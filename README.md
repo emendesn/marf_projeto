@@ -1,4 +1,4 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/emendesn/marfrig_projeto)
+![GitHub repo size](https://img.shields.io/github/repo-size/emendesn/marf_projeto)
 ![Twitter Follow](https://img.shields.io/twitter/follow/emendesn?label=seguir&style=social)
 # Projeto Marfrig
 Acompanhamento Projeto
