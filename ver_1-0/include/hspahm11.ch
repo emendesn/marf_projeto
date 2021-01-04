@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "Prontu¡rio Eletr‘nico"
+   #define STR0002 "Pesquisar"
+   #define STR0003 "Visualizar"
+   #define STR0004 "Incluir"
+   #define STR0005 "Alterar"
+   #define STR0006 "Excluir"
+   #define STR0007 "Legenda"
+   #define STR0008 "InternaÁ„o"
+   #define STR0009 "Ambulatorial"
+   #define STR0010 "Pronto Atendimento"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Prontu¡rio Eletr‘nico"
+      #define STR0002 "Pesquisar"
+      #define STR0003 "Visualizar"
+      #define STR0004 "Incluir"
+      #define STR0005 "Alterar"
+      #define STR0006 "Excluir"
+      #define STR0007 "Legenda"
+      #define STR0008 "InternaÁ„o"
+      #define STR0009 "Ambulatorial"
+      #define STR0010 "Pronto Atendimento"
+   #ELSE
+      #define STR0001 "Prontu¡rio Eletr‘nico"
+      #define STR0002 "Pesquisar"
+      #define STR0003 "Visualizar"
+      #define STR0004 "Incluir"
+      #define STR0005 "Alterar"
+      #define STR0006 "Excluir"
+      #define STR0007 "Legenda"
+      #define STR0008 "InternaÁ„o"
+      #define STR0009 "Ambulatorial"
+      #define STR0010 "Pronto Atendimento"
+   #ENDIF
+#ENDIF

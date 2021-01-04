@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 ""
+   #define STR0002 ""
+   #define STR0003 "Buscar"
+   #define STR0004 "Visualizar"
+   #define STR0005 "Incluir"
+   #define STR0006 "Modificar"
+   #define STR0007 "Borrar"
+   #define STR0008 "Imprimir"
+   #define STR0009 "Não é possível excluir este armazém."
+   #define STR0010 "Armazém utilizado para controle de qualidade. Não pode ser excluido."
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 ""
+      #define STR0002 ""
+      #define STR0003 "Search"
+      #define STR0004 "View"
+      #define STR0005 "Insert"
+      #define STR0006 "Edit"
+      #define STR0007 "Delete"
+      #define STR0008 "Print"
+      #define STR0009 "Não é possível excluir este armazém."
+      #define STR0010 "Armazém utilizado para controle de qualidade. Não pode ser excluido."
+   #ELSE
+      #define STR0001 "Armazém"
+      #define STR0002 "Cadastro de Armazém"
+      #define STR0003 "Pesquisar"
+      #define STR0004 "Visualizar"
+      #define STR0005 "Incluir"
+      #define STR0006 "Alterar"
+      #define STR0007 "Excluir"
+      #define STR0008 "Imprimir"
+      #define STR0009 "Não é possível excluir este armazém."
+      #define STR0010 "Armazém utilizado para controle de qualidade. Não pode ser excluido."
+   #ENDIF
+#ENDIF

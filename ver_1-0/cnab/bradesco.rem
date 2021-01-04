@@ -1,0 +1,64 @@
+Ident. Registro00100100                                                           
+Ident. Fita Rem00200201                                                           
+Literal Remessa0030090'REMESSA'                                                   
+Cod. Servico   010011001                                                          
+Literal Servico0120260'COBRANCA'                                                  
+Codigo Empresa 0270460STRZERO(VAL(ALLTRIM(SEE->EE_CODEMP)),20)                    
+Nome da Empresa0470760SUBSTR(SM0->M0_NOMECOM,1,30)                                
+Numero do Banco0770790237                                                         
+Nome do Banco  0800940PADR("BRADESCO",15," ")                                     
+Data da Gravaca0951000gravadata(ddatabase,.F.)                                    
+branco         1011080SPACE(8)                                                    
+Ident. Sistema 1091100"MX"                                                        
+Nr. Remessa    1111170STRZERO(VAL(SEE->EE_ULTDSK),7)                              
+Branco         1183940SPACE(277)                                                  
+Nr. Sequencial 3954000000001                                                      
+Ident. Registro00100101                                                           
+Agencia Debito 002006000000                                                       
+Digito agencia 00700700                                                           
+Razao Cta.Corre008012000000                                                       
+Conta Corrente 01301900000000                                                     
+Dig.Cta.Corrent02002000                                                           
+Ident. Empresa 02102100                                                           
+0+Cod.Carteira 0220240"0"+SEE->EE_CODCART                                         
+Agencia        0250290STRZERO(VAL(ALLTRIM(SA6->A6_AGENCIA)),5)                    
+Conta          0300360STRZERO(VAL(ALLTRIM(SA6->A6_NUMCON)),7)                     
+DV da Conta    0370370ALLTRIM(SA6->A6_DVCTA)                                      
+Uso da Empresa 0380620SE1->E1_IDCNAB                                              
+Especie        0630650SPACE(3)                                                    
+Uso da Empresa 066070000000                                                       
+Nosso Numero   0710820U_MGFFINBC()                                                
+Desconto       08309200000000000                                                  
+condicao pape  09309302                                                           
+Ident. Papel   0940940"N"                                                         
+Branco         0951040SPACE(10)                                                   
+Id. Rateio Cred1051050SPACE(1)                                                    
+Emite AVISO    10610602                                                           
+Branco         1071080SPACE(2)                                                    
+Ocorrencia     1091100IF(SE1->E1_OCORREN='  ',01,SE1->E1_OCORREN)                 
+Num Documento  1111200SE1->(E1_NUM+E1_PARCELA)                                    
+Data do Vencto 1211260GRAVADATA(SE1->E1_VENCREA,.F.)                              
+Valor Titulo   1271390STRZERO((U_RFINE25()*100),13)                               
+Banco Cobranca 1401420000                                                         
+Agencia Cobranc143147000000                                                       
+ESPECIE        1481490TABELA("17",SUBSTR(SE1->E1_TIPO,1,2))                       
+Identificacao  1501500'N'                                                         
+Data Emissao   1511560GRAVADATA(SE1->E1_EMISSAO,.F.)                              
+1a.Instrucao   1571580IF(!EMPTY(SEE->EE_INSTPRI),SEE->EE_INSTPRI,"00")            
+2a. Instrucao  1591600IF(!EMPTY(SEE->EE_INSTSEC),SEE->EE_INSTSEC,"00")            
+Vlr.Atraso Dia 1611732STRZERO((SE1->E1_VALJUR*100),13)                            
+Data Lim. Desc.1741790SE1->(IF(EMPTY(E1_DESCFIN),"000000",GRAVADATA(E1_VENCREA))) 
+Vlr Desconto   1801922STRZERO((SE1->(E1_VALOR*E1_DESCFIN)),13)                    
+Vlr IOF        1932050STRZERO(0,13)                                               
+Vlr Abatimento 2062182STRZERO(SE1->(E1_DECRESC*100),13)                           
+Ident. Sacado  2192200IF(LEN(ALLTRIM(SA1->A1_CGC))==11,01,02)                     
+Inscr. Sacado  2212340STRZERO(VAL(SA1->A1_CGC),14,0)                              
+Nome do Sacado 2352740SUBSTR(SA1->A1_NOME,1,40)                                   
+Endereco Sacado2753140SA1->(IF(EMPTY(A1_ENDCOB),A1_END,A1_ENDCOB))                
+1a. mensagem   3153260SPACE(12)                                                   
+CEP Sufixo CEP 3273340SA1->(IF(EMPTY(A1_ENDCOB),A1_CEP,A1_CEPC))                  
+Avalista       3353940SPACE(60)                                                   
+Numero Sequenc.3954000INCREMENTA()                                                
+Ident.Registro 00100109                                                           
+branco         0023940SPACE(393)                                                  
+Sequencial     3954000Incrementa()                                                

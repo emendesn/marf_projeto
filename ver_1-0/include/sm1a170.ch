@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "Bancos"
+   #define STR0002 "Este programa permite el mantenimiento del Archivo de Bancos."
+   #define STR0003 "Banco"
+   #define STR0004 "Archivo de Bancos"
+   #define STR0005 "Buscar"
+   #define STR0006 "Visualizar"
+   #define STR0007 "Incluir"
+   #define STR0008 "Modificar"
+   #define STR0009 "Borrar"
+   #define STR0010 "Imprimir"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Banks"
+      #define STR0002 "This file allows the maintenance of Banks File."
+      #define STR0003 "Bank"
+      #define STR0004 "Banks File"
+      #define STR0005 "Search"
+      #define STR0006 "View"
+      #define STR0007 "Add"
+      #define STR0008 "Edit"
+      #define STR0009 "Delete"
+      #define STR0010 "Print"
+   #ELSE
+      #define STR0001 "Bancos"
+      #define STR0002 "Este programa permite a manutenção do Cadastro de Bancos."
+      #define STR0003 "Banco"
+      #define STR0004 "Cadastro de Bancos"
+      #define STR0005 "Pesquisar"
+      #define STR0006 "Visualizar"
+      #define STR0007 "Incluir"
+      #define STR0008 "Alterar"
+      #define STR0009 "Excluir"
+      #define STR0010 "Imprimir"
+   #ENDIF
+#ENDIF

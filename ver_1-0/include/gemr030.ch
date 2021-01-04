@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "Este programa tem como objetivo imprimir relatorio "
+   #define STR0002 "de acordo com os parametros informados pelo usuario"
+   #define STR0003 "de titulos a receber pelo valor presente liquido"
+   #define STR0004 "Relatorio de titulos a receber pelo valor presente liquido"
+   #define STR0005 "Codigo             Empreendimento                                Endereco                                 Bairro                         CEP       Cidade                        UF"
+   #define STR0006 "                                       Qtde|Titulos Unidades|         Amortizacao               Juros               Valor"
+   #define STR0007 "Zebrado"
+   #define STR0008 "Administracao"
+   #define STR0009 "*** CANCELADO PELO OPERADOR ***"
+   #define STR0010 "TOTAIS ->"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Este programa tem como objetivo imprimir relatorio "
+      #define STR0002 "de acordo com os parametros informados pelo usuario"
+      #define STR0003 "de titulos a receber pelo valor presente liquido"
+      #define STR0004 "Relatorio de titulos a receber pelo valor presente liquido"
+      #define STR0005 "Codigo             Empreendimento                                Endereco                                 Bairro                         CEP       Cidade                        UF"
+      #define STR0006 "                                       Qtde|Titulos Unidades|         Amortizacao               Juros               Valor"
+      #define STR0007 "Zebrado"
+      #define STR0008 "Administracao"
+      #define STR0009 "*** CANCELADO PELO OPERADOR ***"
+      #define STR0010 "TOTAIS ->"
+   #ELSE
+      #define STR0001 "Este programa tem como objetivo imprimir relatorio "
+      #define STR0002 "de acordo com os parametros informados pelo usuario"
+      #define STR0003 "de titulos a receber pelo valor presente liquido"
+      #define STR0004 "Relatorio de titulos a receber pelo valor presente liquido"
+      #define STR0005 "Codigo             Empreendimento                                Endereco                                 Bairro                         CEP       Cidade                        UF"
+      #define STR0006 "                                       Qtde|Titulos Unidades|         Amortizacao               Juros               Valor"
+      #define STR0007 "Zebrado"
+      #define STR0008 "Administracao"
+      #define STR0009 "*** CANCELADO PELO OPERADOR ***"
+      #define STR0010 "TOTAIS ->"
+   #ENDIF
+#ENDIF

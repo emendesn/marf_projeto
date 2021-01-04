@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "First"
+   #define STR0002 "Asistente de Exportacion"
+   #define STR0003 "Bienvenido al asistente de Exportacion de datos del First. Esta rutina permite que todos los datos y las configuraciones de la version First se exporten para la version Classic o Express. Para continuar con la exportacion informe el directorio en donde se guardaran los paquetes de exportacion del First."
+   #define STR0004 "Directorio"
+   #define STR0005 "Buscar"
+   #define STR0006 "Seleccione el Archivo"
+   #define STR0007 "<< &anular"
+   #define STR0008 "&Continuar >>"
+   #define STR0009 "Directorio o camino invalido."
+   #define STR0010 "Verifique el directorio informado."
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "First"
+      #define STR0002 "Export Assistant        "
+      #define STR0003 "Welcome to the Export Assistant of First data. Through this routine you can export all data and configurations from First version to Calssic or Express versions. To continue exporting, enter the directory where the First export packs will be saved.                                          "
+      #define STR0004 "Directory"
+      #define STR0005 "Search  "
+      #define STR0006 "Select a File      "
+      #define STR0007 "<< C&ancel  "
+      #define STR0008 "&Continue  >>"
+      #define STR0009 "Invalid directory or path.    "
+      #define STR0010 "Check the entered directory.    "
+   #ELSE
+      #define STR0001 "First"
+      #define STR0002 "Assistente de Exportação - Bonagura"
+      #define STR0003 "Bem Vindo ao assistente de Exportação dos dados do First. Esta rotina permite que todos os dados (fiscal e financeiro) da versao First sejam exportados para arquivo texto (TXT). Para prosseguir com a exportação informe o diretório onde os pacotes de exportação do First serão gravados."
+      #define STR0004 "Diretorio"
+      #define STR0005 "Procurar"
+      #define STR0006 "Selecione o Arquivo"
+      #define STR0007 "<< C&ancelar"
+      #define STR0008 "&Continuar >>"
+      #define STR0009 "Diretorio ou caminho inválido."
+      #define STR0010 "Verifique o diretorio informado."
+   #ENDIF
+#ENDIF

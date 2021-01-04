@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+	#define STR0001 "Cadastro de Encerramento de Notas"
+	#define STR0002 "Pesquisar"
+	#define STR0003 "Visualizar"
+	#define STR0004 "Incluir"
+	#define STR0005 "Alterar"
+	#define STR0006 "Excluir"
+	#define STR0007 "Encerrar Notas"
+	#define STR0008 "Selecione um aluno para encerrar suas notas."
+	#define STR0009 "Atenção"
+	#define STR0010 "Aguarde, encerrando nota para o RA "
+#ELSE
+	#IFDEF ENGLISH
+		#define STR0001 "Cadastro de Encerramento de Notas"
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Alterar"
+		#define STR0006 "Excluir"
+		#define STR0007 "Encerrar Notas"
+		#define STR0008 "Selecione um aluno para encerrar suas notas."
+		#define STR0009 "Atenção"
+		#define STR0010 "Aguarde, encerrando nota para o RA "
+	#ELSE
+		#define STR0001 "Cadastro de Encerramento de Notas"
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Alterar"
+		#define STR0006 "Excluir"
+		#define STR0007 "Encerrar Notas"
+		#define STR0008 "Selecione um aluno para encerrar suas notas."
+		#define STR0009 "Atenção"
+		#define STR0010 "Aguarde, encerrando nota para o RA "
+	#ENDIF
+#ENDIF

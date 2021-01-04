@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Rotina de Faturamento Agrupado de Orçamentos"
+	#define STR0002 "de Peças e Serviços. Utilize os parâmetros"
+	#define STR0003 "para selecionar o cliente para faturamento."
+	#define STR0004 "Facturación agrupado de presupuestos de piezas"
+	#define STR0005 "Número"
+	#define STR0006 "Tipo"
+	#define STR0007 "Fecha apertura"
+	#define STR0008 "Valor total"
+	#define STR0009 "Cliente"
+	#define STR0010 "Tienda"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Budget Grouped Invoicing Routine"
+		#define STR0002 "of Parts and Services. Use parameters"
+		#define STR0003 "to select the customer for invoicing."
+		#define STR0004 "Grouped invoices of Spare Parts budgets"
+		#define STR0005 "Number"
+		#define STR0006 "Type"
+		#define STR0007 "Opening Date"
+		#define STR0008 "Total Value"
+		#define STR0009 "Customer"
+		#define STR0010 "Store"
+	#else
+		#define STR0001 "Rotina de Faturamento Agrupado de Orçamentos"
+		#define STR0002 "de Peças e Serviços. Utilize os parâmetros"
+		#define STR0003 "para selecionar o cliente para faturamento."
+		#define STR0004 "Faturamento agrupado de orçamentos de Peças"
+		#define STR0005 "Número"
+		#define STR0006 "Tipo"
+		#define STR0007 "Data Abertura"
+		#define STR0008 "Valor Total"
+		#define STR0009 "Cliente"
+		#define STR0010 "Loja"
+	#endif
+#endif

@@ -1,0 +1,40 @@
+#IFDEF SPANISH
+	#define STR0001 "Pesquisar"  
+	#define STR0002	"Visualizar"
+	#define STR0003	"Incluir" 
+	#define STR0004	"Alterar"
+	#define STR0005	"Excluir"
+	#define STR0006	"Já existe registro com esta informação"
+	#define STR0007	"Troque a chave principal deste registro."
+	#define STR0008 "Técnico"
+	#define STR0009 "Cadastro de Técnico"
+	#define STR0010 "Campos Cond. Pagto. e Produto não preenchidos"
+	#define STR0011 "Preencha um dos campos"
+	
+#ELSE
+	#IFDEF ENGLISH
+		#define STR0001 "Pesquisar"  
+		#define STR0002	"Visualizar"
+		#define STR0003	"Incluir" 
+		#define STR0004	"Alterar"
+		#define STR0005	"Excluir"
+		#define STR0006	"Já existe registro com esta informação"
+		#define STR0007	"Troque a chave principal deste registro."
+		#define STR0008 "Técnico"
+		#define STR0009 "Cadastro de Técnico"
+		#define STR0010 "Campos Cond. Pagto. e Produto não preenchidos"
+		#define STR0011 "Preencha um dos campos"
+	#ELSE
+		#define STR0001 "Pesquisar"  
+		#define STR0002	"Visualizar"
+		#define STR0003	"Incluir" 
+		#define STR0004	"Alterar"
+		#define STR0005	"Excluir"
+		#define STR0006	"Já existe registro com esta informação"
+		#define STR0007	"Troque a chave principal deste registro."
+		#define STR0008 "Técnico"
+		#define STR0009 "Cadastro de Técnico"
+		#define STR0010 "Campos Cond. Pagto. e Produto não preenchidos"
+		#define STR0011 "Preencha um dos campos"
+      #ENDIF
+#ENDIF

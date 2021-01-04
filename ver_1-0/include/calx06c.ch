@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 ", En caso de la no utilizacion del Color, el Producto debe contener la Referencia y el color juntos "
+   #define STR0002 ", No existe lista para esta Referencia y Color "
+   #define STR0003 "Informando"
+   #define STR0004 "Cantidad"
+   #define STR0005 "Prc. Unit."
+   #define STR0006 "Tamanos"
+   #define STR0007 "Tamanos: "
+   #define STR0008 ", Total de la lista nao coincide con el total General "
+   #define STR0009 "<ATENCION> Item del Pedido tiene OP, la cantidad no puede modificarse"
+   #define STR0010 "<ATENCION> Producto Inactivo"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 ", Caso nao utilizares a Cor o Produto devera conter a Referencia e a cor juntos "
+      #define STR0002 ", Nao existe grade para esta Referencia e Cor "
+      #define STR0003 "Informando"
+      #define STR0004 "Quantidade"
+      #define STR0005 "Prc. Unit."
+      #define STR0006 "Tamanhos"
+      #define STR0007 "Tamanhos: "
+      #define STR0008 ", Total da grade nao confere com o total Geral "
+      #define STR0009 "<ATENCAO> Item do Pedido ja possui OP,  a quantidade nao pode ser alterada"
+      #define STR0010 "<ATENCAO> Produto Inativo"
+   #ELSE
+      #define STR0001 ", Caso nao utilizares a Cor o Produto devera conter a Referencia e a cor juntos "
+      #define STR0002 ", Nao existe grade para esta Referencia e Cor "
+      #define STR0003 "Informando"
+      #define STR0004 "Quantidade"
+      #define STR0005 "Prc. Unit."
+      #define STR0006 "Tamanhos"
+      #define STR0007 "Tamanhos: "
+      #define STR0008 ", Total da grade nao confere com o total Geral "
+      #define STR0009 "<ATENCAO> Item do Pedido ja possui OP,  a quantidade nao pode ser alterada"
+      #define STR0010 "<ATENCAO> Produto Inativo"
+   #ENDIF
+#ENDIF

@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "O produto selecionado não pode ser utilizado para o produtor informado."
+   #define STR0002 "A primeira pesagem deve ser maior que a segunda pesagem."
+   #define STR0003 "A primeira pesagem deve ser menor que a segunda pesagem."
+   #define STR0004 "O PH informado é menor que "
+   #define STR0005 "%. Toda a carga será descartada para triguilho."
+   #define STR0006 "O cliente/fornecedor da retenção/perda difere da nota selecionada."
+   #define STR0007 "O produto da retenção/perda não consta na nota selecionada."
+   #define STR0008 "O produto selecionado não pode ser utilizado para o produtor informado."
+   #define STR0009 "O produto da retenção/perda não consta na nota selecionada."
+   #define STR0010 "Nota de Dev./Compra inválida para a retenção/perda."
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "O produto selecionado não pode ser utilizado para o produtor informado."
+      #define STR0002 "A primeira pesagem deve ser maior que a segunda pesagem."
+      #define STR0003 "A primeira pesagem deve ser menor que a segunda pesagem."
+      #define STR0004 "O PH informado é menor que "
+      #define STR0005 "%. Toda a carga será descartada para triguilho."
+      #define STR0006 "O cliente/fornecedor da retenção/perda difere da nota selecionada."
+      #define STR0007 "O produto da retenção/perda não consta na nota selecionada."
+      #define STR0008 "O produto selecionado não pode ser utilizado para o produtor informado."
+      #define STR0009 "O produto da retenção/perda não consta na nota selecionada."
+      #define STR0010 "Nota de Dev./Compra inválida para a retenção/perda."
+   #ELSE
+      #define STR0001 "O produto selecionado não pode ser utilizado para o produtor informado."
+      #define STR0002 "A primeira pesagem deve ser maior que a segunda pesagem."
+      #define STR0003 "A primeira pesagem deve ser menor que a segunda pesagem."
+      #define STR0004 "O PH informado é menor que "
+      #define STR0005 "%. Toda a carga será descartada para triguilho."
+      #define STR0006 "O cliente/fornecedor da retenção/perda difere da nota selecionada."
+      #define STR0007 "O produto da retenção/perda não consta na nota selecionada."
+      #define STR0008 "O produto selecionado não pode ser utilizado para o produtor informado."
+      #define STR0009 "O produto da retenção/perda não consta na nota selecionada."
+      #define STR0010 "Nota de Dev./Compra inválida para a retenção/perda."
+   #ENDIF
+#ENDIF

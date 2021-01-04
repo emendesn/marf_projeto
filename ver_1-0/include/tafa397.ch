@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Sped Fiscal Bloque K – Control de producción y stock"
+	#define STR0002 "K100 - Período de cálculo del ICMS/IPI"
+	#define STR0003 "K200 - Stock registrado"
+	#define STR0004 "K220 - Otros movimientos internos entre mercaderías"
+	#define STR0005 "K230 - Ítems producidos"
+	#define STR0006 "K235 - Insumos consumidos"
+	#define STR0007 "K250 - Indust. Realizada por terceros - Ítems producidos"
+	#define STR0008 "K255 - Indust. en terceros - Insumos consumidos"
+	#define STR0009 "K230/K235 Ítems producidos e insumos consumidos"
+	#define STR0010 "K250/K255 Industrialización en terceros"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Sped Fiscal Block K – Production and Stock Control"
+		#define STR0002 "K100 - ICMS/IPI Calculation Period"
+		#define STR0003 "K200 - Stock Posted to Books"
+		#define STR0004 "K220 - Other Internal Transactions between Goods"
+		#define STR0005 "K230 - Items Produced"
+		#define STR0006 "K235 - Inputs Consumed"
+		#define STR0007 "K250 - Indust. Executed by Third Parties - Items Produced"
+		#define STR0008 "K255 - Indust. at Third Parties - Inputs Consumed"
+		#define STR0009 "K230/K235 Items Produced and Inputs Consumed"
+		#define STR0010 "K250/K255 Industrialization at Third Parties"
+	#else
+		#define STR0001 "Sped Fiscal Bloco K – Controle da Produção e Estoque"
+		#define STR0002 "K100 - Período de Apuração do ICMS/IPI"
+		#define STR0003 "K200 - Estoque Escriturado"
+		#define STR0004 "K220 - Outras Movimentações Internas entre Mercadorias"
+		#define STR0005 "K230 - Itens Produzidos"
+		#define STR0006 "K235 - Insumos Consumidos"
+		#define STR0007 "K250 - Indust. Efetuada por Terceiros - Itens Produzidos"
+		#define STR0008 "K255 - Indust.em Terceiros - Insumos Consumidos"
+		#define STR0009 "K230/K235 Itens Produzidos e Insumos Consumidos"
+		#define STR0010 "K250/K255 Industrialização em Terceiros"
+	#endif
+#endif

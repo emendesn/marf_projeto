@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+	#define STR0001 "Adminstradoras Financeira"
+	#define STR0002 "Este programa permite a manutenção do Cadastro de Adminstradoras Financeira."
+	#define STR0003 "Banco"
+	#define STR0004 "Cadastro de Administradoras Financeiras"
+   #define STR0005 "Buscar"
+   #define STR0006 "Visualizar"
+   #define STR0007 "Incluir"
+   #define STR0008 "Modificar"
+   #define STR0009 "Borrar"
+   #define STR0010 "Imprimir"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Adminstradoras Financeira"
+      #define STR0002 "Este programa permite a manutenção do Cadastro de Adminstradoras Financeira."
+      #define STR0003 "Banco"
+      #define STR0004 "Cadastro de Administradoras Financeiras"
+      #define STR0005 "Search"
+      #define STR0006 "View"
+      #define STR0007 "Insert"
+      #define STR0008 "Edit"
+      #define STR0009 "Delete"
+      #define STR0010 "Print"
+   #ELSE
+      #define STR0001 "Adminstradoras Financeira"
+      #define STR0002 "Este programa permite a manutenção do Cadastro de Adminstradoras Financeira."
+      #define STR0003 "Banco"
+      #define STR0004 "Cadastro de Administradoras Financeiras"
+      #define STR0005 "Pesquisar"
+      #define STR0006 "Visualizar"
+      #define STR0007 "Incluir"
+      #define STR0008 "Alterar"
+      #define STR0009 "Excluir"
+      #define STR0010 "Imprimir"
+   #ENDIF
+#ENDIF

@@ -1,0 +1,78 @@
+#ifdef SPANISH
+	#define STR0001 "Movimiento de Costo de Transporte"
+	#define STR0002 "Buscar"
+	#define STR0003 "Visualizar"
+	#define STR0004 "Incluir"
+	#define STR0005 "Borrar"
+	#define STR0006 "Cod. Gasto: "
+	#define STR0007 "Leyenda"
+	#define STR0008 "Pendiente"
+	#define STR0009 "Baja Parcial"
+	#define STR0010 "Baja Total"
+	#define STR0011 "Dar de baja documento"
+	#define STR0012 "Revertir Baja"
+	#define STR0013 "Dar de Baja item"
+	#define STR0014 "Seleccionando registros..."
+	#define STR0015 "Muestra Asientos Contables"
+	#define STR0016 "Aglutina Asientos. Contables"
+	#define STR0017 "Serv Transporte De"
+	#define STR0018 "Serv Transporte A"
+	#define STR0019 "Generando Movimientos para el Contrato..."
+	#define STR0020 "Comunicandose con la Operadora..."
+	#define STR0021 "Atencion"
+	#define STR0022 "En la tabla SE2(Cuentas por Pagar) se encontro un registro con la misma clave primaria, por lo tanto no sera posible efectuar la grabacion."
+	#define STR0023 "Para corregir este problema, ejecute el update referente a la creacion del campo DG_PARC de la tabla de Movimiento de Costo Transporte (SDG)."
+	#define STR0024 "OK"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Transport Cost Movement         "
+		#define STR0002 "Search   "
+		#define STR0003 "View"
+		#define STR0004 "Insert "
+		#define STR0005 "Delete "
+		#define STR0006 "Expense Code: "
+		#define STR0007 "Legend"
+		#define STR0008 "Pending  "
+		#define STR0009 "Partial Post."
+		#define STR0010 "Total Post."
+		#define STR0011 "Post docum. "
+		#define STR0012 "Reverse Post."
+		#define STR0013 "Post Item  "
+		#define STR0014 "Selecting records... "
+		#define STR0015 "Trips "
+		#define STR0016 "Confirm "
+		#define STR0017 "Line:   "
+		#define STR0018 "Tirp: "
+		#define STR0019 "Generating Movements for Contract..."
+		#define STR0020 "Establishing communication with Operator..."
+		#define STR0021 "Attention"
+		#define STR0022 "It was found in table SE2(Accounts Payable) a record with the same primary key, therefore, it is not possible to save it. "
+		#define STR0023 "To correct this problem, run the update regarding the creation of the field DG_PARC of table Transport Cost Movement (SDG)."
+		#define STR0024 "OK"
+	#else
+		#define STR0001 If( cPaisLoc $ "ANG|PTG", "Movimento De Custo De Transporte", "Movimento de Custo de Transporte" )
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Excluir"
+		#define STR0006 If( cPaisLoc $ "ANG|PTG", "Cod. despesa: ", "Cod. Despesa: " )
+		#define STR0007 "Legenda"
+		#define STR0008 "Em Aberto"
+		#define STR0009 If( cPaisLoc $ "ANG|PTG", "Liquidação Parcial", "Baixa Parcial" )
+		#define STR0010 If( cPaisLoc $ "ANG|PTG", "Liquidação Total", "Baixa Total" )
+		#define STR0011 "Baixar Docto"
+		#define STR0012 "Estorna Baixa"
+		#define STR0013 "Baixar Item"
+		#define STR0014 If( cPaisLoc $ "ANG|PTG", "A Seleccionar Registos...", "Selecionando Registros..." )
+		#define STR0015 "Viagens"
+		#define STR0016 "Confirmar"
+		#define STR0017 "Linha : "
+		#define STR0018 "Viagem : "
+		#define STR0019 If( cPaisLoc $ "ANG|PTG", "A Criar Movimentos Para O Contrato...", "Gerando Movimentos para o Contrato..." )
+		#define STR0020 If( cPaisLoc $ "ANG|PTG", "A Realizar Comunicação Com A Operadora...", "Realizando Comunicação com a Operadora..." )
+		#define STR0021 "Atenção"
+		#define STR0022 If( cPaisLoc $ "ANG|PTG", "Foi encontrado na tabela SE2(Contas a Pagar) um registo com a mesma chave primária, portanto não será possível efectuar a gravação.", "Foi encontrado na tabela SE2(Contas a Pagar) um registro com a mesma chave primária, portanto não será possível efetuar a gravação." )
+		#define STR0023 "Para corrigir este problema, execute o update referente à criação do campo DG_PARC da tabela de Movimento de Custo Transporte (SDG)."
+		#define STR0024 "OK"
+	#endif
+#endif

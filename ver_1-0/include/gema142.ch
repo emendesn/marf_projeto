@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "Estrutura do Empreendimento"
+   #define STR0002 "Nao e permitido incluir uma estrutura no nivel definido para unidades. "
+   #define STR0003 "Favor verificar a configuracao da mascara usada no Empreendimento."
+   #define STR0004 "Atencao!"
+   #define STR0005 "Somente acrescente ao final o codigo da estrutura, nao retire codigos superiores."
+   #define STR0006 "Tamanho do Codigo esta invalido, verifique o nivel para esta mascara: "
+   #define STR0007 " ."
+   #define STR0008 "Ja existe uma estrutura com esse codigo, favor ecolher outro."
+   #define STR0009 "Unidades não podem ser excluidas. Existem unidades com reserva ou com contrato assinado."
+   #define STR0010 "Descrição não pode estar vazia!"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Estrutura do Empreendimento"
+      #define STR0002 "Nao e permitido incluir uma estrutura no nivel definido para unidades. "
+      #define STR0003 "Favor verificar a configuracao da mascara usada no Empreendimento."
+      #define STR0004 "Atencao!"
+      #define STR0005 "Somente acrescente ao final o codigo da estrutura, nao retire codigos superiores."
+      #define STR0006 "Tamanho do Codigo esta invalido, verifique o nivel para esta mascara: "
+      #define STR0007 " ."
+      #define STR0008 "Ja existe uma estrutura com esse codigo, favor ecolher outro."
+	   #define STR0009 "Unidades não podem ser excluidas. Existem unidades com reserva ou com contrato assinado."
+	   #define STR0010 "Descrição não pode estar vazia!"
+   #ELSE
+      #define STR0001 "Estrutura do Empreendimento"
+      #define STR0002 "Nao e permitido incluir uma estrutura no nivel definido para unidades. "
+      #define STR0003 "Favor verificar a configuracao da mascara usada no Empreendimento."
+      #define STR0004 "Atencao!"
+      #define STR0005 "Somente acrescente ao final o codigo da estrutura, nao retire codigos superiores."
+      #define STR0006 "Tamanho do Codigo esta invalido, verifique o nivel para esta mascara: "
+      #define STR0007 " ."
+      #define STR0008 "Ja existe uma estrutura com esse codigo, favor ecolher outro."
+	   #define STR0009 "Unidades não podem ser excluidas. Existem unidades com reserva ou com contrato assinado."
+	   #define STR0010 "Descrição não pode estar vazia!"
+   #ENDIF
+#ENDIF

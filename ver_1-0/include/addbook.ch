@@ -1,0 +1,108 @@
+#ifdef SPANISH
+	#define STR0001 "Address Book"
+	#define STR0002 "Incluir"
+	#define STR0003 "Editar"
+	#define STR0004 "Delete"
+	#define STR0005 "Cancel"
+	#define STR0006 "Type Name or Select from List:"
+	#define STR0007 "New Entry"
+	#define STR0008 "Group Name:"
+	#define STR0009 "&Add"
+	#define STR0010 "&Remove"
+	#define STR0011 "&Cancel"
+	#define STR0012 "Group Name already exist."
+	#define STR0013 "Attention"
+	#define STR0014 "E-mail Address"
+	#define STR0015 "Are you sure that you want to permanently remove the selected group from this Address Book?"
+	#define STR0016 "Seleccionar"
+	#define STR0017 "Orden:"
+	#define STR0018 "Buscarr:"
+	#define STR0019 "Retorno:"
+	#define STR0020 "Atencion"
+	#define STR0021 "¡No hay e-mail registrado para este cliente!"
+	#define STR0022 "¡No hay e-mail registrado para este proveedor!"
+	#define STR0023 "¡No hay e-mail registrado para este proveedor!"
+	#define STR0024 "¡No hay e-mail registrado para este contacto!"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Address Book"
+		#define STR0002 "Add"
+		#define STR0003 "Edit"
+		#define STR0004 "Delete"
+		#define STR0005 "Cancel"
+		#define STR0006 "Type the name or select it from the list:"
+		#define STR0007 "New Entry"
+		#define STR0008 "Group Name:"
+		#define STR0009 "&Add"
+		#define STR0010 "&Remove"
+		#define STR0011 "&Cancel"
+		#define STR0012 "Group Name already exists."
+		#define STR0013 "Attention"
+		#define STR0014 "E-mail Address"
+		#define STR0015 "Are you sure that you want to permanently remove the selected group from this Address Book?"
+		#define STR0016 "Select"
+		#define STR0017 "Order:"
+		#define STR0018 "Search:"
+		#define STR0019 "Return:"
+		#define STR0020 "Attention"
+		#define STR0021 "There is no e-mail registered for this customer!"
+		#define STR0022 "There is no e-mail registered for this supplier!"
+		#define STR0023 "There is no e-mail registered for this sales representative!"
+		#define STR0024 "There is no e-mail registered for this contact!"
+	#else
+		Static STR0001 := "Catálogo de Endereços"
+		#define STR0002  "Incluir"
+		#define STR0003  "Editar"
+		#define STR0004  "Excluir"
+		#define STR0005  "Cancelar"
+		Static STR0006 := "Digite o Nome ou Selecione na Lista:"
+		#define STR0007  "Nova Entrada"
+		Static STR0008 := "Nome do Grupo:"
+		Static STR0009 := "&Adicionar"
+		Static STR0010 := "&Remover"
+		Static STR0011 := "&Cancelar"
+		Static STR0012 := "Nome do Grupo já existe."
+		#define STR0013  "Atenção"
+		Static STR0014 := "E-mail Address"
+		Static STR0015 := "Tem certeza que deseja remover o grupo selecionado permanentemente deste Catálogo de Endereços?"
+		Static STR0016 := "Selecionar"
+		#define STR0017  "Ordem:"
+		#define STR0018  "Procurar:"
+		#define STR0019  "Retorno:"
+		Static STR0020 := "Atencäo"
+		Static STR0021 := "Näo ha e-mail cadastrado para este cliente!"
+		Static STR0022 := "Näo ha e-mail cadastrado para este fornecedor!"
+		Static STR0023 := "Näo ha e-mail cadastrado para este vendedor!"
+		Static STR0024 := "Não ha e-mail cadastrado para este contato!"
+	#endif
+#endif
+
+#ifndef SPANISH
+#ifndef ENGLISH
+	STATIC uInit := __InitFun()
+
+	Static Function __InitFun()
+	uInit := Nil
+	If Type('cPaisLoc') == 'C'
+
+		If cPaisLoc == "PTG"
+			STR0001 := "Catálogo De Endereços"
+			STR0006 := "Digite O Nome Ou Seleccione Na Lista:"
+			STR0008 := "Nome Do Grupo:"
+			STR0009 := "&adicionar"
+			STR0010 := "&remover"
+			STR0011 := "&cancelar"
+			STR0012 := "Nome do grupo já existe."
+			STR0014 := "Endereços De E-mail"
+			STR0015 := "Tem A Certeza Que Deseja Remover O Grupo Seleccionado Permanentemente Deste Catálogo De Endereços?"
+			STR0016 := "Seleccionar"
+			STR0020 := "Atenção"
+			STR0021 := "Não há e-mail registado para este cliente!"
+			STR0022 := "Não há e-mail registado para este fornecedor!"
+			STR0023 := "Não há e-mail registado para este vendedor!"
+			STR0024 := "Não há e-mail registado para este contacto!"
+		EndIf
+		EndIf
+	Return Nil
+#ENDIF
+#ENDIF

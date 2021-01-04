@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Registro de Formularios"
+	#define STR0002 "Buscar"
+	#define STR0003 "Visualizar"
+	#define STR0004 "Incluir"
+	#define STR0005 "Modificar"
+	#define STR0006 "Confirmar"
+	#define STR0007 "Borrar"
+	#define STR0008 "Leyenda"
+	#define STR0009 "Pendiente"
+	#define STR0010 "Entregado"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Form file        "
+		#define STR0002 "Search   "
+		#define STR0003 "View      "
+		#define STR0004 "Insert "
+		#define STR0005 "Edit   "
+		#define STR0006 "Confirm  "
+		#define STR0007 "Delete "
+		#define STR0008 "Caption"
+		#define STR0009 "Pending "
+		#define STR0010 "Delivered"
+	#else
+		#define STR0001 "Cadastro de Guias"
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Alterar"
+		#define STR0006 "Confirmar"
+		#define STR0007 "Excluir"
+		#define STR0008 "Legenda"
+		#define STR0009 "Pendente"
+		#define STR0010 "Entregue"
+	#endif
+#endif

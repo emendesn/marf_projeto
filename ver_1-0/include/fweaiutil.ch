@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Inicio do Processamento"
+	#define STR0002 "Inicio"
+	#define STR0003 "Falhou"
+	#define STR0004 "Processo interrompido"
+	#define STR0005 "Falha"
+	#define STR0006 "Fim do Processamento"
+	#define STR0007 "Fim"
+	#define STR0008 "Não especificado"
+	#define STR0009 "URL DO TOTVS ESB"
+	#define STR0010 "Configure o parametro MV_EAIURL"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Inicio do Processamento"
+		#define STR0002 "Inicio"
+		#define STR0003 "Falhou"
+		#define STR0004 "Processo interrompido"
+		#define STR0005 "Falha"
+		#define STR0006 "Fim do Processamento"
+		#define STR0007 "Fim"
+		#define STR0008 "Não especificado"
+		#define STR0009 "URL DO TOTVS ESB"
+		#define STR0010 "Configure o parametro MV_EAIURL"
+	#else
+		#define STR0001  "Inicio do Processamento"
+		#define STR0002  "Inicio"
+		#define STR0003  "Falhou"
+		#define STR0004  "Processo interrompido"
+		#define STR0005  "Falha"
+		#define STR0006  "Fim do Processamento"
+		#define STR0007  "Fim"
+		#define STR0008  "Não especificado"
+		#define STR0009  "URL DO TOTVS ESB"
+		#define STR0010  "Configure o parametro MV_EAIURL"
+	#endif
+#endif

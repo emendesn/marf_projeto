@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Relatório de notas com divergências - Analítico"
+	#define STR0002 "Relatório de notas com divergências - Sintético"
+	#define STR0003 "Notas classificadas com divergências"
+	#define STR0004 "Documento"
+	#define STR0005 "Série"
+	#define STR0006 "Fornecedor"
+	#define STR0007 "Data"
+	#define STR0008 "Total"
+	#define STR0009 "Total de Notas de Entrada classificadas com divergências"
+	#define STR0010 "Diferença"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Report of invoices with divergences - Analytical"
+		#define STR0002 "Report of invoices with divergences - Summarized"
+		#define STR0003 "Invoices classified with divergences"
+		#define STR0004 "Document"
+		#define STR0005 "Series"
+		#define STR0006 "Supplier"
+		#define STR0007 "Date"
+		#define STR0008 "Total"
+		#define STR0009 "Total Inbound Invoices classified with divergences"
+		#define STR0010 "Difference"
+	#else
+		#define STR0001 "Relatório de notas com divergências - Analítico"
+		#define STR0002 "Relatório de notas com divergências - Sintético"
+		#define STR0003 "Notas classificadas com divergências"
+		#define STR0004 "Documento"
+		#define STR0005 "Série"
+		#define STR0006 "Fornecedor"
+		#define STR0007 "Data"
+		#define STR0008 "Total"
+		#define STR0009 "Total de Notas de Entrada classificadas com divergências"
+		#define STR0010 "Diferença"
+	#endif
+#endif

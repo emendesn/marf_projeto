@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Visualizar"
+	#define STR0002 "Incluir"
+	#define STR0003 "Modificar"
+	#define STR0004 "Borrar"
+	#define STR0005 "Imprimir"
+	#define STR0006 "Buscar"
+	#define STR0007 "Registro de organo concediente"
+	#define STR0008 "Orgão Concedente"
+	#define STR0009 "¡Codigo ya registrado!"
+	#define STR0010 "¡Organo registrado en la tabla de lineas! "
+#else
+	#ifdef ENGLISH
+		#define STR0001 "View"
+		#define STR0002 "Add"
+		#define STR0003 "Change"
+		#define STR0004 "Delete"
+		#define STR0005 "Print"
+		#define STR0006 "Search"
+		#define STR0007 "Contract-Letting Agency Register"
+		#define STR0008 "Granting Body"
+		#define STR0009 "Code already registered!"
+		#define STR0010 "Agency registered in the Line Table!"
+	#else
+		#define STR0001 "Visualizar"
+		#define STR0002 "Incluir"
+		#define STR0003 "Alterar"
+		#define STR0004 "Excluir"
+		#define STR0005 "Imprimir"
+		#define STR0006 "Pesquisar"
+		#define STR0007 "Cadastro de Órgão Concedente"
+		#define STR0008 "Orgão Concedente"
+		#define STR0009 "Código já Cadastrado!"
+		#define STR0010 "Órgão Cadastrado na Tabela de Linhas!"
+	#endif
+#endif

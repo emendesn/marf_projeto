@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Registro de Sala de Atendimiento"
+	#define STR0002 "Consultar"
+	#define STR0003 "Visualizar"
+	#define STR0004 "Incluir"
+	#define STR0005 "Alterar"
+	#define STR0006 "Excluir"
+	#define STR0007 "Codigo ya existente..."
+	#define STR0008 "Atencion"
+	#define STR0009 "Este Codigo esta siendo usado por la Disponibilidad Ambulatorial (GM6). ¡ Imposible Excluirlo !"
+	#define STR0010 "Validacion"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Registration of Service Room   "
+		#define STR0002 "Search"
+		#define STR0003 "View"
+		#define STR0004 "Add"
+		#define STR0005 "Edit"
+		#define STR0006 "Delete"
+		#define STR0007 "Code already exists..."
+		#define STR0008 "Note"
+		#define STR0009 "This code is being used by the la Infirmary Availability (GM6). Cannot delete it !       "
+		#define STR0010 "Validation"
+	#else
+		#define STR0001 "Cadastro de Sala de Atendimento"
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Alterar"
+		#define STR0006 "Excluir"
+		#define STR0007 "Codigo ja existente..."
+		#define STR0008 "Atencao"
+		#define STR0009 "Este Codigo esta sendo usado pela Disponibilidade Ambulatorial(GM6).Impossivel Exclui-lo!"
+		#define STR0010 "Validação"
+	#endif
+#endif

@@ -1,0 +1,45 @@
+#ifdef SPANISH
+	#define STR0001 "Buscar"
+	#define STR0002 "Visualizar"
+	#define STR0003 "Incluir"
+	#define STR0004 "Modificar"
+	#define STR0005 "Borrar"
+	#define STR0006 "Definir busqueda"
+	#define STR0007 "Codigo:"
+	#define STR0008 "Archivo"
+	#define STR0009 "Filtro"
+	#define STR0010 "Orden"
+	#define STR0011 "Tipo "
+	#define STR0012 "Campos "
+	#define STR0013 "Tipo"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Search"
+		#define STR0002 "View"
+		#define STR0003 "Insert"
+		#define STR0004 "Edit"
+		#define STR0005 "Delete"
+		#define STR0006 "Define Search"
+		#define STR0007 "Code:"
+		#define STR0008 "File"
+		#define STR0009 "Filter"
+		#define STR0010 "Order"
+		#define STR0011 "Type "
+		#define STR0012 "Fields"
+		#define STR0013 "Type"
+	#else
+		#define STR0001 "Pesquisar"
+		#define STR0002 "Visualizar"
+		#define STR0003 "Incluir"
+		#define STR0004 "Alterar"
+		#define STR0005 "Excluir"
+		#define STR0006 "Definir Pesquisa"
+		#define STR0007 If( cPaisLoc $ "ANG|PTG", "Código:", "Codigo:" )
+		#define STR0008 If( cPaisLoc $ "ANG|PTG", "Ficheiro", "Arquivo" )
+		#define STR0009 "Filtro"
+		#define STR0010 "Ordem"
+		#define STR0011 "Tipo "
+		#define STR0012 "Campos    "
+		#define STR0013 "Tipo"
+	#endif
+#endif

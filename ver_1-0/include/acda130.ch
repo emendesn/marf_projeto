@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+   #define STR0001 "Pesquisar"
+   #define STR0002 "Consulta"
+   #define STR0003 "Consulta Geral Log de Eventos"
+   #define STR0004 "Informacoes da Etiqueta "
+   #define STR0005 "OP "
+   #define STR0006 "Nota Entrada "
+   #define STR0007 "Nota Saida "
+   #define STR0008 "Auxiliar "
+   #define STR0009 "Eventos"
+   #define STR0010 "Carregando...."
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Pesquisar"
+      #define STR0002 "Consulta"
+      #define STR0003 "Consulta Geral Log de Eventos"
+      #define STR0004 "Informacoes da Etiqueta "
+      #define STR0005 "OP "
+      #define STR0006 "Nota Entrada "
+      #define STR0007 "Nota Saida "
+      #define STR0008 "Auxiliar "
+      #define STR0009 "Eventos"
+      #define STR0010 "Carregando...."
+   #ELSE
+      #define STR0001 "Pesquisar"
+      #define STR0002 "Consulta"
+      #define STR0003 "Consulta Geral Log de Eventos"
+      #define STR0004 "Informacoes da Etiqueta "
+      #define STR0005 "OP "
+      #define STR0006 "Nota Entrada "
+      #define STR0007 "Nota Saida "
+      #define STR0008 "Auxiliar "
+      #define STR0009 "Eventos"
+      #define STR0010 "Carregando...."
+   #ENDIF
+#ENDIF

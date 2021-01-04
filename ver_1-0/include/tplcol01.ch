@@ -1,0 +1,42 @@
+#IFDEF SPANISH
+   #define STR0001 "El objetivo de este programa es imprimir un informe"
+   #define STR0002 "segun los parametros informados por el usuario.     "
+   #define STR0003 "Informe de pre-cierre      "
+   #define STR0004 "Codigo Nombre                                    Extra   Valor            Leche     Valor        Valor      Leche Valor Porc.     Valor  Valor            Valor      Valor      Valor      Liquido Red.       Precio"
+   #define STR0005 "       Productor                                 Cuota   ExtraCuota       Cuota  Unitario        Total      Acido Acido Gordur   Calid.  Total Bruto   Funrural    Capital      Flete      a Pagar            Neto  "
+   #define STR0006 "A rayas 
+   #define STR0007 "Administrac. "
+   #define STR0008 "Informe de pre-cierre       - "
+   #define STR0009 "Total Linea "
+   #define STR0010 "***CANCELADO POR EL OPERADOR***"
+   #define STR0011 "Linea:  "
+   #define STR0012 "Total Gral."
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "The purpose of this program is to print a report   "
+      #define STR0002 "according to the parameters entered by the user.    "
+      #define STR0003 "Pre-closing report         "
+      #define STR0004 "Code   Producer                                  Extra   Amount            Milk   Unit           Total      Sour  Sour.  Fat    Quality  Total         FUNRURAL    Capital      Frght      Net     Redutase     Net "
+      #define STR0005 "       Name                                      Quota   ExtraQuota        Quota  Value          Amount     Milk  Value perc.    value   Gross Amnt     Amount      value       value      to be paid          Price"
+      #define STR0006 "Z. form"
+      #define STR0007 "Management   "
+      #define STR0008 "Pre-closing report          - "
+      #define STR0009 "Row total   "
+      #define STR0010 "***CANCELLED BY THE OPERATOR***"
+      #define STR0011 "Line:   "
+      #define STR0012 "Grand total"
+   #ELSE
+      #define STR0001 "Este programa tem como objetivo imprimir relatorio "
+      #define STR0002 "de acordo com os parametros informados pelo usuario."
+      #define STR0003 "Relatorio de Pre Fechamento"
+      #define STR0004 "Codigo Nome                                      Extra   Valor            Leite     Valor        Valor      Leite Valor Percen    Valor  Valor            Valor      Valor      Valor      Liquido Redutase    Preco"
+      #define STR0005 "       Produtor                                   Cota   Extra Cota        Cota  Unitario        Total      Acido Acido Gordur  Qualid.  Total Bruto   Funrural    Capital      Frete      a Pagar           Liquido"
+      #define STR0006 "Zebrado"
+      #define STR0007 "Administracao"
+      #define STR0008 "Relatorio de Pre Fechamento - "
+      #define STR0009 "Total Linha "
+      #define STR0010 "*** CANCELADO PELO OPERADOR ***"
+      #define STR0011 "Linha : "
+      #define STR0012 "Total Geral"
+   #ENDIF
+#ENDIF

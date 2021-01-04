@@ -1,0 +1,36 @@
+#IFDEF SPANISH
+      #define STR0001 "Regiones"
+      #define STR0002 "Este programa permite el mantenimiento del Archivo de Regiones."
+      #define STR0003 "Region"
+      #define STR0004 "Archivo de Regiones"
+      #define STR0005 "Buscar"
+      #define STR0006 "Visualizar"
+      #define STR0007 "Incluir"
+      #define STR0008 "Modificar"
+      #define STR0009 "Borrar"
+      #define STR0010 "Imprimir"
+#ELSE
+   #IFDEF ENGLISH
+      #define STR0001 "Regions"
+      #define STR0002 "This programa allows maintainance of the Regions File."
+      #define STR0003 "Region"
+      #define STR0004 "Regions File"
+      #define STR0005 "Search"
+      #define STR0006 "View"
+      #define STR0007 "Add"
+      #define STR0008 "Edit"
+      #define STR0009 "Delete"
+      #define STR0010 "Print"
+   #ELSE
+      #define STR0001 "Regioes"
+      #define STR0002 "Este programa permite a manutenção dos Tipos de Lançamento Padrão."
+      #define STR0003 "Regiao"
+      #define STR0004 "Tipos de Lançamento Padrão"
+      #define STR0005 "Pesquisar"
+      #define STR0006 "Visualizar"
+      #define STR0007 "Incluir"
+      #define STR0008 "Alterar"
+      #define STR0009 "Excluir"
+      #define STR0010 "Imprimir"
+   #ENDIF
+#ENDIF

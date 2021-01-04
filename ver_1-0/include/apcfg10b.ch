@@ -1,0 +1,106 @@
+#ifdef SPANISH
+	#define STR0001 "Confirmar"
+	#define STR0002 "Anular"
+	#define STR0003 "Editar Grupo de Campos - "
+	#define STR0004 "Visualizar Grupo de Campos - "
+	#define STR0005 "Campos"
+	#define STR0006 "Visualizar..."
+	#define STR0007 "Descripcion"
+	#define STR0008 "Tam Maximo"
+	#define STR0009 "Tam Minimo"
+	#define STR0010 "Tamaño"
+	#define STR0011 "Formato"
+	#define STR0012 "Tabla"
+	#define STR0013 "Campo"
+	#define STR0014 "Titulo"
+	#define STR0015 "Se modificara la estructura de las tablas de los campos "
+	#define STR0016 "relacionados al grupo y esta operacion quizas demore bastante. ¿Desea modificar el grupo?"
+	#define STR0017 "El Diccionario de Datos de una o mas empresas no esta completo."
+	#define STR0018 "Operacion no disponible."
+	#define STR0019 "Preguntas"
+	#define STR0020 "Grupo"
+	#define STR0021 "Orden"
+	#define STR0022 "Pregunta"
+	#define STR0023 "Atencion"
+	#define STR0024 "Verifique se existem Tabelas compartilhadas com outras empresas. "
+	#define STR0025 "Solamente se actualizaran el diccionario de la empresa corriente y la tabla, por lo tanto, recomendamos que modifique el mismo grupo en el diccionario de las otras empresas."
+	#define STR0026 "¿Desea modificar el grupo?"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "OK"
+		#define STR0002 "Cancel"
+		#define STR0003 "Edit Fields Group - "
+		#define STR0004 "View Fields Group - "
+		#define STR0005 "Fields"
+		#define STR0006 "View"
+		#define STR0007 "Description"
+		#define STR0008 "Max.Size"
+		#define STR0009 "Min.Size"
+		#define STR0010 "Size"
+		#define STR0011 "Format"
+		#define STR0012 "Table"
+		#define STR0013 "Field"
+		#define STR0014 "Title"
+		#define STR0015 "The table structure of the fields related to the group "
+		#define STR0016 " will be modified and this operation m,ay take long. Update the group?"
+		#define STR0017 "The Data Dictionary of some company is not complete."
+		#define STR0018 "Operation not available."
+		#define STR0019 "Questions"
+		#define STR0020 "Group"
+		#define STR0021 "Order"
+		#define STR0022 "Question"
+		#define STR0023 "Warning"
+		#define STR0024 "Verifique se existem Tabelas compartilhadas com outras empresas. "
+		#define STR0025 "Only the current company`s dictionary and the table will be updated, so you'd better update the same group ín the other companies` dictionaries."
+		#define STR0026 "Update the group?"
+	#else
+		#define STR0001  "Confirmar"
+		#define STR0002  "Cancelar"
+		Static STR0003 := "Editar Grupo de Campos - "
+		Static STR0004 := "Visualizar Grupo de Campos - "
+		#define STR0005  "Campos"
+		#define STR0006  "Visualizar"
+		#define STR0007  "Descrição"
+		#define STR0008  "Tam Máximo"
+		#define STR0009  "Tam Mínimo"
+		#define STR0010  "Tamanho"
+		#define STR0011  "Formato"
+		#define STR0012  "Tabela"
+		#define STR0013  "Campo"
+		#define STR0014  "Título"
+		Static STR0015 := "A estrutura das tabelas dos campos relacionados ao grupo "
+		Static STR0016 := " será alterada e esta operação poderá ser extremamente demorada. Deseja alterar o grupo?"
+		Static STR0017 := "O Dicionário de Dados de alguma(s) empresa(s) não esta completo."
+		#define STR0018  "Operação não disponível."
+		#define STR0019  "Perguntas"
+		#define STR0020  "Grupo"
+		#define STR0021  "Ordem"
+		#define STR0022  "Pergunta"
+		#define STR0023  "Atenção"
+		Static STR0024 := "Verifique se existem Tabelas compartilhadas com outras empresas."
+		Static STR0025 := "Somente o dicionário da empresa corrente e a tabela serão atualizadas, portanto é aconselhável alterar o mesmo grupo no dicionário das outras empresas."
+		#define STR0026  "Deseja alterar o grupo?"
+	#endif
+#endif
+
+#ifndef SPANISH
+#ifndef ENGLISH
+	STATIC uInit := __InitFun()
+
+	Static Function __InitFun()
+	uInit := Nil
+	If Type('cPaisLoc') == 'C'
+
+		If cPaisLoc == "PTG"
+			STR0003 := "Editar grupo de campos - "
+			STR0004 := "Visualizar grupo de campos - "
+			STR0015 := "A estrutura das tabelas dos campos relacionados com o grupo "
+			STR0016 := " será alterada e esta operação poderá ser extremamente demorada. deseja alterar o grupo?"
+			STR0017 := "O dicionário de dados de alguma(s) empresa(s) não está completo."
+			STR0024 := "Verifique se existem tabelas partilhadas com outras empresas."
+			STR0025 := "Somente o dicionário da empresa corrente e a tabela serão actualizados, portanto é aconselhável alterar o mesmo grupo no dicionário das outras empresas."
+		EndIf
+		EndIf
+	Return Nil
+#ENDIF
+#ENDIF

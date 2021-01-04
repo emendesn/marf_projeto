@@ -1,0 +1,81 @@
+#ifdef SPANISH
+	#define STR0001 "Vehiculos"
+	#define STR0002 "Buscar"
+	#define STR0003 "Visualizar"
+	#define STR0004 "Incluir"
+	#define STR0005 "Modificar"
+	#define STR0006 "Excluir"
+	#define STR0007 "Ya existe movimiento de este vehiculo..."
+	#define STR0008 "Atenção"
+	#define STR0009 "Replicar"
+	#define STR0010 "Historial"
+	#define STR0011 "Historial no se puede modificar!"
+	#define STR0012 "hs"
+	#define STR0013 "Opcionales"
+	#define STR0014 "Vis. Opcionales"
+	#define STR0015 "Buscar Chasis"
+	#define STR0016 "Base de conocimiento"
+	#define STR0017 "Busqueda Chasis"
+	#define STR0018 "Vehiculo:"
+	#define STR0019 "Descripcion"
+	#define STR0020 "Conf. Veículo"
+	#define STR0021 "Para configurar um veículo é necessário uma marca e um modelo"
+	#define STR0022 "Você alterou marca/modelo do veículo, será necessário refazer a configuração"
+	#define STR0023 "Você mudou o modelo ou a marca do veículo para uma diferente da configuração do veículo, favor selecionar novamente a configuração do mesmo."
+	#define STR0024 "Por favor antes de configurar o veículo, selecione o modelo e a marca do mesmo."
+	#define STR0025 "O modelo do veículo não corresponde ao modelo do pedido de compra para o item escolhido."
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Vehicles"
+		#define STR0002 "Search"
+		#define STR0003 "View"
+		#define STR0004 "Add"
+		#define STR0005 "Edit"
+		#define STR0006 "Delete"
+		#define STR0007 "There is already transaction of this vehicle..."
+		#define STR0008 "Attention"
+		#define STR0009 "Replicate"
+		#define STR0010 "History"
+		#define STR0011 "History cannot be changed!"
+		#define STR0012 "h"
+		#define STR0013 "Optional"
+		#define STR0014 "Optional Vls."
+		#define STR0015 "Search Chassis"
+		#define STR0016 "Knowledge Bnk"
+		#define STR0017 "Chassis Search"
+		#define STR0018 "Vehicle:"
+		#define STR0019 "Description"
+		#define STR0020 "Vehicle Conf"
+		#define STR0021 "Brand and model needed to configure vehicle"
+		#define STR0022 "You changed vehicle brand/model. You must configure it"
+		#define STR0023 "You changed vehicle brand or model to one different from vehicle configuration. Please select its configuration again."
+		#define STR0024 "Prior to configuring vehicle, select its brand and model."
+		#define STR0025 "Vehicle model not in line with purchase order model of selected item."
+	#else
+		#define STR0001 If( cPaisLoc $ "ANG|PTG", "Veículos", "Veiculos" )
+		#define STR0002 "Pesquisar"
+		#define STR0003 "Visualizar"
+		#define STR0004 "Incluir"
+		#define STR0005 "Alterar"
+		#define STR0006 If( cPaisLoc $ "ANG|PTG", "Eliminar", "Excluir" )
+		#define STR0007 If( cPaisLoc $ "ANG|PTG", "Já existe movimentação deste veículo...", "Preencha o campo CHASSI antes de escolher o item do pedido de compra." )
+		#define STR0008 "Atenção"
+		#define STR0009 "Replicar"
+		#define STR0010 If( cPaisLoc $ "ANG|PTG", "Histórico", "Atenção" )
+		#define STR0011 If( cPaisLoc $ "ANG|PTG", "Histórico não pode ser alterado!", "Pesquisar Chassi" )
+		#define STR0012 If( cPaisLoc $ "ANG|PTG", "horas", "hs" )
+		#define STR0013 "Opcionais"
+		#define STR0014 "Vis.Opcionais"
+		#define STR0015 If( cPaisLoc $ "ANG|PTG", "Pesquisar Chassis", "Pesquisar Chassi" )
+		#define STR0016 If( cPaisLoc $ "ANG|PTG", "Base conhecimento", "Bco Conhecimento" )
+		#define STR0017 If( cPaisLoc $ "ANG|PTG", "Pesquisa chassis", "Pesquisa Chassi" )
+		#define STR0018 "Veículo:"
+		#define STR0019 "Descrição"
+		#define STR0020 "Conf. Veículo"
+		#define STR0021 "Para configurar um veículo é necessário uma marca e um modelo"
+		#define STR0022 "Você alterou marca/modelo do veículo, será necessário refazer a configuração"
+		#define STR0023 "Você mudou o modelo ou a marca do veículo para uma diferente da configuração do veículo, favor selecionar novamente a configuração do mesmo."
+		#define STR0024 "Por favor antes de configurar o veículo, selecione o modelo e a marca do mesmo."
+		#define STR0025 "O modelo do veículo não corresponde ao modelo do pedido de compra para o item escolhido."
+	#endif
+#endif

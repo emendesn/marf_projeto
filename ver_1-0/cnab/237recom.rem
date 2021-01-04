@@ -1,0 +1,74 @@
+TIPO REGISTRO  0010010"0"                                                         
+TIPO OPERACAO  0020020"3"                                                         
+LITERAL REMESSA0030090"OCORREN"                                                   
+CODIGO SERVICO 0100110"07"                                                        
+LITERAL SERVICO0120260"FUNDO RECEBIVEL"                                           
+AGENCIA        0270300SEE->EE_AGENCIA                                             
+ZEROS          0310320"00"                                                        
+CONTA          0330380SUBSTR(SA6->A6_NUMCON,1,5)+SA6->A6_DVCTA                    
+BRANCOS        039046 SPACE(08)                                                   
+NOME EMPRESA   0470760SUBSTR(SM0->M0_NOMECOM,1,30)                                
+BANCO          0770790"237"                                                       
+NOME BANCO     0800940"BRADESCO      "                                            
+DATA GERACAO   0951000GRAVADATA(DDATABASE,.F.)                                    
+BRANCOS        1011050SPACE(05)                                                   
+UN.DENSIDADE   1061080"BPI"                                                       
+N.SEQ.RETORNO  1091130SUBSTR(SEE->EE_ULTDSK,2,5)                                  
+DT. CREDITO    1141190GRAVADATA(DDATABASE,.F.)                                    
+DISPONIVEL     1203940SPACE(294)                                                  
+SEQUENCIAL     3954000"000001"                                                    
+TIPO REGISTRO  0010010"1"                                                         
+COD. INSCRICAO 0020030"02"                                                        
+NUM. INSCRICAO 0040170SUBST(SM0->M0_CGC,1,14)                                     
+AGENCIA        0180210SEE->EE_AGENCIA                                             
+ZEROS          0220230"00"                                                        
+CONTA          0240280SUBSTR(SA6->A6_NUMCON,1,5)                                  
+DAC            0290290SUBSTR(SA6->A6_DVCTA,1,1)                                   
+BRANCOS        0300370SPACE(04)                                                   
+USO EMPRESA    0380620IF(EMPTY(SE1->E1_ZIDCNAB),SE1->E1_IDCNAB,SE1->E1_ZIDCNAB)   
+NOSSO NUMERO   0630700SE1->E1_NUMBCO                                              
+QTD DE MOEDA   0710825SPACE(12)                                                   
+NUM. CARTEIRA  0830850SEE->EE_CODCART                                             
+NOSSO NUMERO   0860930SUBSTR(SE1->E1_NUMBCO,1,8)                                  
+DAC-CART E NOSS0940940RIGHT(ALLTRIM(SE1->E1_NUMBCO),1)                            
+ESPACO         0951070SPACE(013)                                                  
+ESPACO         1081080"I"                                                         
+OCORRENCIA     1091100IIF(ZA7->ZA7_TIPO=="1","01",ZA8->ZA8_MOTREC)                
+DT.OCORRENCIA  1111160GRAVADATA(DDATABASE,.F.)                                    
+N. DOCUMENTO   1171260PADL(SE1->E1_NUM,10,"0")                                    
+ESPACO         1271340SUBSTR(SE1->E1_NUMBCO,1,8)                                  
+ESPACO         1351460SPACE(12)                                                   
+VENCIMENTO     1471520GRAVADATA(SE1->E1_VENCREA,.F.)                              
+VALOR TITULO   1531650STRZERO((SE1->E1_SALDO*100),13)                             
+COD.BANCO      1661680"341"                                                       
+AGENCIA        1691720"08541"                                                     
+DAC AGENCIA    1731730SPACE(1)                                                    
+ESPECIE        1741750"01"                                                        
+DESPESA COBRANC1761880"0000000000000"                                             
+ESPACE         1892530SPACE(65)                                                   
+VLR.PRINCIPAL  2542660STRZERO((SE1->E1_SALDO*100),13)                             
+JUROS MORA     2672790"0000000000000"                                             
+VLR. IOF       2802920"0000000000000"                                             
+BRANCOS        2932950SPACE(03)                                                   
+DT. CREDITO    2963010GRAVADATA(DDATABASE,.F.)                                    
+COD.OCORR.SACAD3023050"0000"                                                      
+BRANCOS        3063240SPACE(19)                                                   
+NOME SACADO    3253540SUBSTR(SA1->A1_NOME,1,30)                                   
+BRANCOS        3553770SPACE(23)                                                   
+ERROS          3783850SPACE(08)                                                   
+BRANCOS        3863940SPACE(09)                                                   
+SEQUENCIAL     3954000INCREMENTA()                                                
+COD.REGISTRO   0010010"9"                                                         
+COD.OCORRENCIA 0020020"3"                                                         
+COD.SERVICO    0030040"07"                                                        
+COD.BANCO      0050070"237"                                                       
+BRANCOS        0080170SPACE(10)                                                   
+QTDE TITULOS   0180250STRZERO(M->NSEQ,8)                                          
+VLR TOTAL TITUL0260390STRZERO(SOMAVALOR(),14)                                     
+AVISO BANCARIO 0400470SPACE(08)                                                   
+BRANCOS        0482070SPACE(150)                                                  
+SEQ.ARQ.OCORREN2082120SUBSTR(SEE->EE_ULTDSK,2,5)                                  
+QTD DETALHES   2132200STRZERO(M->NSEQ,8)                                          
+TOTAL TITULOS  2212340STRZERO(SOMAVALOR(),14)                                     
+BRANCOS        2353940SPACE(16)                                                   
+NUM.SEQUENCIAL 3954000INCREMENTA()                                                

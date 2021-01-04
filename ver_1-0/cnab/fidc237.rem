@@ -1,0 +1,64 @@
+TIPO REGISTRO  0010010"0"                                                         
+TIPO OPERACAO  0020020"1"                                                         
+LITERAL REMESSA0030090"REMESSA"                                                   
+CODIGO SERVICO 0100110"07"                                                        
+LITERAL SERVICO0120260"FUNDO RECEBIVEL"                                           
+AGENCIA        0270300SEE->EE_AGENCIA                                             
+ZEROS          0310320"00"                                                        
+CONTA          0330380SUBSTR(SA6->A6_NUMCON,1,5)+SA6->A6_DVCTA                    
+BRANCOS        039046 SPACE(08)                                                   
+NOME EMPRESA   0470760SUBSTR(SM0->M0_NOMECOM,1,30)                                
+BANCO          0770790"237"                                                       
+NOME BANCO     0800940"FIDC-CAT 109"                                              
+DATA GERACAO   0951000GRAVADATA(DDATABASE,.F.)                                    
+BRANCOS        1013940SPACE(294)                                                  
+SEQUENCIAL     3954000"000001"                                                    
+TIPO REGISTRO  0010010"1"                                                         
+COD. INSCRICAO 0020030"04"                                                        
+NUM. INSCRICAO 0040170SUBST(SM0->M0_CGC,1,14)                                     
+AGENCIA        0180210SEE->EE_AGENCIA                                             
+ZEROS          0220230"00"                                                        
+CONTA          0240280SUBSTR(SA6->A6_NUMCON,1,5)                                  
+DAC            0290290SUBSTR(SA6->A6_DVCTA,1,1)                                   
+BRANCOS        0300330SPACE(04)                                                   
+INSTRUCAO      0340370                                                            
+USO EMPRESA    0380620IF(EMPTY(SE1->E1_ZIDCNAB),SE1->E1_IDCNAB,SE1->E1_ZIDCNAB)   
+NOSSO NUMERO   0630700SUBSTR(SE1->E1_NUMBCO,3,7)+SUBSTR(SE1->E1_NUMBCO,11,1)      
+QTD DE MOEDA   0710835STRZERO(0,13)                                               
+NUM. CARTEIRA  0840860SEE->EE_CODCART                                             
+USO BANCO      0871070SPACE(21)                                                   
+CARTEIRA       1081080"I"                                                         
+OCORRENCIA     1091100IIF(ZA7->ZA7_TIPO=="1","01","02")                           
+NUM DOCTO      1111200FORMULA("G01")                                              
+VENCIMENTO     1211260GRAVADATA(SE1->E1_VENCREA,.F.)                              
+VALOR TITULO   1271392STRZERO((SE1->E1_SALDO*100),13)                             
+CODIGO BANCO   1401420"237"                                                       
+AG COBRADORA   1431470STRZERO(VAL(SEE->EE_AGENCIA),5)                             
+ESPECIE TIT.   1481490"01"                                                        
+ACEITE         1501500"A"                                                         
+DATA DE EMISSAO1511560GRAVADATA(SE1->E1_EMISSAO,.F.)                              
+INTRUCAO 1     1571580"00"                                                        
+INSTRUCAO 2    1591600"00"                                                        
+JUROS DE 1 DIA 1611732STRZERO((SE1->E1_VALJUR*100),13)                            
+DESCONTO ATE   1741790SPACE(06)                                                   
+VAL. DESCONTO  1801922SPACE(13)                                                   
+VAL. IOF       1932052SPACE(13)                                                   
+ABATIMENTO     2062182SPACE(13)                                                   
+INSCRICAO      2192200IIF(LEN(ALLTRIM(SA1->A1_CGC))==11,01,02)                    
+NUM. INSCRICAO 2212340STRZERO(VAL(SA1->A1_CGC),14)                                
+NOME           2352640SUBSTR(SA1->A1_NOME,1,30)                                   
+COMP. NOME     2652740SUBSTR(SA1->A1_NOME,31,10)                                  
+LOGRADOURO     2753140IF(EMPTY(SA1->A1_ENDCOB),SA1->A1_END,SA1->A1_ENDCOB)        
+BAIRRO         3153260IIF(empty(SA1->A1_BAIRROC),SA1->A1_BAIRRO,SA1->A1_BAIRROC)  
+CEP            3273340IIF(empty(SA1->A1_CEPC),SA1->A1_CEP,SA1->A1_CEPC)           
+CIDADE         3353490IIF(empty(SA1->A1_MUNC),SA1->A1_MUN,SA1->A1_MUNC)           
+ESTADO         3503510IIF(empty(SA1->A1_ESTC),SA1->A1_EST,SA1->A1_ESTC)           
+SACADOR        3523810SPACE(30)                                                   
+BRANCOS        3823850SPACE(04)                                                   
+DATA DE MORA   3863910GravaData(SE1->E1_VENCTO,.F.)                               
+PRAZO          3923930SPACE(02)                                                   
+BRANCOS        3943940SPACE(01)                                                   
+NUM. SEQUENCIAL3954000INCREMENTA()                                                
+TIPO REGISTRO  00100109                                                           
+BRANCOS        0023940SPACE(393)                                                  
+NUM. SEQUENCIAL3954000INCREMENTA()                                                

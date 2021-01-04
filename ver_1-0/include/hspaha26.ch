@@ -1,0 +1,36 @@
+#ifdef SPANISH
+	#define STR0001 "Buscar"
+	#define STR0002 "Visualizar"
+	#define STR0003 "Incluir"
+	#define STR0004 "Modificar"
+	#define STR0005 "Excepciones de asientos de gastos por convenio"
+	#define STR0006 "No existen excepciones para este convenio..."
+	#define STR0007 "Atencion"
+	#define STR0008 "Plan"
+	#define STR0009 "Item invalido"
+	#define STR0010 "Tratamiento de las exepciones"
+#else
+	#ifdef ENGLISH
+		#define STR0001 "Search"
+		#define STR0002 "View"
+		#define STR0003 "Insert"
+		#define STR0004 "Edit"
+		#define STR0005 "Expenses Entries Exceptions per Agreement"
+		#define STR0006 "There are no Exceptions For This Agreement..."
+		#define STR0007 "Attention"
+		#define STR0008 "H.Care"
+		#define STR0009 "Invalid Item"
+		#define STR0010 "Treatment of exceptions"
+	#else
+		#define STR0001 "Pesquisar"
+		#define STR0002 "Visualizar"
+		#define STR0003 "Incluir"
+		#define STR0004 "Alterar"
+		#define STR0005 "Excecoes de Lancamentos de Despesas Por Convenio"
+		#define STR0006 "Não Existem Excecoes Para Este Convênio..."
+		#define STR0007 "Atenção"
+		#define STR0008 "Plano"
+		#define STR0009 "Item inválido"
+		#define STR0010 "Tratamento das exeções"
+	#endif
+#endif
