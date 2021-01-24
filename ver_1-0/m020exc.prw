@@ -8,13 +8,13 @@ Data................: 20/10/2016
 Descricao / Objetivo: Ponto de entrada apos a exclusao do fornecedor
 Doc. Origem.........: Fiscal-FIS13
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 
-@alteracoes 17/10/2019 - Henrique Vidal
-	Alterada chamada da funcao MGFCOM88 
-    RTASK0010137 - Apaga fornecedores vinculados da grade de aprovacao, apos exclusao do cadastro.
+@alterações 17/10/2019 - Henrique Vidal
+	Alterada chamada da função MGFCOM88 
+    RTASK0010137 - Apaga fornecedores vinculados da grade de aprovação, após exclusão do cadastro.
 */
 User Function M020EXC()
 

@@ -10,7 +10,7 @@ Data................: 19/10/2016
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada MA020ROT, para amarracao de fornecedores X series da NFE
 Doc. Origem.........: Fiscal-FIS13
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -18,7 +18,7 @@ User Function MGFFIS03(aRetorno)
 
 //Local aRetorno := {}
 
-Aadd(aRetorno,{"Relacionar Especie NFE Talonario", "U_Fis03Amar()",0,4,2,.F.})
+Aadd(aRetorno,{"Relacionar Espécie NFE Talonário", "U_Fis03Amar()",0,4,2,.F.})
 
 Return(aRetorno)
 
@@ -34,8 +34,8 @@ Private cString := "ZZ1"
 dbSelectArea(cString)
 dbSetOrder(1)
 
-//AxCadastro(cString,"Cadastro de Series da NFE Talonario",cVldExc,cVldAlt)
-AxCadastro(cString,"Cadastro de Especies da NFE Talonario",cVldExc,cVldAlt)
+//AxCadastro(cString,"Cadastro de Séries da NFE Talonário",cVldExc,cVldAlt)
+AxCadastro(cString,"Cadastro de Especies da NFE Talonário",cVldExc,cVldAlt)
 
 Return()
 
@@ -48,14 +48,14 @@ Local aArea := {ZZ1->(GetArea())}
 
 If Altera
 	lRet := .F.
-	//APMsgStop("Alteracao nao permitida, exclua e inclua a Serie.")
-	APMsgStop("Alteracao nao permitida, exclua e inclua a Especie.")
+	//APMsgStop("Alteração não permitida, exclua e inclua a Série.")
+	APMsgStop("Alteração não permitida, exclua e inclua a Espécie.")
 Else
 	If ZZ1->(dbSeek(xFilial("ZZ1")+M->ZZ1_SERIE))
 		While ZZ1->(!Eof()) .and. xFilial("ZZ1")+M->ZZ1_SERIE == ZZ1->ZZ1_FILIAL+ZZ1->ZZ1_SERIE
 			If ZZ1->ZZ1_ESPECI == M->ZZ1_ESPECI
 				lRet := .F.
-				APMsgStop("Chaves (Especie/Serie) jï¿½ cadastrada.")
+				APMsgStop("Chaves (Espécie/Série) já cadastrada.")
 				Exit
 			Endif
 			ZZ1->(dbSkip())
@@ -88,8 +88,8 @@ dbUseArea(.T.,"TOPCONN",TCGenQry(,,cQ),cAliasTrb,.F.,.T.)
 
 While (cAliasTrb)->(!Eof())
 	lRet := .F.
-	APMsgStop("Serie nao podera ser excluida, utilizada no Fornecedor/Loja: "+(cAliasTrb)->ZW_FORNECE+"/"+(cAliasTrb)->ZW_LOJA)
-	APMsgStop("Especie nao podera ser excluida, utilizada no Fornecedor/Loja: "+(cAliasTrb)->ZW_FORNECE+"/"+(cAliasTrb)->ZW_LOJA)
+	APMsgStop("Série não poderá ser excluída, utilizada no Fornecedor/Loja: "+(cAliasTrb)->ZW_FORNECE+"/"+(cAliasTrb)->ZW_LOJA)
+	APMsgStop("Espécie não poderá ser excluída, utilizada no Fornecedor/Loja: "+(cAliasTrb)->ZW_FORNECE+"/"+(cAliasTrb)->ZW_LOJA)
 	Exit
 Enddo	
 	 
@@ -136,7 +136,7 @@ Private oGetD
 // somente cadastra as series se o fornecedor estiver configurado para emitir a nota fiscal eletronica
 If SA2->A2_ZEMINFE != "1"
 	lContinua := .F.
-	APMsgStop("Fornecedor nao esta configurado para emissao de Nota Fiscal Eletronica."+CRLF+;
+	APMsgStop("Fornecedor não está configurado para emissão de Nota Fiscal Eletrônica."+CRLF+;
 	"Verifique campo customizado 'Emite NFE'.")
 Endif	
 
@@ -171,14 +171,14 @@ If lContinua
 		nOpc := 3
 	Endif
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Inicializa a Variaveis da Enchoice.                  ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Inicializa a Variaveis da Enchoice.                  ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	RegToMemory("SZW",.F.,.F.)
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Montagem do aHeader                                  ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Montagem do aHeader                                  ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	dbSelectArea("SX3")
 	dbSetOrder(1)
 	MsSeek("SZW")
@@ -200,9 +200,9 @@ If lContinua
 		dbSkip()
 	EndDo
 	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Montagem do aCols                                    ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Montagem do aCols                                    ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	dbSelectArea("_TRA")	
 	dbGotop()
 	
@@ -248,19 +248,19 @@ If lContinua
 	
 	_TRA->(dbCloseArea())
 		
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Caso nao ache nenhum item , abandona rotina.         ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Caso nao ache nenhum item , abandona rotina.         ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	If (Len(aCols) == 0)
-		//MsgInfo("Nao foi encontrada nenhuma Serie de NFE Talonario cadastrada.","Atencao")
-		MsgInfo("Nao foi encontrada nenhuma Especie de NFE Talonario cadastrada.","Atencao")
+		//MsgInfo("Não foi encontrada nenhuma Série de NFE Talonário cadastrada.","Atenção")
+		MsgInfo("Não foi encontrada nenhuma Espécie de NFE Talonário cadastrada.","Atenção")
 		lContinua := .F.
 	EndIf
 	
 	If ( lContinua )
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Faz o calculo automatico de dimensoes de objetos     ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Faz o calculo automatico de dimensoes de objetos     ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		aSize := MsAdvSize()
 		aObjects := {}
 		AAdd( aObjects, {100,15,.T.,.F.})
@@ -316,8 +316,8 @@ Local x := 0
 
 If !aCols[n,Len(aHeader)+1]
 	If Empty(aCols[n][1])
-		//ApMsgAlert("Falta informar a Serie.","Alerta")
-		ApMsgAlert("Falta informar a Especie.","Alerta")
+		//ApMsgAlert("Falta informar a Série.","Alerta")
+		ApMsgAlert("Falta informar a Espécie.","Alerta")
 		lRet := .F.
 	Endif	
 	If lRet
@@ -326,8 +326,8 @@ If !aCols[n,Len(aHeader)+1]
 			If !aCols[x,Len(aHeader)+1]
 				If x <> n
 					If aCols[x][1]+aCols[x][2] == aCols[n][1]+aCols[n][2] //aCols[x][2] == aCols[n][2]
-						ApMsgAlert("Chaves (Especie/Serie) iguais nos itens.","Alerta")
-						//ApMsgAlert("Especies iguais nos itens.","Alerta")
+						ApMsgAlert("Chaves (Espécie/Série) iguais nos itens.","Alerta")
+						//ApMsgAlert("Espécies iguais nos itens.","Alerta")
 						lRet := .F.
 						Exit
 					Endif	
@@ -353,8 +353,8 @@ For x := 1 To Len(aCols)
 			If !aCols[y,Len(aHeader)+1]
 				If x <> y
 					If aCols[x][1]+aCols[x][2] == aCols[y][1]+aCols[y][2] //aCols[x][1] == aCols[y][1]
-						ApMsgAlert("Chaves (Especie/Serie) iguais nos itens.","Alerta")
-						//ApMsgAlert("Especies iguais nos itens.","Alerta")
+						ApMsgAlert("Chaves (Espécie/Série) iguais nos itens.","Alerta")
+						//ApMsgAlert("Espécies iguais nos itens.","Alerta")
 						lRet := .F.
 						Exit
 					Endif	
@@ -424,8 +424,8 @@ Local lRet := ParamIxb[1]
 Local lContinua := .T.
 Local cQ := ""
 Local cAliasTrb := GetNextAlias()
-Local cE_Esps  := SuperGetMV('MGF_FIS03E',.T.,'SPED,CTE') //Especies para documentos eletronicos. Quando o cliente emite NF-e.
-Local cMGFTipo := SuperGetMV('MGF_FIS03T',.T.,'D,B')      //Tipo de Documentos que nao precisam passar pela Regra.
+Local cE_Esps  := SuperGetMV('MGF_FIS03E',.T.,'SPED,CTE') //Espécies para documentos eletrônicos. Quando o cliente emite NF-e.
+Local cMGFTipo := SuperGetMV('MGF_FIS03T',.T.,'D,B')      //Tipo de Documentos que não precisam passar pela Regra.
 
 // nao passou na validacao do padrao
 If !lRet
@@ -449,13 +449,13 @@ Endif
 If Empty(cSerNFe)
 	lContinua := .F.
 	lRet := .F.	
-	APMsgStop("Informar Serie de Documento de Entrada!")
+	APMsgStop("Informar Série de Documento de Entrada!")
 Endif
 
 If Empty(cEspNFe)
 	lContinua := .F.
 	lRet := .F.	
-	APMsgStop("Informar Especie de Documento de Entrada!")
+	APMsgStop("Informar Espécie de Documento de Entrada!")
 Endif
 
 If lContinua	
@@ -484,7 +484,7 @@ If lContinua
 				lContinua := .F.
 			Endif
 			
-			// Imporataï¿½ï¿½o de XML., nao precisa validar este ponto			
+			// Imporatação de XML., nao precisa validar este ponto			
 			If IsInCallStack("U_MGFINT09")
 				lContinua := .F.
 			Endif
@@ -494,7 +494,7 @@ If lContinua
 				If Alltrim(cEspNFe) $ cE_Esps
 					lContinua := .F.
 					lRet := .F.
-					APMsgStop("Especie " + Alltrim(cEspNFe) + " nao permitida para entrada manual para este fornecedor.")
+					APMsgStop("Espécie " + Alltrim(cEspNFe) + " não permitida para entrada manual para este fornecedor.")
 				Endif
 			Endif
 				
@@ -519,8 +519,8 @@ If lContinua
 				If (cAliasTrb)->(Eof())
 					lContinua := .F.
 					lRet := .F.
-					//APMsgStop("Serie deste documento nao esta cadastrada para este Fornecedor na tabela de 'Amarracao de Fornecedor x Especie x Serie NFE Talonario'.")
-					APMsgStop("Especie deste documento nao esta cadastrada para este Fornecedor na tabela de 'Amarracao de Fornecedor x Especie NFE Talonario'.")
+					//APMsgStop("Série deste documento não está cadastrada para este Fornecedor na tabela de 'Amarração de Fornecedor x Especie x Série NFE Talonário'.")
+					APMsgStop("Espécie deste documento não está cadastrada para este Fornecedor na tabela de 'Amarração de Fornecedor x Especie NFE Talonário'.")
 				Endif	
 				
 				(cAliasTrb)->(dbCloseArea())

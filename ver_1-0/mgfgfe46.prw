@@ -143,8 +143,53 @@ static function runInteg46()
 
 		Endif
 
-		// Valida se existe outro registro com o mesmo numero no DAK_XOEREF
+		// Valida se foi informado codigo recebedor quando for EXP e Via Maritima ou Aerea - wvn
+		If lContinua
+			lGfe46w := GETMV("MGF_GFE46W")
+			IF lGfe46w 
+				_cVia := ' '
+				cQryRec := " "
+				cQryRec := " SELECT C5_NUM, C5_PEDEXP " + CRLF
+				cQryRec += "  FROM "+RetSqlName("SC5")+ " TSC5 " + CRLF
+				cQryRec += "  WHERE " + CRLF
+				cQryRec += "  TSC5.C5_NUM= '"+QRYDAK->DAI_PEDIDO+ "' AND TSC5.C5_FILIAL='"+QRYDAK->DAK_FILIAL+"' AND" + CRLF
+				cQryRec += "  TSC5.D_E_L_E_T_ = ' ' "+ CRLF
+				IF SELECT("QRYCAR") > 0
+					QRYCAR->( dbCloseArea() )
+				ENDIF
+				TcQuery changeQuery(cQryRec) New Alias "QRYCAR"
+				IF ! EMPTY(QRYCAR->C5_PEDEXP)  // Se o campo numero do pedido EXP não estiver em branco
+					// Pesquisa EXP na tabela ZB8
+					ZB8->(DbSetOrder(3))				
+					If ZB8->(DbSeek(xFilial("ZB8")+QRYCAR->C5_PEDEXP))
+						_cVia := ZB8->ZB8_VIA
+					EndIf				
+					IF _cVia $"01|02" 	// Aérea ou Marítima			
+						DAK->(dbSetOrder(1))		
+						If DAK->(dbSeek(QRYDAK->DAK_FILIAL+QRYDAK->DAK_COD))
+							IF EMPTY(DAK->DAK_XCODR) 
+								lContinua := .F.
+								If _cVia == '01'
+									_cNomeVia := "Maritima"
+								Else
+									_cNomeVia := "Aerea"
+								EndIf
+								cResp := "Carga " + QRYDAK->DAK_COD +" é para o mercado externo, e a via de transporte é " +_cVia +"-"+ _cNomeVia +". É obrigatório o preenchimento do campo recebedor."
+								DAK->(DbSetOrder(1))
+								If DAK->(dbSeek(QRYDAK->DAK_FILIAL+QRYDAK->DAK_COD))
+									RecLock("DAK",.F.)
+									DAK->DAK_XRETWS := cResp
+									DAK->(MsUnLock())
+								EndIf
+								ConOut('Thread '+StrZero(threadid(),6)+' - [MGFWSC46]] '+cResp+" - "+DtoC(dDataBase)+" - "+Time())
+							ENDIF
+						EndIf
+					EndIf
+				Endif
+			EndIf
+		EndIf
 
+		// Valida se existe outro registro com o mesmo numero no DAK_XOEREF
 		If lContinua
 
 		   cQuery := "SELECT DAK_COD,DAK_XOEREF,DAK_ZCDTPO "

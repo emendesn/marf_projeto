@@ -16,7 +16,7 @@ Data.....:              14/09/2017
 Descricao / Objetivo:   Consulta de Nota Fiscal para COMPROVEI
 Doc. Origem:            Contrato GAP - FATCON- Consulta NFE
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Consulta de NFE - Parte WS Server consumir o Metodo Consulta NFE
 ==========================================================================================================
 */
@@ -149,7 +149,7 @@ Return .T.
 
 Static Function xConsNFE(cxFil,cNumNfe,cTipo,oBj)
 
-	Local cSerSai	  := '200'//SuperGetMV("MGF_FAT52A",.F.,'200')//Serie da Nota de Saida
+	Local cSerSai	  := '200'//SuperGetMV("MGF_FAT52A",.F.,'200')//Serie da Nota de Saída
 
 	Local cNextAlias := GetNextAlias()
 	
@@ -237,7 +237,7 @@ Static Function xConsNFE(cxFil,cNumNfe,cTipo,oBj)
 			oBj:MSG := "Danfe Encontrada"
 		Else
 			oBj:STATUS := "E"
-			oBj:MSG := 'Danfe Nao Encontrada ou sem chave da Sefaz, Verifique os Dados Filial: "' + cxFil + '",  Documento:"' + cNumNfe + '", Tipo: "' + cTipo + '"'
+			oBj:MSG := 'Danfe Não Encontrada ou sem chave da Sefaz, Verifique os Dados Filial: "' + cxFil + '",  Documento:"' + cNumNfe + '", Tipo: "' + cTipo + '"'
 		EndIf
 		
 		While (cNextAlias)->(!EOF())
@@ -286,7 +286,7 @@ Static Function xConsNFE(cxFil,cNumNfe,cTipo,oBj)
 			
 	ElseIf cTipo == "E"
 		oBj:STATUS := "E"
-		oBj:MSG := "Aguardando definiï¿½ï¿½es para Desenvolvimento"
+		oBj:MSG := "Aguardando definições para Desenvolvimento"
 	EndIf
 
 Return .t.

@@ -7,10 +7,10 @@ Programa............: MGFFIS21
 Autor...............: Flavio Dentello
 Data................: Outubro/2017 
 Descricao / Objetivo: Fiscal
-Doc. Origem.........: 
+Doc. Origem.........: Marfrig
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Log Cadastro de Aliqtuota Efetiva de ICMS
+Uso.................: Marfrig
+Obs.................: Log Cadastro de Alíqtuota Efetiva de ICMS
 =====================================================================================
 */
 
@@ -24,11 +24,11 @@ User Function MGFFIS21()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZD7")
-	oMBrowse:SetDescription("Log Cadastro de Aliquota Efetiva")
+	oMBrowse:SetDescription("Log Cadastro de Alíquota Efetiva")
 
-	oMBrowse:AddLegend("ZD7_OPER=='1'", "GREEN", "Inclusao"  )
-	oMBrowse:AddLegend("ZD7_OPER=='2'", "BLUE" , "Alteracao" )
-	oMBrowse:AddLegend("ZD7_OPER=='3'", "RED"  , "Exclusao"  )
+	oMBrowse:AddLegend("ZD7_OPER=='1'", "GREEN", "Inclusão"  )
+	oMBrowse:AddLegend("ZD7_OPER=='2'", "BLUE" , "Alteração" )
+	oMBrowse:AddLegend("ZD7_OPER=='3'", "RED"  , "Exclusão"  )
 
 	oMBrowse:Activate()
 
@@ -58,11 +58,11 @@ Static Function ModelDef()
 
 	oModel:AddFields( 'ZD7MASTER', /*cOwner*/, oStruZD7, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription( 'Log Cadastro de Aliquota Efetiva' )
+	oModel:SetDescription( 'Log Cadastro de Alíquota Efetiva' )
 
 	oModel:SetPrimaryKey({"ZD7_FILIAL"})
 
-	oModel:GetModel( 'ZD7MASTER' ):SetDescription( 'Log Cadastro de Aliquota Efetiva' )
+	oModel:GetModel( 'ZD7MASTER' ):SetDescription( 'Log Cadastro de Alíquota Efetiva' )
 
 Return oModel
 

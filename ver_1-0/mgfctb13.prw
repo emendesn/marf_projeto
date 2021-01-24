@@ -9,10 +9,10 @@
 Programa............: MGFCTB13
 Autor...............: Atilio Amarilla
 Data................: 01/11/2017
-Descricao / Objetivo: Manutencao de Parametros de Fechamento
+Descrição / Objetivo: Manutenção de Parâmetros de Fechamento
 Doc. Origem.........: Contrato - GAP CTB04
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -35,7 +35,7 @@ User Function MGFCTB13()
 	Local dDataEst	:= GetMV("MV_DBLQMOV")
 	Local cAtuaSal	:= GetMV("MV_ATUSAL")
 
-	aAdd(aParamBox,{2,"Replica para filiais",1,{"Nao ","Sim"},40,"",.T.})
+	aAdd(aParamBox,{2,"Replica para filiais",1,{"Não","Sim"},40,"",.T.})
 
 	aAdd(aParamBox,{1,"Data Limite Financeiro",dDataFin,"","","","",50,.T.})
 
@@ -43,9 +43,9 @@ User Function MGFCTB13()
 
 	aAdd(aParamBox,{1,"Data Limite Estoque"	,dDataEst,"","","","",50,.T.})
 
-	aAdd(aParamBox,{2,"Atualiza Saldos CTB",1,IIF(cAtuaSal=="N",{"Nao ","Sim"},{"Sim","Nao "}),40,"",.T.})
+	aAdd(aParamBox,{2,"Atualiza Saldos CTB",1,IIF(cAtuaSal=="N",{"Não","Sim"},{"Sim","Não"}),40,"",.T.})
 
-	If ParamBox(aParamBox,"Parametros de Fechamento",@aRet)
+	If ParamBox(aParamBox,"Parâmetros de Fechamento",@aRet)
 
 		If ValType(aRet[1]) == "C"
 			If aRet[1] == "Sim"
@@ -90,7 +90,7 @@ User Function MGFCTB13()
 			GrvLogParam(aParamBox, aRet, nil )
 		Endif
 
-		Aviso("Marfrig - Parametros de Fechamento","Atualizacao finalizada",{"Ok"})
+		Aviso("Marfrig - Parâmetros de Fechamento","Atualização finalizada",{"Ok"})
 
 	Endif
 
@@ -129,7 +129,7 @@ Endif
 //Sempre adiciona a filial corrente
 AADD(aParfil, {.T., cFilAnt, cFilName	})
 
-// Monta as mensagens/textos que serao gravados no Log
+// Monta as mensagens/textos que serão gravados no Log
 For nI:=	2	TO		LEN(aParam)
 	lContinua:=	.F.	// RVBJ - somente se houve alteracao
 

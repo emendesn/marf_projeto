@@ -10,7 +10,7 @@ Data................: Fev/2018
 Descricao / Objetivo: Financeiro
 Doc. Origem.........: Financeiro
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina para incrementar campo do SE2
 =====================================================================================
 */
@@ -26,7 +26,7 @@ if lIsBlind
 	RpcSetEnv(aMatriz[1],aMatriz[2])
 	
 	If !LockByName(ProcName())
-		Conout("JOB jï¿½ em Execucao : "+ProcName()+ DTOC(dDATABASE) + " - " + TIME() )
+		Conout("JOB já em Execução : "+ProcName()+ DTOC(dDATABASE) + " - " + TIME() )
 		RpcClearEnv()
 		Return()
 	EndIf
@@ -80,7 +80,7 @@ While (cAliasTrb)->(!Eof())
 			tcSqlExec( "COMMIT" )
 		EndIf
 	Else
-		ConOut("Problemas na gravacao do campo E2_ZNPORTA.")
+		ConOut("Problemas na gravação do campo E2_ZNPORTA.")
 	EndIf
 	
 	(cAliasTrb)->(dbSkip())

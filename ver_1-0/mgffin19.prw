@@ -5,15 +5,15 @@
 Programa............: MGFFIN19
 Autor...............: Roberto Sidney
 Data................: 11/10/2016
-Descricao / Objetivo: MBrowse - Informacoes do sinistro
+Descricao / Objetivo: MBrowse - Informações do sinistro
 Doc. Origem.........: CRE24 - GAP CRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
 User Function MGFFIN19()
-PRIVATE cCadastro := "Informacoes de Sinistro
+PRIVATE cCadastro := "Informações de Sinistro
 PRIVATE aRotina     := { }
 
 cString := "SZX"
@@ -43,17 +43,17 @@ Return(.T.)
 Programa............: MGFVISUSIN
 Autor...............: Roberto Sidney
 Data................: 11/10/2016
-Descricao / Objetivo: Tela de visualizacao das informacoes de sinistro
+Descricao / Objetivo: Tela de visualização das informações de sinistro
 Doc. Origem.........: CRE24 - GAP CRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
 User Function MGFVISUSIN(aTitulos,lGrv,cQtdeT,cSomaT,cNumSin)
 
 //+----------------------------------------------+
-//ï¿½ Variaveis do Cabecalho do Modelo 2           ï¿½
+//¦ Variaveis do Cabecalho do Modelo 2           ¦
 //+----------------------------------------------+
 Private cCliSeg := "" // Space(6)
 Private cLoja   := ""//Space(2)
@@ -84,9 +84,9 @@ endif
 cCliSeg  := aCliente[1]
 cLoja    := aCliente[2]
 cNCli    := Posicione("SA1",1,xFilial("SA1")+cCliSeg+cLoja,"A1_NOME")
-nOpcx:=3 //3-Inclusao
+nOpcx:=3 //3-Inclusão
 //+-----------------------------------------------+
-//ï¿½ Montando aHeader para a Getdados              ï¿½
+//¦ Montando aHeader para a Getdados              ¦
 //+-----------------------------------------------+
 
 dbSelectArea("SX3")
@@ -107,7 +107,7 @@ While !Eof() .And. (x3_arquivo == "SZY")
 End
 
 //+-----------------------------------------------+
-//ï¿½ Montando aCols para a GetDados                ï¿½
+//¦ Montando aCols para a GetDados                ¦
 //+-----------------------------------------------+
 aCols:=Array(1,nUsado+1)
 dbSelectArea("SX3")
@@ -142,15 +142,15 @@ lAlt := iif(lGrv = .T.,.T.,.F.) // I-Inclui / V-Visualiza
 aCOLS := aAtuAcols(aCOLS,cOPC)
 
 //+----------------------------------------------+
-//ï¿½ Variaveis do Rodape do Modelo 2
+//¦ Variaveis do Rodape do Modelo 2
 //+----------------------------------------------+
 nTotSin:=0
 //+----------------------------------------------+
-//ï¿½ Titulo da Janela                             ï¿½
+//¦ Titulo da Janela                             ¦
 //+----------------------------------------------+
-cTitulo:="Informacoes do Sinistro"
+cTitulo:="Informações do Sinistro"
 //+----------------------------------------------+
-//ï¿½ Array com descricao dos campos do Cabecalho  ï¿½
+//¦ Array com descricao dos campos do Cabecalho  ¦
 //+----------------------------------------------+
 aC:={}
 AADD(aC,{"cCliSeg"		,{15,10}	,"Seguradora"			,"@!"						,'ExecBlock("MD2VLCLI",.F.,.F.)',"SA1",.F.})
@@ -166,7 +166,7 @@ AADD(aC,{"nSomaT"		,{54,300}	,"Vlr. Total"			, "@E 999,999,999,999.99"	,,,.F.})
 AADD(aC,{"nQtdeT"		,{54,420}	,"Quantidade"			, "@E 999,999,999"			,,,.F.})
 
 //+-------------------------------------------------+
-//ï¿½ Array com descricao dos campos do Rodape        ï¿½
+//¦ Array com descricao dos campos do Rodape        ¦
 //+-------------------------------------------------+
 aR:={}
 
@@ -175,14 +175,14 @@ ncol := 10
 AADD(aR,{"nTotSin" ,{nlin,ncol},"Total Sinistro ", "@E 999",,,.F.})
 
 //+------------------------------------------------+
-//ï¿½ Array com coordenadas da GetDados no modelo2   ï¿½
+//¦ Array com coordenadas da GetDados no modelo2   ¦
 //+------------------------------------------------+
 aCGD:={117,5,80,315}
 //aCGD:={117,5,80,315}
 
 aGetEdit := {}   // Array com campos colunas editaveis, neste caso nenhuma
 //+----------------------------------------------+
-//ï¿½ Validacoes na GetDados da Modelo 2           ï¿½
+//¦ Validacoes na GetDados da Modelo 2           ¦
 //+----------------------------------------------+
 
 if lGrv
@@ -196,7 +196,7 @@ else
 Endif
 
 //+----------------------------------------------+
-//ï¿½ Chamada da Modelo2                           ï¿½
+//¦ Chamada da Modelo2                           ¦
 //+----------------------------------------------+
 // lRet = .t. se confirmou
 // lRet = .f. se cancelou
@@ -209,9 +209,9 @@ if lRet .and. lGrv
 	Begin Transaction // gresele 19/05/17
 
 	fwMsgRun(, {|| u_GrvSinis(aTitulos) }, "Processando", "Aguarde. Gravando Sinistro..." )
-	fwMsgRun(, {|| ProcSinis(aTitulos) }, "Processando", "Aguarde. Gerando titulo seguradora..." )
+	fwMsgRun(, {|| ProcSinis(aTitulos) }, "Processando", "Aguarde. Gerando título seguradora..." )
 
-	APMsgInfo("Informacoes do Seguro geradas com sucesso.")
+	APMsgInfo("Informações do Seguro geradas com sucesso.")
 
 	End Transaction 
 
@@ -237,7 +237,7 @@ static function ProcSinis(aTitulos)
 			_cChvPesq := aTitulos[nPos,2]+aTitulos[nPos,4]+aTitulos[nPos,5]+aTitulos[nPos,6]+aTitulos[nPos,7]+aTitulos[nPos,10]+aTitulos[nPos,11]
 
 			if !BxTitDac(_cChvPesq)
-				// Desmarca o titulo para que o mesmo nao seja considerado na amarracao DACAO x Titulo de seguri
+				// Desmarca o titulo para que o mesmo não seja considerado na amarração DACAO x Titulo de seguri
 				aTitulos[nPos,1] := .F.
 			endif
 		endif
@@ -254,14 +254,14 @@ Data................: 11/10/2016
 Descricao / Objetivo: Grava dados refrentes ao sinistro
 Doc. Origem.........: CRE24 - GAP CRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
 User Function GrvSinis(aTitulos)
 Local nLenTit := 0
 
-// Grava cabecalho do sinistro
+// Grava cabeçalho do sinistro
 SZX->(Reclock("SZX",.T.))
 SZX->ZX_FILIAL := xFilial("SZX")
 SZX->ZX_SINISTR := cSiniPro
@@ -300,10 +300,10 @@ Return(.T.)
 Programa............: aAtuAcols
 Autor...............: Roberto Sidney
 Data................: 11/10/2016
-Descricao / Objetivo: Atualiza acols da tela de dados do sinistro, inclusao e visualizacao
+Descricao / Objetivo: Atualiza acols da tela de dados do sinistro, inclusão e visualização
 Doc. Origem.........: CRE24 - GAP CRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -347,10 +347,10 @@ Return(aCOLS)
 Programa............: FTMSREL
 Autor...............: Roberto Sidney
 Data................: 11/10/2016
-Descricao / Objetivo: Cria Alias para a funcao MsDocument - Banco de conhecimento 
+Descricao / Objetivo: Cria Alias para a função MsDocument - Banco de conhecimento 
 Doc. Origem.........: CRE24 - GAP CRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -367,10 +367,10 @@ Return aEntidade
 Programa.:              BxTitDac
 Autor....:              Roberto Sidney
 Data.....:              10/10/2016
-Descricao / Objetivo:   Efetua a baixa do titulo por dacao
+Descricao / Objetivo:   Efetua a baixa do titulo por dação
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -393,26 +393,26 @@ Static Function BxTitDac(_cChvBx)
 		//aOcorSin[1]  //  01 - Normal
 		_cSituaca := aSituaca[1]  //  1 - Simples
 
-		// Retira o situlo da situacao cobranca
+		// Retira o situlo da situação cobrança
 		SE1->(Reclock("SE1",.F.))
 		SE1->E1_SITUACA := '0' //_cSituaca
 		SE1->(MsUnlock())
 
-		// Buscar ocorrencia pelo Banco (PORTADOR)
+		// Buscar ocorrência pelo Banco (PORTADOR)
 		DbSelectArea("ZA6")
 		DbSetOrder(1)
 		IF ZA6->(DbSeek(iif(!empty(xFilial("ZA6")), _cFil, xFilial("ZA6"))+SE1->E1_PORTADO+"N"))  
 			_cOcorren := ZA6->ZA6_OCOR 
 		ELSE    
-			//alert("Ocorrencia nao encontrada. ")
+			//alert("Ocorrencia não encontrada. ")
 			//_cInstr1 := "01"
 			//_cInstr2 := "00"
 		ENDIF
 
-		// Ajusta siutaï¿½ï¿½o de cobranca bordero
+		// Ajusta siutação de cobrança borderô
 		u_JusInstCob(_cOcorren,_cBordero,.T.)
 
-		// Ajusta situacao de cobranca - CNAB
+		// Ajusta situacao de cobrança - CNAB
 		IF _cIDCNAB <> ''
 			u_JusInstCob(_cOcorren,_cBordero,.F.)
 		Endif
@@ -434,8 +434,8 @@ Static Function BxTitDac(_cChvBx)
 		{"AUTVALREC"   ,SE1->E1_VALOR 	  	   ,Nil}}
 
 		if SE1->E1_SALDO = 0 .AND. ! Empty(SE1->E1_BAIXA)
-			ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+ " jï¿½ encontra-se baixado",""},3,;
-			{"Verificar situacao do titulo junto a ï¿½rea Financeira",""},3)
+			ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+ " já encontra-se baixado",""},3,;
+			{"Verificar situação do título junto a área Financeira",""},3)
 			lRet := .F.
 		Else
 			lMsErroAuto := .F.
@@ -456,7 +456,7 @@ Static Function BxTitDac(_cChvBx)
 		Endif
 	Else
 
-		ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PACELA+" nao localizado",""},3,;
+		ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PACELA+" não localizado",""},3,;
 		{"Verificar situacao do titulo junto a area financeira",""},3)
 		lRet := .F.
 
@@ -471,7 +471,7 @@ Data.....:              10/10/2016
 Descricao / Objetivo:   Gera titulo se segur
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -485,7 +485,7 @@ Static Function GerTitSeg(nTotTitSeg)
 	Local aChaveSE1 := {}
 	Local cTitSeg := ""
 
-	_cNumero := STRZERO(VAL(SOMA1(GetMv("MGF_TITSEG"))),9) // Numeracao do titulo de seguradora
+	_cNumero := STRZERO(VAL(SOMA1(GetMv("MGF_TITSEG"))),9) // Numeração do titulo de seguradora
 
 	Begin Transaction
 
@@ -503,10 +503,10 @@ Static Function GerTitSeg(nTotTitSeg)
 		{ "E1_VALOR"    , nTotTitSeg	, NIL }}
 
 		lMsErroAuto := .F.
-		MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 3)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao
+		MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 3)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão
 		If lMsErroAuto // SE ENCONTROU ALGUM ERRO
-			msgStop("Erro na geracao do titulos!")
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			msgStop("Erro na geração do titulos!")
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 		         MostraErro()
 		    Else // EM ESTADO DE JOB
 		        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -593,7 +593,7 @@ User Function TudOkFin19()
 Local lRet := .T. 
 
 If Empty(cSiniSeg)
-	MsgStop("Informe o campo 'Sinistro Seguro' no cabecalho")
+	MsgStop("Informe o campo 'Sinistro Seguro' no cabeçalho")
 	lRet := .F.
 Endif
 

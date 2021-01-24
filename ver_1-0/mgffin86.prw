@@ -12,7 +12,7 @@ Data................: 07/03/2018
 Descricao / Objetivo: Cadastro de Tipo de Valor
 Doc. Origem.........: MIT044- CAP016 - Tipo de Valor
 Solicitante.........: Cliente - Mauricio CAP
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Colocar no Menu
 =====================================================================================
 */
@@ -34,7 +34,7 @@ Local cArea := GetArea()
 dbSelectArea('ZDS')
 ZDS->(dbSetOrder(2))
 IF ZDS->(dbSeek(ZDR->ZDR_COD))
-	MsgAlert('Nao ï¿½ possivel excluir pois este tipo de valor esta relacionado a um Titulo !!!')
+	MsgAlert('Não é possivel excluir pois este tipo de valor está relacionado a um Titulo !!!')
 	bRet  := .F.
 EndIF
 

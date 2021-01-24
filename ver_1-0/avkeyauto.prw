@@ -5,10 +5,10 @@
 Programa............: AvKeyAuto
 Autor...............: Totvs
 Data................: Dez/2018
-Descricao / Objetivo: Ponto de entrada para tratamento da variavel cConteudo via execauto
+Descrição / Objetivo: Ponto de entrada para tratamento da variavel cConteudo via execauto
 Doc. Origem.........: EEC
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 User Function AvKeyAuto()

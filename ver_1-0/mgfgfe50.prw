@@ -15,17 +15,11 @@ user function MGFGFE50()
 
 Local oproc := nil
 
-if ALLTRIM(DAK->DAK_XSTCANC)<>"S" .AND. ALLTRIM(DAK->DAK_XSTCANC)<>"N"
-
-	If MsgYesNo("Confirma Reenvio da Carga "+DAK->DAK_COD+" para obter CTe e MDFe? ")
-		fwmsgrun(,{|oproc| MGFGFE50E(oproc)}, "Aguarde...","Validando Carga...")
-	ELSE
-		msgalert("Processo cancelado pelo usuário!")
-	Endif
-
+If MsgYesNo("Confirma Reenvio da Carga "+DAK->DAK_COD+" para obter CTe e MDFe? ")
+	fwmsgrun(,{|oproc| MGFGFE50E(oproc)}, "Aguarde...","Validando Carga...")
 ELSE
-	msgALERT("Carga em processo de cancelamento ou com cancelamento negado, necessário estar com o cancelamento autorizado para reenviar!")
-endif
+	msgalert("Processo cancelado pelo usuário!")
+Endif
 
 return
 

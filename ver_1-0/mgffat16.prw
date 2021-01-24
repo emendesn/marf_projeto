@@ -1,15 +1,18 @@
 #Include 'Protheus.ch'
+#include "totvs.ch"
+#include "topconn.ch"
+#include "tbiconn.ch"
 
 /*
 =====================================================================================
 Programa............: MGFFAT16
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Funcao para Regras Marfrig de bloqueio
+Descrição / Objetivo: Função para Regras Marfrig de bloqueio
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza as validacoes dos Bloqueios Marfrig conforme Regras
+Uso.................: Marfrig
+Obs.................: Realiza as validações dos Bloqueios Marfrig conforme Regras
 =====================================================================================
 */
 User Function MGFFAT16(cNumBlq)
@@ -18,9 +21,9 @@ User Function MGFFAT16(cNumBlq)
 	Local nValMin   	:= SuperGetMV("MGF_FAT16A",.F.,150) //Valor Minimo de Pedido
 	Local nValMaxPer   	:= SuperGetMV("MGF_FAT16B",.F.,30)  //Valor porcentagem Superior Permitido
 	Local nValMinPer   	:= SuperGetMV("MGF_FAT16C",.F.,30)  //Valor porcentagem Inferior Permitido
-	Local cCodEspec   	:= SuperGetMV("MGF_FAT16E",.F.,'BO|DO|AM')  //Codigos da especie de pedido utilizados para regra 18
-	Local cCodPedLib   	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o por aprovacao
-	Local lRet 			:= /*SC5->C5_TIPOCLI <> "X" .AND.*/ !(SC5->C5_ZTIPPED $ cCodPedLib)  //Tem que ficar .T. para passar por aprovacao, se ficar .F. passa direto.
+	Local cCodEspec   	:= SuperGetMV("MGF_FAT16E",.F.,'BO|DO|AM')  //Códigos da especie de pedido utilizados para regra 18
+	Local cCodPedLib   	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão por aprovação
+	Local lRet 			:= /*SC5->C5_TIPOCLI <> "X" .AND.*/ !(SC5->C5_ZTIPPED $ cCodPedLib)  //Tem que ficar .T. para passar por aprovação, se ficar .F. passa direto.
 
 	Local nValAtrs		:= 0
 	Local nTotPed		:= 0
@@ -29,11 +32,11 @@ User Function MGFFAT16(cNumBlq)
 	Local nSld			:= 0
 	Local nAcres		:= 0
 
-	Local nRiscoB		:= SuperGetMV("MV_RISCOB",.F.,30) //Dias maximo de atraso toleravel para Riscoo B
-	Local nRiscoC       := SuperGetMV("MV_RISCOC",.F.,20) //Dias maximo de atraso toleravel para Riscoo C
-	Local nRiscoD       := SuperGetMV("MV_RISCOD",.F.,10) //Dias maximo de atraso toleravel para Riscoo D
-	Local cCodPer   	:= AllTrim(SuperGetMV("MGF_FAT16D",.F.,'000099'))  //Codigo da Perda.
-	Local cEspAlm   	:= AllTrim(SuperGetMV("MGF_FAT16G",.F.,' '))  //Codigo da Perda.
+	Local nRiscoB		:= SuperGetMV("MV_RISCOB",.F.,30) //Dias máximo de atraso tolerável para Riscoo B
+	Local nRiscoC       := SuperGetMV("MV_RISCOC",.F.,20) //Dias máximo de atraso tolerável para Riscoo C
+	Local nRiscoD       := SuperGetMV("MV_RISCOD",.F.,10) //Dias máximo de atraso tolerável para Riscoo D
+	Local cCodPer   	:= AllTrim(SuperGetMV("MGF_FAT16D",.F.,'000099'))  //Código da Perda.
+	Local cEspAlm   	:= AllTrim(SuperGetMV("MGF_FAT16G",.F.,' '))  //Código da Perda.
 	Local nMedAtr   	:= SuperGetMV("MGF_FAT16H",.F.,8)    //Media de dias de atraso do cliente.
 	Local cBlCred		:= ''
 	Local aEmpenho		:= {}
@@ -72,7 +75,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '03'//Cliente com dias de atraso medio atingido
+			CASE cNumBlq == '03'//Cliente com dias de atraso médio atingido
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' .AND. !(SC5->C5_ZTIPPED $ cCodEspec)//GAP CRE019 FASE 4 Grandes Redes
 				//				nTotPed	:= U_xMF16TotPd(SC5->C5_NUM)
 				//				If !Empty(SC5->C5_MOEDA)
@@ -97,7 +100,7 @@ User Function MGFFAT16(cNumBlq)
 						lRet := .F.
 					Endif
 				ElseIf empty(SA1->A1_RISCO)
-					//If SA1->A1_METR <= 3 //William 13/08/2019 - Mudanca para pegar valor de parametro MGF_MATR
+					//If SA1->A1_METR <= 3 //William 13/08/2019 - Mudança para pegar valor de parametro MGF_MATR
 					If SA1->A1_METR <= nMedAtr
 						lRet := .F.
 					endif
@@ -105,7 +108,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '04'//Cliente sem limite de credito
+			CASE cNumBlq == '04'//Cliente sem limite de crédito
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' .AND. !(SC5->C5_ZTIPPED $ cCodEspec) //GAP CRE019 FASE 4 Grandes Redes
 				If SA1->A1_LC > 0
 					lRet := .F.
@@ -113,7 +116,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '05'//Endereco de entrega bloqueado
+			CASE cNumBlq == '05'//Endereço de entrega bloqueado
 			If SC5->C5_TIPO == 'N'
 				If FieldPos("C5_ZIDEND") > 0 .AND. !Empty(SC5->C5_ZIDEND)
 					dbSelectArea('SZ9')
@@ -129,7 +132,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '06'//Alteracao da condicao de pagamento
+			CASE cNumBlq == '06'//Alteração da condição de pagamento
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' .AND. !(SC5->C5_ZTIPPED $ cCodEspec) //GAP CRE019 FASE 4 Grandes Redes
 				If SA1->A1_COND == SC5->C5_CONDPAG
 					lRet := .F.
@@ -137,14 +140,14 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '07'//Total do pedido maior que o limite de credito
+			CASE cNumBlq == '07'//Total do pedido maior que o limite de crédito
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' .AND. !(SC5->C5_ZTIPPED $ cCodEspec) //GAP CRE019 FASE 4 Grandes Redes
 				//nTotPed	:= U_xMF16TotPd(SC5->C5_NUM) //Total do Pedido
 				lRet := !(xMF16VLC(SA1->A1_COD,SA1->A1_LOJA))
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '08'//Valor total abaixo do mï¿½nimo
+			CASE cNumBlq == '08'//Valor total abaixo do mínimo
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' //GAP CRE019 FASE 4 Grandes Redes
 				nTotPed := xMF16TSPed(SC5->C5_NUM)
 				If nTotPed >= nValMin
@@ -153,7 +156,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '09'//Condicao de Pagamento Antecipada
+			CASE cNumBlq == '09'//Condição de Pagamento Antecipada
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' .AND. !(SC5->C5_ZTIPPED $ cCodEspec) //GAP CRE019 FASE 4 Grandes Redes
 				dbSelectArea('SE4')
 				SE4->(dbSetOrder(1))//E4_FILIAL, E4_CODIGO
@@ -168,7 +171,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '73'//Preï¿½o maximo de venda atingido
+			CASE cNumBlq == '73'//Preço máximo de venda atingido
 			If SC5->C5_TIPO == 'N' .and. alltrim(SC5->C5_ZTIPPED) <> alltrim(cEspAlm) .and. xMF16EBLQ(SC5->C5_NUM,SC6->C6_ITEM)
 				nPrcVen := MaTabPrVen(SC5->C5_TABELA,SC6->C6_PRODUTO,SC6->C6_QTDVEN,SC5->C5_CLIENTE,SC5->C5_LOJACLI,SC5->C5_MOEDA,SC5->C5_EMISSAO)
 
@@ -207,7 +210,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			Endif
-			CASE cNumBlq == '72'//Preï¿½o abaixo do preco da lista
+			CASE cNumBlq == '72'//Preço abaixo do preço da lista
 			If SC5->C5_TIPO == 'N' .and. xMF16EBLQ(SC5->C5_NUM,SC6->C6_ITEM)
 				nPrcVen := MaTabPrVen(SC5->C5_TABELA,SC6->C6_PRODUTO,SC6->C6_QTDVEN,SC5->C5_CLIENTE,SC5->C5_LOJACLI,SC5->C5_MOEDA,SC5->C5_EMISSAO)
 //				If round(SC6->C6_PRCVEN, 2) >= nPrcVen //Comentado por William em 17/04/2019.
@@ -217,7 +220,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '71'//Preï¿½o mï¿½nimo de venda atingido*/
+			CASE cNumBlq == '71'//Preço mínimo de venda atingido*/
 			If SC5->C5_TIPO == 'N'
 				nPrcVen := MaTabPrVen(SC5->C5_TABELA,SC6->C6_PRODUTO,SC6->C6_QTDVEN,SC5->C5_CLIENTE,SC5->C5_LOJACLI,SC5->C5_MOEDA,SC5->C5_EMISSAO)
 				If (SC6->C6_PRCVEN > (nPrcVen * (1 - (nValMinPer/100))))
@@ -226,7 +229,7 @@ User Function MGFFAT16(cNumBlq)
 			Else
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '15'//Data de limite de credito vencida
+			CASE cNumBlq == '15'//Data de limite de crédito vencida
 			If SC5->C5_TIPO == 'N' .AND. SA1->A1_ZGDERED <> 'S' //GAP CRE019 FASE 4 Grandes Redes
 				If SA1->A1_VENCLC > SC5->C5_EMISSAO //Verifica se a data esta viginte
 					lRet := .F.
@@ -234,11 +237,11 @@ User Function MGFFAT16(cNumBlq)
 			else
 				lRet := .F.
 			Endif
-			CASE cNumBlq == '16'//Pedido aguardando transferencia.
+			CASE cNumBlq == '16'//Pedido aguardando transferência.
 			If Empty(SC6->C6_ZPEDPAI)//Se preenchido realiza o bloqueio
 				lRet := .F.
 			EndIf
-			CASE cNumBlq == '17'//Nao Contribuinte DIFAL.
+			CASE cNumBlq == '17'//Não Contribuinte DIFAL.
 			If SC5->C5_TIPO $ 'N/C'
 				If SA1->A1_EST == SM0->M0_ESTENT
 					lRet := .F.
@@ -246,13 +249,13 @@ User Function MGFFAT16(cNumBlq)
 				If SA1->A1_TIPO <> 'F'
 					lRet := .F.
 				Endif
-				If SA1->A1_TIPO == 'F' .AND. Empty(SA1->A1_INSCR) .AND. SA1->A1_CONTRIB == '2' //Se .T. verifica se a UF esta na F0L
+				If SA1->A1_TIPO == 'F' .AND. Empty(SA1->A1_INSCR) .AND. SA1->A1_CONTRIB == '2' //Se .T. verifica se a UF está na F0L
 					dbSelectArea('F0L')
 					F0L->(dbSetOrder(1))//F0L_FILIAL, F0L_UF, F0L_INSCR
 					If (F0L->(dbSeek(xFilial('F0L')+SA1->A1_EST)))
 						lRet := .F.
 					Endif
-				ElseIf SA1->A1_TIPO == 'F' .AND. !Empty(SA1->A1_INSCR) .AND. SA1->A1_CONTRIB == '1' //Se .T. verifica se a UF esta na F0L
+				ElseIf SA1->A1_TIPO == 'F' .AND. !Empty(SA1->A1_INSCR) .AND. SA1->A1_CONTRIB == '1' //Se .T. verifica se a UF está na F0L
 					dbSelectArea('F0L')
 					F0L->(dbSetOrder(1))//F0L_FILIAL, F0L_UF, F0L_INSCR
 					If (F0L->(dbSeek(xFilial('F0L') + SA1->A1_EST)))
@@ -272,13 +275,13 @@ User Function MGFFAT16(cNumBlq)
 					If SA2->A2_TIPO <> 'F'
 						lRet := .F.
 					Endif
-					If SA2->A2_TIPO == 'F' .AND. Empty(SA2->A2_INSCR) .AND. SA2->A2_CONTRIB == '2' //Se .T. verifica se a UF esta na F0L
+					If SA2->A2_TIPO == 'F' .AND. Empty(SA2->A2_INSCR) .AND. SA2->A2_CONTRIB == '2' //Se .T. verifica se a UF está na F0L
 						dbSelectArea('F0L')
 						F0L->(dbSetOrder(1))//F0L_FILIAL, F0L_UF, F0L_INSCR
 						If (F0L->(dbSeek(xFilial('F0L')+SA2->A2_EST)))
 							lRet := .F.
 						Endif
-					ElseIf SA2->A2_TIPO == 'F' .AND. !Empty(SA2->A2_INSCR) .AND. SA2->A2_CONTRIB == '1' //Se .T. verifica se a UF esta na F0L
+					ElseIf SA2->A2_TIPO == 'F' .AND. !Empty(SA2->A2_INSCR) .AND. SA2->A2_CONTRIB == '1' //Se .T. verifica se a UF está na F0L
 						dbSelectArea('F0L')
 						F0L->(dbSetOrder(1))//F0L_FILIAL, F0L_UF, F0L_INSCR
 						If (F0L->(dbSeek(xFilial('F0L') + SA2->A2_EST)))
@@ -291,7 +294,7 @@ User Function MGFFAT16(cNumBlq)
 
 				restArea(aAreaSA2)
 			Endif
-			CASE cNumBlq == '18'//Pedido Tipo Bonificaï¿½ï¿½o/Doaï¿½ï¿½o/Amostra.
+			CASE cNumBlq == '18'//Pedido Tipo Bonificação/Doação/Amostra.
 			If SC5->C5_TIPO $ 'N/C'
 				If !(SC5->C5_ZTIPPED $ cCodEspec) //Se preenchido com BO-Bonificacao/DO-Doacao/AM-Amostra realiza o bloqueio
 					lRet := .F.
@@ -333,10 +336,10 @@ Return lRet
 Programa............: xMF16DcPro
 Autor...............: Joni Lima
 Data................: 06/12/2016
-Descricao / Objetivo: Realiza a verificaï¿½ï¿½o se o desconto manual esta acima do valor maximo de desconto que o desconto progressivo permitiria
+Descrição / Objetivo: Realiza a verificação se o desconto manual esta acima do valor maximo de desconto que o desconto progressivo permitiria
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se o valor do desconto manual esta acima do maior valor de desconto progressivo.
 =====================================================================================
 */
@@ -394,11 +397,11 @@ Return lRet
 Programa............: xMF16SldAv
 Autor...............: Joni Lima
 Data................: 01/12/2016
-Descricao / Objetivo: Realiza Comparaï¿½ï¿½o de Saldo por Lote com quantiade nos pedidos
+Descrição / Objetivo: Realiza Comparação de Saldo por Lote com quantiade nos pedidos
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza comparaï¿½ï¿½o de Total de Pedidos e Saldo Por Lote
+Uso.................: Marfrig
+Obs.................: Realiza comparação de Total de Pedidos e Saldo Por Lote
 =====================================================================================
 */
 Static Function xMF16SldAv(cFilSC6,cProdut,dDtMin,dDtMax)
@@ -431,13 +434,11 @@ Static Function xMF16SldAv(cFilSC6,cProdut,dDtMin,dDtMax)
 	Conout("[MGFFAT16] - Analizado bTaura: "+cValToChar(bTaura))
 
 	IF bTaura
-		//processa( {|| U_MGFTAE21(@aRet,cFilSC6,cProdut,.T.,dDtMin,dDtMax) }, "Processando Consulta...","Consultando Saldo no Taura...",.F.)
 
 		aRetSaldo := {0,0}
-		aRetSaldo := staticCall( MGFWSC05, getSalProt, cProdut, SC5->C5_NUM, SC5->C5_FILIAL, .F., dDtMin, dDtMax )
+		aRetSaldo := getSalProt(cProdut, SC5->C5_NUM, SC5->C5_FILIAL, .F., dDtMin, dDtMax )
 		Conout("[MGFFAT16] - Retornou aRetSaldo Saldo: "+ Transform(aRetSaldo[1],"@E 999,999,999.9999") + " e peso medio: "+ Transform(aRetSaldo[2],"@E 999,999,999.9999") )
 
-		//IF ( aRet[01] - staticCall( MGFWSC05, getSalProt, cProdut, SC5->C5_ZTIPPED, SC5->C5_NUM ) ) <= 0
 		IF aRetSaldo[1] <= 0
 			lRet := .F.
 		EndIF
@@ -514,10 +515,10 @@ Return lRet
 Programa............: xMGF16COT
 Autor...............: Joni Lima
 Data................: 06/12/2016
-Descricao / Objetivo: Caso o tipo de venda marfrig seja igual ao parametro sera realizado o Blqoueio
+Descrição / Objetivo: Caso o tipo de venda marfrig seja igual ao parametro será realizado o Blqoueio
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Compara o tipo de venda marfrig com o informado no parametro.
 =====================================================================================
 */
@@ -532,10 +533,10 @@ Return lRet
 Programa............: xMF16VLC
 Autor...............: Joni Lima
 Data................: 30/11/2016
-Descricao / Objetivo: Retorna o Limite de Credito DISPONIVEL do cliente
+Descrição / Objetivo: Retorna o Limite de Credito DISPONIVEL do cliente
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna Limite de credito disponivel.
 =====================================================================================
 */
@@ -592,11 +593,11 @@ Return lRet
 Programa............: xMF16N24H
 Autor...............: Joni Lima
 Data................: 24/11/2016
-Descricao / Objetivo: Verifica se existe Nota emitida nos ultimos 24 Horas
+Descrição / Objetivo: Verifica se existe Nota emitida nos ultimos 24 Horas
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a Verificacao
+Uso.................: Marfrig
+Obs.................: Realiza a Verificação
 =====================================================================================
 */
 User Function xMF16N24H()
@@ -654,10 +655,10 @@ Return lRet
 Programa............: xMF16TSPed
 Autor...............: Joni Lima
 Data................: 20/10/2016
-Descricao / Objetivo: Funcao para Calcular o Total do Pedido Simplificado
+Descrição / Objetivo: Função para Calcular o Total do Pedido Simplificado
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza o calculo do total do Pedido Simplificado
 =====================================================================================
 */
@@ -687,10 +688,10 @@ Return nRet
 Programa............: xMF16TotPd
 Autor...............: Joni Lima
 Data................: 20/10/2016
-Descricao / Objetivo: Funcao para Calcular o Total do Pedido
+Descrição / Objetivo: Função para Calcular o Total do Pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza o calculo do total do Pedido
 =====================================================================================
 */
@@ -713,7 +714,7 @@ User Function xMF16TotPd(cPedido)
 	SC5->(DbSetOrder(1))//C5_FILIAL+C5_NUM
 	If SC5->(dbSeek(FWxFilial('SC5') + cPedido))
 
-		//Cabecalho
+		//Cabeçalho
 		MaFisIni(SC5->C5_CLIENT			 ,;//01 Codigo Cliente/Fornecedor
 		SC5->C5_LOJACLI				 ,;//02 Loja do Cliente/Fornecedor
 		If(SC5->C5_TIPO$'DB',"F","C"),;//03 C:Cliente , F:Fornecedor
@@ -725,13 +726,13 @@ User Function xMF16TotPd(cPedido)
 		"SB1"						 ,;//09 Alias do Cadastro de Produtos - ("SBI" P/ Front Loja)
 		"MATA461"       			 ,;//10 Nome da rotina que esta utilizando a funcao
 		Nil							 ,;//11 Tipo de documento
-		Nil							 ,;//12 Especie do documento
-		Nil							 ,;//13 Codigo e Loja do Prospect
+		Nil							 ,;//12 Espécie do documento
+		Nil							 ,;//13 Código e Loja do Prospect
 		Nil							 ,;//14 Grupo Cliente
 		Nil							 ,;//15 Recolhe ISS
-		Nil							 ,;//16 Codigo do cliente de entrega na nota fiscal de saida
-		Nil							 ,;//17 Loja do cliente de entrega na nota fiscal de saida
-		Nil							 ,;//18 Informacoes do transportador [01]-UF,[02]-TPTRANS
+		Nil							 ,;//16 Código do cliente de entrega na nota fiscal de saída
+		Nil							 ,;//17 Loja do cliente de entrega na nota fiscal de saída
+		Nil							 ,;//18 Informações do transportador [01]-UF,[02]-TPTRANS
 		Nil							 ,;//19 Se esta emitindo nota fiscal ou cupom fiscal (Sigaloja)
 		Nil							 ,;//20 Define se calcula IPI (SIGALOJA)
 		cPedido						 ,;//21 Pedido de Venda
@@ -773,8 +774,8 @@ User Function xMF16TotPd(cPedido)
 				nil						,;// 14-Valor da Embalagem 					( Opcional )
 				nRecSB1					,;// 15-RecNo do SB1
 				nRecSF4					,;// 16-RecNo do SF4
-				SC6->C6_ITEM			,;// 17-Numero do item ï¿½ Exemplo '01'
-				Nil						,;// 18-Despesas nao tributadas (Portugal)
+				SC6->C6_ITEM			,;// 17-Numero do item – Exemplo '01'
+				Nil						,;// 18-Despesas não tributadas (Portugal)
 				Nil						,;// 19-Tara (Portugal)
 				SC6->C6_CF				,;// 20-CFOP
 				Nil						,;// 21-Array para o calculo do IVA Ajustado (opcional)
@@ -805,10 +806,10 @@ Return nRet
 Programa............: xMF16QtdIt
 Autor...............: Joni Lima
 Data................: 20/10/2016
-Descricao / Objetivo: Funcao para trazer a Quantidade de Itens do Pedido
+Descrição / Objetivo: Função para trazer a Quantidade de Itens do Pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Pega a quantidade de itens do Pedido
 =====================================================================================
 */
@@ -952,7 +953,7 @@ Return lRet
 Programa............: xVerReg
 Autor...............: Joni Lima
 Data................: 06/06/2018
-Descricao / Objetivo: Funcao para verificar se ï¿½ executada a Regra de bloqueio
+Descrição / Objetivo: Função para verificar se é executada a Regra de bloqueio
 Obs.................: informar o codigo do Tipo
 =====================================================================================
 */
@@ -1029,9 +1030,9 @@ static Function xCrdXTitAt(cCliLoja,dData,nMoeda,lMovSE5)
 		CriaTipos()
 	Endif
 
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	// ï¿½ Testa os parametros vindos do Excel                  ï¿½
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	// ³ Testa os parametros vindos do Excel                  ³
+	// ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	nMoeda      := If(Empty(nMoeda),1,nMoeda)
 	dData       := If(Empty(dData),dDataBase,dData)
 	If ( ValType(nMoeda) == "C" )
@@ -1191,3 +1192,283 @@ Static Function xTAbert(cCod,cLoja)
 	RestArea(aArea)
 
 Return nRet
+
+
+//Funções antigas mantidas para retrocompatibilidade com fontes que fazem callstatic:
+// MGFFAT16, MGFFAT68, MGFLIBPD, MGFWSC27, MGFWSC33
+//------------------------------------------------------
+// Retorna saldo do Produto apos consulta com Taura - Pedido deve estar posicionado
+// [1] = Saldo (Taura - Protheus)
+// [2] = Peso Medio
+//------------------------------------------------------
+static function getSalProt( cB1Cod, cC5Num, cStockFil, lJobStock, dDtMin, dDtMax, _BlqEst )
+	local cQueryProt	:= ""
+	local nRetProt		:= 0
+	local nRetProt2		:= 0
+	local aArea			:= getArea()
+	local aAreaSZJ		:= SZJ->(getArea())
+	local aAreaSA1		:= SA1->(getArea())
+	local aAreaSB1		:= SB1->(getArea())
+
+	local aRet			:= {}
+	local aRet2			:= {}
+	local nSalProt		:= 0
+	local nSalProt2		:= 0
+	local nPesoMedio	:= 0
+	local aRetStock		:= { 0 , 0 }
+
+	local lRet			:= .F.
+	local lFefo			:= .F.
+
+	local nMGFDTMIN		:= 0
+	local nMGFDTMAX		:= 0
+
+	local dDataMin		:= CTOD("  /  /  ")
+	local dDataMax		:= CTOD("  /  /  ")
+
+	local nDtMin		:= superGetMv("MGF_DTMIN", , 0 )
+	local nDtMax		:= superGetMv("MGF_DTMAX", , 0 )
+
+	local nDtMinPr		:= superGetMv( "MGF_MINPR", , 0 )
+	local nDtMaxPr		:= superGetMv( "MGF_MAXPR", , 0 )
+
+	default lJobStock	:= .F.
+	default cC5Num		:= space(06)
+	default cStockFil	:= cFilAnt
+
+	default dDtMin		:= CTOD("  /  /  ")
+	default dDtMax		:= CTOD("  /  /  ")
+	default _BlqEst		:= .F.
+
+	if !empty( dDtMin )
+		dDataMin := dDtMin
+	endif
+
+	if !empty( dDtMax )
+		dDataMax := dDtMax
+	endif
+
+	if !empty( dDataMin ) .and. !empty( dDataMax )
+		lFefo := .T.
+	endif
+
+	if lJobStock
+		if QRYSB2->ZJ_FEFO <> 'S'
+			// Para o tipo VE as datas nao importam na consulta ao Taura, mas na conta para debitar Pedidos do Protheus sim
+			dDataMin := CTOD("  /  /  ")
+			dDataMax := CTOD("  /  /  ")
+		elseif QRYSB2->ZJ_FEFO == 'S'
+			dDataMin := dDataBase + QRYSB2->ZJ_MINIMO
+			dDataMax := dDataBase + QRYSB2->ZJ_MAXIMO
+		endif
+	endif
+
+	if lJobStock
+		if QRYSB2->ZJ_FEFO <> 'S'
+			U_MGFTAE21( @aRet, cStockFil, QRYSB2->idproduto, .F., dDataMin, dDataMax )
+		else
+			// Se NAO houver saldo no VE outros tipos recebem o saldo do VE (zerado ou negativo)
+			// Se HOUVER saldo no VE consulta novamente o saldo nos outros tipos
+
+			U_MGFTAE21( @aRet, cStockFil, QRYSB2->idproduto, .F., dDataMin, dDataMax )
+
+			nRetProt := getSaldoPv( QRYSB2->idproduto, cStockFil, cC5Num, "", "", _BlqEst )
+			nSalProt := ( aRet[01] - nRetProt )
+
+			aRet2 := {0}
+			U_MGFTAE21( @aRet2, cStockFil, QRYSB2->idproduto, .T., dDataMin, dDataMax )
+
+			nRetProt2 := getSaldoPv( QRYSB2->idproduto, cStockFil, cC5Num, dDataMin, dDataMax, _BlqEst )
+			nSalProt2 := ( aRet2[01] - nRetProt2 )
+
+			if nSalProt2 > nSalProt
+				// Se FF ou PR forem maiores do que o VE, respeitara os valores do VE
+				dDataMin := CTOD("  /  /  ")
+				dDataMax := CTOD("  /  /  ")
+			else
+				aRet := {}
+				aRet := aClone( aRet2 )
+			endif
+		endif
+	else
+		DBSelectArea('SZJ')
+		SZJ->(DBSetOrder(1))
+		SZJ->(DBSeek(xFilial('SZJ') + SC5->C5_ZTIPPED))
+
+		if SZJ->ZJ_FEFO <> 'S'
+			if !empty( dDataMin ) .and. !empty( dDataMax )
+				U_MGFTAE21( @aRet, cStockFil, cB1Cod, .T., dDataMin, dDataMax )
+
+				nRetProt := 0
+				nRetProt := getSaldoPv( cB1Cod, cStockFil, cC5Num, dDataMin, dDataMax, _BlqEst )
+				nSalProt := 0
+				nSalProt := ( aRet[01] - nRetProt )
+
+				// CASO TENHA PARAMETRIZADO DATA, DEVERA VERIFICAR COM VE SEM DATA
+				aRet2 := {0}
+				U_MGFTAE21( @aRet2, cStockFil, cB1Cod, .F., dDataMin, dDataMax )
+
+				nRetProt2 := getSaldoPv( cB1Cod, cStockFil, cC5Num, "", "", _BlqEst )
+				nSalProt2 := ( aRet2[01] - nRetProt2 )
+
+				// SE - 'VE com Data' for maior que 'VE sem Data' - Considera SEM DATA
+				//if nSalProt2 > nSalProt
+				if nSalProt > nSalProt2
+					aRet := {}
+					aRet := aClone( aRet2 )
+
+					dDataMin := CTOD("  /  /  ")
+					dDataMax := CTOD("  /  /  ")
+				endif
+
+			else
+				U_MGFTAE21( @aRet, cStockFil, cB1Cod, .F., dDataMin, dDataMax )
+			endif
+		else
+			// Se NAO houver saldo no VE outros tipos recebem o saldo do VE (zerado ou negativo)
+			// Se HOUVER saldo no VE consulta novamente o saldo nos outros tipos
+			U_MGFTAE21( @aRet, cStockFil, cB1Cod, .F., dDataMin, dDataMax )
+
+			nRetProt := getSaldoPv( cB1Cod, cStockFil, cC5Num, "", "", _BlqEst )
+			nSalProt := ( aRet[01] - nRetProt )
+
+			aRet2 := {0}
+			U_MGFTAE21( @aRet2, cStockFil, cB1Cod, .T., dDataMin, dDataMax )
+
+			nRetProt2 := getSaldoPv( cB1Cod, cStockFil, cC5Num, dDataMin, dDataMax, _BlqEst )
+			nSalProt2 := ( aRet2[01] - nRetProt2 )
+
+			if nSalProt2 > nSalProt
+				// Se FF ou PR forem maiores do que o VE, respeitara os valores do VE
+				dDataMin := CTOD("  /  /  ")
+				dDataMax := CTOD("  /  /  ")
+			else
+				aRet := {}
+				aRet := aClone( aRet2 )
+			endif
+		endif
+	endif
+
+	if aRet[2] > 0
+		nPesoMedio := ( aRet[1] / aRet[2] )
+	endif
+
+	nRetProt := 0
+	nSalProt := 0
+	Conout("Parametros enviado para a função getSaldoPv: "+cB1Cod +"," + cStockFil + "," + cC5Num )
+	nRetProt := getSaldoPv( cB1Cod, cStockFil, cC5Num, dDataMin, dDataMax, _BlqEst )
+	nSalProt := ( aRet[01] - nRetProt )
+	qTaura   := aRet[01]
+	restArea(aAreaSB1)
+	restArea(aAreaSA1)
+	restArea(aAreaSZJ)
+	restArea(aArea)
+
+	aRetStock := { nSalProt, nPesoMedio }
+	Conout("[MGFWSC05] - Resuldado da funcao getSalProt: Saldo: "+ Alltrim(Transform(nSalProt,"@E 999,999,999.9999")) + " Peso Medio: "+ Alltrim(Transform(nPesoMedio,"@E 999,999,999.9999")) )
+return aRetStock
+
+
+//------------------------------------------------------------
+// Retorna o saldo de Pedidos
+//------------------------------------------------------------
+static function getSaldoPv( cB1Cod, cStockFil, cC5Num, dDataMin, dDataMax, _BlqEst )
+
+	local nSaldoPV		:= 0
+	local cQueryProt	:= ""
+	local cQryPv		:= getNextAlias()
+
+	Conout("Parametros recebido na função getSaldoPv: "+cB1Cod +"," + cStockFil + "," + cC5Num )
+
+	// a query abaixo para trazer o saldo que o Protheus tem de pedidos, por produto
+	// desconsidera o pedido que está sendo manipulado no momento ou analisado
+	// mas considera todos os pedidos que estão com bloqueio seja de estoque o não no sistema
+	// gerando erro. Criado um parametro no final para informar se deve ou não descosiderar
+	// pedidos com bloqueio de estoque.
+
+	cQueryProt  := "SELECT SUM(C6_QTDVEN) - SUM(C6_QTDENT) AS SALDO"
+	cQueryProt  += " FROM " +	RetSqlName("SC6") + " C6 "
+	cQueryProt +=  " INNER JOIN " + RetSqlName("SA1") + " A1 ON C6.C6_CLI		=	A1.A1_COD AND C6.C6_LOJA		=	A1.A1_LOJA AND A1.D_E_L_E_T_	<>	'*' "
+	cQueryProt +=  " INNER JOIN " + RetSqlName("SF4") + " F4 ON C6_TES			=	F4_CODIGO AND F4.D_E_L_E_T_	<>	'*' "
+	cQueryProt +=  " INNER JOIN " + RetSqlName("SC5") + " C5 ON C6.C6_FILIAL = C5.C5_FILIAL AND C6.C6_NUM = C5.C5_NUM AND C5.D_E_L_E_T_ = ' ' "
+
+	cQueryProt  += " WHERE"
+	cQueryProt  += "	    C6.D_E_L_E_T_	<>	'*'"
+	cQueryProt	+= "	AND F4.F4_ESTOQUE	=	'S'"
+	cQueryProt  += "	AND C6_PRODUTO		=	'" + cB1Cod		+ "'"
+	cQueryProt  += "	AND C6_FILIAL		=	'" + cStockFil	+ "'"
+	cQueryProt  += "  	AND C6_NOTA			=	'         '"
+	cQueryProt  += "  	AND C6_BLQ			<>	'R'"
+
+	if !empty( cC5Num )
+		cQueryProt  += "  AND C6_NUM <> '" + cC5Num + "'"
+	endif
+
+	if !empty( dDataMin ) .and. !empty( dDataMax )
+		cQueryProt  += " AND"
+		cQueryProt  += "     ("
+		cQueryProt  += "         C6.C6_ZDTMIN BETWEEN '" + dToS( dDataMin ) + "' AND '" + dToS( dDataMax ) + "'"
+		cQueryProt  += "         OR"
+		cQueryProt  += "         C6.C6_ZDTMAX BETWEEN '" + dToS( dDataMin ) + "' AND '" + dToS( dDataMax ) + "'"
+		cQueryProt  += "     )"
+	endif
+
+	Conout("[MGFWSC05] - Roda Query funcao getSaldoPv: "+ cQueryProt )
+	tcQuery cQueryProt New Alias (cQryPv)
+
+	if !(cQryPv)->(EOF())
+		nSaldoPV := (cQryPv)->SALDO
+	endif
+
+	If Select(cQryPv) > 0
+		(cQryPv)->(DBCloseArea())
+	EndIf
+	Conout("[MGFWSC05] - Resuldado da Query funcao getSaldoPv saldo pvs: "+ Transform(nSaldoPV,"@E 999,999,999.9999") )
+
+	// agora processo o saldo de pedidos que estão com bloqueio de estoque
+	// e desconto essa quantidade na quantidade de pedido que a query anterior trouxe pois havia contemplado
+	// erroneamente todos os pedidos mesmos os que estão com bloqueio de estoque
+
+	if _BlqEst
+		cQueryProt  := "SELECT SUM(C6_QTDVEN) - SUM(C6_QTDENT) AS SALDO"
+		cQueryProt  += " FROM " +	RetSqlName("SC6") + " C6 "
+		cQueryProt +=  " INNER JOIN " + RetSqlName("SA1") + " A1 ON C6.C6_CLI		=	A1.A1_COD AND C6.C6_LOJA		=	A1.A1_LOJA AND A1.D_E_L_E_T_	<>	'*' "
+		cQueryProt +=  " INNER JOIN " + RetSqlName("SF4") + " F4 ON C6_TES			=	F4_CODIGO AND F4.D_E_L_E_T_	<>	'*' "
+		cQueryProt +=  " INNER JOIN " + RetSqlName("SC5") + " C5 ON C6.C6_FILIAL = C5.C5_FILIAL AND C6.C6_NUM = C5.C5_NUM AND C5.D_E_L_E_T_ = ' ' "
+		cQueryProt +=  " INNER JOIN " + RetSqlName("SZV") + " SZV ON SZV.ZV_FILIAL = C5.C5_FILIAL AND SZV.ZV_PEDIDO = C5.C5_NUM AND SZV.D_E_L_E_T_ = ' ' AND SZV.ZV_CODRGA IN ('000011') AND SZV.ZV_ITEMPED = C6.C6_ITEM "
+		cQueryProt  += " WHERE"
+		cQueryProt  += "	    C6.D_E_L_E_T_	<>	'*'"
+		cQueryProt	+= "	AND F4.F4_ESTOQUE	=	'S'"
+		cQueryProt  += "	AND C6_PRODUTO		=	'" + cB1Cod		+ "'"
+		cQueryProt  += "	AND C6_FILIAL		=	'" + cStockFil	+ "'"
+		cQueryProt  += "  	AND C6_NOTA			=	'         '"
+		cQueryProt  += "  	AND C6_BLQ			<>	'R'"
+		cQueryProt  += "  	AND C5.C5_ZBLQRGA = 'B' "
+		cQueryProt  += "  	AND SZV.ZV_CODAPR = ' ' "
+		if !empty( cC5Num )
+			cQueryProt  += "  AND C6_NUM <> '" + cC5Num + "'"
+		endif
+
+		if !empty( dDataMin ) .and. !empty( dDataMax )
+			cQueryProt  += " AND"
+			cQueryProt  += "     ("
+			cQueryProt  += "         C6.C6_ZDTMIN BETWEEN '" + dToS( dDataMin ) + "' AND '" + dToS( dDataMax ) + "'"
+			cQueryProt  += "         OR"
+			cQueryProt  += "         C6.C6_ZDTMAX BETWEEN '" + dToS( dDataMin ) + "' AND '" + dToS( dDataMax ) + "'"
+			cQueryProt  += "     )"
+		endif
+
+		Conout("[MGFWSC05] - Roda Query funcao getSaldoPv: "+ cQueryProt )
+		tcQuery cQueryProt New Alias (cQryPv)
+
+		if !(cQryPv)->(EOF())
+			nSaldoPV := nSaldoPV - (cQryPv)->SALDO
+		endif
+
+		If Select(cQryPv) > 0
+			(cQryPv)->(DBCloseArea())
+		EndIf
+		Conout("[MGFWSC05] - Resuldado da Query funcao getSaldoPv - saldos bloqueados: "+ Transform(nSaldoPV,"@E 999,999,999.9999") )
+	ENDIF
+
+return nSaldoPV

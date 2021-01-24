@@ -11,7 +11,7 @@ Data.....:              05/10/2016
 Descricao / Objetivo:   Execucao do P.E. M460FIM
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -105,7 +105,7 @@ Data.....:              05/10/2016
 Descricao / Objetivo:   Executa Query para verificar se o pedido tem contrato atrelado.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

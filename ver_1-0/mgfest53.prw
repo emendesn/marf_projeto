@@ -259,7 +259,7 @@ EndIf
 
 If !(mv_par12 == 1)
 	oSection1:Cell('B7_LOTECTL'	):Disable()
-	oSection1:Cell('B7_NUMLOTE'	):Disable()
+//	oSection1:Cell('B7_NUMLOTE'	):Disable()
 	nCellTot-= 2
 EndIf
 

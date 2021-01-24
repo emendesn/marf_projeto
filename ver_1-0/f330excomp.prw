@@ -6,24 +6,25 @@
 Programa............: F330EXCOMP
 Autor...............: Paulo Fernandes
 Data................: 26/04/2018
-Descricao / Objetivo: Ponto de Entrada na rotina de compensacao recebimento(FINA330).
+Descricao / Objetivo: Ponto de Entrada na rotina de compensação recebimento(FINA330).
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Devido a lentidao na compensacao de CR, foi solicitado pelo
-                      Analista Claudio o desvinculo da tabela SE5 com as tabelas FK1 e FKA
+Uso.................: Marfrig
+Obs.................: Devido a lentidão na compensação de CR, foi solicitado pelo
+                      Analista Cláudio o desvínculo da tabela SE5 com as tabelas FK1 e FKA
 ==========================================================================================
 */
 User Function F330EXCOMP()
 Local aArea			:= GetArea()
 Local aAreaSE1		:= SE1->(GetArea())
 Local aAreaSE5		:= SE5->(GetArea())
-Local aTitSE1		:= PARAMIXB[1]			// array contendo os titulos a compensar
+Local aTitSE1		:= PARAMIXB[1]			// array contendo os títulos a compensar
 Local aRecnoSE5		:= PARAMIXB[2]			// array contendo o RECNO da tabela SE5
 Local nRecnoSE5		:= SE5->(Recno())
-Local nOpcA			:= PARAMIXB[3]			// 4=Exclusao; 5=Estorno
+Local nOpcA			:= PARAMIXB[3]			// 4=Exclusão; 5=Estorno
 Local nX			:= 0					// controle loop FOR...NEXT
 Local cAliasSE5		:= GetNextAlias()
+Local cUpdSE1
 Local cE5DOCUMEN	:= ""
 Local lRet			:= .T.
 
@@ -38,8 +39,8 @@ aTitSE1[nX,5],;//Loja
 aTitSE1[nX,6],;//Data de vencimento
 If(aTitSE1[nX,8],aTitSE1[nX,7],Transform(0,PesqPict("SE1","E1_SALDO"))),;//Saldo Compensar
 aTitSE1[nX,25],;//Limite de Compensacao
-aTitSE1[nX,13],;//Acrescimos
-aTitSE1[nX,14],;//Decrescimos
+aTitSE1[nX,13],;//Acréscimos
+aTitSE1[nX,14],;//Decréscimos
 aTitSE1[nX,10],;//CLiente+Loja
 aTitSE1[nX,11],;//Nome CLiente
 aTitSE1[nX,12],;//CGC
@@ -85,6 +86,33 @@ For nX:=1 To Len(aTitSE1)
 		MGLINKFK((cAliasSE5)->SE5RECNO)
 	Endif
 	(cAliasSE5)->(dbCloseArea())
+
+	begin transaction
+
+		// Atualiza o adiantamento para encio ao SF
+		cUpdSE1 := "UPDATE " + retSQLName("SE1") + " SE1"
+		cUpdSE1 += " SET "
+		cUpdSE1 += "	SE1.E1_XINTSFO = 'P'"
+		cUpdSE1 += " WHERE"
+		cUpdSE1 += "		SE1.SE1_PREFIXO	= '" + SubStr(aTitSE1[nX][7],1,3) + "'"
+		cUpdSE1 += "		SE1.SE1_NUM	=     '" + SubStr(aTitSE1[nX][7],4,9) + "'"
+		cUpdSE1 += "		SE1.SE1_PARCELA	= '" + SubStr(aTitSE1[nX][7],13,2) + "'"
+
+		tcSQLExec( cUpdSE1 )
+
+		// Atualiza o titulo no qual ocorreu o estorno
+		cUpdSE1 := "UPDATE " + retSQLName("SE1") + " SE1"
+		cUpdSE1 += " SET "
+		cUpdSE1 += "	SE1.E1_XINTSFO = 'P'"
+		cUpdSE1 += " WHERE"
+		cUpdSE1 += "		SE1.SE1_PREFIXO	= '" + aTitSE1[nX][1] + "'"
+		cUpdSE1 += "		SE1.SE1_NUM	=     '" + aTitSE1[nX][2] + "'"
+		cUpdSE1 += "		SE1.SE1_PARCELA	= '" + aTitSE1[nX][3] + "'"
+
+		tcSQLExec( cUpdSE1 )		
+
+	end transaction 
+
 Next
 
 SE5->(dbGoTo(nRecnoSE5))
@@ -95,9 +123,9 @@ RestArea(aArea)
 
 Return(lRet)
 
-Static Function MGLINKFK(nRecnoSE5)
-Local cQuery		:= ""					// sentenï¿½a SQL para update dos campos na SE5,FK1 e FKA
-Local nRetSql		:= ""					// retorno execucao sentenï¿½a SQL
+Static procedure MGLINKFK(nRecnoSE5)
+Local cQuery            					// sentença SQL para update dos campos na SE5,FK1 e FKA
+Local nRetSql		:= ""					// retorno execução sentença SQL
 Local cCodFil		:= ""
 Local cMovFKS		:= ""
 Local cIDorig		:= ""
@@ -125,7 +153,7 @@ If nRetSql == 0
 		tcSqlExec( "COMMIT" )
 	EndIf
 Else
-	Aviso("Desvincula SE5->FK1->FKA","Problemas na exclusao do vinculo com a tabela FK1.",{"Ok"})
+	Aviso("Desvincula SE5->FK1->FKA","Problemas na exclusão do vínculo com a tabela FK1.",{"Ok"})
 EndIf
 
 // exclui link na FKA
@@ -141,7 +169,7 @@ If nRetSql == 0
 		tcSqlExec( "COMMIT" )
 	EndIf
 Else
-	Aviso("Desvincula SE5->FK1->FKA","Problemas na exclusao do vinculo com a tabela FKA.",{"Ok"})
+	Aviso("Desvincula SE5->FK1->FKA","Problemas na exclusão do vínculo com a tabela FKA.",{"Ok"})
 EndIf
 
 Return

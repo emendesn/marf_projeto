@@ -3,10 +3,10 @@
 Programa.:              F650VAR
 Autor....:              Atilio Amarilla
 Data.....:              22/05/2017
-Descricao / Objetivo:   PE acionado no relatorio de arquivo CNAB. Busca ID CNAB 
+Descricao / Objetivo:   PE acionado no relatСrio de arquivo CNAB. Busca ID CNAB 
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE rotina FINA200
 =====================================================================================
 */
@@ -16,9 +16,9 @@ User Function F650VAR()
 // , UM IMPACTA NO OUTRO, POIS ESTE PE NAO RECEBE A VARIAVEL LACHOUTIT E COM ISSO PERDE O CONTEUDO ANTERIOR DESTA VARIAVEL,
 // QUANDO A CARTEIRA ( PAGAR OU RECEBER ) NAO EH TRATADA NESTE PE.
 
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-//О©╫GAP CNAB - Se existe ID CNAB importado (E1_ZIDCNAB), busca E1_IDCNAB    О©╫
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+//ЁGAP CNAB - Se existe ID CNAB importado (E1_ZIDCNAB), busca E1_IDCNAB    Ё
+//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 //If ExistBlock("MGFFIN49")
 //	U_MGFFIN49()
 //EndIf

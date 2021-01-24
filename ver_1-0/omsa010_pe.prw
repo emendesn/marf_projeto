@@ -8,7 +8,7 @@ Data................: 22/02/2017
 Descricao / Objetivo: Ponto de entrada na rotina de Cadastro de Tabela e Preco do Faturamento
 Doc. Origem.........: Protheus-Taura Cadastros
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

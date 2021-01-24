@@ -12,64 +12,22 @@ User Function MGFWSC79()
 
 Local _nni := 0
 Local _ntimeout := 0
-	
+
 U_MFCONOUT(' Iniciando processamento...') 
-
-RPCSetType( 3 )
-
-PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010041'
-
-U_MFCONOUT(' Iniciado o ambiente, iniciando monitoramento...' )
 
 _ntimeout := getMv("MGF_SFATO")
 
-cQry := " select    ZFR_CODIGO,"
-cQry += "           ZFR_DESCRI,"
-cQry += "           ZFR_TIPO  ,"
-cQry += "           ZFR_URL   ,"
-cQry += "           (UTL_RAW.CAST_TO_VARCHAR2(dbms_lob.substr(ZFR_PAYLOA, 2000, 1)) || " 
-cQry += "               UTL_RAW.CAST_TO_VARCHAR2(dbms_lob.substr(ZFR_PAYLOA, 2000, 2001)))  ZFR_PAYLOA,"
-cQry += "           ZFR_RESPOT,"
-cQry += "           ZFR_INTERV,"
-cQry += "           ZFR_TOLERA,"
-cQry += "           ZFR_VALOR ,"
-cQry += "           ZFR_POSH  ,"
-cQry += "           ZFR_POSV  ,"
-cQry += "           ZFR_TAMH  ,"
-cQry += "           ZFR_TAMV  ,"
-cQry += "           ZFR_FONTE ,"
-cQry += "           ZFR_ATIVO ,"
-cQry += "           ZFR_ALERT ,"
-cQry += "           ZFR_MIN   ,"
-cQry += "           ZFR_MAN   "
-cQry += " FROM " + retsqlname("ZFR") + " where d_e_l_e_t_ <> '*' and "
-cQry += " ZFR_ATIVO = '1' "
+cQry := " select   R_E_C_N_O_ REC
+cQry += " FROM " + retsqlname("ZFR") + " where d_e_l_e_t_ <> '*'   and "
+cQry += " ( ZFR_ATIVO = '1' or ZFR_ATIVO = '2')"
     
 TcQuery cQry New Alias "TMPZFR"
 
 Do while !(TMPZFR->(EOF()))
    
-   aRet := StartJob("U_WSC79E",GetEnvServer(),.F.,;
-                _nni,;
-                TMPZFR->ZFR_CODIGO,;
-                TMPZFR->ZFR_DESCRI,;
-                TMPZFR->ZFR_TIPO,;
-                TMPZFR->ZFR_URL,;
-                TMPZFR->ZFR_PAYLOA,;
-                TMPZFR->ZFR_RESPOT,;
-                TMPZFR->ZFR_INTERV,;
-                TMPZFR->ZFR_TOLERA,;
-                TMPZFR->ZFR_VALOR,;
-                TMPZFR->ZFR_POSH,;
-                TMPZFR->ZFR_POSV,;
-                TMPZFR->ZFR_TAMH,;
-                TMPZFR->ZFR_TAMV,;
-                TMPZFR->ZFR_FONTE,;
-                TMPZFR->ZFR_ATIVO,;
-                TMPZFR->ZFR_MIN,;
-                TMPZFR->ZFR_MAN,;
-                TMPZFR->ZFR_ALERT,;
-                _ntimeout) 
+   aRet := U_WSC79E(  _nni,;
+                        TMPZFR->REC,;
+                            _ntimeout) 
 
     TMPZFR->(Dbskip())
 
@@ -87,24 +45,7 @@ Return
 	@since 30/12/2019
 /*/
 User Function WSC79E (_nni,;
-                        _cZFR_CODIGO,;
-                        _cZFR_DESCRI,;
-                        _cZFR_TIPO,;
-                        _cZFR_URL,;
-                        _cZFR_PAYLOA,;
-                        _cZFR_RESPOT,;
-                        _cZFR_INTERV,;
-                        _cZFR_TOLERA,;
-                        _cZFR_VALOR,;
-                        _cZFR_POSH,;
-                        _cZFR_POSV,;
-                        _cZFR_TAMH,;
-                        _cZFR_TAMV,;
-                        _cZFR_FONTE,;
-                        _cZFR_ATIVO,;
-                        _cZFR_MIN,;
-                        _cZFR_MAN,;
-                        _cZFR_ALER,;
+                        _nrec,;
                         _ntimeout) 
 
     Local oWS
@@ -116,31 +57,76 @@ User Function WSC79E (_nni,;
     Local cAuditoria := ""
     Local aSize      := {}
     Local aXML       := {}
+    Local aheader    := {}
     Local nX         := 0
     Local odetret    := nil
 
-    U_MFCONOUT('Monitorando regra ' + _cZFR_CODIGO + " - " + alltrim(_cZFR_DESCRI) + '...' )
+    ZFR->(Dbgoto(_nrec))
 
-    RPCSetType( 3 )
+    U_MFCONOUT('Monitorando regra ' + alltrim(ZFR->ZFR_CODIGO) + " - " + alltrim(ZFR->ZFR_DESCRI) + '...' )
 
-    PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010041'
+    //Tipo Y só faz uma vez a cada 3 horas
+    If alltrim(ZFR->ZFR_TIPO) == 'Y'
+        
+        _chora := strZERO(val(SUBSTR(TIME(),1,2))-3,2)
 
-    If _cZFR_TIPO == 'J' .OR. _cZFR_TIPO == 'G' .or. _cZFR_TIPO == 'T' //Monitoramento de serviço via Json
+        cQuery := " SELECT  r_e_c_n_o_ "
+	    cQuery += " FROM " + RetSqlName("ZFS")
+	    cQuery += "  WHERE zfs_codigo = '" + alltrim(ZFR->ZFR_CODIGO)  + "' and zfs_data = '" + DTOS(DATE())  + "' "
+        cQuery += "  and zfs_hora > '" + _chora + ":00:00' "'
+	    cQuery += "  AND D_E_L_E_T_= ' ' "
+
+	    If select("ZHLTMP") > 0
+		    ZHLTMP->(Dbclosearea())
+	    Endif
+
+	    dbUseArea( .T., "TOPCONN", TCGENQRY(,,cQuery),"ZHLTMP", .F., .T.)
+    
+        If !ZHLTMP->(Eof())
+
+            Return
+        
+        Endif
+
+    Endif
+    
+    If alltrim(ZFR->ZFR_TIPO) == 'J' .OR. alltrim(ZFR->ZFR_TIPO) == 'G' .or. alltrim(ZFR->ZFR_TIPO) == 'T';
+                     .OR.  alltrim(ZFR->ZFR_TIPO) == 'K' .OR.  alltrim(ZFR->ZFR_TIPO) == 'Y' 
+    
+        //Monitoramento de serviço via Json
 
         _cHeadRet		:= ""
 	    _aHeadOut		:= {}
 
 	    aadd(_aHeadOut,'Content-Type: application/json')
+        //Adiciona autenticação se estiver no ZFR_VALOR
+        If !empty(alltrim(ZFR->ZFR_VALOR))
+            aAdd(_aHeadOut,"Authorization: Basic "+Encode64(alltrim(ZFR->ZFR_VALOR)) )
+        Endif
 
 	    _nTimeIni		:= seconds()
 	    
-        If _cZFR_TIPO == 'J'  //METODO POST
-            _cPostRet		:= httpPost(_cZFR_URL,, _cZFR_PAYLOA, _ntimeout, _aHeadOut, @_cHeadRet)
-        Elseif _cZFR_TIPO == 'G' .or.  _cZFR_TIPO == 'T'//METODO GET
+        If alltrim(ZFR->ZFR_TIPO) == 'J'  //METODO POST
+            _cPostRet		:= httpPost(alltrim(ZFR->ZFR_URL),, alltrim(ZFR->ZFR_PAYLOA), _ntimeout, _aHeadOut, @_cHeadRet)
+        Elseif alltrim(ZFR->ZFR_TIPO) == 'G' .or.  alltrim(ZFR->ZFR_TIPO) == 'T'    //METODO GET
            aHeadStr := {}
            cHeaderRet := ""
             aadd( aHeadStr, 'Content-Type: application/json')
-   			_cPostRet := httpQuote( alltrim(_cZFR_URL) , "GET", alltrim(_cZFR_PAYLOA),  , _nTimeOut , aHeadStr , cHeaderRet  )
+   			_ni := 1
+            Do While _ni <= 5
+            
+                _cPostRet := httpQuote( alltrim(ZFR->ZFR_URL) , "GET", alltrim(ZFR->ZFR_PAYLOA),  , _nTimeOut , aHeadStr , @cHeaderRet  )
+                _nStatuHttp	:= httpGetStatus()
+
+                If valtype(_cpostret) == "C" .and. _nStatuHttp >= 200 .and. _nStatuHttp <= 299
+                    _ni := 99
+                Else
+                    _ni++
+                Endif
+            
+            Enddo
+        Elseif alltrim(ZFR->ZFR_TIPO) == 'K' .or. alltrim(ZFR->ZFR_TIPO) == 'Y'
+             _cPostRet		:= httpget(alltrim(ZFR->ZFR_URL))       
         Endif
 	    _nTimeFin		:= seconds()
 	    _nTimeProc		:= _ntimefin - _ntimeini
@@ -151,11 +137,11 @@ User Function WSC79E (_nni,;
             _cpostret := "Falha de conexão"
         Endif
 
-        If _cZFR_TIPO == 'T' 
+        If alltrim(ZFR->ZFR_TIPO) == 'T' 
 
-            If ALLTRIM(_cZFR_PAYLOA) $ _cPostRet
+            If ALLTRIM(ZFR->ZFR_PAYLOA) $ _cPostRet
 
-                fwJsonDeserialize( _cPostRet, @oDetRet )
+                 fwJsonDeserialize( _cPostRet, @oDetRet )
 
                 if valtype(oDetRet:ITENPENDENTES) == "N"
                     _cpostret := alltrim(str(oDetRet:ITENPENDENTES))
@@ -163,11 +149,11 @@ User Function WSC79E (_nni,;
                     _cstatus := "ALERTA"
                     _ntot := oDetRet:ITENPENDENTES
 
-                     If _ntot >=  _cZFR_MIN .and. _ntot <= _cZFR_ALER
+                     If _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_ALERT
                         _cstatus := "OK"
-                    Elseif _ntot >=  _cZFR_MIN .and. _ntot <= _cZFR_MAN
+                    Elseif _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_MAN
                         _cstatus := "ALERTA"
-                    Elseif _ntot <=  _cZFR_MIN .or. _ntot >= _cZFR_MAN
+                    Elseif _ntot <=  ZFR->ZFR_MIN .or. _ntot >= ZFR->ZFR_MAN
                         _cstatus := "FALHA"
                     Endif
 
@@ -188,7 +174,60 @@ User Function WSC79E (_nni,;
 
             Endif
 
-        else
+        elseif alltrim(ZFR->ZFR_TIPO) == 'Y'
+
+            oobjr := nil
+            _ntot := 0
+
+			If fwJsonDeserialize(_cPostRet , @oobjr)
+
+                If AttIsMemberOf( oobjr, "data") .and. AttIsMemberOf( oobjr:data, "realizadas") .and. VALTYPE(oobjr:data:realizadas) == "N"
+                
+                    _ntot := oobjr:data:realizadas
+
+                Endif
+
+            Endif
+            
+            _cstatus := "ALERTA"
+            
+            If _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_ALERT
+                _cstatus := "OK"
+            Elseif _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_MAN
+                _cstatus := "ALERTA"
+            Elseif _ntot <=  ZFR->ZFR_MIN .or. _ntot >= ZFR->ZFR_MAN
+                _cstatus := "FALHA"
+            Endif
+
+             _cPostRet := alltrim(str(_ntot))
+
+                
+        elseIF   alltrim(ZFR->ZFR_TIPO) == 'K'
+
+            //PEGA SO OS NUMEROS DO RETORNO
+            _cret := ""
+
+            For _nnj := 1 to len(_cPostRet)
+
+                If val(substr(_cpostret,_nnj,1)) > 0 .or. (substr(_cpostret,_nnj,1)) == '0'
+                    _cret += substr(_cpostret,_nnj,1)
+                Endif
+            
+            Next
+
+            _cstatus := "ALERTA"
+            _ntot := val(_cret)
+            _cPostRet := alltrim(str(_ntot))
+
+            If _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_ALERT
+                _cstatus := "OK"
+            Elseif _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_MAN
+                _cstatus := "ALERTA"
+            Elseif _ntot <=  ZFR->ZFR_MIN .or. _ntot >= ZFR->ZFR_MAN
+                _cstatus := "FALHA"
+            Endif
+
+        ELSE
             
 
             _cstatus := IIF(_nStatuHttp >=200 .AND. _nStatuHttp <= 299, "OK","FALHA")
@@ -198,7 +237,7 @@ User Function WSC79E (_nni,;
                 //Valida se já teve falhas seguidas
                 cQry := " select   ZFS_STATUS  "
                 cQry += " FROM " + retsqlname("ZFS") + " where d_e_l_e_t_ <> '*' and "
-                cQry += " ZFS_CODIGO = '" + _cZFR_CODIGO + "' "
+                cQry += " ZFS_CODIGO = '" + alltrim(ZFR->ZFR_CODIGO) + "' "
                 cQry += " AND ZFS_DATA = '" + DTOS(DATE())  + "' ORDER BY R_E_C_N_O_ DESC"
     
                 If select("TMPZFS") > 0
@@ -227,10 +266,10 @@ User Function WSC79E (_nni,;
 
         Dbselectarea("ZFS")
         Reclock("ZFS",.T.)
-        ZFS->ZFS_CODIGO     := _cZFR_CODIGO
+        ZFS->ZFS_CODIGO     := ALLTRIM(ZFR->ZFR_CODIGO)
         ZFS->ZFS_DATA       := date()
         ZFS->ZFS_HORA       := time()
-        ZFS->ZFS_REQUIS     := _cZFR_PAYLOA
+        ZFS->ZFS_REQUIS     := ALLTRIM(ZFR->ZFR_PAYLOA)
         ZFS->ZFS_RESPOS     := _cPostRet
         ZFS->ZFS_TEMPO      := _nTimeProc
         ZFS->ZFS_STATUS     := _cstatus
@@ -239,20 +278,20 @@ User Function WSC79E (_nni,;
 
     Endif
  
-    If _cZFR_TIPO == 'Q' //Monitoramento de serviço query
+    If alltrim(ZFR->ZFR_TIPO) == 'Q' //Monitoramento de serviço query
     
         If Select("TMPQRY") > 0
             TMPQRY->(Dbclosearea())
         Endif
 
-        U_MFCONOUT('Executando query da regra ' + " - " + alltrim(_cZFR_DESCRI) + '...' )
+        U_MFCONOUT('Executando query da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + '...' )
 
-        _cZFR_PAYLOA := alltrim(_cZFR_PAYLOA)
+        _CPAYLOA := alltrim(ZFR->ZFR_PAYLOA)
 
-        _cZFR_PAYLOA := strtran(_cZFR_PAYLOA,chr(13)," ")
-        _cZFR_PAYLOA := strtran(_cZFR_PAYLOA,chr(10)," ")
+        _CPAYLOA := strtran(ZFR->ZFR_PAYLOA,chr(13)," ")
+        _CPAYLOA := strtran(ZFR->ZFR_PAYLOA,chr(10)," ")
 
-        _cqry := &(_cZFR_PAYLOA)    
+        _cqry := &(_CPAYLOA)    
 
         TcQuery _cqry New Alias "TMPQRY"
 
@@ -263,9 +302,9 @@ User Function WSC79E (_nni,;
         Endif
 
         //Monitor de pedidos ecommerce
-        If _cZFR_CODIGO == '000000001'
+        If ALLTRIM(ZFR->ZFR_CODIGO) == '000000001'
 
-            U_MFCONOUT('Ajustando arquivo de consulta da regra ' + " - " + alltrim(_cZFR_DESCRI) + '...' )
+            U_MFCONOUT('Ajustando arquivo de consulta da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + '...' )
             //Ajusta arquivo de execução de consulta
             _larq := .F.
             _carqexe := getmv("MGFWSC79E",,"\\spdwvhml016\Consulta\executa.bat")
@@ -328,7 +367,7 @@ User Function WSC79E (_nni,;
                 
                     Do while !FT_FEOF()
 
-                        U_MFCONOUT('Validando pedido ' + strzero(_nni,6) + ' de ' + strzero(_nlast,6) + ' da regra ' + " - " + alltrim(_cZFR_DESCRI) + '...' )
+                        U_MFCONOUT('Validando pedido ' + strzero(_nni,6) + ' de ' + strzero(_nlast,6) + ' da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + '...' )
                         
                         cLine  := alltrim(FT_FReadLn())   
                         
@@ -368,22 +407,22 @@ User Function WSC79E (_nni,;
 
         Endif
 
-        U_MFCONOUT('Gravando resultado da regra ' + " - " + alltrim(_cZFR_DESCRI) + ' - ' + alltrim(str(_ntot)) + "..." )
+        U_MFCONOUT('Gravando resultado da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + ' - ' + alltrim(str(_ntot)) + "..." )
 
         _cstatus := "ALERTA"
 
-        If _ntot >=  _cZFR_MIN .and. _ntot <= _cZFR_ALER
+        If _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_ALERT
             _cstatus := "OK"
-        Elseif _ntot >=  _cZFR_MIN .and. _ntot <= _cZFR_MAN
+        Elseif _ntot >=  ZFR->ZFR_MIN .and. _ntot <= ZFR->ZFR_MAN
             _cstatus := "ALERTA"
-        Elseif _ntot <=  _cZFR_MIN .or. _ntot >= _cZFR_MAN
+        Elseif _ntot <=  ZFR->ZFR_MIN .or. _ntot >= ZFR->ZFR_MAN
             _cstatus := "FALHA"
         Endif
 
 
         Dbselectarea("ZFS")
         Reclock("ZFS",.T.)
-        ZFS->ZFS_CODIGO     := _cZFR_CODIGO
+        ZFS->ZFS_CODIGO     := ALLTRIM(ZFR->ZFR_CODIGO)
         ZFS->ZFS_DATA       := date()
         ZFS->ZFS_HORA       := time()
         ZFS->ZFS_REQUIS     := _cqry
@@ -394,7 +433,7 @@ User Function WSC79E (_nni,;
 
     Endif
 
-    If _cZFR_TIPO == 'S' //TSS
+    If ALLTRIM(ZFR->ZFR_TIPO) == 'S' //TSS
 
         _asefaz := {}
         _nni := 1
@@ -426,7 +465,7 @@ User Function WSC79E (_nni,;
 
             cfilant := _asefaz[_nni,2]
 
-            U_MFCONOUT('Consultando TSS da regra ' + " - " + alltrim(_cZFR_DESCRI) + ' para o estado de ' + _asefaz[_nni,1] + '...' )
+            U_MFCONOUT('Consultando TSS da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + ' para o estado de ' + _asefaz[_nni,1] + '...' )
 
             cURL   := PadR(GetNewPar("MV_SPEDURL","http://"),250)
     	    cIdEnt :=  getCfgEntidade()
@@ -474,11 +513,11 @@ User Function WSC79E (_nni,;
 
         _cerr := substr(_cerr,1,len(_cerr)-1)
 
-        U_MFCONOUT('Gravando resultado da regra ' + " - " + alltrim(_cZFR_DESCRI) + ' - ' + _cstatus + "..." )
+        U_MFCONOUT('Gravando resultado da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + ' - ' + _cstatus + "..." )
 
         Dbselectarea("ZFS")
         Reclock("ZFS",.T.)
-        ZFS->ZFS_CODIGO     := _cZFR_CODIGO
+        ZFS->ZFS_CODIGO     := ALLTRIM(ZFR->ZFR_CODIGO)
         ZFS->ZFS_DATA       := date()
         ZFS->ZFS_HORA       := time()
         ZFS->ZFS_REQUIS     := " "
@@ -490,7 +529,7 @@ User Function WSC79E (_nni,;
 
     Endif
     
-    U_MFCONOUT('Completou monitoramento da regra ' + " - " + alltrim(_cZFR_DESCRI) + '...' )
+    U_MFCONOUT('Completou monitoramento da regra ' + " - " + alltrim(ZFR->ZFR_DESCRI) + '...' )
 
 Return
 

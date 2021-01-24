@@ -7,10 +7,10 @@
 Programa............: MGFCTB07
 Autor...............: Joni Lima
 Data................: 02/10/2017
-Descricao / Objetivo: Tela para selecao dos arquivos
+Descrição / Objetivo: Tela para seleção dos arquivos
 Doc. Origem.........: Contrato - GAP CTB94
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -33,13 +33,13 @@ Return aLinha
 Programa............: xLerArq
 Autor...............: Joni Lima
 Data................: 02/10/2017
-Descricao / Objetivo: Monta a tela para escolha dos Arquivos
+Descrição / Objetivo: Monta a tela para escolha dos Arquivos
 =====================================================================================
 */
 Static Function xLerArq() 
 
 	Local cMascara 	:= "Todos os Arquivos|*.csv"
-	Local cTitulo	:= OemToAnsi("Informe o diretorio onde se encontra o arquivo.")
+	Local cTitulo	:= OemToAnsi("Informe o diretório onde se encontra o arquivo.")
 	Local cFile		:= ''
 
 	cFile := cGetFile(cMascara, cTitulo, 0, "\", .F., GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
@@ -51,7 +51,7 @@ Return cFile
 Programa............: xPrepLin
 Autor...............: Joni Lima
 Data................: 02/10/2017
-Descricao / Objetivo: Monta o Array,
+Descrição / Objetivo: Monta o Array,
 =====================================================================================
 */
 Static Function xPrepLin(cFile)
@@ -78,7 +78,7 @@ Static Function xPrepLin(cFile)
 			//IncProc(OemToAnsi("Efetuando Leitura do Arquivo"))
 		Enddo
 	Else
-		MsgInfo( 'Nao  foi possivel ler o arquivo: ' + cFile)
+		MsgInfo( 'Não foi possível ler o arquivo: ' + cFile)
 	EndIf
 
 Return aLinhas
@@ -88,7 +88,7 @@ Return aLinhas
 Programa............: xValLin
 Autor...............: Joni Lima
 Data................: 18/10/2017
-Descricao / Objetivo: Realiza validacao basicas das Linhas.
+Descrição / Objetivo: Realiza validação basicas das Linhas.
 =====================================================================================
 */
 static function xValLin(aLinhas)

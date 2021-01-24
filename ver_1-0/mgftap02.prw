@@ -1,5 +1,7 @@
-#INCLUDE "PROTHEUS.CH"
-#INCLUDE "TOPCONN.CH"   
+#include "totvs.ch"
+#include "protheus.ch"
+#include "topconn.ch"
+#include "tbiconn.ch"
 
 //-----------------------------------------------------------------------------------
 /*/{Protheus.doc}MGFTAP02 
@@ -7,28 +9,25 @@ Processamento de integrações assincronas de produção
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-User Function MGFTAP02( _cfils )
+User Function MGFTAP02( _cfils,_cstatus )
 
 Local _nnj := 1
 Local _afils := nil
 
-Default _cfils := "010067"
+Default _cfils := "010041"
+Default _cstatus := " "
 
 _afils := STRTOKARR( _cfils, ',' )
 
-RpcSetType(3)
-RpcSetEnv( '01' , '010067' , Nil, Nil, "EST", Nil )//, aTables )
 SetFunName("MGFTAP02")
 
 For _nnj := 1 to len(_afils)
 
 	cempant := substr(_afils[_nnj],1,2)
 	CFILANT := _afils[_nnj]
-	MGFTAP02E( _afils[_nnj] )
+	MGFTAP02E( _afils[_nnj],_cstatus )
 
 Next
-
-RpcClearEnv()
 
 Return
 
@@ -38,7 +37,7 @@ Processamento de integrações assincronas de produção
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-Static Function MGFTAP02E( _cfilial )
+Static Function MGFTAP02E( _cfilial,_cstatus )
 
 Local aTables	:= { "SB1" , "SB2" , "SM0" , "SC2" , "ZZE" }
 Local cQryInc, cQryExc, cNumDoc, cNumOrd, nPos, aRotAuto
@@ -107,15 +106,24 @@ SC2->( dbSetOrder(9) ) // C2_FILIAL+C2_NUM+C2_ITEM+C2_PRODUTO
 ZZE->( dbSetOrder(1) )
 SD3->( dbSetOrder(2) )
 
+_lretproc := .T.
 
-U_MFCONOUT('Iniciando pré processamento de movimentos produtivos para filial ' + CFILANT + '...') 
-_lretproc := MGFTP02I()
+If _cstatus == ' '
 
-If _lretproc
+	U_MFCONOUT('Iniciando pré processamento de movimentos produtivos para filial ' + CFILANT + '...') 
+	_lretproc := MGFTP02I()
+
+Else
+
+	_nlast := 999999999
+
+Endif
+
+If _lretproc .and. _cstatus == ' '
 
 	U_MFCONOUT('Completou pré processamento de movimentos produtivos para filial ' + CFILANT + '...') 
 
-Else
+Elseif _cstatus == ' '
 
 	U_MFCONOUT('Falhou pré processamento de movimentos produtivos para filial ' + CFILANT + '...') 
 	Return
@@ -124,7 +132,7 @@ Endif
 
 If _lretproc
 
-	If _lretproc
+	If _lretproc .and. _cstatus == ' '
 
 		U_MFCONOUT('Iniciando processamento de registros ignorados para filial ' + CFILANT + '...')  
 		_lretproc := U_MGFTP02H()   
@@ -133,7 +141,7 @@ If _lretproc
 	
 			U_MFCONOUT('Completou processamento de registros ignorados para filial ' + CFILANT + '...')    
 
-		Else
+		Elseif _cstatus == ' '
 
 			U_MFCONOUT('Falhou processamento de registros ignorados para filial ' + CFILANT + '...')  
 
@@ -142,7 +150,7 @@ If _lretproc
 	Endif                     
 
 
-	If _lretproc
+	If _lretproc .and. _cstatus == ' '
 
 		U_MFCONOUT('Iniciando processamento de estornos de encerramento de OP para filial ' + CFILANT + '...')  
 		_lretproc := U_MGFTP02W()   
@@ -151,7 +159,7 @@ If _lretproc
 	
 			U_MFCONOUT('Completou processamento de estornos de encerramento de OP para filial ' + CFILANT + '...')    
 
-		Else
+		Elseif _cstatus == ' '
 
 			U_MFCONOUT('Falhou processamento de estornos de encerramento de OP para filial ' + CFILANT + '...')  
 
@@ -159,31 +167,14 @@ If _lretproc
 
 	Endif                     
 
-	If _lretproc
-
-		U_MFCONOUT('Iniciando abertura de OPs para filial ' + CFILANT + '...')  
-		_lretproc := U_MGFTP02Z()
-
-		If _lretproc
-	
-			U_MFCONOUT('Completou abertura de OPs para filial ' + CFILANT + '...') 
-
-		Else
-
-			U_MFCONOUT('Falhou abertura de OPs para filial ' + CFILANT + '...') 
-
-		Endif
-
-	Endif
-
-	If _lretproc
+	If _lretproc .and. _cstatus == ' '
 
 		U_MFCONOUT('Iniciando validação de apontamentos de produção para filial ' + CFILANT + '...')  
 		_lretproc := U_MGFTP02Q()
 	
 		If _lretproc
 			U_MFCONOUT('Completou validação de apontamentos de produção para filial ' + CFILANT + '...') 
-		Else
+		Elseif _cstatus == ' '
 			U_MFCONOUT('Falhou validação de apontamentos de produção para filial ' + CFILANT + '...') 	
 		Endif
 
@@ -192,7 +183,7 @@ If _lretproc
 	If _lretproc
 
 		U_MFCONOUT('Iniciando execução de apontamentos de produção para filial ' + CFILANT + '...')   
-		_lretproc := U_MGFTP02E()
+		_lretproc := U_MGFTP02E(_cstatus)
 
 		If _lretproc
 
@@ -209,7 +200,7 @@ If _lretproc
 	If _lretproc
 
 		U_MFCONOUT('Iniciando processamento de estornos de movimentos internos/produção para filial ' + CFILANT + '...')   
-		_lretproc := U_MGFTP02K(1)           
+		_lretproc := U_MGFTP02K(1,_cstatus)           
 
 		If _lretproc
 		
@@ -226,7 +217,7 @@ If _lretproc
 	If _lretproc
 
 		U_MFCONOUT('Iniciando reprocessamento de estornos de movimentos internos/produção para filial ' + CFILANT + '...')   
-		_lretproc := U_MGFTP02K(2)           
+		_lretproc := U_MGFTP02K(2,_cstatus)           
 
 		If _lretproc
 		
@@ -243,7 +234,7 @@ If _lretproc
 	If _lretproc
 
 		U_MFCONOUT('Iniciando execução de apontamentos de consumo para filial ' + CFILANT + '...')
-		_lretproc := U_MGFTP02T()
+		_lretproc := U_MGFTP02T(_cstatus)
 
 		If _lretproc
 
@@ -257,24 +248,7 @@ If _lretproc
 
 	Endif
 
-	If _lretproc
-		U_MFCONOUT('Iniciando execução de transferências produtivas para filial ' + CFILANT + '...')
-		
-		//_lretproc := U_MGFTP02U()
-	
-		If _lretproc
-		
-			U_MFCONOUT('Completou execução de transferências produtivas para filial ' + CFILANT + '...')
-
-		Else
-
-			U_MFCONOUT('Falhou execução de transferências produtivas para filial ' + CFILANT + '...')
-
-		Endif
-
-	Endif
-
-	If _lretproc
+	If _lretproc .and. _cstatus == ' '
 
 		U_MFCONOUT('Iniciando encerramentos de OP para filial ' + CFILANT + '...')
 		_lretproc := U_MGFTP02J()
@@ -283,7 +257,7 @@ If _lretproc
 
 			U_MFCONOUT('Completou encerramentos de OP para filial ' + CFILANT + '...')
 
-		Else
+		Elseif _cstatus == ' '
 
 			U_MFCONOUT('Falhou encerramentos de OP para filial ' + CFILANT + '...')
 
@@ -305,42 +279,6 @@ Endif
 
 
 Return
-
-//-----------------------------------------------------------------------------------
-/*/{Protheus.doc}MGFTP0201 - Retorna sequencia da OP
-@author  Atilio Amarilla
-@since 08/11/2016
-*/
-Static Function MGFTP0201(aNumOrd,_carealoc)
-
-Local cRet	:= cSeq	:= ""
-Local nPos
-Local cAliasTRB := GetNextAlias()
-Local cQuery
-
-cQuery := "SELECT MAX( C2_SEQUEN ) C2_SEQUEN " + CRLF
-cQuery += "FROM "+RetSqlName("SC2")+" SC2 "+CRLF
-cQuery += "WHERE SC2.D_E_L_E_T_ = ' ' "+CRLF
-cQuery += "	AND C2_FILIAL = '"+ (_carealoc)->ZZE_FILIAL +"' "+CRLF
-cQuery += "	AND C2_NUM = '"+Subs((_carealoc)->ZZE_GERACA,3)+"' "+CRLF
-cQuery += "	AND C2_ITEM = '"+(_carealoc)->ZZE_TPOP+"' "+CRLF
-
-DbUseArea( .T., "TOPCONN", TcGenQry(,,cQuery), cAliasTRB, .T., .F. )
-
-If !Empty( (cAliasTRB)->C2_SEQUEN )
-	cSeq	:= Soma1( (cAliasTRB)->C2_SEQUEN )
-	cRet	:= Subs((_carealoc)->ZZE_GERACA,3,6) + (_carealoc)->ZZE_TPOP + cSeq
-Else
-	cSeq	:= "001"
-	cRet	:=  Subs((_carealoc)->ZZE_GERACA,3,6) + (_carealoc)->ZZE_TPOP + cSeq
-EndIf
-
-aAdd( aNumOrd , { (_carealoc)->ZZE_FILIAL , (_carealoc)->ZZE_GERACA + (_carealoc)->ZZE_TPOP , cSeq  } )
-
-dbSelectArea(cAliasTRB)
-dbCloseArea()
-
-Return( cRet )
 
 //-----------------------------------------------------------------------------------
 /*/{Protheus.doc}MGFTP0202 - Retorna próximo D3_DOC
@@ -366,7 +304,7 @@ para melhorar performance dos jobs com execautos
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-Static Function MGFTP02I()
+Static Function MGFTP02I(_cstatus)
 
 Local _lretloc := .T.
 Local _carealoc := GetNextAlias()
@@ -401,7 +339,8 @@ Local aRecno := {}
 		_cquery := "select r_e_c_n_o_ RECNO from "+RetSqlName("ZZE")+" where d_e_l_e_t_ <> '*' "
 		_cquery += " and zze_filial = '" + xfilial("ZZE") + "' "
 		_cquery += " and zze_dtrec >= '" + dtos(date()-1) + "' "
-		_cquery += " and (zze_status = '6' or (zze_acao = '2' and zze_status = '2' and zze_descer like '%TAP19%')) "
+		_cquery += " and (zze_status = '6' or (zze_acao = '2' and zze_status = '2' and zze_descer like '%TAP19%') "
+		_cquery += "                              or (zze_acao = '1' and zze_status = '2' and zze_descer like '%localizada%')) "
 
 		If val(substr(alltrim(time()),1,2)) > 0
 
@@ -454,6 +393,62 @@ Local aRecno := {}
 			(_carealoc)->(Dbskip())
 
 		Enddo
+
+		//Marca registros da filial com status 2 e 6 enviados nas últimas 48 horas e processados 
+		//há mais de 60 minutos para reprocessamento (para evitar erros de falta de saldo)
+
+		U_MFCONOUT("Carregando registros com data anterior ao fechamento de estoque...")
+
+		dMovBlq		:= GetMV("MV_DBLQMOV",,stod('20010101'))
+		dMovBlq		:= Max( dMovBlq , GetMV("MV_ULMES",,stod('20010101')) )
+
+		If dmovblq > stod('20010101')
+
+			_cquery := "select r_e_c_n_o_ RECNO from "+RetSqlName("ZZE")+" where d_e_l_e_t_ <> '*' "
+			_cquery += " and zze_filial = '" + xfilial("ZZE") + "' "
+			_cquery += " and zze_EMISSA <= '" + dtos(dMovBlq) + "' "
+			_cquery += " and ZZE_STATUS = ' ' "
+
+			If Select(_carealoc) > 0
+				(_carealoc)->(Dbclosearea())
+			Endif
+
+			dbUseArea( .T., "TOPCONN", TcGenQry(,,_cQuery), _carealoc,.T.,.F.)
+			dbSelectArea(_carealoc)
+
+			U_MFCONOUT("Contando registros data anterior ao fechamento de estoque...")
+
+			_ntot := 0
+			_nni := 1
+
+			Do while (_carealoc)->(!Eof())
+				_ntot++
+				(_carealoc)->(Dbskip())
+			ENDDO
+
+			(_carealoc)->(Dbgotop())
+
+			Do while (_carealoc)->(!Eof())
+
+				U_MFCONOUT("Marcando registro com dat anterior ao fechamento de estoque - " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + "...")
+				_nni++
+
+				ZZE->(Dbgoto((_carealoc)->RECNO))
+
+				Reclock("ZZE",.F.)
+				ZZE->ZZE_CANCEL := " "
+				ZZE->ZZE_DESCER := "[MGFTAP02] Movimentação com data anterior ao fechamento (Bloqueio de Movimentação ou Virada de Saldos)."
+				ZZE->ZZE_STATUS := "2"
+				ZZE->ZZE_HRPROC := time()
+				ZZE->ZZE_DTPROC := date()
+
+				ZZE->(Msunlock())
+
+				(_carealoc)->(Dbskip())
+
+			Enddo
+
+		Endif
  		
 	END SEQUENCE
 
@@ -614,7 +609,7 @@ Return _lretloc
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-User Function MGFTP02K(_nexe)
+User Function MGFTP02K(_nexe,_cstatus)
 
 Local _lretloc := .T.
 Local _carealoc := GetNextAlias()
@@ -623,13 +618,19 @@ Local _ntot := 0
 
 BEGIN SEQUENCE
 
-cQryInc := "SELECT ZZE_ID, ZZE_FILIAL, ZZE_GERACA, ZZE_TPOP, ZZE_TPMOV, ZZE_CODPA, "+CRLF
+cQryInc := "SELECT ZZE_ID, ZZE_FILIAL, ZZE_GERACA, ZZE_TPOP, ZZE_TPMOV, ZZE_CODPA, ZZE_PEDLOT, "+CRLF
 cQryInc += "		ZZE_COD, EXC.ZZE_LOTECT, EXC.ZZE_DTVALI, EXC.ZZE_QUANT ZZE_QUANT, EXC.ZZE_LOCAL, ZZE_OPTAUR, "+CRLF
 cQryInc += "		EXC.ZZE_QTDPCS ZZE_QTDPCS, EXC.ZZE_QTDCXS ZZE_QTDCXS, R_E_C_N_O_ RECNO, ZZE_CHAVEU  "+CRLF
 cQryInc += "FROM "+RetSqlName("ZZE")+" EXC "+CRLF
 cQryInc += "WHERE EXC.D_E_L_E_T_ = ' ' "+CRLF
 cQryInc += "	AND EXC.ZZE_FILIAL = '"+xFilial("ZZE")+"' "+CRLF
-cQryInc += "	AND (EXC.ZZE_STATUS = ' ' OR EXC.ZZE_STATUS = 'X') "+CRLF
+
+If _cstatus == ' '
+	cQryInc += "	AND (EXC.ZZE_STATUS = ' ' OR EXC.ZZE_STATUS = 'X') "+CRLF
+Else
+	cQryInc += "	AND (EXC.ZZE_STATUS = '" + _cstatus + "') "+CRLF
+Endif
+
 cQryInc += "	AND EXC.ZZE_ACAO = '2' "+CRLF
 cQryInc += "    AND EXC.R_E_C_N_O_ <= " + alltrim(str(_nlast))+CRLF
 cQryInc += "    AND ROWNUM < 100 " //Limita quantidade de estornos por execução para não atrasar outras integrações
@@ -667,7 +668,19 @@ While (_carealoc)->(!Eof()) .and. _lretloc
 
 	SB1->( dbSeek( xFilial("SB1")+(_carealoc)->ZZE_COD ) )
 	cIdSeq	:= Soma1(cIdSeq)
-			
+
+
+	If LEN(ALLTRIM((_carealoc)->ZZE_PEDLOT))>=8
+
+		_cpedlote := ALLTRIM((_carealoc)->ZZE_PEDLOT)
+
+
+	Else
+
+		_cpedlote := ""
+
+	Endif
+	
 				
 	aAdd( aRotThread , {	(_carealoc)->ZZE_FILIAL,	;
 									(_carealoc)->ZZE_GERACA,	;
@@ -683,7 +696,8 @@ While (_carealoc)->(!Eof()) .and. _lretloc
 									cIdProc,					;
 									cIdSeq,						;
 									(_carealoc)->ZZE_QTDPCS,	;
-									(_carealoc)->ZZE_QTDCXS	;
+									(_carealoc)->ZZE_QTDCXS,;
+									_cpedlote	;
 									}	)
 
 
@@ -719,11 +733,11 @@ END SEQUENCE
 Return _lretloc
 
 //-------------------------------------------------------------------------------------
-/*/{Protheus.doc}MGFTP02Z - Consulta Necessidade de Abertura de OP de Industrializados 
+/*/{Protheus.doc}MGFTP02Z - Abertura de OP de Industrializados 
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-User Function MGFTP02Z()
+User Function MGFTP02Z(_cfilial,coptaura,_cproduto,_nquant,_ddata,_ctipo)
 
 Local _nni := 0
 Local _ntot := 0
@@ -732,126 +746,87 @@ Local _lretloc := .T.
 Local _carealoc := GetNextAlias()
 Local _cultimo := " "
 
-cQryInc := "SELECT ZZE_ID, ZZE_FILIAL, ZZE_GERACA, ZZE_TPOP, ZZE_CODPA, ZZE_OPTAUR, 0.01 ZZE_QUANT, "+CRLF
-cQryInc += " ZZE_EMISSA,ZZE_CHAVEU,ZZE.R_E_C_N_O_ RECNO "+CRLF 
-cQryInc += "FROM "+RetSqlName("ZZE")+" ZZE "+CRLF
-cQryInc += "LEFT JOIN "+RetSqlName("SC2")+" SC2 ON SC2.D_E_L_E_T_ = ' ' "+CRLF
-cQryInc += "	AND C2_FILIAL = ZZE_FILIAL "+CRLF
-cQryInc += "	AND C2_ZOPTAUR = ZZE_OPTAUR "+CRLF
-cQryInc += "	AND C2_ITEM = ZZE_TPOP "+CRLF
-cQryInc += "	AND C2_PRODUTO = ZZE_CODPA "+CRLF
-cQryInc += "WHERE ZZE.D_E_L_E_T_ = ' ' "+CRLF
-cQryInc += "	AND ZZE_FILIAL = '"+xFilial("ZZE")+"' "+CRLF
-cQryInc += "	AND (ZZE_STATUS = ' ' OR ZZE_STATUS = 'X') "+CRLF
-cQryInc += "	AND ZZE_ACAO = '1' "+CRLF
-cQryInc += "    AND ZZE.R_E_C_N_O_ <= " + alltrim(str(_nlast))
-cQryInc += "	AND C2_NUM IS NULL "+CRLF
-cQryInc += "	AND INSTR('"+cMovTr+"',ZZE_TPMOV) = 0 "+CRLF
-cQryInc += "ORDER BY ZZE_OPTAUR,ZZE_CODPA, ZZE_ID "+CRLF
 
-If Select(_carealoc) > 0
-	(_carealoc)->(Dbclosearea())
-Endif
+cCodPA	 := alltrim(_cproduto)
+coptaura := alltrim(coptaura)
 
-dbUseArea( .T., "TOPCONN", TcGenQry(,,cQryInc), _carealoc,.T.,.F.)
-dbSelectArea(_carealoc)
-(_carealoc)->(DbGoTop())
+aRotThread	:= {}
 
-cCodPA	 := (_carealoc)->ZZE_CODPA
-cOPTaura := (_carealoc)->ZZE_OPTAUR
-_cultimo	:= (_carealoc)->ZZE_FILIAL+(_carealoc)->ZZE_OPTAUR+(_carealoc)->ZZE_CODPA
+_nni++
+U_MFCONOUT('Abrindo OP ' + ALLTRIM(_cfilial) + "/" +alltrim(coptaura) + "/" + cCodPA + "...")
+
+cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len(cCodPA) , cCodPA )
+cOPTaura := Stuff( Space(TamSX3("C2_NUM")[1]) , 1 , Len(coptaura), coptaura )
 	
-If (_carealoc)->(!Eof())
+SC2->( dbsetorder(1) ) //C2_FILIAL+C2_NUM  
 
-	_ntot := 1
+_citem := "01"
 
-	While (_carealoc)->(!Eof())
-		If _cultimo != (_carealoc)->ZZE_FILIAL+(_carealoc)->ZZE_OPTAUR+(_carealoc)->ZZE_CODPA
-			_ntot++
-			_cultimo	:= (_carealoc)->ZZE_FILIAL+(_carealoc)->ZZE_OPTAUR+(_carealoc)->ZZE_CODPA
+//Define item a ser usado
+If SC2->( dbSeek( _cfilial+SUBSTR(ALLTRIM(cOPTaura),1,6) ) )
+
+	Do while SC2->C2_FILIAL + alltrim(SC2->C2_NUM) == _cfilial+SUBSTR(ALLTRIM(cOPTaura),1,6)
+
+		If SC2->C2_ITEM >= _citem
+			If SC2->C2_ITEM < '10'
+				_citem := strzero(val(SC2->C2_ITEM)+1,2)
+			Else
+				_citem := soma1(SC2->C2_ITEM)
+			Endif
 		Endif
-		(_carealoc)->(DbSkip())	
-	Enddo
 
-	(_carealoc)->(DbGoTop())
+
+		SC2->(Dbskip())
+
+	Enddo
 
 Endif
 
-While (_carealoc)->(!Eof())
-
-	aRotThread	:= {}
-
-	_nni++
-	U_MFCONOUT('Abrindo OP ' + alltrim((_carealoc)->ZZE_OPTAUR) + "/" + alltrim((_carealoc)->ZZE_CODPA) + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
-
-	cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len((_carealoc)->ZZE_CODPA) , (_carealoc)->ZZE_CODPA )
-	cOPTaura := Stuff( Space(TamSX3("C2_ZOPTAUR")[1]) , 1 , Len((_carealoc)->ZZE_OPTAUR), (_carealoc)->ZZE_OPTAUR )
-	SC2->( dbOrderNickName("OPTAURA") )
-	cChave	:= (_carealoc)->ZZE_FILIAL+cOPTaura+cCodPA
-
-	If SC2->( !dbSeek( cChave ) )
-				
-		nPos	:= aScan(aNumOrd,{ |x| x[1] == (_carealoc)->ZZE_FILIAL .And. x[2] == (_carealoc)->(ZZE_GERACA+ZZE_TPOP)   } )
+//Define sequencia, se op tem mais de 6 caracteres coloca caracteres adicionais no c2_sequen
+If len(alltrim(cOPTaura)) <= 6
+	_cc2seque := '001'
+Else
+	_cc2seque := padl(substr(alltrim(cOPTaura),7,3),3,"0")
+Endif
 	
-		If nPos > 0
-			cSeq := Soma1( aNumOrd[nPos][3] )
-			aNumOrd[nPos][3] := cSeq
-			cNumOrd	:=  Subs(aNumOrd[nPos][2],3) + cSeq
-		Else
-			cNumOrd	:= MGFTP0201(@aNumOrd,_carealoc)
-		EndIf
-	
-		aRotAuto	:= {}
-	
-		aAdd( aRotAuto , {'C2_FILIAL'	, (_carealoc)->ZZE_FILIAL			,NIL} )
-		aAdd( aRotAuto , {'C2_PRODUTO'	, (_carealoc)->ZZE_CODPA			,NIL} )
-		aAdd( aRotAuto , {'C2_ITEM'		, Subs(cNumOrd,7,2)					,NIL} )
-		aAdd( aRotAuto , {'C2_SEQUEN'	, Subs(cNumOrd,9,3)					,NIL} )
-		aAdd( aRotAuto , {'C2_NUM'		, Subs(cNumOrd,1,6) 				,NIL} )
-		aAdd( aRotAuto , {'C2_QUANT'	, (_carealoc)->ZZE_QUANT			,NIL} )
-		aAdd( aRotAuto , {'C2_DATPRI'	, STOD((_carealoc)->ZZE_GERACA)-3	,NIL} )
-		aAdd( aRotAuto , {'C2_DATPRF'	, STOD((_carealoc)->ZZE_GERACA)	,NIL} )
-		aAdd( aRotAuto , {'C2_ZTIPO'	, Subs(cNumOrd,7,2)					,NIL} )
-		aAdd( aRotAuto , {'C2_ZOPTAUR'	, (_carealoc)->ZZE_OPTAUR			,NIL} )
-		aAdd( aRotAuto , {'AUTEXPLODE'	, "N"								,NIL} )
-		aAdd( aRotAuto , {'__ZTPOP'		, (_carealoc)->ZZE_TPOP			,NIL} )
+cChave	:= _cfilial+alltrim(cOPTaura)
 
-		aAdd( aRotThread , aRotAuto )
+			
+aRotAuto	:= {}
 	
-	EndIF
-	
-	cFunTAP		:= "U_MGFTAP03"
-	cOpc		:= "1"
-	aParThread	:= { " " , " " , cIdProc , "" }
+aAdd( aRotAuto , {'C2_FILIAL'	, _cfilial								,NIL} )
+aAdd( aRotAuto , {'C2_PRODUTO'	, _ccodpa								,NIL} )
+aAdd( aRotAuto , {'C2_ITEM'		, _citem								,NIL} )
+aAdd( aRotAuto , {'C2_SEQUEN'	, _cc2seque								,NIL} )
+aAdd( aRotAuto , {'C2_NUM'		, alltrim(cOPTaura)						,NIL} )
+aAdd( aRotAuto , {'C2_QUANT'	, _nquant								,NIL} )
+aAdd( aRotAuto , {'C2_DATPRI'	, STOD(_ddata)-3						,NIL} )
+aAdd( aRotAuto , {'C2_DATPRF'	, STOD(_ddata)							,NIL} )
+aAdd( aRotAuto , {'C2_ZTIPO'	, _ctipo								,NIL} )
+aAdd( aRotAuto , {'C2_ZOPTAUR'	, alltrim(cOPTaura)						,NIL} )
+aAdd( aRotAuto , {'AUTEXPLODE'	, "N"									,NIL} )
+aAdd( aRotAuto , {'__ZTPOP'		, _ctipo								,NIL} )
 
-	IF Len(aRotThread) > 0 
-		_lretloc := U_MGFTAP03( {	cOpc ,;						//01
-									aRotThread ,; 				//02
-									aParThread[1] ,; 			//03
-									aParThread[2] ,; 			//04
-									aParThread[3] ,; 			//05
-									aParThread[4] ,;			//06
-									(_carealoc)->ZZE_CHAVEU,;	//07
-									(_carealoc)->RECNO  	} )	//08
-		If _lretloc
-			U_MFCONOUT('Abriu OP ' + alltrim((_carealoc)->ZZE_OPTAUR) + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...") 
-		Else
-			U_MFCONOUT('Falha de integridade dos dados...')
-			Disarmtransaction()
-			BREAK
-		Endif
-	EndIF
+aAdd( aRotThread , aRotAuto )
+		
+cFunTAP		:= "U_MGFTAP03"
+cOpc		:= "1"
+aParThread	:= { " " , " " , cIdProc , "" }
 
-	//Avança até próxima OP Taura
-	cCodPA	 := (_carealoc)->ZZE_CODPA
-	cOPTaura := (_carealoc)->ZZE_OPTAUR
-	_cultimo	:= (_carealoc)->ZZE_FILIAL+(_carealoc)->ZZE_OPTAUR+(_carealoc)->ZZE_CODPA
-	
-	Do while (_carealoc)->(!Eof()) .and. _cultimo == (_carealoc)->ZZE_FILIAL+(_carealoc)->ZZE_OPTAUR+(_carealoc)->ZZE_CODPA
-		(_carealoc)->( dbSkip() )
-	Enddo
+IF Len(aRotThread) > 0 
+	_lretloc := U_MGFTAP03( {	cOpc ,;						//01
+								aRotThread ,; 				//02
+								aParThread[1] ,; 			//03
+								aParThread[2] ,; 			//04
+								aParThread[3] ,; 			//05
+								aParThread[4]  	} )			//06
+	If _lretloc
+		U_MFCONOUT('Abriu OP ' + alltrim(SC2->C2_FILIAL) + "/" + alltrim(SC2->C2_NUM)  + "/" + alltrim(SC2->C2_PRODUTO) + "...") 
+	Else
+		U_MFCONOUT('Falha de integridade dos dados...')
+	Endif
 
-EndDo
+EndIF
 
 Return _lretloc
 
@@ -1270,7 +1245,7 @@ Return _lretloc
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-User Function MGFTP02E()
+User Function MGFTP02E(_cstatus)
 
 Local _nni := 0
 Local _lretloc := .T.
@@ -1285,12 +1260,12 @@ cQryInc += "		ZZE_QUANT ZZE_QUANT, ZZE_QTDPCS ZZE_QTDPCS, ZZE_QTDCXS ZZE_QTDCXS,
 cQryInc += "FROM "+RetSqlName("ZZE")+" ZZE "+CRLF
 cQryInc += "WHERE ZZE.D_E_L_E_T_ = ' ' "+CRLF
 cQryInc += "	AND ZZE_FILIAL = '"+xFilial("ZZE")+"' "+CRLF
-cQryInc += "	AND ZZE_STATUS = ' ' "+CRLF
+cQryInc += "	AND ZZE_STATUS = '" + _cstatus + "' "+CRLF
 cQryInc += "	AND ZZE_ACAO = '1' "+CRLF
 cQryInc += "	AND ZZE_CANCEL = ' ' "+CRLF
 cQryInc += "    AND R_E_C_N_O_ <= " + alltrim(str(_nlast))
 cQryInc += "	AND INSTR('"+cMovPrd+"',ZZE_TPMOV) > 0 "+CRLF
-cQryInc += "ORDER BY ZZE_OPTAUR,ZZE_COD "+CRLF
+cQryInc += "ORDER BY ZZE_OPTAUR,ZZE_COD,ZZE_PEDLOT "+CRLF
 
 If Select(_carealoc) > 0
 	(_carealoc)->(Dbclosearea())
@@ -1304,8 +1279,8 @@ If (_carealoc)->(!Eof())
 
 	While (_carealoc)->(!Eof())
 		_ntot++
-		_cultimo := ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD)
-		Do while (_carealoc)->( !eof()) .and. ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD) == _cultimo
+		_cultimo := ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD + (_carealoc)->ZZE_PEDLOT)
+		Do while (_carealoc)->( !eof()) .and. ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD + (_carealoc)->ZZE_PEDLOT) == _cultimo
 			(_carealoc)->(Dbskip())
 		Enddo
 	Enddo
@@ -1336,6 +1311,19 @@ While (_carealoc)->(!Eof())
 		SC2->( dbOrderNickName("OPTAURA") )
 		cChave	:= (_carealoc)->ZZE_FILIAL+cOPTaura+cCodPA
 
+		//Se não achar a OP cria agora
+		If !(SC2->( dbSeek( cChave ) ))
+
+			U_MGFTP02Z((_carealoc)->ZZE_FILIAL,coptaura,cCodPA,0.01,(_carealoc)->ZZE_EMISSA,(_carealoc)->ZZE_TPOP)
+			aRotThread := {}
+
+		Endif
+
+		cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len((_carealoc)->ZZE_CODPA) , (_carealoc)->ZZE_CODPA )
+		cOPTaura := Stuff( Space(TamSX3("C2_ZOPTAUR")[1]) , 1 , Len((_carealoc)->ZZE_OPTAUR), (_carealoc)->ZZE_OPTAUR )
+		SC2->( dbOrderNickName("OPTAURA") )
+		cChave	:= (_carealoc)->ZZE_FILIAL+cOPTaura+cCodPA
+
 		If SC2->( dbSeek( cChave ) )
 
 			If !Empty( SC2->C2_DATRF )
@@ -1347,6 +1335,8 @@ While (_carealoc)->(!Eof())
 			If SC2->C2_PRODUTO == (_carealoc)->ZZE_CODPA
 
 				SB1->( dbSeek( xFilial("SB1")+(_carealoc)->ZZE_COD ) )
+				_ccodpro := SB1->B1_COD
+				_clocpr := SB1->B1_LOCPAD
 				cNumOrd	:= SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )
 				cNumDoc	:= MGFTP0202()
 				cTM := cTMPrd
@@ -1355,7 +1345,7 @@ While (_carealoc)->(!Eof())
 				_nquant := 0
 				_nqtdpcs := 0
 				_nqtdcxs := 0
-				_cultimo := ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD)
+				_cultimo := ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD) + (_carealoc)->ZZE_PEDLOT
 				_cfilial := (_carealoc)->ZZE_FILIAL
 				_clocal := (_carealoc)->ZZE_LOCAL 
 
@@ -1373,7 +1363,7 @@ While (_carealoc)->(!Eof())
 				_ccodpa := (_carealoc)->ZZE_CODPA
 				
 				//Busca registros seguintes para aglutinar em uma D3
-				Do while (_carealoc)->( !eof()) .and. ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD) == _cultimo
+				Do while (_carealoc)->( !eof()) .and. ((_carealoc)->ZZE_OPTAUR + (_carealoc)->ZZE_COD + (_carealoc)->ZZE_PEDLOT) == _cultimo
 
 					_nquant += (_carealoc)->ZZE_QUANT
 					_nqtdpcs += (_carealoc)->ZZE_QTDPCS
@@ -1392,12 +1382,12 @@ While (_carealoc)->(!Eof())
 
 				aAdd( aRotAuto ,	{"D3_FILIAL"	, _cfilial		,NIL} )
 				aAdd( aRotAuto ,	{"D3_TM"		, cTM							,NIL} )
-				aAdd( aRotAuto ,	{"D3_COD"		, SB1->B1_COD					,NIL} )
+				aAdd( aRotAuto ,	{"D3_COD"		, _ccodpro					,NIL} )
 				aAdd( aRotAuto ,	{"D3_QUANT"		, _nquant		,NIL} )
 				aAdd( aRotAuto ,	{"D3_ZQTDPCS"	, _nqtdpcs		,NIL} )
 				aAdd( aRotAuto ,	{"D3_ZQTDCXS"	, _nqtdcxs		,NIL} )
 				aAdd( aRotAuto ,	{"D3_OP"		, cNumOrd						,NIL} )
-				aAdd( aRotAuto ,	{"D3_LOCAL"		, IIF(Empty(_clocal), SB1->B1_LOCPAD , _clocal ),NIL} )
+				aAdd( aRotAuto ,	{"D3_LOCAL"		, IIF(Empty(_clocal), _clocpr , _clocal ),NIL} )
 				aAdd( aRotAuto ,	{"D3_DOC"		, cNumDoc						,NIL} )
 				aAdd( aRotAuto ,	{"D3_PARCTOT"	, "P"							,NIL} )
 				aAdd( aRotAuto ,	{"D3_EMISSAO"	, _demissao ,NIL} )
@@ -1499,147 +1489,12 @@ END SEQUENCE
 
 Return _lretloc
 
-//-------------------------------------------------------------------------------------
-/*/{Protheus.doc}MGFTP02U - Transferencia (Mata261) - Produzindo com mudança de Codigo      
-@author  Atilio Amarilla
-@since 08/11/2016
-*/
-User Function MGFTP02U()
-
-Local _nni := 0
-Local _lretloc := .T.
-Local _ntot := 0
-Local _carealoc :=  GetNextAlias()
-
-BEGIN SEQUENCE
-
-cQryInc := "SELECT ZZE_ID, ZZE_FILIAL, ZZE_ACAO, ZZE_EMISSA, ZZE_TPOP, ZZE_TPMOV, ZZE_CODPA, ZZE_COD, ZZE_LOCAL, ZZE_OPTAUR , "+CRLF
-cQryInc += "		ZZE_QUANT, ZZE_QTDPCS, ZZE_QTDCXS, ZZE_CHAVEU, R_E_C_N_O_ RECNO"+CRLF
-cQryInc += "FROM "+RetSqlName("ZZE")+" ZZE "+CRLF
-cQryInc += "WHERE ZZE.D_E_L_E_T_ = ' ' "+CRLF
-cQryInc += "	AND ZZE_FILIAL = '"+xFilial("ZZE")+"' "+CRLF
-cQryInc += "	AND ZZE_STATUS = ' ' "+CRLF
-cQryInc += "	AND ZZE_CANCEL = ' ' "+CRLF
-cQryInc += "    AND R_E_C_N_O_ <= " + alltrim(str(_nlast))
-cQryInc += "	AND INSTR('"+cMovTr+"',ZZE_TPMOV) > 0 "+CRLF
-cQryInc += "	AND ZZE_COD <> ZZE_CODPA" + CRLF 
-cQryInc += "ORDER BY ZZE_ID "+CRLF
-
-If Select(_carealoc) > 0
-	(_carealoc)->(Dbclosearea())
-Endif
-
-dbUseArea( .T., "TOPCONN", TcGenQry(,,cQryInc), _carealoc,.T.,.F.)
-dbSelectArea(_carealoc)
-(_carealoc)->(DbGoTop())
-
-If (_carealoc)->(!Eof())
-
-	While (_carealoc)->(!Eof())
-		_ntot++
-		(_carealoc)->(Dbskip())
-	Enddo
-
-	(_carealoc)->(DbGoTop())
-
-Endif
-
-While (_carealoc)->(!Eof())
-
-
-	aRotThread	:= {}
-
-	_nni++
-	_coptaura := alltrim((_carealoc)->ZZE_OPTAUR)
-	_ccodpa := alltrim((_carealoc)->ZZE_CODPA)
-	_cchaveu := ALLTRIM((_carealoc)->(ZZE_CHAVEU))
-	_nrecno := (_carealoc)->RECNO
-
-	U_MFCONOUT('Executando transferência para ' + _coptaura + "/" + _ccodpa + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...") 
-
-	While !(_carealoc)->( eof() ) .And. Len( aRotThread  ) < 1
-			
-		IF (_carealoc)->ZZE_ACAO == '1'
-			cCodOrig  := (_carealoc)->ZZE_COD
-			cCodDest  := (_carealoc)->ZZE_CODPA
-		Else
-			cCodOrig  := (_carealoc)->ZZE_CODPA
-			cCodDest  := (_carealoc)->ZZE_COD
-		EndIF
-
-		SB1->( dbSeek( xFilial("SB1")+cCodOrig ) )
-			
-		If !Empty( (_carealoc)->ZZE_LOCAL )
-			cCodLoc	:= Stuff( Space(TamSX3("ZZE_LOCAL")[1]) , 1 , Len((_carealoc)->ZZE_LOCAL) , (_carealoc)->ZZE_LOCAL )
-		Else
-			cCodLoc	:= SB1->B1_LOCPAD
-		EndIf
-			
-		cFilAnt		:= (_carealoc)->ZZE_FILIAL
-		dDataBase	:= STOD( (_carealoc)->ZZE_EMISSAO )
-
-		cIdSeq	:= Soma1(cIdSeq)
-		cNumDoc	:= MGFTP0202()
-			
-		cChave := " AND ZZE_UUID = '"+ALLTRIM((_carealoc)->(ZZE_CHAVEU))+"'"
-
-		aRotAuto	:= {}
-
-		aAdd( aRotAuto ,cFilAnt )
-		aAdd( aRotAuto ,cCodOrig)
-		aAdd( aRotAuto ,cCodDest)
-		aAdd( aRotAuto ,(_carealoc)->ZZE_QUANT )
-		aAdd( aRotAuto ,cCodLoc )
-		aAdd( aRotAuto ,STOD((_carealoc)->ZZE_EMISSA))
-		aAdd( aRotAuto , (_carealoc)->ZZE_OPTAUR )
-		aAdd( aRotAuto , cIdSeq  )
-		aAdd( aRotAuto , cNumDoc ) 
-		aAdd( aRotAuto , cChave )
-		aAdd( aRotAuto , cOP )					
-		aAdd( aRotThread,aRotAuto)
-			
-		(_carealoc)->( dbSkip() )
-			
-	EndDo
-		
-	If Len( aRotThread ) > 0
-
-		cFunTAP		:= "U_MGFTAP20"
-		aParThread	:= { " " , " " , cIdProc , "",ALLTRIM((_carealoc)->(ZZE_CHAVEU)) }
-
-		_lretloc := U_MGFTAP20( {aRotThread ,;								//01
-								 _cchaveu		,;							//02
-								 _nrecno	}		)						//03
-		
-		If _lretloc
-			U_MFCONOUT('Completou transferência para ' + _coptaura + "/" + _ccodpa + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...") 
-		Else
-
-				_lretloc := .F.
-				U_MFCONOUT('Falha de integridade dos dados...')
-				Disarmtransaction()
-				BREAK
-
-		Endif	
-	aRotThread := {}
-
-	EndIf
-		
-EndDo
-	
-dbSelectArea(_carealoc)
-dbCloseArea()
-
-END SEQUENCE
-
-Return _lretloc
-
 //-----------------------------------------------------------------------------------------------------------
 /*/{Protheus.doc}MGFTP02T - Movimentos Internos (Mata240) - Requisição para OP (Consumo)  
 @author  Atilio Amarilla
 @since 08/11/2016
 */
-User Function MGFTP02T()
+User Function MGFTP02T(_cstatus)
 
 Local _nni := 0
 Local _lretloc := .T.
@@ -1654,8 +1509,13 @@ cQryInc += "		ZZE_QUANT, ZZE_QTDPCS, ZZE_QTDCXS, ZZE_LOCAL, ZZE_OPTAUR,ZZE_CHAVE
 cQryInc += "FROM "+RetSqlName("ZZE")+" ZZE "+CRLF
 cQryInc += "WHERE ZZE.D_E_L_E_T_ = ' ' "+CRLF
 cQryInc += "	AND ZZE_FILIAL = '"+xFilial("ZZE")+"' "+CRLF
-cQryInc += "	AND (ZZE_STATUS = ' ' OR ZZE_STATUS = 'X') "+CRLF
-cQryInc += "	AND ZZE_ACAO = '1'  "+CRLF
+
+If _cstatus == ' '
+	cQryInc += "	AND (ZZE_STATUS = ' ' OR ZZE_STATUS = 'X') "+CRLF
+Else
+	cQryInc += "	AND (ZZE_STATUS = '" + _cstatus + "') "+CRLF
+Endif
+
 cQryInc += "	AND ZZE_CANCEL = ' ' "+CRLF
 cQryInc += "    AND R_E_C_N_O_ <= " + alltrim(str(_nlast))
 cQryInc += "	AND INSTR('"+cMovReq+cMovDev+"/XX',ZZE_TPMOV) > 0 "+CRLF
@@ -1711,6 +1571,19 @@ While (_carealoc)->(!Eof()) .and. _lretloc
 		SC2->( dbOrderNickName("OPTAURA") )
 		cChave	:= (_carealoc)->ZZE_FILIAL+cOPTaura+cCodPA
 
+		//Se não achar a OP cria agora
+		If !(SC2->( dbSeek( cChave ) ))
+
+			U_MGFTP02Z((_carealoc)->ZZE_FILIAL,coptaura,cCodPA,0.01,(_carealoc)->ZZE_EMISSA,(_carealoc)->ZZE_TPOP)
+			aRotThread := {}
+
+		Endif
+
+		cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len((_carealoc)->ZZE_CODPA) , (_carealoc)->ZZE_CODPA )
+		cOPTaura := Stuff( Space(TamSX3("C2_ZOPTAUR")[1]) , 1 , Len((_carealoc)->ZZE_OPTAUR), (_carealoc)->ZZE_OPTAUR )
+
+		SC2->( dbOrderNickName("OPTAURA") )
+		cChave	:= (_carealoc)->ZZE_FILIAL+cOPTaura+cCodPA
 		
 		If SC2->( dbSeek( cChave ) )
 
@@ -1937,6 +1810,19 @@ While (_carealoc)->(!Eof())
 	cTpOP	:= (_carealoc)->ZZE_TPOP
 	SC2->( dbOrderNickName("OPTAURA") )
 	cChave	:= (_carealoc)->(ZZE_FILIAL+ZZE_OPTAUR+ZZE_CODPA)
+	coptaura := (_carealoc)->ZZE_OPTAUR
+
+	//Se não achar a OP cria agora
+	If !(SC2->( dbSeek( cChave ) ))
+
+		U_MGFTP02Z((_carealoc)->ZZE_FILIAL,coptaura,cCodPA,0.01,(_carealoc)->ZZE_EMISSA,(_carealoc)->ZZE_TPOP)
+		aRotThread := {}
+
+	Endif
+
+ 	cCodPA	:= (_carealoc)->ZZE_CODPA
+	cChave	:= (_carealoc)->(ZZE_FILIAL+ZZE_OPTAUR+ZZE_CODPA)
+	coptaura := (_carealoc)->ZZE_OPTAUR
 
 	If SC2->( dbSeek( cChave ) )
 

@@ -10,7 +10,7 @@ Data.....:              Novembro/2018
 Descricao / Objetivo:   Tira Reserva SB2
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -60,7 +60,7 @@ Static Function ModelDef()
 	Local oStr1:=FWFormStruct(1,'SB2')
 	oModel := MPFormModel():New("EST44", /*bPreValidacao*/,/*bPosValidacao*/,/*bCommit*/,/*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 
 
 	oModel:AddFields( 'EST44MASTER', /*cOwner*/, oStr1, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
@@ -86,7 +86,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -108,7 +108,7 @@ Static Function Est44Mk(cField)
 	Local nPos := 0
 
 	cFldMrk := cAlias+'->'+cField
-	// Verifica se o item esta sendo marcado ou desmarcado
+	// Verifica se o item está sendo marcado ou desmarcado
 	If !oBrowse:IsMark()
 		(cAlias)->(RecLock(cAlias,.F.))
 		&cFldMrk := oBrowse:Mark()
@@ -166,7 +166,7 @@ USER Function Est44Res()
 	Local cFiltro   := ''
 
 	If MsgYesNo("Confirma Zerar Empenho ? ","Zerar Empenho")
-		//Filtro padrao executado na Tela
+		//Filtro padrão executado na Tela
 		cFiltro := 'B2_FILIAL==XFILIAL("SB2") .AND. B2_RESERVA <> 0  .AND. (B2_QEMP<>0 .or. B2_RESERVA<>0 .or. B2_QACLASS<>0 .OR. B2_NAOCLAS<>0) '
 
 		(aAreaBrw)->(DBSetFilter(&('{||' + cFiltro + '}'),cFiltro))

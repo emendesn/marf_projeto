@@ -14,7 +14,7 @@ Data.....:              19/04/2017
 Descricao / Objetivo:   Cadastro de Clientes - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              a
 =====================================================================================
 */
@@ -128,6 +128,11 @@ static function CRM35POS( oModel )
 	local cUpdZBJ	:= ""
 	local cDelZBJ	:= ""
 
+	local aRecZbj
+	local nPos
+	local nPointer
+	local cCampo
+
 	DBSelectArea("ZBI")
 
 	if nOper == MODEL_OPERATION_INSERT .OR. nOper == MODEL_OPERATION_UPDATE
@@ -203,10 +208,38 @@ static function CRM35POS( oModel )
 					elseif nOpcChk == 2
 						lRet := .T.
 						QRYZBJ->(DBGoTop())
+
+						// Carrega as informacoes do registro corrente
+						aRecZbj := Array( ZBJ->(Fcount()), 2 )
+						for nPos := 1  to len( aRecZbj )
+							aRecZbj[ nPos ][1] := ZBJ->( FieldName( nPos ) )
+							aRecZbj[ nPos ][2] := ZBJ->( FieldGet( nPos ) )
+						next
+
+						if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == 'ZBJ_INTSFO'} ) ) > 0
+							aRecZbj[ nPointer ][2] := 'P'
+						endif
+
+						if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == 'ZBJ_REPRES'} ) ) > 0
+							aRecZbj[ nPointer ][2] := oModelZBJ:getValue("ZBJ_REPRES")
+						endif
+
+						// Elimina as ocorrencias anteriores
 						while !QRYZBJ->(EOF())
 							eraseStruc(QRYZBJ->ZBJ_CLIENT,QRYZBJ->ZBJ_LOJA,QRYZBJ->ZBJ_ROTEIR)
 							QRYZBJ->(DBSkip())
 						enddo
+
+						// Adiciona o registro com a transferencias
+						recLock("ZBJ", .T.)
+							for nPos := 1  to ZBJ->(Fcount())
+								cCampo := ZBJ->( FieldName( nPos ) )
+								if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == cCampo } ) ) > 0
+									ZBJ->&cCampo := aRecZbj[ nPointer ][2]
+								endif
+							next
+						ZBJ->(MSUnlock())
+
 					elseif nOpcChk == 3
 						Help( ,, 'MGFCRM27',, 'Cadastro abortado.', 1, 0 )
 						lRet := .F.
@@ -241,7 +274,7 @@ static function CRM35POS( oModel )
 						SA1->A1_XINTEGX	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SFA
 						SA1->A1_XINTECO	:= '0' // STATUS PARA O CLIENTE SER ENVIADO AO E-COMMERCE
 
-						if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+						if SA1->A1_PESSOA == "J"
 							SA1->A1_XINTSFO	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SALESFORCE
 						endif
 
@@ -249,11 +282,34 @@ static function CRM35POS( oModel )
 				endif
 
 				//Tratamento Hierarquia Cliente x Vendedor Salesforce - ALT e UPD
-				if nOper <> MODEL_OPERATION_INSERT .or. nOper <> MODEL_OPERATION_DELETE
+				//if nOpcChk == 2 .And. ( nOper == MODEL_OPERATION_UPDATE .AND. nOper <> MODEL_OPERATION_DELETE )
+				if nOpcChk == 2 .And. nOper == MODEL_OPERATION_UPDATE .AND. nOper <> MODEL_OPERATION_DELETE
 					oModel:setValue('ZBJMASTER' , 'ZBJ_INTSFO' , 'P' )
 
-					// Cria o novo registro antes da delecao
-					keepZBJ()
+					aRecZbj := Array( ZBJ->(Fcount()), 2 )
+					for nPos := 1  to len( aRecZbj )
+						aRecZbj[ nPos ][1] := ZBJ->( FieldName( nPos ) )
+						aRecZbj[ nPos ][2] := ZBJ->( FieldGet( nPos ) )
+					next
+
+					if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == 'ZBJ_INTSFO'} ) ) > 0
+					   aRecZbj[ nPointer ][2] := 'P'
+					endif
+
+					if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == 'ZBJ_REPRES'} ) ) > 0
+					   aRecZbj[ nPointer ][2] := ZBJ->ZBJ_REPRES
+					endif
+
+                    // Adiciona o registro novo
+					recLock("ZBJ", .T.)
+						for nPos := 1  to ZBJ->(Fcount())
+						    cCampo := ZBJ->( FieldName( nPos ) )
+							if ( nPointer := Ascan( aRecZbj, { |xItem| xItem[1] == cCampo } ) ) > 0
+								ZBJ->&cCampo := aRecZbj[ nPointer ][2]
+							endif
+						next
+					ZBJ->(MSUnlock())
+
 
 					// ATUALIZA TODOS OS VENDEDORES - CASO CLIENTE ESTEJA EM MAIS DE UMA CARTEIRA
 					cUpdZBJ	:= ""
@@ -316,11 +372,12 @@ static function CRM35POS( oModel )
 	restArea(aArea)
 return lRet
 
+
 //-------------------------------------------------------
 // Duplica o cadastro da ZBJ - APENAS NA ALTERACAO
 //-------------------------------------------------------
-static function keepZBJ()
-	local nRecnoZBJ		:= ZBJ->(RECNO())
+static procedure keepZBJ()
+	/*local nRecnoZBJ		:= ZBJ->(RECNO()) */
 	local cZBJFilial	:= ZBJ->ZBJ_FILIAL
 	local cZBJRepres	:= ZBJ->ZBJ_REPRES
 	local cZBJClient	:= ZBJ->ZBJ_CLIENT
@@ -350,63 +407,23 @@ return
 //******************************************************
 // Apaga da estrutura atual caso exista
 //******************************************************
-static function eraseStruc(cA1Cod, cA1Loj, cRoteiro)
-	local nZBJRecno	:= ""
-	local cQryArq	:= ""
+static procedure eraseStruc(cA1Cod, cA1Loj, cRoteiro)
 
-	cQryArq += "SELECT ZBJ.R_E_C_N_O_ ZBJRECNO"										+ CRLF
-	/*
-	cQryArq += "FROM " + retSQLName("ZBD") + " ZBD"									+ CRLF
-	cQryArq += "INNER JOIN " + retSQLName("ZBE") + " ZBE"							+ CRLF
-	cQryArq += "ON"																	+ CRLF
-	cQryArq += "	ZBD.ZBD_CODIGO = ZBE.ZBE_DIRETO"								+ CRLF
-	cQryArq += "INNER JOIN " + retSQLName("ZBF") + " ZBF"							+ CRLF
-	cQryArq += "ON"																	+ CRLF
-	cQryArq += "	ZBE.ZBE_CODIGO = ZBF.ZBF_NACION" 								+ CRLF
-	cQryArq += "AND	ZBE.ZBE_DIRETO = ZBF.ZBF_DIRETO" 								+ CRLF
-	cQryArq += "INNER JOIN " + retSQLName("ZBG") + " ZBG" 							+ CRLF
-	cQryArq += "ON" 																+ CRLF
-	cQryArq += "	ZBF.ZBF_CODIGO = ZBG.ZBG_TATICA" 								+ CRLF
-	cQryArq += "AND	ZBF.ZBF_NACION = ZBG.ZBG_NACION" 								+ CRLF
-	cQryArq += "INNER JOIN " + retSQLName("ZBH") + " ZBH" 							+ CRLF
-	cQryArq += "ON"	 																+ CRLF
-	cQryArq += "	ZBG.ZBG_CODIGO = ZBH.ZBH_REGION" 								+ CRLF
-	cQryArq += "AND	ZBG.ZBG_TATICA = ZBH.ZBH_TATICA"								+ CRLF
-	cQryArq += "INNER JOIN " + retSQLName("ZBI") + " ZBI" 							+ CRLF
-	cQryArq += "ON" 																+ CRLF
-	cQryArq += "	ZBH.ZBH_CODIGO = ZBI.ZBI_SUPERV" 								+ CRLF
-	cQryArq += "AND	ZBH.ZBH_REGION = ZBI.ZBI_REGION"								+ CRLF
-	*/
+	local nZBJRecno	:= ""
+	local cQryArq
+
+	cQryArq := "SELECT ZBJ.R_E_C_N_O_ ZBJRECNO"										+ CRLF
 
 	cQryArq += StaticCall(MGFCRM16,QryNivSelEV,.F.)
 
 	cQryArq += "INNER JOIN " + retSQLName("ZBJ") + " ZBJ"	+ CRLF
 	cQryArq += "ON" 										+ CRLF
-//	cQryArq += "	ZBJ.ZBJ_REPRES = ZBI.ZBI_REPRES"		+ CRLF
 	cQryArq += "    ZBJ.ZBJ_ROTEIR = ZBI.ZBI_CODIGO" 								+ CRLF
-    /*
-	cQryArq += "WHERE" 																+ CRLF
-	cQryArq += "		ZBD.ZBD_FILIAL	=	'" + xFilial("ZBD") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBD.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBE.ZBE_FILIAL	=	'" + xFilial("ZBE") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBE.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBF.ZBF_FILIAL	=	'" + xFilial("ZBF") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBF.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBG.ZBG_FILIAL	=	'" + xFilial("ZBG") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBG.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBH.ZBH_FILIAL	=	'" + xFilial("ZBH") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBH.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBI.ZBI_FILIAL	=	'" + xFilial("ZBI") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBI.D_E_L_E_T_	<>	'*'" 									+ CRLF
-	cQryArq += "	AND	ZBJ.ZBJ_FILIAL	=	'" + xFilial("ZBJ") + "'" 				+ CRLF
-	cQryArq += "	AND	ZBJ.D_E_L_E_T_	<>	'*'" 									+ CRLF
-    */
 
    	cQryArq += StaticCall(MGFCRM16,QryNivWheEV,.T.)
 
 	cQryArq += "	AND	ZBJ.ZBJ_CLIENT	=	'" + cA1Cod	+ "'"						+ CRLF
 	cQryArq += "	AND	ZBJ.ZBJ_LOJA	=	'" + cA1Loj	+ "'"						+ CRLF
-	//cQryArq += "	AND	ZBJ.ZBJ_ROTEIR	=	'" + cRoteiro + "'"						+ CRLF
 
 	TcQuery cQryArq New Alias "QRYARQ"
 
@@ -420,6 +437,7 @@ static function eraseStruc(cA1Cod, cA1Loj, cRoteiro)
 		ZBJ->( DBGoTo( nZBJRecno ) )
 
 		recLock("ZBJ", .F.)
+		    ZBJ->ZBJ_INTSFO := 'P'
 			ZBJ->(DBDelete())
 		ZBJ->(MSUnlock())
 
@@ -430,6 +448,8 @@ static function eraseStruc(cA1Cod, cA1Loj, cRoteiro)
 
 	QRYARQ->(DBCloseArea())
 return
+
+
 
 User Function REPRES()
 Local lRet := .T.

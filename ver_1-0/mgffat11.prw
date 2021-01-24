@@ -5,10 +5,10 @@
 Programa............: MGFFAT11
 Autor...............: Mauricio Gresele
 Data................: 06/10/2016 
-Descricao / Objetivo: Eliminar residuos de itens de pedidos nao entregues.
+Descricao / Objetivo: Eliminar resíduos de itens de pedidos não entregues.
 Doc. Origem.........: Faturamento - GAP FAT19
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gerar residuo dos itens do pedido que nao foram faturados
 =====================================================================================
 */

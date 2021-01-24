@@ -8,17 +8,17 @@
 Programa.:              MGFEEC4A
 Autor....:              Barbieri
 Data.....:              Out/2016
-Descricao / Objetivo:   Rotina para Relacao Pedido x Doc de Exportacao 
+Descricao / Objetivo:   Rotina para Relação Pedido x Doc de Exportação 
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
 
 User Function EEC15A(aRotina)
 
-	aadd(aRotina,{"Doc/Ativ Exportacao","U_MGFEEC15",0,1,0}) 
+	aadd(aRotina,{"Doc/Ativ Exportação","U_MGFEEC15",0,1,0}) 
 	aadd(aRotina,{"Impressao de Proforma Invoice","U_MGFEEC37",0,1,0}) 	
 
 Return(aRotina) 
@@ -29,10 +29,10 @@ Return(aRotina)
 Programa.:              MGFEEC15
 Autor....:              Leonardo Kume
 Data.....:              Out/2016
-Descricao / Objetivo:   Relacao Pedido x Doc de Exportacao 
+Descricao / Objetivo:   Relação Pedido x Doc de Exportação 
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -49,7 +49,7 @@ User Function MGFEEC15()
 	u_InsZZJ15()
 
 	oBrowse:setAlias("ZZJ")
-	oBrowse:setDescription("Pedido x Doc de Exportacao")
+	oBrowse:setDescription("Pedido x Doc de Exportação")
 	oBrowse:AddLegend("GetAdvFVal('SZZ','ZZ_TIPO',xFilial('SZZ')+ZZJ_CODDOC,1,'') = 'D' ","BLUE" ,'Documento')
 	oBrowse:AddLegend("GetAdvFVal('SZZ','ZZ_TIPO',xFilial('SZZ')+ZZJ_CODDOC,1,'') = 'A' ","GREEN" ,"Atividade")
 
@@ -97,7 +97,7 @@ Static Function ModelDef()
 
 	oModel:AddFields("ZZJMASTER",/*cOwner*/,oStrZZJ, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription('Pedido x Doc/Ativ Exportacao')
+	oModel:SetDescription('Pedido x Doc/Ativ Exportação')
 
 	oModel:SetPrimaryKey({"ZZJ_FILIAL","ZZJ_COD"})
 
@@ -143,10 +143,10 @@ Return oView
 Programa.:              InsZZJ15
 Autor....:              Barbieri
 Data.....:              Out/2016
-Descricao / Objetivo:   Relacao Pedido x Doc de Exportacao automatico por cliente do pedido
+Descricao / Objetivo:   Relação Pedido x Doc de Exportação automatico por cliente do pedido
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -242,7 +242,7 @@ User Function InsZZJ15(cResp)
 		DbSetOrder(1)
 //		Set Filter to ALLTRIM(ZZJ_PEDIDO) == Alltrim(EE7->(EE7_ZEXP+EE7_ZANOEX+EE7_ZSUBEX))
 
-	Elseif IsInCallStack("EECAE100") //Incluï¿½do por Barbieri em 11/2016 com dados da tabela EEC       
+	Elseif IsInCallStack("EECAE100") //Incluído por Barbieri em 11/2016 com dados da tabela EEC       
 		//		cOrcam := GetAdvFVal("EE7","EE7_ZORCAM",xFilial("EE7")+EEC->EEC_PEDREF,1,"")
 		cOrcam := Alltrim(EEC->(EEC_ZEXP+EEC_ZANOEX+EEC_ZSUBEX))
 		DbSelectArea("ZZJ")
@@ -303,7 +303,7 @@ Return
 // 02 - Delete
 User Function DELEEC15()
 
-	if MsgYesNo("Deseja remover esse documento do pedido numero "+ZZJ->ZZJ_PEDIDO+"?")
+	if MsgYesNo("Deseja remover esse documento do pedido número "+ZZJ->ZZJ_PEDIDO+"?")
 		ZZJ->(Reclock("ZZJ",.F.))
 		ZZJ->(DbDelete())
 		ZZJ->(MsUnlock())
@@ -318,10 +318,10 @@ Return (.t.)
 Programa.:              DATEEC15
 Autor....:              Barbieri
 Data.....:              Nov/2016
-Descricao / Objetivo:   Funcao para buscar data base ref. cadastro de Doc/Ativ 
+Descricao / Objetivo:   Função para buscar data base ref. cadastro de Doc/Ativ 
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -383,7 +383,7 @@ Atualiza todos os campos de data dos pedidos, chamado em PE no fim do Embarque e
 @since 06/01/2017
 @version 1.0
 @param cPedido, character, numero do pedido do EE7
-@param cOrcam, character, numero do orï¿½amento caso nao tenha pedido
+@param cOrcam, character, numero do orçamento caso não tenha pedido
 /*/
 User Function DTEC15UP(cPedido,cOrcam,lProforma)
 

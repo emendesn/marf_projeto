@@ -1,13 +1,13 @@
 /*
 =====================================================================================
 Programa.:              EECPEM36
-Autor....:              Flavio dos Anjos Dentello
+Autor....:              Flávio dos Anjos Dentello
 Data.....:              Nov/2016
-Descricao / Objetivo:   Impressao do documento Shipping Instructions no Modelo Cliente
+Descricao / Objetivo:   Impressão do documento Shipping Instructions no Modelo Marfrig
 Grava a tabela com o total dos documentos a serem impressos
 Doc. Origem:            GAP EEC07
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -35,7 +35,7 @@ cQuery += " GROUP BY EE9_FILIAL, EE9_PREEMB, ZZJ_CODDOC, ZZJ_QTDCOP, ZZJ_QTDORI"
 cQuery := ChangeQuery(cQuery)
 DbUseArea(.T.,"TOPCONN", TCGENQRY(,,cQuery),cAlias1, .F., .T.)
 
-////MONTAR A REGRA PARA AGRUPAR AS QUANTIDADES DE DOCUMENTOS, PODE SER ATRAVES DO WHILE OU ENTAO VERIFICAR A POSSIBILIDADE DE FAZER VIA SUM() NA QUERY
+////MONTAR A REGRA PARA AGRUPAR AS QUANTIDADES DE DOCUMENTOS, PODE SER ATRAVES DO WHILE OU ENTÃO VERIFICAR A POSSIBILIDADE DE FAZER VIA SUM() NA QUERY
 aAreaZZI := ZBA->(GetArea())
 
 DbSelectArea("ZBA")

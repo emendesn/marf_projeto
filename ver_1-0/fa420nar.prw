@@ -10,7 +10,7 @@ Descricao / Objetivo:   Retornar o conteudo do diretorio destino do CNAB. O cont
 						o diretorio destino de geracao do arquivo. Motivo: Nao permitir que o usuario informe o destino e manuseie o arquivo gerado.
 Doc. Origem:            Contrato - GAP MGFINT03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

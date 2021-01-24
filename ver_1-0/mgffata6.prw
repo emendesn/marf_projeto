@@ -18,7 +18,7 @@ user function MGFFATA6()
 	endif
 
 	If FieldPos("A1_XENVSFO") > 0 .and. FieldPos("A1_XINTSFO") > 0
-		if M->A1_PESSOA == "J" .and. !empty( M->A1_CGC )
+		if M->A1_PESSOA == "J"
 			if M->A1_XENVSFO == "S"
 				M->A1_XINTSFO := "P"
 			endif

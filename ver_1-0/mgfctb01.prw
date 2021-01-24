@@ -9,10 +9,10 @@ STATIC lDefTopCTB	:= IfDefTopCTB()
 Programa............: MGFCTB01
 Autor...............: Joni Lima
 Data................: 05/11/2016
-Descricao / Objetivo: Realiza Contabilizacao dos Rateios
+Descrição / Objetivo: Realiza Contabilização dos Rateios
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -31,10 +31,10 @@ Return
 Programa............: xMF01ConRt
 Autor...............: Joni Lima
 Data................: 07/11/2016
-Descricao / Objetivo: Realiza Contabilizacao dos Rateios
+Descrição / Objetivo: Realiza Contabilização dos Rateios
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -46,7 +46,7 @@ Static Function xMF01ConRt()
 	Local lExibeLcto  := MV_PAR05 == 1 //GetMv("MGF_EXIBE",,.T.)
 	
 	Local cxFilAtu := cFilAnt //Filial Atual
-	Local cLoteCTB	:= GetMv("MGF_LOTPAD",,"") //Lote Contabil para esse Lancamento
+	Local cLoteCTB	:= GetMv("MGF_LOTPAD",,"") //Lote Contabil para esse Lançamento
 	Local cArqCTB	:= ""
 	Local nTotalLcto:= 0
 	
@@ -108,7 +108,7 @@ Static Function xMF01ConRt()
 				SM0->(dbSetOrder(1))//M0_CODIGO + M0_CODFIL
 				SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 				
-				//Realiza Contabilizacao Ponto Lancamento 333
+				//Realiza Contabilização Ponto Lançamento 333
 				nHeadProv  := HeadProva(cLoteCTB,"MGFCTB01",Substr(cUsuario,7,6),@cArqCTB)
 				nTotalLcto += DetProva(nHeadProv,'333',"MGFCTB01",cLoteCTB,,,,,@c333,@aCT5,,/*@aFlagCTB*/)
 				RodaProva(nHeadProv,nTotalLcto)
@@ -118,7 +118,7 @@ Static Function xMF01ConRt()
 				SM0->(dbSetOrder(1))//M0_CODIGO + M0_CODFIL
 				SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 				
-				//Realiza Contabilizacao Ponto Lancamento 334
+				//Realiza Contabilização Ponto Lançamento 334
 				nHeadProv  := HeadProva(cLoteCTB,"MGFCTB01",Substr(cUsuario,7,6),@cArqCTB)
 				nTotalLcto += DetProva(nHeadProv,'334',"MGFCTB01",cLoteCTB,,,,,@c334,@aCT5,,@aFlagCTB)
 				RodaProva(nHeadProv,nTotalLcto)
@@ -131,7 +131,7 @@ Static Function xMF01ConRt()
 		(cNextAlias)->(dbCloseArea())
 	EndIF
 
-	cFilAnt := cxFilAtu//Retorna Filial que chamou a Execucao
+	cFilAnt := cxFilAtu//Retorna Filial que chamou a Execução
 	SM0->(dbSetOrder(1))//M0_CODIGO + M0_CODFIL
 	SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 
@@ -146,10 +146,10 @@ Return
 Programa............: xMF01lCont
 Autor...............: Joni Lima
 Data................: 09/11/2016
-Descricao / Objetivo: Realiza Validacao dos periodos nos calendarios
+Descrição / Objetivo: Realiza Validação dos periodos nos calendarios
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se o calendario da Filial se encontra fechado ou aberto.
 =====================================================================================
 */
@@ -235,22 +235,22 @@ Static Function xMF01lCont()
 		SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 		
 		dDtHav 	 := STOD(aFil[ni,2]) //Pega Data
-		lTempRet := U_XXVlDtCal(dDtHav,dDtHav) //Realiza Validacao do Periodo
+		lTempRet := U_XXVlDtCal(dDtHav,dDtHav) //Realiza Validação do Periodo
 		//lTempRet := StartJob("U_xM10JobD",GetEnvServer(),.T.,cEmpAnt,cFilAnt,cModulo,dDtHav) //(cEmp,cFil,cModulo,dDt)
 		//If lTempRet
-			//lTempRet := CtbDtComp(1,dDtHav,cMoeda) //Realiza Validacao do Periodo esta amarrado com Moeda
+			//lTempRet := CtbDtComp(1,dDtHav,cMoeda) //Realiza Validação do Periodo esta amarrado com Moeda
 		//EndIf
 		
 		If !lTempRet
 			AADD(aERROS,'Filial: ' + aFil[ni,1] + ', Data: ' + dToC(dDtHav))
-			If lRet //Sera alterado apenas uma vez essa variavel.
+			If lRet //Será alterado apenas uma vez essa variavel.
 				lRet := .F.
 			EndIf
 		EndIf
 		
 	Next ni
 	
-	//Verifica se Gerou erros e apresenta as filiais e datas que estao com datas em calendarios INDISPONIVEIS
+	//Verifica se Gerou erros e apresenta as filiais e datas que estão com datas em calendarios INDISPONIVEIS
 	If Len(aERROS) > 0
 		For ni := 1 to Len(aERROS)
 			cErros += aERROS[ni]
@@ -280,7 +280,7 @@ Local lRet 		:= .F.
 Local nPos      := 0
 Local lCache := CtbCache(7)
 
-DEFAULT cStatBlq	:= GetNewPar("MV_CTGBLOQ","234")	/// INDICA OS STATUS DE CALENDARIO QUE NAO PERMITEM REPROCESSAR
+DEFAULT cStatBlq	:= GetNewPar("MV_CTGBLOQ","234")	/// INDICA OS STATUS DE CALENDARIO QUE NÃO PERMITEM REPROCESSAR
 DEFAULT dDtIni 		:= dDataBase
 DEFAULT dDtFim 		:= dDataBase
 DEFAULT nTMoedas	:= 2
@@ -300,9 +300,9 @@ If lCache .And. Len(__aCtbVlDtCal) > 0  .And. ( nPos := aScan(__aCtbVlDtCal,{|x|
 	lDatasOk := __aCtbVlDtCal[nPos, 8]
 																		
 	If !lDatasOk .And. lMensagem
-		//"O intervalo de datas informadas nao podera ser processado. "#"Verifique o intervalo de datas ou os calendï¿½rios no intervalo."
-		//"Moeda "#", o periodo "#" do calendario "#" esta Bloqueado/Encerrado."
-		MsgInfo("O intervalo de datas informadas nao podera ser processado. Verifique o intervalo de datas ou os calendï¿½rios no intervalo.","Moeda , o periodo  do calendario  esta Bloqueado/Encerrado.")
+		//"O intervalo de datas informadas não poderá ser processado. "#"Verifique o intervalo de datas ou os calendários no intervalo."
+		//"Moeda "#", o periodo "#" do calendario "#" está Bloqueado/Encerrado."
+		MsgInfo("O intervalo de datas informadas não poderá ser processado. Verifique o intervalo de datas ou os calendários no intervalo.","Moeda , o periodo  do calendario  está Bloqueado/Encerrado.")
 	EndIf
 Else																		
 
@@ -312,7 +312,7 @@ Else
 
 	
 	For nQ := 1 to __nQuantas
-		If nTMoedas == 2			/// SE FOR MOEDA ESPECï¿½FICA
+		If nTMoedas == 2			/// SE FOR MOEDA ESPECÍFICA
 			nQ := Val(cMoeda)
 		Else						/// SE FOR PARA TODAS AS MOEDAS
 			cMoeda := StrZero(nQ,2)
@@ -389,7 +389,7 @@ Else
 						EndIf
 						CTE->(dbSkip())
 					EndDo
-					If !lFoundCTG	/// SE NAO ENCONTROU NENHUM CALENDï¿½RIO AMARRADO
+					If !lFoundCTG	/// SE NÃO ENCONTROU NENHUM CALENDÁRIO AMARRADO
 						If lMensagem
 							Help("  ",1,"CTGNOCAD")
 						EndIf
@@ -397,7 +397,7 @@ Else
 					EndIf
 				Else
 					If lMensagem
-						// Nao  hï¿½ nenhuma calendï¿½rio montado
+						// Não há nenhuma calendário montado
 						Help("  ",1,"CTGDTOUT")
 					EndIf
 					lDatasOk := .F.
@@ -411,9 +411,9 @@ Else
 						(dDtIni >= aCalends[nCal][1] .and. dDtIni <= aCalends[nCal][2])
 						
 						If lMensagem
-							//"O intervalo de datas informadas nao podera ser processado. "#"Verifique o intervalo de datas ou os calendï¿½rios no intervalo."
-							//"Moeda "#", o periodo "#" do calendario "#" esta Bloqueado/Encerrado."
-							MsgInfo("O intervalo de datas informadas nao podera ser processado. Verifique o intervalo de datas ou os calendï¿½rios no intervalo.","Moeda "+StrZero(nQ,2)+", o periodo "+aCalends[nCal][4]+" do calendario "+aCalends[nCal][3]+" esta Bloqueado/Encerrado.")
+							//"O intervalo de datas informadas não poderá ser processado. "#"Verifique o intervalo de datas ou os calendários no intervalo."
+							//"Moeda "#", o periodo "#" do calendario "#" está Bloqueado/Encerrado."
+							MsgInfo("O intervalo de datas informadas não poderá ser processado. Verifique o intervalo de datas ou os calendários no intervalo.","Moeda "+StrZero(nQ,2)+", o periodo "+aCalends[nCal][4]+" do calendario "+aCalends[nCal][3]+" está Bloqueado/Encerrado.")
 						EndIf
 						lDatasOk := .F.
 						Exit
@@ -465,9 +465,9 @@ Else
 				
 				If lRet
 					If lMensagem
-						//"O intervalo de datas informadas nao podera ser processado. "#"Verifique o intervalo de datas ou os calendï¿½rios no intervalo."
-						//"Moeda "#", o periodo "#" do calendario "#" esta Bloqueado/Encerrado."
-						MsgInfo("O intervalo de datas informadas nao podera ser processado. Verifique o intervalo de datas ou os calendï¿½rios no intervalo.","Moeda "+cMoeda+", o periodo "+CTEBLOQ->CTG_PERIOD+" do calendario "+CTEBLOQ->CTG_CALEND+" esta Bloqueado/Encerrado.")
+						//"O intervalo de datas informadas não poderá ser processado. "#"Verifique o intervalo de datas ou os calendários no intervalo."
+						//"Moeda "#", o periodo "#" do calendario "#" está Bloqueado/Encerrado."
+						MsgInfo("O intervalo de datas informadas não poderá ser processado. Verifique o intervalo de datas ou os calendários no intervalo.","Moeda "+cMoeda+", o periodo "+CTEBLOQ->CTG_PERIOD+" do calendario "+CTEBLOQ->CTG_CALEND+" está Bloqueado/Encerrado.")
 					EndIf
 					lDatasOk := .F.			
 				EndIf
@@ -503,9 +503,9 @@ Else
 							
 							If CTG->CTG_STATUS$cStatBlq
 								If lMensagem
-									//"O intervalo de datas informadas nao podera ser processado. "#"Verifique o intervalo de datas ou os calendï¿½rios no intervalo."
-									//"Moeda "#", o periodo "#" do calendario "#" esta Bloqueado/Encerrado."
-									MsgInfo("O intervalo de datas informadas nao podera ser processado. Verifique o intervalo de datas ou os calendï¿½rios no intervalo.","Moeda "+cMoeda+", o periodo "+CTG->CTG_PERIOD+" do calendario "+CTG->CTG_CALEND+" esta Bloqueado/Encerrado.")
+									//"O intervalo de datas informadas não poderá ser processado. "#"Verifique o intervalo de datas ou os calendários no intervalo."
+									//"Moeda "#", o periodo "#" do calendario "#" está Bloqueado/Encerrado."
+									MsgInfo("O intervalo de datas informadas não poderá ser processado. Verifique o intervalo de datas ou os calendários no intervalo.","Moeda "+cMoeda+", o periodo "+CTG->CTG_PERIOD+" do calendario "+CTG->CTG_CALEND+" está Bloqueado/Encerrado.")
 								EndIf
 								
 								lDatasOk := .F.
@@ -524,7 +524,7 @@ Else
 					EndDo
 					
 					If !lFoundCTG
-						// Nao  hï¿½ nenhuma calendï¿½rio montado
+						// Não há nenhuma calendário montado
 						If lMensagem
 							Help("  ",1,"CTGNOCAD")
 						Endif
@@ -533,7 +533,7 @@ Else
 					EndIf
 				Else
 					If lMensagem
-						// Nao  hï¿½ nenhuma calendï¿½rio montado
+						// Não há nenhuma calendário montado
 						Help("  ",1,"CTGDTOUT")
 					EndIf
 					lDatasOk := .F.

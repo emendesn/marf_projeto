@@ -1,38 +1,22 @@
 #include "protheus.ch"
 
-/*
-=====================================================================================
-Programa............: MGFFAT93
-Autor...............: Totvs
-Data................: Agosto/2018 
-Descricao / Objetivo: Rotina chamada pelo PE MA410MNU
-Doc. Origem.........: OMS
-Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Forcar reenvio da nota de saida ao Taura
-=====================================================================================
-*/
+//---------------------------------------------------------------------------------
+/*/{Protheus.doc} MGFFAT93 - Reenvio NF para Taura - Chamado por MA410MNU e OM200US
+@author  Totvs
+@since Agosto/2018
+/*/
+
 User Function MGFFAT93()
 
 Local aArea := {SC6->(GetArea()),SF2->(GetArea()),GetArea()}
-Local cChave := ""
 Local cGrupoPar := GetMv("MGF_INTNF")
 Local aGrupo := UsrRetGrp(UsrRetName(RetCodUsr())) //Carrega Grupos do usuario
-//Local cGrupoUsu := ""
 Local nCnt := 0
-Local lContinua := .F.
-Local cQ := ""
-Local cAliasTrb := GetNextAlias()
-Local lGravou := .F.
+Local acampos := {}
+Private _atots := {}
 
-/*
-For nCnt:=1 to Len(aGrupo)
-	cGrupoUsu += "'"+aGrupo[nCnt]+"',"
-Next
-If !Empty(cGrupoUsu)
-	cGrupoUsu := Subs(cGrupoUsu,1,Len(cGrupoUsu)-1)
-Endif
-*/
+BEGIN SEQUENCE
+
 // verifica se grupo do usuario estah contido nos grupos do parametro da Marfrig
 For nCnt:=1 To Len(aGrupo)
 	If Alltrim(aGrupo[nCnt]) $ Alltrim(cGrupoPar)
@@ -41,61 +25,138 @@ For nCnt:=1 To Len(aGrupo)
 	Endif
 Next
 
-If lContinua		
-	If "XXX" $ Alltrim(SC5->C5_NOTA) // residuo
-		SC6->(dbSetOrder(1))
-		If SC6->(dbSeek(xFilial("SC6")+SC5->C5_NUM))
-			While SC6->(!Eof()) .and. xFilial("SC6")+SC5->C5_NUM == SC6->C6_FILIAL+SC6->C6_NUM
-				If !Empty(SC6->C6_NOTA) .and. !"XXX" $ Alltrim(SC6->C6_NOTA)
-					cChave := SC5->C5_FILIAL+SC6->C6_NOTA+SC6->C6_SERIE+SC5->C5_CLIENTE+SC5->C5_LOJACLI
-					Exit // sai porque na marfrig nao tem pedido que integra com o taura faturado em mais de 1 nota
-				Endif
-				SC6->(dbSkip())
-			Enddo
-		Endif
-	Else	
-		If !Empty(SC5->C5_NOTA)
-			cChave := SC5->C5_FILIAL+SC5->C5_NOTA+SC5->C5_SERIE+SC5->C5_CLIENTE+SC5->C5_LOJACLI
-		Endif	
-	Endif				
-	
-	If Empty(cChave)
-		APMsgAlert("Pedido nao esta faturado.")
-	Else	
-		cQ := "SELECT R_E_C_N_O_ SF2_RECNO "
-		cQ += "FROM "+RetSqlName("SF2")+" SF2 "
-		cQ += "WHERE F2_FILIAL || F2_DOC || F2_SERIE || F2_CLIENTE || F2_LOJA = '"+cChave+"' "
-		//cQ += "AND SF2.D_E_L_E_T_ = ' ' " // OBS: ler tambï¿½m registros deletados, pois as notas deletadas tambem devem ser reenviadas ao taura
-							
-		cQ := ChangeQuery(cQ)
-							
-		dbUseArea( .T., "TOPCONN", TCGENQRY(,,cQ),cAliasTrb, .F., .T.)
-		
-		If (cAliasTrb)->(!Eof())
-			While (cAliasTrb)->(!Eof())
-				SF2->(dbGoto((cAliasTrb)->SF2_RECNO))
-				If SF2->(Recno()) == (cAliasTrb)->SF2_RECNO
-					SF2->(RecLock("SF2",.F.))
-					SF2->F2_ZTAUREE := "S"
-					SF2->(MsUnLock())
-					lGravou := .T.
-				Endif
-				(cAliasTrb)->(dbSkip())
-			Enddo		
-			If lGravou
-				APMsgInfo("Campo 'F2_ZTAUREE' gravado com sucesso com conteudo 'S'.")
-			Endif	
-		Else
-			APMsgAlert("Nao foi possivel encontrar a nota de saida."+CRLF+;
-			"Chave: "+cChave)
-		Endif
-		(cAliasTrb)->(dbCloseArea())
-	Endif		
+If !lContinua
+
+	u_mgfmsg("Grupo de acesso do usuário não está cadastrado no parâmetro 'MGF_INTNF'"+CRLF+;
+				"Não será permitido acessar a rotina.","Atenção",,1)
+	Break
+
+Endif
+
+
+If alltrim(funname()) = "OMSA200"
+
+	If u_MGFmsg("Deseja reenviar NFs da carga " + DAK->DAK_FILIAL + "/" + DAK->DAK_COD + " para o Taura?","Atenção",,1,2,2)
+
+		MGFFAT93C() //Envia para pedidos da carga posicionada
+
+	Else
+
+		u_mgfmsg("Processo Cancelado!","Atenção",,1)
+
+	Endif
+
 Else
-	APMsgAlert("Grupo de acesso do usuario nao esta cadastrado no parametro 'MGF_INTNF'"+CRLF+;
-	"Nao sera permitido acessar a rotina.")
-Endif	
+
+	If u_MGFmsg("Deseja reenviar NF do pedido " + SC5->C5_FILIAL + "/" + SC5->C5_NUM + " para o Taura?","Atenção",,1,2,2)
+
+		MGFFAT93E()	//Envia somente pedido de vendas posicionado
+
+	Else
+
+		u_mgfmsg("Processo Cancelado!","Atenção",,1)
+
+	Endif
 	
+
+Endif	
+
+AADD(aCampos,"Filial")
+AADD(aCampos,"PV")
+AADD(aCampos,"NF")
+AADD(aCampos,"Status")
+
+If len(_atots) > 0
+
+	U_MGListBox( "Resultado do processamento" , aCampos , _atots )   
+
+Endif
+	
+END SEQUENCE
+
+
 aEval(aArea,{|x| RestArea(x)})	
 
 Return()
+
+//---------------------------------------------------------------------------------
+/*/{Protheus.doc} MGFFAT93E - Execução de envio com SC5 posicionada
+@author  Totvs
+@since 21/09/2020
+/*/
+Static Function MGFFAT93E()
+
+Local _aresults := {}
+
+	SD2->(Dbsetorder(8)) //D2_FILIAL+D2_PEDIDO+D2_ITEMPV
+	
+	If !(SD2->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM)))
+		aadd(_aresults,{SC5->C5_FILIAL,SC5->C5_NUM,"N/C","Pedido não está faturado."})
+	Else	
+
+		SF2->(Dbsetorder(1)) //F2_FILIAL+F2_DOC_F2_SERIE
+		
+		If SF2->(Dbseek(SD2->D2_FILIAL+SD2->D2_DOC+SD2->D2_SERIE))
+
+			While SF2->F2_FILIAL+SF2->F2_DOC+SF2->F2_SERIE == SD2->D2_FILIAL+SD2->D2_DOC+SD2->D2_SERIE
+				SF2->(RecLock("SF2",.F.))
+				SF2->F2_ZTAUREE := "S"
+				SF2->(MsUnLock())
+				SF2->(dbSkip())
+				aadd(_aresults,{SC5->C5_FILIAL,SC5->C5_NUM,SF2->F2_FILIAL+"/"+SF2->F2_DOC,"Pedido marcado para reenviar NF"})
+			Enddo		
+
+		Else
+
+			aadd(_aresults,{SC5->C5_FILIAL,SC5->C5_NUM,"N/C","Falha em localizar NF Saída"})
+
+		Endif
+
+	Endif	
+
+	_atots := _aresults
+
+Return 
+
+//---------------------------------------------------------------------------------
+/*/{Protheus.doc} MGFFAT93C - Execução de envio por carga
+@author  Totvs
+@since 21/09/2020
+/*/
+Static Function MGFFAT93C()
+
+Local _aresults := {}
+
+DAI->(Dbsetorder(1)) //DAI_FILIAL+DAI_COD
+
+If DAI->(Dbseek(DAK->DAK_FILIAL+DAK->DAK_COD))
+
+	Do while DAK->DAK_FILIAL+DAK->DAK_COD == DAI->DAI_FILIAL+DAI->DAI_COD
+
+		SC5->(Dbsetorder(1)) //C5_FILIAL+C5_NUM
+
+		If SC5->(Dbseek(DAI->DAI_FILIAL+DAI->DAI_PEDIDO))
+
+			MGFFAT93E()	//Envia somente pedido de vendas posicionado
+
+			aadd(_aresults,_atots[1])
+
+		Else
+
+			aadd(_aresults,{DAI->DAI_FILIAL,DAI->DAI_PEDIDO,"N/C","Falha em pedido de vendas!"})
+
+		Endif
+
+		DAI->(Dbskip())
+
+	Enddo
+
+Else
+
+	aadd(_aresults,{DAK->DAK_FILIAL,DAK->DAK_COD,"N/C","Falha em localizar itens da carga!"})
+
+Endif
+
+_atots := _aresults
+
+Return

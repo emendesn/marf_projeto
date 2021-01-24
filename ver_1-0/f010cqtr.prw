@@ -8,11 +8,11 @@
 Programa.:              F010CQTR - PE
 Autor....:              Antonio Carlos        
 Data.....:              03/10/2016                                                                                                            
-Descricao / Objetivo:   incluir informacoes de Titulos Recebidos por Rede 
+Descricao / Objetivo:   incluir informações de Títulos Recebidos por Rede 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Titulos Recebidos por Rede na Posicao do Cliente
+Uso......:              Marfrig
+Obs......:              Títulos Recebidos por Rede na Posição do Cliente
 =====================================================================================
 */
 User Function  F010CQTR()

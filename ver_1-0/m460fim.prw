@@ -11,7 +11,7 @@ Data.....:              05/10/2016
 Descricao / Objetivo:   Chamada do P.E. M460FIM
 Doc. Origem:            GAP VEN05 / FAT19 / CPA998 / CRE29
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -21,11 +21,11 @@ User Function M460FIM()
 		U_MGFFIN82()
 	Endif      
 
-	//Natanael Filho - FUNRURAL - Devolucao de compra
+	//Natanael Filho - FUNRURAL - Devolução de compra
 	If FindFunction("U_MGFFINA2")
-		//Verifica se ï¿½ uma devolucao de compras e se houve o calculo do FUNDESA
+		//Verifica se é uma devolução de compras e se houve o calculo do FUNDESA
 		If SF2->F2_TIPO = 'D' .AND. (SF2->F2_CONTSOC > 0 .OR. SF2->F2_VLSENAR > 0)
-			U_MGFFINA2(1) // 1 - Inclusao; 2 - Exclusao
+			U_MGFFINA2(1) // 1 - Inclusão; 2 - Exclusão
 		EndIf
 	Endif
 
@@ -33,15 +33,18 @@ User Function M460FIM()
 		U_MGFGCT04()
 	Endif
 	
-	// marca itens nao entregues como residuo
-	If FindFunction("U_MGFFAT11") // FAT19
+	If FindFunction("U_MGFFAT11") // FAT19 - marca itens nao entregues como residuo
 		U_MGFFAT11()
 	Endif
-	
 	
 	If FindFunction("U_MGFFIN04") // CPA998
 		U_MGFFIN04()
 	Endif
+
+	If FindFunction("U_MGFFINC2") // Baixa CP Tx Gilrat
+		U_MGFFINC2()
+	Endif
+
 	If FindFunction("U_CRE2901") // CRE29
 		U_CRE2901()
 	Endif 
@@ -56,7 +59,7 @@ User Function M460FIM()
 	If FindFunction("U_MGFCRM47")
 		U_MGFCRM47()
 	Endif         
-	//Copia do Peso Bruto na nota Fiscal com valor do Pedido de venda
+	//Cópia do Peso Bruto na nota Fiscal com valor do Pedido de venda
 	If FindFunction("U_MGFFAT71")
 		U_MGFFAT71()
 	Endif   
@@ -79,22 +82,22 @@ User Function M460FIM()
 	Endif
 	
 	/* PAULO HENRIQUE - TOTVS - 19/08/2019
-	CHAMADA DE FUNCAO PARA ATUALIZAï¿½ï¿½O DA TABELA CDG, QUNADO HOUVER A INCLUSAO DAS TAGS nProc E indProc
+	CHAMADA DE FUNÇÃO PARA ATUALIZAÇÃO DA TABELA CDG, QUNADO HOUVER A INCLUSÃO DAS TAGS nProc E indProc
 	*/
 	If FindFunction("U_MGFFATB5")
 		U_MGFFATB5()
 	Endif
 
-	// Atualiza cidade de divisa em Trechos do itinerï¿½rio GWU para os pedidos de Exportacao
+	// Atualiza cidade de divisa em Trechos do itinerário GWU para os pedidos de exportação
 	If FindFunction("U_MGFFATBK")
-		If SF2->F2_EST = "EX" //Verifica se ï¿½ Exportacao
+		If SF2->F2_EST = "EX" //Verifica se é exportação
 			U_MGFFATBK()
 		EndIf 
 	Endif
 
-	//Na emissao de venda interestadual com um dos grupos tributï¿½rios listados na 
-	//rotina MGFFATBL, carregarï¿½ os dados do fornecedor, natureza, centro de custo 
-	//e conta contabil p/ criar titulo a pagar de ICMS prï¿½prio (F2_VALICM calculado) 
+	//Na emissão de venda interestadual com um dos grupos tributários listados na 
+	//rotina MGFFATBL, carregará os dados do fornecedor, natureza, centro de custo 
+	//e conta contábil p/ criar título a pagar de ICMS próprio (F2_VALICM calculado) 
 	If FindFunction("U_MGFFATBN")
 		If SF2->F2_VALICM > 0 //ICMS calculado
 			U_MGFFATBN()

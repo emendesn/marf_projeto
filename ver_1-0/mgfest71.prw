@@ -13,12 +13,12 @@
 User Function MGFEST71()
 Local oBrowse		:= Nil
 Local aBKRotina		:= {}
-
+/*
 If !cFilAnt $GetMv("MGF_EPIFIL") // Verifica se a filial está autorizada ao tratamento de EPI
 		MsgAlert("Esta filial não está habilitada para executar essa rotina-MGFEST71","MGF_EPIFIL")
 		Return
 ENDIF
-
+*/
 If Type('aRotina') <> 'U'
 	aBKRotina		:= aRotina
 Endif	

@@ -5,10 +5,10 @@
 Programa............: MA125BUT
 Autor...............: Gresele
 Data................: Nov/2017
-Descricao / Objetivo: Ponto de entrada utilizado para adicionar botoes na tela de manutencao do Contrato de parceria
+Descrição / Objetivo: Ponto de entrada utilizado para adicionar botões na tela de manutencao do Contrato de parceria
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

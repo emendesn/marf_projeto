@@ -14,7 +14,7 @@ Data.....:              21/07/2017
 Descricao / Objetivo:   Cadastro de Seguro RCTRC
 Doc. Origem:            GAP RCTRC
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -95,15 +95,15 @@ Return oView
 //-------------------------------------------------------------------
 User Function MGFFT43T()
 
-	If MSGYESNO("Retransmitir solicitacao de averbaï¿½ï¿½o da nota " + alltrim(ZBS->ZBS_NUM) + "?","Retransmissï¿½o de Averbaï¿½ï¿½o de nota")
+	If MSGYESNO("Retransmitir solicitação de averbação da nota " + alltrim(ZBS->ZBS_NUM) + "?","Retransmissão de Averbação de nota")
 
-		fwmsgrun( ,{|| U_MGFFT41T() },'Retransmissï¿½o de Averbaï¿½ï¿½o de nota','Aguarde...')
+		fwmsgrun( ,{|| U_MGFFT41T() },'Retransmissão de Averbação de nota','Aguarde...')
 
-		msgalert("Processo concluido!","Retransmissï¿½o de Averbaï¿½ï¿½o de nota")
+		msgalert("Processo concluído!","Retransmissão de Averbação de nota")
 
 	Else
 
-		MsgStop( "Processo Cancelado!", "Retransmissï¿½o de Averbaï¿½ï¿½o de nota" )
+		MsgStop( "Processo Cancelado!", "Retransmissão de Averbação de nota" )
 	
 	EndIf
 
@@ -115,13 +115,13 @@ user function xImpFat43()
 	private	aRet
 	private	aParambox	:=	{}
 
-	aadd(aParamBox, {1, "Emissao de"				, CToD(space(8))	, "@R 99/99/99"				, 								, ,	, 070 	, .F.})
-	aadd(aParamBox, {1, "Emissao ate"				, CToD(space(8))	, "@R 99/99/99"				, 								, ,	, 070 	, .F.})
+	aadd(aParamBox, {1, "Emissão de"				, CToD(space(8))	, "@R 99/99/99"				, 								, ,	, 070 	, .F.})
+	aadd(aParamBox, {1, "Emissão até"				, CToD(space(8))	, "@R 99/99/99"				, 								, ,	, 070 	, .F.})
 	aadd(aParambox, {6, "Salvar arquivo Excel em"	, space(100)		, "@!"	, ""	, ""	, 070, .T., "Todos os Arquivos|*.*", GetTempPath(), GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY})
 
-	if paramBox(aParambox, "Parï¿½metros"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
+	if paramBox(aParambox, "Parâmetros"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 		cursorWait() //Mostra Ampulheta
-		msAguarde({|| defRelat()}, "Aguarde...", "Gerando relatorio!")
+		msAguarde({|| defRelat()}, "Aguarde...", "Gerando relatório!")
 		cursorArrow() //Libera Ampulheta
 	endif
 return
@@ -143,7 +143,7 @@ static function defRelat()
 	getInfoZBS()
 
 	if (cQryExcel)->(EOF())
-		msgAlert("Nao hï¿½ dados com os parametros informados.")
+		msgAlert("Não há dados com os parâmetros informados.")
 	else
 		Count to nCountQry
 
@@ -154,38 +154,38 @@ static function defRelat()
 		oExcel:AddworkSheet(cWrkSht1)			//Cria Planilha
 		oExcel:AddTable(cWrkSht1, cTblTit1) 	//Cria Tabela
 
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Filial"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Numero NF"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Serie NF"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Emissao NF"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Situacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Vlr Tot NF"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Num Pedido"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Numero OE"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Loja Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Nome Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "UF"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CNPJ/CPF Cli"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Transp"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Nome Transp"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Status Envio"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CCE"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Envio"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Usuario"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Usuario"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Retran"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Retorn"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Retorno WS"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Integ Taura"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Arquivo XML"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CFOP"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Operacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Averbacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "D.RCTRC Tota"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Tipo Veiculo"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "D.RCTRC Rate"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
-		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Ordem de Emb"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetï¿½rio,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Filial"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Numero NF"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Serie NF"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Emissao NF"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Situacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Vlr Tot NF"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Num Pedido"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Numero OE"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Loja Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Nome Cliente"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "UF"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CNPJ/CPF Cli"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Transp"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Nome Transp"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Status Envio"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CCE"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Envio"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Cod Usuario"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Usuario"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Retran"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Dt/Hr Retorn"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Retorno WS"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Integ Taura"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Arquivo XML"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "CFOP"			, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Operacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Averbacao"		, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "D.RCTRC Tota"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Tipo Veiculo"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "D.RCTRC Rate"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
+		oExcel:AddColumn(cWrkSht1	, cTblTit1, "Ordem de Emb"	, 1 /*nAlign - 1-Left,2-Center,3-Right*/, 1 /*nFormat - ( 1-General,2-Number,3-Monetário,4-DateTime )*/)
 
 		while !(cQryExcel)->(EOF())
 			nCountPro++
@@ -236,16 +236,16 @@ static function defRelat()
 		cArq := CriaTrab(NIL, .F.) + ".xml"
 		oExcel:GetXMLFile(cArq)
 
-		msProcTxt("Transferindo para estacao...")
+		msProcTxt("Transferindo para estação...")
 
 		if __CopyFile(cArq, cLocArq + cArq)
-			MsgInfo("Relatorio gerado em: " + cLocArq + cArq)
+			MsgInfo("Relatório gerado em: " + cLocArq + cArq)
 			oExcelApp := MsExcel():New()
 			oExcelApp:WorkBooks:Open(cLocArq + cArq)
 			oExcelApp:SetVisible(.T.)
 			oExcelApp:Destroy()
 			if !ApOleClient('MsExcel')
-				msgAlert("Excel nao esta instalado neste computador.")
+				msgAlert("Excel não esta instalado neste computador.")
 			endIf
 		endif
 	endif

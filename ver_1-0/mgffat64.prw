@@ -13,7 +13,7 @@
 #include "tbiconn.ch"
 #INCLUDE "FWBRWSTR.CH"
 
-#define CRLF chr(13) + chr(10)
+#define CRLF chr(13) + chr(10) 
 
 #DEFINE SC5CAMPOS "C5_NUM|C5_CLIENTE|C5_LOJACLI"
 #DEFINE SC6CAMPOS "C6_ITEM|C6_NUM|C6_PRODUTO|C6_QTDVEN|C6_PRCVEN|C6_PRUNIT|C6_VALOR"
@@ -28,7 +28,9 @@ Data.....:              fev/2018
 Descricao / Objetivo:   Tela para \cao de Pedidos com Bloqueio
 Doc. Origem:            GAP FAT14
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
+@ Alteraçaõ na Query  - Dados Duplicados 02/10/2020
+@ Alteraçaõ na Query  - Amarrado a estrutura de venda ZBJ_REPRES com o A1_VEND
 Obs......:
 =====================================================================================
 */
@@ -36,7 +38,7 @@ user function MGFFAT64()
 	//local aButtons := {{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil}}
 	local aButtons := {{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.T.,"Finalizar"},{.F.,"Cancelar"},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil},{.F.,Nil}}
 
-	fwExecView(	"" /*"Aprovacao de Pedidos com bloqueio - cTitulo*/		,;
+	fwExecView(	"" /*"Aprovação de Pedidos com bloqueio - cTitulo*/		,;
 				"MGFFAT64"							/*cPrograma*/		,;
 				MODEL_OPERATION_INSERT				/*nOperation*/		,;
 													/*oDlg*/			,;
@@ -47,15 +49,15 @@ user function MGFFAT64()
 				{|| .T.}							/*bCancel*/ )
 
 				/*
-				 - cTitulo:			titulo da janela
+				 - cTitulo:			título da janela
 				 - cPrograma:		nome do programa-fonte
-				 - nOperation:		indica o codigo de operacao (inclusao, alteracao ou exclusao)
-				 - oDlg:			objeto da janela em que o View deve ser colocado. Se nao informado, uma nova janela sera criada;
-				 - bCloseOnOK:		indica se a janela deve ser fechada ao final da operacao. Se ele retornar .T. (verdadeiro) fecha a janela;
-				 - bOk:				Bloco executado no acionamento do botao confirmar que retornando .F. (falso) impedirï¿½ o fechamento da janela;
+				 - nOperation:		indica o código de operação (inclusão, alteração ou exclusão)
+				 - oDlg:			objeto da janela em que o View deve ser colocado. Se não informado, uma nova janela será criada;
+				 - bCloseOnOK:		indica se a janela deve ser fechada ao final da operação. Se ele retornar .T. (verdadeiro) fecha a janela;
+				 - bOk:				Bloco executado no acionamento do botão confirmar que retornando .F. (falso) impedirá o fechamento da janela;
 				 - nPercReducao:	Se informado reduz a janela em percentualmente;
-				 - aEnableButtons:	Indica os botï¿½es da barra de botï¿½es que estarï¿½o habilitados;
-				 - bCancel:			Bloco executado no acionamento do botao cancelar que retornando .F. (falso) impedirï¿½ o fechamento da janela;
+				 - aEnableButtons:	Indica os botões da barra de botões que estarão habilitados;
+				 - bCancel:			Bloco executado no acionamento do botão cancelar que retornando .F. (falso) impedirá o fechamento da janela;
 				*/
 
 return
@@ -74,7 +76,7 @@ Static Function ModelDef()
 
 	oModel := MPFormModel():New( 'MDLFAT64',, /*{ || chkMdl() }*/, { |oModel| cmtFat64( oModel ) } )
 
-	oModel:SetDescription( 'Aprovacao de Pedidos com bloqueio' )
+	oModel:SetDescription( 'Aprovação de Pedidos com bloqueio' )
 
 	/******************************************************************************
 	ADICAO DE GATILHOS - CENTER
@@ -93,7 +95,7 @@ Static Function ModelDef()
 	oStrCenter:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
 	aAux[4] )
 
 	/******************************************************************************
@@ -113,7 +115,7 @@ Static Function ModelDef()
 	oStrDown:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
 	aAux[4] )
 
 	oStrCenter:SetProperty("*", MODEL_FIELD_OBRIGAT	, .F.			)
@@ -242,14 +244,14 @@ static function gtMdlTop()
 						"C" 					,; 	// [04] C Tipo do campo
 						10						,; 	// [05] N Tamanho do campo
 						0 						,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"De"						,; 	// [01] C Titulo do campo
 						"De"						,; 	// [02] C ToolTip do campo
@@ -257,29 +259,29 @@ static function gtMdlTop()
 						"D" 						,; 	// [04] C Tipo do campo
 						8							,; 	// [05] N Tamanho do campo
 						0 							,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Ate"						,; 	// [01] C Titulo do campo
-						"Ate"						,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Até"						,; 	// [01] C Titulo do campo
+						"Até"						,; 	// [02] C ToolTip do campo
 						"ATE"	 					,; 	// [03] C identificador (ID) do Field
 						"D" 						,; 	// [04] C Tipo do campo
 						8							,; 	// [05] N Tamanho do campo
 						0 							,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Motivo de"							,; 	// [01] C Titulo do campo
 						"Motivo de"							,; 	// [02] C ToolTip do campo
@@ -287,59 +289,59 @@ static function gtMdlTop()
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("ZT_CODIGO")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Motivo ate"							,; 	// [01] C Titulo do campo
-						"Motivo ate"							,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Motivo até"							,; 	// [01] C Titulo do campo
+						"Motivo até"							,; 	// [02] C ToolTip do campo
 						"MOTIVOATE"	 						,; 	// [03] C identificador (ID) do Field
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("ZT_CODIGO")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Regiao de"							,; 	// [01] C Titulo do campo
-						"Regiao de"							,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Região de"							,; 	// [01] C Titulo do campo
+						"Região de"							,; 	// [02] C ToolTip do campo
 						"REGIAODE"	 						,; 	// [03] C identificador (ID) do Field
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("A1_ZREGIAO")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Regiao ate"							,; 	// [01] C Titulo do campo
-						"Regiao ate"							,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Região até"							,; 	// [01] C Titulo do campo
+						"Região até"							,; 	// [02] C ToolTip do campo
 						"REGIAOATE"	 						,; 	// [03] C identificador (ID) do Field
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("A1_ZREGIAO")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Pedido"							,; 	// [01] C Titulo do campo
 						"Pedido"							,; 	// [02] C ToolTip do campo
@@ -347,44 +349,44 @@ static function gtMdlTop()
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("C5_NUM")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Gerencia"							,; 	// [01] C Titulo do campo
-						"Gerencia"							,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Gerência"							,; 	// [01] C Titulo do campo
+						"Gerência"							,; 	// [02] C ToolTip do campo
 						"GERENCIA"	 						,; 	// [03] C identificador (ID) do Field
 						"C" 								,; 	// [04] C Tipo do campo
 						tamSX3("ZBH_REPRES")[1]				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Classificacao"							,; 	// [01] C Titulo do campo
-						"Classificacao"							,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Classificação"							,; 	// [01] C Titulo do campo
+						"Classificação"							,; 	// [02] C ToolTip do campo
 						"CLASSE"	 						,; 	// [03] C identificador (ID) do Field
 						"C" 								,; 	// [04] C Tipo do campo
 						1				,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || .T. } 				,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || .T. } 				,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 												,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Buscar"						,; 	// [01] C Titulo do campo
 						"Buscar"						,; 	// [02] C ToolTip do campo
@@ -392,14 +394,14 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || OMDLFAT64 := FWModelActive(), buscaPv(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || OMDLFAT64 := FWModelActive(), buscaPv(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Visualizar Pedido"						,; 	// [01] C Titulo do campo
 						"Visualizar Pedido"						,; 	// [02] C ToolTip do campo
@@ -407,14 +409,14 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || visualPv(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || visualPv(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Aprovar"						,; 	// [01] C Titulo do campo
 						"Aprovar"						,; 	// [02] C ToolTip do campo
@@ -422,14 +424,14 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || OMDLFAT64 := FWModelActive(), aprovaPv(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || OMDLFAT64 := FWModelActive(), aprovaPv(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Rejeitar"						,; 	// [01] C Titulo do campo
 						"Rejeitar"						,; 	// [02] C ToolTip do campo
@@ -437,44 +439,44 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || OMDLFAT64 := FWModelActive(), motivoReje(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || OMDLFAT64 := FWModelActive(), motivoReje(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Posicao Cliente"						,; 	// [01] C Titulo do campo
-						"Posicao Cliente"						,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Posição Cliente"						,; 	// [01] C Titulo do campo
+						"Posição Cliente"						,; 	// [02] C ToolTip do campo
 						"POSICAO"	 					,; 	// [03] C identificador (ID) do Field
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || xMF10ClCon(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || xMF10ClCon(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Acomp. Cobranca"						,; 	// [01] C Titulo do campo
-						"Acomp. Cobranca"						,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Acomp. Cobrança"						,; 	// [01] C Titulo do campo
+						"Acomp. Cobrança"						,; 	// [02] C ToolTip do campo
 						"ACOMPCOB"	 					,; 	// [03] C identificador (ID) do Field
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || aRotina := {}, U_MGFFIN36(),  aRotina := {}, .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || aRotina := {}, U_MGFFIN36(),  aRotina := {}, .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Grade"						,; 	// [01] C Titulo do campo
 						"Grade"						,; 	// [02] C ToolTip do campo
@@ -482,29 +484,29 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || showGrid(), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || showGrid(), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
-	oStruct:AddField(	"Posicao Estoque"						,; 	// [01] C Titulo do campo
-						"Posicao Estoque"						,; 	// [02] C ToolTip do campo
+	oStruct:AddField(	"Posição Estoque"						,; 	// [01] C Titulo do campo
+						"Posição Estoque"						,; 	// [02] C ToolTip do campo
 						"POSESTOQUE"	 					,; 	// [03] C identificador (ID) do Field
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || StaticCall(MGFFAT13,FAT13_Saldo,), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || StaticCall(MGFFAT13,FAT13_Saldo,), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Marcar Todos"						,; 	// [01] C Titulo do campo
 						"Marcar Todos"						,; 	// [02] C ToolTip do campo
@@ -512,14 +514,14 @@ static function gtMdlTop()
 						"BT" 								,; 	// [04] C Tipo do campo
 						10									,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || marcacao(.T.), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }							,; 	// [08] B Code-block de validacao When do campo
+						{ || marcacao(.T.), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }							,; 	// [08] B Code-block de validação When do campo
 						 									,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 								,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 								,;	// [10] L Indica se o campo tem preenchimento obrigatório
 				      										,; 	// [11] B Code-block de inicializacao do campo
 						.F. 								,;	// [12] L Indica se trata de um campo chave
-						.F.		 							,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            					// [14] L Indica se o campo ï¿½ virtual
+						.F.		 							,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            					// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Desmarcar Todos"					,; 	// [01] C Titulo do campo
 						"Desmarcar Todos"					,; 	// [02] C ToolTip do campo
@@ -527,14 +529,14 @@ static function gtMdlTop()
 						"BT" 								,; 	// [04] C Tipo do campo
 						10									,; 	// [05] N Tamanho do campo
 						0 									,; 	// [06] N Decimal do campo
-						{ || marcacao(.F.), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }							,; 	// [08] B Code-block de validacao When do campo
+						{ || marcacao(.F.), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }							,; 	// [08] B Code-block de validação When do campo
 						 									,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 								,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 								,;	// [10] L Indica se o campo tem preenchimento obrigatório
 				      										,; 	// [11] B Code-block de inicializacao do campo
 						.F. 								,;	// [12] L Indica se trata de um campo chave
-						.F.		 							,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            					// [14] L Indica se o campo ï¿½ virtual
+						.F.		 							,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            					// [14] L Indica se o campo é virtual
 
 	oStruct:AddField(	"Lib Estoque"						,; 	// [01] C Titulo do campo
 						"Lib Estoque"						,; 	// [02] C ToolTip do campo
@@ -542,14 +544,14 @@ static function gtMdlTop()
 						"BT" 							,; 	// [04] C Tipo do campo
 						10								,; 	// [05] N Tamanho do campo
 						0 								,; 	// [06] N Decimal do campo
-						{ || fwMsgRun(, {|| U_MGFFAT68() }, "Processando. Aguarde...", "Selecionando Pedidos para Liberacao de Estoque..." ), .T. }			,; 	// [07] B Code-block de validacao do campo
-						{ || .T. }				,; 	// [08] B Code-block de validacao When do campo
+						{ || fwMsgRun(, {|| U_MGFFAT68() }, "Processando. Aguarde...", "Selecionando Pedidos para Liberação de Estoque..." ), .T. }			,; 	// [07] B Code-block de validação do campo
+						{ || .T. }				,; 	// [08] B Code-block de validação When do campo
 						 						,; 	// [09] A Lista de valores permitido do campo
-				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+				      	.F. 					,;	// [10] L Indica se o campo tem preenchimento obrigatório
 												,; 	// [11] B Code-block de inicializacao do campo
 						.F. 					,;	// [12] L Indica se trata de um campo chave
-						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-						.F. )  	            	// [14] L Indica se o campo ï¿½ virtual
+						.F.		 				,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+						.F. )  	            	// [14] L Indica se o campo é virtual
 return oStruct
 
 //---------------------------------------------------------
@@ -562,414 +564,414 @@ static function getVwTop()
 
 	oStruct:AddField(	"DATA"								,;	// [01] cIdField			ID do Field
 						"01"								,;	// [02] cOrdem				Ordem do campo
-						"Data"								,;	// [03] cTitulo				Titulo do campo
-						"Tipo de Data"						,;	// [04] cDescric			Descricao completa do campo
+						"Data"								,;	// [03] cTitulo				Título do campo
+						"Tipo de Data"						,;	// [04] cDescric			Descrição completa do campo
 						{}									,;	// [05] aHelp				Array com o help dos campos
 						"GET"								,;	// [06] cType               Tipo
 						""									,;	// [07] cPicture			Picture do Campo
 						{||}								,;	// [08] bPictVar			Bloco de Picture var
 						""									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.									,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						""									,;	// [11] cFolder				Id da folder onde o Field esta
-						""									,;	// [12] cGroup				Id do Group onde o field esta
-						{"Emissao", "Embarque", "Entrega"}	,;	// [13] aComboValues		Array com os valores do combo
-						NIL									,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						.T.									,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						""									,;	// [11] cFolder				Id da folder onde o Field está
+						""									,;	// [12] cGroup				Id do Group onde o field está
+						{"Emissão", "Embarque", "Entrega"}	,;	// [13] aComboValues		Array com os valores do combo
+						NIL									,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						'//'								,;	// [15] cIniBrow			Inicializador do Browse
-						.T.									,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						""									,;	// [17] cPictVar			Picture Variavel
-															,;	// [18] lInsertLine			Indica pulo de linha apos o campo
-															)	// [19] nWidth				Largura fixa da apresentacao do campo
+						.T.									,;	// [16] lVirtual			Indica se o campo é Virtual
+						""									,;	// [17] cPictVar			Picture Variável
+															,;	// [18] lInsertLine			Indica pulo de linha após o campo
+															)	// [19] nWidth				Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"DE"								,;	// [01] cIdField			ID do Field
 						"02"								,;	// [02] cOrdem				Ordem do campo
-						"De"								,;	// [03] cTitulo				Titulo do campo
-						"Data de"							,;	// [04] cDescric			Descricao completa do campo
+						"De"								,;	// [03] cTitulo				Título do campo
+						"Data de"							,;	// [04] cDescric			Descrição completa do campo
 						NIL									,;	// [05] aHelp				Array com o help dos campos
 						"D"									,;	// [06] cType               Tipo
 						NIL									,;	// [07] cPicture			Picture do Campo
 						Nil									,;	// [08] bPictVar			Bloco de Picture var
 						Nil									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.									,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil									,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL									,;	// [12] cGroup				Id do Group onde o field esta
+						.T.									,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil									,;	// [11] cFolder				Id da folder onde o Field está
+						NIL									,;	// [12] cGroup				Id do Group onde o field está
 						Nil									,;	// [13] aComboValues		Array com os valores do combo
-						NIL									,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL									,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL									,;	// [15] cIniBrow			Inicializador do Browse
-						.T.									,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL									,;	// [17] cPictVar			Picture Variavel
-						NIL	)									// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.									,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL									,;	// [17] cPictVar			Picture Variável
+						NIL	)									// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"ATE"								,;	// [01] cIdField			ID do Field
 						"03"								,;	// [02] cOrdem				Ordem do campo
-						"Ate"								,;	// [03] cTitulo				Titulo do campo
-						"Data ate"							,;	// [04] cDescric			Descricao completa do campo
+						"Até"								,;	// [03] cTitulo				Título do campo
+						"Data até"							,;	// [04] cDescric			Descrição completa do campo
 						NIL									,;	// [05] aHelp				Array com o help dos campos
 						"D"									,;	// [06] cType               Tipo
 						NIL									,;	// [07] cPicture			Picture do Campo
 						Nil									,;	// [08] bPictVar			Bloco de Picture var
 						Nil									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.									,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil									,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL									,;	// [12] cGroup				Id do Group onde o field esta
+						.T.									,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil									,;	// [11] cFolder				Id da folder onde o Field está
+						NIL									,;	// [12] cGroup				Id do Group onde o field está
 						Nil									,;	// [13] aComboValues		Array com os valores do combo
-						NIL									,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL									,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL									,;	// [15] cIniBrow			Inicializador do Browse
-						.T.									,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL									,;	// [17] cPictVar			Picture Variavel
-						NIL	)									// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.									,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL									,;	// [17] cPictVar			Picture Variável
+						NIL	)									// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"MOTIVODE"								,;	// [01] cIdField			ID do Field
 						"04"									,;	// [02] cOrdem				Ordem do campo
-						"Motivo de"								,;	// [03] cTitulo				Titulo do campo
-						"Motivo de"								,;	// [04] cDescric			Descricao completa do campo
+						"Motivo de"								,;	// [03] cTitulo				Título do campo
+						"Motivo de"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"SZT"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"MOTIVOATE"								,;	// [01] cIdField			ID do Field
 						"05"									,;	// [02] cOrdem				Ordem do campo
-						"Motivo ate"								,;	// [03] cTitulo				Titulo do campo
-						"Motivo ate"								,;	// [04] cDescric			Descricao completa do campo
+						"Motivo até"								,;	// [03] cTitulo				Título do campo
+						"Motivo até"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"SZT"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"REGIAODE"								,;	// [01] cIdField			ID do Field
 						"06"									,;	// [02] cOrdem				Ordem do campo
-						"Regiao de"								,;	// [03] cTitulo				Titulo do campo
-						"Regiao de"								,;	// [04] cDescric			Descricao completa do campo
+						"Região de"								,;	// [03] cTitulo				Título do campo
+						"Região de"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"SZP"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"REGIAOATE"								,;	// [01] cIdField			ID do Field
 						"07"									,;	// [02] cOrdem				Ordem do campo
-						"Regiao ate"								,;	// [03] cTitulo				Titulo do campo
-						"Regiao ate"								,;	// [04] cDescric			Descricao completa do campo
+						"Região até"								,;	// [03] cTitulo				Título do campo
+						"Região até"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"SZP"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"PEDIDO"								,;	// [01] cIdField			ID do Field
 						"08"									,;	// [02] cOrdem				Ordem do campo
-						"Pedido"								,;	// [03] cTitulo				Titulo do campo
-						"Pedido"								,;	// [04] cDescric			Descricao completa do campo
+						"Pedido"								,;	// [03] cTitulo				Título do campo
+						"Pedido"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"SC5"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"GERENCIA"								,;	// [01] cIdField			ID do Field
 						"09"									,;	// [02] cOrdem				Ordem do campo
-						"Gerencia"								,;	// [03] cTitulo				Titulo do campo
-						"Gerencia"								,;	// [04] cDescric			Descricao completa do campo
+						"Gerência"								,;	// [03] cTitulo				Título do campo
+						"Gerência"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						"ZBH2"									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						.T.										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						NIL										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						.T.										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL	)										// [18] lInsertLine			Indica pulo de linha apos o campo
+						.T.										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL	)										// [18] lInsertLine			Indica pulo de linha após o campo
 
 	oStruct:AddField(	"CLASSE"								,;	// [01] cIdField			ID do Field
 						"11"									,;	// [02] cOrdem				Ordem do campo
-						"Classificacao"								,;	// [03] cTitulo				Titulo do campo
-						"Classificacao"								,;	// [04] cDescric			Descricao completa do campo
+						"Classificação"								,;	// [03] cTitulo				Título do campo
+						"Classificação"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"GET"									,;	// [06] cType               Tipo
 						""									,;	// [07] cPicture			Picture do Campo
 						{||}								,;	// [08] bPictVar			Bloco de Picture var
 						""									,;	// [09] cLookup				Chave para ser usado no Looup
-						.T.									,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						""									,;	// [11] cFolder				Id da folder onde o Field esta
-						""									,;	// [12] cGroup				Id do Group onde o field esta
+						.T.									,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						""									,;	// [11] cFolder				Id da folder onde o Field está
+						""									,;	// [12] cGroup				Id do Group onde o field está
 						{"", "A", "B", "C", "D", "E"}	,;	// [13] aComboValues		Array com os valores do combo
-						NIL									,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL									,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL									,;	// [15] cIniBrow			Inicializador do Browse
-						.T.									,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						""									,;	// [17] cPictVar			Picture Variavel
-															,;	// [18] lInsertLine			Indica pulo de linha apos o campo
-															)	// [19] nWidth				Largura fixa da apresentacao do campo
+						.T.									,;	// [16] lVirtual			Indica se o campo é Virtual
+						""									,;	// [17] cPictVar			Picture Variável
+															,;	// [18] lInsertLine			Indica pulo de linha após o campo
+															)	// [19] nWidth				Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"BUSCAR"								,;	// [01] cIdField			ID do Field
 						"12"									,;	// [02] cOrdem				Ordem do campo
-						"Buscar"								,;	// [03] cTitulo				Titulo do campo
-						"Buscar"								,;	// [04] cDescric			Descricao completa do campo
+						"Buscar"								,;	// [03] cTitulo				Título do campo
+						"Buscar"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"VISUALPV"								,;	// [01] cIdField			ID do Field
 						"13"									,;	// [02] cOrdem				Ordem do campo
-						"Visualiza PV"								,;	// [03] cTitulo				Titulo do campo
-						"Visualiza PV"								,;	// [04] cDescric			Descricao completa do campo
+						"Visualiza PV"								,;	// [03] cTitulo				Título do campo
+						"Visualiza PV"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"APROVPV"								,;	// [01] cIdField			ID do Field
 						"14"									,;	// [02] cOrdem				Ordem do campo
-						"Aprovar"								,;	// [03] cTitulo				Titulo do campo
-						"Aprovar"								,;	// [04] cDescric			Descricao completa do campo
+						"Aprovar"								,;	// [03] cTitulo				Título do campo
+						"Aprovar"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"REJEITAPV"								,;	// [01] cIdField			ID do Field
 						"15"									,;	// [02] cOrdem				Ordem do campo
-						"Rejeitar"								,;	// [03] cTitulo				Titulo do campo
-						"Rejeitar"								,;	// [04] cDescric			Descricao completa do campo
+						"Rejeitar"								,;	// [03] cTitulo				Título do campo
+						"Rejeitar"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"POSICAO"								,;	// [01] cIdField			ID do Field
 						"16"									,;	// [02] cOrdem				Ordem do campo
-						"Posicao Cliente"								,;	// [03] cTitulo				Titulo do campo
-						"Posicao Cliente"								,;	// [04] cDescric			Descricao completa do campo
+						"Posição Cliente"								,;	// [03] cTitulo				Título do campo
+						"Posição Cliente"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"ACOMPCOB"								,;	// [01] cIdField			ID do Field
 						"17"									,;	// [02] cOrdem				Ordem do campo
-						"Acomp. Cobranca"								,;	// [03] cTitulo				Titulo do campo
-						"Acomp. Cobranca"								,;	// [04] cDescric			Descricao completa do campo
+						"Acomp. Cobrança"								,;	// [03] cTitulo				Título do campo
+						"Acomp. Cobrança"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"GRADE"								,;	// [01] cIdField			ID do Field
 						"18"									,;	// [02] cOrdem				Ordem do campo
-						"Grade"								,;	// [03] cTitulo				Titulo do campo
-						"Grade"								,;	// [04] cDescric			Descricao completa do campo
+						"Grade"								,;	// [03] cTitulo				Título do campo
+						"Grade"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"POSESTOQUE"								,;	// [01] cIdField			ID do Field
 						"19"									,;	// [02] cOrdem				Ordem do campo
-						"Posicao Estoque"								,;	// [03] cTitulo				Titulo do campo
-						"Posicao Estoque"								,;	// [04] cDescric			Descricao completa do campo
+						"Posição Estoque"								,;	// [03] cTitulo				Título do campo
+						"Posição Estoque"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"MARCA"									,;	// [01] cIdField			ID do Field
 						"20"									,;	// [02] cOrdem				Ordem do campo
-						"Marca Todos"							,;	// [03] cTitulo				Titulo do campo
-						"Marca Todos"							,;	// [04] cDescric			Descricao completa do campo
+						"Marca Todos"							,;	// [03] cTitulo				Título do campo
+						"Marca Todos"							,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) 										// [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"DESMARCA"								,;	// [01] cIdField			ID do Field
 						"21"									,;	// [02] cOrdem				Ordem do campo
-						"Desmarca Todos"								,;	// [03] cTitulo				Titulo do campo
-						"Desmarca Todos"								,;	// [04] cDescric			Descricao completa do campo
+						"Desmarca Todos"								,;	// [03] cTitulo				Título do campo
+						"Desmarca Todos"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 	oStruct:AddField(	"LIBESTOQ"								,;	// [01] cIdField			ID do Field
 						"22"									,;	// [02] cOrdem				Ordem do campo
-						"Lib Estoque"								,;	// [03] cTitulo				Titulo do campo
-						"Lib Estoque"								,;	// [04] cDescric			Descricao completa do campo
+						"Lib Estoque"								,;	// [03] cTitulo				Título do campo
+						"Lib Estoque"								,;	// [04] cDescric			Descrição completa do campo
 						NIL										,;	// [05] aHelp				Array com o help dos campos
 						"BT"									,;	// [06] cType               Tipo
 						NIL										,;	// [07] cPicture			Picture do Campo
 						Nil										,;	// [08] bPictVar			Bloco de Picture var
 						Nil										,;	// [09] cLookup				Chave para ser usado no Looup
-						Nil										,;	// [10] lCanChange			Logico dizendo se o campo pode ser alterado
-						Nil										,;	// [11] cFolder				Id da folder onde o Field esta
-						NIL										,;	// [12] cGroup				Id do Group onde o field esta
+						Nil										,;	// [10] lCanChange			Lógico dizendo se o campo pode ser alterado
+						Nil										,;	// [11] cFolder				Id da folder onde o Field está
+						NIL										,;	// [12] cGroup				Id do Group onde o field está
 						Nil										,;	// [13] aComboValues		Array com os valores do combo
-						NIL										,;	// [14] nMaxLenCombo		Tamanho maximo da maior opcao do combo
+						NIL										,;	// [14] nMaxLenCombo		Tamanho máximo da maior opção do combo
 						NIL										,;	// [15] cIniBrow			Inicializador do Browse
-						NIL										,;	// [16] lVirtual			Indica se o campo ï¿½ Virtual
-						NIL										,;	// [17] cPictVar			Picture Variavel
-						NIL										,;	// [18] lInsertLine			Indica pulo de linha apos o campo
+						NIL										,;	// [16] lVirtual			Indica se o campo é Virtual
+						NIL										,;	// [17] cPictVar			Picture Variável
+						NIL										,;	// [18] lInsertLine			Indica pulo de linha após o campo
 							) // [19] nWidth Indica a largura fixa da coluna do grid
 
 return oStruct
@@ -1017,14 +1019,14 @@ static function gtMdlCente()
 	'L'				, ;	// [04]  C   Tipo do campo
 	1				, ;	// [05]  N   Tamanho do campo
 	0				, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1033,14 +1035,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_FILIAL")[1]		, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1049,14 +1051,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_NUM")[1]		, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1065,14 +1067,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_TIPO")[1]		, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1081,14 +1083,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_ZTIPPED")[1]		, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1097,14 +1099,14 @@ static function gtMdlCente()
 	'D'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_EMISSAO")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1113,14 +1115,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_ZCLASSE")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1129,14 +1131,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_CLIENTE")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1145,14 +1147,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_LOJACLI")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1161,14 +1163,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_NOME")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1177,14 +1179,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_CONDPAG")[1] + tamSX3("E4_DESCRI")[1] + 3	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1193,14 +1195,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_COND")[1] + tamSX3("E4_DESCRI")[1] + 3	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1209,14 +1211,14 @@ static function gtMdlCente()
 	'N'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_LC")[1]	, ;	// [05]  N   Tamanho do campo
 	tamSX3("A1_LC")[2]						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1225,14 +1227,14 @@ static function gtMdlCente()
 	'N'						, ;	// [04]  C   Tipo do campo
 	12						, ;	// [05]  N   Tamanho do campo
 	2						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1241,14 +1243,14 @@ static function gtMdlCente()
 	'N'						, ;	// [04]  C   Tipo do campo
 	12						, ;	// [05]  N   Tamanho do campo
 	2						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 //	oStruct:AddField( 		;// Ord. Tipo Desc.
 //	""						, ;	// [01]  C   Titulo do campo
@@ -1257,14 +1259,14 @@ static function gtMdlCente()
 //	'N'						, ;	// [04]  C   Tipo do campo
 //	12						, ;	// [05]  N   Tamanho do campo
 //	2						, ;	// [06]  N   Decimal do campo
-//	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-//	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+//	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+//	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 //	 				,; 	// [09] A Lista de valores permitido do campo
-//	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+//	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 //					,; 	// [11] B Code-block de inicializacao do campo
 //	.F. 			,;	// [12] L Indica se trata de um campo chave
-//	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-//	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+//	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+//	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1273,14 +1275,14 @@ static function gtMdlCente()
 	'N'						, ;	// [04]  C   Tipo do campo
 	12						, ;	// [05]  N   Tamanho do campo
 	2						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1289,14 +1291,14 @@ static function gtMdlCente()
 	'N'						, ;	// [04]  C   Tipo do campo
 	12						, ;	// [05]  N   Tamanho do campo
 	2						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1305,14 +1307,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZBH_DESCRI")[1], ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1321,14 +1323,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_ZREGIAO")[1] + tamSX3("ZP_DESCREG")[1] + 3	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1337,14 +1339,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_ZREDE")[1] + tamSX3("ZQ_DESCR")[1] + 3  	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
@@ -1354,14 +1356,14 @@ static function gtMdlCente()
 	'D'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_ZDTEMBA")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1370,14 +1372,14 @@ static function gtMdlCente()
 	'D'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_FECENT")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1386,14 +1388,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A1_VEND")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1402,14 +1404,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A3_NOME")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1418,14 +1420,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZBH_REPRES")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1434,14 +1436,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A3_NOME")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1450,14 +1452,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZBH_DESCRI")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1466,14 +1468,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C5_VEND1")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 		;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -1482,14 +1484,14 @@ static function gtMdlCente()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("A3_NOME")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 return oStruct
 
 //---------------------------------------------------------
@@ -1500,591 +1502,591 @@ static function getVwCente()
 
 	oStruct:AddField(	"C5_ZSELECT"												,;	// [01]  C   Nome do Campo
 					"01"															,;	// [02]  C   Ordem
-					"Selecao"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Selecao"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Seleção"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Seleção"														,;	// [04]  C   Descricao do campo//"Descrição"
 					{}																,;	// [05]  A   Array com Help
 					"L"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					{||}															,;	// [08]  B   Bloco de Picture Var
 					""																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					""																,;	// [11]  C   Pasta do campo
 					""																,;	// [12]  C   Agrupamento do campo
 																					,;	// [13]  A   Lista de valores permitido do campo (Combo)
-																					,;	// [14]  N   Tamanho maximo da maior opcao do combo
+																					,;	// [14]  N   Tamanho maximo da maior opção do combo
 					".F."															,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					""																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					30)																	// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					30)																	// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_FILIAL"												,;	// [01]  C   Nome do Campo
 					"02"															,;	// [02]  C   Ordem
-					"Filial"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Filial"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Filial"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Filial"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_NUM"												,;	// [01]  C   Nome do Campo
 					"03"															,;	// [02]  C   Ordem
-					"Pedido"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Pedido"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Pedido"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Pedido"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_TIPO"												,;	// [01]  C   Nome do Campo
 					"04"															,;	// [02]  C   Ordem
-					"Tipo"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Tipo"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Tipo"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Tipo"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					30)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					30)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_ZTIPPED"												,;	// [01]  C   Nome do Campo
 					"05"															,;	// [02]  C   Ordem
-					"Especie"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Especie"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Espécie"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Espécie"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					30)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					30)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_EMISSAO"												,;	// [01]  C   Nome do Campo
 					"06"															,;	// [02]  C   Ordem
-					"Emissao"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Emissao"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Emissão"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Emissão"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"D"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"A1_ZCLASSE"												,;	// [01]  C   Nome do Campo
 					"07"															,;	// [02]  C   Ordem
-					"Classificacao"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Classificacao"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Classificação"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Classificação"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_CLIENTE"												,;	// [01]  C   Nome do Campo
 					"08"															,;	// [02]  C   Ordem
-					"Cod Cli"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cod Cli"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cod Cli"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cod Cli"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C5_LOJACLI"												,;	// [01]  C   Nome do Campo
 					"09"															,;	// [02]  C   Ordem
-					"Loja Cli"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Loja Cli"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Loja Cli"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Loja Cli"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					30)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					30)												// [19]	 N	 Largura fixa da apresentação do campo
 
 
 	oStruct:AddField(	"A1_NOME"												,;	// [01]  C   Nome do Campo
 					"10"															,;	// [02]  C   Ordem
-					"Cliente"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cliente"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cliente"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cliente"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					200)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					200)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"NOMEGERENC"												,;	// [01]  C   Nome do Campo
 					"11"															,;	// [02]  C   Ordem
-					"Nome Gerencia"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Nome Gerencia"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Nome Gerência"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Nome Gerência"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C5_CONDPAG"												,;	// [01]  C   Nome do Campo
 					"12"															,;	// [02]  C   Ordem
-					"Cond. Pgto."														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cond. Pgto."														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cond. Pgto."														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cond. Pgto."														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"A1_COND"												,;	// [01]  C   Nome do Campo
 					"13"															,;	// [02]  C   Ordem
-					"Cond. Pgto. Cli."														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cond. Pgto. Cli."														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cond. Pgto. Cli."														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cond. Pgto. Cli."														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"VLRPEDIDO"													,;	// [01]  C   Nome do Campo
 					"14"															,;	// [02]  C   Ordem
-					"Vlr. Pedido"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Vlr. Pedido"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Vlr. Pedido"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Vlr. Pedido"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"											,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"A1_LC"												,;	// [01]  C   Nome do Campo
 					"15"															,;	// [02]  C   Ordem
-					"Vlr. LC."														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Vlr. LC."														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Vlr. LC."														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Vlr. LC."														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"LIMDISP"													,;	// [01]  C   Nome do Campo
 					"16"															,;	// [02]  C   Ordem
-					"Disponï¿½vel"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Disponï¿½vel"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Disponível"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Disponível"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 //	oStruct:AddField(	"LIMITESUPE"													,;	// [01]  C   Nome do Campo
 //					"14"															,;	// [02]  C   Ordem
-//					"Limite Superado"														,;	// [03]  C   Titulo do campo//"Descricao"
-//					"Limite Superado"														,;	// [04]  C   Descricao do campo//"Descricao"
+//					"Limite Superado"														,;	// [03]  C   Titulo do campo//"Descrição"
+//					"Limite Superado"														,;	// [04]  C   Descricao do campo//"Descrição"
 //					NIL																,;	// [05]  A   Array com Help
 //					"N"																,;	// [06]  C   Tipo do campo
 //					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 //					NIL																,;	// [08]  B   Bloco de Picture Var
 //					NIL																,;	// [09]  C   Consulta F3
-//					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+//					.T.																,;	// [10]  L   Indica se o campo é alteravel
 //					NIL																,;	// [11]  C   Pasta do campo
 //					NIL																,;	// [12]  C   Agrupamento do campo
 //					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-//					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+//					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 //					NIL																,;	// [15]  C   Inicializador de Browse
-//					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+//					.T.																,;	// [16]  L   Indica se o campo é virtual
 //					NIL																,;	// [17]  C   Picture Variavel
-//					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+//					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"TITATRASO"													,;	// [01]  C   Nome do Campo
 					"17"															,;	// [02]  C   Ordem
-					"Atraso"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Atraso"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Atraso"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Atraso"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"SALDORA"													,;	// [01]  C   Nome do Campo
 					"18"															,;	// [02]  C   Ordem
-					"Adiantamento"											,;	// [03]  C   Titulo do campo//"Descricao"
-					"Adiantamento"											,;	// [04]  C   Descricao do campo//"Descricao"
+					"Adiantamento"											,;	// [03]  C   Titulo do campo//"Descrição"
+					"Adiantamento"											,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"SEGMENTO"												,;	// [01]  C   Nome do Campo
 					"19"															,;	// [02]  C   Ordem
-					"Segmento"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Segmento"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Segmento"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Segmento"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 
 	oStruct:AddField(	"A1_ZREGIAO"											,;	// [01]  C   Nome do Campo
 					"20"															,;	// [02]  C   Ordem
-					"Regiao"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Regiao"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Região"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Região"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"A1_ZREDE"												,;	// [01]  C   Nome do Campo
 					"21"															,;	// [02]  C   Ordem
-					"Rede"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Rede"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Rede"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Rede"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C5_ZDTEMBA"												,;	// [01]  C   Nome do Campo
 					"22"															,;	// [02]  C   Ordem
-					"Embarque"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Embarque"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Embarque"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Embarque"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"D"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C5_FECENT"												,;	// [01]  C   Nome do Campo
 					"23"															,;	// [02]  C   Ordem
-					"Entrega"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Entrega"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Entrega"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Entrega"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"D"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"A1_VEND"												,;	// [01]  C   Nome do Campo
 					"24"															,;	// [02]  C   Ordem
-					"Cod. Repres."															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cod. Repres."															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cod. Repres."															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cod. Repres."															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"A3_NOME"												,;	// [01]  C   Nome do Campo
 					"25"															,;	// [02]  C   Ordem
-					"Nome Repres."															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Nome Repres."															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Nome Repres."															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Nome Repres."															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"ZBH_REPRES"												,;	// [01]  C   Nome do Campo
 					"26"															,;	// [02]  C   Ordem
-					"Gerencia"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Gerencia"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Gerência"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Gerência"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"ZBH_DESCRI"												,;	// [01]  C   Nome do Campo
 					"27"															,;	// [02]  C   Ordem
-					"Depto."															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Depto."															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Depto."															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Depto."															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C5_VEND1"												,;	// [01]  C   Nome do Campo
 					"28"															,;	// [02]  C   Ordem
-					"Cod. Repres. Pedido"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cod. Repres. Pedido"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cod. Repres. Pedido"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cod. Repres. Pedido"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"VENDPED"												,;	// [01]  C   Nome do Campo
 					"29"															,;	// [02]  C   Ordem
-					"Representante Pedido"															,;	// [03]  C   Titulo do campo//"Descricao"
-					"Representante Pedido"															,;	// [04]  C   Descricao do campo//"Descricao"
+					"Representante Pedido"															,;	// [03]  C   Titulo do campo//"Descrição"
+					"Representante Pedido"															,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 return oStruct
 
 //---------------------------------------------------------
@@ -2142,14 +2144,14 @@ static function gtMdlDown()
 	'L'				, ;	// [04]  C   Tipo do campo
 	1				, ;	// [05]  N   Tamanho do campo
 	0				, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2158,14 +2160,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_FILIAL")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2174,14 +2176,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZV_CODRGA")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2190,14 +2192,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZT_DESCRI")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2206,14 +2208,14 @@ static function gtMdlDown()
 	'D'						, ;	// [04]  C   Tipo do campo
 	tamSX3("ZV_DTBLQ")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2222,14 +2224,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_ITEM")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2238,14 +2240,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_NUM")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2254,14 +2256,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_PRODUTO")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2270,14 +2272,14 @@ static function gtMdlDown()
 	'C'						, ;	// [04]  C   Tipo do campo
 	tamSX3("B1_DESC")[1]	, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
@@ -2287,14 +2289,14 @@ static function gtMdlDown()
 	'N'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_QTDVEN")[1]	, ;	// [05]  N   Tamanho do campo
 	tamSX3("C6_QTDVEN")[2]	, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2303,14 +2305,14 @@ static function gtMdlDown()
 	'N'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_PRCVEN")[1]	, ;	// [05]  N   Tamanho do campo
 	tamSX3("C6_PRCVEN")[2]	, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2319,14 +2321,14 @@ static function gtMdlDown()
 	'N'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_PRUNIT")[1]	, ;	// [05]  N   Tamanho do campo
 	tamSX3("C6_PRUNIT")[2]	, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 	oStruct:AddField( 	;// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -2335,14 +2337,14 @@ static function gtMdlDown()
 	'N'						, ;	// [04]  C   Tipo do campo
 	tamSX3("C6_VALOR")[1]	, ;	// [05]  N   Tamanho do campo
 	tamSX3("C6_VALOR")[2]	, ;	// [06]  N   Decimal do campo
-	{ || .T. } 		,; 	// [07] B Code-block de validacao do campo
-	{ || .T. }		,; 	// [08] B Code-block de validacao When do campo
+	{ || .T. } 		,; 	// [07] B Code-block de validação do campo
+	{ || .T. }		,; 	// [08] B Code-block de validação When do campo
 	 				,; 	// [09] A Lista de valores permitido do campo
-	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatï¿½rio
+	.F. 			,;	// [10] L Indica se o campo tem preenchimento obrigatório
 					,; 	// [11] B Code-block de inicializacao do campo
 	.F. 			,;	// [12] L Indica se trata de um campo chave
-	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operacao de update.
-	.F. )  	           	// [14] L Indica se o campo ï¿½ virtual
+	.F.		 		,; 	// [13] L Indica se o campo pode receber valor em uma operação de update.
+	.F. )  	           	// [14] L Indica se o campo é virtual
 
 return oStruct
 
@@ -2354,263 +2356,263 @@ static function getVwDown()
 
 	oStruct:AddField(	"C6_ZSELECT"												,;	// [01]  C   Nome do Campo
 					"01"															,;	// [02]  C   Ordem
-					"Selecao"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Selecao"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Seleção"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Seleção"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"L"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					".F."															,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					30)																	// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					30)																	// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C6_FILIAL"												,;	// [01]  C   Nome do Campo
 					"02"															,;	// [02]  C   Ordem
-					"Filial"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Filial"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Filial"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Filial"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 
 	oStruct:AddField(	"C6_NUM"												,;	// [01]  C   Nome do Campo
 					"03"															,;	// [02]  C   Ordem
-					"Pedido"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Pedido"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Pedido"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Pedido"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C6_ITEM"												,;	// [01]  C   Nome do Campo
 					"04"															,;	// [02]  C   Ordem
-					"Item"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Item"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Item"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Item"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C6_PRODUTO"												,;	// [01]  C   Nome do Campo
 					"05"															,;	// [02]  C   Ordem
-					"Produto"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Produto"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Produto"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Produto"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"B1_DESC"												,;	// [01]  C   Nome do Campo
 					"06"															,;	// [02]  C   Ordem
-					"Descricao do Produto"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Descricao do Produto"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Descrição do Produto"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Descrição do Produto"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					200)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					200)												// [19]	 N	 Largura fixa da apresentação do campo
 
 
 	oStruct:AddField(	"ZV_CODRGA"													,;	// [01]  C   Nome do Campo
 					"07"															,;	// [02]  C   Ordem
-					"Cï¿½d.Bloq."														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Cï¿½d.Bloq."														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Cód.Bloq."														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Cód.Bloq."														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					60)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					60)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"ZT_DESCRI"													,;	// [01]  C   Nome do Campo
 					"08"															,;	// [02]  C   Ordem
-					"Bloqueio"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Bloqueio"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Bloqueio"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Bloqueio"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"C"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					200)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					200)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"ZV_DTBLQ"													,;	// [01]  C   Nome do Campo
 					"09"															,;	// [02]  C   Ordem
-					"Dt. Bloq."														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Dt. Bloq."														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Dt. Bloq."														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Dt. Bloq."														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"D"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																)	// [18]  L   Indica pulo de linha apos o campo
+					NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruct:AddField(	"C6_QTDVEN"												,;	// [01]  C   Nome do Campo
 					"10"															,;	// [02]  C   Ordem
-					"Quantidade"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Quantidade"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Quantidade"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Quantidade"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					""																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C6_PRCVEN"												,;	// [01]  C   Nome do Campo
 					"11"															,;	// [02]  C   Ordem
-					"Prc Unitario"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Prc Unitario"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Prc Unitario"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Prc Unitario"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C6_PRUNIT"												,;	// [01]  C   Nome do Campo
 					"12"															,;	// [02]  C   Ordem
-					"Prc Lista"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Prc Lista"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Prc Lista"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Prc Lista"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 
 	oStruct:AddField(	"C6_VALOR"												,;	// [01]  C   Nome do Campo
 					"13"															,;	// [02]  C   Ordem
-					"Total"														,;	// [03]  C   Titulo do campo//"Descricao"
-					"Total"														,;	// [04]  C   Descricao do campo//"Descricao"
+					"Total"														,;	// [03]  C   Titulo do campo//"Descrição"
+					"Total"														,;	// [04]  C   Descricao do campo//"Descrição"
 					NIL																,;	// [05]  A   Array com Help
 					"N"																,;	// [06]  C   Tipo do campo
 					"@E 9,999,999,999.99"																,;	// [07]  C   Picture
 					NIL																,;	// [08]  B   Bloco de Picture Var
 					NIL																,;	// [09]  C   Consulta F3
-					.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+					.T.																,;	// [10]  L   Indica se o campo é alteravel
 					NIL																,;	// [11]  C   Pasta do campo
 					NIL																,;	// [12]  C   Agrupamento do campo
 					NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-					NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+					NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 					NIL																,;	// [15]  C   Inicializador de Browse
-					.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+					.T.																,;	// [16]  L   Indica se o campo é virtual
 					NIL																,;	// [17]  C   Picture Variavel
-					NIL																,;	// [18]  L   Indica pulo de linha apos o campo
-					100)												// [19]	 N	 Largura fixa da apresentacao do campo
+					NIL																,;	// [18]  L   Indica pulo de linha após o campo
+					100)												// [19]	 N	 Largura fixa da apresentação do campo
 return oStruct
 
 //---------------------------------------------------------
@@ -2890,7 +2892,8 @@ static function runBuscaPv()
 	cQrySC5 += "  	AND	SA3CLI.D_E_L_E_T_	=	' '" 						+ CRLF
 	cQrySC5 += " LEFT JOIN "	+ retSQLName("ZBJ") + " ZBJ" 				+ CRLF
 	cQrySC5 += " ON" 														+ CRLF
-	cQrySC5 += "         ZBJ.ZBJ_LOJA	=	SA1.A1_LOJA" 					+ CRLF
+	cQrySC5 += "        ZBJ.ZBJ_REPRES		=	SA1.A1_VEND "				+ CRLF
+	cQrySC5 += "     AND ZBJ.ZBJ_LOJA	=	SA1.A1_LOJA" 					+ CRLF
 	cQrySC5 += "     AND ZBJ.ZBJ_CLIENT	=	SA1.A1_COD" 					+ CRLF
 	cQrySC5 += "     AND ZBJ.ZBJ_FILIAL	=	'" + xFilial("ZBJ") + "'" 		+ CRLF
 	cQrySC5 += "     AND ZBJ.D_E_L_E_T_	= 	' '" 							+ CRLF
@@ -2907,7 +2910,8 @@ static function runBuscaPv()
 	endif
 
 	cQrySC5 += " ON" 														+ CRLF
-	cQrySC5 += "         ZBH.ZBH_CODIGO		=	ZBI.ZBI_SUPERV" 			+ CRLF
+	
+	cQrySC5 += "     ZBH.ZBH_CODIGO		    =	ZBI.ZBI_SUPERV" 			+ CRLF
 	cQrySC5 += "     AND ZBH.ZBH_REGION		=	ZBI.ZBI_REGION" 			+ CRLF
 	cQrySC5 += "     AND ZBH.ZBH_TATICA		=	ZBI.ZBI_TATICA" 			+ CRLF
 	cQrySC5 += "     AND ZBH.ZBH_NACION		=	ZBI.ZBI_NACION" 			+ CRLF
@@ -2926,7 +2930,7 @@ static function runBuscaPv()
 	// Pedido de Rede
 	cQrySC5 += " 	AND	SC5.C5_XREDE	<>	'S'"	+ CRLF
 
-	if upper( allTrim( oMdlTop:getValue("DATA") ) ) == "EMISSï¿½O"
+	if upper( allTrim( oMdlTop:getValue("DATA") ) ) == "EMISSÃO"
 		if !empty( oMdlTop:getValue("DE") )
 			cQrySC5 += " 	AND	SC5.C5_EMISSAO >= '" + dToS( oMdlTop:getValue("DE") ) + "'" + CRLF
 		endif
@@ -3130,6 +3134,7 @@ static function runBuscaPv()
 	cQrySC5 += " LEFT JOIN "	+ retSQLName("ZBJ") + " ZBJ" 				+ CRLF
 	cQrySC5 += " ON" 														+ CRLF
 	cQrySC5 += "         ZBJ.ZBJ_LOJA	=	SA1.A1_LOJA" 					+ CRLF
+	cQrySC5 += "     AND ZBJ.ZBJ_REPRES	=	SA1.A1_VEND" 					+ CRLF
 	cQrySC5 += "     AND ZBJ.ZBJ_CLIENT	=	SA1.A1_COD" 					+ CRLF
 	cQrySC5 += "     AND ZBJ.ZBJ_FILIAL	=	'" + xFilial("ZBJ") + "'" 		+ CRLF
 	cQrySC5 += "     AND ZBJ.D_E_L_E_T_	= 	' '" 							+ CRLF
@@ -3164,7 +3169,7 @@ static function runBuscaPv()
 	//cQrySC5 += " 	AND	SC5.D_E_L_E_T_	<>	'*'" + CRLF
 	cQrySC5 += " 		SC5.D_E_L_E_T_	=	' '" + CRLF
 
-	if upper( allTrim( oMdlTop:getValue("DATA") ) ) == "EMISSï¿½O"
+	if upper( allTrim( oMdlTop:getValue("DATA") ) ) == "EMISSÃO"
 		if !empty( oMdlTop:getValue("DE") )
 			cQrySC5 += " 	AND	SC5.C5_EMISSAO >= '" + dToS( oMdlTop:getValue("DE") ) + "'" + CRLF
 		endif
@@ -3284,7 +3289,7 @@ static function runBuscaPv()
 				QRYSC5->(DBSkip())
 			enddo
 
-			//if !isInCallStack ( "rejeitaPV" ) .AND. !isInCallStack ( "aprovaPV" ) // Quando usuario estiver aprovando/rejeitando nao altera posicionamento da tela
+			//if !isInCallStack ( "rejeitaPV" ) .AND. !isInCallStack ( "aprovaPV" ) // Quando usuário estiver aprovando/rejeitando não altera posicionamento da tela
 				oMdlDown:GoLine(1)
 			//endif
 		enddo
@@ -3292,7 +3297,7 @@ static function runBuscaPv()
 
 	QRYSC5->(DBCloseArea())
 
-	if !isInCallStack ( "rejeitaPV" ) .AND. !isInCallStack ( "aprovaPV" ) // Quando usuario estiver aprovando/rejeitando nao altera posicionamento da tela
+	if !isInCallStack ( "rejeitaPV" ) .AND. !isInCallStack ( "aprovaPV" ) // Quando usuário estiver aprovando/rejeitando não altera posicionamento da tela
 		oMdlCenter:GoLine(1)
 	endif
 
@@ -3388,7 +3393,7 @@ static function visualPv()
 	private aRotina := {	{ "Pesquisar"	, "PesqBrw"		, 0 , 1 , 0 , .F. },;	// "Pesquisar"
 							{ "Visualizar"	, "A410Visual"	, 0 , 2 , 0 , NIL },;	// "Visualizar"
 							{ "Liberar"		, "A440Libera"	, 0 , 6 , 0 , NIL },;	// "Liberar"
-							{ "Automatico"	, "A440Automa"	, 0 , 0 , 0 , NIL },;	// "Automatico"
+							{ "Automatico"	, "A440Automa"	, 0 , 0 , 0 , NIL },;	// "Autom tico"
 							{ "Legenda"		, "A410Legend"	, 0 , 0 , 0 , .F. }}	// "Legenda"
 
 	if !oMdlCenter:isEmpty()
@@ -3447,7 +3452,7 @@ static function aprovaPv( lAprovEst, aItemLib )
 	if lAprovEst
 		if len(aItemLib) > 0
 			_aRegProc := aClone( aItemLib )
-			processa( { || xMF10AtSZV( .T. ) }, "Aguarde...", "Processando a Liberacao...", .F. )
+			processa( { || xMF10AtSZV( .T. ) }, "Aguarde...", "Processando a Liberação...", .F. )
 
 			If Len(_aPedTau) > 0
 				StartJob( "U_xM64PRC", GetEnvServer(), .F., _aPedTau )
@@ -3466,8 +3471,8 @@ static function aprovaPv( lAprovEst, aItemLib )
 		next
 
 		if len(_aRegProc) > 0
-			if aviso("Liberacao", "Sera realizada a LIBERACAO de todos os itens marcados. Deseja Continuar?", { "Continuar", "Cancelar" }, 1) == 1
-				processa({|| xMF10AtSZV(.T.)},"Aguarde...","Processando a Liberacao...",.F.)
+			if aviso("Liberação", "Será realizada a LIBERAÇÃO de todos os itens marcados. Deseja Continuar?", { "Continuar", "Cancelar" }, 1) == 1
+				processa({|| xMF10AtSZV(.T.)},"Aguarde...","Processando a Liberação...",.F.)
 
 				If Len(_aPedTau) > 0
 					StartJob( "U_xM64PRC", GetEnvServer(), .F., _aPedTau )
@@ -3478,7 +3483,7 @@ static function aprovaPv( lAprovEst, aItemLib )
 			// Realiza nova busca e preenchidmento dos grids apos a aprovacao
 			buscaPV()
 		else
-			alert('Nao foi selecionado nenhum registro para liberacao!')
+			alert('Não foi selecionado nenhum registro para liberação!')
 		endif
 
 		FWRestRows( aSaveLines )
@@ -3508,14 +3513,14 @@ static function rejeitaPv()
 	next
 
 	if len(_aRegProc) > 0
-		if aviso("Rejeicao", "Sera realizada a REJEICAO de todos os itens marcados. Deseja Continuar?", { "Continuar", "Cancelar" }, 1) == 1
-			processa( { || xMF10AtSZV( .F. ) }, "Aguarde...", "Processando a Rejeicao...", .F. )
+		if aviso("Rejeição", "Será realizada a REJEIÇÃO de todos os itens marcados. Deseja Continuar?", { "Continuar", "Cancelar" }, 1) == 1
+			processa( { || xMF10AtSZV( .F. ) }, "Aguarde...", "Processando a Rejeição...", .F. )
 		endif
 
 		// Realiza nova busca e preenchidmento dos grids apos a aprovacao
 		buscaPV()
 	else
-		alert('Nao foi selecionado nenhum registro rejeicao!')
+		alert('Não foi selecionado nenhum registro rejeição!')
 	endif
 
 	FWRestRows( aSaveLines )
@@ -3527,11 +3532,11 @@ return
 Programa............: xMF10AtSZV
 Autor...............: Joni Lima
 Data................: 18/10/2016
-Descricao / Objetivo: Percorre os Browse executando Liberacao do Pedido ou Rejeicao
+Descrição / Objetivo: Percorre os Browse executando Liberação do Pedido ou Rejeição
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Varredura dos Browses para Liberacao
+Uso.................: Marfrig
+Obs.................: Realiza Varredura dos Browses para Liberação
 =====================================================================================
 */
 Static Function xMF10AtSZV(lLibera)
@@ -3567,7 +3572,7 @@ Static Function xMF10AtSZV(lLibera)
 			SC5->(dbSetOrder(1))//C5_FILIAL + C5_NUM
 			If SC5->(dbSeek(_aRegProc[ni,1] + _aRegProc[ni,2]))
 
-				//Liberacao do WebService
+				//Liberação do WebService
 				If xLibWS( _aRegProc[nI, 2] )
 					RecLock('SC5',.F.)
 					SC5->C5_ZCONWS := 'S'
@@ -3576,10 +3581,10 @@ Static Function xMF10AtSZV(lLibera)
 
 				lLib := !(xMF10ExiB(_aRegProc[ni,1],_aRegProc[ni,2]))
 
-				//Realiza Liberacao ou bloqueio
+				//Realiza Liberação ou bloqueio
 				RecLock('SC5',.F.)
 
-				If lLib //Liberacao
+				If lLib //Liberação
 					lEnv := SC5->C5_ZBLQRGA <> 'L'
 					SC5->C5_ZBLQRGA := 'L'
 					SC5->C5_ZLIBENV := 'S'
@@ -3615,7 +3620,7 @@ Static Function xMF10AtSZV(lLibera)
 	Next ni
 
 	If !Empty(cMsg)
-		AVISO("Bloqueios sem Classificacao", cMsg, { "OK" }, 3)
+		AVISO("Bloqueios sem Classificação", cMsg, { "OK" }, 3)
 	EndIf
 
 	RestArea(aAreaSC5)
@@ -3628,11 +3633,11 @@ Return
 Programa............: xMF10VerCl
 Autor...............: Joni Lima
 Data................: 28/11/2016
-Descricao / Objetivo: Realiza a Verificacao de classificacao de Perda
+Descrição / Objetivo: Realiza a Verificação de classificação de Perda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Retorna se existe e uma descricao do problema.
+Uso.................: Marfrig
+Obs.................: Retorna se existe e uma descrição do problema.
 =====================================================================================
 */
 Static Function xMF10VerCl(cxFil,cPedido,cItem,cRegra)
@@ -3643,7 +3648,7 @@ Static Function xMF10VerCl(cxFil,cPedido,cItem,cRegra)
 	If Empty(Posicione('SZV',1,cxFil + cPedido + cItem + cRegra,'ZV_CODPER'))
 		lRet := .F.
 		cRet := 'Filial: ' + cxFil + ', Pedido: ' + cPedido + ', Item: ' + cItem + ', Regra: ' + cRegra  + CRLF
-		cRet += 'Bloqueio esta sem Classificacao de Perda, Favor Classificar'
+		cRet += 'Bloqueio esta sem Classificação de Perda, Favor Classificar'
 	EndIf
 
 Return {lRet,cRet}
@@ -3653,11 +3658,11 @@ Return {lRet,cRet}
 Programa............: xMF10LbRj
 Autor...............: Joni Lima
 Data................: 14/10/2016
-Descricao / Objetivo: Realiza a liberacao do Item
+Descrição / Objetivo: Realiza a liberação do Item
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: altera a tabela SZV a aprovacao do Bloqueio
+Uso.................: Marfrig
+Obs.................: altera a tabela SZV a aprovação do Bloqueio
 =====================================================================================
 */
 static Function xMF10LbRj(cFilPed, cPedido,cItem,cReg,cAprov,lLib)
@@ -3691,7 +3696,7 @@ static Function xMF10LbRj(cFilPed, cPedido,cItem,cReg,cAprov,lLib)
 				cUpdSZV += " 	AND	D_E_L_E_T_	=	' '"						+ CRLF
 
 				if tcSQLExec( cUpdSZV ) < 0
-					conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 				endif
 
 				sfaZC5( cFilPed, cPedido )
@@ -3715,7 +3720,7 @@ static Function xMF10LbRj(cFilPed, cPedido,cItem,cReg,cAprov,lLib)
 				cUpdSZV += " 	AND	D_E_L_E_T_	=	' '"						+ CRLF
 
 				if tcSQLExec( cUpdSZV ) < 0
-					conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 				endif
 			endif
 
@@ -3776,7 +3781,7 @@ static Function xMF10LbRj(cFilPed, cPedido,cItem,cReg,cAprov,lLib)
 						cUpdSZV += " 	AND	D_E_L_E_T_	=	' '"						+ CRLF
 
 						if tcSQLExec( cUpdSZV ) < 0
-							conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+							conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 						endif
 
 						sfaZC5( cFilPed, cPedido )
@@ -3800,7 +3805,7 @@ static Function xMF10LbRj(cFilPed, cPedido,cItem,cReg,cAprov,lLib)
 						cUpdSZV += " 	AND	D_E_L_E_T_	=	' '"						+ CRLF
 
 						if tcSQLExec( cUpdSZV ) < 0
-							conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+							conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 						endif
 					endif
 
@@ -3896,11 +3901,11 @@ return lCont
 Programa............: xMF10ExiB
 Autor...............: Joni Lima
 Data................: 14/10/2016
-Descricao / Objetivo: Verifica se existe bloqueio nao aprovado para o pedido
+Descrição / Objetivo: Verifica se existe bloqueio não aprovado para o pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica na se existe bloqueio para o pedido SZV sem Data de aprovacao
+Uso.................: Marfrig
+Obs.................: Verifica na se existe bloqueio para o pedido SZV sem Data de aprovação
 =====================================================================================
 */
 static Function xMF10ExiB(cxFil,cPedido)
@@ -3994,11 +3999,11 @@ return
 Programa............: xMF10ClCon
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Chama rotina de posicao do Cliente
+Descrição / Objetivo: Chama rotina de posição do Cliente
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a visualizacao das consultas dos clientes
+Uso.................: Marfrig
+Obs.................: Faz a visualização das consultas dos clientes
 =====================================================================================
 */
 static Function xMF10ClCon()
@@ -4015,7 +4020,7 @@ static Function xMF10ClCon()
 	Private aRotina := {	{"Pesquisar","PesqBrw"		, 0 , 1 , 0 , .F.},;	// "Pesquisar"
 	{"Visualizar","A410Visual"	, 0 , 2 , 0 , NIL},;	// "Visualizar"
 	{"Liberar","A440Libera"		, 0 , 6 , 0 , NIL},;	// "Liberar"
-	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Automatico"
+	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Autom tico"
 	{"Legenda","A410Legend"		, 0 , 0 , 0 , .F.}}		// "Legenda"
 
 	DBSelectArea('SA1')
@@ -4057,7 +4062,7 @@ static function showGrid()
 		enddo
 
 		//-------------------------------------------------------------
-		// Tela de selecao da Oportunidade
+		// Tela de seleção da Oportunidade
 		//-------------------------------------------------------------
 		DEFINE MSDIALOG oDlgGrid TITLE 'Grade de Entrega' FROM aCoors[1]/2, aCoors[2]/2 TO aCoors[3]/2, aCoors[4]/2 PIXEL //STYLE DS_MODALFRAME
 			oFwBrow := fwBrowse():New()
@@ -4069,37 +4074,37 @@ static function showGrid()
 
 			oFwBrow:addColumn({"Grade"		, {||aGrade[oFwBrow:nAt,1]}		, "C", pesqPict("ZDQ","ZDQ_GRADE")	, 1, tamSx3("ZDQ_GRADE")[1]/2	,, .F.})
 			oFwBrow:addColumn({"Segunda"	, {||aGrade[oFwBrow:nAt,2]}		, "C", pesqPict("ZDQ","ZDQ_SEGUND")	, 1, tamSx3("ZDQ_SEGUND")[1]	,, .F.})
-			oFwBrow:addColumn({"Terca"		, {||aGrade[oFwBrow:nAt,3]}		, "C", pesqPict("ZDQ","ZDQ_TERCA")	, 1, tamSx3("ZDQ_TERCA")[1]		,, .F.})
+			oFwBrow:addColumn({"Terça"		, {||aGrade[oFwBrow:nAt,3]}		, "C", pesqPict("ZDQ","ZDQ_TERCA")	, 1, tamSx3("ZDQ_TERCA")[1]		,, .F.})
 			oFwBrow:addColumn({"Quarta"		, {||aGrade[oFwBrow:nAt,4]}		, "C", pesqPict("ZDQ","ZDQ_QUARTA")	, 1, tamSx3("ZDQ_QUARTA")[1]	,, .F.})
 			oFwBrow:addColumn({"Quinta"		, {||aGrade[oFwBrow:nAt,5]}		, "C", pesqPict("ZDQ","ZDQ_QUINTA")	, 1, tamSx3("ZDQ_QUINTA")[1]	,, .F.})
 			oFwBrow:addColumn({"Sexta"		, {||aGrade[oFwBrow:nAt,6]}		, "C", pesqPict("ZDQ","ZDQ_SEXTA")	, 1, tamSx3("ZDQ_SEXTA")[1]		,, .F.})
 
 	/* add(Column
-	[n][01] Titulo da coluna
+	[n][01] Título da coluna
 	[n][02] Code-Block de carga dos dados
 	[n][03] Tipo de dados
-	[n][04] Mascara
+	[n][04] Máscara
 	[n][05] Alinhamento (0=Centralizado, 1=Esquerda ou 2=Direita)
 	[n][06] Tamanho
 	[n][07] Decimal
-	[n][08] Indica se permite a edicao
-	[n][09] Code-Block de validacao da coluna apos a edicao
+	[n][08] Indica se permite a edição
+	[n][09] Code-Block de validação da coluna após a edição
 	[n][10] Indica se exibe imagem
-	[n][11] Code-Block de execucao do duplo clique
-	[n][12] Variavel a ser utilizada na edicao (ReadVar)
-	[n][13] Code-Block de execucao do clique no header
-	[n][14] Indica se a coluna esta deletada
-	[n][15] Indica se a coluna sera exibida nos detalhes do Browse
-	[n][16] Opcoes de carga dos dados (Ex: 1=Sim, 2=Nao)
+	[n][11] Code-Block de execução do duplo clique
+	[n][12] Variável a ser utilizada na edição (ReadVar)
+	[n][13] Code-Block de execução do clique no header
+	[n][14] Indica se a coluna está deletada
+	[n][15] Indica se a coluna será exibida nos detalhes do Browse
+	[n][16] Opções de carga dos dados (Ex: 1=Sim, 2=Não)
 	[n][17] Id da coluna
-	[n][18] Indica se a coluna ï¿½ virtual
+	[n][18] Indica se a coluna é virtual
 	*/
 
 			oFwBrow:activate(.T.)
 
 		ACTIVATE MSDIALOG oDlgGrid CENTER
 	else
-		msgAlert("Nao foi cadastrada Grade de Entrega")
+		msgAlert("Não foi cadastrada Grade de Entrega")
 	endif
 
 	QRYZDQ->(DBCloseArea())
@@ -4142,13 +4147,13 @@ static function motivoReje()
 
 	cMotivoRej := ""
 
-	DEFINE MSDIALOG oDlg TITLE 'Motivo de Rejeicao' FROM  aCoors[1]/2, aCoors[2]/2 TO aCoors[3]/2-100, aCoors[4]/2-150 PIXEL STYLE DS_MODALFRAME
+	DEFINE MSDIALOG oDlg TITLE 'Motivo de Rejeição' FROM  aCoors[1]/2, aCoors[2]/2 TO aCoors[3]/2-100, aCoors[4]/2-150 PIXEL STYLE DS_MODALFRAME
 
 		@ 025, 005 SAY oSay2 PROMPT "Motivo:"							SIZE 035, 007 OF oDlg COLORS 0, 16777215 PIXEL
 		@ 007, 050 GET oGetMotivo VAR cGetMotivo OF oDlg MULTILINE		SIZE 175, 044 COLORS 0, 16777215 HSCROLL PIXEL
 
 		@ 080, 005 BUTTON oBtnSelec	PROMPT "Confirmar"	SIZE 037, 012 OF oDlg PIXEL ACTION ( nOpcx := 1, cMotivoRej := cGetMotivo, rejeitaPv()	, oDlg:end() )
-		@ 080, 050 BUTTON oBtnSair	PROMPT "Sair"		SIZE 037, 012 OF oDlg PIXEL ACTION ( nOpcx := 0, msgAlert("Rejeicao cancelada!")		, oDlg:end() )
+		@ 080, 050 BUTTON oBtnSair	PROMPT "Sair"		SIZE 037, 012 OF oDlg PIXEL ACTION ( nOpcx := 0, msgAlert("Rejeição cancelada!")		, oDlg:end() )
 
 	ACTIVATE MSDIALOG oDlg CENTER
 return

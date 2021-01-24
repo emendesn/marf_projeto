@@ -7,12 +7,12 @@
 /*
 ====================================================================================
 Programa............: PE01NFESEFAZ()
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 13/04/2017
-Descricao / Objetivo: Ponto de entrada para inclusao de mensagens na DANFE
+Descricao / Objetivo: Ponto de entrada para inclusão de mensagens na DANFE
 Doc. Origem.........: GAP - FIS29
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -74,7 +74,7 @@ user function PE01NFESEFAZ()
 	Local cMsgFrete     := GetMV("MGF_FORFRE")
 	Local cAliqFre		:= SuperGetMV("MV_ALIQFRE",.T.," ")
 	Local nAliqFre		:= 0
-	/*Local cFilfre  		:= GetMv('MGF_VLFRET')*/ //Trecho removido, pois a mensagem sera exibida para todas as unidades
+	/*Local cFilfre  		:= GetMv('MGF_VLFRET')*/ //Trecho removido, pois a mensagem será exibida para todas as unidades
 	Local cInfHabil		:= ""
 	//Local nPedido 		:= 0
 	Local cPedido 		:= ""
@@ -155,7 +155,7 @@ user function PE01NFESEFAZ()
 				SD1->(dbSkip())
 			Enddo
 		EndIf
-		//Informacoes complementares para Nota de Importacao
+		//Informações complementares para Nota de Importação
 		If SF1->F1_EST == "EX"
 			//		_cMensCli += "CONTR.AUT.EFETUAR PAG.IMPOSTO EM PRAZO PREV. NO RICMS, LIV.I, ART.50, IV, E LIVRO III,"+CRLF
 			//		_cMensCli += "ART.53-E,II, CONCESSAO NR 0600124623. "
@@ -221,8 +221,8 @@ user function PE01NFESEFAZ()
 			EndIf
 		Next nI
 
-		//Informacoes do veï¿½culo para operacoes internas, uma vez que a mesma nao sera mais necessï¿½ria para a Nota Fiscal 4.0 - Natanael Simoes
-		If !SuperGetMV("MV_INTTRAN",.T.,.T.) .AND.  Len(aVeiculo) > 0 // Parametro que define se as tags <veicTransp> e <reboque>, seram geradas em operacoes internas.
+		//Informações do veículo para operações internas, uma vez que a mesma não será mais necessária para a Nota Fiscal 4.0 - Natanael Simões
+		If !SuperGetMV("MV_INTTRAN",.T.,.T.) .AND.  Len(aVeiculo) > 0 // Parametro que define se as tags <veicTransp> e <reboque>, seram geradas em operações internas.
 			If SM0->M0_ESTCOB <> aDest[09] //UF Destino
 				cMensCli += "||Veiculo: Placa " + Alltrim(aVeiculo[01]) + ", UF: " + Alltrim(aVeiculo[02])
 				If !Empty(Alltrim(aVeiculo[03]))
@@ -232,21 +232,21 @@ user function PE01NFESEFAZ()
 		EndIf
 		///
 
-		cMensCli += NoAcento(alltrim(_cMensCli ))
+		cMensCli += u_MGF_NOAC(alltrim(_cMensCli )) //Retira caracteres especiais
 		cMensCli := STRTRAN(cMensCli,'"','')
 
 		//-----------------------------------------------------------------------------------
-		//GAP133/MGFFIS35 - Alteracao da data de Entrega para a Operacao Busca de Gado - GO
-		//Adiciona no topo do array a data que sera informada no Campo Data de saida do DANFE.
-		//Essa informacao sera utilizada no fonte NFESEFAZ para preenchimento da TAG <dhSaiEnt>
+		//GAP133/MGFFIS35 - Alteração da data de Entrega para a Operação Busca de Gado - GO
+		//Adiciona no topo do array a data que será informada no Campo Data de saída do DANFE.
+		//Essa informação será utilizada no fonte NFESEFAZ para preenchimento da TAG <dhSaiEnt>
 		//-----------------------------------------------------------------------------------
 		If lMGFFIS35
 			If SF1->(FieldPos("F1_ZDTBUSC"))>0 .AND.  len(aNota)=6 //Data de Busca de Gado
-				If !Empty(SF1->F1_ZDTBUSC) //Deve setificar-se que o array possui 6 posicoes para uso da mesma no NFESEFAZ
+				If !Empty(SF1->F1_ZDTBUSC) //Deve setificar-se que o array possui 6 posições para uso da mesma no NFESEFAZ
 					aadd(aNota,SF1->F1_ZDTBUSC)
 				EndIf
 			Else
-				Help( ,, 'PE01NFESEFAZ_01',, 'ï¿½ necessario compatibilizar o fonte para o GAP133.', 1, 0)
+				Help( ,, 'PE01NFESEFAZ_01',, 'É necessário compatibilizar o fonte para o GAP133.', 1, 0)
 			EndIf
 		EndIf
 
@@ -306,7 +306,7 @@ user function PE01NFESEFAZ()
 		SC5->( MsSeek( xFilial("SC5") + SC6->C6_NUM ) )
 
 
-		// Manipulacao do endereco de entrega
+		// Manipulação do endereço de entrega
 		// Roberto 14/09/16
 		If Findfunction ('u_RetEndXML')
 			If !Empty(SC5->C5_ZIDEND)
@@ -315,7 +315,7 @@ user function PE01NFESEFAZ()
 		Endif
 
 
-		//nPedido := val(SC6->C6_NUM) // Comentado por Barbieri pois a numeracao dos pedidos chegou no 999999
+		//nPedido := val(SC6->C6_NUM) // Comentado por Barbieri pois a numeração dos pedidos chegou no 999999
 		//cPedido := alltrim(str(nPedido)) // Barbieri
 		cPedido := SC6->C6_NUM // Barbieri
 
@@ -331,7 +331,7 @@ user function PE01NFESEFAZ()
 		EndIf
 
 		///Valor do Frete
-		/*If cFilant $ cFilfre*/ // Trecho Removido, pois a mensagem sera exibida para todas as unidades
+		/*If cFilant $ cFilfre*/ // Trecho Removido, pois a mensagem será exibida para todas as unidades
 		If .T.
 			dBselectArea('DAI')
 			dbSetOrder(3) //DAI_FILIAL+DAI_NFISCA+DAI_SERIE+DAI_CLIENT+DAI_LOJA
@@ -340,7 +340,7 @@ user function PE01NFESEFAZ()
 				DAK->(DbSetOrder(1))
 				DAK->(dbSeek(xFilial('DAK')+DAI->DAI_COD+DAI->DAI_SEQCAR))
 		
-				//GRAVA PLACA DO VEï¿½CULO
+				//GRAVA PLACA DO VEÍCULO
 				DbSelectArea('DA3')
 				DA3->(DbSetOrder(1))
 				If DA3->(Msseek(xFilial('DA3') + DAK->DAK_CAMINH))
@@ -488,7 +488,7 @@ user function PE01NFESEFAZ()
 
 		//For nT := 1 to Len(aInfoItem)
 
-		///Verifica se hï¿½ mensagem para o produto.
+		///Verifica se há mensagem para o produto.
 		dBselectArea('SB1')
 		dbSetOrder(1) //B1_FILIAL+B1_COD
 		If DbSeek(xFilial('SB1')+SC6->C6_PRODUTO)
@@ -582,12 +582,12 @@ user function PE01NFESEFAZ()
 					MensPauta(SM0->M0_ESTENT,@_cMensCli)
 				Endif
 			EndIf
-			//Inclusao informacao de quantidade de caixas SOMENTE Exportacao
+			//Inclusão informação de quantidade de caixas SOMENTE EXPORTAÇÃO
 
 			//If !Empty(GetAdvFVal("SC5","C5_PEDEXP",xFilial("SC5")+APROD[nI][38],1,""))
 				DbSelectArea("ZZR")
 				ZZR->(DbSetOrder(1))
-				//Informacoes da linha do produto do NFESEFAZ
+				//Informações da linha do produto do NFESEFAZ
 				//7==>cD2Cfop,;
 				//8==>SB1->B1_UM,;
 				//9==>(cAliasSD2)->D2_QUANT,;
@@ -602,17 +602,17 @@ user function PE01NFESEFAZ()
 							aProd[nI][12] := ZZR->ZZR_PESOL
 						Endif
 					EndIf
-					//Quantidade de caixas nas informacoes complementares do pedido
+					//Quantidade de caixas nas informações complementares do pedido
 					If ZZR->ZZR_TOTCAI > 0
-						aprod[nI][25] += " Qtd."+Alltrim(cEspecie)+": "+Alltrim(Transform(ZZR->ZZR_TOTCAI,"@E 999,999"))  //Informacoes adicinais
+						aprod[nI][25] += " Qtd."+Alltrim(cEspecie)+": "+Alltrim(Transform(ZZR->ZZR_TOTCAI,"@E 999,999"))  //Informações adicinais
 					Endif
 				Elseif !Empty(GetAdvFVal("SC5","C5_PEDEXP",xFilial("SC5")+APROD[nI][38],1,""))
 
 					cPedOri		:= GetAdvFVal("SC5","C5_PEDEXP",xFilial("SC5")+APROD[nI][38],1,"")
 					aPedExp := QtdCaixas(cPedOri,PADR(APROD[nI][39],2))
-					//Quantidade de caixas nas informacoes complementares do pedido
+					//Quantidade de caixas nas informações complementares do pedido
 					If Len(aPedExp) > 0 .and. (aPedExp[1] > 0 )
-						aprod[nI][25] += " Qtd."+Alltrim(cEspecie)+": "+Alltrim(Transform(aPedExp[1],"@E 999,999"))  //Informacoes adicinais
+						aprod[nI][25] += " Qtd."+Alltrim(cEspecie)+": "+Alltrim(Transform(aPedExp[1],"@E 999,999"))  //Informações adicinais
 					EndIf
 					//Peso Liquido na Segunda Unidade de medida se for Kg
 					If Len(aPedExp) > 1 .and. (aPedExp[2] > 0 ).and. Alltrim(aProd[1][11]) == "KG" .and. Alltrim(aProd[nI][11]) <> Alltrim(aProd[nI][08])
@@ -629,14 +629,14 @@ user function PE01NFESEFAZ()
 			EndIF
 			
 			//Natanael Filho, 25-04-2019
-			//Mensagem para impressao do ICMS RJ nas unidades do Rio de Janeiro - Art
+			//Mensagem para impressão do ICMS RJ nas unidades do Rio de Janeiro - Art
 			
 			//Posiciona na SFT para retornar os valores do ICMS Retido
 			SFT->(DbSelectArea("SFT"))
 			SFT->(DBSetOrder(1)) //FT_FILIAL+FT_TIPOMOV+FT_SERIE+FT_NFISCAL+FT_CLIEFOR+FT_LOJA+FT_ITEM+FT_PRODUTO
 			If SFT->(DBSeek(xFilial("SFT")+"S"+SF3->F3_SERIE+SF3->F3_NFISCAL+SF3->F3_CLIEFOR+SF3->F3_LOJA + Pad( aProd[nI][39],TamSX3("FT_ITEM")[1]) + aProd[nI][2]))
 				If SFT->FT_BSTANT > 0 .AND. SFT->FT_VSTANT > 0 .AND. SFT->FT_PSTANT > 0
-					If aProd[nI][48] == "1"; // Origem da informacao: F4_ART274
+					If aProd[nI][48] == "1"; // Origem da informação: F4_ART274
 					 	.AND. IIF(!SuperGetMV("MV_SPEDEND",.T.,.T.),Alltrim(SM0->M0_ESTCOB),Alltrim(SM0->M0_ESTENT)) == "RJ"; //lEndFis:= MV_SPEDEND: Configurar a NF-e SEFAZ quanto ao endereco que dev	e ser considerado. T = Endereco de entrega ou F = 	Endereco de cobranca.
 					 	.AND. aProd[nI][23] == "60" //CST
 						cMensFis += " ICMS RECOLHIDO ANTECIPADO POR SUBS. TRIBUTARIA CONF. INC. II ART 27 DO LIVRO II, E ITEM 23 DO ANEXO I DO LIVRO II DO RICMS" +;
@@ -653,8 +653,8 @@ user function PE01NFESEFAZ()
 
 	EndIf
 
-	//Informacoes do veï¿½culo para operacoes internas, uma vez que a mesma nao sera mais necessï¿½ria para a Nota Fiscal 4.0 - Natanael Simoes
-	If SuperGetMV("MV_INTTRAN",.T.,.T.) .AND.  Len(aVeiculo) > 0 // Parametro que define se as tags <veicTransp> e <reboque>, seram geradas em operacoes internas.
+	//Informações do veículo para operações internas, uma vez que a mesma não será mais necessária para a Nota Fiscal 4.0 - Natanael Simões
+	If SuperGetMV("MV_INTTRAN",.T.,.T.) .AND.  Len(aVeiculo) > 0 // Parametro que define se as tags <veicTransp> e <reboque>, seram geradas em operações internas.
 		If SM0->M0_ESTCOB <> aDest[09] //UF Destino
 			cMensCli += "|| Veiculo: Placa " + Alltrim(aVeiculo[01]) + ", UF: " + Alltrim(aVeiculo[02])
 			If !Empty(Alltrim(aVeiculo[03]))
@@ -665,15 +665,15 @@ user function PE01NFESEFAZ()
 	///
 
 
-	//Mensagem para Nota Fiscal sobre o sistema de re-impressao do boleto pelo Cliente - Natanael Filho - 20181114
-	_msgFINB0 := SuperGetMV("MGF_FINB0A",.T.,"2ï¿½ Via de boletos, favor acessar o portal https://www.portaldeboletos.com.br/MARFRIG-PORTAL-BOLETOS")
+	//Mensagem para Nota Fiscal sobre o sistema de re-impressão do boleto pelo Cliente - Natanael Filho - 20181114
+	_msgFINB0 := SuperGetMV("MGF_FINB0A",.T.,"2ª Via de boletos, favor acessar o portal https://www.portaldeboletos.com.br/MARFRIG-PORTAL-BOLETOS")
 	If !Empty(Alltrim(_msgFINB0))
 		cMensCli += "||" + _msgFINB0
 	EndIf
 	///
 
 
-	cMensCli += ' '+NoAcento(alltrim(_cMensCli ))
+	cMensCli += ' '+ u_MGF_NOAC(alltrim(_cMensCli )) //Retira caracteres especiais
 
 	cMensCli := STRTRAN(cMensCli,'"','')
 
@@ -719,75 +719,6 @@ user function PE01NFESEFAZ()
 
 
 return aRetorno
-
-
-//-------------------------------------------------------------
-//-------------------------------------------------------------
-static FUNCTION NoAcento(cString)
-	Local cChar  := ""
-	Local nX     := 0
-	Local nY     := 0
-	Local cVogal := "aeiouAEIOU"
-	Local cAgudo := "ï¿½ï¿½ï¿½ï¿½ï¿½"+"ï¿½ï¿½ï¿½ï¿½ï¿½"
-	Local cCircu := "ï¿½ï¿½ï¿½ï¿½ï¿½"+"ï¿½ï¿½ï¿½ï¿½ï¿½"
-	Local cTrema := "ï¿½ï¿½ï¿½ï¿½ï¿½"+"ï¿½ï¿½ï¿½ï¿½ï¿½"
-	Local cCrase := "ï¿½ï¿½ï¿½ï¿½ï¿½"+"ï¿½ï¿½ï¿½ï¿½ï¿½"
-	Local cTio   := "ï¿½ï¿½ï¿½ï¿½"
-	Local cCecid := "ï¿½ï¿½"
-	Local cMaior := "&lt;"
-	Local cMenor := "&gt;"
-	Local cxBol1 := "Â°"
-	Local cxBol2 := "ï¿½"
-
-	cSring := StrTran(cString,cxBol1,".")
-	cSring := StrTran(cString,cxBol2,".")
-
-	For nX:= 1 To Len(cString)
-		cChar:=SubStr(cString, nX, 1)
-		IF cChar$cAgudo+cCircu+cTrema+cCecid+cTio+cCrase
-			nY:= At(cChar,cAgudo)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
-			EndIf
-			nY:= At(cChar,cCircu)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
-			EndIf
-			nY:= At(cChar,cTrema)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
-			EndIf
-			nY:= At(cChar,cCrase)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
-			EndIf
-			nY:= At(cChar,cTio)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr("aoAO",nY,1))
-			EndIf
-			nY:= At(cChar,cCecid)
-			If nY > 0
-				cString := StrTran(cString,cChar,SubStr("cC",nY,1))
-			EndIf
-		Endif
-	Next
-
-	If cMaior$ cString
-		cString := strTran( cString, cMaior, "" )
-	EndIf
-	If cMenor$ cString
-		cString := strTran( cString, cMenor, "" )
-	EndIf
-
-	cString := StrTran( cString, CRLF, " " )
-
-	For nX:=1 To Len(cString)
-		cChar:=SubStr(cString, nX, 1)
-		If (Asc(cChar) < 32 .Or. Asc(cChar) > 123) .and. !cChar $ '|'
-			cString:=StrTran(cString,cChar,".")
-		Endif
-	Next nX
-Return cString
 
 
 Static Function MensPauta(cEst,_cMensCli)
@@ -860,7 +791,7 @@ Return()
 
 
 /*/{Protheus.doc} QtdCaixas
-//TODO Retorna Informacoes do Pedido de Exportacao
+//TODO Retorna Informações do Pedido de Exportação
 @author leonardo.kume
 @since 24/04/2018
 @version 6

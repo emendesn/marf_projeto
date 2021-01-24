@@ -9,10 +9,10 @@
 Programa.:              MGFFINBO 
 Autor....:              Renato Junior
 Data.....:              01/06/2020
-Descricao / Objetivo:   ENVIO DE E-MAIL DE COBRANï¿½A
+Descricao / Objetivo:   ENVIO DE E-MAIL DE COBRANÇA
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -22,7 +22,7 @@ User Function MGFFINBO()
 
 	oBrowse3 := FWMBrowse():New()
 	oBrowse3:SetAlias('ZGD')
-	oBrowse3:SetDescription('Gerencia Comercial x Vendedores')
+	oBrowse3:SetDescription('Gerência Comercial x Vendedores')
 	oBrowse3:Activate()
 
 return NIL
@@ -58,29 +58,29 @@ Static Function ModelDef()
 	oStruZGE:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('XMGFFINBO',/**/ , , { | oModel | zgdCmt( oModel ) }/*bCommit*/, ;
 		{|oModel| bCancel()}	/*{|| FWFORMCANCEL(SELF)} /*bCancel( oModel )/*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'ZGDMASTER', /*cOwner*/, oStruZGD, /*bPreValidacao*/, {|oModel| posvldZGD(oModel)} /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'ZGEDETAIL', 'ZGDMASTER', oStruZGE, /*bPreValidacao*/, {|a,b| posvldZGE(a,b)} /*bPosValidacao*/, /*bCarga*/ )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZGD_FILIAL","ZGD_CODIGO"})
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "ZGEDETAIL",{{"ZGE_FILIAL","XFILIAL('ZGE')"},{"ZGE_CODIGO","ZGD_CODIGO"}},ZGE->(IndexKey(1)))
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Cadastro de Gerencia Comercial x Vendedores' )	
+	oModel:SetDescription( 'Cadastro de Gerência Comercial x Vendedores' )	
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'ZGDMASTER' ):SetDescription( 'Gerencia Comercial' )
-	oModel:GetModel( 'ZGEDETAIL' ):SetDescription( 'Vendedores da Gerencia Comercial' )
+	oModel:GetModel( 'ZGDMASTER' ):SetDescription( 'Gerência Comercial' )
+	oModel:GetModel( 'ZGEDETAIL' ):SetDescription( 'Vendedores da Gerência Comercial' )
 
 	oStruZGD:SetProperty("ZGD_CODIGO",MODEL_FIELD_INIT,{||GETSXENUM('ZGD','ZGD_CODIGO')})
 
@@ -96,13 +96,13 @@ Static Function ViewDef()
 	Local oModel   := FWLoadModel( 'MGFFINBO' )
 	Local oView
 
-	// Remove o campo Codigo Regiao do detalhe
+	// Remove o campo Codigo Região do detalhe
 	oStruZGE:RemoveField( "ZGE_CODIGO" )
 
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -124,7 +124,7 @@ Return oView
 //--------------------------------------------------------------
 static function zgdCmt( oModel )
 	Local lRet		:= .T.
- Local nOperation := oModel:GetOperation()
+    Local nOperation    := oModel:GetOperation()
 
 	If oModel:VldData()
 		FwFormCommit( oModel )
@@ -152,18 +152,18 @@ Local cChvProd		:=	oMdlZGE:getValue("ZGE_CODVEN")
 Local cMsgErr		:= ""
 
 If Empty(cChvProd)
-	cMsgErr := "Vendedor nao informado."
+	cMsgErr := "Vendedor não informado."
 Else
 	POSICIONE('SA3',1,XFILIAL('SA3') + cChvProd, 'A3_NOME')
 	If ! SA3->(FOUND())
-		cMsgErr := "Vendedor nao existe."
+		cMsgErr := "Vendedor não existe."
 	Else
 		For nI := 1 to oMdlZGE:length()
 		 	If nLin <> nI	// Desconsidera a propria linha digitada
 				oMdlZGE:goLine(nI)
 				if !oMdlZGE:isDeleted()
 					If cChvProd == oMdlZGE:getValue("ZGE_CODVEN")
-						cMsgErr := "Vendedor jï¿½ cadastrado nesta Gerencia."
+						cMsgErr := "Vendedor já cadastrado nesta Gerência."
 						Exit
 					Endif
 				Endif
@@ -173,7 +173,7 @@ Else
 Endif
 
 If ! Empty(cMsgErr)
-	Help( ,, 'Nao permitido',, cMsgErr, 1, 0 )
+	Help( ,, 'Não permitido',, cMsgErr, 1, 0 )
 	xRet := .F.
 Endif
 
@@ -238,10 +238,10 @@ dbSelectArea(cNextAlias)
 
 If ! (cNextAlias)->(Eof())
 	While ! (cNextAlias)->(Eof())
-		cMsgVend	+=	"Vendedor: "+(cNextAlias)->ZGE_CODVEN+" jï¿½ informado para outra Gerencia Comercial: "+(cNextAlias)->ZGD_CODIGO + CRLF
+		cMsgVend	+=	"Vendedor: "+(cNextAlias)->ZGE_CODVEN+" já informado para outra Gerência Comercial: "+(cNextAlias)->ZGD_CODIGO + CRLF
 		(cNextAlias)->(Dbskip())
 	Enddo
-	Help( ,, 'Nao permitido',, cMsgVend, 1, 0 )
+	Help( ,, 'Não permitido',, cMsgVend, 1, 0 )
 	_lRet			:= .F.
 Endif
 

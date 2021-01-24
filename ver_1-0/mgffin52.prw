@@ -7,10 +7,10 @@
 Programa.:              MGFFIN52
 Autor....:              Leonardo Kume        
 Data.....:              14/03/2017
-Descricao / Objetivo:   Informacoes sobre o Limite de credito do cliente da Rede 
+Descricao / Objetivo:   Informações sobre o Limite de crédito do cliente da Rede 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -21,9 +21,9 @@ User Function MGFFI52A(aParam)
 	Static oDlg3
 	Private nRadMenu1 := 1
 
-	If aParam[1] == 1// Deve retornar o nome a ser exibido no botao
+	If aParam[1] == 1// Deve retornar o nome a ser exibido no botão
 
-		Return "Outras funcoes"
+		Return "Outras funções"
 
 	ElseIf aParam[1] == 2
 
@@ -34,10 +34,10 @@ User Function MGFFI52A(aParam)
 		aadd(aOpcoes,"Limite de Credito Rede")
 		//aadd(aOpcoes,"Tit.Baixados Marfrig")
 
-		DEFINE MSDIALOG oDlg3 TITLE "Funcaes Posicao Cliente" FROM 000, 000  TO 200, 400 COLORS 0, 16777215 PIXEL
+		DEFINE MSDIALOG oDlg3 TITLE "Funções Posição Cliente" FROM 000, 000  TO 200, 400 COLORS 0, 16777215 PIXEL
 		oRadMenu1:= tRadMenu():New(20,06,aOpcoes,{|u|if(PCount()>0,nRadMenu1:=u,nRadMenu1)}, oDlg3,,,,,,,,159,130,,,,.T.)
-		@ 006, 006 SAY oSay1 PROMPT "Selecione a funcao :" SIZE 091, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
-		@ 070,  90 BUTTON "Executar" SIZE 050, 012 PIXEL OF oDlg3 Action(processa ({|| Botao()},"Executa funcao"))
+		@ 006, 006 SAY oSay1 PROMPT "Selecione a função :" SIZE 091, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
+		@ 070,  90 BUTTON "Executar" SIZE 050, 012 PIXEL OF oDlg3 Action(processa ({|| Botao()},"Executa função"))
 		@ 070, 150 BUTTON "Cancelar" SIZE 050, 012 PIXEL OF oDlg3 Action(oDlg3:End())
 
 		ACTIVATE MSDIALOG oDlg3 CENTERED
@@ -96,7 +96,7 @@ User Function MGFFIN52()
 		(cAliasSA1)->( DbSkip() )
 	EndDo
 
-	DEFINE DIALOG oDlg4 TITLE "Limites de credito Cliente Rede "+ _cCodRede  FROM 180,180 TO 580,780 PIXEL
+	DEFINE DIALOG oDlg4 TITLE "Limites de crédito Cliente Rede "+ _cCodRede  FROM 180,180 TO 580,780 PIXEL
 	nList := 1
 
 	oBrowse := TCBrowse():New( 01 , 01, 300, 200,, {'Codigo','Loja','Nome','Rede','LC'},{20,50,50,50}, oDlg4,,,,,{||},,,,,,,.F.,,.T.,,.F.,,, )

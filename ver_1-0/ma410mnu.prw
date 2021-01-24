@@ -17,9 +17,11 @@ user function MA410MNU()
 		AADD(aRotina,{OemToAnsi("Informar Valor de Frete"),"U_FRETEPED()", 0, 8, 0, Nil})
 	EndIf
 
-	If FindFunction("U_MGFFAT66")
-		AADD(aRotina,{OemToAnsi("Informar Data de Reembarque"),"U_MGFFAT66()", 0, 8, 0, Nil})
-	EndIf
+	If SuperGetMv("MGF_ZMA410",.F.,.F.)  = .T. // Verifica se Habilita o parâmetro abaixo
+		If FindFunction("U_MGFFAT66")
+			AADD(aRotina,{OemToAnsi("Informar Data de Reembarque"),"U_MGFFAT66()", 0, 8, 0, Nil})
+		EndIf
+	Endif
 
 	// Historico do Pedido
 	If FindFunction("U_FAT0363")

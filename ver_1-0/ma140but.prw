@@ -6,7 +6,7 @@ Data................: Fev/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada para inclusao de botoes na tela de pre-nota de entrada
 =====================================================================================
 */

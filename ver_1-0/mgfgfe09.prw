@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFGFE09
-Autor:...................: Flavio Dentello
+Autor:...................: Fl�vio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Alteracao do GAP GFE09
+Descri��o / Objetivo.....: Altera��o do GAP GFE09
 Doc. Origem..............: GAP - GFE11
-Solicitante..............: 
-Uso......................: 
+Solicitante..............: Cliente
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -21,7 +21,7 @@ User Function GFE0901
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZD3")
-	oMBrowse:SetDescription("Cadastro de Regras Tipo de Operacao")
+	oMBrowse:SetDescription("Cadastro de Regras Tipo de Opera��o")
 	oMBrowse:Setmenudef("MGFGFE09")
 	
 	oMBrowse:Activate()
@@ -61,13 +61,13 @@ oStruZD3:setProperty("ZD3_TRECH2"	, MODEL_FIELD_VALID	,{||U_GFE09Tr2()	})
 oStruZD3:setProperty("ZD3_PRODUT"	, MODEL_FIELD_VALID	,{||U_xGFE09PR()	})
 oStruZD3:setProperty("ZD3_CLIENT"	, MODEL_FIELD_VALID	,{||U_xGFE09CL()	})
 
-oModel:SetDescription( 'Regras de Tipo Operacao' )
+oModel:SetDescription( 'Regras de Tipo Opera��o' )
 
 oModel:SetPrimaryKey({"ZD3_FILIAL","ZD3_COD"})
 
 //oStruZD3:setValue('ZD3MASTER','ZD3_EXPRES', xcExpressao)
 
-oModel:GetModel( 'ZD3MASTER' ):SetDescription( 'Regras de Tipo Operacao' )
+oModel:GetModel( 'ZD3MASTER' ):SetDescription( 'Regras de Tipo Opera��o' )
 
 Return oModel
 
@@ -81,7 +81,7 @@ Local cCampos := {}
 
 
 	oStruZD3:AddGroup( 'GRP01', '                                          ', '', 1 )
-	oStruZD3:AddGroup( 'GRP02', 'Tipo de Operacao a ser utilizado na Carga ', '', 2 )
+	oStruZD3:AddGroup( 'GRP02', 'Tipo de Opera��o a ser utilizado na Carga ', '', 2 )
 	oStruZD3:AddGroup( 'GRP03', 'Observa��es                               ', '', 3 )
 
 	oStruZD3:SetProperty( 'ZD3_COD'    , MVC_VIEW_GROUP_NUMBER, 'GRP01' )
@@ -116,7 +116,7 @@ oView:SetOwnerView( 'VIEW_ZD3', 'TELA' )
 Return oView
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE CARGA
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE CARGA
 **********************************************************
 User Function CARGA_MGF()
 
@@ -129,7 +129,7 @@ cExpres := BuildExpr('DAK',,,.T.,,,)
 
 cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_CARGA")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_CARGA")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_CARGA")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -138,7 +138,7 @@ cExpres := Alltrim(StrTran(cExpres,".",""))
 Return .T.
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA GWN
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA GWN
 **********************************************************
 User Function xRomanei()
 
@@ -150,7 +150,7 @@ cExpres := BuildExpr('DA3',,,.T.,,,)
 
 cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_ROMANE")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_ROMANE")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_ROMANE")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 
@@ -159,7 +159,7 @@ cExpres := Alltrim(StrTran(cExpres,".",""))
 Return .T.
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE NOTA
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE NOTA
 **********************************************************
 User Function NOTA()
 
@@ -173,7 +173,7 @@ dBselectArea('SF2')
 
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_NOTA")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_NOTA")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_NOTA")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -182,7 +182,7 @@ dBselectArea('SF2')
 Return .T.
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE PEDIDO
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE PEDIDO
 **********************************************************
 User Function PEDIDO()
 
@@ -196,7 +196,7 @@ dBselectArea('SC5')
 
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_PEDIDO")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_PEDIDO")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_PEDIDO")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -205,7 +205,7 @@ dBselectArea('SC5')
 Return .T.
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE ITEM NF
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE ITEM NF
 **********************************************************
 User Function ITEMZD3()
 
@@ -219,7 +219,7 @@ dBselectArea('SD2')
 
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_ITEM")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_ITEM")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_ITEM")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -229,7 +229,7 @@ Return .T.
 
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE TRECHO DE ITINERARIO 1
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE TRECHO DE ITINERARIO 1
 **********************************************************
 User Function GFE09Tr1()
 
@@ -242,7 +242,7 @@ dBselectArea('GWU')
 
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_TRECH1")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_TRECH1")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_TRECH1")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -251,7 +251,7 @@ dBselectArea('GWU')
 Return .T.
 
 **********************************************************
-//FUNCAO QUE RETORNA TELA DE EXPRESSAO DA TABELA DE TRECHO DE ITINERARIO 2
+//FUN��O QUE RETORNA TELA DE EXPRESS�O DA TABELA DE TRECHO DE ITINERARIO 2
 **********************************************************
 User Function GFE09Tr2()
 
@@ -264,7 +264,7 @@ dBselectArea('GWU')
 
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_TRECH2")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_TRECH2")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_TRECH2")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -273,10 +273,10 @@ dBselectArea('GWU')
 Return .T.
 
 /*/{Protheus.doc} xGFE09PR
-	Validacao, para abertura de tela de filtro, onde sera geradado a expressao para tabela SB1
+	Valida��o, para abertura de tela de filtro, onde sera geradado a express�o para tabela SB1
 	@type function
 
-	@return  	xRet, true ou false, validacao do campo ZD3_PRODUT
+	@return  	xRet, true ou false, valida��o do campo ZD3_PRODUT
 
 	@author Joni Lima do Carmo
 	@since 18/07/2019
@@ -292,7 +292,7 @@ User Function xGFE09PR()
 	cExpres := BuildExpr('SB1',,,.T.,,,)
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_PRODUT")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_PRODUT")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_PRODUT")[1]) + ")", 1, 0,)
 		Return cRet
 	EndIf
 
@@ -301,10 +301,10 @@ User Function xGFE09PR()
 Return .T.
 
 /*/{Protheus.doc} xGFE09CL
-	Validacao, para abertura de tela de filtro, onde sera geradado a expressao para tabela SA1
+	Valida��o, para abertura de tela de filtro, onde sera geradado a express�o para tabela SA1
 	@type function
 
-	@return  	xRet, true ou false, validacao do campo ZD3_CLIENT
+	@return  	xRet, true ou false, valida��o do campo ZD3_CLIENT
 
 	@author Joni Lima do Carmo
 	@since 18/07/2019
@@ -320,7 +320,7 @@ User Function xGFE09CL()
 	cExpres := BuildExpr('SA1',,,.T.,,,)
 	cExpres := Alltrim(StrTran(cExpres,".",""))
 	If Len(cExpres) > TamSX3("ZD3_CLIENT")[1]
-		Help( ,, 'HELP',, "O tamanho da expressao (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_CLIENT")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da express�o (" + cValToChar(Len(cExpres)) + ") � maior do que o sistema comporta (" + cValTochar(TamSX3("ZD3_CLIENT")[1]) + ")", 1, 0,)
 		Return cRet
 	EndIf
 
@@ -328,7 +328,7 @@ User Function xGFE09CL()
 
 Return .T.
 **********************************************************
-//FUNCAO QUE GRAVA EXPRESSAO NO CAMPO MEMO
+//FUN��O QUE GRAVA EXPRESS�O NO CAMPO MEMO
 **********************************************************
 Static Function GFE09POS()
 
@@ -398,12 +398,12 @@ Return .T.
 /*
 =========================================================================================================
 Programa.................: MGFGFE09
-Autor:...................: Flavio Dentello
+Autor:...................: Fl�vio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Cadastro de Veiculos Fidelizados
+Descri��o / Objetivo.....: Cadastro de Ve�culos Fidelizados
 Doc. Origem..............: GAP - GFE09
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -424,11 +424,11 @@ Private cString := "SZN"
 dbSelectArea("SZN")
 dbSetOrder(1)
 
-AxCadastro(cString,"Parametro Tipo de Operacao e classificacao de Frete",cVldExc,cVldAlt)
+AxCadastro(cString,"Par�metro Tipo de Opera��o e Classifica��o de Frete",cVldExc,cVldAlt)
 
 Return
              
-// Valida inclusao
+// Valida inclus�o
                             
 User Function INCLUI()
 
@@ -474,7 +474,7 @@ DbCloseArea()
 
 If lRet = .F.
 
-	MsgAlert("Regra j� cadastrada, Nao � possivel criar regras duplicadas!")
+	MsgAlert("Regra j� cadastrada, N�o � poss�vel criar regras duplicadas!")
 
 EndIf
 
@@ -492,7 +492,7 @@ User Function GFE09PrioVld()
 Local lRet := .T.
 
 If Len(Alltrim(M->ZD3_PRIORI)) < TamSX3("ZD3_PRIORI")[1]
-	APMsgAlert("Preencha o campo com "+Alltrim(Str(TamSX3("ZD3_PRIORI")[1]))+" digitos.")
+	APMsgAlert("Preencha o campo com "+Alltrim(Str(TamSX3("ZD3_PRIORI")[1]))+" d�gitos.")
 	lRet := .F.
 Endif
 

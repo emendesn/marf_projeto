@@ -5,10 +5,10 @@
 Programa.:              MGFFIN44
 Autor....:              Atilio Amarilla
 Data.....:              28/02/2017
-Descricao / Objetivo:   Geracao Arquivo padrao CNAB
+Descricao / Objetivo:   GeraГЦo Arquivo padrЦo CNAB
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado pelo browse MVC MGFFIN43
 =====================================================================================
 */
@@ -69,7 +69,7 @@ Static Function MGFFIN4401()
 	Local nOpcA		:= 0
 	Local lFIDC		:= ZA7->ZA7_TIPO == "1"
 
-	Local aCabRem	:= {"Remessa","Filial","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Emissao","Vencimento","Valor"}
+	Local aCabRem	:= {"Remessa","Filial","Prefixo","NЗmero","Parcela","Tipo","Cliente","Loja","Nome","EmissЦo","Vencimento","Valor"}
 	Local aItens	:= {}
 
 	If ZA7->ZA7_TIPO == "2"
@@ -92,7 +92,7 @@ Static Function MGFFIN4401()
 			EndDo
 		EndIf
 	Else
-		nOpcA := Aviso("FIDC - Geracao Arquivo","Deseja gerar arquivo novamente?",{'Sim',"Nao"})
+		nOpcA := Aviso("FIDC - GeraГЦo Arquivo","Deseja gerar arquivo novamente?",{'Sim',"NБo"})
 		If nOpcA == 1
 			If lFIDC
 				cNumBor := ZA7->ZA7_NUMBOR
@@ -118,9 +118,9 @@ Static Function MGFFIN4401()
 	PRIVATE nLinha				:= 0 // Contador de Linhas nao deletar
 	PRIVATE nQtdLinLote			:= 0 // Contador de linhas do detalhe do lote
 
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	//О©╫ Posiciona no Banco indicado                                  О©╫
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	//Ё Posiciona no Banco indicado                                  Ё
+	//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	cBanco  := cBcoFIDC
 	cAgencia:= cAgeFIDC
 	cConta  := cCtaFIDC
@@ -228,12 +228,12 @@ Static Function MGFFIN4401()
 			Loop
 		EndIF
 
-		//Criacao dos XMLs
+		//CriaГЦo dos XMLs
 		//U_xMFT90Gr((cAlias)->E1_RECNO, AllTrim(ZA7->ZA7_FILIAL) + ZA7->ZA7_CODREM)
 
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		//О©╫ Posiciona no cliente                                         О©╫
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		//Ё Posiciona no cliente                                         Ё
+		//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		dbSelectArea("SA1")
 		MsSeek(xFilial("SA1")+SE1->E1_CLIENTE+SE1->E1_LOJA)
 		// Se o Header do arquivo nao foi criado, cria.
@@ -259,9 +259,9 @@ Static Function MGFFIN4401()
 
 		nSomaDecre += SE1->E1_SDDECRE
 
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		//О©╫ Le Arquivo de Parametrizacao                                 О©╫
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		//Ё Le Arquivo de Parametrizacao                                 Ё
+		//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		nLidos:=0
 		FSEEK(nHdlBco,0,0)
 		nTamArq:=FSEEK(nHdlBco,0,2)
@@ -270,9 +270,9 @@ Static Function MGFFIN4401()
 
 		While nLidos <= nTamArq
 
-			//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-			//О©╫ Verifica o tipo qual registro foi lido                       О©╫
-			//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+			//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+			//Ё Verifica o tipo qual registro foi lido                       Ё
+			//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 			xBuffer:=Space(85)
 			FREAD(nHdlBco,@xBuffer,85)
 
@@ -462,12 +462,12 @@ Static Function MGFFIN4401()
 			EndIf
 			//Gerar Bordero
 			If ZA7->ZA7_TIPO == "1" // FIDC
-				//aCabRem	:= {"Remessa","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Vencimento","Valor"}
+				//aCabRem	:= {"Remessa","Prefixo","NЗmero","Parcela","Tipo","Cliente","Loja","Nome","Vencimento","Valor"}
 				aAdd( aItens , { 	ZA7->ZA7_CODREM , ( cAlias )->E1_FILIAL , ( cAlias )->E1_PREFIXO , ( cAlias )->E1_NUM, ( cAlias )->E1_PARCELA , ( cAlias )->E1_TIPO , ;
 					( cAlias )->E1_CLIENTE , ( cAlias )->E1_LOJA , ( cAlias )->E1_NOMCLI , DTOC(STOD(( cAlias )->E1_EMISSAO)) , ;
 					DTOC(STOD(( cAlias )->E1_VENCREA)) , Tran( ( cAlias )->E1_VALOR , PesqPict("SE1","E1_VALOR") ) } )
 			Else
-				//aCabRem	:= {"Remessa","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Vencimento","Valor","Motivo Recompra"}
+				//aCabRem	:= {"Remessa","Prefixo","NЗmero","Parcela","Tipo","Cliente","Loja","Nome","Vencimento","Valor","Motivo Recompra"}
 				aAdd( aItens , { 	ZA7->ZA7_CODREM , ( cAlias )->E1_FILIAL , ( cAlias )->E1_PREFIXO , ( cAlias )->E1_NUM, ( cAlias )->E1_PARCELA , ( cAlias )->E1_TIPO , ;
 					( cAlias )->E1_CLIENTE , ( cAlias )->E1_LOJA , ( cAlias )->E1_NOMCLI , DTOC(STOD(( cAlias )->E1_EMISSAO)) , ;
 					DTOC(STOD(( cAlias )->E1_VENCREA)) , Tran( ( cAlias )->E1_VALOR , PesqPict("SE1","E1_VALOR") ),;
@@ -482,9 +482,9 @@ Static Function MGFFIN4401()
 
 	// Se conseguiu criar o Header do arquivo, entao cria o Trailler
 	If lHeadMod2
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		//О©╫ Monta Registro Trailler                              		  О©╫
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		//Ё Monta Registro Trailler                              		  Ё
+		//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		nSeq++
 		nLidos:=0
 		FSEEK(nHdlBco,0,0)
@@ -492,9 +492,9 @@ Static Function MGFFIN4401()
 		FSEEK(nHdlBco,0,0)
 		While nLidos <= nTamArq
 
-			//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-			//О©╫ Tipo qual registro foi lido                                  О©╫
-			//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+			//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+			//Ё Tipo qual registro foi lido                                  Ё
+			//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 			xBuffer:=Space(85)
 			FREAD(nHdlBco,@xBuffer,85)
 
@@ -516,9 +516,9 @@ Static Function MGFFIN4401()
 
 		dbSelectArea( cAlias )
 
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		//О©╫ Fecha o arquivos utilizados                                  О©╫
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		//Ё Fecha o arquivos utilizados                                  Ё
+		//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		FCLOSE(nHdlBco)
 		FCLOSE(nHdlSaida)
 
@@ -538,7 +538,7 @@ Static Function MGFFIN4401()
 		U_zGeraExc(aCabRem,aItens,cArqExc,cPatRem,cPatLoc,"FIDC - Remessa "+ZA7->ZA7_CODREM)
 
 		If !lCopy
-			Aviso("FIDC - Remessa","Arquivo "+cArqRem+" nao copiado para pasta "+cPatLoc+"."+CRLF+"Verifique suas permissО©╫es.",{'Ok'})
+			Aviso("FIDC - Remessa","Arquivo "+cArqRem+" nЦo copiado para pasta "+cPatLoc+"."+CRLF+"Verifique suas permissУes.",{'Ok'})
 		Else
 			Aviso("FIDC - Remessa","Arquivo "+cArqRem+" gerado na pasta "+cPatLoc+"."+CRLF+"Processamento terminado!",{'Ok'})
 		EndIf
@@ -547,9 +547,9 @@ Static Function MGFFIN4401()
 
 	dbSelectArea( cAlias )
 	dbCloseArea()
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	//О©╫ Recupera a Integridade dos dados                             О©╫
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	//Ё Recupera a Integridade dos dados                             Ё
+	//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	//RetIndex("SE1")
 	//dbSetOrder(1)
 	//dbClearFilter()
@@ -579,9 +579,9 @@ Static Function AbrePar(cArqRem)
 
 	nHdlBco:=FOPEN(cArqEnt,0+64)
 
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	//О©╫ Cria Arquivo Saida                                       О©╫
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	//Ё Cria Arquivo Saida                                       Ё
+	//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	nHdlSaida:=MSFCREATE(cPatRem+cArqSaida,0)
 
 Return .T.
@@ -602,22 +602,22 @@ STATIC Function MGFFIN4402( nTam,nDec,cConteudo,aBordero,lTrailler,lFinCnab2,lId
 
 	lTrailler := IIF( lTrailler==NIL, .F., lTrailler ) // Para imprimir o trailler
 	// caso se deseje abandonar
-	// a geracao do arquivo
+	// a gera┤фo do arquivo
 	// de envio pela metade
 
 	lFinCnab2 := Iif( lFinCnab2 == Nil, .F., lFinCnab2 )
 
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	//О©╫ O retorno podera' ser :                                  О©╫
-	//О©╫ 1 - Grava Ok                                             О©╫
-	//О©╫ 2 - Ignora bordero                                       О©╫
-	//О©╫ 3 - Abandona rotina                                      О©╫
-	//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	//Ё O retorno podera' ser :                                  Ё
+	//Ё 1 - Grava Ok                                             Ё
+	//Ё 2 - Ignora bordero                                       Ё
+	//Ё 3 - Abandona rotina                                      Ё
+	//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 
 	If nRetorno == 1 .or. ( lTrailler .and. nBorderos > 0 )
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		//О©╫ Analisa conteudo                                         О©╫
-		//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		//Ё Analisa conteudo                                         Ё
+		//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		IF Empty(cConteudo)
 			cCampo:=Space(nTam)
 		Else

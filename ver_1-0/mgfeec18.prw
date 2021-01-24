@@ -6,10 +6,10 @@
 Programa.:              MGFEEC18
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de informacoes da Certificacao Sanitaria
+Descricao / Objetivo:   Fonte MVC para exibição de informações da Certificação Sanitária
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -18,7 +18,7 @@ User Function MGFEEC18()
 
 	oBrowse := FWMBrowse():New()
 	oBrowse:SetAlias('ZZR')
-	oBrowse:SetDescription('Certificacao Sanitaria')
+	oBrowse:SetDescription('Certificação Sanitária')
 	oBrowse:Activate()
 
 Return NIL
@@ -44,7 +44,7 @@ Static Function ModelDef()
 	oModel := MPFormModel():New('EEC18M', /*bPreValidacao*/, /*bPosValidacao*/, /*bCommit*/, /*bCancel*/ )
 	//oModel := MPFormModel():New('COMP011MODEL', /*bPreValidacao*/, { |oMdl| COMP011POS( oMdl ) }, /*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'EEC18MASTER', /*cOwner*/, oStruZZRM, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC18DETAIL', 'EEC18MASTER', oStruZZRD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
@@ -52,15 +52,15 @@ Static Function ModelDef()
 
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Certificacao Sanitaria' )
+	oModel:SetDescription( 'Certificação Sanitária' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC18MASTER' ):SetDescription( 'Certificacao Sanitaria' )
+	oModel:GetModel( 'EEC18MASTER' ):SetDescription( 'Certificação Sanitária' )
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "EEC18DETAIL", { { "ZZR_FILIAL", "XFILIAL('ZZR')" }, { "ZZR_PEDIDO", "ZZR_PEDIDO" } }, ZZR->( IndexKey( 1 ) ) )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZZR_FILIAL","ZZR_PEDIDO"})
 
 Return oModel
@@ -83,7 +83,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -102,8 +102,8 @@ Static Function ViewDef()
 	oView:SetOwnerView( 'VIEW_CALC', 'CALC' )
 
 
-	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Acao de Confirmar ' + o:ClassName(),1,0) } )
-	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Acao de Cancelar '  + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Ação de Confirmar ' + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Ação de Cancelar '  + o:ClassName(),1,0) } )
 Return oView
 
 /*
@@ -111,10 +111,10 @@ Return oView
 Programa.:              EEC18A
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Inclusao de botao na Manutencao do Embarque
+Descricao / Objetivo:   Inclusão de botão na Manutenção do Embarque
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -126,11 +126,11 @@ User Function EEC18A(aButtons)
 	If cParam == "BUTTON_REMESSA" 
 
 	aArea := GetArea()
-	aadd(aButtons,{"Certif.Sanitaria",{|| U_EEC18B()},"Certif.Sanitaria"})
+	aadd(aButtons,{"Certif.Sanitária",{|| U_EEC18B()},"Certif.Sanitária"})
 	RestArea(aArea)
 	EndIf
 	*/
-	aadd(aButtons,{"Certif.Sanitaria","U_EEC18B",0,1,0})
+	aadd(aButtons,{"Certif.Sanitária","U_EEC18B",0,1,0})
 
 Return aButtons
 
@@ -140,10 +140,10 @@ Return aButtons
 Programa.:              EEC18B
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Abre visualizasao da tabela de Certificacao Sanitaria
+Descricao / Objetivo:   Abre visualização da tabela de Certificação Sanitária
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -181,12 +181,12 @@ User Function EEC18B()
 			(cAliasEE7)->(DbSkip())
 		EndDo
 		If Len(aPedido) > 1
-			MsgInfo("Esse embarque tem mais de um pedido, serao abertos o certificado sanitario dos pedidos em sequï¿½ncia.")
+			MsgInfo("Esse embarque tem mais de um pedido, serão abertos o certificado sanitário dos pedidos em sequência.")
 		Endif
 		For nI := 1 to Len(aPedido)
 			DbSelectArea("ZZR")
 			DbGoTo(aPedido[nI][2])
-			FWExecView("Certificacao Sanitaria", "MGFEEC18", MODEL_OPERATION_VIEW ,, {|| .T. } )
+			FWExecView("Certificação Sanitária", "MGFEEC18", MODEL_OPERATION_VIEW ,, {|| .T. } )
 		Next nI
 	Else
 		cTipoPed := GetAdvFVal("EE7","EE7_ZTIPPE",xFilial("EE7")+EEC->EEC_PEDREF,1,"")
@@ -194,7 +194,7 @@ User Function EEC18B()
 		If cTipoPed == "N"
 			U_EEC48B()
 		Else
-			Alert("Certificacao Sanitaria ainda nao importada do TAURA")
+			Alert("Certificação Sanitária ainda não importada do TAURA")
 		EndIf
 	EndIf
 
@@ -207,10 +207,10 @@ Return
 Programa.:              EEC18RET
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Retorna informacao do campo passado
+Descricao / Objetivo:   Retorna informação do campo passado
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -326,7 +326,7 @@ Data.....:              Dez/2016
 Descricao / Objetivo:   Posiciona no registro da tabela informada
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -377,10 +377,10 @@ Return lRet
 Programa.:              EEC18GRV
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Grava Informacao na tabela informacoes passadas pelo TAURA.
+Descricao / Objetivo:   Grava Informação na tabela informações passadas pelo TAURA.
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

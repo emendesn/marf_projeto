@@ -22,81 +22,85 @@ User Function MGF05R03()
 	Private _cWhereAnd	:= ""
 	Private _aEmailQry	:= {}
 
-	AADD(_aDefinePl, "Faturamento - Carregamento e Pedidos"	)	//01-  _cTitulo	- Titulo da planilha a ser gerada. Aparecera na regua de processamento.
+	AADD(_aDefinePl, "Faturamento - Carregamento e Pedidos"	)	//01-  _cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	AADD(_aDefinePl, "Carregamento e Pedidos"				)	//02-  _cArqName  - Nome da planilha Excel a ser criada
 	AADD(_aDefinePl, {"Carregamento e Pedidos"}				)	//03-  _cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	AADD(_aDefinePl, {"Carregamento e Pedidos"}				)	//04-  _cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	AADD(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	AADD(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	AADD(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	AADD(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02											 03								 04		05	 06	 07		 08	 09		
-	AADD(_aCampoQry, {"C5_FILIAL"	,"EMPRESA"									,"Cod. Empresa"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_NUM"		,"PEDIDO"									,"Nï¿½ Pedido"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_EMISSAO"	,"DATA_EMISSAO			 	as DT_EMISSAO"	,"Data Emissao"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_CLIENTE"	,"CLIENTE"									,"Cod. Cliente"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_FILIAL"	,"EMPRESA"									,"Cód. Empresa"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_NUM"		,"PEDIDO"									,"Nº Pedido"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"DA3_PLACA"	,"PLACA"									,"Placa"						,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"DA4_NOME"	,"DA4_NOME"	  							    ,"Motorista"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"A1_EST"		,"ESTADO"									,"Estado"						,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"F2_CARGA"	,"ORDEM_EMBARQUE"							,"Ordem Embarque"				,""		,	, 	,""		,""	,""	}) // Paulo Henrique - MARFRIG - 30/10/2019 - RTAKS0010337
+    AADD(_aCampoQry, {"F2_TRANSP"	,"F2_TRANSP"							    ,"Cod. Transp"	     			,""		,	, 	,""		,""	,""	}) 
+    AADD(_aCampoQry, {"A4_NOME"	    ,"A4_NOME"	   						        ,"Nome Transportadora"			,""		,	, 	,""		,""	,""	}) 
+    AADD(_aCampoQry, {"DUT_DESCRI"	,"DUT_DESCRI"							    ,"Tipo de Veiculo"	     		,""		,	, 	,""		,""	,""	}) 
+    AADD(_aCampoQry, {"C5_EMISSAO"	,"DATA_EMISSAO			 	as DT_EMISSAO"	,"Data Emissao"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_CLIENTE"	,"CLIENTE"									,"Cód. Cliente"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_LOJACLI"	,"LOJA_CLIENTE			 	as LJ_CLIENTE"	,"Loja Cliente"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_LOJAENT"	,"LOJA_ENTREGA			 	as LJ_ENTREGA"	,"Loja Entrega"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_XCGCCPF"	,"CNPJ"										,"CPF/CNPJ Cliente"				,"C"	,18	,0	,"@!"	,""	,"@!"})
 	AADD(_aCampoQry, {"C5_ZTMSINT"	,"INTEGRAD_TMS"	    						,"Integrado TMS"				,""		,	, 	,""		,""	,""	}) // Paulo Henrique - TOTVS - 09/09/2019 - RTASK0010017
 	AADD(_aCampoQry, {"C5_ZBLQRGA"	,"STATUS"									,"Status"						,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_ZTIPPED"	,"ESPECIE_PEDIDO			as ESPECIEPED"	,"Especie Pedido"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_CONDPAG"	,"COD_CONDICAO			 	as CDCONDICAO"	,"Cod. Condicao"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_TABELA"	,"TABELA_PRECO			 	as TAB_PRECO" 	,"Tabela Preco"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_ZTIPPED"	,"ESPECIE_PEDIDO			as ESPECIEPED"	,"Espécie Pedido"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_CONDPAG"	,"COD_CONDICAO			 	as CDCONDICAO"	,"Cód. Condição"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_TABELA"	,"TABELA_PRECO			 	as TAB_PRECO" 	,"Tabela Preço"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_FECENT"	,"DATA_ENTREGA			 	as DT_ENTREGA"	,"Data Entrega"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_ZDTEMBA"	,"DATA_EMBARQUE			 	as DTEMBRAQUE"	,"Data Embarque"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"F2_CARGA"	,"ORDEM_EMBARQUE"							,"Ordem Embarque"				,""		,	, 	,""		,""	,""	}) // 30/10/2019 - RTAKS0010337
-	AADD(_aCampoQry, {"C5_ZIDEND"	,"COD_ENDERECO			 	as CDENDERECO"	,"Cod. Endereco"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_ZENDER"	,"ENDERECO"									,"Endereco"						,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_ZIDEND"	,"COD_ENDERECO			 	as CDENDERECO"	,"Cód. Endereço"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_ZENDER"	,"ENDERECO"									,"Endereço"						,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"A1_NOME"		,"NOME_CLIENTE				as NOM_CLIENT"	,"Nome Cliente"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"ZP_CODREG"	,"COD_REGIAO"								,"Cod. da Regiao"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"ZP_DESCREG"	,"REGIAO"									,"Nome da Regiao"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"A3_COD"		,"CODIGO_VENDEDOR			as COD_VENDED"	,"Cod. Vendedor"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"ZP_CODREG"	,"COD_REGIAO"								,"Cód. da Região"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"ZP_DESCREG"	,"REGIAO"									,"Nome da Região"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"A3_COD"		,"CODIGO_VENDEDOR			as COD_VENDED"	,"Cód. Vendedor"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"A3_NOME"		,"NOME_VENDEDOR				as NOM_VENDED"	,"Nome Vendedor"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"A1_MUN"		,"CIDADE"									,"Cidade"						,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"A1_EST"		,"ESTADO"									,"Estado"						,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"A1_ZCROAD"	,"COD_ROTEIRIZACAO  		as CD_ROTEIRI"	,"Cod. Roteirizacao"			,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_PRODUTO"	,"COD_PRODUTO				as CD_PRODUTO"	,"Cod. Produto"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"A1_ZCROAD"	,"COD_ROTEIRIZACAO  		as CD_ROTEIRI"	,"Cód. Roteirização"			,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_PRODUTO"	,"COD_PRODUTO				as CD_PRODUTO"	,"Cód. Produto"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_DESCRI"	,"DESCRICAO"								,"Descr. Produto"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_QTDVEN"	,"QUANT_SOLICITADA  		as QTDESOLICI"	,"Qtde Solicitada"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_PRCVEN"	,"PRECO_VENDA  			 	as PRECOVENDA"	,"Preco da Venda"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_PRUNIT"	,"PRECO_TABELA 			 	as PRECOTABEL"	,"Preco de Tabela"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_PRCVEN"	,"PRECO_VENDA  			 	as PRECOVENDA"	,"Preço da Venda"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_PRUNIT"	,"PRECO_TABELA 			 	as PRECOTABEL"	,"Preço de Tabela"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_VALOR"	,"VALOR"									,"Valor"						,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_DESCONT"	,"DESCONTO"									,"Desconto"						,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_DATFAT"	,"DATA_FATURAMENTO  		as DT_FATURAM"	,"Data Faturamento"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_NOTA"		,"N_NF"										,"Nï¿½ Nota Fiscal"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_NOTA"		,"N_NF"										,"Nº Nota Fiscal"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_SERIE"	,"N_SERIE"									,"Serie NF"						,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_QTDENT"	,"QUANT_ATENDIDA 			as QTDEATENDI"	,"Qtde Atendida"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_ZQTDPEC"	,"QUANT_PECA_CAIXA"							,"Qtde Peï¿½a Caixa"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_ZDTMIN"	,"DATA_MINIMA				as DT_MINIMA" 	,"Data Minima"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C6_ZDTMAX"	,"DATA_MAXIMA				as DT_MAXIMA" 	,"Data Maxima"					,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"Z9_ZREGIAO"	,"COD_REG_ENTREGA			as CD_ENTREGA"	,"Cod. Reg. Entrega"			,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_ZQTDPEC"	,"QUANT_PECA_CAIXA"							,"Qtde Peça Caixa"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_ZDTMIN"	,"DATA_MINIMA				as DT_MINIMA" 	,"Data Mínima"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C6_ZDTMAX"	,"DATA_MAXIMA				as DT_MAXIMA" 	,"Data Máxima"					,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"Z9_ZREGIAO"	,"COD_REG_ENTREGA			as CD_ENTREGA"	,"Cód. Reg. Entrega"			,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"ZP_DESCREG"	,"REG_ENTREGA				as RG_ENTREGA"	,"Descr. Registro de Entrega"	,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"Z9_ZMUNIC"	,"CID_ENTREGA				as CID_ENTREG"	,"Cidade Entrega"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"Z9_ZEST"		,"UF_ENTREGA"								,"UF Entrega"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_ZROAD"	,"PEDIDO_ROTEIRIZADO 		as PEDIDOROTE"	,"Pedido Roteirizado"			,"C"	,6	,0	,""		,""	,""	})
 	AADD(_aCampoQry, {"XXTIPOFRET"	,"TIPO_FRETE"								,"Tipo Frete"					,"C"	,20	,0	,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_ZCROAD"	,"COD_ROTEIRIZACAO_ENTREGA	as CODROTEENT"	,"Cod Rote Entrega"				,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"DA3_PLACA"	,"PLACA"									,"Placa"						,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"XXC6DATFAT"	,"STATUS_PEDIDO				as STATUSPEDI"	,"Status Pedido"				,"C"	,12	,0	,""		,""	,""	})
 	AADD(_aCampoQry, {"ZBD_DESCRI"	,"DIRETORIA"								,"Diretoria"					,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"C6_BLQ"		,"STATUS_BLOQUEIO"							,"Status do Bloqueio Pedido"	,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_ZCODUSU"	,"COD_USUARIO"								,"Codigo do Usuario"			,""		,	, 	,""		,""	,""	})
-	AADD(_aCampoQry, {"C5_ZNOMUSU"	,"NOME_USUARIO"								,"Nome do Usuario"				,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_ZCODUSU"	,"COD_USUARIO"								,"Código do Usuário"			,""		,	, 	,""		,""	,""	})
+	AADD(_aCampoQry, {"C5_ZNOMUSU"	,"NOME_USUARIO"								,"Nome do Usuário"				,""		,	, 	,""		,""	,""	})
 	AADD(_aCampoQry, {"ZV_DTBLQ"	,"DATA_REEMBARQUE"							,"Data Reembarque"				,""		,""	,"" ,""		,""	,""	})
 	//RVBJ
 	AADD(_aCampoQry, {"C5_PBRUTO"	,"C5_PBRUTO"								,"Peso Bruto"					,""		,""	,"" ,""		,""	,""	})
 	AADD(_aCampoQry, {"C5_XVLDESC"	,"C5_XVLDESC"								,"Valor da Descarga"			,""		,""	,"" ,""		,""	,""	})
 
 	AADD(_aCampoQry, {"SA1.A1_CEP"				,"CEP_CLIENTE"					,"CEP Cliente"					,""		,""	,"" ,""		,""	,""	})
-	AADD(_aCampoQry, {"SA1.A1_END"				,"ENDERECO_CLIENTE"				,"Endereco Cliente"				,""		,""	,"" ,""		,""	,""	})
+	AADD(_aCampoQry, {"SA1.A1_END"				,"ENDERECO_CLIENTE"				,"Endereço Cliente"				,""		,""	,"" ,""		,""	,""	})
 	AADD(_aCampoQry, {"SA1.A1_COMPLEM"			,"COMPLEMENTO_CLIENTE"			,"Complemento Cliente"			,""		,""	,"" ,""		,""	,""	})
 	AADD(_aCampoQry, {"SA1.A1_BAIRRO"			,"BAIRRO_CLIENTE"				,"Bairro Cliente"				,""		,""	,"" ,""		,""	,""	})
 	AADD(_aCampoQry, {"SA1.A1_DDD || SA1.A1_TEL","TELEFONE_CLIENTE"				,"Telefone Cliente"				,""		,18	,"" ,""		,""	,""	})
@@ -106,12 +110,12 @@ User Function MGF05R03()
 	AADD(_aCampoQry, {"C5_ZMENNOT"				,"C5_ZMENNOT"					,"Mensagem nota 2"				,""		,	, 	,""		,""	,""	})	
 	AADD(_aCampoQry, {"C6_PEDCLI"				,"C6_PEDCLI"					,"Pedido Cliente"				,""		,	, 	,""		,""	,""	})	
 
-	//Monta os parametros
+	//Monta os parâmetros
 	aAdd(_aParambox,{1,"Data Entrega Inicial"	,Ctod("")						,""		,""													,""		,""	,050,.F.})			// 01
 	aAdd(_aParambox,{1,"Data Entrega Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR01, MV_PAR02, 'Data Entrega')"	,""		,""	,050,.F.})			// 02
-	aAdd(_aParambox,{1,"Data Emissao Inicial"	,Ctod("")						,""		,""													,""		,""	,050,.F.})			// 03
-	aAdd(_aParambox,{1,"Data Emissao Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR03, MV_PAR04, 'Data Emissao')"	,""		,""	,050,.F.})			// 04
-	//Necessario adicionar o filtro DATA_FATURAMENTO_FILTRO (nao obrigatorio), e quando solecionar nao ï¿½ obrigatorio a selecao de outro filtro, relatorio 	
+	aAdd(_aParambox,{1,"Data Emissão Inicial"	,Ctod("")						,""		,""													,""		,""	,050,.F.})			// 03
+	aAdd(_aParambox,{1,"Data Emissão Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR03, MV_PAR04, 'Data Emissão')"	,""		,""	,050,.F.})			// 04
+	//Necessário adicionar o filtro DATA_FATURAMENTO_FILTRO (não obrigatorio), e quando solecionar não é obrigatorio a seleção de outro filtro, relatório 	
 	aAdd(_aParambox,{1,"Data Faturamento Inicial"	,Ctod("")					,""		,""														,""		,""	,050,.F.})		// 05
 	aAdd(_aParambox,{1,"Data Faturamento Final"		,Ctod("")					,""		,"U_VLFIMMAI(MV_PAR05, MV_PAR06, 'Data Faturamento')"	,""		,""	,050,.F.})		// 06
 	aAdd(_aParambox,{1,"Cod. Produto Inicial"	,Space(tamSx3("C6_PRODUTO")[1])	,""		,""													,"SB1"	,""	,050,.F.})			// 07
@@ -123,18 +127,18 @@ User Function MGF05R03()
 	aAdd(_aParambox,{1,"Cod. Cliente Final"		,Space(tamSx3("A1_COD")[1])		,""		,"U_VLFIMMAI(MV_PAR12, MV_PAR13, 'Cod. Cliente')"	,"CLI"	,""	,050,.F.})			// 13
 	aAdd(_aParambox,{1,"Data Embarque Inicial"	,Ctod("")						,""		,""													,""		,""	,050,.F.})			// 14
 	aAdd(_aParambox,{1,"Data Embarque Final"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR14, MV_PAR15, 'Data Embarque')"	,""		,""	,050,.F.})			// 15
-	aAdd(_aParambox,{1,"Nï¿½ do Pedido"			,Space(tamSx3("C5_NUM")[1])		,"@!"	,""													,""		,""	,050,.F.})			// 16
+	aAdd(_aParambox,{1,"Nº do Pedido"			,Space(tamSx3("C5_NUM")[1])		,"@!"	,""													,""		,""	,050,.F.})			// 16
 	aAdd(_aParambox,{1,"Data Reembarque Inicial",Ctod("")						,""		,""													,""		,,050,.F.})
 	aAdd(_aParambox,{1,"Data Reembarque Final"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR17, MV_PAR18, 'Data Reembarque')",""		,,050,.F.})
 	aAdd(_aParambox,{3,"Status do Pedido"		,Iif(Set(_SET_DELETED),1,2)		, {"TODOS","FATURADO","NAO FATURADO" }								, 100,"",.F.})			// 17
-
+    
 	If !U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; EndIf
  
 	If _aRet[19] <> 1	// 1=Todos
 	   _cStatPedi	:= If(_aRet[19] == 2, "FATURADO" , "NAO FATURADO" )
 	EndIf
 
-	// Rotina que obtem a selecao das FILIAIS a processar e as armazena na array _aSelFil  
+	// Rotina que obtem a seleção das FILIAIS a processar e as armazena na array _aSelFil  
 	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)
 
 	If Empty(_aSelFil)
@@ -144,45 +148,45 @@ User Function MGF05R03()
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
 	If _aRet[1] > _aRet[2]
-		MsgStop("A Data de Entrega Inicial, nao pode ser maior que a data de Entrega Final.")
+		MsgStop("A Data de Entrega Inicial, não pode ser maior que a data de Entrega Final.")
 		Return.F.
 	EndIf
 
 	If _aRet[3] > _aRet[4]
-		MsgStop("A Data de Emissao Inicial, nao pode ser maior que a data de Emissao Final.")
+		MsgStop("A Data de Emissão Inicial, não pode ser maior que a data de Emissão Final.")
 		Return.F.
 	EndIf
 	
 	If _aRet[5] > _aRet[6]
-		MsgStop("A Data de Faturamento Inicial, nao pode ser maior que a data de Faturamento Final.")
+		MsgStop("A Data de Faturamento Inicial, não pode ser maior que a data de Faturamento Final.")
 		Return.F.
 	EndIf
 	
 	//===		S E L E C I O N A	D I R E T O R I A
-	cQryDireto	:= "SELECT ' Nao Informado' as ZBD_CODIGO, '" +SPACE(TamSx3("ZBD_DESCRI")[1])+ "' as ZBD_DESCRI FROM DUAL UNION ALL "	// Coloco um espaco no comeï¿½o de " Nao Informado" para este registro aparecer na 1ï¿½ linha do Browse 
+	cQryDireto	:= "SELECT ' Não Informado' as ZBD_CODIGO, '" +SPACE(TamSx3("ZBD_DESCRI")[1])+ "' as ZBD_DESCRI FROM DUAL UNION ALL "	// Coloco um espaço no começo de " Não Informado" para este registro aparecer na 1ª linha do Browse 
 	cQryDireto	+= "SELECT DISTINCT ZBD_CODIGO, ZBD_DESCRI "
 
-	// 31/10/2019 - Avalia o tipo de servidor
+	// Paulo Henrique - Marfrig - 31/10/2019 - Avalia o tipo de servidor
 	cEnviroSrv	:= AllTrim(UPPER(GETENVSERVER()))
 	
-	If cEnviroSrv $ 'PRODUCAO|PRE_RELEASE'                  
+	//If cEnviroSrv $ 'PRODUCAO|PRE_RELEASE'                  
     	cQryDireto += "  FROM " +   U_If_BIMFR( "PROTHEUS", RetSqlName("ZBD") ) + " TMPZBD " 
-	Else
-    	cQryDireto += "  FROM " + RetSqlName("ZBD") + " TMPZBD " 
-	EndIf
+	//Else
+    //	cQryDireto += "  FROM " + RetSqlName("ZBD") + " TMPZBD " 
+	//EndIf
 
 	cQryDireto	+= "  WHERE TMPZBD.D_E_L_E_T_ = ' ' " 
 	cQryDireto	+= "  ORDER BY ZBD_CODIGO, ZBD_DESCRI"
-	aCpoDireto	:=	{	{ "ZBD_CODIGO"	,"Codigo"		,TamSx3("ZBD_CODIGO")[1] + 50	}	,;
+	aCpoDireto	:=	{	{ "ZBD_CODIGO"	,"Código"		,TamSx3("ZBD_CODIGO")[1] + 50	}	,;
 						{ "ZBD_DESCRI"	,"Diretoria"	,TamSx3("ZBD_DESCRI")[1] 		}	 } 
 	cTitDireto	:= "Diretorias a serem listadas: "
 
 	nPosRetorn	:= 2		// Quero que seja retornado o primeiro campo: A6_COD
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	_cDiretori	:= U_Array_In( U_MarkGene(cQryDireto, aCpoDireto, cTitDireto, nPosRetorn, @_lCancProg ) )
 
 	If _lCancProg
@@ -197,53 +201,53 @@ User Function MGF05R03()
 	cQryTatico	+= "  ORDER BY ZBF_DESCRI  "
 	aCpoTatico	:=	{	{ "ZBF_DESCRI"	,U_X3Titulo("ZBF_DESCRI")	,TamSx3("ZBF_DESCRI")[1]	}	}
 	
-	cTitTatico	:= "Selecao Tï¿½tico: "
+	cTitTatico	:= "Seleção Tático: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: ZBF_DESCRI
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	_cTatico	:= U_Array_In( U_MarkGene(cQryTatico, aCpoTatico, cTitTatico, nPosRetorn, @_lCancProg ) )
 
 	If _lCancProg
 		Return
 	EndIf
 
-	// 31/10/2019 - Avalia o tipo de servidor
-	If cEnviroSrv $ 'PRODUCAO|PRE_RELEASE'                  
+	// Paulo Henrique - Marfrig - 31/10/2019 - Avalia o tipo de servidor
+	//If cEnviroSrv $ 'PRODUCAO|PRE_RELEASE'                  
     	_cQuery += "  FROM " + U_If_BIMFR( "If_BIMFR", "V_FAT_CARREGAMENTOPEDIDOS"  )
-	Else
-	  	_cQuery += "  FROM V_FAT_CARREGAMENTOPEDIDOS"
-	EndIf
+	//Else
+	//  	_cQuery += "  FROM V_FAT_CARREGAMENTOPEDIDOS"
+	//EndIf
 
-	_cQuery += U_WhereAnd( !Empty(_cCODFILIA ),   " EMPRESA IN " + _cCODFILIA	                                                )	// OBRIGATORIO (SELECAO DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += U_WhereAnd( !Empty(_aRet[2] ),     " DATA_ENTREGA_FILTRO BETWEEN '"  + _aRet[1]  + "' AND '" + _aRet[2] + "'  "	)	// OBRIGATORIO, COM A VALIDACAO DE 35 DIAS
-	_cQuery += U_WhereAnd( !Empty(_aRet[4] ),     " DATA_EMISSAO_FILTRO BETWEEN '"  + _aRet[3]  + "' AND '" + _aRet[4] + "'  "	)	// OBRIGATORIO, COM A VALIDACAO DE 35 DIAS
-	_cQuery += U_WhereAnd( !Empty(_aRet[6] ),     " DATA_FATURAMENTO_FILTRO BETWEEN '"  + _aRet[5]  + "' AND '" + _aRet[6] + "'  "	)	// OBRIGATORIO, COM A VALIDACAO DE 35 DIAS
-	_cQuery += U_WhereAnd( !Empty(_aRet[8] ),     " COD_PRODUTO BETWEEN '"          + _aRet[7]  + "' AND '" + _aRet[8] + "'  "	)	// NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !Empty(_aRet[10] ),    " CODIGO_VENDEDOR BETWEEN '"      + _aRet[9]  + "' AND '" + _aRet[10] + "'  "	)	// NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !Empty(_aRet[11] ),    " ESPECIE_PEDIDO LIKE '%"         + _aRet[11]  + "%' "	                        )	// NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !Empty(_aRet[12] ),    " COD_CLIENTE_FILTRO BETWEEN '"   + _aRet[12] + "' AND '" + _aRet[13] + "' "	)	// NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !Empty(_aRet[14] ),    " DATA_EMBARQUE_FILTRO BETWEEN '" + _aRet[14] + "' AND '" + _aRet[15] + "' "	)	// NAO OBRIGATORIO - SEM TRAVA
-	_cQuery += U_WhereAnd( !Empty(_aRet[17] ),    " DATA_REEMBARQUE_FILTRO BETWEEN '" + _aRet[17] + "' AND '" + _aRet[18] + "' "	)	// NAO OBRIGATORIO - SEM TRAVA
+	_cQuery += U_WhereAnd( !Empty(_cCODFILIA ),   " EMPRESA IN " + _cCODFILIA	                                                )	// OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
+	_cQuery += U_WhereAnd( !Empty(_aRet[2] ),     " DATA_ENTREGA_FILTRO BETWEEN '"  + _aRet[1]  + "' AND '" + _aRet[2] + "'  "	)	// OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !Empty(_aRet[4] ),     " DATA_EMISSAO_FILTRO BETWEEN '"  + _aRet[3]  + "' AND '" + _aRet[4] + "'  "	)	// OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !Empty(_aRet[6] ),     " DATA_FATURAMENTO_FILTRO BETWEEN '"  + _aRet[5]  + "' AND '" + _aRet[6] + "'  "	)	// OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !Empty(_aRet[8] ),     " COD_PRODUTO BETWEEN '"          + _aRet[7]  + "' AND '" + _aRet[8] + "'  "	)	// NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !Empty(_aRet[10] ),    " CODIGO_VENDEDOR BETWEEN '"      + _aRet[9]  + "' AND '" + _aRet[10] + "'  "	)	// NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !Empty(_aRet[11] ),    " ESPECIE_PEDIDO LIKE '%"         + _aRet[11]  + "%' "	                        )	// NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !Empty(_aRet[12] ),    " COD_CLIENTE_FILTRO BETWEEN '"   + _aRet[12] + "' AND '" + _aRet[13] + "' "	)	// NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !Empty(_aRet[14] ),    " DATA_EMBARQUE_FILTRO BETWEEN '" + _aRet[14] + "' AND '" + _aRet[15] + "' "	)	// NÃO OBRIGATORIO - SEM TRAVA
+	_cQuery += U_WhereAnd( !Empty(_aRet[17] ),    " DATA_REEMBARQUE_FILTRO BETWEEN '" + _aRet[17] + "' AND '" + _aRet[18] + "' "	)	// NÃO OBRIGATORIO - SEM TRAVA
 
 	If Empty(_cDiretori )
-		_cQuery +=  ""		// Nao incrementa a clausula Where
+		_cQuery +=  ""		// Não incrementa a clausula Where
 	ElseIf AT("' '", _cDiretori ) <> 0
 		_cQuery += U_WhereAnd( .T. ,              " ( DIRETORIA IS NULL OR DIRETORIA IN " + _cDiretori + " )"              )
 	Else	
 		_cQuery += U_WhereAnd( .T. ,              " DIRETORIA IN " + _cDiretori	                                        )	
 	EndIf
 
-	_cQuery += U_WhereAnd( !Empty(_aRet[16] ),    " PEDIDO LIKE '%"         + _aRet[16]  + "%' "	            )	// NAO OBRIGATORIO
+	_cQuery += U_WhereAnd( !Empty(_aRet[16] ),    " PEDIDO LIKE '%"         + _aRet[16]  + "%' "	            )	// NÃO OBRIGATORIO
 
 	If _aRet[19] <> 1	// 1=Todos
-	   _cQuery += U_WhereAnd( !Empty(_cStatPedi ),    " STATUS_PEDIDO = '"          		+ _cStatPedi + "' "	)	// NAO OBRIGATORIO
+	   _cQuery += U_WhereAnd( !Empty(_cStatPedi ),    " STATUS_PEDIDO = '"          		+ _cStatPedi + "' "	)	// NÃO OBRIGATORIO
 	EndIf
 
 	_cQuery += U_WhereAnd( !Empty(_cTatico ),              " TATICO IN " + _cTatico		+ " "	)	+CRLF 
-		
+
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 
     MsgRun("Aguarde!!! Montando\Desconectando Tela",,{ ||U_MG05R03T()})
@@ -252,9 +256,9 @@ RETURN
 
 /*
 {Protheus.doc} MG05R03T
-Grid de retorno do BI adaptado com funcao de excluir pedidos					
+Grid de retorno do BI adaptado com função de excluir pedidos					
 
-@author Josue Danich Prestes
+@author Josué Danich Prestes
 @since 25/10/2019  
 */
 User Function MG05R03T()
@@ -278,7 +282,7 @@ User Function MG05R03T()
 
 	If VALTYPE(_aEmailQry) == "A"
 		If !Empty(_aEmailQry)
-			_aEmailQry[3]	:= _aEmailQry[3] + _cQuery		// Incremento agora no corpo do e-mail que jï¿½ tinha o texto; a query do relatorio. 
+			_aEmailQry[3]	:= _aEmailQry[3] + _cQuery		// Incremento agora no corpo do e-mail que já tinha o texto; a query do relatório. 
 			U_BIEnvEml(_aEmailQry[1]/*cTo*/, _aEmailQry[2]/*_cSubject*/, _aEmailQry[3]/*_cCorpo*/ )
 		EndIf
 	EndIf
@@ -293,18 +297,18 @@ User Function MG05R03T()
 		aAdd(aStruTRB,{ _aCampoQry[_nI,_nPoApeli] ,;	// Nome do Campo
 						_aCampoQry[_nI,_nPoTipo],;		// Tipo
 						_aCampoQry[_nI,_nPoTaman],;		// tamanho
-						_aCampoQry[_nI,_nPoDecim]})		// Nï¿½ de decimais
+						_aCampoQry[_nI,_nPoDecim]})		// Nº de decimais
 	Next
 	aAdd(aStruTRB,{ 	"X" ,;	// Nome do Campo
 						"C" ,;	// Tipo
 						1   ,;	// tamanho
-						0   })	// Nï¿½ de decimais
+						0   })	// Nº de decimais
 
-	// A linha abaixo nao tem efeito p/ o fonte. ï¿½ apenas p/ na compilacao nao aparecer a MSG "warning W0003 Local variable __LOCALDRIVER never used"
+	// A linha abaixo não tem efeito p/ o fonte. É apenas p/ na compilacao nao aparecer a MSG "warning W0003 Local variable __LOCALDRIVER never used"
 	__LocalDriver	:= __LocalDriver + ""	
 
 	cNomeArq := CriaTrab( aStruTRB,.T. )
-	
+
 	dbUseArea(.T.,__LocalDriver,cNomeArq ,_cTmp01 ,.T. ,.F.)
 	MsAguarde({|| SqlToTrb(_cQuery,aStruTRB,_cTmp01)},"Criando a tabela com os dados da Query",;
 	                                                  "Criando a tabela com os dados da Query",.T.)
@@ -340,7 +344,7 @@ User Function MG05R03T()
 		oBrowse:setSeek(,aSeek)
 		oBrowse:setOwner(oDlgMain)
 	
-		//Detalhes das colunas que serao exibidas
+		//Detalhes das colunas que serão exibidas
 		For _nI	:= 1 to Len(_aCampoQry)
 
 			If 		_aCampoQry[_ni, _nPoTipo] == "D"	
@@ -360,7 +364,7 @@ User Function MG05R03T()
 		oDlgMain:Activate(	,,,.F.	,,.T.	,, )
 			
     Else
-		MsgStop(" Nao existem dados para os parametros informados" )
+		MsgStop(" Não existem dados para os parametros informados" )
     EndIf
 
 	If !Empty(cNomeArq)
@@ -384,7 +388,7 @@ RETURN
 {Protheus.doc} MGF05R03M
 Cria menu da tela de grid					
 
-@author Josue Danich Prestes
+@author Josué Danich Prestes
 @since 25/10/2019  
 */
 Static Function MGF05R03M()
@@ -406,7 +410,7 @@ Return( aRotina )
 {Protheus.doc} MG05R03B
 Monta colunas do grid					
 
-@author Josue Danich Prestes
+@author Josué Danich Prestes
 @since 25/10/2019  
 */
 User Function MG05R03B()
@@ -417,7 +421,7 @@ fwmsgrun(,{|oproc| U_MG05R03E(oproc)} ,"Aguarde...","Carregando pedidos...")
 {Protheus.doc} MG05R03C
 Monta colunas do grid					
 
-@author Josue Danich Prestes
+@author Josué Danich Prestes
 @since 25/10/2019  
 */
 Static Function MG05R03C(cCampo,cTitulo,nArrData,cPicture,nAlign,nSize,nDecimal)
@@ -451,7 +455,7 @@ Return {aColumn}
 {Protheus.doc} MG05R03E
 Abre tela com pedidos a serem excluidos					
 
-@author Josue Danich Prestes
+@author Josué Danich Prestes
 @since 25/10/2019  
 */
 User Function MG05R03E(oproc)
@@ -475,17 +479,17 @@ User Function MG05R03E(oproc)
 	   (_cTmp01)->(dbSkip())
 	EndDo
 
-	//Carrega tela de visualizasao de pedidos para confirmar processamento
+	//Carrega tela de visualização de pedidos para confirmar processamento
 	_ACOLS := {}
 	aheader := {"Filial",;
-				"Numero",;
+				"Número",;
 				"Data Entrega",;
 				"Pedido Roteirizado",;
 				"Nome Vendedor",;
-				"Especie de Pedido",;
+				"Espécie de Pedido",;
 				"Soma de Qtde Solicitada"	}
 
-	// pergunta sobre filiais e tipos a considerar na exclusao
+	// pergunta sobre filiais e tipos a considerar na exclusão
 	_oldpar01 := MV_PAR01
 	_oldpar02 := MV_PAR02
 	_oldpar03 := MV_PAR03
@@ -526,7 +530,7 @@ User Function MG05R03E(oproc)
 				   (SC5->C5_ZROAD != "S" .AND. _NROTEI == 2) .OR. ;
 				   _NROTEI == 3
 
-				   // Sï¿½ preenche o array se nao foi faturado de fato
+				   // Só preenche o array se não foi faturado de fato
 				   If Empty(SC5->C5_NOTA) .AND. Empty(SC5->C5_SERIE) 				
 
 						_nj := Ascan(_acols,{|item| item[1] == SC5->C5_FILIAL .AND. item[2] == SC5->C5_NUM})
@@ -536,7 +540,7 @@ User Function MG05R03E(oproc)
 							AADD(_ACOLS,{	SC5->C5_FILIAL,;
 											SC5->C5_NUM,;
 											IIF(EMPTY(SC5->C5_ZDTREEM),SC5->C5_ZDTEMBA,SC5->C5_ZDTREEM),;
-											IIF(SC5->C5_ZROAD=="S","SIM","NAO"),;
+											IIF(SC5->C5_ZROAD=="S","SIM","NÃO"),;
 											POSICIONE("SA3",1,XFILIAL("SA3")+SC5->C5_VEND1,"A3_NOME"),;
 											SC5->C5_ZTIPPED,;
 											(_cTmp01)->QTDESOLICI  } )
@@ -559,9 +563,9 @@ User Function MG05R03E(oproc)
 	If Len(_ACOLS) == 0
 
 		If  !( ISINCALLSTACK("MDIEXECUTE") .OR. ISINCALLSTACK("SIGAADV") )
-			U_MFCONOUT("Nao foram localizados pedidos!")
+			U_MFCONOUT("Não foram localizados pedidos!")
 		Else
-			msgbox("Nao foram localizados pedidos!")
+			msgbox("Não foram localizados pedidos!")
 		EndIf
 
 		Return
@@ -684,7 +688,7 @@ User Function MG05R03E(oproc)
 
 				AADD(_ACOLS,{cFilPed,cPedExc,_ddtent,_ddtrem,_cclient+"/"+_cloja,;
 				POSICIONE("SA1",1,xfilial("SA1")+_cclient+_cloja,"A1_NREDUZ"),;
-				"Nao localizou pedido de venda"})
+				"Não localizou pedido de venda"})
 
 			EndIf
 
@@ -693,17 +697,17 @@ User Function MG05R03E(oproc)
 		If Len(_ACOLS) > 0
 
 			If  !( ISINCALLSTACK("MDIEXECUTE") .OR. ISINCALLSTACK("SIGAADV") )
-				U_MFCONOUT("Completou exclusao de pedidos de venda nao atendidos!")
+				U_MFCONOUT("Completou exclusão de pedidos de venda não atendidos!")
 			Else
-				U_MGListBox( "Resultado de exclusao de pedidos" , aheader , _ACOLS , .T. , 1 )
+				U_MGListBox( "Resultado de exclusão de pedidos" , aheader , _ACOLS , .T. , 1 )
 			EndIf
 
 		Else
 
 			If  !( ISINCALLSTACK("MDIEXECUTE") .OR. ISINCALLSTACK("SIGAADV") )
-				U_MFCONOUT("Nenhum pedido excluido!")
+				U_MFCONOUT("Nenhum pedido excluído!")
 			Else
-				msgbox("Nenhum pedido excluido!","Atencao")	
+				msgbox("Nenhum pedido excluído!","Atenção")	
 			EndIf
 
 		EndIf
@@ -711,9 +715,9 @@ User Function MG05R03E(oproc)
 	Else
 
 		If  !( ISINCALLSTACK("MDIEXECUTE") .OR. ISINCALLSTACK("SIGAADV") )
-			U_MFCONOUT("Processo cancelado pelo usuario!")
+			U_MFCONOUT("Processo cancelado pelo usuário!")
 		Else
-			msgbox("Processo cancelado pelo usuario!","Atencao")
+			msgbox("Processo cancelado pelo usuário!","Atenção")
 		EndIf
 
 	EndIf
@@ -721,16 +725,16 @@ User Function MG05R03E(oproc)
 Return Nil
 
 
-/*/{Protheus.doc} xApagaPed (nome da Funcao)
-@Descricao Funcao que executa a exclusao dos pedidos de vendas, via MsExecAuto
+/*/{Protheus.doc} xApagaPed (nome da Função)
+@descrição Função que executa a exclusão dos pedidos de vendas, via MsExecAuto
 
 @author Fabio Costa
 @since 15/08/2019
 
 @version P12.1.017
 @country Brasil
-@language Portugues
-@chamado/problema PRB0040215-Eliminaï¿½ï¿½o-de-residuos-PV
+@language Português
+@chamado/problema PRB0040215-Eliminação-de-residuos-PV
 /*/
 
 Static Function xApagaPed(cFilPed,cPed,cSit)
@@ -738,7 +742,7 @@ Static Function xApagaPed(cFilPed,cPed,cSit)
 	Local cQuery 	  := ""
 	Local cDescMo     := ""
 	Local lMsErroAuto := .F.
-	Local _cretorno   := "Erro nao previsto"
+	Local _cretorno   := "Erro não previsto"
 
 	If 		cSit == "M"
 	   		cDescMo := "EXCLUIDO VIA RELATORIO DE Carregamento e Pedidos"
@@ -796,7 +800,7 @@ Static Function xApagaPed(cFilPed,cPed,cSit)
 				cfilant := cfilori
 
 			Else
-				_cretorno := "Erro na exclusao do pedido - Pedido nao localizado"
+				_cretorno := "Erro na exclusão do pedido - Pedido não localizado"
 			EndIf
 
 			If lMsErroAuto
@@ -809,7 +813,7 @@ Static Function xApagaPed(cFilPed,cPed,cSit)
 					cErro += aErro[nX] + " "
 				Next nX
 
-				_cretorno := "Erro na exclusao do pedido - " + cErro
+				_cretorno := "Erro na exclusão do pedido - " + cErro
 
 			Else 
 
@@ -817,8 +821,8 @@ Static Function xApagaPed(cFilPed,cPed,cSit)
 				
 				If 		SC5->(dbSeek(cFilPed+cPed))
 						DisarmTransaction()
-						_cretorno := "Erro na exclusao do pedido"
-				ElseIf 	_cretorno == "Erro nao previsto"
+						_cretorno := "Erro na exclusão do pedido"
+				ElseIf 	_cretorno == "Erro não previsto"
 						_cretorno := "Pedido excluido com sucesso!"
 				EndIf
 
@@ -872,7 +876,7 @@ Return _cretorno
 
 /*
 {Protheus.doc} MG05R03J
-Inicia o Processo para o JOB de exclusao de pedidos					
+Inicia o Processo para o JOB de exclusão de pedidos					
 
 @author Paulo Henrique Rodrigues da Mata
 @since 23/03/2020
@@ -882,12 +886,12 @@ User Function MG05R03J(lJob)
     Local aDadEv     := {}
 	Local aTables    := {'SC5','SC6','ZG1'} 
 
-	U_MFCONOUT("Inicio do processo do JOB para exclusao dos PV's")
+	U_MFCONOUT("Inicio do processo do JOB para exclusão dos PV's")
 
 	RpcSetType(3)
 	RpcSetEnv( "01" , "010001" , Nil, Nil, "FAT", Nil, aTables )
 
-	U_MFCONOUT("Criando o ARRAY na ZG1 para inicio da exclusao dos PV's")
+	U_MFCONOUT("Criando o ARRAY na ZG1 para inicio da exclusão dos PV's")
 		
 	// Executa a leitura da tabela ZG1 - Especie de Pedidos
 	ZG1->(dbSetOrder(1))
@@ -906,7 +910,7 @@ User Function MG05R03J(lJob)
 	EndDo
 	
 	// Processa o JOB
-	U_MFCONOUT("Inicia o JOB de exclusao dos PV's")
+	U_MFCONOUT("Inicia o JOB de exclusão dos PV's")
 	
 	BEGIN TRANSACTION
 
@@ -916,13 +920,13 @@ User Function MG05R03J(lJob)
 
     RpcClearEnv()
 
-	U_MFCONOUT("Termina o JOB de exclusao dos PV's")
+	U_MFCONOUT("Termina o JOB de exclusão dos PV's")
 
 Return
 
 /*
 {Protheus.doc} FJOBPPV
-Gera ARRAY para exclusao de pedidos nao faturados					
+Gera ARRAY para exclusão de pedidos não faturados					
 
 @author Paulo Henrique Rodrigues da Mata
 @since 23/03/2020
@@ -972,9 +976,9 @@ Static Function fJobApPV(aDadEv)
 	
 	For nPos := 1 to Len(aDadEv)
 
-		U_MFCONOUT("Faz a leitura do ARRAY da ZG1 para a exclusao dos PV's")
+		U_MFCONOUT("Faz a leitura do ARRAY da ZG1 para a exclusão dos PV's")
 
-		// Faz a leitura de ZG1 para execucao desta rotina
+		// Faz a leitura de ZG1 para execução desta rotina
 		_CEMPS  := AllTrim(aDadEv[nPos,1])
 		_CTIPOS := AllTrim(aDadEv[nPos,2])
 		_CROTEI	:= aDadEv[nPos,3]
@@ -986,7 +990,7 @@ Static Function fJobApPV(aDadEv)
 		cPvBlq  := AllTrim(aDadEv[nPos,9])
 		cBlqFl  := AllTrim(aDadEv[nPos,10])
 
-		// Se o usuario do ZG1 tem o acesso a todas as unidades, executa a condicao abaixo
+		// Se o usuário do ZG1 tem o acesso a todas as unidades, executa a condição abaixo
 		If !Empty(_CEMPS)
 
 			If Select("QRYFIL") > 0
@@ -1062,13 +1066,13 @@ Static Function fJobApPV(aDadEv)
 		// Data de entrega a considerar os dias descontados
 		_dDDC := Date() - _nDDM 
 
-		// Como esta em JOB, inicia busca a query da variavel privada _cQuery
+		// Como está em JOB, inicia busca a query da variável privada _cQuery
 		If Select("QRYEPV") > 0
 			QRYEPV->(dbCloseArea())
 		EndIf
 
-		// Cria a query do JOB para exclusao dos PV's
-		U_MFCONOUT("Cria a query do JOB para exclusao dos PV's")
+		// Cria a query do JOB para exclusão dos PV's
+		U_MFCONOUT("Cria a query do JOB para exclusão dos PV's")
 		
 		cQryEpv := "SELECT EMPRESA "+cEnter
 		cQryEpv += " ,  PEDIDO "+cEnter
@@ -1126,12 +1130,12 @@ Static Function fJobApPV(aDadEv)
 
 		cEnvSrv	:= AllTrim(UPPER(GETENVSERVER()))
 		
-		// 31/10/2019 - Avalia o tipo de servidor
-		If cEnvSrv $ 'PRODUCAO|PRE_RELEASE'                  
+		// Paulo Henrique - Marfrig - 31/10/2019 - Avalia o tipo de servidor
+	//	If cEnvSrv $ 'PRODUCAO|PRE_RELEASE'                  
     		cQryEpv += "  FROM " + U_IF_BIMFR( "IF_BIMFR", "V_FAT_CARREGAMENTOPEDIDOS"  )+cEnter
-		Else
-    		cQryEpv += "  FROM V_FAT_CARREGAMENTOPEDIDOS"+cEnter
-		EndIf
+	//	Else
+    //		cQryEpv += "  FROM V_FAT_CARREGAMENTOPEDIDOS"+cEnter
+	//	EndIf
 
 		cQryEpv += " WHERE EMPRESA IN "+If(Empty(_cCODFILIA),Formatin(_CEMPS,";"),_cCODFILIA)+" "+cEnter
 		cQryEpv += " AND DATA_ENTREGA_FILTRO BETWEEN '"+DtoS(_dDtEmi)+"' AND '"+DtoS(_dDDC)+"' "+cEnter  
@@ -1145,19 +1149,19 @@ Static Function fJobApPV(aDadEv)
 		dbSelectArea("QRYEPV")
 		dbGoTop()
 
-		// Inicia a verificacao dos dados do temporario
-		U_MFCONOUT("Inicia a verificacao dos dados do temporario")
+		// Inicia a verificação dos dados do temporário
+		U_MFCONOUT("Inicia a verificação dos dados do temporário")
 
-		// Conta pedidos e gera o array para exclusao dos PV's
+		// Conta pedidos e gera o array para exclusão dos PV's
 		While QRYEPV->(!Eof())
 
-			// Antes de excluir o PV, verifica se jï¿½ esta na tabela ZEI e seu status
+			// Antes de excluir o PV, verifica se já está na tabela ZEI e seu status
 			ZEI->(dbSetOrder(1))
 
 			If ZEI->(dbSeek(QRYEPV->EMPRESA+QRYEPV->PEDIDO))
 				U_MFCONOUT(	"Filial : "+QRYEPV->EMPRESA+" - Pedido : "+QRYEPV->PEDIDO+;
-           					" esta com o STATUS : "+AllTrim(UPPER(ZEI->ZEI_STATUS))+;
-		  					" e nao foi excluido.")
+           					" está com o STATUS : "+AllTrim(UPPER(ZEI->ZEI_STATUS))+;
+		  					" e não foi excluído.")
 				QRYEPV->(dbSkip())
 				Loop
 			EndIf			  
@@ -1179,7 +1183,7 @@ Static Function fJobApPV(aDadEv)
 					If (SC5->C5_ZROAD == "S" .AND. _CROTEI == "S") .OR. ;
 					   (SC5->C5_ZROAD != "S" .AND. _CROTEI == "N") .OR. _CROTEI == "T"
 
-					   // Sï¿½ preenche o array se nao foi faturado de fato
+					   // Só preenche o array se não foi faturado de fato
 					   If Empty(SC5->C5_NOTA) .AND. Empty(SC5->C5_SERIE) 
 
 						  U_MFCONOUT("Verifica bloqueio dos pedidos liberados")
@@ -1223,7 +1227,7 @@ Static Function fJobApPV(aDadEv)
 						  
 						  Else
 						  
-						     U_MFCONOUT("Pedidos "+SC9->C9_PEDIDO+" nao foi liberado e esta em exclusao.")
+						     U_MFCONOUT("Pedidos "+SC9->C9_PEDIDO+" não foi liberado e está em exclusão.")
 						  	 _lOk := .T.
 						  
 						  EndIf
@@ -1232,7 +1236,7 @@ Static Function fJobApPV(aDadEv)
 						
 						  If _lOk
 
-						     U_MFCONOUT("Cria o ARRAY para exclusao dos PV's")
+						     U_MFCONOUT("Cria o ARRAY para exclusão dos PV's")
 							
 							 _nj := Ascan(_aCols,{|item| item[1] == SC5->C5_FILIAL .AND. ;
 							                             item[2] == SC5->C5_NUM})
@@ -1241,7 +1245,7 @@ Static Function fJobApPV(aDadEv)
 							 	AADD(_aCols,{	SC5->C5_FILIAL,;
 												SC5->C5_NUM,;
 												If(EMPTY(SC5->C5_ZDTREEM),SC5->C5_ZDTEMBA,SC5->C5_ZDTREEM),;
-												If(SC5->C5_ZROAD == "S","SIM","NAO"),;
+												If(SC5->C5_ZROAD == "S","SIM","NÃO"),;
 												POSICIONE("SA3",1,XFILIAL("SA3")+SC5->C5_VEND1,"A3_NOME"),;
 												SC5->C5_ZTIPPED,;
 												nQtdSol  } )
@@ -1265,13 +1269,13 @@ Static Function fJobApPV(aDadEv)
 		EndDo
 
 		If Empty(Len(_aCols))
-			U_MFCONOUT("Nao foram localizados pedidos para serem excluidos!")
+			U_MFCONOUT("Não foram localizados pedidos para serem excluídos!")
 			Return
 		EndIf
 
 		_aCols := aSort(_aCols, , , { | x,y | x[1]+x[2] > y[1]+y[2] } )
 
-		U_MFCONOUT("Inicio da Exclusao dos PV's")
+		U_MFCONOUT("Inicio da Exclusão dos PV's")
 
 		For nkl := 1 to Len(_aCols)
 			AADD(aPeds,_aCols[nkl])
@@ -1362,16 +1366,16 @@ Static Function fJobApPV(aDadEv)
 
 				AADD(_aCols,{cFilPed,cPedExc,_ddtent,_ddtrem,_cclient+"/"+_cloja,;
 					 POSICIONE("SA1",1,xfilial("SA1")+_cclient+_cloja,"A1_NREDUZ"),;
-					 "Nao localizou pedido de venda"})
-				U_MFCONOUT("Nao localizou pedido de venda")
+					 "Não localizou pedido de venda"})
+				U_MFCONOUT("Não localizou pedido de venda")
 			EndIf
 
 		Next
 
 		If Len(_aCols) > 0
-			U_MFCONOUT("Completou exclusao de pedidos de venda nao atendidos!")
+			U_MFCONOUT("Completou exclusão de pedidos de venda não atendidos!")
 		Else
-			U_MFCONOUT("Nenhum pedido excluido!")
+			U_MFCONOUT("Nenhum pedido excluído!")
 		EndIf
 	
 	Next

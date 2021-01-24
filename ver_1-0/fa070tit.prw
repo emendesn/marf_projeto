@@ -10,7 +10,7 @@ Data.....:              03/2018
 Descricao / Objetivo:   Alterar carteira para permitir baixa
 Doc. Origem:            Financeiro 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE FINA070 --> (TDN) O ponto de entrada FA070TIT sera executado apos a confirmacao da baixa do contas a receber.
 ============================================================================================================================
 */ 
@@ -26,8 +26,8 @@ IF SE1->E1_SITUACA <> "0"
 	SE1->(MsUnlock())
 ENDIF
 
-//Integracao com Salesforce, baixa
-//Verificar se o tipo do titulo esta na regra de Integracao.
+//Integração com Salesforce, baixa
+//Verificar se o tipo do título está na regra de integração.
 if ALLTRIM(SE1->E1_TIPO) $ cTipos
 	If vldCli() //Validar Cliente
 		recLock("SE1", .F.)

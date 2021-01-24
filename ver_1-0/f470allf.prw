@@ -6,10 +6,10 @@
 Programa............: F470ALLF
 Autor...............: Barbieri
 Data................: 03/05/2018
-Descricao / Objetivo: F470ALLF - Sinalizacao para tratamento do extrato 
+Descrição / Objetivo: F470ALLF - Sinalização para tratamento do extrato 
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=6071573
 =====================================================================================
 */

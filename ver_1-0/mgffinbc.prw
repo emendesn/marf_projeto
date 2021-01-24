@@ -8,7 +8,7 @@ Data.....:              27/09/2019
 Descricao / Objetivo:   Gera o nosso numero para titulos em cobranÃ§a simples
 Doc. Origem:            RTASK0010081
 Solicitante:            Contas a Receber
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -18,7 +18,7 @@ Local _cNossoNum := Space(11)
 Local _cDvNosNum := Space(01)
 Local _cNumBco   := Space(15)
 
-// Converte o campo E1_NUMBCO sem o "-" (hifen)
+// Converte o campo E1_NUMBCO sem o "-" (hífen)
 _cNumBco := STRTRAN(SE1->E1_NUMBCO,"-","")
 
 // 1a. Parte : Nosso Numero

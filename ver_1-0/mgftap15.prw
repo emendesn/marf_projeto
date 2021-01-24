@@ -4,19 +4,17 @@
 #include "tbiconn.ch"
 #include "apwebsrv.ch"
 #include "apwebex.ch"
-#define CRLF chr(13) + chr(10)             
-/*
-==========================================================================================================
-Programa.:              MGFTAP15
-Autor....:              Marcelo Carneiro         
-Data.....:              21/06/2017 
-Descricao / Objetivo:   Integração TAURA - Protheus
-Doc. Origem:            MIT044- METODO CONSULTA ESTOQUE OP PROTHEUS
-Solicitante:            Cliente
-Uso......:              Marfrig
-Obs......:              WbeService Server Metodo ConsultaEstoqueOPProtheus
-==========================================================================================================
-*/
+#define CRLF chr(13) + chr(10)   
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} MGFTAP15
+WS CONSULTA ESTOQUE OP PROTHEUS
+
+@author Marcelo Carneiro
+@since 21/06/2017 
+@type WS  
+/*/   
 
 WSSTRUCT TAP15_CONSULTA
 	WSDATA FILIAL        as String
@@ -47,7 +45,7 @@ Private cFilSaldo := Alltrim(::WSCONSULTA:FILIAL)
 Private cOP       := Alltrim(::WSCONSULTA:OP)
 Private aRetorno  := {} 
 
-aRetorno := TAP15_CONS(cFilSaldo,cOP)
+aRetorno := u_MTAP15C(cFilSaldo,cOP)
 
 ::WSRETORNO := WSClassNew( "TAP15_RETORNO")
 ::WSRETORNO:ITENS := {}
@@ -60,8 +58,17 @@ For nI := 1 To Len(aRetorno)
 Next nI
 
 Return .T.
-********************************************************************************************************************************************
-Static Function TAP15_CONS(cFilSaldo,cOP)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} MTAP15C
+REALIZA CONSULTA ESTOQUE OP PROTHEUS
+@author Marcelo Carneiro
+@since 21/06/2017 
+@type WS  
+/*/   
+
+User Function MTAP15C(cFilSaldo,cOP)
 
 Local cQuery    := ''     
 Local aRetorno  := {} 
@@ -116,16 +123,3 @@ IF Len(aRetorno) == 0
 EndIF
 
 Return aRetorno
-***********************************************************************************
-User Function ZTeste_TAP15
-Private aRetorno  := {} 
-
-RpcSetType(3)
-RpcSetEnv( "01" , "010001" , Nil, Nil, "EST", Nil )
-
-aRetorno := TAP15_CONS('010003','17122003113024')
-
-msgAlert('1929')      
-
-Return
-

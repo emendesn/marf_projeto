@@ -144,14 +144,19 @@ User Function MGFTAP04( aParam )
 					lMsBlq			:= .F.
 				EndIf
 
-				SC2->( dbSetOrder(1) ) //D3_FILIAL+D3_DOC+D3_COD
+				SC2->( dbSetOrder(1) ) //C2_FILIAL+C2_NUM+C2_ITEM+C2_SEQ
 				SC2->( dbSeek( cFilAnt+cNumOrd ) )
 
-				If !Empty( SC2->C2_DATRF )
-					lEncOP	:= .T.
-					dEncOP	:= SC2->C2_DATRF 
+				//Reabre op se precisar
+				If !Empty(SC2->C2_DATRF)
+					_nsc2pos := SC2->(Recno())
+					lOpEnc	:= .T.
+					_dorifec := SC2->C2_DATRF
+					Reclock("SC2",.F.)
+					SC2->C2_DATRF := stod(" ")
+					SC2->(Msunlock())
 				Else
-					lEncOP	:= .F.
+					lOpEnc	:= .F.
 				EndIf
 
 				nContExec	:= 0
@@ -176,7 +181,6 @@ User Function MGFTAP04( aParam )
 							Sleep(nSleep)
 							If nContExec == 1
 								cErro += cFunName +" - ExecAuto Mata250" + CRLF
-								cErro += IIF(lEncOP,'OP Encerrada no Protheus'+ CRLF,'')
 								cErro += "Id Proc - "+ cIdProc + CRLF
 								cErro += "Filial  - "+ cFilOrd + CRLF
 								cErro += "Ordem   - "+ cNumOrd + CRLF
@@ -208,8 +212,14 @@ User Function MGFTAP04( aParam )
 
 				EndDo
 
-				SC2->( dbSetOrder(1) ) //D3_FILIAL+D3_DOC+D3_COD
-				SC2->( dbSeek( cFilAnt+cNumOrd ) )
+				//Fecha novamente op que estava encerrada
+				If lOpEnc
+					SC2->(Dbgoto(_nsc2pos))
+					Reclock("SC2",.F.)
+					SC2->C2_DATRF := _dorifec
+					SC2->(Msunlock())
+				Endif
+
 
 				If lMsBlq
 					RecLock("SB1",.F.)

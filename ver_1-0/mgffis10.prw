@@ -9,8 +9,8 @@ Data.....:              10/11/2016
 Descricao / Objetivo:   Ajuste Fiscal
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao no cadastro de fornecedores
+Uso......:              Marfrig
+Obs......:              Manutenção no cadastro de fornecedores
 =====================================================================================
 */
 User Function MGFFIS10()
@@ -20,7 +20,7 @@ User Function MGFFIS10()
 	local cUsuario := SuperGetMv("MGF_UFIS40",.F.,"000000",)
 
 	If !(RetCodUsr() $ cUsuario)
-		MsgInfo("Usuario sem permissao para alteracao.","Atencao!")
+		MsgInfo("Usuário sem permissão para alteração.","Atenção!")
 		Return 
 	Else
 		DBSelectArea("SA2")
@@ -28,9 +28,9 @@ User Function MGFFIS10()
 
 		if SA2->( DBSeek( xFilial("SA2") + SF1->(F1_FORNECE + F1_LOJA) ) )
 			//UPDATE/ exclusao precisa estar possicionado
-			fwExecView("Alteracao", "MGFFIS10", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)//"Alteracao"
+			fwExecView("Alteração", "MGFFIS10", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)//"AlteraÃ§Ã£o"
 		else
-			msgAlert("Fornecedor da Nota nao encontrado!")
+			msgAlert("Fornecedor da Nota não encontrado!")
 		endif
 
 		SA2->(DBCloseArea())
@@ -61,7 +61,7 @@ static function ModelDef()
 	oModel := MPFormModel():New("XMGFFIS10", /*bPreValidacao*/,/*bPosValidacao*/, { | oModel | cmtSA2(oModel) }/*bCommit*/,/*bCancel*/ )
 	oModel:AddFields("SA2MASTER",/*cOwner*/,oStrSA2, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription('Alteracao do Fornecedor')
+	oModel:SetDescription('Alteração do Fornecedor')
 	//oModel:SetPrimaryKey({"ZZ5_FILIAL","ZZ5_CODIGO"}) // NecessÃ¡rio apenas quando nao X2_UNICO em branco
 
 return(oModel)

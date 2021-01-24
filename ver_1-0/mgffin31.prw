@@ -8,12 +8,12 @@
 Programa.:              MGFFIN31 - PE
 Autor....:              Antonio Carlos
 Data.....:              03/10/2016
-Descricao / Objetivo:   incluir informacoes de Titulos Abertos Credito da Rede \ Titulos Vencidos da Rede
+Descricao / Objetivo:   incluir informações de Títulos Abertos Credito da Rede \ Titulos Vencidos da Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Titulos Abertos por Rede
-Alteracao efetuada para incluir clientes com mesmo inï¿½cio do CNPJ
+Uso......:              Marfrig
+Obs......:              Títulos Abertos por Rede
+Alteração efetuada para incluir clientes com mesmo início do CNPJ
 =====================================================================================
 */
 User Function MGFFIN31(cQueryOri)

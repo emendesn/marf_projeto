@@ -10,7 +10,7 @@ Data.....:              Nov/2017
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada MT120TEL
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

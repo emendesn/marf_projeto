@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada M410STTS
 Doc. Origem.........: Faturamento
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Forcar o envio do pedido sem regra de bloqueio na fila de envio ao Taura
 =====================================================================================
 */

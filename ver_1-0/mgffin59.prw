@@ -4,18 +4,18 @@
 Programa.:              MGFFIN59
 Autor....:              Atilio Amarilla
 Data.....:              25/09/2017
-Descricao / Objetivo:   Baixa CNAB - Bloqueio de baixa pelo portador para titulo FIDC
+Descricao / Objetivo:   Baixa CNAB - Bloqueio de baixa pelo portador para título FIDC
 Doc. Origem:            Contrato - GAP CRE019/20/21
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Transacoes referentes a Banco/Carteira FIDC
+Uso......:              Marfrig
+Obs......:              Transações referentes a Banco/Carteira FIDC
 =====================================================================================
 */
 
 User Function MGFFIN59(lRet)
 
 Local _cLinha	:= " "
-Local _cConven	:= Alltrim(SEE->EE_CODEMP) //Convï¿½nio do banco.
+Local _cConven	:= Alltrim(SEE->EE_CODEMP) //Convênio do banco.
 
 /*
 __________________________________
@@ -52,7 +52,7 @@ If File( AllTrim(MV_PAR04) )
 
 			MV_PAR04	:= Space(Len(MV_PAR04))
 		
-			MsgStop( "O Arquivo de Entrada nao pertence ao banco selecionado nos parametros"+CRLF+CRLF+"Verifique os parametros" , "Divergï¿½ncia Banco x Arquivo" )
+			MsgStop( "O Arquivo de Entrada não pertence ao banco selecionado nos parâmetros"+CRLF+CRLF+"Verifique os parâmetros" , "Divergência Banco x Arquivo" )
 		EndIf
 	EndIf 
 EndIf

@@ -11,7 +11,7 @@ Data.....:              11/07/2017
 Descricao / Objetivo:   Bloquear execucao dos gatilhos para o campo de valor nos pedido de retorno de beneficiamento
 Doc. Origem:           
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

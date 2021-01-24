@@ -8,11 +8,11 @@
 Programa.:              MGFFIN22 - PE
 Autor....:              Antonio Carlos        
 Data.....:              03/10/2016
-Descricao / Objetivo:   incluir informacoes de Credito da Rede
+Descricao / Objetivo:   incluir informações de Credito da Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              incluir informacoes de Credito da Rede na Consulta 1a.Tela
+Uso......:              Marfrig
+Obs......:              incluir informações de Credito da Rede na Consulta 1a.Tela
 =====================================================================================
 */
 User Function MGFFIN22()
@@ -36,10 +36,10 @@ User Function MGFFIN22()
 	
 	If mv_par18 == 1
 		If (Empty(SA1->A1_CGC) .and. Empty(SA1->A1_ZREDE))
-			APMsgStop("Consulta por Rede nao podera ser efetuada, pois cliente pertence a situacao abaixo:"+CRLF+;
+			APMsgStop("Consulta por Rede não poderá ser efetuada, pois cliente pertence a situação abaixo:"+CRLF+;
 			"- CNPJ em branco e Rede em branco "+CRLF+;
 			CRLF+;
-			"A consulta ira prosseguir sem tratar o conceito de 'Rede'.")
+			"A consulta irá prosseguir sem tratar o conceito de 'Rede'.")
 
 			mv_par18 := 2  // forca rede = Nao
 			Return(aCols)
@@ -324,7 +324,7 @@ User Function MGFFIN22()
 	ENDIF
 
 	If MV_PAR15 == 1 //Considera RA
-		//GAP CRE028 FASE 4 -> Saldo de adiantamento Posicao de Cliente
+		//GAP CRE028 FASE 4 -> Saldo de adiantamento Posição de Cliente
 		cQuery := "SELECT SUM(E1_SALDO) SALDO " +CHR(10)
 		cQuery += "FROM " + RetSqlName("SE1") + " SE1, " + RetSqlName("SA1") + " SA1 " +CHR(10)
 		cQuery += "WHERE " +CHR(10) 
@@ -371,7 +371,7 @@ User Function MGFFIN22()
 
 		If mv_par18 == 1 //Considera rede de clientes
 /*			
-			//GAP CRE028 FASE 4 -> Saldo de adiantamento Posicao de Cliente POR REDE
+			//GAP CRE028 FASE 4 -> Saldo de adiantamento Posição de Cliente POR REDE
 			cQuery := "SELECT SUM(E1_SALDO) SALDO " +CHR(10)
 			cQuery += "FROM " + RetSqlName("SE1") + " SE1, " + RetSqlName("SA1") + " SA1 " +CHR(10)
 			cQuery += "WHERE " +CHR(10) 
@@ -424,7 +424,7 @@ User Function MGFFIN22()
 		Endif
 	Endif
 /*
-	Aadd(aCols,{"LC Disponï¿½vel",;
+	Aadd(aCols,{"LC Disponível",;
 		TRansform((cAliasVSA1)->limite_disponivel,PesqPict("SA1","A1_LC",14,2)),;
 		" ",;
 		" ",""," ",;
@@ -445,7 +445,7 @@ Static Function QueryRede(cCodRede,cRaizCNPJ,cEst)
 		cQ := " AND A1_ZREDE = '"+cCodRede+"' "+CHR(10) // exportacao soh trata pela rede, pois o CNPJ nao eh mandatorio
 	Elseif !Empty(cCodRede) .and. !Empty(cRaizCNPJ)
 //		cQ := " AND (A1_ZREDE = '"+cCodRede+"' OR SUBSTR(A1_CGC,1,9) = '"+cRaizCNPJ+"') "+CHR(10)		
-		cQ := " AND SUBSTR(A1_CGC,1,8) = '"+cRaizCNPJ+"' "+CHR(10)		// forï¿½a rede ser somente pela raiz do CNPJ		
+		cQ := " AND SUBSTR(A1_CGC,1,8) = '"+cRaizCNPJ+"' "+CHR(10)		// força rede ser somente pela raiz do CNPJ		
 	Elseif !Empty(cCodRede) .and. Empty(cRaizCNPJ)
 		cQ := " AND A1_ZREDE = '"+cCodRede+"' "+CHR(10)		
 	Elseif Empty(cCodRede) .and. !Empty(cRaizCNPJ)

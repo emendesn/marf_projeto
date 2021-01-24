@@ -6,10 +6,10 @@
 Programa.................: MGFFIN91
 Autor:...................: Tarcisio Galeano
 Data.....................: 23/03/2018
-Descricao / Objetivo.....: Cadastro de sub grupos de clientes
+Descrição / Objetivo.....: Cadastro de sub grupos de clientes
 Doc. Origem..............: GAP - CRE56
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: Criado para F3 do campo A1_SUBGRP
 =========================================================================================================
 */
@@ -33,10 +33,10 @@ Return
 Programa............: MenuDef
 Autor:...................: Tarcisio Galeano
 Data.....................: 23/03/2018
-Descricao / Objetivo.....: Cadastro de sub grupos de clientes
+Descrição / Objetivo.....: Cadastro de sub grupos de clientes
 Doc. Origem..............: GAP - CRE56
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: Criado para F3 do campo A1_SUBGRP
 =========================================================================================================
 */
@@ -57,10 +57,10 @@ Return(aRotina)
 Programa............: ModelDef
 Autor:...................: Tarcisio Galeano
 Data.....................: 23/03/2018
-Descricao / Objetivo.....: Cadastro de sub grupos de clientes
+Descrição / Objetivo.....: Cadastro de sub grupos de clientes
 Doc. Origem..............: GAP - CRE56
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: Criado para F3 do campo A1_SUBGRP
 =========================================================================================================
 */
@@ -82,10 +82,10 @@ Return(oModel)
 Programa............: ViewDef
 Autor:...................: Tarcisio Galeano
 Data.....................: 23/03/2018
-Descricao / Objetivo.....: Cadastro de sub grupos de clientes
+Descrição / Objetivo.....: Cadastro de sub grupos de clientes
 Doc. Origem..............: GAP - CRE56
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: Criado para F3 do campo A1_SUBGRP
 =========================================================================================================
 */

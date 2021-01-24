@@ -17,13 +17,22 @@ User Function MGFEEC57()
 	If 	cParam ==  "PE_COPYPED"
 		aAliasEE7	:= EE7->(GetArea())
 		aAliasEE8	:= EE8->(GetArea())
-        lHilton := Substr(EE7->EE7_PEDIDO,10,1) == 'H'
-        cNum        := M->(ALLTRIM(EE7_ZEXP))
-        cNum        += iif(lHilton,'H','')
-        cNum        += M->(ALLTRIM(EE7_ZANOEX)+ALLTRIM(EE7_ZSUBEX))+"A"
-		While Exist57(@cNum)
+       
+		If At("(",EE7->EE7_PEDIDO)>0
+		   cNum        := AllTrim(EE7->EE7_PEDIDO)+"A"
+		Else
+			cNum        := M->(ALLTRIM(EE7_ZEXP))
+			cNum        += iif(lHilton,'H','')
+			cNum        += M->(ALLTRIM(EE7_ZANOEX)+ALLTRIM(EE7_ZSUBEX))+"A"
+		EndIf
+       
+        While Exist57(@cNum)
             cNum := Soma1(cNum)
+            If At("(",EE7->EE7_PEDIDO)>0 
+                cNum:=SubStr(EE7->EE7_PEDIDO,1, At(")",EE7->EE7_PEDIDO))+Substr(cNum,Len(cNum),1)
+            EndIf
         EndDo
+        
         M->EE7_PEDIDO := cNum
         EE8->(RestArea(aAliasEE8))
         EE7->(RestArea(aAliasEE7))

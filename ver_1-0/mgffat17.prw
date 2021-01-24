@@ -4,17 +4,17 @@
 Programa............: MGFFAT17
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT410INC
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT410INC
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza o Processamento das regras.
 =====================================================================================
 */
 User Function MGFFAT17(cPedido)
 
 	Local aArea			:= GetArea()
-	Local cCodPedLib   	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o por aprovacao
+	Local cCodPedLib   	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão por aprovação
 	Local lLiberado		:= SC5->C5_ZTIPPED $ cCodPedLib  //Tem que ficar .T. para passar direto 
 	Local lRet 			:= !Empty(cPedido) //.AND. SC5->C5_TIPOCLI <> "X" //.T.
 	Local lHor24 		:= .F.
@@ -43,7 +43,7 @@ User Function MGFFAT17(cPedido)
 		Return(.T.)
 	Endif	
 	
-	// Rotina de Prï¿½ pedido onde rodado via startjob
+	// Rotina de Pré pedido onde rodado via startjob
 	IF isBlind() .AND. IsInCallStack("U_xFAT87PED") 	    
 		Return(.T.)
 	Endif	
@@ -53,14 +53,14 @@ User Function MGFFAT17(cPedido)
 	If lLiberado
 		SC5->(RecLock('SC5',.F.))
 		SC5->C5_ZBLQRGA := 'L'
-		SC5->C5_ZLIBENV := 'S' // alterado em 30/11/17 por Gresele, para forcar o envio destes pedidos para o Taura, pois na tabela SZJ ( tipos de pedido Marfrig ) eh que tem a regra se os pedidos devem ser enviados ou nao para o Taura ou keyconsult
+		SC5->C5_ZLIBENV := 'S' // alterado em 30/11/17 por Gresele, para forçar o envio destes pedidos para o Taura, pois na tabela SZJ ( tipos de pedido Marfrig ) eh que tem a regra se os pedidos devem ser enviados ou nao para o Taura ou keyconsult
 		SC5->C5_ZTAUREE := 'S'
 		SC5->(MsunLock())
 	ElseIf lRet
 		//Verifica se existiu notas nas ultimas 24 horas
 		lHor24 := U_xMF16N24H()
 
-		//Sempre apos inclusao ou inclusao/alteracao sera inciado como bloqueado o Registro
+		//Sempre após inclusão ou inclusão/alteração será inciado como bloqueado o Registro
 		SC5->(RecLock('SC5',.F.))
 		SC5->C5_ZBLQRGA := 'B'
 
@@ -117,7 +117,7 @@ Static function xDelSZV(cPedido)
 
 	If (SZV->(DbSeek(cChvSZV )))
 		While SZV->(!EOF()) .and. SZV->(ZV_FILIAL+ZV_PEDIDO) == cChvSZV 
-			// Alterado Marcelo Carneiro para nao apagar os bloqueios do Taura.
+			// Alterado Marcelo Carneiro para não apagar os bloqueios do Taura.
 			IF SZV->ZV_CODRGA <> '000088' .AND. SZV->ZV_CODRGA <> '000089'
 				RecLock('SZV',.F.)
 				SZV->(dbDelete())
@@ -206,7 +206,7 @@ User function xBlqMkRga()
 				APMsgAlert("Pedido "+(_cAliasTrb)->C5_NUM +" com bloqueio de regra!")
 			Endif
 			If !Empty((_cAliasTrb)->C5_ZTPTRAN)
-				APMsgAlert("Pedido "+(_cAliasTrb)->C5_NUM+" foi gerado pela rotina especï¿½fica de 'Automacao de Vendas.'")
+				APMsgAlert("Pedido "+(_cAliasTrb)->C5_NUM+" foi gerado pela rotina específica de 'Automação de Vendas.'")
 			Endif
 			dbSkip()
 		Enddo	

@@ -5,11 +5,11 @@
 Programa.:              MGFGCT009
 Autor....:              Roberto Sidney
 Data.....:              28/10/2016
-Descricao / Objetivo:   Busca pelo contrato de acordo com a condicao de pagamento, atualiza campos no pedido de venda
+Descricao / Objetivo:   Busca pelo contrato de acordo com a condição de pagamento, atualiza campos no pedido de venda
 Doc. Origem:            VEN02 - GAP MGFVEN02
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Chamada efetuada atraves do ponto de entrada A410INC()
+Uso......:              Marfrig
+Obs......:              Chamada efetuada através do ponto de entrada A410INC()
 =====================================================================================
 */
 User Function MGFGCT09(_cCliente,_cLoja,_cCondPag,lExecAuto)
@@ -21,7 +21,7 @@ User Function MGFGCT09(_cCliente,_cLoja,_cCondPag,lExecAuto)
 	
 	Local _xcFil	 := GetMV('MGF_CT09FI',.F.,"010001")		
 	
-	// efetua a busca apenas para pedido que nao possuam numero do contrato informado
+	// efetua a busca apenas para pedido que não possuam numero do contrato informado
 	If FunName() == "EECFATCP" // cModulo == "EEC"
 		Return(.T.)
 	EndIf
@@ -30,10 +30,10 @@ User Function MGFGCT09(_cCliente,_cLoja,_cCondPag,lExecAuto)
 
 	if Empty(alltrim(_cContrato))
 
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Filtra parcelas de contratos automaticos ï¿½
-		//ï¿½ pendentes para a data atual              ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Filtra parcelas de contratos automaticos ³
+		//³ pendentes para a data atual              ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		cArqTrb	:= CriaTrab( nil, .F. )
 		cQuery := "SELECT CN9.CN9_FILIAL,CN9.CN9_NUMERO,CN9.CN9_REVISA,CN9.CN9_CONDPG,CNA.CNA_NUMERO," + CRLF
 		cQuery += "CNA.CNA_CLIENT,CNA.CNA_LOJACL " + CRLF
@@ -54,16 +54,16 @@ User Function MGFGCT09(_cCliente,_cLoja,_cCondPag,lExecAuto)
 		DbSelectArea(cArqTrb)
 		If (cArqTrb)->(Eof())
 			IF !lExecAuto
-				msgalert("Nao ï¿½ possivel localizar o contratos para o condicao de pagamento "+alltrim(_cCondPag))
+				msgalert("Nao é possivel localizar o contratos para o condição de pagamento "+alltrim(_cCondPag))
 				M->C5_ZMDCTR :=''
 				M->C5_ZREVIS :=''
 				M->C5_ZMDPLAN:=''
 			Else
-				Conout("Nao ï¿½ possivel localizar o contratos para o condicao de pagamento "+alltrim(_cCondPag))
+				Conout("Nao é possivel localizar o contratos para o condição de pagamento "+alltrim(_cCondPag))
 			Endif
 			Return(.F.)
 		Else
-			// Temporariamente nao haverï¿½ a validacao da quantidades de contrato por Condicao de Pagamento
+			// Temporariamente não haverá a validação da quantidades de contrato por Condição de Pagamento
 			_nCont := 0
 			While ! (cArqTrb)->(eof())
 				_nCont ++
@@ -71,12 +71,12 @@ User Function MGFGCT09(_cCliente,_cLoja,_cCondPag,lExecAuto)
 			Enddo
 			if _nCont > 1
 				IF !lExecAuto
-					msgalert("Forma localizados("+alltrim(str(_nCont))+ ") contratos para a condicao de pagamento "+alltrim(_cCondPag))
+					msgalert("Forma localizados("+alltrim(str(_nCont))+ ") contratos para a condição de pagamento "+alltrim(_cCondPag))
 					M->C5_ZMDCTR :=''
 					M->C5_ZREVIS :=''
 					M->C5_ZMDPLAN:=''
 				Else
-					msgalert("Forma localizados("+alltrim(str(_nCont))+ ")contratos para a condicao de pagamento "+alltrim(_cCondPag))
+					msgalert("Forma localizados("+alltrim(str(_nCont))+ ")contratos para a condição de pagamento "+alltrim(_cCondPag))
 				Endif
 				Return(.F.)
 			Endif

@@ -6,7 +6,7 @@ Data.....:              Julho/2018
 Descricao / Objetivo:   Rotina chamada pelo ponto de entrada A100DEL
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -17,7 +17,7 @@ Local lRet := .T.
 //If IsInCallStack("A140EstCla") // estorno de classificacao
 	If Alltrim(SF1->F1_ORIGEM) == "GFEA065" .and. !IsInCallStack("GFEA065") //cModulo != "GFE"
 		lRet := .F.
-		APMsgStop("Estorno de classificacao de documentos incluidos pelo GFE, somente devem ser realizadas pelo modulo GFE.")
+		APMsgStop("Estorno de classificação de documentos incluídos pelo GFE, somente devem ser realizadas pelo módulo GFE.")
 	Endif
 //Endif		
 

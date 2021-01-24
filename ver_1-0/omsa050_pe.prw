@@ -5,10 +5,10 @@
 Programa............: OMSA050
 Autor...............: Mauricio Gresele
 Data................: 12/12/2016 
-Descricao / Objetivo: Ponto de entrada na rotina de Cadastro de Ajudantes, para utilizaï¿½ï¿½o em MVC
+Descricao / Objetivo: Ponto de entrada na rotina de Cadastro de Ajudantes, para utilização em MVC
 Doc. Origem.........: Protheus-Taura Cadastros
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

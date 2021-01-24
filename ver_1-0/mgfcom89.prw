@@ -6,7 +6,7 @@ Data.....:              Julho/2018
 Descricao / Objetivo:   Rotina chamada pelo ponto de entrada MT120ALT 
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -23,7 +23,7 @@ If Type("l120Auto") <> "U" .and. !l120Auto
 		SY1->(dbSetOrder(3))
 		If SY1->(!dbSeek(xFilial("SY1")+RetCodUsr()))
 			lRet := .F.
-			APMsgStop("Usuario nao esta cadastrado como comprador.")	
+			APMsgStop("Usuário não está cadastrado como comprador.")	
 		Endif	
 	Endif	
 Endif	

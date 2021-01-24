@@ -7,7 +7,7 @@ Data................: 25/08/2017
 Descricao / Objetivo: Apresentar Nome do Fornecedor no Browse do Contrato
 Doc. Origem.........: Contrato - GAP MGFCGT12
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Inicializador de Browse no campo virtual CN9_NOME
 =====================================================================================
 */

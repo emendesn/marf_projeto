@@ -7,10 +7,10 @@
 Programa............: MGFFINB3
 Autor...............: Joni Lima
 Data................: 26/11/2018
-Descricao / Objetivo: Cadastro Administradora
+Descrição / Objetivo: Cadastro Administradora
 Doc. Origem.........: Contrato - E-commerce Oracle
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro de Administraora
 =====================================================================================
 */
@@ -29,8 +29,8 @@ Return oMBrowse
 /*
 =====================================================================================
 Programa............: MenuDef
-Descricao / Objetivo: MenuDef da rotina
-Obs.................: Definicao do Menu
+Descrição / Objetivo: MenuDef da rotina
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -48,7 +48,7 @@ Return(aRotina)
 /*
 =====================================================================================
 Programa............: ModelDef
-Obs.................: Definicao do Modelo de Dados para cadastro da Administradora Financeira
+Obs.................: Definição do Modelo de Dados para cadastro da Administradora Financeira
 =====================================================================================
 */
 Static Function ModelDef()
@@ -68,7 +68,7 @@ Return oModel
 /*
 =====================================================================================
 Programa............: ViewDef
-Obs.................: Definicao da View de Dados para cadastro da Administradora Financeira
+Obs.................: Definição da View de Dados para cadastro da Administradora Financeira
 =====================================================================================
 */
 Static Function ViewDef()

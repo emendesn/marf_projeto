@@ -5,10 +5,10 @@
 Programa............: CTBA120
 Autor...............: Joni Lima
 Data................: 07/11/2016
-Descricao / Objetivo: Pontos de Entradas MVC para GAP CTB01
+Descrição / Objetivo: Pontos de Entradas MVC para GAP CTB01
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: PE MVC do fonte CTBA120, Rateio.
 =====================================================================================
 */

@@ -31,9 +31,9 @@ User Function x6TGCT()
 		aAdd(aCabec,{"CND_PARCEL",(cArqTrb)->CNF_PARCEL,NIL})	
 	EndIf*/		
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿	
-	//ï¿½ Executa rotina automatica para gerar as medicoes ï¿½	
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿	
+	//³ Executa rotina automatica para gerar as medicoes ³	
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ	
 	//CNTA120(aCabec,aItem,3,.F.)		
 	MSExecAuto( { |x,y,z| CNTA120( x,y,z ) }, aCabec, aItem, 3 )
 
@@ -42,7 +42,7 @@ User Function x6TGCT()
 	If !lMsErroAuto
 		ALert("Incluido com sucesso! " + cDoc)		
 	Else		
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 	         MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -63,11 +63,11 @@ Return
 Programa.:              mgfgct06
 Autor....:              Roberto Sidney
 Data.....:              21/09/2016
-Descricao / Objetivo:   Gera a medicao automatica do contrato a partir do faturamento, efetua ajuste das amarracoes do contrao x pedido x titulo
+Descricao / Objetivo:   Gera a medição automática do contrato a partir do faturamento, efetua ajuste das amarrações do contrao x pedido x titulo
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Chamada efetuada atraves do ponto de entrada A410CONS()
+Uso......:              Marfrig
+Obs......:              Chamada efetuada através do ponto de entrada A410CONS()
 =====================================================================================
 */
 User Function mgfgct06(aItem,_cChaveSE1)
@@ -118,12 +118,12 @@ User Function mgfgct06(aItem,_cChaveSE1)
 		Return(.T.)
 	Endif	
 
-	// inclusao de Carga Taura
+	// inclusão de Carga Taura
 	If IsInCallStack("GravarCarga") .or. IsInCallStack("U_TAS02EECPA100") .or. IsInCallStack("U_GravarCarga") .or. IsInCallStack("U_xGravarCarga") .or. IsInCallStack("U_xTAS02EECPA100")
 		Return(.T.)
 	Endif	
 
-	ConOut(PadC("Rotina Automaica para a Mediï¿½ï¿½o do Contrato de Compras e Vendas",80))
+	ConOut(PadC("Rotina Automática para a Medição do Contrato de Compras e Vendas",80))
 
 	DbSelectArea("SC5")
 	_cPedido := SC5->C5_NUM
@@ -156,10 +156,10 @@ User Function mgfgct06(aItem,_cChaveSE1)
 		_aCabec := {}
 		_aItens := {}  
 
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Filtra parcelas de contratos automaticos ï¿½
-		//ï¿½ pendentes para a data atual              ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Filtra parcelas de contratos automaticos ³
+		//³ pendentes para a data atual              ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		_cArqTrb := CriaTrab( nil, .F. )     
 		cQuery := "SELECT CN9.CN9_FILIAL,CN9.CN9_NUMERO,CN9.CN9_REVISA,CN9_ZTOTDE, CNF.CNF_CONTRA,CNF.CNF_REVISA,CNA.CNA_NUMERO,CNA.CNA_DTINI," + CRLF
 		cQuery += "CNA.CNA_CLIENT,CNA.CNA_LOJACL,CNF.CNF_PARCEL,CNF.CNF_COMPET " + CRLF
@@ -225,7 +225,7 @@ User Function mgfgct06(aItem,_cChaveSE1)
 				aAdd(aCabCN120,{"CND_PARCEL",'01',NIL})
 			EndIf
 
-			aAdd(aCabCN120,{"CND_OBS","Mediï¿½ï¿½o automatica - Pedido de venda numero " + _cPedido +" - Nota: .",NIL}) //Mediï¿½ï¿½o gerada automaticamente a partir da inclusao do pedido de venda numero ###.
+			aAdd(aCabCN120,{"CND_OBS","Medição automática - Pedido de venda número " + _cPedido +" - Nota: .",NIL}) //Medição gerada automaticamente a partir da inclusão do pedido de venda número ###.
 			aAdd(aCabCN120,{"NUMPED",_cPedido,NIL})
 			aAdd(aCabCN120,{"CND_SERVIC","1",NIL}) 
 			
@@ -240,7 +240,7 @@ User Function mgfgct06(aItem,_cChaveSE1)
 				if lMsErroAuto
 					DISARMTRANSACTION()
 					//ROLLBACKSX8()
-					If (!IsBlind()) // COM INTERFACE GRAFICA
+					If (!IsBlind()) // COM INTERFACE GRÁFICA
 				         MostraErro()
 				    Else // EM ESTADO DE JOB
 				        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -249,7 +249,7 @@ User Function mgfgct06(aItem,_cChaveSE1)
 				        ConOut("Error: "+ cError)
 				    EndIf
 					_lToK := .F.
-					APmsgalert("Mediï¿½ï¿½o do contrato " + allTrim(_cContra) + " nao gerada!")
+					APmsgalert("Medição do contrato " + allTrim(_cContra) + " não gerada!")
 				else
 					//CONFIRMSX8()
 					DBSelectArea("CND")
@@ -269,7 +269,7 @@ User Function mgfgct06(aItem,_cChaveSE1)
 					// comentada em 34/04/18 por gresele, pois foi identificado que esta tela estah ocasionando problema de lock na sb2, pois a durante a geracao da nota de saida
 					// esta tela aparece e fica aguardando o usuario confirmar, e se neste momento o taura enviar o carregamento da carga de pedidos, pode ocasionar lock se os 
 					// produtos forem concorrentes.
-					//APmsgalert("Gerada Mediï¿½ï¿½o " + allTrim(_cDoc) + " do contrato " + allTrim(_cContra) )
+					//APmsgalert("Gerada Medição " + allTrim(_cDoc) + " do contrato " + allTrim(_cContra) )
 				endif
 
 			END TRANSACTION
@@ -325,7 +325,7 @@ User Function xMGCT6MED(cEmp,cFil,cModulo,aCabCN120,aItemCN120,cChvCN9,cChvCND)
 		Conout('Terminou Processo: ' + DtoC(Date()) + ' Horas: ' + TIME())	
 
 		RECOVER
-		Conout('Deu Problema na Execucao' + ' Horas: ' + TIME() )
+		Conout('Deu Problema na Execução' + ' Horas: ' + TIME() )
 	END SEQUENCE
 
 	ErrorBlock( bError )

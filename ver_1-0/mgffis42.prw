@@ -8,13 +8,13 @@
 
 //-------------------------------------------------------------------
 /*/{Protheus.doc} MGFFIS42
-GAP 366 - Bloqueio para apuracao de ICMS
+GAP 366 - Bloqueio para apuração de ICMS
 
-Rotina para cadastro de bloqueio de periodos.
-Desenvolver uma rotina em MVC dentro do arquivo MGFFIS42.PRW para manutencao
- do cadastro de bloqueio de periodos utilizando a estrutura da tabela ZCG.
+Rotina para cadastro de bloqueio de períodos.
+Desenvolver uma rotina em MVC dentro do arquivo MGFFIS42.PRW para manutenção
+ do cadastro de bloqueio de períodos utilizando a estrutura da tabela ZCG.
 
-@author Natanael Simoes
+@author Natanael Simões
 @since 22/01/2019
 @version P12.1.17
 /*/
@@ -24,7 +24,7 @@ Local oBrowse
 
 oBrowse := FWMBrowse():New()
 oBrowse:SetAlias('ZCG')
-oBrowse:SetDescription('Bloqueio de apuracao de ICMS')
+oBrowse:SetDescription('Bloqueio de apuração de ICMS')
 oBrowse:Activate()
 
 Return NIL
@@ -40,7 +40,7 @@ ADD OPTION aRotina TITLE '&Excluir'    ACTION 'VIEWDEF.MGFFIS42' OPERATION 5 ACC
 ADD OPTION aRotina TITLE '&Fechto Geral'  ACTION 'u_MANPAR53'       OPERATION 6 ACCESS 0
 ADD OPTION aRotina TITLE 'Im&primir'   ACTION 'VIEWDEF.MGFFIS42' OPERATION 8 ACCESS 0
 
-//ADD OPTION aRotina TITLE '&Copiar'     ACTION 'VIEWDEF.MGFFIS42' OPERATION 9 ACCESS 0 //Se habilitar a copia, deve ser tratado o auto-incremental do ZCG_SEQ 
+//ADD OPTION aRotina TITLE '&Copiar'     ACTION 'VIEWDEF.MGFFIS42' OPERATION 9 ACCESS 0 //Se habilitar a cópia, deve ser tratado o auto-incremental do ZCG_SEQ 
 Return aRotina
 
 
@@ -55,15 +55,15 @@ Local oModel
 oModel := FWModelActive()
 oModel := MPFormModel():New('XMGFFIS42', /*bPreValidacao*/, { |oModel| FIS42POS( oModel )}, /*bCommit*/, /*bCancel*/ )
 
-// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+// Adiciona ao modelo uma estrutura de formulário de edição por campo
 oModel:AddFields( 'ZCGMASTER', /*cOwner*/, oStruZCG,  /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 // Adiciona a descricao do Modelo de Dados
-oModel:SetDescription( 'Bloqueio de apuracao de ICMS' )
+oModel:SetDescription( 'Bloqueio de apuração de ICMS' )
 oModel:SetPrimaryKey({"ZCG_FILIAL+ZCG_ANO+ZCG_MES"})
 
 // Adiciona a descricao do Componente do Modelo de Dados
-oModel:GetModel( 'ZCGMASTER' ):SetDescription( 'Bloqueio de apuracao de ICMS' )
+oModel:GetModel( 'ZCGMASTER' ):SetDescription( 'Bloqueio de apuração de ICMS' )
 
 Return oModel
 
@@ -79,14 +79,14 @@ Local cCampos := {}
 
 // Crio os Agrupamentos de Campos  
 // AddGroup( cID, cTitulo, cIDFolder, nType )   nType => ( 1=Janela; 2=Separador )
-oStruZCG:AddGroup( 'GRUPO01', 'Periodo', '', 2 )
+oStruZCG:AddGroup( 'GRUPO01', 'Período', '', 2 )
 
 oStruZCG:SetProperty( '*'         , MVC_VIEW_GROUP_NUMBER, 'GRUPO01' )
 
 // Cria o objeto de View
 oView := FWFormView():New()
 
-// Define qual o Modelo de dados sera utilizado
+// Define qual o Modelo de dados será utilizado
 oView:SetModel( oModel )
 
 //Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -106,11 +106,11 @@ Static Function FIS42POS( oModel )
 Local nOperation := oModel:GetOperation()
 Local lRet       := .T.
 
-// Inclusao dos registros
+// Inclusão dos registros
 If nOperation == 3
-	// Valida se o cadastro jï¿½ existe
+	// Valida se o cadastro já existe
 	If !Vazio(Posicione("ZCG",1,xFilial("ZCG")+Alltrim(STR(M->ZCG_ANO))+Alltrim(STR(M->ZCG_MES)),"ZCG_STAT"))
-		Help( ,, 'MGFFIS42',, 'Registro/Combinacao jï¿½ existente na Base de Dados', 1, 0)
+		Help( ,, 'MGFFIS42',, 'Registro/Combinação já existente na Base de Dados', 1, 0)
 		lRet := .F.
 	EndIf
 	
@@ -137,10 +137,10 @@ Return lRet
 Programa............: MANPAR53
 Autor...............: Wagner Neves
 Data................: 16/03/2020
-Descricao / Objetivo: Este programa serve para alterar o parametro que controla bloqueio apuracao do ICMS
+Descricao / Objetivo: Este programa serve para alterar o parâmetro que controla bloqueio apuração do ICMS
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -154,7 +154,7 @@ Local aAlter   := {}
 Local aButtons := {}
 
 If !__cUserId $ _cUsuarios
-	Alert("Somente o Administrador ou usuï¿½rios autorizados podem executar esta rotina.")
+	Alert("Somente o Administrador ou usuários autorizados podem executar esta rotina.")
 	Return
 EndIf
 Private oDlg, oMainWnd
@@ -164,11 +164,11 @@ Private _oFont
 Public _aColsEx := {}
 Public _aHeader := {}
 Private oGetD
-cTitulo  := "Fechamento Geral (Todas as Filiais) para Apuracao do ICMS"
+cTitulo  := "Fechamento Geral (Todas as Filiais) para Apuração do ICMS"
 
 DEFINE MSDIALOG oDlg TITLE cTitulo From 09,00 to 40,101 of oMainWnd
 _oGroupRod := TGroup():New(015,010,220,390,cTitulo,oDlg,,,.T.) 
-_aHeader := {"Filial  ","Parametro  ","Descricao do Parametro  ","Data  "}
+_aHeader := {"Filial  ","Parametro  ","Descrição do Parametro  ","Data  "}
 DbSelectArea("SM0")  
 DbSelectArea('SX6')
 SX6->(DbSetOrder(1))        
@@ -195,7 +195,7 @@ Local aArea := getArea()
 Local culmes	 := ""		
 Local cdatafis := ""		
 Local cdatafin := ""
-iif(msgyesno("Confirma a alteracao do parametro ?"),cret:=.t.,cret:=.f.)
+iif(msgyesno("Confirma a alteração do parâmetro ?"),cret:=.t.,cret:=.f.)
 if cret == .t.
 	for nx := 1 to Len(aArr)  	
 		cfilant := aArr[nx][1]
@@ -204,7 +204,7 @@ if cret == .t.
 			putmv("MGF_FIS43A",cdatafis)		
 		EndIf
 	next nx
-	msginfo("O parametro foi alterado com sucesso !")
+	msginfo("O parâmetro foi alterado com sucesso !")
 endif
 cfilant := cfilorig      
 restArea(aArea)

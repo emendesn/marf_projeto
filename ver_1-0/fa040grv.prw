@@ -11,23 +11,24 @@ Data.....:              24/10/2016
 Descricao / Objetivo:   O ponto de entrada FA040GRV sera executado apos a gravacao de todos os dados referentes ao titulo e antes da contabilizacao.
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              http://tdn.totvs.com/pages/releaseview.action?pageId=6071098
 =====================================================================================
 */
-user function FA040GRV()
-    
+User Function FA040GRV()
+
 	If FindFunction("U_MGFFIN82")
 		U_MGFFIN82()
-    Endif  
+	Endif
 
 	If findfunction("U_MGFFAT22")
 		U_MGFFAT22()
 	Endif
-	
-	If FindFunction("U_CRE2905")
-	U_CRE2905()
-    Endif  
 
+	If ! ( IsInCallStack("EECAF200") .OR. IsInCallStack("EECAC100") .OR. IsInCallStack("EECAP100") )  // Baixa automatica e Adiantamentos do EEC nao deve considerar
+		If FindFunction("U_CRE2905")
+			U_CRE2905()
+		Endif
+	Endif
 
-return
+Return

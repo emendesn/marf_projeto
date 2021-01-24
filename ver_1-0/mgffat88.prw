@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo PE M460FIM
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gravacao de campos do GFE
 =====================================================================================
 */

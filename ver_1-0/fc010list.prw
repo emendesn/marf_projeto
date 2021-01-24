@@ -8,11 +8,11 @@
 Programa.:              FC010LIST - PE
 Autor....:              Antonio Carlos        
 Data.....:              03/10/2016
-Descricao / Objetivo:   incluir informacoes de Credito da Rede
+Descricao / Objetivo:   incluir informações de Credito da Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              incluir informacoes de Credito da Rede
+Uso......:              Marfrig
+Obs......:              incluir informações de Credito da Rede
 =====================================================================================
 */
 User Function FC010LIST()  

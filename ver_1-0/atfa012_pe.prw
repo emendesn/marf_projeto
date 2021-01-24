@@ -8,7 +8,7 @@ Data................: 22/05/2017
 Descricao / Objetivo: Ponto de entrada na rotina de Cadastro do Ativo Imobilizado
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

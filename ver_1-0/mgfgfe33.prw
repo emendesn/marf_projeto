@@ -1,6 +1,8 @@
-#include "protheus.ch"
 #include "topconn.ch"
 #include "tbiconn.ch"
+#include 'protheus.ch'
+#include "rwmake.ch"
+#include "totvs.ch"
 
 /*
 =====================================================================================
@@ -14,56 +16,18 @@ Uso.................: Marfrig
 Obs.................: Rotina de job de sicronizacao do GFE
 =====================================================================================
 */
-User Function MGFGFE33(aTab1)
-	/*
-	Local aMatriz := {"01","010001"}
-	Local lIsBlind := IsBlind() .OR. Type("__LocalDriver") == "U"
+User Function MGFGFE33(aTab)
 
-	if lIsBlind
-	RpcSetType(3)
-	RpcSetEnv(aMatriz[1],aMatriz[2])
-
-	MGFGFE33Proc()
-
-	RpcClearEnv()	
-	EndIf
-
-	Return()
-
-
-	Static Function MGFGFE33Proc()
-	*/
-	//Local aArea := {GetArea()}
-	//Local aTab := {"SA1","SA2","SA4","SF1","SF2","CC2","CT1","CTT","DA3","DA4","DAK","DUT"}
-	Local aTab := {"SA1","SA2","DA3","DA4","SA4","CC2","DUT","CTT","CT1","DAK","SF2","SF1","GW1","ZBS"}
 	Local nCnt := 0
-
-	//Default aTab := {"SA1","SA2","DA3","DA4","SA4","CC2","DUT","CTT","CT1","DAK","SF2","SF1"}
-
-	//IF LEN(ATAB1) > 0
-	//	For nCnt:=1 To Len(aTab1)
-	//		CONOUT(ATAB[NCNT])
-	//	NEXT	
-	//ELSE
-	//	CONOUT("SEM PARAMENTROS")
-	//ENDIF		
-
+	Default aTab := {"GW1","SA1","SA2","DA3","DA4","SA4","CC2","DUT","CTT","CT1","DAK","ZBS","SF2","SF1","GWU"}
 
 	For nCnt:=1 To Len(aTab)
-		//IF NCNT != 2
-		//	LOOP
-		//ENDIF
-		//IF NCNT > 9 
-		//	EXIT
-		//ENDIF	
 
-		StartJob("U_GFE33Proc",GetEnvServer(),.F.,aTab[nCnt])
+		U_GFE33Proc(aTab[nCnt])
+
 	Next
 
-	//aEval(aArea,{|x| RestArea(x)})
-
 Return()
-
 
 User Function GFE33Proc(cTab)
 
@@ -82,19 +46,16 @@ User Function GFE33Proc(cTab)
 	Local lCalc := .T.
 
 	If lIsBlind
-		RpcSetType(3)
-		RpcSetEnv(aMatriz[1],aMatriz[2],,,"GFE")
-		//RpcSetEnv(cEmp,cFil,,,/*"FAT"*/,,{"SA2"},,,.T.)
 
 		If !LockByName(ProcName()+"_"+cTab)
-			Conout("JOB jÃ¡ em ExecuÃ§Ã£o : "+ProcName()+"_"+cTab+" - "+DTOC(dDATABASE) + " - " + TIME() )
-			RpcClearEnv()
+			Conout("JOB já em Execução : "+ProcName()+"_"+cTab+" - "+DTOC(dDATABASE) + " - " + TIME() )
 			Return()
 		EndIf
+
 	EndIf
 
 	conOut("********************************************************************************************************************")
-	conOut('Inicio do processamento - MGFGFE33 - SincronizaÃ§Ã£o GFE - Tabela: '+cTab+' - ' + DTOC(dDATABASE) + " - " + TIME()  )
+	conOut('Inicio do processamento - MGFGFE33 - Sincronização GFE - Tabela: '+cTab+' - ' + DTOC(dDATABASE) + " - " + TIME()  )
 	conOut("********************************************************************************************************************"+ CRLF)
 
 	cAliasTrb := GetNextAlias()
@@ -107,13 +68,12 @@ User Function GFE33Proc(cTab)
 	Endif		
 
 	For nCnt:=1 To nVezes
+
 		cQ := GFE33Filtro(cTab,nCnt)
-		conout(cq)	
+
 		nCount:=0
 
 		If !Empty(cQ)
-			//cQ := ChangeQuery(cQ) // obs: nao usar pois distorce a query
-			MemoWrit("c:\temp\mgfgfe33.sql",cQ)
 
 			cTime1 := Time()	
 			Conout("mgfgfe33 - inicio query: "+cTab+" - "+DTOC(dDATABASE)+" - "+TIME())
@@ -121,28 +81,6 @@ User Function GFE33Proc(cTab)
 			cTime2 := Time()
 			Conout("mgfgfe33 - fim query: "+cTab+" - Tempo de processamento da query: "+ElapTime(cTime1,cTime2)+" - "+DTOC(dDATABASE)+" - "+TIME())
 
-			/*
-			dbSelectArea(cTab)
-			dbSetOrder(1)
-			While (cAliasTrb)->(!Eof())
-			(cTab)->(dbGoto((cAliasTrb)->RECNO))
-			If (cTab)->(Recno()) == (cAliasTrb)->RECNO
-			CONOUT("cliente "+STR((cAliasTrb)->RECNO))
-			nCount++
-			//cEmpAnt := &((cTab)->(Subs(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL",1,2)))
-			conout((cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"))
-			If !Empty((cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"))
-			cEmpAnt := Subs((cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"),1,2)
-			conout(cempant)
-			//cFilAnt := &((cTab)->(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"))
-			cFilAnt := (cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL")
-			conout(cfilant)
-			Endif	
-			OMSM011IPG(cTab)
-			Endif	
-			(cAliasTrb)->(dbSkip())
-			Enddo	
-			*/
 
 			(cAliasTrb)->(dbGotop())
 			(cAliasTrb)->(dbEval({ || nTotal++ },,{ || (cAliasTrb)->(!Eof()) } ))
@@ -165,8 +103,6 @@ User Function GFE33Proc(cTab)
 					Else
 						cQ += "AND TRIM(A1_CGC) = '"+Alltrim((cAliasTrb)->A1_CGC)+"' "
 					Endif	
-					//cQ += "AND TRIM(REPLACE(A1_NOME,CHR(39),CHR(32))) = '"+Alltrim(StrTran((cAliasTrb)->A1_NOME,"'"," ")) +"' "
-					//cQ += "AND TRIM(REPLACE(A1_END,CHR(39),CHR(32))) = '"+Alltrim(StrTran((cAliasTrb)->A1_END,"'"," ")) +"' "
 					cQ += "ORDER BY A1_FILIAL,A1_COD,A1_LOJA "
 				Endif	
 
@@ -181,10 +117,7 @@ User Function GFE33Proc(cTab)
 					Else
 						cQ += "AND TRIM(A2_CGC) = '"+Alltrim((cAliasTrb)->A2_CGC)+"' "
 					Endif	
-					//cQ += "AND TRIM(REPLACE(A2_NOME,CHR(39),CHR(32))) = '"+Alltrim(StrTran((cAliasTrb)->A2_NOME,"'"," ")) +"' "
-					//cQ += "AND TRIM(REPLACE(A2_END,CHR(39),CHR(32))) = '"+Alltrim(StrTran((cAliasTrb)->A2_END,"'"," ")) +"' "
 					cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN (SELECT A2_LOJA FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD AND SA21.A2_LOJA = SA2.A2_LOJA) ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END) "
-					//cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN A2_LOJA ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END)	"
 					cQ += "ORDER BY A2_FILIAL,A2_COD,A2_LOJA "
 				Endif
 
@@ -369,6 +302,15 @@ User Function GFE33Proc(cTab)
 					cQ += "WHERE R_E_C_N_O_ ="+Alltrim(STR((cAliasTrb)->RECNO))
 				EndIf
 
+				If cTab == "GWU"  //WVN
+					cChave := (cAliasTrb)->DAK_FILIAL+" - Carga : "+(cAliasTrb)->DAK_COD+(cAliasTrb)->DAK_SEQCAR+" - RECNO GWU "+Alltrim(STR((cAliasTrb)->GWURECNO))
+					cQ := "SELECT GWU.R_E_C_N_O_ RECNO "
+					cQ += "FROM "+RetSqlName("GWU")+" GWU "
+					cQ += "WHERE GWU.D_E_L_E_T_ = ' ' " 
+					cQ += "AND GWU.R_E_C_N_O_ = '"+Alltrim(STR((cAliasTrb)->GWURECNO))+"'"
+				Endif	
+
+
 				dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQ),cAliasTrb1,.T.,.T.)
 
 				(cTab)->(dbGoto((cAliasTrb1)->RECNO))
@@ -377,24 +319,25 @@ User Function GFE33Proc(cTab)
 					nCount++
 					If !Empty((cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"))
 						cEmpAnt := Subs((cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL"),1,2)
-						If !cTab $ "DAK/SF1/SF2/GW1/ZBS" 
+						If !cTab $ "DAK/SF1/SF2/GW1/ZBS/GWU" 
 							Conout("mgfgfe33 - cEmpAnt: "+cEmpAnt)
 						Endif	
 						cFilAnt := (cTab)->&(IIf(Subs(cTab,1,1)=="S",Subs(cTab,2,2),cTab)+"_FILIAL")
-						If !cTab $ "DAK/SF1/SF2/GW1/ZBS" 
+						If !cTab $ "DAK/SF1/SF2/GW1/ZBS/GWU" 
 							Conout("mgfgfe33 - cFilAnt: "+cFilAnt)
 						Endif	
 					Endif	
 					If Empty(cEmpAnt)
 						cEmpAnt := "01"
-					Endif	
-					If !cTab $ "SF1/SF2/GW1/ZBS" 
+					Endif			
+
+					If !cTab $ "SF1/SF2/GW1/ZBS/GWU" 
 						OMSM011IPG(cTab)
 					Elseif cTab == "SF2" 
 						lCalc := .T.
 						// nao processa documentos se encontrar o romaneio e estiver calculado
 						GWN->(dbSetOrder(1))
-						If GWN->(dbSeek(xFilial("GWN")+SF2->F2_CARGA+SF2->F2_SEQCAR))
+						If GWN->(dbSeek(SF2->F2_FILIAL+SF2->F2_CARGA+SF2->F2_SEQCAR))
 							If GWN->GWN_CALC == "1" // 1 = romaneio calculado
 								lCalc := .F.
 							Endif
@@ -403,11 +346,17 @@ User Function GFE33Proc(cTab)
 							OMSM011NFS("TODOS",,,cTab,"MATA461")
 						Endif
 					Elseif cTab == "SF1"
-						OMSM011NFE("TODOS",,,cTab,"MATA103",,.T.)
+						//OMSM011NFE("TODOS",,,cTab,"MATA103",,.T.)
 					ElseIf cTab == "GW1"
 						RecLock(cTab,.F.)
 						(cTab)->GW1_DANFE := (cAliasTrb)->CHVNFE
 						(cTab)->(MsUnlock())
+					
+					ElseIf cTab == "GWU" //WVN
+						RecLock(cTab,.F.)
+						(cTab)->GWU_NRCIDD := (cAliasTrb)->GU7_NRCID
+						(cTab)->(MsUnlock())
+
 					ElseIf cTab == "ZBS"
 						RecLock(cTab,.F.)
 						If nCnt == 1
@@ -430,9 +379,6 @@ User Function GFE33Proc(cTab)
 				(cAliasTrb1)->(dbCloseArea())
 				(cAliasTrb)->(dbSkip())
 
-				//IF nCount > 1000
-				//EXIT
-				//ENDIF	
 			Enddo	
 
 			conOut("********************************************************************************************************************")
@@ -444,12 +390,11 @@ User Function GFE33Proc(cTab)
 	Next
 
 	conOut("********************************************************************************************************************")
-	conOut('Final do processamento - MGFGFE33 - SincronizaÃ§Ã£o GFE - Tabela: '+cTab+' - ' + DTOC(dDATABASE) + " - " + TIME()  )
+	conOut('Final do processamento - MGFGFE33 - Sincronização GFE - Tabela: '+cTab+' - ' + DTOC(dDATABASE) + " - " + TIME()  )
 	conOut("********************************************************************************************************************"+ CRLF)
 
 	If lIsBlind
 		UnLockByName(ProcName()+"_"+cTab)		
-		RpcClearEnv()	
 	Endif
 
 Return()
@@ -460,339 +405,76 @@ Static Function GFE33Filtro(cTab,nVez)
 	Local cQ := ""
 
 	If cTab == "SA1"
-		// clientes de exportacao e encontrados na gu3
-		/*
-		cQ := "SELECT SA1.R_E_C_N_O_ RECNO "+CRLF
-		cQ += "FROM "+RetSqlName("SA1")+" SA1 "+CRLF
-		cQ += "	WHERE SA1.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "	AND "+CRLF
-		cQ += "	( "+CRLF
-		cQ += "	A1_TIPO = 'X' "+CRLF
-		cQ += "	AND EXISTS "+CRLF
-		cQ += "		( "+CRLF
-		cQ += "		SELECT 1 "+CRLF
-		cQ += "		FROM "+RetSqlName("GU3")+" GU3 "+CRLF
-		cQ += "			WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "			AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF
-		cQ += "			AND TRIM(GU3_CDEMIT) = TRIM(A1_COD) || TRIM(A1_LOJA) "+CRLF
-		cQ += GFE33CmpSA1()
-		cQ += "		) "+CRLF
-		cQ += "	) "+CRLF 
-		cQ += "ORDER BY SA1.R_E_C_N_O_ "//A1_FILIAL,A1_COD,A1_LOJA "
-		*/
-		/*
-		cQ := "SELECT RECNO FROM "+CRLF
-		cQ += "( "+CRLF
-		cQ += "SELECT SA1.R_E_C_N_O_ RECNO "+CRLF
-		cQ += "FROM "+RetSqlName("SA1")+" SA1 "+CRLF
-		cQ += "RIGHT JOIN "+RetSqlName("GU3")+" GU3 "+CRLF
-		cQ += "	ON GU3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "	AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF
-		cQ += GFE33CmpSA1()
-		cQ += "	WHERE SA1.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "	AND TRIM(A1_COD) || TRIM(A1_LOJA) = TRIM(GU3_CDEMIT) "+CRLF
-		cQ += "	AND A1_TIPO = 'X' "+CRLF
-		CQ += "AND SA1.R_E_C_N_O_ = 4820 "
-
-		cQ += "UNION "+CRLF
-
-		cQ += "SELECT SA1.R_E_C_N_O_ RECNO "+CRLF
-		cQ += "FROM "+RetSqlName("SA1")+" SA1 "+CRLF
-		cQ += "RIGHT JOIN "+RetSqlName("GU3")+" GU3 "+CRLF
-		cQ += "	ON GU3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "	AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF
-		cQ += GFE33CmpSA1()
-		cQ += "	WHERE SA1.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "	AND TRIM(A1_CGC) = TRIM(GU3_CDEMIT) "+CRLF
-		cQ += "	AND A1_TIPO <> 'X' "+CRLF
-		CQ += "AND SA1.R_E_C_N_O_ = 4820 "
-
-		cQ += ") "+CRLF
-
-		cQ += "ORDER BY RECNO "//A1_FILIAL,A1_COD,A1_LOJA "
-		*/
 
 		cQ := "SELECT "+CRLF
-		//cQ += "A1_FILIAL,A1_CGC,A1_NOME,A1_END "+CRLF
 		cQ += "A1_FILIAL,A1_CGC "+CRLF	
 		cQ += "FROM "+CRLF
 		cQ += "( "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "A1_FILIAL "+CRLF
 		cQ += ",TRIM(CASE WHEN A1_TIPO <> 'X' THEN TRIM(A1_CGC) ELSE TRIM(A1_COD) || TRIM(A1_LOJA) END) A1_CGC "+CRLF
-		/*
-		cQ += ",TRIM(A1_NOME) A1_NOME "+CRLF
-		cQ += ",TRIM(A1_NREDUZ) "+CRLF
-		cQ += ",TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_PESSOA ELSE 'X' END) "+CRLF
-		cQ += ",TRIM(A1_DTNASC) "+CRLF
-		cQ += ",'1' "+CRLF
-		cQ += ",TRIM(A1_END) A1_END "+CRLF
-		cQ += ",TRIM(A1_COMPLEM) "+CRLF
-		cQ += ",TRIM(A1_BAIRRO) "+CRLF 
-		cQ += ",TRIM(A1_CEP) "+CRLF
-		cQ += ","+GFE33Cidade("SA1")+CRLF
-		cQ += ",TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_CGC ELSE ' ' END) "+CRLF
-		cQ += ",TRIM(A1_INSCR) "+CRLF
-		cQ += ",TRIM(A1_INSCRM) "+CRLF
-		cQ += ",TRIM(SUBSTR(A1_CXPOSTA,1,10)) "+CRLF
-		cQ += ",TRIM(A1_EMAIL) "+CRLF
-		cQ += ",TRIM(A1_TEL) "+CRLF
-		cQ += ",TRIM(A1_FAX) "+CRLF
-		cQ += ",TRIM(A1_HPAGE) "+CRLF
-		cQ += ",'2' "+CRLF
-		*/
-		//cQ += ",TRIM(CASE WHEN A1_MSBLQL = '1' THEN '2' ELSE '1' END) "+CRLF
 		cQ += "FROM "+RetSqlName("SA1")+" SA1 "+CRLF
 		cQ += "WHERE SA1.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND A1_FILIAL = '"+xFilial("SA1")+"' "+CRLF	
-		//	cQ += "AND A1_TIPO <> 'X' "+CRLF
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "GU3_FILIAL "+CRLF
 		cQ += ",TRIM(GU3_CDEMIT) "+CRLF
-		/*
-		cQ += ",TRIM(GU3_NMEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMFAN) "+CRLF
-		cQ += ",TRIM(GU3_NATUR) "+CRLF
-		cQ += ",TRIM(GU3_DTNASC) "+CRLF
-		cQ += ",TRIM(GU3_CLIEN) "+CRLF
-		cQ += ",TRIM(GU3_ENDER) "+CRLF
-		cQ += ",TRIM(GU3_COMPL) "+CRLF
-		cQ += ",TRIM(GU3_BAIRRO) "+CRLF
-		cQ += ",TRIM(GU3_CEP) "+CRLF
-		cQ += ",TRIM(GU3_NRCID) "+CRLF
-		cQ += ",TRIM(GU3_IDFED) "+CRLF
-		cQ += ",TRIM(GU3_IE) "+CRLF
-		cQ += ",TRIM(GU3_IM) "+CRLF
-		cQ += ",TRIM(GU3_CXPOS) "+CRLF
-		cQ += ",TRIM(GU3_EMAIL) "+CRLF
-		cQ += ",TRIM(GU3_FONE1) "+CRLF
-		cQ += ",TRIM(GU3_FAX) "+CRLF
-		cQ += ",TRIM(GU3_WSITE) "+CRLF
-		cQ += ",TRIM(GU3_ORIGEM) "+CRLF
-		*/
-		//cQ += ",TRIM(GU3_SIT) "+CRLF
 		cQ += "FROM "+RetSqlName("GU3")+" GU3 "+CRLF
 		cQ += "WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF	
 		cQ += "AND GU3_CLIEN = '1' "+CRLF	
-		//	cQ += "AND LENGTH(TRIM(GU3_CDEMIT)) > 8 "+CRLF
 		cQ += ") "+CRLF
-		/*
-		cQ += "UNION "+CRLF
-
-		cQ += "SELECT "+CRLF
-		cQ += "A1_CGC,A1_NOME,A1_END "+CRLF
-		cQ += "FROM ( "+CRLF
-		cQ += "SELECT TRIM(A1_COD) || TRIM(A1_LOJA) A1_CGC "+CRLF	
-		cQ += ",TRIM(A1_NOME) A1_NOME "+CRLF
-		cQ += ",TRIM(A1_NREDUZ) "+CRLF
-		cQ += ",TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_PESSOA ELSE 'X' END) "+CRLF
-		cQ += ",TRIM(A1_DTNASC) "+CRLF
-		cQ += ",'1' "+CRLF
-		cQ += ",TRIM(A1_END) A1_END "+CRLF
-		cQ += ",TRIM(A1_COMPLEM) "+CRLF
-		cQ += ",TRIM(A1_BAIRRO) "+CRLF 
-		cQ += ",TRIM(A1_CEP) "+CRLF
-		cQ += ","+GFE33Cidade("SA1")+CRLF
-		cQ += ",TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_CGC ELSE ' ' END) "+CRLF
-		cQ += ",TRIM(A1_INSCR) "+CRLF
-		cQ += ",TRIM(A1_INSCRM) "+CRLF
-		cQ += ",TRIM(SUBSTR(A1_CXPOSTA,1,10)) "+CRLF
-		cQ += ",TRIM(A1_EMAIL) "+CRLF
-		cQ += ",TRIM(A1_TEL) "+CRLF
-		cQ += ",TRIM(A1_FAX) "+CRLF
-		cQ += ",TRIM(A1_HPAGE) "+CRLF
-		cQ += ",'2' "+CRLF
-		//	cQ += ",TRIM(CASE WHEN A1_MSBLQL = '1' THEN '2' ELSE '1' END) "+CRLF
-		cQ += "FROM "+RetSqlName("SA1")+" SA1 "+CRLF
-		cQ += "WHERE SA1.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND A1_TIPO = 'X' "+CRLF
-		cQ += "MINUS "+CRLF
-		cQ += "SELECT "+CRLF
-		cQ += "TRIM(GU3_CDEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMFAN) "+CRLF
-		cQ += ",TRIM(GU3_NATUR) "+CRLF
-		cQ += ",TRIM(GU3_DTNASC) "+CRLF
-		cQ += ",TRIM(GU3_CLIEN) "+CRLF
-		cQ += ",TRIM(GU3_ENDER) "+CRLF
-		cQ += ",TRIM(GU3_COMPL) "+CRLF
-		cQ += ",TRIM(GU3_BAIRRO) "+CRLF
-		cQ += ",TRIM(GU3_CEP) "+CRLF
-		cQ += ",TRIM(GU3_NRCID) "+CRLF
-		cQ += ",TRIM(GU3_IDFED) "+CRLF
-		cQ += ",TRIM(GU3_IE) "+CRLF
-		cQ += ",TRIM(GU3_IM) "+CRLF
-		cQ += ",TRIM(GU3_CXPOS) "+CRLF
-		cQ += ",TRIM(GU3_EMAIL) "+CRLF
-		cQ += ",TRIM(GU3_FONE1) "+CRLF
-		cQ += ",TRIM(GU3_FAX) "+CRLF
-		cQ += ",TRIM(GU3_WSITE) "+CRLF
-		cQ += ",TRIM(GU3_ORIGEM) "+CRLF
-		//	cQ += ",TRIM(GU3_SIT) "+CRLF
-		cQ += "FROM "+RetSqlName("GU3")+" GU3 "+CRLF
-		cQ += "WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND GU3_CLIEN = '1' "+CRLF	
-		cQ += "AND LENGTH(TRIM(GU3_CDEMIT)) <= 8 "+CRLF
-		cQ += ") "+CRLF
-		*/
-		//cQ += "ORDER BY A1_FILIAL,A1_CGC,A1_NOME,A1_END "+CRLF
 		cQ += "ORDER BY A1_FILIAL,A1_CGC "+CRLF	
+
 	Endif
 
 	If cTab == "SA2" .and. nVez == 1
 		cQ := "SELECT "+CRLF
-		//cQ += "A2_FILIAL,A2_CGC,A2_NOME,A2_END "+CRLF
 		cQ += "A2_FILIAL,A2_CGC "+CRLF	
 		cQ += "FROM "+CRLF
 		cQ += "( "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "A2_FILIAL "+CRLF
 		cQ += ",TRIM(CASE WHEN A2_TIPO <> 'X' THEN TRIM(A2_CGC) ELSE TRIM(A2_COD) || TRIM(A2_LOJA) END) A2_CGC "+CRLF
-		/*
-		cQ += ",TRIM(A2_NOME) A2_NOME "+CRLF
-		cQ += ",TRIM(A2_NREDUZ) "+CRLF
-		cQ += ",TRIM(A2_TIPO) "+CRLF
-		cQ += ",'1' "+CRLF	
-		cQ += ",TRIM(A2_END) A2_END "+CRLF
-		cQ += ",TRIM(A2_COMPLEM) "+CRLF
-		cQ += ",TRIM(A2_BAIRRO) "+CRLF 
-		cQ += ",TRIM(A2_CEP) "+CRLF
-		cQ += ","+GFE33Cidade("SA2")+CRLF
-		cQ += ",TRIM(CASE WHEN A2_TIPO <> 'X' THEN A2_CGC ELSE ' ' END) "+CRLF
-		cQ += ",TRIM(A2_INSCR) "+CRLF
-		cQ += ",TRIM(A2_INSCRM) "+CRLF
-		cQ += ",TRIM(SUBSTR(A2_CX_POST,1,10)) "+CRLF
-		cQ += ",TRIM(A2_EMAIL) "+CRLF
-		cQ += ",TRIM(SUBSTR(A2_TEL,1,15)) "+CRLF
-		cQ += ",TRIM(A2_FAX) "+CRLF
-		cQ += ",TRIM(A2_HPAGE) "+CRLF
-		cQ += ",'2' "+CRLF
-		cQ += ",TRIM(A2_CONTRIB) "+CRLF
-		cQ += ",TRIM(CASE WHEN A2_SIMPNAC = '1' THEN '2' ELSE '1' END) "+CRLF
-		*/
-		//cQ += ",TRIM(CASE WHEN A2_MSBLQL = '1' THEN '2' ELSE '1' END) "+CRLF	
 		cQ += "FROM "+RetSqlName("SA2")+" SA2 "+CRLF
 		cQ += "WHERE SA2.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND A2_FILIAL = '"+xFilial("SA2")+"' "+CRLF	
-		//cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN A2_LOJA ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END) "+CRLF
-		//cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN (SELECT A2_LOJA FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD AND SA21.A2_LOJA = SA2.A2_LOJA) ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END) "+CRLF
-		//CQ += "AND A2_CGC = '00749574577' "
-		//cQ += "AND ROWNUM <= 10000 "
 		cQ += "AND A2_ZTPFORN <> '2' "
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "GU3_FILIAL "+CRLF
 		cQ += ",TRIM(GU3_CDEMIT) "+CRLF
-		/*
-		cQ += ",TRIM(GU3_NMEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMFAN) "+CRLF
-		cQ += ",TRIM(GU3_NATUR) "+CRLF
-		cQ += ",TRIM(GU3_FORN) "+CRLF
-		cQ += ",TRIM(GU3_ENDER) "+CRLF
-		cQ += ",TRIM(GU3_COMPL) "+CRLF
-		cQ += ",TRIM(GU3_BAIRRO) "+CRLF
-		cQ += ",TRIM(GU3_CEP) "+CRLF
-		cQ += ",TRIM(GU3_NRCID) "+CRLF
-		cQ += ",TRIM(GU3_IDFED) "+CRLF
-		cQ += ",TRIM(GU3_IE) "+CRLF
-		cQ += ",TRIM(GU3_IM) "+CRLF
-		cQ += ",TRIM(GU3_CXPOS) "+CRLF
-		cQ += ",TRIM(GU3_EMAIL) "+CRLF
-		cQ += ",TRIM(GU3_FONE1) "+CRLF
-		cQ += ",TRIM(GU3_FAX) "+CRLF
-		cQ += ",TRIM(GU3_WSITE) "+CRLF
-		cQ += ",TRIM(GU3_ORIGEM) "+CRLF
-		cQ += ",TRIM(GU3_CONICM) "+CRLF
-		cQ += ",TRIM(GU3_TPTRIB) "+CRLF	
-		*/
-		//cQ += ",TRIM(GU3_SIT) "+CRLF	
 		cQ += "FROM "+RetSqlName("GU3")+" GU3 "+CRLF
 		cQ += "WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF	
 		cQ += "AND GU3_FORN = '1' "+CRLF	
-		//	CQ += "AND GU3_CDEMIT = '00217160212' "	
 		cQ += ") "+CRLF
-		//cQ += "ORDER BY A2_FILIAL,A2_CGC,A2_NOME,A2_END "+CRLF
 		cQ += "ORDER BY A2_FILIAL,A2_CGC "+CRLF	
 	Endif
 
 	If cTab == "SA2" .and. nVez == 2
 		cQ := "SELECT "+CRLF
-		//cQ += "A2_FILIAL,A2_CGC,A2_NOME,A2_END "+CRLF
 		cQ += "A2_FILIAL,A2_CGC "+CRLF	
 		cQ += "FROM "+CRLF
 		cQ += "( "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "A2_FILIAL "+CRLF
 		cQ += ",TRIM(CASE WHEN A2_TIPO <> 'X' THEN TRIM(A2_CGC) ELSE TRIM(A2_COD) || TRIM(A2_LOJA) END) A2_CGC "+CRLF
-		/*
-		cQ += ",TRIM(A2_NOME) A2_NOME "+CRLF
-		cQ += ",TRIM(A2_NREDUZ) "+CRLF
-		cQ += ",TRIM(A2_TIPO) "+CRLF
-		cQ += ",'1' "+CRLF	
-		cQ += ",TRIM(A2_END) A2_END "+CRLF
-		cQ += ",TRIM(A2_COMPLEM) "+CRLF
-		cQ += ",TRIM(A2_BAIRRO) "+CRLF 
-		cQ += ",TRIM(A2_CEP) "+CRLF
-		cQ += ","+GFE33Cidade("SA2")+CRLF
-		cQ += ",TRIM(CASE WHEN A2_TIPO <> 'X' THEN A2_CGC ELSE ' ' END) "+CRLF
-		cQ += ",TRIM(A2_INSCR) "+CRLF
-		cQ += ",TRIM(A2_INSCRM) "+CRLF
-		cQ += ",TRIM(SUBSTR(A2_CX_POST,1,10)) "+CRLF
-		cQ += ",TRIM(A2_EMAIL) "+CRLF
-		cQ += ",TRIM(SUBSTR(A2_TEL,1,15)) "+CRLF
-		cQ += ",TRIM(A2_FAX) "+CRLF
-		cQ += ",TRIM(A2_HPAGE) "+CRLF
-		cQ += ",'2' "+CRLF
-		cQ += ",TRIM(A2_CONTRIB) "+CRLF
-		cQ += ",TRIM(CASE WHEN A2_SIMPNAC = '1' THEN '2' ELSE '1' END) "+CRLF 
-		*/
-		//cQ += ",TRIM(CASE WHEN A2_MSBLQL = '1' THEN '2' ELSE '1' END) "+CRLF	
 		cQ += "FROM "+RetSqlName("SA2")+" SA2 "+CRLF
 		cQ += "WHERE SA2.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND A2_FILIAL = '"+xFilial("SA2")+"' "+CRLF	
 		cQ += "AND A2_LOJA = (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) "+CRLF
-		//cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN A2_LOJA ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END) "+CRLF
-		//cQ += "AND A2_LOJA = (CASE WHEN A2_ZTPFORN <> '2' THEN (SELECT A2_LOJA FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD AND SA21.A2_LOJA = SA2.A2_LOJA) ELSE (SELECT MAX(A2_LOJA) FROM "+RetSqlName("SA2")+" SA21 WHERE SA21.D_E_L_E_T_ = ' ' AND SA21.A2_COD = SA2.A2_COD) END) "+CRLF
-		//CQ += "AND A2_CGC = '00749574577' "
-		//cQ += "AND ROWNUM <= 10000 "
 		cQ += "AND A2_ZTPFORN = '2' "
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "GU3_FILIAL "+CRLF
 		cQ += ",TRIM(GU3_CDEMIT) "+CRLF
-		/*
-		cQ += ",TRIM(GU3_NMEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMFAN) "+CRLF
-		cQ += ",TRIM(GU3_NATUR) "+CRLF
-		cQ += ",TRIM(GU3_FORN) "+CRLF
-		cQ += ",TRIM(GU3_ENDER) "+CRLF
-		cQ += ",TRIM(GU3_COMPL) "+CRLF
-		cQ += ",TRIM(GU3_BAIRRO) "+CRLF
-		cQ += ",TRIM(GU3_CEP) "+CRLF
-		cQ += ",TRIM(GU3_NRCID) "+CRLF
-		cQ += ",TRIM(GU3_IDFED) "+CRLF
-		cQ += ",TRIM(GU3_IE) "+CRLF
-		cQ += ",TRIM(GU3_IM) "+CRLF
-		cQ += ",TRIM(GU3_CXPOS) "+CRLF
-		cQ += ",TRIM(GU3_EMAIL) "+CRLF
-		cQ += ",TRIM(GU3_FONE1) "+CRLF
-		cQ += ",TRIM(GU3_FAX) "+CRLF
-		cQ += ",TRIM(GU3_WSITE) "+CRLF
-		cQ += ",TRIM(GU3_ORIGEM) "+CRLF
-		cQ += ",TRIM(GU3_CONICM) "+CRLF
-		cQ += ",TRIM(GU3_TPTRIB) "+CRLF	
-		*/
-		//cQ += ",TRIM(GU3_SIT) "+CRLF	
 		cQ += "FROM "+RetSqlName("GU3")+" GU3 "+CRLF
 		cQ += "WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF	
 		cQ += "AND GU3_FORN = '1' "+CRLF	
-		//	CQ += "AND GU3_CDEMIT = '00217160212' "	
 		cQ += ") "+CRLF
-		//cQ += "ORDER BY A2_FILIAL,A2_CGC,A2_NOME,A2_END "+CRLF
 		cQ += "ORDER BY A2_FILIAL,A2_CGC "+CRLF	
 	Endif
 
@@ -813,15 +495,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += ",TRIM(DA3_COMEXT) "+CRLF 
 		cQ += ",TRIM(DA3_VOLMAX) "+CRLF
 		cQ += ",TRIM(DA3_CAPACM) "+CRLF
-		//cQ += ",TRIM(DA3_CAPACN) "+CRLF
-		//cQ += ",TRIM(DA3_TARA) "+CRLF
-		//cQ += ",TRIM(DA3_DESC) "+CRLF
-		//cQ += ",TRIM(DA3_ANOFAB) "+CRLF
-		//cQ += ",TRIM(DA3_RENAVA) "+CRLF
-		//cQ += ",TRIM(DA3_CIV) "+CRLF
-		//cQ += ",TRIM(DA3_CIPP) "+CRLF
-		//cQ += ",TRIM(DA3_ATIVO) "+CRLF
-		//cQ += ",TRIM(CASE WHEN DA3_ATIVO = '1' THEN 'VEICULO ATIVO' ELSE 'VEICULO INATIVO' END) "+CRLF
 		cQ += "FROM "+RetSqlName("DA3")+" DA3 "+CRLF
 		cQ += "WHERE DA3.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND DA3_FILIAL = '"+xFilial("DA3")+"' "+CRLF	
@@ -838,15 +511,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += ",TRIM(GU8_COMPRI) "+CRLF
 		cQ += ",TRIM(GU8_VOLUT) "+CRLF
 		cQ += ",TRIM(GU8_CARGUT) "+CRLF
-		//cQ += ",TRIM(GU8_PBT) "+CRLF
-		//cQ += ",TRIM(GU8_TARA) "+CRLF
-		//cQ += ",TRIM(GU8_MMOD) "+CRLF
-		//cQ += ",TRIM(GU8_ANOFAB) "+CRLF
-		//cQ += ",TRIM(GU8_RENAVA) "+CRLF
-		//cQ += ",TRIM(GU8_CIV) "+CRLF
-		//cQ += ",TRIM(GU8_CIPP) "+CRLF
-		//cQ += ",TRIM(GU8_SIT) "+CRLF
-		//cQ += ",TRIM(GU8_DSSIT) "+CRLF
 		cQ += "FROM "+RetSqlName("GU8")+" GU8 "+CRLF
 		cQ += "WHERE GU8.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GU8_FILIAL = '"+xFilial("GU8")+"' "+CRLF	
@@ -867,14 +531,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += ",TRIM(DA4_CGC) "+CRLF
 		cQ += ",TRIM(DA4_RG) "+CRLF	
 		cQ += ",TRIM(DA4_RGORG) "+CRLF
-		//cQ += ",TRIM(DA4_NUMCNH) "+CRLF
-		//cQ += ",TRIM(DA4_REGCNH) "+CRLF 
-		//cQ += ",TRIM(DA4_DTECNH) "+CRLF
-		//cQ += ",TRIM(DA4_DTVCNH) "+CRLF
-		//cQ += ",TRIM(DA4_MUNCNH) "+CRLF
-		//cQ += ",TRIM(DA4_ESTCNH) "+CRLF
-		//cQ += ",TRIM(DA4_CATCNH) "+CRLF
-		//cQ += ",TRIM(DA4_CARPER) "+CRLF
 		cQ += ",TRIM(CASE WHEN DA4_BLQMOT = '1' THEN '2' ELSE '1' END) "+CRLF
 		cQ += "FROM "+RetSqlName("DA4")+" DA4 "+CRLF
 		cQ += "WHERE DA4.D_E_L_E_T_ = ' ' "+CRLF
@@ -888,14 +544,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += ",TRIM(GUU_IDFED) "+CRLF
 		cQ += ",TRIM(GUU_RG) "+CRLF
 		cQ += ",TRIM(GUU_ORGEXP) "+CRLF
-		//cQ += ",TRIM(GUU_NUMCNH) "+CRLF
-		//cQ += ",TRIM(GUU_REGCNH) "+CRLF
-		//cQ += ",TRIM(GUU_DTECNH) "+CRLF
-		//cQ += ",TRIM(GUU_DTVCNH) "+CRLF
-		//cQ += ",TRIM(GUU_MUNCNH) "+CRLF
-		//cQ += ",TRIM(GUU_ESTCNH) "+CRLF
-		//cQ += ",TRIM(GUU_CATCNH) "+CRLF
-		//cQ += ",TRIM(GUU_MOPP) "+CRLF
 		cQ += ",TRIM(GUU_SIT) "+CRLF
 		cQ += "FROM "+RetSqlName("GUU")+" GUU "+CRLF
 		cQ += "WHERE GUU.D_E_L_E_T_ = ' ' "+CRLF
@@ -912,26 +560,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "SELECT "+CRLF
 		cQ += "A4_FILIAL "+CRLF
 		cQ += ",TRIM(A4_CGC) A4_CGC "+CRLF
-		/*
-		cQ += ",TRIM(A4_NOME) "+CRLF
-		cQ += ",TRIM(A4_NREDUZ) "+CRLF
-		cQ += ",TRIM(CASE WHEN A4_TPTRANS = '3' THEN 'F' ELSE 'J' END) "+CRLF
-		cQ += ",TRIM(CASE WHEN A4_TPTRANS = '3' THEN '2' ELSE '1' END) "+CRLF	
-		cQ += ",TRIM(CASE WHEN A4_TPTRANS = '3' THEN '1' ELSE '2' END) "+CRLF	
-		cQ += ",TRIM(A4_END) "+CRLF	
-		cQ += ",TRIM(A4_COMPLEM) "+CRLF
-		cQ += ",TRIM(A4_BAIRRO) "+CRLF
-		cQ += ",TRIM(A4_CEP) "+CRLF 
-		cQ += ","+GFE33Cidade("SA4")+CRLF	
-		//cQ += ",TRIM(A4_MUN) "+CRLF
-		//cQ += ",TRIM(A4_EST) "+CRLF
-		cQ += ",TRIM(A4_CGC) "+CRLF
-		cQ += ",TRIM(A4_INSEST) "+CRLF
-		cQ += ",TRIM(A4_EMAIL) "+CRLF
-		cQ += ",TRIM(A4_TEL) "+CRLF
-		cQ += ",TRIM(A4_HPAGE) "+CRLF	
-		cQ += ",'2' "+CRLF		
-		*/
 		cQ += "FROM "+RetSqlName("SA4")+" SA4 "+CRLF
 		cQ += "WHERE SA4.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND A4_FILIAL = '"+xFilial("SA4")+"' "+CRLF	
@@ -939,26 +567,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "SELECT "+CRLF
 		cQ += "GU3_FILIAL "+CRLF
 		cQ += ",TRIM(GU3_CDEMIT) "+CRLF
-		/*
-		cQ += ",TRIM(GU3_NMEMIT) "+CRLF
-		cQ += ",TRIM(GU3_NMFAN) "+CRLF
-		cQ += ",TRIM(GU3_NATUR) "+CRLF
-		cQ += ",TRIM(GU3_TRANSP) "+CRLF
-		cQ += ",TRIM(GU3_AUTON) "+CRLF
-		cQ += ",TRIM(GU3_ENDER) "+CRLF
-		cQ += ",TRIM(GU3_COMPL) "+CRLF
-		cQ += ",TRIM(GU3_BAIRRO) "+CRLF
-		cQ += ",TRIM(GU3_CEP) "+CRLF
-		cQ += ",TRIM(GU3_NRCID) "+CRLF
-		//cQ += ",TRIM(GU3_NMCID) "+CRLF
-		//cQ += ",TRIM(GU3_UF) "+CRLF
-		cQ += ",TRIM(GU3_IDFED) "+CRLF
-		cQ += ",TRIM(GU3_IE) "+CRLF
-		cQ += ",TRIM(GU3_EMAIL) "+CRLF
-		cQ += ",TRIM(GU3_FONE1) "+CRLF
-		cQ += ",TRIM(GU3_WSITE) "+CRLF
-		cQ += ",TRIM(GU3_ORIGEM) "+CRLF
-		*/
 		cQ += "FROM "+RetSqlName("GU3")+" GU3 "+CRLF
 		cQ += "WHERE GU3.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GU3_FILIAL = '"+xFilial("GU3")+"' "+CRLF	
@@ -1067,7 +675,7 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "ORDER BY CT1_FILIAL,CT1_CONTA "+CRLF
 	Endif
 
-	If cTab == "DAK"
+	If cTab == "DAK" 
 		cQ := "SELECT "+CRLF
 		cQ += "DAK_FILIAL,DAK_COD "+CRLF
 		cQ += "FROM "+CRLF
@@ -1075,52 +683,40 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "SELECT "+CRLF
 		cQ += "DAK_FILIAL "+CRLF
 		cQ += ",TRIM(DAK_COD || DAK_SEQCAR) DAK_COD "+CRLF
-		/* executar somente para os romaneios que nao tem no gfe, pois a rotina padrao nao altera o romaneio, apenas inclui quando este nao existe
-		cQ += ",'2' "+CRLF
-		cQ += ",TRIM(DAK_MOTORI) "+CRLF	
-		cQ += ",TRIM((SELECT DA3_TIPVEI "+CRLF	
-		cQ += "FROM "+RetSqlName("DA3")+" DA3 "+CRLF
-		cQ += "WHERE DA3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND DA3_FILIAL = '"+xFilial("DA3")+"' "+CRLF	
-		cQ += "AND DA3_COD = DAK_CAMINH)) "+CRLF
-		cQ += ",TRIM((SELECT DA3_PLACA "+CRLF	
-		cQ += "FROM "+RetSqlName("DA3")+" DA3 "+CRLF
-		cQ += "WHERE DA3.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND DA3_FILIAL = '"+xFilial("DA3")+"' "+CRLF	
-		cQ += "AND DA3_COD = DAK_CAMINH)) "+CRLF
-		cQ += ",TRIM((SELECT X6_CONTEUD "+CRLF	
-		cQ += "FROM "+RetSqlName("SX6")+" SX6 "+CRLF
-		cQ += "WHERE SX6.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND X6_VAR = 'MV_CDTPOP')) "+CRLF
-		cQ += ",TRIM(NVL((SELECT A4_CGC "+CRLF	
-		cQ += "FROM "+RetSqlName("SA4")+" SA4 "+CRLF
-		cQ += "WHERE SA4.D_E_L_E_T_ = ' ' "+CRLF
-		cQ += "AND A4_FILIAL = '"+xFilial("SA4")+"' "+CRLF	
-		cQ += "AND A4_COD = DAK_TRANSP),' ')) "+CRLF
-		cQ += ",TRIM(DAK_DATA) "+CRLF		
-		cQ += ",TRIM(SUBSTR(DAK_HORA,1,5)) "+CRLF		
-		*/
 		cQ += "FROM "+RetSqlName("DAK")+" DAK "+CRLF
 		cQ += "WHERE DAK.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
 		cQ += "GWN_FILIAL "+CRLF
 		cQ += ",TRIM(GWN_NRROM) "+CRLF
-		/*
-		cQ += ",TRIM(GWN_ORI) "+CRLF
-		cQ += ",TRIM(GWN_CDMTR) "+CRLF
-		cQ += ",TRIM(GWN_CDTPVC) "+CRLF
-		cQ += ",TRIM(GWN_PLACAD) "+CRLF
-		cQ += ",TRIM(GWN_CDTPOP) "+CRLF
-		cQ += ",TRIM(GWN_CDTRP) "+CRLF
-		cQ += ",TRIM(GWN_DTIMPL) "+CRLF
-		cQ += ",TRIM(GWN_HRIMPL) "+CRLF
-		*/
 		cQ += "FROM "+RetSqlName("GWN")+" GWN "+CRLF
 		cQ += "WHERE GWN.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += ") "+CRLF
 		cQ += "ORDER BY DAK_FILIAL,DAK_COD "+CRLF
 	Endif
+
+	If cTab == "GWU" //WVN
+		cQ := "SELECT "+CRLF
+		cQ += " DAK_FILIAL,DAK_DATA,DAK_COD,DAK_SEQCAR,DAK_XCIDR,DAI_PEDIDO,C5_NUM,EE7_PEDIDO,GU7_NRCID,GWU_CDTPDC,GWU_NRDC,GWU_SERDC,GWU_NRCIDD,A1_COD,A1_LOJA,A1_EST,GWU.R_E_C_N_O_ GWURECNO"+CRLF
+		cQ += "FROM "+RetSqlName("DAK")+" DAK" +CRLF
+		cQ += " INNER JOIN DAI010 DAI ON DAI_FILIAL=DAK_FILIAL AND DAI_COD=DAK_COD AND DAI_SEQCAR = DAK_SEQCAR"+CRLF
+		cQ += " INNER JOIN SC5010 SC5 ON C5_FILIAL=DAI_FILIAL AND C5_NUM=DAI_PEDIDO"+CRLF
+		cQ += " INNER JOIN EE7010 EE7 ON EE7_FILIAL=C5_FILIAL AND C5_PEDEXP=EE7_PEDIDO"+CRLF
+		cQ += " INNER JOIN GU7010 GU7 ON SUBSTR(GU7_NRCID,3,5)=DAK_XCIDR AND GU7_CDUF=DAK_XUFR"+CRLF
+		cQ += " INNER JOIN SA1010 SA1 ON A1_COD=DAI_CLIENT AND A1_LOJA = DAI_LOJA"+CRLF
+		cQ += " INNER JOIN GWU010 GWU ON GWU_FILIAL=DAK_FILIAL AND GWU_NRDC=DAI_NFISCA AND GWU_SERDC=DAI_SERIE"+CRLF
+		cQ += "WHERE "+CRLF
+		cQ += " GWU.GWU_NRCIDD = '9999999'"+CRLF		
+    	cQ += " AND DAK.DAK_DATA >= '"+DTOS(dDataBase-GetMv("MGF_GFE333",,10))+"' "+CRLF
+		Cq += " AND SA1.A1_EST = 'EX'"+CRLF
+    	cQ += " AND DAI.D_E_L_E_T_ = ' '"+CRLF
+    	cQ += " AND SC5.D_E_L_E_T_ = ' '"+CRLF
+    	cQ += " AND EE7.D_E_L_E_T_ = ' '"+CRLF
+    	cQ += " AND GU7.D_E_L_E_T_ = ' '"+CRLF
+    	cQ += " AND GWU.D_E_L_E_T_ = ' '"+CRLF
+		cQ += " AND SA1.D_E_L_E_T_ = ' '"+CRLF
+		cQ += " ORDER BY 1,2,3,4"
+    EndIf
 
 	If cTab == "SF2" .and. nVez == 1
 		cQ := "SELECT "+CRLF
@@ -1153,8 +749,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "WHERE GW1.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GW1_CDTPDC = 'NFS' "+CRLF 
 		cQ += "AND GW1_ORIGEM = '2' "+CRLF // origem ERP
-		//cQ += "AND GW1_ORINR <> ' ' "+CRLF // indica que eh tipo B ou D
-		//cQ += "AND GW1_ORISER <> ' ' "+CRLF
 		cQ += ") "+CRLF
 		cQ += "ORDER BY F2_FILIAL,F2_SERIE,F2_DOC,F2_CGC "+CRLF
 	Endif
@@ -1215,14 +809,11 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "WHERE SF1.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND F1_STATUS='A' "+CRLF
 		cQ += "AND F1_TIPO IN ('D','B') "+CRLF
-		//cQ += "AND F1_TPFRETE = 'F' "+CRLF
 		If GetMv("MGF_FRSGFE",,.T.)
 			cQ += "AND F1_TPFRETE NOT IN (' ','S') "+CRLF	
 		Endif	
 		cQ += "AND F1_ESPECIE IN ('SPED','NFP') "+CRLF
 		cQ += "AND F1_ORIGLAN <> 'LF' "+CRLF
-		//cQ += "AND F1_FORMUL <> 'S' "+CRLF
-		//cQ += "AND F1_DTDIGIT >= '"+GetMv("MGF_DTSGFE",,"20180901")+"' "+CRLF
 		cQ += "AND F1_DTDIGIT >= '"+dTos(dDataBase-GetMv("MGF_GFE331",,10))+"' "+CRLF			
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
@@ -1234,8 +825,6 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "WHERE GW1.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND GW1_CDTPDC = 'NFE' "+CRLF 
 		cQ += "AND GW1_ORIGEM = '2' "+CRLF // origem ERP
-		//cQ += "AND GW1_ORINR <> ' ' "+CRLF // indica que eh tipo B ou D
-		//cQ += "AND GW1_ORISER <> ' ' "+CRLF
 		cQ += ") "+CRLF
 		cQ += "ORDER BY F1_FILIAL,F1_SERIE,F1_DOC,F1_CGC "+CRLF
 	Endif
@@ -1259,14 +848,11 @@ Static Function GFE33Filtro(cTab,nVez)
 		cQ += "WHERE SF1.D_E_L_E_T_ = ' ' "+CRLF
 		cQ += "AND F1_STATUS='A' "+CRLF
 		cQ += "AND F1_TIPO NOT IN ('D','B','C','I','P') "+CRLF
-		//cQ += "AND F1_TPFRETE = 'F' "+CRLF
 		If GetMv("MGF_FRSGFE",,.T.)	
 			cQ += "AND F1_TPFRETE NOT IN (' ','S') "+CRLF		
 		Endif	
 		cQ += "AND F1_ESPECIE IN ('SPED','NFP') "+CRLF
 		cQ += "AND F1_ORIGLAN <> 'LF' "+CRLF
-		//cQ += "AND F1_FORMUL <> 'S' "+CRLF
-		//cQ += "AND F1_DTDIGIT >= '"+GetMv("MGF_DTSGFE",,"20180901")+"' "+CRLF	
 		cQ += "AND F1_DTDIGIT >= '"+dTos(dDataBase-GetMv("MGF_GFE331",,10))+"' "+CRLF		
 		cQ += "MINUS "+CRLF
 		cQ += "SELECT "+CRLF
@@ -1362,63 +948,6 @@ Static Function GFE33Filtro(cTab,nVez)
 
 
 Return(cQ)
-
-/*	
-Static Function GFE33CmpSA1()
-
-Local cQ := ""
-/*
-cQ := "			AND "+CRLF
-cQ += "			( "+CRLF
-cQ += "			TRIM(GU3_NMEMIT) <> TRIM(A1_NOME) "+CRLF
-cQ += "			OR TRIM(GU3_NMFAN) <> TRIM(A1_NREDUZ) "+CRLF
-cQ += "			OR TRIM(GU3_NATUR) <> TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_PESSOA ELSE 'X' END) "+CRLF
-cQ += "			OR TRIM(GU3_DTNASC) <> TRIM(A1_DTNASC) "+CRLF
-cQ += "			OR TRIM(GU3_CLIEN) <> '1' "+CRLF
-cQ += "			OR TRIM(GU3_ENDER) <> TRIM(A1_END) "+CRLF
-cQ += "			OR TRIM(GU3_COMPL) <> TRIM(A1_COMPLEM) "+CRLF
-cQ += "			OR TRIM(GU3_BAIRRO) <> TRIM(A1_BAIRRO) "+CRLF
-cQ += "			OR TRIM(GU3_CEP) <> TRIM(A1_CEP) "+CRLF
-cQ += "			OR TRIM(GU3_NRCID) <> "+GFE33Cidade("SA1")+" "+CRLF
-cQ += "			OR TRIM(GU3_IDFED) <> TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_CGC ELSE ' ' END) "+CRLF
-cQ += "			OR TRIM(GU3_IE) <> TRIM(A1_INSCR) "+CRLF
-cQ += "			OR TRIM(GU3_IM) <> TRIM(A1_INSCRM) "+CRLF
-cQ += "			OR TRIM(GU3_CXPOS) <> TRIM(SUBSTR(A1_CXPOSTA,1,10)) "+CRLF
-cQ += "			OR TRIM(GU3_EMAIL) <> TRIM(A1_EMAIL) "+CRLF
-cQ += "			OR TRIM(GU3_FONE1) <> TRIM(A1_TEL) "+CRLF
-cQ += "			OR TRIM(GU3_FAX) <> TRIM(A1_FAX) "+CRLF
-cQ += "			OR TRIM(GU3_WSITE) <> TRIM(A1_HPAGE) "+CRLF
-cQ += "			OR TRIM(GU3_ORIGEM) <> '2' "+CRLF
-cQ += "			OR TRIM(GU3_SIT) <> TRIM(CASE WHEN A1_MSBLQL = '1' THEN '2' ELSE '1' END) "+CRLF
-cQ += "			) "+CRLF
-*/
-/*
-cQ := "			AND NOT "+CRLF
-cQ += "			( "+CRLF
-cQ += "			TRIM(A1_NOME) = TRIM(GU3_NMEMIT) "+CRLF
-cQ += "			AND TRIM(A1_NREDUZ) = TRIM(GU3_NMFAN) "+CRLF
-cQ += "			AND TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_PESSOA ELSE 'X' END) = TRIM(GU3_NATUR) "+CRLF
-cQ += "			AND TRIM(A1_DTNASC) = TRIM(GU3_DTNASC) "+CRLF
-cQ += "			AND '1' = TRIM(GU3_CLIEN) "+CRLF
-cQ += "			AND TRIM(A1_END) = TRIM(GU3_ENDER) "+CRLF
-cQ += "			AND TRIM(A1_COMPLEM) = TRIM(GU3_COMPL) "+CRLF
-cQ += "			AND TRIM(A1_BAIRRO) = TRIM(GU3_BAIRRO) "+CRLF
-cQ += "			AND TRIM(A1_CEP) = TRIM(GU3_CEP) "+CRLF
-cQ += "			AND "+GFE33Cidade("SA1")+" = TRIM(GU3_NRCID) "+CRLF
-cQ += "			AND TRIM(CASE WHEN A1_TIPO <> 'X' THEN A1_CGC ELSE ' ' END) = TRIM(GU3_IDFED) "+CRLF
-cQ += "			AND TRIM(A1_INSCR) = TRIM(GU3_IE) "+CRLF
-cQ += "			AND TRIM(A1_INSCRM) = TRIM(GU3_IM) "+CRLF
-cQ += "			AND TRIM(SUBSTR(A1_CXPOSTA,1,10)) = TRIM(GU3_CXPOS) "+CRLF
-cQ += "			AND TRIM(A1_EMAIL) = TRIM(GU3_EMAIL) "+CRLF
-cQ += "			AND TRIM(A1_TEL) = TRIM(GU3_FONE1) "+CRLF
-cQ += "			AND TRIM(A1_FAX) = TRIM(GU3_FAX) "+CRLF
-cQ += "			AND TRIM(A1_HPAGE) = TRIM(GU3_WSITE) "+CRLF
-cQ += "			AND '2' = TRIM(GU3_ORIGEM) "+CRLF
-cQ += "			AND TRIM(CASE WHEN A1_MSBLQL = '1' THEN '2' ELSE '1' END) = TRIM(GU3_SIT) "+CRLF
-cQ += "			) "+CRLF
-
-Return(cQ)
-*/
 
 Static Function GFE33Cidade(cTab)
 

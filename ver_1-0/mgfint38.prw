@@ -69,11 +69,36 @@ local aX3Finance	:= {} // Campos do financeiro
 local cFinPenFin	:= allTrim( superGetMv( "MGF_INT39B" , , "07" ) ) // 07 - FINANCEIRO - PENDENC
 local cFinInativ	:= allTrim( superGetMv( "MGF_INT39C" , , "08" ) ) // 08 - FINANCEIRO - INATIVI
 local cFinBlqRec	:= allTrim( superGetMv( "MGF_INT39D" , , "09" ) ) // 09 - FINANCEIRO - RECEITA
+local ColabFilial   := ""
+local cUnit         := ""
+local cUsrSFSA2		:= AllTrim( superGetMv( "MGF_INT39F" , , "004747" ) )
 
 Private aSX3     := {}
 Private aFolder  := {}
 Private bAltBlq  := .F.
 Private bAltTipo := .F.
+
+
+//Se é cliente vindo pela integração de cadastro de funcionário
+//e for cliente de loja montana, não passa pela grade
+If isincallstack("U_MGFINT02") .and. cTab == "SA1" 
+
+  colabfilial := alltrim(M->A1_ZCFIL)
+  cunit := AllTrim( SuperGetMv( "MGF_INT39E" , , "010001/010065/010041/010039/010042/010045/020003/010069/010068/010070/010067" ) ) 
+
+  if AllTrim(ColabFilial)$cUnit
+
+	Return .T.
+
+  Endif
+
+Endif
+
+if ( isInCallStack( "INSERTORUPDATECUSTOMER" ) .AND. FunName() == "MGFWSS11" .AND. cTab == "SA1" )
+	if lPulaGrade
+		Return .T.
+	endif
+endif
 
 IF !ALTERA
     Return .T.
@@ -136,6 +161,8 @@ IF ( FunName() <> "RPC"  .AND.  FunName() <> 'MGFTAC10' .AND.  FunName() <> 'MGF
 	elseif ( isInCallStack( "INSERTORUPDATECUSTOMER" ) .AND. FunName() == "MGFWSS07" .AND. cTab == "SA1" )
 		// SE ORIGEM E-COMMERCE COLOCA CODIGO DO VENDEDOR
 		cZB1USER := cUsrEComme
+	ElseIf FunName() == "MGFWSS24" .AND. cTab == "SA2"
+		cZB1USER := cUsrSFSA2
 	else
 		cZB1USER := RetCodUsr()
 	endif
@@ -385,7 +412,7 @@ If ZB4->(dbSeek(cCad+' '))
 		If U_FIS40Aprovr(ZB4->ZB4_IDSET,cCad) // Natanael - 30/10/2018 - GAP387 - Criar inteligÃªncia no campo CNAE do cliente x Grupo de TributaÃ§Ã£o
 			ZB2->ZB2_SEQ    := '00'
 			ZB2->ZB2_STATUS := '1' //Aprovado
-			ZB2->ZB2_OBS	:= 'LiberaÃ§Ã£o automÃ¡tica'
+			ZB2->ZB2_OBS	:= 'Liberação automática'
 			ZB2->ZB2_IDAPR  := RetCodUsr()
 			ZB2->ZB2_DATA   := Date()
 			ZB2->ZB2_HORA   := Time()
@@ -448,6 +475,10 @@ Local cCad   := ''
 Local bTem   := .F.
 
 Default bMVC := .F.
+
+If isincallstack("u_MGFINT02")
+	Return .T.
+Endif
 
 If !ALTERA
      If bMVC

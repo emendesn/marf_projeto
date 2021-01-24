@@ -14,7 +14,7 @@ Data.....:              05/07/2017
 Descricao / Objetivo:   Importa CSV Categoria de Produtos
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 
 Layout esperado do CSV:
@@ -37,7 +37,7 @@ static function getParam()
 
 	aadd(aParambox, {6, "Selecione o arquivo"	, space(100), "@!"	, ""	, ""	, 070, .T., "Arquivos .CSV |*.CSV", GetTempPath(), GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE, .F. /*NAO MOSTRA SERVIDOR*/})
 
-return paramBox(aParambox, "Importacao - Categoria de Produtos"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
+return paramBox(aParambox, "Importação - Categoria de Produtos"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 
 //-----------------------------------------------------
 //-----------------------------------------------------
@@ -131,10 +131,10 @@ static function importZBP(aCpoDetail)
 
 	// Aqui ocorre o instanciamento do modelo de dados (Model)
 	// Neste exemplo instanciamos o modelo de dados do fonte COMP022_MVC
-	// que ï¿½ a rotina de manutencao de musicas
+	// que é a rotina de manutenção de musicas
 	oModel := FWLoadModel( 'MGFCRM38' )
 
-	// Temos que definir qual a operacao deseja: 3 ï¿½ Inclusao / 4 ï¿½ Alteracao / 5 - Exclusao
+	// Temos que definir qual a operação deseja: 3 – Inclusão / 4 – Alteração / 5 - Exclusão
 	oModel:SetOperation( 4 )
 
 	// Antes de atribuirmos os valores dos campos temos que ativar o modelo
@@ -153,9 +153,9 @@ static function importZBP(aCpoDetail)
 	For nI := 1 To Len( aCpoDetail )
 		if nI == 1 .and. oAux:Length() == 1 .and. empty(oAux:getValue("ZBR_PRODUT", 1))
 
-			// Incluï¿½mos uma linha nova
-			// ATENCAO: O itens sao criados em uma estrura de grid (FORMGRID), portanto jï¿½ ï¿½ criada uma primeira linha
-			//branco automaticamente, desta forma comeï¿½amos a inserir novas linhas a partir da 2ï¿½ vez	
+			// Incluímos uma linha nova
+			// ATENCAO: O itens são criados em uma estrura de grid (FORMGRID), portanto já é criada uma primeira linha
+			//branco automaticamente, desta forma começamos a inserir novas linhas a partir da 2ª vez	
 
 			lFirstLine := .T.
 		else
@@ -167,8 +167,8 @@ static function importZBP(aCpoDetail)
 
 				If  nGridLegth == oAux:Length()
 
-					// Se por algum motivo o metodo AddLine() nao consegue incluir a linha,
-					// ele retorna a quantidade de linhas jï¿½
+					// Se por algum motivo o metodo AddLine() não consegue incluir a linha,
+					// ele retorna a quantidade de linhas já
 					// existem no grid. Se conseguir retorna a quantidade mais 1
 					lRet    := .F.
 					Exit
@@ -185,8 +185,8 @@ static function importZBP(aCpoDetail)
 
 				If !( lAux := oModel:SetValue( 'ZBRDETAIL', aCpoDetail[nI][nJ][1], aCpoDetail[nI][nJ][2] ) )
 
-					// Caso a atribuicao nao possa ser feita, por algum motivo (validacao, por exemplo)
-					// o metodo SetValue retorna .F.
+					// Caso a atribuição não possa ser feita, por algum motivo (validação, por exemplo)
+					// o método SetValue retorna .F.
 					lRet    := .F.
 					nItErro := nI
 					Exit
@@ -203,35 +203,35 @@ static function importZBP(aCpoDetail)
 
 
 	If lRet
-		// Faz-se a validacao dos dados, note que diferentemente das tradicionais "rotinas automaticas"
-		// neste momento os dados nao sao gravados, sao somente validados.
+		// Faz-se a validação dos dados, note que diferentemente das tradicionais "rotinas automáticas"
+		// neste momento os dados não são gravados, são somente validados.
 		If ( lRet := oModel:VldData() )
-			// Se o dados foram validados faz-se a gravacao efetiva dos dados (commit)
+			// Se o dados foram validados faz-se a gravação efetiva dos dados (commit)
 			lRet := oModel:CommitData()
 		EndIf
 	EndIf
 
 	If !lRet
-		// Se os dados nao foram validados obtemos a descricao do erro para gerar LOG ou mensagem de aviso
+		// Se os dados não foram validados obtemos a descrição do erro para gerar LOG ou mensagem de aviso
 		aErro   := oModel:GetErrorMessage()
-		// A estrutura do vetor com erro ï¿½:
-		//  [1] Id do formulario de origem
+		// A estrutura do vetor com erro é:
+		//  [1] Id do formulário de origem
 		//  [2] Id do campo de origem
-		//  [3] Id do formulario de erro
+		//  [3] Id do formulário de erro
 		//  [4] Id do campo de erro
 		//  [5] Id do erro
 		//  [6] mensagem do erro
-		//  [7] mensagem da solucao
+		//  [7] mensagem da solução
 		//  [8] Valor atribuido
 		//  [9] Valor anterior
 	
-		AutoGrLog( "Id do formulario de origem:" + ' [' + AllToChar( aErro[1]  ) + ']' )
+		AutoGrLog( "Id do formulário de origem:" + ' [' + AllToChar( aErro[1]  ) + ']' )
 		AutoGrLog( "Id do campo de origem:     " + ' [' + AllToChar( aErro[2]  ) + ']' )
-		AutoGrLog( "Id do formulario de erro:  " + ' [' + AllToChar( aErro[3]  ) + ']' )
+		AutoGrLog( "Id do formulário de erro:  " + ' [' + AllToChar( aErro[3]  ) + ']' )
 		AutoGrLog( "Id do campo de erro:       " + ' [' + AllToChar( aErro[4]  ) + ']' )
 		AutoGrLog( "Id do erro:                " + ' [' + AllToChar( aErro[5]  ) + ']' )
 		AutoGrLog( "Mensagem do erro:          " + ' [' + AllToChar( aErro[6]  ) + ']' )
-		AutoGrLog( "Mensagem da solucao:       " + ' [' + AllToChar( aErro[7]  ) + ']' )
+		AutoGrLog( "Mensagem da solução:       " + ' [' + AllToChar( aErro[7]  ) + ']' )
 		AutoGrLog( "Valor atribuido:           " + ' [' + AllToChar( aErro[8]  ) + ']' )
 		AutoGrLog( "Valor anterior:            " + ' [' + AllToChar( aErro[9]  ) + ']' )
 
@@ -239,7 +239,7 @@ static function importZBP(aCpoDetail)
 			AutoGrLog( "Erro no Item:              " + ' [' + AllTrim( AllToChar( nItErro  ) ) + ']' )
 		EndIf
 
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO

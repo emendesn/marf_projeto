@@ -5,10 +5,10 @@
 Programa............: MGFFIN57
 Autor...............: Mauricio Gresele
 Data................: Agosto/2017
-Descricao / Objetivo: Rotina chamada pelo ponto de entrada F050ALT
+Descrição / Objetivo: Rotina chamada pelo ponto de entrada F050ALT
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     

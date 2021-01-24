@@ -3,12 +3,12 @@
 /*
 =====================================================================================
 Programa.:              MGFFINCRE29
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              21/10/2016
 Descricao / Objetivo:   Cadastro de tipos de desconto
 Doc. Origem:            GAP FIN_CRE029_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

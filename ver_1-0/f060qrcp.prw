@@ -7,11 +7,11 @@
 Programa.:              F060QRCP 
 Autor....:              Paulo Fernandes
 Data.....:              04/2018                                                                                                            
-Descricao / Objetivo:   Altera a query de selecao de titulos para o bordero, tratando o campo de outra tabela(SF2).
-                        Se o campo F2_CHVNFE nao preenchido o titulo nao pode ser selecionado
+Descricao / Objetivo:   Altera a query de seleção de títulos para o borderô, tratando o campo de outra tabela(SF2).
+                        Se o campo F2_CHVNFE não preenchido o título não pode ser selecionado
 Doc. Origem:            Financeiro 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE FINA061
 ============================================================================================================================
 */ 
@@ -22,12 +22,12 @@ Local cSqlRet	:= ""
 
 /* Nova Expressao SQL de filtro para a rotina FINA061.
 ============================================================================================================================
-Motivo: Acrescentar uma condicao na clausula WHERE para nao selecionar titulos gerados por NF_e que ainda nao foi autorizada
-Descritivo : Neste P.E recebe a query completa da rotina FINA061. Necessario incluir um JOIN com a tabela SF2, para isso ï¿½
-necessario alterar as colunas R_E_C_N_O_ e D_E_L_E_T_ para incluir o prefixo SE1, assim nao ocorre ambiguidade de colunas com
-a tabela SF2. Em seguida particiona a query em duas. A primeira parte ï¿½ o conteudo ate a clausula WHERE e a segunda a partir
-da clausula WHERE. A variavel "cSql_Inner" contem o INNER JOIN. O resultado ï¿½ a concatenacao da primeira parte com o INNER e 
-a segunda parte. A condicao F2_CHVNFE <> '' foi incluida no P.E FA060QRY.
+Motivo: Acrescentar uma condição na cláusula WHERE para não selecionar títulos gerados por NF_e que ainda não foi autorizada
+Descritivo : Neste P.E recebe a query completa da rotina FINA061. Necessário incluir um JOIN com a tabela SF2, para isso é
+necessário alterar as colunas R_E_C_N_O_ e D_E_L_E_T_ para incluir o prefixo SE1, assim não ocorre ambiguidade de colunas com
+a tabela SF2. Em seguida particiona a query em duas. A primeira parte é o conteúdo até a cláusula WHERE e a segunda a partir
+da cláusula WHERE. A variável "cSql_Inner" contém o INNER JOIN. O resultado é a concatenação da primeira parte com o INNER e 
+a segunda parte. A condição F2_CHVNFE <> '' foi incluída no P.E FA060QRY.
 ============================================================================================================================
 */
 cSql_1:=StrTran(cSql,"R_E_C_N_O_","SE1.R_E_C_N_O_")

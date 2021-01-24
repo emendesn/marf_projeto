@@ -10,10 +10,10 @@
 Programa............: OS040GRV
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: Contrato GAPS - MIT044- Cadastro de Motorista
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada no final do cadastro de Motorista
 =====================================================================================
 */

@@ -7,11 +7,11 @@
 Programa.:              A DEFINIR 
 Autor....:              Barbieri
 Data.....:              21/03/2017
-Descricao / Objetivo:   BROWSE PARA MANIPULACAO DAS REGIOES 
+Descricao / Objetivo:   BROWSE PARA MANIPULAÇÃO DAS REGIÕES 
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Regioes de Entregas conforme cliente
+Uso......:              Marfrig
+Obs......:              Regiões de Entregas conforme MARFRIG 
 =====================================================================================
 */
 
@@ -22,7 +22,7 @@ User Function BRWSZP()
 
 	oBrowse3 := FWMBrowse():New()
 	oBrowse3:SetAlias('SZP')
-	oBrowse3:SetDescription('Cadastro de Regioes ROADNET')
+	oBrowse3:SetDescription('Cadastro de Regiões ROADNET')
 	oBrowse3:Activate()
 
 return NIL
@@ -47,22 +47,22 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('XBRWSZP',/**/ , , { | oModel | szpCmt( oModel ) }/*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'SZPMASTER', /*cOwner*/, oStruSZP, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'ZAPDETAIL', 'SZPMASTER', oStruZAP, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZP_FILIAL","ZP_CODREG"})
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "ZAPDETAIL",{{"ZAP_FILIAL","XFILIAL('ZAP')"},{"ZAP_CODREG","ZP_CODREG"}},ZAP->(IndexKey(1)))
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Cadastro de Regioes ROADNET' )	
+	oModel:SetDescription( 'Cadastro de Regiões ROADNET' )	
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'SZPMASTER' ):SetDescription( 'Regiao' )
-	oModel:GetModel( 'ZAPDETAIL' ):SetDescription( 'Cidades da Regiao' )
+	oModel:GetModel( 'SZPMASTER' ):SetDescription( 'Região' )
+	oModel:GetModel( 'ZAPDETAIL' ):SetDescription( 'Cidades da Região' )
 
 Return oModel
 
@@ -76,13 +76,13 @@ Static Function ViewDef()
 	Local oModel   := FWLoadModel( 'BRWSZP' )
 	Local oView
 
-	// Remove o campo Codigo Regiao do detalhe
+	// Remove o campo Codigo Região do detalhe
 	oStruZAP:RemoveField( "ZAP_CODREG" )
 
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -127,7 +127,7 @@ User function ZapVldMun()
 
 	IF ZAP->(dbSeek(xFilial('ZAP')+FwFldGet("ZAP_CODMUN")))
 		cRegRoad := ZAP->ZAP_CODREG
-		MsgAlert('Cidade jï¿½ cadastrada na regiao '+cRegRoad+'!')
+		MsgAlert('Cidade já cadastrada na região '+cRegRoad+'!')
 		lRet := .F.
 	EndIF 
 

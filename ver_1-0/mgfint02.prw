@@ -3,34 +3,170 @@
 
 #define CRLF chr(13) + chr(10)
 
-/*
-===============================================================================================
-Programa.:              MGFINT02
-Autor....:              Atilio Amarilla
-Data.....:              19/08/2016
-Descricao / Objetivo:   Integração PROTHEUS x RH Evolution
-Doc. Origem:            Contrato - GAP MGFINT01
-Solicitante:            Cliente
-Uso......:              Marfrig
-Obs......:              Importação de Colaboradores (Fornecedores e Clientes) e Titulos a Pagar
-===============================================================================================
+//-----------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFINT02 
+Execução de importação Protheus x RH Evolution
+@author  Atilio Amarilla
+@since 19/08/2016
 */
 User Function MGFINT02( cTpInt , aDados )
 
 	Local aCampos	:= {}
 	Local aRetDados	:= {}
+	Local _alista   := {}
 	Local aTables	:= { "SA1" , "SA2" , "SM0" , "SE2" , "SED" }
+	Default cTpint := "C"
+
+	U_MFCONOUT("Inicializando integração de RH Evolution - Protheus...")
+
 
 	RPCSetType( 3 )
 	RpcSetEnv( "01" , "010001" , Nil, Nil, "FIN", Nil, aTables )
 
+	ZH3->(Dbgotop())
+
 	If 		cTpInt	== "C"	// Colaborador
-			MGFINT02CL( aDados , @aRetDados )
+
+			U_MFCONOUT("Carregando cadastros pendentes...")	
+			_alista := MGFINT02Z3() //Carrega integrações pendentes
+			
+			For _nni := 1 to len(_alista)
+
+				aRetDados := {}
+				U_MFCONOUT("Integrando cadastro " + strzero(_nni,6) + " de " +  strzero(len(_alista),6) + "...")	
+				MGFINT02CL( _alista[_nni] , @aRetDados )
+
+				
+				ZH3->(Dbgoto(_alista[_nni][42]))
+
+				_ccliente := ""
+				_clojac := ""
+				_cfornece := ""
+				_clojaf := ""
+
+				SA2->(DbSetOrder(3))	// A2_FILIAL+A2_CGC
+				SA2->(DbGoTop())
+
+				If SA2->( dbSeek( xFilial("SA2") + alltrim(ZH3->ZH3_CNPJ) ) )
+					_cfornece := SA2->A2_COD
+					_clojaf := SA2->A2_LOJA
+				Endif
+
+				SA1->(DbSetOrder(3))	// A1_FILIAL+A1_CGC
+				SA1->(DbGoTop())
+
+				If SA1->( dbSeek( xFilial("SA1") + alltrim(ZH3->ZH3_CNPJ) ) )
+					_ccliente := SA1->A1_COD
+					_clojac := SA1->A1_LOJA
+				Endif
+				
+				Reclock("ZH3",.F.)
+				
+				ZH3->ZH3_STATUS := IIF(ARETDADOS[3][1]=="S","3","4")
+				ZH3->ZH3_DTPROC := dtoc(DATE())
+				ZH3->ZH3_HRPROC := TIME()
+				ZH3->ZH3_CLIENT := _ccliente
+				ZH3->ZH3_LOJAC  := _clojac
+				ZH3->ZH3_FORNEC := _cfornece
+				ZH3->ZH3_LOJAF  := _clojac
+				ZH3->ZH3_RESULT := ARETDADOS[6][1]
+
+				ZH3->(Msunlock())
+
+
+			Next
+
+			U_MFCONOUT("Completou integração de cadastros pendentes...")	
+
 	ElseIf 	cTpInt	== "P"	// Titulos a Pagar
 			MGFINT02PG( aDados , @aRetDados )
 	EndIf
 
 Return aRetDados
+
+//-----------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFINT02Z3 
+Le registros pendentes da tabela intermediaria
+@author  Atilio Amarilla
+@since 19/08/2016
+*/
+Static Function MGFINT02Z3()
+
+Local _alista := {}
+Local cAliasTRB := GetNextAlias()
+Local cQuery
+
+cQuery := "SELECT R_E_C_N_O_ REC "+CRLF
+cQuery += "FROM "+RetSqlName("ZH3")+" ZH3 "+CRLF
+cQuery += "WHERE ZH3.D_E_L_E_T_ = ' ' "+CRLF
+cQuery += "	AND ZH3_STATUS = ' ' "
+
+If select(cAliasTRB) > 0
+	cAliasTRB->(Dbclosearea())
+Endif
+
+DbUseArea( .T., "TOPCONN", TcGenQry(,,cQuery), cAliasTRB, .T., .F. )
+
+Do while (cAliasTRB)->(!Eof())
+
+	ZH3->(Dbgoto((cAliasTRB)->REC))
+
+	aadd( _alista, {	alltrim(ZH3->ZH3_OPER)			,; //01
+						alltrim(ZH3->ZH3_TIPO)			,; //02
+						alltrim(ZH3->ZH3_CNPJ)			,; //03
+						alltrim(ZH3->ZH3_IE)			,; //04
+						alltrim(ZH3->ZH3_IM)			,; //05
+						alltrim(ZH3->ZH3_NOME)			,; //06
+						alltrim(ZH3->ZH3_NREDUZ)		,; //07
+						alltrim(ZH3->ZH3_CONTAT)		,; //08
+						alltrim(ZH3->ZH3_ENDERE)		,; //09
+						alltrim(ZH3->ZH3_BAIRRO)		,; //10
+						alltrim(ZH3->ZH3_CODMUN)		,; //11
+						alltrim(ZH3->ZH3_CEP)			,; //12
+						alltrim(ZH3->ZH3_TELEFO)		,; //13
+						alltrim(ZH3->ZH3_FAX)			,; //14
+						alltrim(ZH3->ZH3_MICROE)		,; //15
+						alltrim(ZH3->ZH3_DATAME)		,; //16
+						alltrim(ZH3->ZH3_EMAIL)			,; //17
+						alltrim(ZH3->ZH3_ORIGEM)		,; //18
+						alltrim(ZH3->ZH3_OBS)			,; //19
+						alltrim(ZH3->ZH3_ESTADO)		,; //20
+						alltrim(ZH3->ZH3_CCUSTO)		,; //21
+						alltrim(ZH3->ZH3_DTNASC)		,; //22
+						alltrim(ZH3->ZH3_CODMGF)		,; //23
+						alltrim(ZH3->ZH3_CONTDE) 		,; //24
+						alltrim(ZH3->ZH3_PAISBC)		,; //25
+						alltrim(ZH3->ZH3_GRPTRI)		,; //26
+						alltrim(ZH3->ZH3_CONTCL)		,; //27
+						alltrim(ZH3->ZH3_GRPTRC)		,; //28
+						alltrim(ZH3->ZH3_NATCLI)		,; //29
+						alltrim(ZH3->ZH3_NATFOR)		,; //30
+						alltrim(ZH3->ZH3_PAIS)			,; //31
+						alltrim(ZH3->ZH3_COMP)			,; //32
+						alltrim(ZH3->ZH3_DDD)			,; //33
+						alltrim(ZH3->ZH3_DDI)			,; //34
+						alltrim(ZH3->ZH3_CFILIA)		,; //35
+						alltrim(ZH3->ZH3_NACION)		,; //36
+						alltrim(ZH3->ZH3_SETOR)			,; //37
+						alltrim(ZH3->ZH3_DSETOR) 		,; //38
+						alltrim(ZH3->ZH3_UNIDAD)		,; //39
+						alltrim(ZH3->ZH3_DTADMI)		,; //40
+						alltrim(ZH3->ZH3_DTDEMI)		,; //41
+						ZH3->(Recno())		} ) //42
+	
+	(cAliasTRB)->(Dbskip())
+
+Enddo
+
+
+Return _alista
+
+//-----------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFINT02CL 
+Criação de cliente e fornecedor
+@author  Atilio Amarilla
+@since 19/08/2016
+*/
 
 Static Function MGFINT02CL( aDados , aRetDados )
 
@@ -76,7 +212,7 @@ Static Function MGFINT02CL( aDados , aRetDados )
 	Local ColabUnidade  := aDados[39]
 	Local ColabDtAdmiss := aDados[40]
 	Local ColabDtDemiss := aDados[41]
-	Local ColabDescUnid := FWFilialName(cEmpAnt,ColabUnidade,2)
+	Local ColabDescUnid := substr(alltrim(FWFilialName(cEmpAnt,ColabUnidade,2)),1,45)
 
 	Local cPaisNacio
 	Local ColabFCnae	:= "0000-0/02"
@@ -125,12 +261,6 @@ Static Function MGFINT02CL( aDados , aRetDados )
 	Local aObrig_SA1:= {}
 	Local aObrig_SA2:= {}
 	Local nRecGRVSA1:= 0
-
-	/* 
-	Paulo da Mata - 07/01/2020 
-	Variáveis para bloqueio SA1 ou SA2, se não existe loja MONTANA no local da Unidade 
-	*/
-
 	Local lExec     := .T. 
 	Local cUnit  	:= AllTrim( SuperGetMv( "MGF_INT39E" , , "010001/010065/010041/010039/010042/010045/020003/010069/010068/010070/010067" ) ) 
 	Local cFrase    := ""
@@ -215,116 +345,6 @@ Static Function MGFINT02CL( aDados , aRetDados )
 	aadd( aCampos,  {  "semEntrada",    "TRATAMENTO",	"noCAMPO",    "A2_ZNASCIO",	    0,	0,	2	,"Nascionalidade "}  )
 
 
-	//Amostra
-	//Campos obrigatorio na tabela SA1 - Clientes (Total: 23 campos obrigatorios)
-	//
-	// A1_COD      ok
-	// A1_LOJA     ok
-	// A1_TIPO     ok "F"
-	// A1_NOME     ok
-	// A1_NREDUZ   ok
-	// A1_MUN      -faltou-
-	// A1_END      ok
-	// A1_EST      ok
-	// A1_DDD      ok
-	// A1_BAIRRO   ok
-	// A1_DDI      ok
-	// A1_NATUREZ  ok
-	// A1_TEL      ok
-	// A1_PAIS     ok
-	//
-
-	//
-	// Campos obrigatorio na tabela SA2 - Fornecedor (Total: 23 campos obrigatorios)
-	//
-	// A2_COD
-	// A2_LOJA
-	// A2_TIPO
-	// A2_NOME
-	// A2_NREDUZ
-	// A2_MUN
-	// A2_END
-	// A2_EST
-	//
-	// A2_BAIRRO
-	//
-	// A2_NATUREZ
-	// A2_TEL
-	// A2_PAIS
-	//
-	// A2_COD_MUN
-	// A2_CEP
-	// A2_INSCR   Inscricao Estadual
-	// A2_CONTA   Conta Contabil    (debito)
-	// A2_CODPAIS Codigo Pais       (ColabPaisBC)
-	// A2_GRPTRIB Grupo Tributario  (cGrpTribSA2)
-	// A2_TPESSOA Tipo de Pessoa    Fixo = "PF"
-	// A2_CNAE
-	// A2_ZOBSERV
-
-	// Campos obrigatorios no dicionário
-
-	If  cStatus <> 'N'
-		aObrig_SA1 := {}
-		u_MGSX3OBR("SA1", @aObrig_SA1 )
-		aCamposSA1 := aClone( aObrig_SA1 )
-
-		nAte := Len( aCamposSA1 )
-		For nJK:= 1 to nAte
-			cNome  := aCamposSA1[nJK]
-			nAchei := aScan( aCampos, { |x| x[3] == cNome  } )
-			if nAchei > 0
-				aCampos[nAchei][5] := 1
-			Else
-				cStatus	:= "N"
-				cObserv	:=	"["+cNome+"] Campo obrigatorio e sem definicao no WebService"
-				nJK     := nAte +1
-			Endif
-		Next
-
-	Endif
-
-	If  cStatus <>'N'
-		aObrig_SA2 := {}
-		u_MGSX3OBR("SA2", @aObrig_SA2 )
-		aCamposSA2 := aClone( aObrig_SA2 )
-
-		nAte := Len( aCamposSA2 )
-		For nJK := 1 to nAte
-			cNome  :=  aCamposSA2[nJK]
-			nAchei := aScan( aCampos, { |x| x[4] == cNome  } )
-			if nAchei > 0
-				aCampos[nAchei][6] := 1
-			Else
-				cStatus	:= "N"
-				cObserv	:=	"["+cNome+"] Campo obrigatorio e sem definicao no WebService"
-				nJK     := nAte +1
-			Endif
-		Next
-	Endif
-
-	//Campos obrigatorios verifica se estão preenchidos
-	if  cStatus <> 'N'
-		nAte := Len( aCampos )
-		For nJK := 1 to nAte
-			If ( aCampos[nJK][5] + aCampos[nJK][6] ) > 0
-				If Empty( aCampos[nJK][2] )
-					If ( aCampos[nJK][4] ==  "A2_INSCR"      .And. aCampos[nJK][6] = 1 )
-						//campo vazio sera ajustado na gravacao como conteudo "ISENTO"
-					ElseIf ( aCampos[nJK][4] ==  "A2_EMAIL"                            )
-						//campo vazio ajustado
-						aCampos[nJK][2] := "sem_email@marfrig.com.br"
-					Else
-						cNome   := aCampos[nJK][1]  + iif( Empty( aCampos[nJK][3] ), ", " +aCampos[nJK][3], "") +  iif( Empty( aCampos[nJK][4] ), ", " +aCampos[nJK][4], "" )
-						cStatus	:= "N"
-						cObserv	:=	"[?] " + cNome+ "/" + aCampos[nJK][8] + "=> Campo obrigatorio vazio"
-						nJK     := nAte +1
-					Endif
-				Endif
-			endif
-		Next
-	Endif
-
 	lCodBen	:= GetNewPar("MGF_INT02A",.T.)	// Criação de Código diferenciado por tipo de colaborador:
 	//	- Funcionário: F00001, F00002,...
 	//  - Beneficiario: B00001, B00002,...
@@ -332,11 +352,6 @@ Static Function MGFINT02CL( aDados , aRetDados )
 
 	U_MFCONOUT("== Integracao RH Evolution - Colaborador ==")
 
-	If lCodBen
-		AtuSX6("C")
-	EndIf
-
-	AtuSX6A()
 	/*
 	ColabTipo
 	B - Beneficiário - Fornecedor – pensão judicial / pensão alimentícia;
@@ -397,9 +412,44 @@ Static Function MGFINT02CL( aDados , aRetDados )
 		cObserv	:= "["+AllTrim(ColabNacion)+"] CODIGO DE NACIONALIDADE INVALIDA."
 	EndIf
 
+	//Valida duplicidade de cliente e fornecedor
+	SA1->(DbSetOrder(3))	// A1_FILIAL+A1_CGC
+	SA2->(DbSetOrder(3))	// A2_FILIAL+A2_CGC
+	
+	_nnc := 0
+	_nnf := 0
+
+	If SA1->( dbSeek( xFilial("SA1") + ColabCNPJ ) )
+
+		_nnc := 0
+
+		Do while  alltrim(ColabCNPJ) == alltrim(SA1->A1_CGC)  
+			_nnc++
+			SA1->(Dbskip())
+		Enddo
+	
+	Endif
+
+	If SA2->( dbSeek( xFilial("SA2") + ColabCNPJ ) )
+
+		_nnf := 0
+
+		Do while  alltrim(ColabCNPJ) == alltrim(SA2->A2_CGC)  
+			_nnf++
+			SA2->(Dbskip())
+		Enddo
+	
+	Endif
+
+	If cstatus == "S" .and. (_nnc > 1 .or. _nnf > 1)
+		cStatus	:= "N"
+		cObserv	:= "["+AllTrim(ColabNacion)+"] Cadastro duplicado."
+	Endif
+
 	U_MFCONOUT(" - Atencao: Status = "+cStatus+If(!Empty(cObserv)," Observacao = "+cObserv,""),"")
 	
 	Begin Transaction
+	BEGIN SEQUENCE
 
 		If  cStatus == "S"
 
@@ -421,7 +471,7 @@ Static Function MGFINT02CL( aDados , aRetDados )
 
 						If ColabOper == "I"	// Inclusão
 
-							cStatus	:= "N"
+							cStatus	:= "S"
 							cObserv	:=	"[SA1]["+ColabOper+"] CLIENTE JA EXISTE."
 
 							dbSelectArea("SA2")
@@ -432,10 +482,11 @@ Static Function MGFINT02CL( aDados , aRetDados )
 								cObserv   += CRLF + "[SA2]["+ColabOper+"] FORNECEDOR JA EXISTE."
 								cCodFor   := SA2->A2_COD
 								cLojFor   := SA2->A2_LOJA
-								cValForne := "N" //Alterado Rafael 07/11/2018
+								cValForne := "S" 
+								ColabOper := "A"
 							Else
 								cObserv += CRLF + "[SA2]["+ColabOper+"] FORNECEDOR NAO EXISTE."
-								cValForne := "S" //Alterado Rafael 07/11/2018
+								cValForne := "S" 
 							EndIf
 						Endif
 
@@ -528,10 +579,10 @@ Static Function MGFINT02CL( aDados , aRetDados )
 					// Entre 01/07 e 31/12 - 30/06
                     If Empty(ColabDtDemiss)
 
-						If dDataBase >= CtoD("01/01/" + Alltrim(str(Year(Date() ) ))) .And. dDataBase <= cToD("30/06/" + Alltrim(str(Year(Date() ) )))
-							aAdd( aMatA030 , { "A1_VENCLC", cToD("31/12/" + Alltrim(str(Year(Date()))))  , NIL } )
+						If  dDataBase <= cToD("30/06/" + Alltrim(str(Year(Date() ) )))
+							aAdd( aMatA030 , { "A1_VENCLC", cToD("30/06/" + Alltrim(str(Year(Date()) + 1 )))   , NIL } )
 						Else
-							aAdd( aMatA030 , { "A1_VENCLC", cToD("30/06/" + Alltrim(str(Year(Date()) + 1 )))  , NIL } )
+							aAdd( aMatA030 , { "A1_VENCLC", cToD("31/12/" + Alltrim(str(Year(Date()) + 1 )))  , NIL } )
 						Endif
 
 					Else // Se o campo de Data de Demissão não estiver vazio, o funcionário é bloqueado   					
@@ -624,16 +675,16 @@ Static Function MGFINT02CL( aDados , aRetDados )
 					//Regra para Definição da Data do Limite de Credito
 					//Entre 01/01 e 30/06 - 31/12
 					//Entre 01/07 e 31/12 - 30/06
-					If dDataBase >= cToD("01/01/" + Alltrim(str(Year(Date() ) ))) .and. dDataBase <= cToD("30/06/" + Alltrim(str(Year(Date() )  )))
-						aAdd( aMatA030 , { "A1_VENCLC", cToD("31/12/" + Alltrim(str(Year(Date()))))  , NIL } )
-					Else
+					If  dDataBase <= cToD("30/06/" + Alltrim(str(Year(Date() ) )))
 						aAdd( aMatA030 , { "A1_VENCLC", cToD("30/06/" + Alltrim(str(Year(Date()) + 1 )))  , NIL } )
+					Else
+						aAdd( aMatA030 , { "A1_VENCLC", cToD("31/12/" + Alltrim(str(Year(Date()) + 1 )))  , NIL } )
 					Endif
 
 				Else
 
 					If ColabOper != "E"	// Exclusão
-						cStatus	:= "N"
+						cStatus	:= "S"
 					EndIf
 
 					cObserv	:=	"[SA1]["+ColabOper+"] CLIENTE NAO EXISTE." + CRLF
@@ -658,6 +709,21 @@ Static Function MGFINT02CL( aDados , aRetDados )
 					   EndIf
 				
 					EndIf
+
+					_lbloq := .T.
+
+					If nopc == 4
+
+						SA1->(dbSetOrder(3))
+					   If SA1->( dbSeek( xFilial("SA1") + ColabCNPJ ) )	
+
+					   		If SA1->A1_MSBLQL != '1'
+						  	 _lbloq := .F.
+							Endif
+
+						Endif
+
+					Endif					
 
 					If lExec 
 
@@ -684,54 +750,37 @@ Static Function MGFINT02CL( aDados , aRetDados )
 								cObserv := cObserv + aErrRet[nJK] + CRLF
 							Next nJK
 
-							If Len(aAVISO) > 0
+							cStatus	:= "N"
 
-								cStatus	:= "N"
+							//Recupera os erros que ocorreram
+							aErro := GetAutoGRLog()
+							cErro := ""
+							cErro += FunName() +" - ExecAuto MatA030" + CRLF
 
-								//Recupera os erros que ocorreram
-								aErro := GetAutoGRLog()
-								cErro := ""
-								cErro += FunName() +" - ExecAuto MatA030" + CRLF
+							cErro += "Nome       - "+ ColabNome + CRLF
+							cErro += "CPF/CNPJ   - "+ ColabCNPJ + CRLF
+							cErro += "Natureza   - "+ ColabNatCli + CRLF
+							cErro += "Nascimento - "+ ColabDTNasc + CRLF
+							cErro += " " + CRLF
 
-								cErro += "Nome       - "+ ColabNome + CRLF
-								cErro += "CPF/CNPJ   - "+ ColabCNPJ + CRLF
-								cErro += "Natureza   - "+ ColabNatCli + CRLF
-								cErro += "Nascimento - "+ ColabDTNasc + CRLF
-								cErro += " " + CRLF
+							cValForne := "N" //Alterado Rafael 07/11/2018
 
-								cValForne := "N" //Alterado Rafael 07/11/2018
+							RollBackSX8()
+							cHorOrd	:= Time()
+							cTempo	:= ElapTime(cHorIni,cHorOrd)
+							nRecnoDoc := 0
 
-								RollBackSX8()
-								cHorOrd	:= Time()
-								cTempo	:= ElapTime(cHorIni,cHorOrd)
-								nRecnoDoc := 0
+							aLogSA1 := {cFilAnt,iif(cStatus=="N",'2','1'),Alltrim(GetMv("MGF_INT02F"))/*cCodint*/,GetMv("MGF_INT02G")/*cCodtpint*/,iif(Len(cErro)>0,FunName() +" - ExecAuto Mata030",cObserv),cDocori,cTempo,cObserv+CRLF+cErro,nRecnoDoc,"",.F.,{cEmpAnt,cFilAnt}}
 
-								aLogSA1 := {cFilAnt,iif(cStatus=="N",'2','1'),Alltrim(GetMv("MGF_INT02F"))/*cCodint*/,GetMv("MGF_INT02G")/*cCodtpint*/,iif(Len(cErro)>0,FunName() +" - ExecAuto Mata030",cObserv),cDocori,cTempo,cObserv+CRLF+cErro,nRecnoDoc,"",.F.,{cEmpAnt,cFilAnt}}
-
-								U_MFCONOUT("Erros apresentados [SA1 - Cadastro de Clientes] - Colaborador : "+;
-											AllTrim(ColabNome)+" - CPF : "+Alltrim(ColabCNPJ)+" - "+;
-											AllTrim(cObserv))
-	                    		
-								DisarmTransaction()
-								break
-							Else
-								iif( ColabOper == "I", ConfirmSX8(), "" )
-								cObserv 	+= "[SA1]["+ColabOper+"] Operação finalizada com sucesso." + CRLF
-								nRecnoDoc 	:= SA1->(Recno())
-								nRecGRVSA1	:= SA1->(Recno())
-								cHorOrd		:= Time()
-								cTempo		:= ElapTime(cHorIni,cHorOrd)
-
-								aLogSA1 := {cFilAnt,iif(cStatus=="N",'2','1'),GetMv("MGF_INT02F")/*cCodint*/,GetMv("MGF_INT02G")/*cCodtpint*/,iif(Len(cErro)>0,FunName() +" - ExecAuto Mata030",cObserv),cDocori,cTempo,cObserv+CRLF+cErro,nRecnoDoc,"",.F.,{cEmpAnt,cFilAnt}}
-								cCodCli := SA1->A1_COD
-								cLojCli := SA1->A1_LOJA
-
-	                    		U_MFCONOUT("Completou o Cadastro de Clientes] - Colaborador : "+;
+							U_MFCONOUT("Erros apresentados [SA1 - Cadastro de Clientes] - Colaborador : "+;
 										AllTrim(ColabNome)+" - CPF : "+Alltrim(ColabCNPJ)+" - "+;
-										"com sucesso")
-							Endif
-							
+										AllTrim(cObserv))
+
+							Disarmtransaction()
+							Break
+	                    							
 						Else
+				
 							iif( ColabOper == "I", ConfirmSX8(), "" )
 							cObserv 	+= "[SA1]["+ColabOper+"] Operação finalizada com sucesso." + CRLF
 							nRecnoDoc 	:= SA1->(Recno())
@@ -744,18 +793,41 @@ Static Function MGFINT02CL( aDados , aRetDados )
 							cLojCli := SA1->A1_LOJA
 
 							// [SA1] - Desbloqueia o cadastro, quando a filial tem loja Montana
-							If ColabOper == "I" .And. nOpc == 3 .And. ColabTipo == "F" 
+							If ColabOper $ "IA" .And. (nOpc == 3 .or. nopc == 4) .And. ColabTipo == "F" 
 								SA1->(RecLock("SA1",.F.))
 								SA1->A1_MSBLQL := If(AllTrim(ColabFilial)$cUnit,"2","1")
 								SA1->(MsUnLock())
 							EndIf
 
-							// [SA1] - Na alteração, deixa desbloqueado se vier por integração 
-							If ColabOper == "A" .And. nOpc == 4 .And. ColabTipo == "F"
+							// [SA1] - Na alteração, deixa desbloqueado se vier por integração e já estava desbloqueado 
+							If ColabOper == "A" .And. nOpc == 4 .And. ColabTipo == "F" .and. !(_lbloq)
 								SA1->(RecLock("SA1",.F.))
 								SA1->A1_MSBLQL := "2"
 								SA1->(MsUnLock())
 							EndIf
+
+							//Se estiver com data de demissão preenchida bloqueia sempre
+							If !empty(SA1->A1_ZDTDFUN) .or. !empty(ColabDtDemiss)
+								SA1->(RecLock("SA1",.F.))
+								SA1->A1_MSBLQL := "1"
+								SA1->A1_ZDTDFUN := IIF(EMPTY(SA1->A1_ZDTDFUN),STOD(ColabDtDemiss),SA1->A1_ZDTDFUN)
+								SA1->(MsUnLock())
+							Else
+								//Se não está demitido sempre ajusta a data de limite de crédito
+								SA1->(RecLock("SA1",.F.))
+								//Regra para Definição da Data do Limite de Credito
+								//Entre 01/01 e 30/06 - 31/12
+								//Entre 01/07 e 31/12 - 30/06
+								If  dDataBase <= cToD("30/06/" + Alltrim(str(Year(Date() ) )))
+									SA1->A1_VENCLC := cToD("30/06/" + Alltrim(str(Year(Date()) + 1 )))
+								Else
+									SA1->A1_VENCLC := cToD("31/12/" + Alltrim(str(Year(Date()) + 1 )))
+								Endif
+
+								SA1->(MsUnLock())
+				
+							Endif
+						
 
 							U_MFCONOUT("Completou o Cadastro de Clientes] - Colaborador : "+;
 										AllTrim(ColabNome)+" CPF : "+Alltrim(ColabCNPJ)+" - "+;
@@ -780,8 +852,8 @@ Static Function MGFINT02CL( aDados , aRetDados )
 					cLojFor := SA2->A2_LOJA
 
 					If ColabOper == "I"	// Inclusão
-						cStatus	:= "N"
-						cObserv	:=	"[SA2]["+ColabOper+"] FORNECEDOR JA EXISTE."
+						ColabOper := "A"
+						nopc := 4
 					Endif
 				Else
 					//na alteração caso não exontre o fornecedor ira cadastrar o mesmo
@@ -800,7 +872,6 @@ Static Function MGFINT02CL( aDados , aRetDados )
 
 				IF nOpc == 3 //Inclusão
 					aAdd( aMatA020 , { "A2_TIPO",	"F" , NIL } )
-					aAdd( aMatA020 , { "A2_PESSOA", IIF(Len(AllTrim(ColabCNPJ))==14,"J","F") , NIL } )
 					aAdd( aMatA020 , { "A2_CGC"	,    iif( Empty(ColabCNPJ) 	 ,SA2->A2_CGC,    ColabCNPJ)	, NIL } )
 				Else
 					aAdd( aMatA020 , { "A2_COD", 	 cCodFor 	    , NIL } )
@@ -813,11 +884,11 @@ Static Function MGFINT02CL( aDados , aRetDados )
 
 				aAdd( aMatA020 , { "A2_INSCR", 	 iif( Empty(ColabInscEst), iif( Empty(SA2->A2_INSCR),"ISENTO", SA2->A2_INSCR ),  ColabInscEst) , NIL } )
 				aAdd( aMatA020 , { "A2_INSCRM",  iif( Empty(ColabInscMun),SA2->A2_INSCRM, ColabInscMun) , NIL } )
-				aAdd( aMatA020 , { "A2_NOME"	, iif( Empty(ColabNome)  ,SA2->A2_NOME,  ColabNome)		, NIL } )
+				aAdd( aMatA020 , { "A2_NOME"	, iif( Empty(ColabNome)  ,SA2->A2_NOME,  substr(alltrim(ColabNome),1,40))		, NIL } )
 				aAdd( aMatA020 , { "A2_NREDUZ"	, iif( Empty(ColabNReduz),SA2->A2_NREDUZ,  ColabNReduz)	, NIL } )
 				aAdd( aMatA020 , { "A2_CONTATO"	, iif( Empty(ColabNome)  ,SA2->A2_CONTATO,ColabContato)	, NIL } )
-				aAdd( aMatA020 , { "A2_END"		, iif( Empty(ColabEndereco),SA2->A2_END,  ColabEndereco), NIL } )
-				aAdd( aMatA020 , { "A2_BAIRRO"	, iif( Empty(ColabBairro),SA2->A2_BAIRRO,ColabBairro)	, NIL } )
+				aAdd( aMatA020 , { "A2_END"		, iif( Empty(ColabEndereco),SA2->A2_END,  substr(alltrim(ColabEndereco),1,40)), NIL } )
+				aAdd( aMatA020 , { "A2_BAIRRO"	, iif( Empty(ColabBairro),SA2->A2_BAIRRO,substr(alltrim(ColabBairro),1,20))	, NIL } )
 				aAdd( aMatA020 , { "A2_EST"		, iif( Empty(ColabEst)	 ,SA2->A2_EST,  ColabEst)		, NIL } )
 				aAdd( aMatA020 , { "A2_COD_MUN"	, iif( Empty(ColabCodMun),SA2->A2_COD_MUN,  ColabCodMun) , NIL } )
 
@@ -828,7 +899,7 @@ Static Function MGFINT02CL( aDados , aRetDados )
 				aAdd( aMatA020 , { "A2_TEL"		, iif( Empty(ColabTelefone),SA2->A2_TEL,  ColabTelefone), NIL } )
 				aAdd( aMatA020 , { "A2_FAX"		, iif( Empty(ColabFax)	 ,SA2->A2_FAX,  ColabFax)		, NIL } )
 				aAdd( aMatA020 , { "A2_EMAIL"	, iif( Empty(ColabEmail) ,iif(Empty(SA2->A2_EMAIL),"sem_email@marfrig.com.br",SA2->A2_EMAIL),  ColabEmail) 	, NIL } )
-				aAdd( aMatA020 , { "A2_ZOBSERV"	, iif( Empty(ColabObs) 	 ,SA2->A2_ZOBSERV,ColabObs)		, NIL } )
+				aAdd( aMatA020 , { "A2_ZOBSERV"	, "Integrado via RH Evolution"		, NIL } )
 				aAdd( aMatA020 , { "A2_CONTA"	, iif( Empty(ColabContDeb),SA2->A2_CONTA,ColabContDeb)  , NIL } )
 
 				If !Empty( ColabDTNasc )
@@ -844,8 +915,8 @@ Static Function MGFINT02CL( aDados , aRetDados )
 				aAdd( aMatA020 , { "A2_NATUREZ", iif( Empty(ColabNatFor),SA2->A2_NATUREZ,ColabNatFor) , NIL } )
 				aAdd( aMatA020 , { "A2_PAIS"   , iif( Empty(ColabPais)  ,SA2->A2_PAIS,ColabPais)      , NIL } )
 				aAdd( aMatA020 , { "A2_COMPLEM", iif( Empty(ColabComp)  ,SA2->A2_COMPLEM,ColabComp)   , NIL } )
-				aAdd( aMatA020 , { "A2_DDD",     iif( Empty(ColabDDD)   ,iif( Empty(SA2->A2_DDD), "00", SA2->A2_DDD), ColabDDD)  	  , NIL } )
-				aAdd( aMatA020 , { "A2_DDI"	,    iif( Empty(ColabDDI)   ,iif( Empty(SA2->A2_DDI), "55", SA2->A2_DDI), ColabDDI)  	  , NIL } )
+				aAdd( aMatA020 , { "A2_DDD",     iif( Empty(ColabDDD)   ,iif( Empty(SA2->A2_DDD), "00", SA2->A2_DDD), substr(ColabDDD,1,3))  	  , NIL } )
+				aAdd( aMatA020 , { "A2_DDI"	,    iif( Empty(ColabDDI)   ,iif( Empty(SA2->A2_DDI), "55", SA2->A2_DDI), substr(ColabDDI,1,3))  	  , NIL } )
 				aAdd( aMatA020 , { "A2_CNAE",    iif( Empty(ColabFCnae) ,SA2->A2_CNAE,ColabFCnae)	  , NIL } )
 				aAdd( aMatA020 , { "A2_ZPROPRI", iif( Empty(ColabPropri),iif(Empty(SA2->A2_ZPROPRI),".",SA2->A2_ZPROPRI), ColabPropri)  , NIL } )
 				aAdd( aMatA020 , { "A2_ZCCD"	, iif( Empty(ColabCCusto) ,SA2->A2_ZCCD, ColabCCusto), NIL } )
@@ -879,15 +950,21 @@ Static Function MGFINT02CL( aDados , aRetDados )
                 
 			    If     nOpc == 3
 				       cFrase := "== Cadastrando fornecedor para o colaborador : "
+					   PRIVATE INCLUI := .T.
+					   PRIVATE ALTERA := .F.
 				ElseIf nOpc == 4  
 				       cFrase := "== Alterando o cadastro de fornecedor para o colaborador : "
+					   PRIVATE INCLUI := .F.
+					   PRIVATE ALTERA := .T.
 				EndIf
 
 	            U_MFCONOUT(cFrase+AllTrim(ColabNome)+" CPF : "+Alltrim(ColabCNPJ))
 
 				MSExecAuto({|x,y| MatA020(x,y)},aMatA020,nOpc)
 
-				If lMsErroAuto
+				SA2->(Dbsetorder(3)) //A2_FILIAL+A2_CGC
+
+				If lMsErroAuto .OR. !(SA2->(Dbseek(xfilial("SA2")+Alltrim(ColabCNPJ))))
 
 					aErrRet  := {}
 					aErrRet  := GetAutoGRLog()
@@ -926,18 +1003,10 @@ Static Function MGFINT02CL( aDados , aRetDados )
 								   AllTrim(ColabNome)+" CPF : "+Alltrim(ColabCNPJ)+" - "+;
 								   AllTrim(cObserv))
 
-						DisarmTransaction()
-						break
+						Disarmtransaction()
+						Break
 
-						//***************************************************
-						//Desfazer gravaçao anterior do ExecAuto SA1/Cliente
-						//***************************************************
-						If nRecGRVSA1 > 0
-							SA1->(dbGoto(nRecGRVSA1))
-							SA1->(RecLock("SA1",.F.))
-							SA1->(DbDelete())
-							SA1->(MsUnLock())
-						Endif
+
 					Else
 						iif( ColabOper == "I", ConfirmSX8(), "" )
 						cObserv += "[SA2]["+ColabOper+"] Operação finalizada com sucesso."
@@ -990,6 +1059,8 @@ Static Function MGFINT02CL( aDados , aRetDados )
 
 		EndIf
 
+	End Sequence
+
 	End Transaction
 
 	aAdd(aRetDados ,{ColabCNPJ})			// 1
@@ -999,35 +1070,15 @@ Static Function MGFINT02CL( aDados , aRetDados )
 	aAdd(aRetDados ,{cCodFor+cLojFor})  	// 5
 	aAdd(aRetDados ,{cObserv})				// 6
 
-	If !Empty(aLogSA1)
-		U_MGFMONITOR(aLogSA1[1],aLogSA1[2],aLogSA1[3]/*cCodint*/,aLogSA1[4]/*cCodtpint*/,aLogSA1[5],aLogSA1[6],aLogSA1[7],aLogSA1[8],aLogSA1[9],aLogSA1[10],aLogSA1[11],aLogSA1[12])
-	EndIf
-
-	If !Empty(aLogSA2)
-		U_MGFMONITOR(aLogSA2[1],aLogSA2[2],aLogSA2[3]/*cCodint*/,aLogSA2[4]/*cCodtpint*/,aLogSA2[5],aLogSA2[6],aLogSA2[7],aLogSA2[8],aLogSA2[9],aLogSA2[10],aLogSA2[11],aLogSA2[12])
-	Endif
-
-	If nRecnoDoc == 0
-		cHorOrd	:= Time()
-		cTempo	:= ElapTime(cHorIni,cHorOrd)
-		nRecnoDoc := 0
-		U_MGFMONITOR(cFilAnt,iif(cStatus=="N",'2','1'),GetMv("MGF_INT02F")/*cCodint*/,GetMv("MGF_INT02G")/*cCodtpint*/,iif(Len(cErro)>0,FunName() +" - ExecAuto Mata020",cObserv),cDocori,cTempo,cObserv+CRLF+cErro,nRecnoDoc,"",.F.,{cEmpAnt,cFilAnt})
-	EndIf
-
 Return aRetDados
 
+//-----------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFINT02PG 
+Criação de título a pagar
+@author  Atilio Amarilla
+@since 19/08/2016
+*/
 
-/*/{Protheus.doc} MGFINT02PG
-//TODO Descrição auto-gerada.
-@author eadonato
-@since 14/01/2019
-@version 1.0
-@return ${return}, ${return_description}
-@param aDados, array, description
-@param aRetDados, array, description
-@type function
-@description Função responsável para gravação dos dados do Título a Pagar no Protheus vindo do RHEvolution
-/*/
 Static Function MGFINT02PG( aDados , aRetDados )
 
 	Local PagarOper		:= aDados[01]
@@ -1299,8 +1350,6 @@ Static Function MGFINT02PG( aDados , aRetDados )
 					cObserv += aErro[nContador] + CRLF
 				Next nContador
 
-				DisarmTransaction()
-				break
 			EndIf
 
 			If !lMsErroAuto
@@ -1327,395 +1376,3 @@ Static Function MGFINT02PG( aDados , aRetDados )
 	U_MGFMONITOR(cFilAnt,iif(cStatus=="N",'2','1'),GetMv("MGF_INT02F")/*cCodint*/,GetMv("MGF_INT02I")/*cCodtpint*/,iif(Len(cErro)>0,FunName() +" - ExecAuto FinA050",cObserv),cDocori,cTempo,cObserv+CRLF+cErro,nRecnoDoc,"",.F.,{cEmpAnt,cFilAnt})
 
 Return aRetDados
-
-Static Function AtuSX6(cTipo)
-
-	If cTipo == "C"
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02B"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02B"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Sequencial para A1_COD "
-			SX6->X6_DESC1  := "Funcionário (Gerar A1_COD F00001, F00002,...     "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= Strzero(1,TamSX3("A1_COD")[1]-1) //"00001"
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02C"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02C"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Sequencial para A2_COD "
-			SX6->X6_DESC1  := "Funcionário (Gerar A2_COD F00001, F00002,...     "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= Strzero(1,TamSX3("A1_COD")[1]-1)
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02D"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02D"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Sequencial para A2_COD "
-			SX6->X6_DESC1  := "Beneficiario (Gerar A2_COD B00001, B00002,...    "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= Strzero(1,TamSX3("A1_COD")[1]-1)
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02E"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02E"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Sequencial para A2_COD "
-			SX6->X6_DESC1  := "Empresa (Gerar A2_COD E00001, E00002,...    "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= Strzero(1,TamSX3("A1_COD")[1]-1)
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02H"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02H"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Prefixo Titulo "
-			SX6->X6_DESC1  := " "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= "RHE"
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-		If SX6->(!DbSeek(xFilial()+"MGF_INT02K"))
-			RecLock("SX6",.T.)
-			SX6->X6_FIL    := ""
-			SX6->X6_VAR    := "MGF_INT02K"
-			SX6->X6_TIPO   := "C"
-			SX6->X6_DESCRIC:= "Integração RH Evolution - Tipo Titulo "
-			SX6->X6_DESC1  := " "
-			//12345678901234567890123456789012345678901234567890
-			SX6->X6_CONTEUD:= "DP"
-			SX6->X6_PROPRI := "U"
-			SX6->X6_PYME   := "S"
-			MsUnlock()
-		Endif
-
-	EndIf
-
-Return
-
-
-Static Function AtuSX6A()
-
-	If SX6->(!DbSeek(xFilial()+"MGF_INT02F"))
-		_nSZ2 := U_GETSZ2()
-		RecLock("SX6",.T.)
-		SX6->X6_FIL    := ""
-		SX6->X6_VAR    := "MGF_INT02F"
-		SX6->X6_TIPO   := "C"
-		SX6->X6_DESCRIC:= "Cod Integração RH Revolution Monitor"
-		SX6->X6_DESC1  := ""
-		//12345678901234567890123456789012345678901234567890
-		SX6->X6_CONTEUD:= strzero(_nSZ2,3)
-		SX6->X6_PROPRI := "U"
-		SX6->X6_PYME   := "S"
-		MsUnlock()
-	Endif
-
-	If SX6->(!DbSeek(xFilial()+"MGF_INT02G"))
-		_nSZ3 := U_GETSZ3(strzero(_nSZ2,3))
-		RecLock("SX6",.T.)
-		SX6->X6_FIL    := ""
-		SX6->X6_VAR    := "MGF_INT02G"
-		SX6->X6_TIPO   := "C"
-		SX6->X6_DESCRIC:= "Cod do Tipo Integração RH Revolution Cadastro"
-		SX6->X6_DESC1  := ""
-		//12345678901234567890123456789012345678901234567890
-		SX6->X6_CONTEUD:= strzero(_nSZ3,3)
-		SX6->X6_PROPRI := "U"
-		SX6->X6_PYME   := "S"
-		MsUnlock()
-	Endif
-
-	If SX6->(!DbSeek(xFilial()+"MGF_INT02I"))
-		_nSZ3 := U_GETSZ3(strzero(_nSZ2,3))
-		RecLock("SX6",.T.)
-		SX6->X6_FIL    := ""
-		SX6->X6_VAR    := "MGF_INT02I"
-		SX6->X6_TIPO   := "C"
-		SX6->X6_DESCRIC:= "Cod do Tipo Integração RH Revolution Titulo"
-		SX6->X6_DESC1  := ""
-		//12345678901234567890123456789012345678901234567890
-		SX6->X6_CONTEUD:= "DP"
-		SX6->X6_PROPRI := "U"
-		SX6->X6_PYME   := "S"
-		MsUnlock()
-	Endif
-
-Return
-
-Static Function AtuSZ2()
-
-	If SZ2->(!DbSeek(xFilial("SZ2")+Get("MGF_INT02F")))
-		RecLock("SZ2",.T.)
-		SZ2->Z2_FILIAL := xFilial("SZ2")
-		SZ2->Z2_CODIGO := Get("MGF_INT02F")
-		SZ2->Z2_NOME   := "RH Revolution"
-		MsUnlock()
-	EndIf
-Return
-
-Static Function AtuSZ3()
-
-	If SZ3->(!DbSeek(xFilial("SZ3")+Get("MGF_INT02F")+Get("MGF_INT02G")))
-		RecLock("SZ3",.T.)
-		SZ3->Z3_FILIAL := xFilial("SZ3")
-		SZ3->Z3_CODINTG := Get("MGF_INT02F")
-		SZ3->Z3_CODTINT := Get("MGF_INT02G")
-		SZ3->Z3_TPINTEG := 'Integracao Cadastro RH Revolution'
-		SZ3->Z3_EMAIL	:= ''
-		SZ3->Z3_FUNCAO	:= ''
-		MsUnlock()
-	EndIf
-
-	If SZ3->(!DbSeek(xFilial("SZ3")+Get("MGF_INT02F")+Get("MGF_INT02I")))
-		RecLock("SZ3",.T.)
-		SZ3->Z3_FILIAL := xFilial("SZ3")
-		SZ3->Z3_CODINTG := Get("MGF_INT02F")
-		SZ3->Z3_CODTINT := Get("MGF_INT02I")
-		SZ3->Z3_TPINTEG := 'Integracao Titulos RH Revolution'
-		SZ3->Z3_EMAIL	:= ''
-		SZ3->Z3_FUNCAO	:= ''
-		MsUnlock()
-	EndIf
-
-
-Return
-
-
-User Function teste022()
-
-	u_MGFX3OBR("SA1")
-
-	u_MGFX3OBR("SA2")
-
-	MsgAlert("Processamento encerrado normalmente")
-
-Return
-
-
-
-/*
-=====================================================================================
-Programa............: MGFINT38
-Autor...............: Marcelo Carneiro
-Data................: 28/03/2017
-Descricao / Objetivo: Integração De Cadastros
-Doc. Origem.........: Contrato GAPS - MIT044- BLOQUEIO DE CADASTROS
-Solicitante.........: Cliente
-Uso.................: Marfrig
-Obs.................: Pontos de Entrada para a Gravação das Tabelas ZB3 ZB2 ZB5
-=====================================================================================
-*/
-
-User Function MGSX3OBR(cALIAS, aCamposOBR)
-	Local   cTab := ""
-	Default aCamposObr := {}
-
-	cTab := cAlias
-
-	If Empty( cAlias)
-		U_MFCONOUT("Nao foi informado o Alias da tabela desejada")
-		Return .T.
-	Endif
-
-
-	dbSelectArea("SX3")
-	SX3->(DbSetOrder(1))
-	SX3->(dbSeek(cTab))
-
-	If SX3->(EOF())
-	    U_MFCONOUT("- Nome do alias não encontrado no dicionario")
-		Return .T.
-	EndIf
-
-	While ( SX3->(!EOF()) .And. SX3->X3_ARQUIVO == cTab )
-
-		If X3OBRIGAT(SX3->X3_CAMPO)  //.AND. X3USO(SX3->X3_USADO)
-			aadd( aCamposOBR, UPPER( Trim(SX3->X3_CAMPO)  )  )
-		EndIF
-		SX3->(dbSkip())
-	EndDo
-
-Return Nil
-
-
-User Function teste022()
-
-	u_MGX3OBR_("SA1")
-
-	u_MGX3OBR_("SA2")
-
-	MsgAlert("Processamento encerrado normalmente")
-
-Return
-
-
-User Function testeSX3()
-
-	u_MGSX3DIC("SA1")
-
-	u_MGSX3DIC("SA2")
-
-	MsgAlert("Processamento encerrado normalmente")
-
-Return
-
-
-/*
-=====================================================================================
-Programa............: MGFINT38
-Autor...............: Marcelo Carneiro
-Data................: 28/03/2017
-Descricao / Objetivo: Integração De Cadastros
-Doc. Origem.........: Contrato GAPS - MIT044- BLOQUEIO DE CADASTROS
-Solicitante.........: Cliente
-Uso.................: Marfrig
-Obs.................: Pontos de Entrada para a Gravação das Tabelas ZB3 ZB2 ZB5
-=====================================================================================
-*/
-
-User Function MGX3OBR_(cALIAS)
-	Local nCampos   := 0
-
-	Local nHandle
-	Local cArqTxt := Criatrab(Nil, .F.)
-	Local cArqGera:= "C:\temp\" + cArqTxt + ".txt"
-
-	nHandle := MsfCreate( cArqGera, 0 )
-
-	cTab := cAlias
-
-	If Empty( cAlias)
-		MsgAlert("Nao foi informado o Alias da tabela desejada")
-		Return .T.
-	Endif
-
-	If !(nHandle > 0)
-		MsgAlert("Arquivo texto nao foi criado! Verifique o erro apresentado " + chr( nHandle) )
-		Return .T.
-	Endif
-
-	FWRITE( nHandle, "Campos obrigatorio na tabela " + cAlias +chr(13)+chr(10) +chr(13)+chr(10) )
-	dbSelectArea("SX3")
-	SX3->(DbSetOrder(1))
-	SX3->(dbSeek(cTab))
-
-	If SX3->(EOF())
-		MsgAlert("Nome do alias não encontrado no dicionario")
-		Return .T.
-	EndIf
-
-	While ( SX3->(!EOF()) .And. SX3->X3_ARQUIVO == cTab )
-
-		If X3OBRIGAT(SX3->X3_CAMPO) // .AND. X3USO(SX3->X3_USADO) .AND. !(SX3->X3_VISUAL $ ('V') ) .AND. (SX3->X3_CONTEXT <> "V"  )
-			FWRITE( nHandle, SX3->X3_CAMPO +chr(13)+chr(10) )
-			nCampos++
-		EndIF
-
-		SX3->(dbSkip())
-	EndDo
-
-	If nCampos > 0
-		FWRITE( nHandle, "" +chr(13)+chr(10) )
-	Else
-		FWRITE( nHandle, "Nenhum campo encontrado! " +chr(13)+chr(10) )
-	Endif
-
-	fClose(nHandle)
-
-	cNome := "C:\temp\" + cALIAS + "X3OBR.txt"
-
-	If file( cNOME )
-		FERASE( cNOME )
-	Endif
-
-	FRENAME( cArqGera, cNome  )
-
-Return .T.
-
-
-User Function MGSX3DIC(cALIAS)
-
-	Local nCampos   := 0
-
-	Local nHandle
-	Local cArqTxt := Criatrab(Nil, .F.)
-	Local cArqGera:= "C:\temp\" + cArqTxt + ".txt"
-
-	nHandle := MsfCreate( cArqGera, 0 )
-
-	cTab := cAlias
-
-	If Empty( cAlias)
-		MsgAlert("Nao foi informado o Alias da tabela desejada")
-		Return .T.
-	Endif
-
-	If !(nHandle > 0)
-		MsgAlert("Arquivo texto nao foi criado! Verifique o erro apresentado " + chr( nHandle) )
-		Return .T.
-	Endif
-
-	FWRITE( nHandle, "Campos obrigatorio na tabela " + cAlias +chr(13)+chr(10) +chr(13)+chr(10) )
-	dbSelectArea("SX3")
-	SX3->(DbSetOrder(1))
-	SX3->(dbSeek(cTab))
-
-	If SX3->(EOF())
-		MsgAlert("Nome do alias não encontrado no dicionario")
-		Return .T.
-	EndIf
-
-	While ( SX3->(!EOF()) .And. SX3->X3_ARQUIVO == cTab )
-
-		If X3USO(SX3->X3_USADO) .AND. !(SX3->X3_VISUAL $ ('V') ) .AND. (SX3->X3_CONTEXT <> "V"  )  // .AND. X3OBRIGAT(SX3->X3_CAMPO)
-			FWRITE( nHandle, SX3->X3_CAMPO +chr(13)+chr(10) )
-			nCampos++
-		EndIF
-
-		SX3->(dbSkip())
-	EndDo
-
-	If nCampos > 0
-		FWRITE( nHandle, "" +chr(13)+chr(10) )
-	Else
-		FWRITE( nHandle, "Nenhum campo encontrado! " +chr(13)+chr(10) )
-	Endif
-
-	fClose(nHandle)
-
-	cNome := "C:\temp\" + cALIAS + "X3OBR.txt"
-
-	If file( cNOME )
-		FERASE( cNOME )
-	Endif
-
-	FRENAME( cArqGera, cNome  )
-
-Return .T.

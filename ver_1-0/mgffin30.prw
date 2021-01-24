@@ -11,8 +11,8 @@ Data.....:              04/10/2016
 Descricao / Objetivo:   apresentar Pedidos por Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Pedidos por Rede na Posicao do Cliente
+Uso......:              Marfrig
+Obs......:              Pedidos por Rede na Posição do Cliente
 =====================================================================================
 */
 User Function  MGFFIN30(cQuery)

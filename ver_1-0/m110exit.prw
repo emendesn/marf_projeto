@@ -8,10 +8,10 @@
 Programa............: M110EXIT
 Autor...............: Juscelino Alves dos Santos
 Data................: 26/11/2018
-Descricao / Objetivo: Gatilho Executado no Botao Cancelar da Solicitacao de Compras 
+Descricao / Objetivo: Gatilho Executado no Botão Cancelar da Solicitação de Compras 
 Doc. Origem ........: MIT680 - GAP EST16
-Solicitante.........: 
-Uso.................: Gestao de Compras 
+Solicitante.........: Marfrig
+Uso.................: Gestão de Compras 
 ==================================================================================
 */
 

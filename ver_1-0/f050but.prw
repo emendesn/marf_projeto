@@ -5,10 +5,10 @@
 Programa............: F050BUT
 Autor...............: Marcelo Carneiro
 Data................: 07/03/2018
-Descricao / Objetivo: O ponto de entrada para criar um botao na chamada na alteracao
+Descrição / Objetivo: O ponto de entrada para criar um botão na chamada na alteração
 Doc. Origem.........: Tipo de Valor - CAP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 User Function F050BUT           	                    

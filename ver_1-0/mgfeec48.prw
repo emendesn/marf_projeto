@@ -6,10 +6,10 @@
 Programa.:              MGFEEC48
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de informacoes da Certificacao Sanitaria Sem Taura
-Doc. Origem:            Exportacao Indireta
+Descricao / Objetivo:   Fonte MVC para exibição de informações da Certificação Sanitária Sem Taura
+Doc. Origem:            Exportação Indireta
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -18,7 +18,7 @@ User Function MGFEEC48()
 
 	oBrowse := FWMBrowse():New()
 	oBrowse:SetAlias('ZDX')
-	oBrowse:SetDescription('Certificacao Sanitaria Sem Taura')
+	oBrowse:SetDescription('Certificação Sanitária Sem Taura')
 	oBrowse:Activate()
 
 Return NIL
@@ -42,7 +42,7 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('EEC48M', /*bPreValidacao*/, /*bPosValidacao*/, {|oModel|xCommit(oModel)}/*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'EEC48MASTER', /*cOwner*/, oStruZDXM, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC48DETAIL', 'EEC48MASTER', oStruZDWD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
@@ -50,15 +50,15 @@ Static Function ModelDef()
 
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Certificacao Sanitaria Sem Taura' )
+	oModel:SetDescription( 'Certificação Sanitária Sem Taura' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC48MASTER' ):SetDescription( 'Certificacao Sanitaria' )
+	oModel:GetModel( 'EEC48MASTER' ):SetDescription( 'Certificação Sanitária' )
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "EEC48DETAIL", { { "ZDW_FILIAL", "xFilial('ZDW')" }, { "ZDW_PEDIDO", "ZDX_PEDIDO" } }, ZDW->( IndexKey( 1 ) ) )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZDW_FILIAL","ZDW_PEDIDO"})
 
 //	oModel:SetActivate({|oModel|xActiv(oModel)})
@@ -116,7 +116,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -135,8 +135,8 @@ Static Function ViewDef()
 	//oView:SetOwnerView( 'VIEW_CALC', 'CALC' )
 
 
-	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Acao de Confirmar ' + o:ClassName(),1,0) } )
-	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Acao de Cancelar '  + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Ação de Confirmar ' + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Ação de Cancelar '  + o:ClassName(),1,0) } )
 Return oView
 
 
@@ -145,10 +145,10 @@ Return oView
 Programa.:              EEC48B
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Abre visualizacao da tabela de Certificacao Sanitaria
+Descricao / Objetivo:   Abre visualização da tabela de Certificação Sanitária
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -180,7 +180,7 @@ User Function EEC48B()
 			FWExecView(iif(isEXP,ZB8->(ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP),EEC->EEC_PREEMB), "MGFEEC48", MODEL_OPERATION_INSERT ,, {|| .T. } )
 		EndIf
 	Else
-		Alert("Certificacao Sanitaria ainda nao distribuida")
+		Alert("Certificação Sanitária ainda não distribuída")
 	EndIf
 
 	RestArea(aAreaEE7)
@@ -192,10 +192,10 @@ Return
 Programa.:              EEC48RET
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Retorna informacao do campo passado
+Descricao / Objetivo:   Retorna informação do campo passado
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -270,7 +270,7 @@ Data.....:              Dez/2016
 Descricao / Objetivo:   Posiciona no registro da tabela informada
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -318,10 +318,10 @@ Return lRet
 Programa.:              EEC48GRV
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Grava Informacao na tabela informacoes passadas pelo TAURA.
+Descricao / Objetivo:   Grava Informação na tabela informações passadas pelo TAURA.
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

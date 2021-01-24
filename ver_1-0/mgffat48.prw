@@ -8,7 +8,7 @@ Data................: Set/2017
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada MS520VLD
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -45,18 +45,18 @@ If !Empty(SF2->F2_CARGA)
 	If (cAliasTrb)->(!Eof())
 		If mv_par04 == 2 // parametro F1 apto a faturar
 			lRet := .F.
-			APMsgStop("Para notas fiscais geradas a partir de montagem de Carga e jï¿½ transmitidas ao Taura, o parametro 'Retornar Ped.Venda ?' deve estar como 'Carteira', para que o Pedido de Venda seja retirado da Carga."+CRLF+;
-			"Acesse os parametros da rotina, via tecla F12 e mude este parametro."+CRLF+;
+			APMsgStop("Para notas fiscais geradas a partir de montagem de Carga e já transmitidas ao Taura, o parâmetro 'Retornar Ped.Venda ?' deve estar como 'Carteira', para que o Pedido de Venda seja retirado da Carga."+CRLF+;
+			"Acesse os parâmetros da rotina, via tecla F12 e mude este parâmetro."+CRLF+;
 			"Carga: "+SF2->F2_CARGA+CRLF+;
-			"Nota Fiscal: "+SF2->F2_DOC+", serie: "+SF2->F2_SERIE)
+			"Nota Fiscal: "+SF2->F2_DOC+", série: "+SF2->F2_SERIE)
 		Endif		
 		/*
 		If Empty(SF2->F2_ZTAUINT) .and. SF2->F2_ZTAUFLA != "1" .and. mv_par04 == 1 // nota nao transmitida ao taura e parametro F1 em carteira
 			lRet := .F.
-			APMsgStop("Para notas fiscais geradas a partir de montagem de Carga e ainda nao transmitidas ao Taura, o parametro 'Retornar Ped.Venda ?' deve estar como 'Apto a Faturar', para que o Pedido de Venda nao seja retirado da Carga."+CRLF+;
-			"Acesse os parametros da rotina, via tecla F12 e mude este parametro."+CRLF+;
+			APMsgStop("Para notas fiscais geradas a partir de montagem de Carga e ainda não transmitidas ao Taura, o parâmetro 'Retornar Ped.Venda ?' deve estar como 'Apto a Faturar', para que o Pedido de Venda não seja retirado da Carga."+CRLF+;
+			"Acesse os parâmetros da rotina, via tecla F12 e mude este parâmetro."+CRLF+;
 			"Carga: "+SF2->F2_CARGA+CRLF+;
-			"Nota Fiscal: "+SF2->F2_DOC+", serie: "+SF2->F2_SERIE)
+			"Nota Fiscal: "+SF2->F2_DOC+", série: "+SF2->F2_SERIE)
 		Endif		
 		*/
 	Endif

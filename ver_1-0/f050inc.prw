@@ -5,10 +5,10 @@
 Programa............: F050INC
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: O ponto de entrada F050INC sera utilizado apos confirmar a gravacao de contas a pagar, antes da contabilizacao. Antes de gravar os titulos de desdobramento.
+Descrição / Objetivo: O ponto de entrada F050INC sera utilizado apos confirmar a gravacao de contas a pagar, antes da contabilização. Antes de gravar os títulos de desdobramento.
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=6070887
 =====================================================================================
 */

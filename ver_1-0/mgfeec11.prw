@@ -6,15 +6,15 @@
 Programa............: MGFEEC11
 Autor...............: Roberto Sidney
 Data................: 03/11/2016
-Descricao / Objetivo: Aprovadores de orcamentos
+Descricao / Objetivo: Aprovadores de orçamentos
 Doc. Origem.........: EEC05 - GAP EEC05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: P
 =====================================================================================
 */
 User Function MGFEEC11()
-PRIVATE cCadastro := "Aprovadores de Orcamentos"
+PRIVATE cCadastro := "Aprovadores de Orçamentos"
 PRIVATE aRotina     := { }
 //Private aCampos := DefCpos() // Define campos a serem exibidos
 

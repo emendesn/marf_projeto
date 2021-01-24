@@ -10,7 +10,7 @@ Chamada de execautos MATA240/Mata250 - Estornos
 @since 20/03/2018 
 @type Função  
 /*/   
-User Function MGFTAP19( aParam )
+User Function MGFTAP19( aParam, cret )
 
 	Local dDatIni	:= Date()
 	Local cHorIni	:= Time()
@@ -83,6 +83,11 @@ User Function MGFTAP19( aParam )
 			cIdSeq	:=	aRotAuto[13]
 			nQtdPcs	:=	aRotAuto[14]
 			nQtdCxs	:=	aRotAuto[14]
+			If len(aRotAuto) >= 16
+				_clote  :=  aRotAuto[16]
+			Else
+				_clote := ""
+			Endif
 
 			SB1->( dbSeek( xFilial("SB1")+cCodPro ) )
 
@@ -108,6 +113,11 @@ User Function MGFTAP19( aParam )
 			cQuery += "	AND D3_COD = '"+cCodPro+"' "+CRLF
 			cQuery += "	AND D3_EMISSAO > '" + DTOS(dMovBlq)+"' "+CRLF
 			cQuery += "	AND D3_ZOPTAUR = '"+cOPTaura+"' "+CRLF
+			If !empty(alltrim(_clote))
+				cQuery += "	AND D3_ZPEDLOT = '"+alltrim(_clote)+"' "+CRLF
+			Endif
+
+
 
 			If cTpMov $ cMovPrd + cMovDev + "05/99"
 				cQuery += "	AND D3_TM < '500' "+CRLF
@@ -115,9 +125,8 @@ User Function MGFTAP19( aParam )
 				cQuery += "	AND D3_TM > '500' "+CRLF
 			EndIf
 
-			If !Empty(cCodLoc)
-				cQuery += "	AND D3_LOCAL = '"+cCodLoc+"' "+CRLF
-			EndIf
+
+
 
 			cQuery	:= ChangeQuery( cQuery )
 
@@ -161,15 +170,15 @@ User Function MGFTAP19( aParam )
 				cQuery += "	AND D3_COD = '"+cCodPro+"' "+CRLF
 				cQuery += "	AND D3_EMISSAO > '" + DTOS(dMovBlq)+"' "+CRLF
 				cQuery += "	AND D3_ZOPTAUR = '"+cOPTaura+"' "+CRLF
-
+				If !empty(alltrim(_clote))
+					cQuery += "	AND D3_ZPEDLOT = '"+alltrim(_clote)+"' "+CRLF
+				Endif
 				If cTpMov $ cMovPrd + cMovDev + "05/99"
 					cQuery += "	AND D3_TM < '500' "+CRLF
 				Else
 					cQuery += "	AND D3_TM > '500' "+CRLF
 				EndIf
-				If !Empty(cCodLoc)
-					cQuery += "	AND D3_LOCAL = '"+cCodLoc+"' "+CRLF
-				EndIf
+
 				cQuery += "ORDER BY R_E_C_N_O_ "+CRLF
 								
 				cQuery	:= ChangeQuery( cQuery )
@@ -253,12 +262,18 @@ User Function MGFTAP19( aParam )
 							lMsBlq			:= .F.
 						EndIf
 
+						//Reabre op se precisar
 						If !Empty(SC2->C2_DATRF)
+							_nsc2pos := SC2->(Recno())
 							lOpEnc	:= .T.
+							_dorifec := SC2->C2_DATRF
+							Reclock("SC2",.F.)
+							SC2->C2_DATRF := stod(" ")
+							SC2->(Msunlock())
 						Else
 							lOpEnc	:= .F.
 						EndIf
-		
+	
 						IF  (cAliasTRB)->F5_TIPO == 'P' .OR. (cAliasTRB)->D3_TM < '500'
 
 							//Se for devolução cria registro na SD4
@@ -315,7 +330,6 @@ User Function MGFTAP19( aParam )
 									cMsgErr := "ExecAuto Mata2"+IIF(cTpMov $ GetMv("MGF_TAP02E",,"01/"),"5","4")+"0 - Estorno"
 									cErro := ""
 									cErro += "["+cFunName+"] - ExecAuto Mata2"+IIF(cTpMov $ GetMv("MGF_TAP02E",,"01/"),"5","4")+"0 - Estorno" + CRLF
-									cErro += IIF(lOpEnc,'OP Encerrada no Protheus'+ CRLF,'')
 									cErro += "Filial  - "+ cFilOrd + CRLF
 									cErro += "Ordem   - "+ cNumOrd + CRLF
 									cErro += "Num.Doc.  "+ cNumDoc + CRLF
@@ -338,6 +352,15 @@ User Function MGFTAP19( aParam )
 						    bProcessa := .T.
 						EndIF
 
+						//Fecha novamente op que estava encerrada
+						If lOpEnc
+							SC2->(Dbgoto(_nsc2pos))
+							Reclock("SC2",.F.)
+							SC2->C2_DATRF := _dorifec
+							SC2->(Msunlock())
+						Endif
+	
+
 					EndIf
 
                     IF cStatus <> "2"
@@ -358,11 +381,18 @@ User Function MGFTAP19( aParam )
 							lMsBlq			:= .F.
 						EndIf
 	
+						//Reabre op se precisar
 						If !Empty(SC2->C2_DATRF)
+							_nsc2pos := SC2->(Recno())
 							lOpEnc	:= .T.
+							_dorifec := SC2->C2_DATRF
+							Reclock("SC2",.F.)
+							SC2->C2_DATRF := stod(" ")
+							SC2->(Msunlock())
 						Else
 							lOpEnc	:= .F.
 						EndIf
+
 
 						//Se for devolução cria registro na SD4
 						//Para evitar validação AJUDA:MAIORQUESALDO do padrão
@@ -392,6 +422,14 @@ User Function MGFTAP19( aParam )
 							SB1->B1_MSBLQL	:= '1'
 							SB1->( msUnlock() )
 						EndIf
+
+						//Fecha novamente op que estava encerrada
+						If lOpEnc
+							SC2->(Dbgoto(_nsc2pos))
+							Reclock("SC2",.F.)
+							SC2->C2_DATRF := _dorifec
+							SC2->(Msunlock())
+						Endif
 
 						//Apaga registro criado na SD4 para não poluir a base de dados
 						If _npossd4 > 0
@@ -466,8 +504,29 @@ User Function MGFTAP19( aParam )
 				SD4->(Msunlock())
 				_npossd4 := SD4->(Recno())
 
+				
+				//Reabre op se precisar
+				If !Empty(SC2->C2_DATRF)
+					_nsc2pos := SC2->(Recno())
+					lOpEnc	:= .T.
+					_dorifec := SC2->C2_DATRF
+					Reclock("SC2",.F.)
+					SC2->C2_DATRF := stod(" ")
+					SC2->(Msunlock())
+				Else
+					lOpEnc	:= .F.
+				EndIf
+
 
 				msExecAuto({|x,Y| Mata240(x,Y)},aRotAuto,3)
+
+				//Fecha novamente op que estava encerrada
+				If lOpEnc
+					SC2->(Dbgoto(_nsc2pos))
+					Reclock("SC2",.F.)
+					SC2->C2_DATRF := _dorifec
+					SC2->(Msunlock())
+				Endif
 				
 				//Apaga registro criado na SD4 para não poluir a base de dados
 				If _npossd4 > 0
@@ -500,7 +559,6 @@ User Function MGFTAP19( aParam )
 					cMsgErr := "ExecAuto Mata2"+IIF(cTpMov $ GetMv("MGF_TAP02E",,"01/"),"5","4")+"0 - Estorno"
 					cErro := ""
 					cErro += "["+cFunName+"] - ExecAuto Mata2"+IIF(cTpMov $ GetMv("MGF_TAP02E",,"01/"),"5","4")+"0 - Estorno" + CRLF
-					cErro += IIF(lOpEnc,'OP Encerrada no Protheus'+ CRLF,'')
 					cErro += "Filial  - "+ cFilOrd + CRLF
 					cErro += "Ordem   - "+ cNumOrd + CRLF
 					cErro += "Num.Doc.  "+ cNumDoc + CRLF

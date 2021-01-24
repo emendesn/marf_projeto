@@ -8,10 +8,10 @@
 Programa.:              CRIASXE
 Autor....:              Marcelo Carneiro
 Data.....:              11/06/2018
-Descricao / Objetivo:   Atualizar o controle de Numeracao apos atualizacao do License server.
+Descricao / Objetivo:   Atualizar o controle de Numeração após atualização do License server.
 Doc. Origem:            MIT006 - item 281
 Solicitante:            Help desk
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Atualiza somente os registros das tabelas mencionadas no programa
 =============================================================================================
 */
@@ -79,7 +79,7 @@ dbSelectArea("QRY_MAX")
 QRY_MAX->(dbGoTop())
 IF !QRY_MAX->(EOF()) .And. !Empty(QRY_MAX->RETMAX)
  	cRet    :=  SOMA1(QRY_MAX->RETMAX)
-else //ALTERADO RAFAEL 05/12/2018 - QUANDO ï¿½ O PRIMEIRO REGISTRO DA FILIAL ESTAVA DANDO ERRO
+else //ALTERADO RAFAEL 05/12/2018 - QUANDO É O PRIMEIRO REGISTRO DA FILIAL ESTAVA DANDO ERRO
 	cRet    := Nil
 endif	
 If Select("QRY_MAX") > 0

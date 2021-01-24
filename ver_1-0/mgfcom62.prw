@@ -10,7 +10,7 @@ Data.....:              11/01/2018
 Descricao / Objetivo:   Evitar cadastro de contratos para o mesmo produto
 Doc. Origem:            Compras 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Gatilho para os campos C3_PRODUTO e C3_DATPRF
 ============================================================================================================================
 */ 
@@ -58,7 +58,7 @@ IF INCLUI
 	EndDo
     
     IF !empty(cProdq)
-    	msgx :="ATENCAO JA EXITE CONTRATO "
+    	msgx :="ATENÇÃO JA EXITE CONTRATO "
     ENDIF
     
     IF cglob <> cfili .and. cFili=0 .and. !empty(msgx)

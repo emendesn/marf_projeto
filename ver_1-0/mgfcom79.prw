@@ -10,7 +10,7 @@ Data.....:              11/01/2018
 Descricao / Objetivo:   Evitar cadastro de contratos para o mesmo produto
 Doc. Origem:            Compras 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Gatilho para o ponto de entrada M125LOK
 ============================================================================================================================
 */ 
@@ -59,7 +59,7 @@ user function MGFCOM79()
 	EndDo
     
     IF cglob <> 0 .and. cglob<>cfilia
-    	msgalert("Sï¿½ sera permitida a inclusao se for um Contrato  para uma Filial.")
+    	msgalert("Só será permitida a inclusão se for um Contrato  para uma Filial.")
         lret := .F.
     ENDIF
 
@@ -89,7 +89,7 @@ user function MGFCOM79()
 	EndDo
 
     //IF cfilia <> 0  
-    	//msgalert("ATENCAO JA EXITE CONTRATO PARA ESTA FILIAL, FAVOR INDICAR UMA FILIAL ")
+    	//msgalert("ATENÇÃO JA EXITE CONTRATO PARA ESTA FILIAL, FAVOR INDICAR UMA FILIAL ")
         //lret := .F.
     //ENDIF
 

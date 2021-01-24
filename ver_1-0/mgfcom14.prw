@@ -9,18 +9,18 @@
 Programa............: MGFCOM14
 Autor...............: Joni Lima
 Data................:
-Descricao / Objetivo: Rotina para aprovacao e rejeicao de documentos
-Doc. Origem.........: Solicitacao de compra - Pedido de compra - Contas a Pagar - Solicitacao Armazem - Lancamento Contï¿½bil
+Descrição / Objetivo: Rotina para aprovação e rejeição de documentos
+Doc. Origem.........: Solicitação de compra - Pedido de compra - Contas a Pagar - Solicitação Armazém - Lançamento Contábil
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 ==============================================================================================================================
-Data da alteracao............: 18/12/2018
+Data da alteração............: 18/12/2018
 Autor........................: Caroline Cazela (caroline.cazela@totvspartners.com.br)
-Descricao da alteracao.......: Inclusao de aprovacao de lanï¿½amentos contï¿½beis. Utiliza o tipo LC e as tabelas SCR, DBM e CT2.
-.............................: Nao  tem integracao com o Fluig.
+Descrição da alteração.......: Inclusão de aprovação de lançamentos contábeis. Utiliza o tipo LC e as tabelas SCR, DBM e CT2.
+.............................: Não tem integração com o Fluig.
 ==============================================================================================================================
 */
-STATIC cOperID	:= 	"000"	// Variavel para armazenar a operacao que foi executada
+STATIC cOperID	:= 	"000"	// Variavel para armazenar a operação que foi executada
 STATIC oModelCT	:= NIL
 
 #DEFINE OP_LIB   	"001"	// Liberado
@@ -35,7 +35,7 @@ User Function MGFCOM14()
 
 	Local aAreaSX3 := SX3->(GetArea())
 
-	Local aStruSCR	:= {} //Estrutura da tabela de Aprovacao SCR
+	Local aStruSCR	:= {} //Estrutura da tabela de Aprovação SCR
 	Local cTmp		:= GetNextAlias()
 	Local cAliasTmp
 	Local aColumns	:= {}
@@ -49,7 +49,7 @@ User Function MGFCOM14()
 	Private  cPerg		:="MTA097X"
 
 	Private aComboE 	:= {"1-Pendente","2-Todos","3-Bloqueados","4-Rejeitados","5-Aprovados"}
-	Private aComboF 	:= {"1-Todos","2-Solicitacao Compra","3-Pedido de Compra","4-Pagamentos","5-Solicit.Armazem","6-Lanc.Contabil"}
+	Private aComboF 	:= {"1-Todos","2-Solicitação Compra","3-Pedido de Compra","4-Pagamentos","5-Solicit.Armazem","6-Lanc.Contabil"}
 	Private aComboT 	:= {"1=ZWA","2=ZWB"}
 	Private aParamBox	:= {}
 	Private aRet 		:= {}
@@ -58,7 +58,7 @@ User Function MGFCOM14()
 	Private _nQtdpar := 4
 	Private oBrowse
 	Private cInsert
-	Private cCampos	:= "" //Pega campos que sao de contexto Real
+	Private cCampos	:= "" //Pega campos que são de contexto Real
 	Private cQry	:= ""
 
 	AtuSX6()
@@ -76,7 +76,7 @@ User Function MGFCOM14()
 	AADD(aParamBox,{1,"Filial De ? "			,Space(06)	,"@C"	 ,".T.","SM0",,65,.F.})
 	AADD(aParamBox,{1,"Filial Ate ?"			,Space(06)	,"@C"	 ,".T.","SM0",!EMPTY(MV_PAR03),65,.F.})
 	AADD(aParamBox,{1,"Solicitante ? "			,Space(06)	,"@C"	 ,".T.","USR",,65,.F.})
-	AADD(aParamBox,{1,"Documento contï¿½m ? "		,Space(10)	,"@C"	 ,".T.",,,65,.F.})
+	AADD(aParamBox,{1,"Documento contém ? "		,Space(10)	,"@C"	 ,".T.",,,65,.F.})
 	_cValPar := ""
 	For _np := 2 to _nQtdpar
 		If Empty(_cValPar)
@@ -84,7 +84,7 @@ User Function MGFCOM14()
 		Else
 			_cValPar += ".AND.!EMPTY(MV_PAR"+strzero(6+_np-2,2)+")"
 		EndIf
-		AADD(aParamBox,{1,"ou Documento contï¿½m ? "	,Space(10)	,"@C"	 ,".T.",,"("+_cValPar+")",65,.F.})
+		AADD(aParamBox,{1,"ou Documento contém ? "	,Space(10)	,"@C"	 ,".T.",,"("+_cValPar+")",65,.F.})
 	Next _np
 
 
@@ -109,13 +109,13 @@ User Function MGFCOM14()
 	mv_par04 := aRet[4]
 
 
-	aStruSCR	:= SCR->(DBSTRUCT()) //Estrutura da tabela de Aprovacao SCR
+	aStruSCR	:= SCR->(DBSTRUCT()) //Estrutura da tabela de Aprovação SCR
 	For nI := 1 to Len(aStruSCR)
 		if aStruSCR[nI][1] == 'CR_FILIAL'
 			aStruSCR[nI][3] := 50
 		endif
 	Next nI
-	cCampos		:= xCmpQry("SCR") 	 //Pega campos que sao de contexto Real
+	cCampos		:= xCmpQry("SCR") 	 //Pega campos que são de contexto Real
 	cQry 		:= xQryDads(cCampos)
 	aIndices	:= xIndQry("SCR")
 	cFieldBrw   := xCmpBrw("SCR") + ",CR_FILIAL,CR_ZNOMUSU,CR_ZDESCST,CR_ZDESTP"
@@ -125,13 +125,13 @@ User Function MGFCOM14()
 	aAdd(aStruSCR, {'CR_ZDESCST','C',15,0})
 	aAdd(aStruSCR, {'CR_ZDESTP', 'C',15,0})
 
-//Instancio o objeto que vai criar a tabela temporaria no BD para poder utilizar posteriormente
+//Instancio o objeto que vai criar a tabela temporária no BD para poder utilizar posteriormente
 	oTmp := FWTemporaryTable():New( cTmp )
 
-//Defino os campos da tabela temporaria
+//Defino os campos da tabela temporária
 	oTmp:SetFields(aStruSCR)
 
-//Adiciono o indice da tabela temporaria
+//Adiciono o índice da tabela temporária
 	For nX := 1 To Len(aIndices)
 
 		aChave	:= StrToKarr(Alltrim(aindices[nX,2]),"+")
@@ -146,26 +146,26 @@ User Function MGFCOM14()
 			AADD(aFldSeek,{"",aStruSCR[ni,2],aStruSCR[ni,3],aStruSCR[ni,4],PesqPict("SCR",aStruSCR[ni,1])})
 		Next nI
 
-		//Campos que irao compor o combo de pesquisa na tela principal
+		//Campos que irão compor o combo de pesquisa na tela principal
 		Aadd(aSeek,{aIndices[nX,3],aFldSeek,nX, .T.})
 
 	Next nX
 
-//Criacao da tabela temporaria no BD
+//Criação da tabela temporária no BD
 	oTmp:Create()
 
-//Obtenho o nome "verdadeiro" da tabela no BD (criada como temporaria)
+//Obtenho o nome "verdadeiro" da tabela no BD (criada como temporária)
 	cTable := oTmp:GetRealName()
 
-//Preparo o comando para alimentar a tabela temporaria
+//Preparo o comando para alimentar a tabela temporária
 	cInsert := "INSERT INTO " + cTable + " (" + cCampos + " RECSCR ) " + cQry
 
 	memoWrite("C:\qry\insertmgfcom14.SQL", cInsert)
 
-//Executo o comando para alimentar a tabela temporaria
+//Executo o comando para alimentar a tabela temporária
 	Processa({|| TcSQLExec(cInsert)})
 
-//Campos que irao compor a tela de filtro
+//Campos que irão compor a tela de filtro
 	For nI := 1 to Len(aStruSCR)
 		If aStruSCR[nI,1] $ cCampos
 			Aadd(aFieFilter,{aStruSCR[nI,1],RetTitle(aStruSCR[nI,1]), aStruSCR[nI,2], aStruSCR[nI,3] , aStruSCR[nI,4],PesqPict("SCR",aStruSCR[ni,1])})
@@ -198,13 +198,13 @@ User Function MGFCOM14()
 
 	oBrowse:= FWMarkBrowse():New()
 	oBrowse:SetAlias( cAliasTmp )
-	oBrowse:SetDescription( 'Aprovacao da Grade Marfrig' )
+	oBrowse:SetDescription( 'Aprovação da Grade Marfrig' )
 	oBrowse:SetSeek(.T.,aSeek)
 	oBrowse:SetTemporary(.T.)
 	oBrowse:SetLocate()
 	oBrowse:SetUseFilter(.T.)
 	oBrowse:SetDBFFilter(.T.)
-	oBrowse:SetFilterDefault( "" ) //Exemplo de como inserir um filtro padrao >>> "TR_ST == 'A'"
+	oBrowse:SetFilterDefault( "" ) //Exemplo de como inserir um filtro padrão >>> "TR_ST == 'A'"
 	oBrowse:oBrowse:SetFieldFilter(aFieFilter)
 	oBrowse:DisableDetails()
 
@@ -213,13 +213,13 @@ User Function MGFCOM14()
 
 	oBrowse:SetAllMark({|| xMarkAll() })
 
-// Definicao da legenda
+// Definição da legenda
 	oBrowse:AddLegend( "CR_STATUS=='01'", "BR_AZUL"   , "Bloqueado (aguardando outros niveis)" )
 	oBrowse:AddLegend( "CR_STATUS=='02'", "DISABLE"   , "Aguardando Liberacao do usuario"     )
 	oBrowse:AddLegend( "CR_STATUS=='03'", "ENABLE"    , "Documento Liberado pelo usuario"     )
 	oBrowse:AddLegend( "CR_STATUS=='04'", "BR_PRETO"  , "Documento Bloqueado pelo usuario"    )
 	oBrowse:AddLegend( "CR_STATUS=='05'", "BR_CINZA"  , "Documento Liberado por outro usuario")
-	oBrowse:AddLegend( "CR_STATUS=='06'", "BR_AMARELO",	"Documento Rejeitado pelo usuario"    )
+	oBrowse:AddLegend( "CR_STATUS=='06'", "BR_AMARELO",	"Documento Rejeitado pelo usuário"    )
 
 	oBrowse:SetColumns(aColumns)
 
@@ -419,9 +419,9 @@ Static Function xDescStat(cChave, cCampo)
 	Local nAtual := 1
 	Local cRet	 := ""
 
-	//Percorre as posicoes do combo
+	//Percorre as posições do combo
 	For nAtual := 1 To Len(aCombo)
-		//Se for a mesma chave, seta a descricao
+		//Se for a mesma chave, seta a descrição
 		If cChave $ '0' + aCombo[nAtual][1]
 			cRet := aCombo[nAtual][3]
 			Exit
@@ -536,13 +536,13 @@ Static function MenuDef()
 	ADD OPTION aRotina Title "Consulta Titulos"		Action 'U_xMC14CTit()'	  						OPERATION 4 ACCESS 0     		//"Consulta Docto"
 	ADD OPTION aRotina Title "Bloqueio"  			Action 'U_XMC14Bloqu'	   				 		OPERATION 4 ACCESS 0 			//"Bloqueio"
 	ADD OPTION aRotina Title "Rejeitar"  			Action 'U_XMC14Rej()'	  				  		OPERATION 4 ACCESS 0 ID OP_REJ  //"Rejeitar"
-	ADD OPTION aRotina Title "Log Aprovacao"  		Action 'U_xMC8LgAp()'	  				   		OPERATION 4 ACCESS 0 			//"Log Aprovacao"
+	ADD OPTION aRotina Title "Log Aprovacao"  		Action 'U_xMC8LgAp()'	  				   		OPERATION 4 ACCESS 0 			//"Log Aprovação"
 	ADD OPTION aRotina Title "Liberacao Lote"  		Action 'U_xC14LLot()'	   				   		OPERATION 4 ACCESS 0
 	ADD OPTION aRotina Title "Bloqueio Lote"  		Action 'U_xC14BLot()'	   				  		OPERATION 4 ACCESS 0
-	ADD OPTION aRotina Title "Rejeicao Lote"  		Action 'U_xC14RLot()'	   				   		OPERATION 4 ACCESS 0
-	ADD OPTION aRotina Title "Mapa de Cotaï¿½ï¿½o" 		Action 'U_MFCOM14A()'	   						OPERATION 4 ACCESS 0
-	ADD OPTION aRotina Title "Visualiza Lancto"		Action 'U_MGFCTB27()'							OPERATION 4 ACCESS 0			//Visualiza Lancamento Contï¿½bil
-	ADD OPTION aRotina Title "Atualizacao tela"		Action 'U_xMC14Ref()'							OPERATION 3 ACCESS 0			//Atualizacao de tela
+	ADD OPTION aRotina Title "Rejeição Lote"  		Action 'U_xC14RLot()'	   				   		OPERATION 4 ACCESS 0
+	ADD OPTION aRotina Title "Mapa de Cotação" 		Action 'U_MFCOM14A()'	   						OPERATION 4 ACCESS 0
+	ADD OPTION aRotina Title "Visualiza Lancto"		Action 'U_MGFCTB27()'							OPERATION 4 ACCESS 0			//Visualiza Lançamento Contábil
+	ADD OPTION aRotina Title "Atualização tela"		Action 'U_xMC14Ref()'							OPERATION 3 ACCESS 0			//Atualização de tela
 
 Return aRotina
 
@@ -569,7 +569,7 @@ User Function xMC14Ref()
 
 
 	cQry	:= xQryDads(cCampos)
-//Preparo o comando para alimentar a tabela temporaria
+//Preparo o comando para alimentar a tabela temporária
 	cInsert := "INSERT INTO " + cTable + " (" + cCampos + " RECSCR ) " + cQry
 	u_xMC14Atu()
 
@@ -706,7 +706,7 @@ Return
 
 //-------------------------------------------------------------------
 /*/{Protheus.doc} MFCOM14A
-Chamada do Mapa de Cotaï¿½ï¿½o a partir da Grade de Aprovacao
+Chamada do Mapa de Cotação a partir da Grade de Aprovação
 
 @author odair.ferraz
 
@@ -724,12 +724,12 @@ User Function MFCOM14A()
 	Local cFilBkp := cFilAnt
 	Local cAlias := oBrowse:Alias()
 
-	// Parametros abaixo foram informados. Pois, atraves de testes verifiquei que nao influenciam em nada na rotina.// Odair Ferraz - Totvs
+	// Parâmetros abaixo foram informados. Pois, através de testes verifiquei que não influenciam em nada na rotina.// Odair Ferraz - Totvs
 	Private MV_PAR01 	:= 	''                      // Do Produto
-	Private MV_PAR02	:=	'ZZZZZZZZZZZZZZ'		// Ate Produto
-	Private MV_PAR03 	:= 	1						// Traz Cotaï¿½ï¿½o Marcada    - SIM / NAO --> 0 ou '' (erro)
+	Private MV_PAR02	:=	'ZZZZZZZZZZZZZZ'		// Até Produto
+	Private MV_PAR03 	:= 	1						// Traz Cotação Marcada    - SIM / NAO --> 0 ou '' (erro)
 	Private MV_PAR04	:=	1   					// Analisa Proposta por    - Item / Proposta --> 0 ou '' (erro)
-	Private MV_PAR05	:=	1						// Peso Preco
+	Private MV_PAR05	:=	1						// Peso Preço
 	Private MV_PAR06	:=	1						// Peso Prazo
 	Private MV_PAR07	:=	1						// Peso Nota
 
@@ -745,7 +745,7 @@ User Function MFCOM14A()
 		If SC8->(dbSeek(xFilial('SC8') + AllTrim(SCR->CR_NUM)))
 			U_xM24MAPCot()
 		Else
-			MSGALERT('Nao  existe Mapa de Cotaï¿½ï¿½o para o documento selecionado !!!','A T E N ï¿½ ï¿½ O !!!')
+			MSGALERT('Não existe Mapa de Cotação para o documento selecionado !!!','A T E N Ç Ã O !!!')
 		EndIf
 	ElseIf AllTrim(SCR->CR_TIPO) == 'PC'
 		dbSelectArea('SC8')
@@ -753,7 +753,7 @@ User Function MFCOM14A()
 		If SC8->(dbSeek(xFilial('SC8') + AllTrim(SCR->CR_NUM)))
 			U_xM24MAPCot()
 		Else
-			MSGALERT('Nao  existe Mapa de Cotaï¿½ï¿½o para o documento selecionado !!!','A T E N ï¿½ ï¿½ O !!!')
+			MSGALERT('Não existe Mapa de Cotação para o documento selecionado !!!','A T E N Ç Ã O !!!')
 		EndIf
 	EndIf
 
@@ -771,7 +771,7 @@ Return()
 //JONI
 //-------------------------------------------------------------------
 /*/{Protheus.doc} ModelDef
-Definicao do modelo de Dados
+Definição do modelo de Dados
 
 @author leonardo.quintania
 
@@ -805,7 +805,7 @@ Static function ModelDef()
 	EndIf
 
 	oModel := MPFormModel():New('XMGFCOM14',/*PreModel*/, {|oModel| A094TudoOk(oModel)}, { |oModel| A094Commit( oModel ) },/*Cancel*/)
-	oModel:SetDescription("Aprovacao de Documentos")
+	oModel:SetDescription("Aprovação de Documentos")
 
 	oModel:addFields('FieldSCR',,oStr1)
 
@@ -835,7 +835,7 @@ Static function ModelDef()
 
 	oModel:SetPrimaryKey( {} ) //Obrigatorio setar a chave primaria (mesmo que vazia)
 
-	oModel:getModel('FieldSCR'):SetDescription("Detalhes da Aprovacao")
+	oModel:getModel('FieldSCR'):SetDescription("Detalhes da Aprovação")
 
 	//		Validacao para nao permitir execucao de registros ja processados
 	oModel:SetVldActivate( {|oModel| A094VlMod(oModel) } )
@@ -847,7 +847,7 @@ return oModel
 
 //-------------------------------------------------------------------
 /*/{Protheus.doc} ViewDef
-Definicao do interface
+Definição do interface
 
 @author leonardo.quintania
 
@@ -962,9 +962,9 @@ Static function A094FilPrd(oModel)
 	// Preenche o campos customizados CR_ZUSELIB,CR_ZAPRLIB
 	oFieldSCR:SetValue('CR_ZUSELIB',xxRetUser())
 
-	//oFieldSCR:LoadValue("CR_DATALIB"  , dDataBase   ) //Gatilha Data de liberacao
+	//oFieldSCR:LoadValue("CR_DATALIB"  , dDataBase   ) //Gatilha Data de liberação
 
-	oFieldSCR:LoadValue("CR_DATALIB"  , DATE()   ) //Gatilha Data de liberacao
+	oFieldSCR:LoadValue("CR_DATALIB"  , DATE()   ) //Gatilha Data de liberação
 
 	If cIdOption == OP_TRA .Or. cIdOption == OP_SUP
 		aSaldo:= MaSalAlc(cAprovS,MaAlcDtRef(cAprovS,oFieldSCR:GetValue("CR_DATALIB"))) //Calcula saldo na data
@@ -1347,7 +1347,7 @@ Static function A094Commit(oModel)
 				MsSeek(xFilial("CT2",SCR->CR_FILIAL) + alltrim(SCR->CR_NUM))
 			EndCase
 
-			If cIdOption == OP_LIB //Liberacao
+			If cIdOption == OP_LIB //Liberação
 				If SCR->CR_TIPO $ "CT|IC|RV|IR|MD|IM"
 					lRet := GCTAlcEnt(oModelCT,MODEL_OPERATION_UPDATE,4,SCR->CR_TIPO,SCR->CR_NUM,,)
 
@@ -1362,7 +1362,7 @@ Static function A094Commit(oModel)
 						MsExecAuto({|a,b,c|,CNTA120(a,b,c)},aCabCN120,aItCN120,6)
 
 						If lMsErroAuto
-							If (!IsBlind()) // COM INTERFACE GRAFICA
+							If (!IsBlind()) // COM INTERFACE GRÁFICA
 								MostraErro()
 							Else // EM ESTADO DE JOB
 								cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -1405,7 +1405,7 @@ Static function A094Commit(oModel)
 						EndIf
 					EndIf
 				EndIf
-			ElseIf cIdOption == OP_REJ //Rejeicao
+			ElseIf cIdOption == OP_REJ //Rejeição
 
 				If SCR->CR_TIPO $ 'SC|PC|SA|LC|'
 					U_xRejSCR({SCR->CR_NUM,SCR->CR_TIPO	, , , ,SCR->CR_GRUPO,,,,DATE(),FwFldGet("CR_OBS")}, DATE() ,7)
@@ -1491,7 +1491,7 @@ Static function xIntFluig(cTpLib,cUserApr,cUserSub,cTpDoc)
 
 	If cTpLib == 'AP'
 		nChosse := 9
-		cText	:= "Aprovacï¿½o via Protheus"
+		cText	:= "Aprovacão via Protheus"
 	ElseIf cTpLib == 'RP'
 		nChosse := 10
 		cText	:= "Reprovado via Protheus"
@@ -1516,7 +1516,7 @@ Static function xIntFluig(cTpLib,cUserApr,cUserSub,cTpDoc)
 		oObj:getInstanceCardData()
 		aItem := oObj:oWSgetInstanceCardDataCardData:oWSitem
 
-		//Indica que a solicitacao foi movimentada pelo Protheus
+		//Indica que a solicitação foi movimentada pelo Protheus
 		For ni:= 1 to Len(aItem)
 
 			If UPPER(AllTrim(aItem[ni]:cITEM[1])) == 'HUSERPROTHEUS'
@@ -1536,7 +1536,7 @@ Static function xIntFluig(cTpLib,cUserApr,cUserSub,cTpDoc)
 
 		Next ni
 
-		//Atualiza a Observacao
+		//Atualiza a Observação
 		For ni:= 1 to Len(aItem)
 
 			If UPPER(AllTrim(aItem[ni]:cITEM[1])) == 'TOBSAPROVADOR___' + Alltrim(cNumApr)
@@ -1556,7 +1556,7 @@ Static function xIntFluig(cTpLib,cUserApr,cUserSub,cTpDoc)
 			If Val(oObj:oWsSaveAndSendTaskResult:oWsItem[1]:cItem[2]) == nChosse
 				Alert('Deu Fluigueira')
 			Else
-				Alert('Erro de integracao: ' + Alltrim(oObj:oWsSaveAndSendTaskResult:oWsItem[1]:cItem[2]) )
+				Alert('Erro de integração: ' + Alltrim(oObj:oWsSaveAndSendTaskResult:oWsItem[1]:cItem[2]) )
 			EndIf
 
 		Else
@@ -1571,7 +1571,7 @@ Static function xIntFluig(cTpLib,cUserApr,cUserSub,cTpDoc)
 			If Val(oObj:oWsSaveAndSendTaskByReplacementResult:oWsItem[1]:cItem[2]) == nChosse
 				Alert('Deu Fluigueira')
 			Else
-				Alert('Erro de integracao: ' + Alltrim(oObj:oWsSaveAndSendTaskByReplacementResult:oWsItem[1]:cItem[2]) )
+				Alert('Erro de integração: ' + Alltrim(oObj:oWsSaveAndSendTaskByReplacementResult:oWsItem[1]:cItem[2]) )
 			EndIf
 
 		EndIf
@@ -1585,7 +1585,7 @@ return
 
 	//--------------------------------------------------------------------
 	/*/{Protheus.doc} A094TudoOk()
-	Efetua validacoes da aprovacao
+	Efetua validações da aprovação
 	@author Leonardo Quintania
 	@since 30/08/2013
 	@version 1.0
@@ -1594,14 +1594,14 @@ return
 //--------------------------------------------------------------------
 Static function A094TudoOk(oModel)
 	Local lRet 		:= .T.
-	Local dDataBloq	:= GetNewPar("MV_ATFBLQM",CTOD("")) //Data de Bloqueio da Movimentacao - MV_ATFBLQM
+	Local dDataBloq	:= GetNewPar("MV_ATFBLQM",CTOD("")) //Data de Bloqueio da Movimentação - MV_ATFBLQM
 	Local aSaldo 	:= {}
 	Local nSaldo 	:= 0
 	Local dDataRef	:= cTod("  /  /  ")
 
 	If SCR->CR_TIPO == "RV"
-		If CN9->(MsSeek(xFilial("CN9")+AllTrim(SCR->CR_NUM))) //Posiciona no contrato da aprovacao
-			//--Popula model da tela de contrato para ser feito validacoes da aprovacao do contrato.
+		If CN9->(MsSeek(xFilial("CN9")+AllTrim(SCR->CR_NUM))) //Posiciona no contrato da aprovação
+			//--Popula model da tela de contrato para ser feito validações da aprovação do contrato.
 			oModelCT := FWLoadModel(If(CN9->CN9_ESPCTR == "1","CNTA300","CNTA301"))
 			oModelCT:SetOperation(MODEL_OPERATION_UPDATE)
 
@@ -1616,17 +1616,17 @@ Static function A094TudoOk(oModel)
 					lRet := CN100Doc(CN9->(Recno()),{DEF_SREVS},.F.)
 				EndIf
 			EndIf
-			//--Gera Base Instalada e Ordem de Servicoï¿½
+			//--Gera Base Instalada e Ordem de Servico³
 			If lRet .And. SuperGetMv("MV_CNINTFS",.F.,.F.) .And. CN9->CN9_ESPCTR == '2'
 				lRet := CN100BIns(CN9->CN9_NUMERO,CN9->CN9_REVISA,CN9->CN9_DTASSI)
 			EndIf
 		EndIf
 	ElseIf SCR->CR_TIPO == "CT"
-		//Verifica se existe bloqueio contabil
-		If lRet := CtbValiDt(Nil, dDataBase,/*.T.*/ ,Nil ,Nil ,{"COM001"}/*,"Data de apuracao bloqueada pelo calendï¿½rio contabil."*/)
+		//Verifica se existe bloqueio contábil
+		If lRet := CtbValiDt(Nil, dDataBase,/*.T.*/ ,Nil ,Nil ,{"COM001"}/*,"Data de apuração bloqueada pelo calendário contábil."*/)
 			If!Empty(dDataBloq) .AND. ( dDataBase <= dDataBloq)
-				//Help(" ",1,"AF012ABLQM",,"Processo bloqueado pelo Calendï¿½rio Contï¿½bil nesta data ou periodo. Caso possivel altere a data de referencia do processo ou contate o responsï¿½vel pelo Modulo Contï¿½bil.",1,0) //"Processo bloqueado pelo Calendï¿½rio Contï¿½bil nesta data ou periodo. Caso possivel altere a data de referencia do processo ou contate o responsï¿½vel pelo Modulo Contï¿½bil."
-				Help(" ",1,"ATFCTBBLQ") //P: Processo bloqueado pelo Calendï¿½rio Contï¿½bil ou parametro de bloqueio nesta data ou periodo. S: Caso possivel altere a data de referencia do processo, verifique o parametro ou contate o responsï¿½vel pelo Modulo Contï¿½bil.)
+				//Help(" ",1,"AF012ABLQM",,"Processo bloqueado pelo Calendário Contábil nesta data ou período. Caso possível altere a data de referência do processo ou contate o responsável pelo Módulo Contábil.",1,0) //"Processo bloqueado pelo Calendário Contábil nesta data ou período. Caso possível altere a data de referência do processo ou contate o responsável pelo Módulo Contábil."
+				Help(" ",1,"ATFCTBBLQ") //P: Processo bloqueado pelo Calendário Contábil ou parâmetro de bloqueio nesta data ou período. S: Caso possível altere a data de referência do processo, verifique o parâmetro ou contate o responsável pelo Módulo Contábil.)
 				lRet := .F.
 			End
 		EndIf
@@ -1637,7 +1637,7 @@ Static function A094TudoOk(oModel)
 return lRet
 	//--------------------------------------------------------------------
 	/*/{Protheus.doc} A094VldSup()
-	Efetua validacao quando superior mostrando tela de senha do superior
+	Efetua validação quando superior mostrando tela de senha do superior
 	@author Leonardo Quintania
 	@since 23/10/2013
 	@version 1.0
@@ -1664,7 +1664,7 @@ return lRet
 
 	//--------------------------------------------------------------------
 	/*/{Protheus.doc} A094VlMod()
-	Efetua validacao do modelo de dados
+	Efetua validação do modelo de dados
 	@author Leonardo Quintania
 	@since 28/08/2013
 	@version 1.0
@@ -1676,13 +1676,13 @@ Static function A094VlMod(oModel)
 	Local ca094User := xxRetUser()
 
 	If lRet .And. !Empty(SCR->CR_DATALIB) .And. SCR->CR_STATUS $ "03#05"
-		Help(" ",1,"A097LIB")  //Este documento jï¿½ foi liberado.#### Escolha outro item que nao foi liberado.
+		Help(" ",1,"A097LIB")  //Este documento já foi liberado.#### Escolha outro item que não foi liberado.
 		lRet := .F.
 	ElseIf lRet .And. SCR->CR_STATUS $ "01"
-		Help(" ",1,"A097BLQ") // Esta operacao nao podera ser realizada pois este registro se encontra bloqueado pelo sistema
+		Help(" ",1,"A097BLQ") // Esta operação não poderá ser realizada pois este registro se encontra bloqueado pelo sistema
 		lRet := .F.
 	ElseIf lRet .And. SCR->CR_STATUS $ "06"
-		Help(" ",1,"A094REJ") // Esta operacao nao podera ser realizada pois este registro se encontra rejeitado pelo sistema
+		Help(" ",1,"A094REJ") // Esta operação não poderá ser realizada pois este registro se encontra rejeitado pelo sistema
 		lRet := .F.
 
 	EndIf
@@ -1748,7 +1748,7 @@ User function XMC14Bloqu()
 			(cAlias)->(MsUnLock())
 		EndIf
 	Else
-		Help(" ",1,"A097BLOQ")  //Nao e possivel bloquear o documento selecionado.
+		Help(" ",1,"A097BLOQ")  //Não é possivel bloquear o documento selecionado.
 		lRet := .F.
 	EndIf
 
@@ -1758,15 +1758,15 @@ return .T.
 
 	//--------------------------------------------------------------------
 	/*/{Protheus.doc} A94ExLiber()
-	Executa ExecView do MGFCOM14 para o botao Liberacao
+	Executa ExecView do MGFCOM14 para o botão Liberação
 	@author Leonardo Quintania
 	@since 23/10/2013
 	@version 1.0
-	@alteracao
+	@alteração
 	********************
 	2020-02-26 feature/RTASK0010611-trava-na-libercao-item-marcado
-	Quando o registro estiver com flag precisa usar a funcao Liberar Lote,
-	para utilizar a funcao Liberar, o registro deve estar com o cursor em
+	Quando o registro estiver com flag precisa usar a função Liberar Lote,
+	para utilizar a função Liberar, o registro deve estar com o cursor em
 	cima dele, com ou sem flag.
 	********************
 
@@ -1795,7 +1795,7 @@ User function XMC14Libe()
 
 	cOperID:= OP_LIB
 	If !IsBlind()
-		If FWExecView ("Aprovacao de Documentos", "MGFCOM14", MODEL_OPERATION_UPDATE ,/*oDlg*/ , {||.T.},/*bOk*/ ,/*nPercReducao*/ ,/*aEnableButtons*/ , /*bCancel*/ , /*cOperatId*/ ,/*cToolBar*/,/*oModelAct*/) == 0//"Superior"
+		If FWExecView ("Aprovação de Documentos", "MGFCOM14", MODEL_OPERATION_UPDATE ,/*oDlg*/ , {||.T.},/*bOk*/ ,/*nPercReducao*/ ,/*aEnableButtons*/ , /*bCancel*/ , /*cOperatId*/ ,/*cToolBar*/,/*oModelAct*/) == 0//"Superior"
 			RecLock((cAlias),.F.)
 			If mv_par01 == 1 .or. mv_par01 == 4 .or. mv_par01 == 5
 				(cAlias)->(DbDelete())
@@ -1834,15 +1834,15 @@ return lRet
 
 //--------------------------------------------------------------------
 /*/{Protheus.doc} xValLib
-	Esta funcao ï¿½ para validar se o usuario esta liberando com o procedimento correto
-	caso ele utulize o botao Liberar, nao podera ter nada com flag.
+	Esta função é para validar se o usuário está liberando com o procedimento correto
+	caso ele utulize o botão Liberar, não poderá ter nada com flag.
 	RTASK0010611
 	@type  Static Function
-	@author Claudio Alves
+	@author Cláudio Alves
 	@since 06/02/2020
 	@version
 	@param 
-	@return _lRet para validar a liberacao
+	@return _lRet para validar a liberação
 	@example
 	
 	@see (links_or_references)
@@ -1874,7 +1874,7 @@ Static Function xValLib(_cOrig)
 		if _nConta == 1
 			(cAlias)->(dbSeek(_cChave))
 			if !((cAlias)->CR_ZOK == oBrowse:Mark())
-				_cMsg	:=	 'Para resolver voce deve posicionar o cursor no item com Flag ou usar a "Liberacao Lote"'
+				_cMsg	:=	 'Para resolver você deve posicionar o cursor no item com Flag ou usar a "Liberação Lote"'
 				if !IsBlind()
 					Help(NIL, NIL, 'MGFCOM14', NIL, 'POSICIONAMENTO DO CURSOR', 1, 0, NIL, NIL, NIL, NIL, NIL, {_cMsg})
 					_lRet	:=	.F.
@@ -1883,9 +1883,9 @@ Static Function xValLib(_cOrig)
 				endif
 			endif
 		elseif _nConta > 1
-			_cMsg	:=	 'Vocï¿½ selecionou ' + alltrim(str(_nConta)) + ' registros, para estes casos deve-se usar a "Liberacao Lote"'
+			_cMsg	:=	 'Você selecionou ' + alltrim(str(_nConta)) + ' registros, para estes casos deve-se usar a "Liberação Lote"'
 			if !IsBlind()
-				Help(NIL, NIL, 'MGFCOM14', NIL, 'SELEï¿½ï¿½O MAIS DE UM REGISTRO', 1, 0, NIL, NIL, NIL, NIL, NIL, {_cMsg})
+				Help(NIL, NIL, 'MGFCOM14', NIL, 'SELEÇÃO MAIS DE UM REGISTRO', 1, 0, NIL, NIL, NIL, NIL, NIL, {_cMsg})
 				_lRet	:=	.F.
 			else
 				_lRet	:=	.F.
@@ -1897,16 +1897,16 @@ Static Function xValLib(_cOrig)
 		if _nConta == 0
 			_cMsg	:=	'Nenhum registro selecionado'
 		elseif _nConta == 1
-			_cMsg	:=	'Foi selecionado ' + alltrim(str(_nConta)) + ' registro, deseja liberï¿½-lo?'
+			_cMsg	:=	'Foi selecionado ' + alltrim(str(_nConta)) + ' registro, deseja liberá-lo?'
 		else
-			_cMsg	:=	'Foram selecionados ' + alltrim(str(_nConta)) + ' registros, deseja liberï¿½-los?'
+			_cMsg	:=	'Foram selecionados ' + alltrim(str(_nConta)) + ' registros, deseja liberá-los?'
 		endif
 		if !IsBlind()
 			if _nConta == 0
 				AVISO("REGISTROS SELECIONADOS", _cMsg, { "Fechar" }, 2)
 				_lRet	:=	.F.
 			else
-				_lRet	:=	iif(AVISO("REGISTROS SELECIONADOS", _cMsg, { "Nao ", "Sim" }, 2) == 1, .F., .T.)
+				_lRet	:=	iif(AVISO("REGISTROS SELECIONADOS", _cMsg, { "Não", "Sim" }, 2) == 1, .F., .T.)
 			endif
 		else
 			_lRet	:=	.T.
@@ -1916,7 +1916,7 @@ Return _lRet
 
 //--------------------------------------------------------------------
 	/*/{Protheus.doc} A094Rejeita()
-	Rejeita a solicitacao de transferencia.
+	Rejeita a solicitação de transferência.
 	@author Raphael Augustos
 	@since 17/03/2014
 	@version 1.0
@@ -1939,17 +1939,17 @@ User function XMC14Rej()
 
 	If SCR->CR_STATUS <> "02"
 		lRet := .F.
-		Help("",1,"A094REJEIT",,"Sï¿½ ï¿½ possivel rejeitar um registro com o status aguardando liberacao.",1,0)
+		Help("",1,"A094REJEIT",,"Só é possivel rejeitar um registro com o status aguardando liberação.",1,0)
 	EndIf
 
 	If !(SCR->CR_TIPO $ "SC|PC|ST|SA|LC|")
 		lRet := .F.
-		Help("",1,"A094REJEIT",,"Sï¿½ ï¿½ possivel rejeitar um registro do tipo SC , SA , LC , PC OU ST.",1,0)
+		Help("",1,"A094REJEIT",,"Só é possivel rejeitar um registro do tipo SC , SA , LC , PC OU ST.",1,0)
 	EndIf
 
 	If lRet
-		If FWExecView ("Rejeitar Solicitiaï¿½ï¿½o de Transferï¿½ncia", "MGFCOM14", MODEL_OPERATION_UPDATE ,/*oDlg*/ , {||.T.},/*bOk*/ ,/*nPercReducao*/ ,/*aEnableButtons*/ , /*bCancel*/ , "004",/*cToolBar*/,/*oModelAct*/) == 0//"Superior"
-			// Validacao de gravacao de tipo de saldo 9 e mensagem descritiva da rejeicao conforme opcao escolhida pela pessoa que rejeitou.
+		If FWExecView ("Rejeitar Solicitiação de Transferência", "MGFCOM14", MODEL_OPERATION_UPDATE ,/*oDlg*/ , {||.T.},/*bOk*/ ,/*nPercReducao*/ ,/*aEnableButtons*/ , /*bCancel*/ , "004",/*cToolBar*/,/*oModelAct*/) == 0//"Superior"
+			// Validação de gravação de tipo de saldo 9 e mensagem descritiva da rejeição conforme opção escolhida pela pessoa que rejeitou.
 			RecLock((cAlias),.F.)
 			If mv_par01 == 1 .or. mv_par01 == 2 .or. mv_par01 == 4
 				(cAlias)->(DbDelete())
@@ -1968,10 +1968,10 @@ User function XMC14Rej()
 return
 
 //////////////////////////////////////////////////////////
-// Funcao	| AjustaHlp()
+// Função	| AjustaHlp()
 // Autor	| Fernando Amorim(Cafu)
 // Data		| 17/12/2015
-// Uso		| Ajusta o dicionï¿½rio e help.
+// Uso		| Ajusta o dicionário e help.
 //////////////////////////////////////////////////////////
 Static function AjustaHlp()
 
@@ -1979,7 +1979,7 @@ Static function AjustaHlp()
 	Local aHelpEng := {}
 	Local aHelpSpa := {}
 
-	aHelpPor := aHelpEng := aHelpSpa := {'Saldo do aprovador insuficiente ','para aprovacao do documento.'}
+	aHelpPor := aHelpEng := aHelpSpa := {'Saldo do aprovador insuficiente ','para aprovação do documento.'}
 
 	PutHelp("SLDAPROV",aHelpPor,aHelpEng,aHelpSpa,.T.)
 
@@ -2027,7 +2027,7 @@ User function xRejSCR(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEstC
 	Local cStatusAnt:= ""
 	Local cAprovOri := ""
 	Local cUserOri  := ""
-	Local cObsBloq  := 'Realizado a Rejeicao'
+	Local cObsBloq  := 'Realizado a Rejeição'
 	Local lAchou	:= .F.
 	Local nRec		:= 0
 	Local lRetorno	:= .T.
@@ -2080,7 +2080,7 @@ User function xRejSCR(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEstC
 		cUser := AllTrim(SC7->C7_USER)
 	Endif
 
-	If nOper == 7  //Evento de rejeicao do documento
+	If nOper == 7  //Evento de rejeição do documento
 		cAuxNivel 	:= SCR->CR_NIVEL
 		cGrupo 		:= SCR->CR_GRUPO
 		cItGrp 		:= SCR->CR_ITGRP
@@ -2106,7 +2106,7 @@ User function xRejSCR(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEstC
 			EndIf
 
 			If !Empty(SCR->CR_FLUIG) .And. SCR->CR_STATUS == "05"
-				CancelProcess(Val(SCR->CR_FLUIG),FWWFUserID(Val(SCR->CR_FLUIG))," cancelado por contingï¿½ncia!",.F.)
+				CancelProcess(Val(SCR->CR_FLUIG),FWWFUserID(Val(SCR->CR_FLUIG))," cancelado por contingência!",.F.)
 			EndIf
 
 			cObsrej := alltrim(SCR->CR_OBS)
@@ -2175,7 +2175,7 @@ User function xRejSCR(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEstC
 		If !Empty(AllTrim(xTo)) .and. cTipoDoc $ ("SC|PC|SA|LC")
 			Envmail(xto,cDocto,XFIL,cTipoDoc,cObsrej)
 		Else
-			Alert("Nao  existe destinatï¿½rio cadastrado nessa selecao!")
+			Alert("Não existe destinatário cadastrado nessa seleção!")
 		EndIf
 		//-----------------------------------------
 	EndIf
@@ -2351,10 +2351,10 @@ Static function xRejDoc(cDocto,cTpDoc,cGrp,cItGrp,cUsrApv,aItens,cUsrOld,nOper,c
 				While !CT2->(EOF()) .And. CT2->(CT2_FILIAL+dtos(CT2_DATA)+CT2_DOC) == cKeyDoc
 					RecLock("CT2",.F.)
 					CT2->CT2_ZAPROV := 'R'
-					If MSGYESNO("O usuario devera excluir o lanï¿½amento contabil? ")
-						CT2->CT2_ZMSGAP := "Excluir Lancamento"
+					If MSGYESNO("O usuário deverá excluir o lançamento contábil? ")
+						CT2->CT2_ZMSGAP := "Excluir Lançamento"
 					Else
-						CT2->CT2_ZMSGAP	:= "Refazer Lancamento"
+						CT2->CT2_ZMSGAP	:= "Refazer Lançamento"
 					EndIF
 
 					CT2->(MsUnlock())
@@ -2490,7 +2490,7 @@ Static function xLIbZC(nReg,nOpc,nTotal,cCodLiber,cGrupo,cObs,dRefer,oModelCT)
 	If nOpc == 2
 		While SCR->(!EOF()) .and. SCR->CR_FILIAL + SCR->(CR_TIPO + CR_NUM) == cChavSCR
 
-			//Se um item estiver sem data de liberacao nao libera o titulo
+			//Se um item estiver sem data de liberação não libera o titulo
 			If (Empty(SCR->CR_DATALIB) .OR. SCR->CR_STATUS = '04' ) .and. SCR->(RECNO()) <> nRec
 				lTudLib := .F.
 				Exit
@@ -2602,7 +2602,7 @@ Static function xLIbZC(nReg,nOpc,nTotal,cCodLiber,cGrupo,cObs,dRefer,oModelCT)
 						If CT2->(DbSeek(xFilial("CT2") + Alltrim(SCR->CR_NUM)))
 
 							//Dispara thread: xAtuCT2 autoexec CT2
-							//Definida a atualizacao por startJob, pois o saldo das contas nao atualizava quando se loga em uma filial, mas aprova o Doc. de outra.
+							//Definida a atualização por startJob, pois o saldo das contas não atualizava quando se loga em uma filial, mas aprova o Doc. de outra.
 							StartJob("U_xAtuCT2",GetEnvServer(),.T.,{cEmpAnt,CT2->CT2_FILIAL,Alltrim(SCR->CR_NUM)})
 
 							//Atualiza o saldo do aprovador.
@@ -2618,7 +2618,7 @@ Static function xLIbZC(nReg,nOpc,nTotal,cCodLiber,cGrupo,cObs,dRefer,oModelCT)
 								SC1->(MsUnLock())
 								SC1->(dbSkip())
 							EndDo
-							// Customizaï¿½ï¿½o - COM03 - Flavio
+							// Customização - COM03 - Flavio
 							If FindFunction('U_MGFCOM28')
 								U_MGFCOM28()
 							EndIf
@@ -2628,7 +2628,7 @@ Static function xLIbZC(nReg,nOpc,nTotal,cCodLiber,cGrupo,cObs,dRefer,oModelCT)
 				EndIf
 			EndIf
 			//Else
-			//Alert('Problema funcao MaAlcDoc Fonte: MGFCOM14, Linha: 1712')
+			//Alert('Problema função MaAlcDoc Fonte: MGFCOM14, Linha: 1712')
 		EndIf
 
 	End Transaction
@@ -2694,7 +2694,7 @@ User Function xAlcSApro(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEs
 	cDocto 				:= cDocto + Space(Len(SCR->CR_NUM) - Len(cDocto))
 	cDocSF1				:= cDocSF1 + Space(Len(SCR->CR_NUM) - Len(cDocSF1))
 
-	//Aprovacao
+	//Aprovação
 	If nOper == 4
 
 		dbSelectArea("SCR")
@@ -2729,9 +2729,9 @@ User Function xAlcSApro(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEs
 
 		lRetorno 	:= .F.
 
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Bloqueia todos os Aprovadores do Nï¿½vel  ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Bloqueia todos os Aprovadores do Nível  ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		SCR->(dbSeek(xFilial("SCR") + cTipoDoc + cDocto + cAuxNivel))
 		nRec := RecNo()
 		While !Eof() .And. xFilial("SCR") + cDocto + cTipoDoc + cAuxNivel == SCR->CR_FILIAL + SCR->CR_NUM + SCR->CR_TIPO + SCR->CR_NIVEL
@@ -2812,7 +2812,7 @@ User function xAlcAprov(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEs
 	cDocto 				:= cDocto + Space(Len(SCR->CR_NUM) - Len(cDocto))
 	cDocSF1				:= cDocSF1 + Space(Len(SCR->CR_NUM) - Len(cDocSF1))
 
-	//Aprovacao
+	//Aprovação
 	If nOper == 4
 
 		dbSelectArea("SCR")
@@ -2898,9 +2898,9 @@ User function xAlcAprov(aDocto,dDataRef,nOper,cDocSF1,lResiduo,cItGrp,aItens,lEs
 
 		lRetorno 	:= .F.
 
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Bloqueia todos os Aprovadores do Nï¿½vel  ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Bloqueia todos os Aprovadores do Nível  ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		SCR->(dbSeek(xFilial("SCR") + cTipoDoc + cDocto + cAuxNivel))
 		nRec := RecNo()
 		While !Eof() .And. xFilial("SCR") + cDocto + cTipoDoc + cAuxNivel == SCR->CR_FILIAL + SCR->CR_NUM + SCR->CR_TIPO + SCR->CR_NIVEL
@@ -2957,7 +2957,7 @@ Static Function xMark()
 			(cAlias)->CR_ZUMARK:= RetCodUsr() //Rafael 08/11/2018
 			(cAlias)->(MsUnLock())
 		Else
-			MsgAlert("Sï¿½ ï¿½ permitido a Marcacao de itens que estejam parado com esse usuario")
+			MsgAlert("Só é permitido a Marcação de itens que estejam parado com esse usuario")
 		EndIf
 	Else
 		RecLock(cAlias,.F.)
@@ -3025,25 +3025,25 @@ Static Function xMarkAll()
 	oBrowse:refresh(.F.)
 Return .T.
 
-// funcao abaixo conforme estava anteriormente em Produï¿½ï¿½o, devera ser excluido apos descomentar acima. Odair 09/11/18
+// função abaixo conforme estava anteriormente em Produção, deverá ser excluído após descomentar acima. Odair 09/11/18
 User Function xC14LLot()
-	Processa({|| xProLote('L')},"Aguarde....","Processando Liberacao")
-	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualizacao' )
+	Processa({|| xProLote('L')},"Aguarde....","Processando Liberação")
+	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualização' )
 	//	Processa({|| U_xMC14Atu()},"Aguarde....","Atualizando a Tela")
 	//EndIF
 Return
-// EXCLUIR ATï¿½ AQUI. Apos o comentado acima ser homologado.
+// EXCLUIR ATÉ AQUI. Após o comentado acima ser homologado.
 
 User Function xC14BLot()
 	Processa({|| xProLote('B')},"Aguarde....","Processando Bloqueio")
-	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualizacao' )
+	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualização' )
 	//	Processa({|| U_xMC14Atu()},"Aguarde....","Atualizando a Tela")
 	//EndIf
 Return
 
 User Function xC14RLot()
-	Processa({|| xProLote('R')},"Aguarde....","Processando Rejeicao")
-	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualizacao' )
+	Processa({|| xProLote('R')},"Aguarde....","Processando Rejeição")
+	//If MsgYesNo( 'Deseja Atualizar a Tela', 'Atualização' )
 	//	Processa({|| U_xMC14Atu()},"Aguarde....","Atualizando a Tela")
 	//EndIf
 Return
@@ -3100,15 +3100,15 @@ Return
 
 //--------------------------------------------------------------------
 	/*/{Protheus.doc} xProLote()
-	Executa ExecView do MGFCOM14 para os botoes Liberado em Lote, bloqueio em Lote, rejeicao em Lote
+	Executa ExecView do MGFCOM14 para os botões Liberado em Lote, bloqueio em Lote, rejeição em Lote
 	@author Leonardo Quintania
 	@since 23/10/2013
 	@version 1.0
-	@alteracao
+	@alteração
 	********************
 	2020-02-26 feature/RTASK0010611-trava-na-libercao-item-marcado
-	Quando o registro estiver com flag precisa usar a funcao Liberar Lote,
-	para utilizar a funcao Liberar, o registro deve estar com o cursor em
+	Quando o registro estiver com flag precisa usar a função Liberar Lote,
+	para utilizar a função Liberar, o registro deve estar com o cursor em
 	cima dele, com ou sem flag.
 	********************
 
@@ -3206,8 +3206,8 @@ Static Function xProLote(cxTp)
 
 
 	if _nCount == 0
-		_mensagem	:=	 'Atencao, voce nao selecionou nenhum registro para Liberacao'
-		Help(NIL, NIL, 'MGFCOM14', NIL, 'Aprovacao de Grade Marfrig', 1, 0, NIL, NIL, NIL, NIL, NIL, {_mensagem})
+		_mensagem	:=	 'Atenção, você não selecionou nenhum registro para Liberação'
+		Help(NIL, NIL, 'MGFCOM14', NIL, 'Aprovação de Grade Marfrig', 1, 0, NIL, NIL, NIL, NIL, NIL, {_mensagem})
 	endif
 	//xDesMark()
 
@@ -3273,14 +3273,14 @@ Data................: 27/10/2016
 Descricao / Objetivo: Acompanhamento de cobranca
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Envia Email
 =====================================================================================
 */
 
 /*
 ========================================================
-Funcao que Envia E-mail do erro (EnvMail())
+Função que Envia E-mail do erro (EnvMail())
 ========================================================
 */
 Static Function EnvMail(xto,cDocto,XFIL,cTipoDoc,cObsrej) //tarcisio galeano 23/11/18
@@ -3346,7 +3346,7 @@ Static Function EnvMail(xto,cDocto,XFIL,cTipoDoc,cObsrej) //tarcisio galeano 23/
 	//--------------------- tarcisio galeano 23/11/18
 	IF cTipoDoc = "SC"
 		oMessage:cSubject               := "Aviso de Rejeicao de Solicitacao de Compras"
-		oMessage:cBody                  := "A Sua solicitacao numero "+cDocto+"da filial "+XFIL+" foi rejeitada, Motivo :("+cObsrej+") "
+		oMessage:cBody                  := "A Sua solicitação numero "+cDocto+"da filial "+XFIL+" foi rejeitada, Motivo :("+cObsrej+") "
 		oMessage:cBody                  += "favor contatar o aprovador." //cHtml
 	ELSE
 		oMessage:cSubject               := "Aviso de Rejeicao de Pedido de Compras"
@@ -3373,33 +3373,33 @@ Return
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½MarkSCR  ï¿½ Autor ï¿½Geronimo B Alves	 ï¿½ Data ï¿½   13/08/18  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.	ï¿½ Monta uma tela de markbrowse, mostrando os Produtos         ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ selecionados pela query recebida por parametro, nos campos ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ tambem recebidos por parametro, para que o usuario marque  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ quais serao processadas									ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Parametrosï¿½ _cQuery		- Query para selecao dos registros			ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ aCpoMostra[1] - Campo a ser mostrado						ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ aCpoMostra[2] - Titulo do Campo							ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ aCpoMostra[3] - Tamanho do Campo em caracteres				ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ cTitulo		- Titulo dq tela de selecao					ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ nPosRetorn	- Numero da posicao do campo na MarkBrowse	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½				- que sera retornado. Ex. Pode ser retornado ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½				- o primeiro, segundo, terceiro ou outro		ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½				- campo do MarkBrowse						ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ _lBtnCance	- Parametro recebido como referencia. Define se deve(.T.) ou  nao deve(.F.) cancelar todo o processamento caso o usuario ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½					clicar no botao cancelar. O _lBtnCance ï¿½ visivel no programa chamador e se retornou como.T., indica que o botao		ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½					foi teclado. Entï¿½o o programa deve ser finalizado																		ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ AP														 ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³MarkSCR  º Autor ³Geronimo B Alves	 º Data ³   13/08/18  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.	³ Monta uma tela de markbrowse, mostrando os Produtos         º±±
+±±º			³ selecionados pela query recebida por parametro, nos campos º±±
+±±º			³ tambem recebidos por parametro, para que o usuario marque  º±±
+±±º			³ quais serao processadas									º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºParametros³ _cQuery		- Query para selecao dos registros			º±±
+±±º			³ aCpoMostra[1] - Campo a ser mostrado						º±±
+±±º			³ aCpoMostra[2] - Titulo do Campo							º±±
+±±º			³ aCpoMostra[3] - Tamanho do Campo em caracteres				º±±
+±±º			³ cTitulo		- Titulo dq tela de selecao					º±±
+±±º			³ nPosRetorn	- Numero da posicao do campo na MarkBrowse	º±±
+±±º			³				- que sera retornado. Ex. Pode ser retornado º±±
+±±º			³				- o primeiro, segundo, terceiro ou outro		º±±
+±±º			³				- campo do MarkBrowse						º±±
+±±º			³ _lBtnCance	- Parametro recebido como referencia. Define se deve(.T.) ou  não deve(.F.) cancelar todo o processamento caso o usuario º±±
+±±º			³					clicar no botão cancelar. O _lBtnCance é visivel no programa chamador e se retornou como.T., indica que o botão		º±±
+±±º			³					foi teclado. Então o programa deve ser finalizado																		º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ AP														 º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
@@ -3422,7 +3422,7 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 	Local nListTam1		:= 600	//400					//380	//340	//280	//250
 	Local nListTam2		:= 230					//220	//200	//170
 	Local nI
-	//	Nesta versao, a variavel lChk ï¿½ criada como private no MGF06R20 para ser tratada lï¿½, caso retrne marcada.
+	//	Nesta versao, a variavel lChk é criada como private no MGF06R20 para ser tratada lá, caso retrne marcada.
 	Local _nI			:= 0
 	Local oButProd		:= ""
 
@@ -3432,8 +3432,8 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 	Private _oCodDoc
 	Private _cCodDoc	:= Space(tamSx3("CR_NUM")[1])
 
-	Private _lCodDoc	:= .T. 			// Na Comeï¿½a a digitacao por codigo
-	Private _nPosCpCHK	:= 2			// Posicao do campo a checar no array. Pode ser 2 para por Codigo
+	Private _lCodDoc	:= .T. 			// Na Começa a digitação por codigo
+	Private _nPosCpCHK	:= 2			// Posicao do campo a checar no array. Pode ser 2 para por Código
 
 	cTitulo  			:= OemToAnsi(cTitulo)
 
@@ -3471,16 +3471,16 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 			DbSkip()
 		Enddo
 	Else
-		MsgStop( "Nao foi encontrado nenhum registro para montar esta tela de selecao de registros" )
+		MsgStop( "Nao foi encontrado nenhum registro para montar esta tela de seleção de registros" )
 		Aadd(aEncontrad , " " )
 	Endif
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Monta a tela de selecao dos arquivos a serem importados				ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Monta a tela de selecao dos arquivos a serem importados				³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	If Len(aList) > 0 .and. lExibe ==.T.
 		DEFINE MSDIALOG oDlg TITLE cTitulo From 005,005 TO 040,160 OF oMainWnd		// 040,100 OF oMainWnd
-		@ 03,  05 Say "Lista de Documentos. Por isto, eles nao aparecem na selecao abaixo "    of oDlg Pixel
+		@ 03,  05 Say "Lista de Documentos. Por isto, eles não aparecem na seleção abaixo "    of oDlg Pixel
 		//@ 07,  15 Say "Tecle <F7> para pesquisar/Marcar os produtos "    of oDlg Pixel
 
 		If Len(aTitulo) == 2
@@ -3508,43 +3508,43 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 			oListBox:bLine := { || {	If(aList[oListBox:nAt,1],oOk,oNo), aList[oListBox:nAt,2], aList[oListBox:nAt,3], aList[oListBox:nAt,4], aList[oListBox:nAt,5]}}
 		Endif
 
-		SetKey(VK_F4,{|| MarcaTodF4( @lChk, @aList, oListBox ) })			// Cria a associaï¿½ï¿½o da tecla F4, ï¿½ funcï¿½o MarcaTodF4()
-		SetKey(VK_F7,{|| F7_Documen( @lChk, oChk ) })						// Cria a associaï¿½ï¿½o da tecla F7, ï¿½ funcï¿½o F7_Documen()
+		SetKey(VK_F4,{|| MarcaTodF4( @lChk, @aList, oListBox ) })			// Cria a associação da tecla F4, à funcão MarcaTodF4()
+		SetKey(VK_F7,{|| F7_Documen( @lChk, oChk ) })						// Cria a associação da tecla F7, à funcão F7_Documen()
 
 		@ 250, 010 CHECKBOX oChk Var lChk Prompt "&Marca/Desmarca Todos - < F4 >" Message "&Marca/Desmarca Todos < F4 >" SIZE 90,007 PIXEL OF oDlg ON CLICK MarcaTodos( lChk, @aList, oListBox )
 
-		@ 250, 130 BUTTON	oButInv Prompt '&Inverter'  Size 30, 12 Pixel        Action ( InvSelecao( @aList, oListBox, @lChk, oChk ), VerTodos( aList, @lChk, oChk ) ) Message 'Inverter Selecao' Of oDlg
+		@ 250, 130 BUTTON	oButInv Prompt '&Inverter'  Size 30, 12 Pixel        Action ( InvSelecao( @aList, oListBox, @lChk, oChk ), VerTodos( aList, @lChk, oChk ) ) Message 'Inverter Seleção' Of oDlg
 		DEFINE SBUTTON oBtnOk	FROM 250,180 TYPE 1 ACTION (nOpc := 1,oDlg:End())		ENABLE OF oDlg
 		DEFINE SBUTTON oBtnCan	FROM 250,220 TYPE 2 ACTION (nOpc := 0,oDlg:End())		ENABLE OF oDlg
 		@ 250, 290 BUTTON	oButProd Prompt '&Pesquisar Doc. <F7>'  Size 60, 12 Pixel Action ( F7_Documento( @lChk, oChk )  ) Message 'Procura Documento' Of oDlg
 
 		ACTIVATE MSDIALOG oDlg CENTERED
-		SetKey( VK_F4 , {||} )					// Cancela a associaï¿½ï¿½o da tecla F4, ï¿½ funcï¿½o MarcaTodF4()	//Keyboard chr(27)
-		SetKey( VK_F7 , {||} )					// Cancela a associaï¿½ï¿½o da tecla F7, ï¿½ funcï¿½o F7_Documen()
+		SetKey( VK_F4 , {||} )					// Cancela a associação da tecla F4, à funcão MarcaTodF4()	//Keyboard chr(27)
+		SetKey( VK_F7 , {||} )					// Cancela a associação da tecla F7, à funcão F7_Documen()
 
 		If nOpc == 0
 			aList := {}
-			If _lCancProg				// Se deve abandonar processamanto caso clique no botao cancelar, e ele foi cancelado (nOpc == 0)
+			If _lCancProg				// Se deve abandonar processamanto caso clique no botão cancelar, e ele foi cancelado (nOpc == 0)
 				_lCancProg	:= .T.		// Cancelar o programa
-				MsgStop("Processamento foi cancelado pelo usuario")
+				MsgStop("Processamento foi cancelado pelo usuário")
 			Else
-				_lCancProg	:=.F.		// Nao  cancelar o programa. Foi clicado o botao cancelar, porem o parametro _lCancProg recebido diz para nao abandonar o programa se isto ocorrese, mas somente limpar/desconsiderar as marcaï¿½ï¿½es
+				_lCancProg	:=.F.		// Não cancelar o programa. Foi clicado o botão cancelar, porem o parametro _lCancProg recebido diz para não abandonar o programa se isto ocorrese, mas somente limpar/desconsiderar as marcações
 			Endif
 		Else
-			_lCancProg	:=.F.			// Nao  cancelar o programa. Nao  foi clicado o botao cancelar.
+			_lCancProg	:=.F.			// Não cancelar o programa. Não foi clicado o botão cancelar.
 		Endif
 	Endif
 
 	If Len(aList) <= 0 .or. Ascan(aList,{|x| x[1] ==.T.}) <= 0
-		//Aviso("Inconsistï¿½ncia", "Nao  foi selecionado nenhum registro. ",{"Ok"}	,,"Atencao:")
+		//Aviso("Inconsistência", "Não foi selecionado nenhum registro. ",{"Ok"}	,,"Atenção:")
 		aList := {}
 	EndIf
 
 	For _nI := 1 to len(aList)
 		If aList[_Ni,1]
 			If ValType( aList[_Ni,nPosRetorn + 1] ) == "C"
-				//  No retornco de campos caracteres retiro os espaï¿½os. Se o registro esta vazio retorno Space(1), pois no Oracle a clausula In
-				//  nao encontra o conteudo ""
+				//  No retornco de campos caracteres retiro os espaços. Se o registro está vazio retorno Space(1), pois no Oracle a clausula In
+				//  não encontra o conteudo ""
 				If Empty( aList[_Ni,nPosRetorn + 1] )
 					aList[_Ni,nPosRetorn + 1]	:= Space(1)
 				Else
@@ -3552,12 +3552,12 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 				Endif
 			Endif
 
-			Aadd(aListMarca, aList[_Ni,nPosRetorn + 1] )	// nPosRetorn eh o campo que desejo retornar.  Aqui, Somo 1, devido ao campo para checkbox que foi incluido no comeï¿½o de cada linha.
+			Aadd(aListMarca, aList[_Ni,nPosRetorn + 1] )	// nPosRetorn eh o campo que desejo retornar.  Aqui, Somo 1, devido ao campo para checkbox que foi incluido no começo de cada linha.
 		Endif
 	Next
 
 	If lChk						// Se Marquei listar todos
-		aListMarca	:= {}		// Deixo o array de marcacao vazio, para nao implementar o filtro.
+		aListMarca	:= {}		// Deixo o array de marcação vazio, para nao implementar o filtro.
 	Endif
 
 	DbGoto(_nRecno)
@@ -3565,20 +3565,20 @@ User Function MarkSCR(_cQuery, aCpoMostra, cTitulo, nPosRetorn, _lCancProg )
 Return aListMarca
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½F7_Documen ï¿½Autor  ï¿½Geronimo B Alves 	 ï¿½ Data  ï¿½  13/08/18  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.	ï¿½ Ao ser teclado F7, abre janela para localizar e marcar      ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ produto pesquisando-o atraves do codigo ou da descricao     ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ Chamo a consulta padrao do SB1 de forma autometica colocandoï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ a tecla F3 no teclado atraves do comando Keyboard chr(114)  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ AP														  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³F7_Documen ºAutor  ³Geronimo B Alves 	 º Data  ³  13/08/18  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.	³ Ao ser teclado F7, abre janela para localizar e marcar      º±±
+±±º			³ produto pesquisando-o através do código ou da descrição     º±±
+±±º			³ Chamo a consulta padrão do SB1 de forma automática colocandoº±±
+±±º			³ a tecla F3 no teclado através do comando Keyboard chr(114)  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ AP														  º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function F7_Documen( lChk, oChk  )
 
@@ -3592,9 +3592,9 @@ Static Function F7_Documen( lChk, oChk  )
 //Local aOrdens := {}
 //Local nOrdem := 1
 
-//AAdd( aOrdens, "Codigo" )
+//AAdd( aOrdens, "Código" )
 
-	SetKey(VK_F7,{|| MarcaDesma() })						// Cria a associaï¿½ï¿½o da tecla F7, ï¿½ funcï¿½o MarcaDesma()
+	SetKey(VK_F7,{|| MarcaDesma() })						// Cria a associação da tecla F7, à funcão MarcaDesma()
 
 	DEFINE MSDIALOG oDlgPesq TITLE "Digite o Documento" FROM 00,00 TO 140,360 PIXEL			// 100,500  // 050,200  // 075,300
 	@ 002, 002 Say    "Digite o Documento a ser Pesquisado ou Marcado" of oDlgPesq Pixel
@@ -3605,7 +3605,7 @@ Static Function F7_Documen( lChk, oChk  )
 	@ 050, 002 Say    "Tecle F7 para Marcar ou Desmarcar a Linha Atual."          of oDlgPesq Pixel
 	@ 050, 300 BUTTON	oBuSemacao Prompt ' ' Size 001, 001 Pixel Action ( nOpcao := 99  ) Message ' ' // Of oDlgPesq
 
-	If	_lCodDoc						// Se atualmente esta configurado para digitacao por codigo.
+	If	_lCodDoc						// Se atualmente esta configurado para digitação por codigo.
 		_oCodDoc:LVISIBLECONTROL	:= .T.
 		_oCodDoc:SetFocus()
 
@@ -3616,35 +3616,35 @@ Static Function F7_Documen( lChk, oChk  )
 
 	ACTIVATE MSDIALOG oDlgPesq //CENTER
 
-	SetKey(VK_F7,{|| F7_Documento( @lChk, oChk ) })						// Cria a associaï¿½ï¿½o da tecla F7, ï¿½ funcï¿½o F7_Documento(), que eera a funcao original da F7
+	SetKey(VK_F7,{|| F7_Documento( @lChk, oChk ) })						// Cria a associação da tecla F7, à funcão F7_Documento(), que eera a função original da F7
 
 Return
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½chkCodDoc ï¿½Autor  ï¿½Geronimo B Alves 	 ï¿½ Data  ï¿½  13/08/18  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.	ï¿½ Se encontro o codigo de produto digitado marco a linha.     ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ Se nao for encontrar, navego ate que a linha do listBox sejaï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ maior do que o codigo que foi digitado.                     ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ 														      ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³chkCodDoc ºAutor  ³Geronimo B Alves 	 º Data  ³  13/08/18  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.	³ Se encontro o código de produto digitado marco a linha.     º±±
+±±º			³ Se não for encontrar, navego até que a linha do listBox sejaº±±
+±±º			³ maior do que o codigo que foi digitado.                     º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ 														      º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 Static Function chkCodDoc()
 	Local _nJ
-	Local lRet := ! _lCodDoc		// Quando digitado o codigo do documento, retorno .F. para nao perder o foco. Quando for digitar a descricao, retorno .T. para perder o foco e ir para o campo Descricao
+	Local lRet := ! _lCodDoc		// Quando digitado o codigo do documento, retorno .F. para não perder o foco. Quando for digitar a descrição, retorno .T. para perder o foco e ir para o campo Descrição
 	Local lPosicionou := .T.
 
 	For _nJ := 1 to len(aList)
 		If _cCodDoc == aList[_nJ ,_nPosCpCHK ]	// Se encontrei o produto digitado
 
-			If !empty( _cCodDoc )		// Se o _oCodDoc, estiver com brancos, nao marco a linha. Para evitar marcacï¿½ï¿½es involuntarias na 1ï¿½ Linha.
+			If !empty( _cCodDoc )		// Se o _oCodDoc, estiver com brancos, não marco a linha. Para evitar marcacóões involuntarias na 1ª Linha.
 				aList[ _nJ ,1]	:= .T.
 			Endif
 			oListBox:nAt	:= _nJ
@@ -3654,7 +3654,7 @@ Static Function chkCodDoc()
 
 		ElseIf alltrim(_cCodDoc) $  aList[_nJ ,_nPosCpCHK ]		// Se a linha do ListBox contem o docuemtno digitado
 
-			If !empty( _cCodDoc )		// Se o _oCodDoc, estiver com brancos, nao marco a linha. Para evitar marcacï¿½ï¿½es involuntarias na 1ï¿½ Linha.
+			If !empty( _cCodDoc )		// Se o _oCodDoc, estiver com brancos, não marco a linha. Para evitar marcacóões involuntarias na 1ª Linha.
 				aList[ _nJ ,1]	:= .T.
 			Endif
 			oListBox:nAt	:= _nJ
@@ -3671,7 +3671,7 @@ Static Function chkCodDoc()
 		Endif
 	Next
 
-	If !lPosicionou									// Se nao achou nenhum elemento,
+	If !lPosicionou									// Se não achou nenhum elemento,
 		oListBox:nAt	:= Len(aList)				// posiciono no ultimo elemento
 		oListBox:Refresh()
 	Endif
@@ -3679,17 +3679,17 @@ Static Function chkCodDoc()
 Return lRet
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½MarcaDesma ï¿½Autor  ï¿½Geronimo B Alves 	 ï¿½ Data  ï¿½  14/08/18  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.	ï¿½ Marca/Desmarca o produto da linha atual do Browse.  (F7)    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ 														      ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³MarcaDesma ºAutor  ³Geronimo B Alves 	 º Data  ³  14/08/18  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.	³ Marca/Desmarca o produto da linha atual do Browse.  (F7)    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ 														      º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 Static Function MarcaDesma( )
@@ -3698,21 +3698,21 @@ Static Function MarcaDesma( )
 Return
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Rotina	ï¿½INVSELECAOï¿½Autor  ï¿½ Ernani Forastieri  ï¿½ Data ï¿½  27/09/04	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Funcao Auxiliar para inverter selecao do ListBox Ativo		ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ Generico													ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºRotina	³INVSELECAOºAutor  ³ Ernani Forastieri  º Data ³  27/09/04	º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Funcao Auxiliar para inverter selecao do ListBox Ativo		º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ Generico													º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function InvSelecao( aVetor, oLbx )
 	Local  nI := 0
-	_nDesmarca	:= 0		// Contador para identificar se existe linhas desmarcadas depois que o botao "Marcar Todos" foi ativado
+	_nDesmarca	:= 0		// Contador para identificar se existe linhas desmarcadas depois que o botão "Marcar Todos" foi ativado
 
 	For nI := 1 To Len( aVetor )
 		aVetor[nI][1] := !aVetor[nI][1]
@@ -3727,18 +3727,18 @@ Static Function InvSelecao( aVetor, oLbx )
 Return NIL
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Rotina	ï¿½ VERTODOS ï¿½Autor  ï¿½ Ernani Forastieri  ï¿½ Data ï¿½  20/11/04	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Funcao auxiliar para verificar se estao todos marcardos	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ ou nao														ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ Generico													ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºRotina	³ VERTODOS ºAutor  ³ Ernani Forastieri  º Data ³  20/11/04	º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Funcao auxiliar para verificar se estao todos marcardos	º±±
+±±º			³ ou nao														º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ Generico													º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function VerTodos( aVetor, lChk, oChkMar )
 	Local lTTrue :=.T.
@@ -3754,26 +3754,26 @@ Static Function VerTodos( aVetor, lChk, oChkMar )
 Return NIL
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Rotina	ï¿½MARCATODOSï¿½Autor  ï¿½ Ernani Forastieri  ï¿½ Data ï¿½  27/09/04	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Funcao Auxiliar para marcar/desmarcar todos os itens do	ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ ListBox ativo												ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ Generico													ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºRotina	³MARCATODOSºAutor  ³ Ernani Forastieri  º Data ³  27/09/04	º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Funcao Auxiliar para marcar/desmarcar todos os itens do	º±±
+±±º			³ ListBox ativo												º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ Generico													º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function MarcaTodos( lMarca, aVetor, oLbx )
 	Local  nI := 0
 
 	If lMarca							// Quando marco todos,
-		_nDesmarca	:= 0				// _nDesmarca ï¿½ zero
+		_nDesmarca	:= 0				// _nDesmarca é zero
 	Else								// Quando Desmarco todos,
-		_nDesmarca	:= Len( aVetor )	// _nDesmarca ï¿½ igual ï¿½ quantidade de todas as linhas
+		_nDesmarca	:= Len( aVetor )	// _nDesmarca é igual à quantidade de todas as linhas
 	Endif
 
 	For nI := 1 To Len( aVetor )
@@ -3785,25 +3785,25 @@ Static Function MarcaTodos( lMarca, aVetor, oLbx )
 Return NIL
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Rotina	ï¿½MarcaTodF4ï¿½Autor  ï¿½Geronimo Benedito Alves										ï¿½ Data ï¿½	08/05/18  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Esta funcao ï¿½ executada, quando o usuario tecla F4.													ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ 01 - Executa MarcaTodos com lChk invertido para alterar todas as linhas							  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½			ï¿½ 02 - Executa VerTodos para ajustar lMarca (lChk) com o novo valor, que devera ser o inverso do atual ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso		ï¿½ Generico																								ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºRotina	³MarcaTodF4ºAutor  ³Geronimo Benedito Alves										º Data ³	08/05/18  º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescricao ³ Esta função é executada, quando o usuario tecla F4.													º±±
+±±º			³ 01 - Executa MarcaTodos com lChk invertido para alterar todas as linhas							  º±±
+±±º			³ 02 - Executa VerTodos para ajustar lMarca (lChk) com o novo valor, que deverá ser o inverso do atual º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso		³ Generico																								º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 Static Function MarcaTodF4( lChk, aList, oListBox )
 	lChk	:= ! lChk
 	MarcaTodos( lChk,  @aList, oListBox )		 // Executa MarcaTodos com lChk invertido para alterar todas as linhas
-	VerTodos  ( aList, @lChk,  oChk )			 // Executa VerTodos para ajustar lMarca (lChk) com o novo valor, que devera ser o inverso do anterior
+	VerTodos  ( aList, @lChk,  oChk )			 // Executa VerTodos para ajustar lMarca (lChk) com o novo valor, que deverá ser o inverso do anterior
 Return NIL
 
 // Atualiza o dicionario de Dados com o parametro correto
@@ -3856,12 +3856,12 @@ Return
 
 
 /*/{Protheus.doc} xAtuCT2
-Rotina de atualziaï¿½ï¿½o dos lanï¿½amentos contï¿½beis (CT2)
+Rotina de atualziação dos lançamentos contábeis (CT2)
 @type  Function
 @author Joni Lima / Natanael Filho
 @since 01/11/2019
 @version 12
-@param cxFil, c, Filial do lanï¿½amento
+@param cxFil, c, Filial do lançamento
 @param cChave, c, Chave de 
 @return return_var, return_type, return_description
 @example
@@ -3934,7 +3934,7 @@ User Function xAtuCT2(aParam)
 			aAdd(aItem,  {'CT2_HIST'	,CT2->CT2_HIST   		,NIL} )
 			aAdd(aItem,  {'CT2_ZAPRO'	,"L"   					,NIL} )
 			aAdd(aItem,  {'CT2_TPSALD'	,"1"   					,NIL} )
-			aAdd(aItem,  {'CT2_ZMSGAP'	,"Lancamento Aprovado"  ,NIL} )
+			aAdd(aItem,  {'CT2_ZMSGAP'	,"Lançamento Aprovado"  ,NIL} )
 			aAdd(aItem,  {'LINPOS'		,"CT2_LINHA"   			,CT2->CT2_LINHA} )
 
 			aAdd(aLinhas,aItem)
@@ -3954,16 +3954,16 @@ User Function xAtuCT2(aParam)
 			lRet := .F.
 			If IsBlind()
 				ConOut("[xAtuCT2]************************************************************************************************************"+ CRLF)
-				Conout("ERRO Lancamento: Aprovacao Padrao")
+				Conout("ERRO Lançamento: Aprovação Padrão")
 			Else
-				MsgAlert("ERRO Lancamento" , "Aprovacao Padrao")
+				MsgAlert("ERRO Lançamento" , "Aprovação Padrão")
 			EndIf
 		Else
 			If IsBlind()
 				ConOut("[xAtuCT2]************************************************************************************************************"+ CRLF)
-				Conout("Lancamento Concluï¿½do: Aprovacao Padrao")
+				Conout("Lançamento Concluído: Aprovação Padrão")
 			Else
-				MsgAlert("Lancamento Concluï¿½do" , "Aprovacao Padrao")
+				MsgAlert("Lançamento Concluído" , "Aprovação Padrão")
 			EndIf
 		Endif
 
@@ -3971,7 +3971,7 @@ User Function xAtuCT2(aParam)
 		cPath := ""
 
 		If !Empty(cFileLog) .And. !lRet
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 				MostraErro(cPath,cFileLog)
 			Else // EM ESTADO DE JOB
 				cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO

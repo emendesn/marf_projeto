@@ -8,7 +8,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MA103BUT
 =====================================================================================
 */

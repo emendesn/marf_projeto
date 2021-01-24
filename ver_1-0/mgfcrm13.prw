@@ -12,7 +12,7 @@ Data.....:              03/04/2017
 Descricao / Objetivo:   
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -39,7 +39,7 @@ user function MGFCRM13()
 	if !empty(aCols[1, nPosRAMI])
 		cCdRami := aCols[1, nPosRAMI]
 	else
-		msgAlert("Selecione um processo RAMI para Devolucao. Tecla F4 para selecionar o processo RAMI.")
+		msgAlert("Selecione um processo RAMI para Devolução. Tecla F4 para selecionar o processo RAMI.")
 		lRet := .F.
 		return lRet
 	endif
@@ -49,7 +49,7 @@ user function MGFCRM13()
 	if INCLUI .or. ALTERA
 		for nI := 1 to len(aCols)
 			if cCdRami <> aCols[nI, nPosRAMI]
-				msgAlert("Selecione um processo RAMI para Devolucao. Tecla F4 para selecionar o processo RAMI.")
+				msgAlert("Selecione um processo RAMI para Devolução. Tecla F4 para selecionar o processo RAMI.")
 				lRet := .F.
 				return lRet
 			endif
@@ -75,7 +75,7 @@ user function MGFCRM13()
 
 				if !lOk
 					lRet := .F.
-					cStrLog += "Item " + allTrim(aCols[nI, nPosItem]) + " da Prï¿½ nota nao corresponde com o RAMI." + CRLF
+					cStrLog += "Item " + allTrim(aCols[nI, nPosItem]) + " da Pré nota não corresponde com o RAMI." + CRLF
 				endif
 			endif
 		next
@@ -99,7 +99,7 @@ user function MGFCRM13()
 
 			if !lOk
 				lRet := .F.
-				cStrLog += "Item " + allTrim(QRYZAW->ZAW_ITEMNF) + " do RAMI nao foi lanï¿½ado na Prï¿½ nota." + CRLF
+				cStrLog += "Item " + allTrim(QRYZAW->ZAW_ITEMNF) + " do RAMI não foi lançado na Pré nota." + CRLF
 			endif
 
 			QRYZAW->(DBSkip())
@@ -107,7 +107,7 @@ user function MGFCRM13()
 	endif
 
 	if !empty(cStrLog)
-		aviso("Prï¿½ Nota de Devolucao invï¿½lida", "A prï¿½ nota de devolucao digitada ï¿½ invï¿½lida. " + CRLF + "Verifique problemas abaixo: " + CRLF + cStrLog, {"Ok"}, 3)
+		aviso("Pré Nota de Devolução inválida", "A pré nota de devolução digitada é inválida. " + CRLF + "Verifique problemas abaixo: " + CRLF + cStrLog, {"Ok"}, 3)
 	else
 		M->F1_ZSENHA := cCdRami
 	endif

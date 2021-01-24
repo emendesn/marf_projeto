@@ -5,11 +5,11 @@
 Programa............: MGF78R03
 Autor...............: Bruno Tamanaka
 Data................: 20/03/2019
-Descricao / Objetivo: Relatorio Trechos de NF - 78 Gestao de Frete e Embarque. 
+Descrição / Objetivo: Relatório Trechos de NF - 78 Gestão de Frete e Embarque. 
 Doc. Origem.........: 
 Solicitante.........: Priscilla Sombini
-Uso.................: 
-Obs.................: Relatorio Trechos de NF.
+Uso.................: Marfrig
+Obs.................: Relatório Trechos de NF.
 =====================================================================================
 */
 
@@ -22,37 +22,37 @@ User Function MGF78R03()
 	Private _aEmailQry, _cWhereAnd
 	_aEmailQry	:= {} ; _cWhereAnd	:= ""
 	
-	Aadd(_aDefinePl, "Relatorio Trechos de NF"				)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Relatorio Trechos de NF"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Relatorio Trechos de NF"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Relatorio Trechos de NF"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Relatório Trechos de NF"				)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Relatório Trechos de NF"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Relatório Trechos de NF"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Relatório Trechos de NF"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 35											//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//				   01				 	 	 02						 03						 	 04	 05	 06	 07	 08	 09
 	Aadd(_aCampoQry, { "COD_FILIAL"				,"COD_FILIAL"			,"Filial"					,"C",006,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "CNPJ_EMISSOR_NF"		,"CNPJ_EMISSOR_NF"		,"CNPJ Emissor NF"			,"C",014,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "NOM_EMISSOR_NF"			,"NOM_EMISSOR_NF"		,"Nome Emissor NF"			,"C",080,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "NUM_DOCUMENTO"			,"NUM_DOCUMENTO"		,"Numero Documento"			,"C",016,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "SER_DOCUMENTO"			,"SER_DOCUMENTO"		,"Serie Documento"			,"C",003,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "DT_EMISSAO_DOC_CARGA"	,"DT_EMISSAO_DOC_CARGA"	,"Data Emissao Doc Carga"	,"D",008,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "NUM_DOCUMENTO"			,"NUM_DOCUMENTO"		,"Número Documento"			,"C",016,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "SER_DOCUMENTO"			,"SER_DOCUMENTO"		,"Série Documento"			,"C",003,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "DT_EMISSAO_DOC_CARGA"	,"DT_EMISSAO_DOC_CARGA"	,"Data Emissão Doc Carga"	,"D",008,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "PESO_REAL_TOTAL"		,"PESO_REAL_TOTAL"		,"Peso Real Total"			,"N",013,5	,""	,""	,""	})																																															  
 	Aadd(_aCampoQry, { "PESO_CUBADO_TOTAL"		,"PESO_CUBADO_TOTAL"	,"Peso Qtd/Alt Total"		,"N",013,5	,""	,""	,""	})
-	Aadd(_aCampoQry, { "DES_ORIGEM"				,"DES_ORIGEM"			,"Descricao Origem"			,"C",010,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "SITUACAO_DOC_CARGA"		,"SITUACAO_DOC_CARGA"	,"Situaï¿½ï¿½o Doc Carga"		,"C",010,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "NUM_ROMANEIO"			,"NUM_ROMANEIO"			,"Numero Romaneio"			,"C",008,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "DES_ORIGEM"				,"DES_ORIGEM"			,"Descrição Origem"			,"C",010,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "SITUACAO_DOC_CARGA"		,"SITUACAO_DOC_CARGA"	,"Situação Doc Carga"		,"C",010,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "NUM_ROMANEIO"			,"NUM_ROMANEIO"			,"Número Romaneio"			,"C",008,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "CNPJ_REMETENTE"			,"CNPJ_REMETENTE"		,"CNPJ Remetente"			,"C",014,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "NOM_REMETENTE"			,"NOM_REMETENTE"		,"Nome Remetente"			,"C",080,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "CNPJ_DESTINATARIO"		,"CNPJ_DESTINATARIO"	,"CNPJ Destinatario"		,"C",014,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "NOM_DESTINATARIO"		,"NOM_DESTINATARIO"		,"Nome Destinatario"		,"C",080,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "CNPJ_DESTINATARIO"		,"CNPJ_DESTINATARIO"	,"CNPJ Destinatário"		,"C",014,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "NOM_DESTINATARIO"		,"NOM_DESTINATARIO"		,"Nome Destinatário"		,"C",080,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "TIPO_FRETE"				,"TIPO_FRETE"			,"Tipo Frete"				,"C",020,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "CHAVE_NF"				,"CHAVE_NF"				,"Chave NF"					,"C",060,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "COD_CIDADE_DESTINO_NF"	,"COD_CIDADE_DESTINO_NF","Cod Cidade Destino NF"	,"C",007,0	,""	,""	,""	})
@@ -61,7 +61,7 @@ User Function MGF78R03()
 	Aadd(_aCampoQry, { "SEQ_TRECHO"				,"SEQ_TRECHO"			,"Seq Trecho"				,"C",002,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "COD_TRANSPORTADORA"		,"COD_TRANSPORTADORA"	,"Cod Transportadora"		,"C",014,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "NOM_TRANSPORTADORA"		,"NOM_TRANSPORTADORA"	,"Nome Transportadora"		,"C",080,0	,""	,""	,""	})
-	Aadd(_aCampoQry, { "COD_TIPO_VEICULO"		,"COD_TIPO_VEICULO"		,"Cod Tipo Veï¿½culo"			,"C",010,0	,""	,""	,""	})
+	Aadd(_aCampoQry, { "COD_TIPO_VEICULO"		,"COD_TIPO_VEICULO"		,"Cod Tipo Veículo"			,"C",010,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "TRECHO_A_PAGAR"			,"TRECHO_A_PAGAR"		,"Trecho a Pagar"			,"C",003,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "COD_CIDADE_ORIGEM"		,"COD_CIDADE_ORIGEM"	,"Cod Cidade Origem"		,"C",007,0	,""	,""	,""	})
 	Aadd(_aCampoQry, { "NOM_CIDADE_ORIGEM"		,"NOM_CIDADE_ORIGEM"	,"Nome Cidade Origem"		,"C",060,0	,""	,""	,""	})
@@ -80,25 +80,25 @@ User Function MGF78R03()
 		
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 	
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 	
 	//---- S  I  T  U  A  C  A  O		D  O  C  U  M  E  N  T  O		C  A  R  G  A
 	cQryStatus	:= "SELECT X5_TABELA, X5_CHAVE, X5_DESCRI "
 	cQryStatus	+= "  FROM " +  U_IF_BIMFR( "PROTHEUS", RetSqlName("SX5")) + " TMPSX5 " 
-	cQryStatus	+= "  WHERE TMPSX5.X5_TABELA	= 'TB' "	//Criada a tabela genï¿½rica TB na SX5.
+	cQryStatus	+= "  WHERE TMPSX5.X5_TABELA	= 'TB' "	//Criada a tabela genérica TB na SX5.
 	cQryStatus	+= "  AND	TMPSX5.X5_CHAVE >= '00' "
 	cQryStatus	+= "  AND	TMPSX5.X5_CHAVE <= '06' " 
 	cQryStatus	+= "  AND	TMPSX5.D_E_L_E_T_  =  ' ' " 
 	aCpoStatus	:=	{	{ "X5_DESCRI"	,U_X3Titulo("X5_DESCRI"), TamSx3("X5_DESCRI")[1] }	} 
-	cTitStatus	:= "Marque Situaï¿½ï¿½es Possiveis a serem listadas: "
+	cTitStatus	:= "Marque Situações Possiveis a serem listadas: "
 	nPosRetorn	:= 1		// Quero que seja retornado o segundo campo: X5_DESCRI
 
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	aStatus	:= U_MarkGene(cQryStatus, aCpoStatus, cTitStatus, nPosRetorn, @_lCancProg )
 	If _lCancProg
 		Return

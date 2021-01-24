@@ -13,7 +13,7 @@ Data................: 07/06/2017
 Descricao / Objetivo: Funcao para gravar dados bancarios do fornecedor na fatura gerada 
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=110432913
 =====================================================================================
 */

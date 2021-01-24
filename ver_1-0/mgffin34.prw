@@ -8,7 +8,7 @@ Data................: 18/10/2016
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada MT103Fim
 Doc. Origem.........: Financeiro - CRE34
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

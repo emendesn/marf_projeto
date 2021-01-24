@@ -6,11 +6,11 @@
 Programa............: MGFCTB08
 Autor...............: Joni Lima
 Data................: 17/10/2017
-Descricao / Objetivo: Funcao para carregar Rateio para Solicitacao de compras
+Descrição / Objetivo: Função para carregar Rateio para Solicitação de compras
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Carrega os rateios para solicitacao de compra
+Uso.................: Marfrig
+Obs.................: Carrega os rateios para solicitação de compra
 =====================================================================================
 */
 User Function MGFCTB08()
@@ -89,7 +89,7 @@ User Function MGFCTB08()
 			EndIf
 		EndIf
 	Else
-		MsgInfo('Sï¿½ ï¿½ possivel incluir Rateio em SCs, que estao em aberto ou em processo de aprovacao.')
+		MsgInfo('Só é possivel incluir Rateio em SCs, que estão em aberto ou em processo de aprovação.')
 	EndIf
 
 Return 
@@ -99,7 +99,7 @@ Return
 Programa............: xGerPerc
 Autor...............: Joni Lima
 Data................: 18/10/2017
-Descricao / Objetivo: Adiciona o Percentual no Array das Linhas
+Descrição / Objetivo: Adiciona o Percentual no Array das Linhas
 =====================================================================================
 */
 Static Function xGerPerc(aLinhas)
@@ -111,7 +111,7 @@ Static Function xGerPerc(aLinhas)
 	local nTotPerc := 0
 	Local nDif100  := 0
 
-	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabecalho o Campo Percentual
+	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabeçalho o Campo Percentual
 	nPosPerc := aScan(aLinhas[1] , "PERCENTUAL" )
 
 	For ni:=2 to Len(aLinhas)
@@ -146,7 +146,7 @@ return
 Programa............: xEncCPO
 Autor...............: Joni Lima
 Data................: 18/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xEncCPO(cEnc)
@@ -166,7 +166,7 @@ return cRet
 Programa............: xTransVal
 Autor...............: Joni Lima
 Data................: 17/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xTransVal(cField,cValue)
@@ -198,7 +198,7 @@ Return xRet
 Programa............: xValRat
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da existencia de Rateio e elimina caso necessario.
+Descrição / Objetivo: Realiza a Validação da existencia de Rateio e elimina caso necessario.
 =====================================================================================
 */
 Static Function xValRat()
@@ -263,7 +263,7 @@ Return lRet
 Programa............: xValFiOr
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da filial de origem com a filial de Destino
+Descrição / Objetivo: Realiza a Validação da filial de origem com a filial de Destino
 =====================================================================================
 */
 Static Function xValFiOr(aLinhas)
@@ -273,7 +273,7 @@ Static Function xValFiOr(aLinhas)
 	
 	If aLinhas[2,nPosOri] <> SC1->C1_FILIAL
 		lRet := .F.
-		MsgInfo('Filial de Origem do Arquivo: ' + AllTrim(aLinhas[2][nPosOri]) + ", Esta diferente da Filial de Origem da Solicitacao " + SC1->C1_FILIAL )
+		MsgInfo('Filial de Origem do Arquivo: ' + AllTrim(aLinhas[2][nPosOri]) + ", Esta diferente da Filial de Origem da Solicitação " + SC1->C1_FILIAL )
 	EndIf
 	
 Return lRet

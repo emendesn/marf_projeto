@@ -7,10 +7,10 @@
 Programa............: MGFCTB26
 Autor...............: Joni Lima
 Data................: 29/01/2016
-Descricao / Objetivo: Cadastro de Limite de Usuarios
+Descrição / Objetivo: Cadastro de Limite de Usuarios
 Doc. Origem.........: Contrato - GAP GRADE ERP para contabil
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de Limite de Usuarios
 =====================================================================================
 */
@@ -31,8 +31,8 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Descricao / Objetivo: MenuDef da rotina
-Obs.................: Definicao do Menu
+Descrição / Objetivo: MenuDef da rotina
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -52,8 +52,8 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Descricao / Objetivo: ModelDef
-Obs.................: Definicao do Modelo de Dados para cadastro de limite Usuarios
+Descrição / Objetivo: ModelDef
+Obs.................: Definição do Modelo de Dados para cadastro de limite Usuarios
 =====================================================================================
 */
 Static Function ModelDef()
@@ -75,8 +75,8 @@ return oModel
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Descricao / Objetivo: ViewDef
-Obs.................: Definicao da visualizasao da tela
+Descrição / Objetivo: ViewDef
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()
@@ -128,7 +128,7 @@ Return
 Programa............: xMC26Som
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Obs.................: Realiza Subtraï¿½ï¿½o no Saldo do Usuario
+Obs.................: Realiza Subtração no Saldo do Usuario
 =====================================================================================
 */
 User Function xMC26Sub(cxFil,cxUser,nValor)
@@ -189,7 +189,7 @@ return nRet
 Programa............: xMC26Val
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Obs.................: Validacao para o campo ZCU_LIMITE
+Obs.................: Validação para o campo ZCU_LIMITE
 =====================================================================================
 */
 User Function xMC26Val(oMdlZCU,cFld,xValue)
@@ -207,7 +207,7 @@ User Function xMC26Val(oMdlZCU,cFld,xValue)
 			If !(xValue >= (nLimite - nSaldo)) 
 				lRet := .F.
 				oMdlZCU:GetModel():SetErrorMessage(oMdlZCU:GetId(),cFld,oMdlZCU:GetModel():GetId(),cFld,cFld,;
-					"Limite nao pode ser inferior ao saldo que jï¿½ esta sendo utilizado : R$ " + alltrim(str(nLimite - nSaldo)), "Para essa manutencao favor realizar exclusao ou aprovacao dos itens desse usuario que estao em aberto")
+					"Limite não pode ser inferior ao saldo que já esta sendo utilizado : R$ " + alltrim(str(nLimite - nSaldo)), "Para essa manutenção favor realizar exclusão ou aprovação dos itens desse usuario que estão em aberto")
 			EndIf
 		EndIf
 	EndIf
@@ -219,7 +219,7 @@ Return lRet
 Programa............: xMC26Sal
 Autor...............: Joni Lima
 Data................: 01/02/2019
-Obs.................: Realiza Verificacao se o usuario possui saldo para fazer o lanï¿½amento
+Obs.................: Realiza Verificação se o usuario possui saldo para fazer o lançamento
 =====================================================================================
 */
 User Function xMC26Sal(cxFil,cxUser,nValor)
@@ -228,12 +228,12 @@ User Function xMC26Sal(cxFil,cxUser,nValor)
 	Local aAreaZCU
 	Local lRet		:= .T.
 	Local cUsDireto		:= SuperGetMV("MGF_CTB25A",.F.,"000000")
-	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que nao passaram pela grade de aprovacao.
+	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que não passaram pela grade de aprovação.
 	Local cxUser		:= Alltrim(RetCodUsr())
 
 	If !(cxUser $ cUsDireto .OR. cEmpAnt $ cEmpDireto)  //Verifica se usuario ou Grupo de empresa passa direto
 	
-		aAreaZCU	:= ZCU->(GetArea()) //Natanael, 25/Jul/2019: Coloquei o GetArea dentro do IF para nao gerar erro nos grupo que nao possui o dicionï¿½rio criado.
+		aAreaZCU	:= ZCU->(GetArea()) //Natanael, 25/Jul/2019: Coloquei o GetArea dentro do IF para não gerar erro nos grupo que não possui o dicionário criado.
 
 		dbSelectArea("ZCU")
 		ZCU->(dbSetOrder(1))//ZCU_FILIAL+ZCU_CDUSER
@@ -241,7 +241,7 @@ User Function xMC26Sal(cxFil,cxUser,nValor)
 		If ZCU->(dbSeek(cxFil + cxUser))
 			lRet := ZCU->ZCU_SALDO >= nValor
 			If !lRet
-				MSGALERT( 'O Seu usuario nao tem Saldo para fazer esse Lancamento', 'Usuario sem Saldo Suficiente' )
+				MSGALERT( 'O Seu usuario não tem Saldo para fazer esse Lançamento', 'Usuario sem Saldo Suficiente' )
 			EndIf
 		EndIf
 

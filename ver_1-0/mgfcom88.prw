@@ -8,18 +8,18 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo PE M020EXC
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao dos dados da grade de aprovacao
 =====================================================================================
-@alteracoes 17/10/2019 - Henrique Vidal
-	Alterada funcao MGFCOM88 
-	RTASK0010137 - Apaga grade de aprovacao, apos exclusao do cadastro.
-	Cenario anterior:
+@alterações 17/10/2019 - Henrique Vidal
+	Alterada função MGFCOM88 
+	RTASK0010137 - Apaga grade de aprovação, após exclusão do cadastro.
+	Cenário anterior:
 	 - Apaga quando a grade estiver pendente.
-	 - Sï¿½ apagava cadastro de fornecedor. 
+	 - Só apagava cadastro de fornecedor. 
 
-	Cenario atual: Cenario anr
-	 - Sï¿½ devera apagar quando a grade estiver pendente e for do tipo inclusao. (Cadastro tiver acabdo de ser incluso e nao aprovado.)
+	Cenário atual: Cenário anr
+	 - Só deverá apagar quando a grade estiver pendente e for do tipo inclusão. (Cadastro tiver acabdo de ser incluso e não aprovado.)
      - Alterado chamada para todos os tipos de cadastro, recebe a ctab como referencia. 
 */
 User Function MGFCOM88(cTab)

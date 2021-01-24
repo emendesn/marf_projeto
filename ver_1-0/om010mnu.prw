@@ -5,10 +5,10 @@
 Programa............: OM010MNU
 Autor...............: Marcos Andrade         
 Data................: 14/09/2016 
-Descricao / Objetivo: Ponto de entrada para incluir rotina no acoes relacionadas Tabela de Preco
+Descricao / Objetivo: Ponto de entrada para incluir rotina no acoes relacionadas Tabela de Preço
 Doc. Origem.........: FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =================================================================================================
 */

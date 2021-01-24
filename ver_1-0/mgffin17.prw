@@ -7,11 +7,11 @@
 Programa............: MGFFIN17
 Autor...............: Joni Lima
 Data................: 04/10/2016
-Descricao / Objetivo: Bloquear Clientes nao tiveram faturamento nos ultimos 180 dias e sao diferente de REDE
+Descrição / Objetivo: Bloquear Clientes não tiveram faturamento nos ultimos 180 dias e são diferente de REDE
 Doc. Origem.........: Contrato - GAP CRE11
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela de Marcacao de Clientes para bloqueio
+Uso.................: Marfrig
+Obs.................: Tela de Marcação de Clientes para bloqueio
 =====================================================================================
 */
 User Function MGFFIN17()
@@ -25,7 +25,7 @@ User Function MGFFIN17()
 
 	Private cCadastro := 'Clientes inativos'
 
-	//Filtro padrao executado na Tela
+	//Filtro padrão executado na Tela
 	cFiltro := "A1_MSBLQL<>'1' .AND. "
 	cFiltro += "U_xMF17VBL(A1_ZREDE) .AND. "
 	cFiltro += "DateDiffDay(A1_DTCAD,dDataBase) > " + cValtoChar(nDias) + " .AND."
@@ -52,11 +52,11 @@ Return
 Programa............: Menudef
 Autor...............: Joni Lima
 Data................: 04/10/2016
-Descricao / Objetivo: Construcao do Menu da Rotina
+Descrição / Objetivo: Construção do Menu da Rotina
 Doc. Origem.........: Contrato - GAP CRE11
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Menu com as opcoes de visualizacao e Bloqueio
+Uso.................: Marfrig
+Obs.................: Menu com as opções de visualização e Bloqueio
 =====================================================================================
 */
 Static Function Menudef()
@@ -70,7 +70,7 @@ Static Function Menudef()
 Return aMenu
 
 /*/{Protheus.doc} ModelDef
-//TODO Relacao do clientes.
+//TODO Relação do clientes.
 @author Eugenio
 @since 17/04/2017
 @version 1.0
@@ -82,13 +82,13 @@ Static Function ModelDef()
 Local oModel   := Nil
 Local oStruZDP := FWFormStruct(1,'SA1',/*bAvalCampo*/,/*lViewUsado*/)
 
-//oStruZDP:SetProperty('Z2_FABRIC', MODEL_FIELD_WHEN,{|| INCLUI })  // este campo sï¿½ pode ser alterado no modo inclusao.
+//oStruZDP:SetProperty('Z2_FABRIC', MODEL_FIELD_WHEN,{|| INCLUI })  // este campo só pode ser alterado no modo inclusão.
 
 oModel := MPFormModel():New('MODELNAME',/*bPreValidacao*/,/*bPosValidacao*/,/*bCommit*/,/*bCancel*/)
 oModel:AddFields('SZ2MASTER',/*cOwner*/,oStruZDP,/*bPreValidacao*/,/*bPosValidacao*/,/*bCarga*/)
 oModel:SetDescription('Cadastro de Clientes')
 
-//oModel:GetModel('MODELNAME'):SetDescription('Cadastro Divisï¿½o do Painel')
+//oModel:GetModel('MODELNAME'):SetDescription('Cadastro Divisão do Painel')
 
 oModel:SetPrimaryKey({})
 
@@ -124,10 +124,10 @@ Return(oView)
 Programa............: xMF17BLQ
 Autor...............: Joni Lima
 Data................: 04/10/2016
-Descricao / Objetivo: Chama rotina para Bloqueio dos clientes selecionados no FwMarkBrowse
+Descrição / Objetivo: Chama rotina para Bloqueio dos clientes selecionados no FwMarkBrowse
 Doc. Origem.........: Contrato - GAP CRE11
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Chamada da rotina de Bloqueio dos clientes
 =====================================================================================
 */
@@ -142,10 +142,10 @@ Return
 Programa............: xProcBlo17
 Autor...............: Joni Lima
 Data................: 04/10/2016
-Descricao / Objetivo: Chama rotina para Bloqueio dos clientes selecionados no FwMarkBrowse
+Descrição / Objetivo: Chama rotina para Bloqueio dos clientes selecionados no FwMarkBrowse
 Doc. Origem.........: Contrato - GAP CRE11
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Chamada da rotina de Bloqueio dos clientes
 =====================================================================================
 */
@@ -164,13 +164,13 @@ Static Function xProcBlo17()
 	Local cMark     := oBrw:Mark()
 	Local cFiltro   := ''
 	Local _cTxtBlq  := "Usuario: "+SubStr(cUsuario,7,15)+" Data: "+DtoC(ddatabase)+" Aviso: "+GetMV("MGF_TXTBLQ")
-	//Local _cTxtBlq  := "Usuario: "+SubStr(cUsuario,7,15)+" Data: "+DtoC(ddatabase)+" Aviso: "+SuperGetMV("MGF_TXTBLQ",,"Bloqueado automï¿½tico por inatividade ")
+	//Local _cTxtBlq  := "Usuario: "+SubStr(cUsuario,7,15)+" Data: "+DtoC(ddatabase)+" Aviso: "+SuperGetMV("MGF_TXTBLQ",,"Bloqueado automático por inatividade ")
 	Local cError := ""
 
 	Private lMsHelpAuto := .T. // se .t. direciona as mensagens     de help para o arq. de log
 	PRIVATE lMsErroAuto := .F.
 
-	//Filtro padrao executado na Tela
+	//Filtro padrão executado na Tela
 	cFiltro := "A1_MSBLQL<>'1' .AND. "
 	cFiltro += "U_xMF17VBL(A1_ZREDE) .AND. "
 	cFiltro += "DateDiffDay(A1_DTCAD,dDataBase) > " + cValtoChar(nDias) + " .AND. "
@@ -208,7 +208,7 @@ Static Function xProcBlo17()
 							EndIF
 						EndIf
 
-						if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+						if SA1->A1_PESSOA == "J"
 							SA1->A1_XENVSFO	:= "S"
 							SA1->A1_XINTSFO	:= "P"
 						endif
@@ -221,10 +221,10 @@ Static Function xProcBlo17()
 							 {"A1_MSBLQL"    ,"1"  					,Nil}} // Bloqueio
 
 
-					MSExecAuto({|x,y| Mata030(x,y)},aVetor,4) //3- Inclusao, 4- Alteracao, 5- Exclusao
+					MSExecAuto({|x,y| Mata030(x,y)},aVetor,4) //3- Inclusão, 4- Alteração, 5- Exclusão
 
 					If lMsErroAuto
-						If (!IsBlind()) // COM INTERFACE GRAFICA
+						If (!IsBlind()) // COM INTERFACE GRÁFICA
 								MostraErro()
 						    Else // EM ESTADO DE JOB
 						        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -260,10 +260,10 @@ Return lRetorno
 Programa............: xMF17VBL
 Autor...............: Joni Lima
 Data................: 05/10/2016
-Descricao / Objetivo: Verifica se o cadastro de REDE permite ou nao o Bloqueio de inatividades
+Descrição / Objetivo: Verifica se o cadastro de REDE permite ou não o Bloqueio de inatividades
 Doc. Origem.........: Contrato - GAP CRE11
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Chamada da rotina de Bloqueio dos clientes
 =====================================================================================
 */

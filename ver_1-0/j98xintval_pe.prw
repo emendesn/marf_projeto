@@ -7,11 +7,11 @@
 Programa.:              J98XINTVAL
 Autor....:              Marcelo Carneiro
 Data.....:              06/09/2019
-Descricao / Objetivo:   Integracao Grade de Aprovacao SigaJuri
+Descricao / Objetivo:   Integração Grade de Aprovação SigaJuri
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
-Obs......:              PE para verificar se pode ou nao a Integracao financeira
+Uso......:              Marfrig
+Obs......:              PE para verificar se pode ou não a integração financeira
 =====================================================================================
 */
 User Function J98XINTVAL()

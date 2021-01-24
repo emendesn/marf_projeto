@@ -176,9 +176,9 @@ WSMETHOD SubstIntegrados WSRECEIVE WSARRAYSUB WSSEND WSRETSUBS WSSERVICE MGFCOM2
 				Next ni
 
 				If !lConti
-					aRetorno := {'ERROR','Nao  Foi possivel realizar a integracao Filial: ' + cxFil + ', Substituto: ' + cCodSubs + ' Tipo: ' + cTipo }
+					aRetorno := {'ERROR','Não Foi possivel realizar a integração Filial: ' + cxFil + ', Substituto: ' + cCodSubs + ' Tipo: ' + cTipo }
 				Else
-					aRetorno := {'OK','Integracao Realizada com Sucesso.'}
+					aRetorno := {'OK','Integração Realizada com Sucesso.'}
 				EndIf
 
 			END TRANSACTION
@@ -205,11 +205,11 @@ Return .T.
 Programa............: xAtSubst
 Autor...............: Joni Lima
 Data................: 15/01/2016
-Descricao / Objetivo: Atualiza Substituto
+Descrição / Objetivo: Atualiza Substituto
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Atualiza Substituto apos interacao do Fluig 
+Uso.................: Marfrig
+Obs.................: Atualiza Substituto apos interação do Fluig 
 =====================================================================================
 */
 Static Function xAtSubst(cxFil,cCod,cTipo)

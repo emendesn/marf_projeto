@@ -8,10 +8,10 @@
 Programa.:              MGFFAT19
 Autor....:              Gustavo Ananias Afonso
 Data.....:              24/10/2016
-Descricao / Objetivo:   Apos a alteracao do produto atualiza status de instegracao para SFA se for elegivel
+Descricao / Objetivo:   Apos a alteração do produto atualiza status de instegração para SFA se for elegivel
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -19,7 +19,7 @@ user function MGFFAT19()
 	local cUpdSA1	:= ""
 	local cUpdSB1	:= ""
 
-	if isInCallStack("U_OS010GRV") //.and. FieldPos("DA0_XENVEC") > 0 .and. FieldPos("DA0_XINTEC") > 0 inclusao nao estava funcionando
+	if isInCallStack("U_OS010GRV") //.and. FieldPos("DA0_XENVEC") > 0 .and. FieldPos("DA0_XINTEC") > 0 inclusão não estava funcionando
 		if DA0->DA0_XENVEC == "1"
 
 			recLock("DA0", .F.)
@@ -37,7 +37,7 @@ user function MGFFAT19()
 			cUpdSA1 += " 	AND	D_E_L_E_T_	<>	'*'"							+ CRLF
 
 			if tcSQLExec( cUpdSA1 ) < 0
-				conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+				conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 			endif
 */
 
@@ -60,10 +60,10 @@ user function MGFFAT19()
 			cUpdSB1 += " 	)"															+ CRLF
 
 			if tcSQLExec( cUpdSB1 ) < 0
-				conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+				conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 			endif
 
-			If DA0->DA0_ATIVO == "2" //tabela ativa? 1=sim, 2=nao
+			If DA0->DA0_ATIVO == "2" //tabela ativa? 1=sim, 2=não
 				xAtuClie(DA0->DA0_CODTAB)
 			EndIf
 		endif
@@ -83,7 +83,7 @@ user function MGFFAT19()
 			endif
 		endif
 			
-		//Tratamento de integracao Produto x Salesforce
+		//Tratamento de integração Produto x Salesforce
 		if SB1->B1_XENVSFO == "S" .AND. ALLTRIM(SB1->B1_COD)  < "500000"
 			recLock("SB1", .F.)
 				SB1->B1_XINTSFO := "P"
@@ -94,7 +94,7 @@ user function MGFFAT19()
 return
 
 /*
-	Atualiza os Clientes E-commerce que estao vinulados a esta lista de preco
+	Atualiza os Clientes E-commerce que estão vinulados a esta lista de preço
 */
 Static Function xAtuClie(cTabela)
 

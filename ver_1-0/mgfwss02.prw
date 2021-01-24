@@ -213,7 +213,7 @@ If mayiusecode(alltrim(::pedido:cabecalho:idTablet))
 		END TRANSACTION
 	else
 		U_MFCONOUT("Pedido já existente, retornando sucesso para o pedido " + ::pedido:cabecalho:idTablet)
-		::retorno:status		:= '0'
+		::retorno:status		:= '1'
 		::retorno:observacao	:= 'Pedido recebido'
 	endif
 

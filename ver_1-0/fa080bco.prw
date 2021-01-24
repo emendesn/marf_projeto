@@ -8,7 +8,7 @@ Data.....:              23/08/2017
 Descricao / Objetivo:   Ponto de entrada para validar banco na baixa de contas a pagar
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

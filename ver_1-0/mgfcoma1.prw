@@ -9,10 +9,10 @@
 Programa............: MGFCOMA1
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Tratamento para produtos nao movimentados a mais de 90 dias
+Descrição / Objetivo: Tratamento para produtos nao movimentados a mais de 90 dias
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -28,7 +28,7 @@ user function MGFCOMA1()
 	                              
 	 
 	 
-	 // Estas filiais consideram notas as outras sï¿½ consumo
+	 // Estas filiais consideram notas as outras só consumo
 	IF xfilial("SC1") $ cFilblq //"010041|010045|020003"
 	 
 		cQuery =  " SELECT B2_FILIAL,B2_COD,SUM(B2_QATU), "
@@ -107,10 +107,10 @@ user function MGFCOMA1()
             
             //faz o tratamento para bloquear
             if cNum > nDias
-        		msgalert("Produto nesta filial nao movimentado a mais de 90 dias, solicitacao recusada. ")
+        		msgalert("Produto nesta filial não movimentado a mais de 90 dias, solicitação recusada. ")
             	cRetu := " "
             //Else
-        	//	msgalert("Produto nao movimentado a "+trans(cNum,"999999")+" dias ")
+        	//	msgalert("Produto não movimentado a "+trans(cNum,"999999")+" dias ")
             Endif
 
 	    	TEMP1->(dbSKIP())
@@ -155,7 +155,7 @@ user function MGFCOMA1()
 		While TEMP2->(!Eof())
         
         //aqui verifica se o produto foi comprado entre 90 dias e a seu saldo
-        // se saldo <= saldo comprado no periodo nao apresentar como disponivel.
+        // se saldo <= saldo comprado no periodo não apresentar como disponivel.
         
 		cQuantd1 := 0 
 
@@ -239,7 +239,7 @@ user function MGFCOMA1()
     
 
      	if !empty(cMsg)
-     		msgalert("Produto disponivel sem movimentacao nas seguintes filiais => "+cMsg)
+     		msgalert("Produto disponível sem movimentação nas seguintes filiais => "+cMsg)
         //else
      	//	msgalert("Produto sem disponibilidade em outras filiais")
         Endif

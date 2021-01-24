@@ -9,11 +9,11 @@
 /*/
 ==============================================================================================================================================================================
 {Protheus.doc} MGFEEC75 
-Lancamento das depesas de Despachante
+Lançamento das depesas de Despachante
 
 @description
-Lancamento das depesas de Despachante gerando SC7 e SF1, SD1
-ï¿½ acionado atraves do programa MGFEEC69
+Lançamento das depesas de Despachante gerando SC7 e SF1, SD1
+É acionado atraves do programa MGFEEC69
 
 @author Marcelo de Almeida Carneiro
 @since 11/11/2019
@@ -29,7 +29,7 @@ Lancamento das depesas de Despachante gerando SC7 e SF1, SD1
 @return
     
 @menu
-    EEC - Atualizacoes - Especificos Marfrig - Lancamento de Despesas
+    EEC - Atualizações - Especificos Marfrig - Lançamento de Despesas
 
 @history
 
@@ -100,7 +100,7 @@ Next nI
 
 
 
-fwMsgRun(, { || getDespLan() }	, "VerIficando despesas jï¿½ lanï¿½adas"	, "Aguarde. Selecionando historico de lanï¿½amento..." )
+fwMsgRun(, { || getDespLan() }	, "VerIficando despesas já lançadas"	, "Aguarde. Selecionando histórico de lançamento..." )
 
 While !QRYHIST->(EOF())
 	AAdd( aDespesLan, {	QRYHIST->EET_PEDIDO             ,;
@@ -184,7 +184,7 @@ DEFINE MSDIALOG oDlgDespes TITLE 'Despesas de Despachante : '+Alltrim(cDespachan
 	oExpsBrw:addColumn({"Filial"				, { || aExps[oExpsBrw:nAt,01] }, "C", pesqPict("EEC","EEC_FILIAL")	, 1, tamSx3("EEC_FILIAL")[1]/2	,	, .F.})
 	oExpsBrw:addColumn({"Processo"				, { || aExps[oExpsBrw:nAt,02] }, "C", pesqPict("EEC","EEC_PEDREF")	, 1, tamSx3("EEC_PEDREF")[1]/2	,	, .F.})
 	oExpsBrw:addColumn({"EXP"					, { || aExps[oExpsBrw:nAt,03] }, "C", pesqPict("EEC","EEC_PEDREF")	, 1, tamSx3("EEC_PEDREF")[1]/2	,	, .F.})
-	oExpsBrw:addColumn({"Codigo Imp."			, { || aExps[oExpsBrw:nAt,04] }, "C", pesqPict("EEC","EEC_IMPORT")	, 1, tamSx3("EEC_IMPORT")[1]/2	,   , .F.})
+	oExpsBrw:addColumn({"Código Imp."			, { || aExps[oExpsBrw:nAt,04] }, "C", pesqPict("EEC","EEC_IMPORT")	, 1, tamSx3("EEC_IMPORT")[1]/2	,   , .F.})
 	oExpsBrw:addColumn({"Loja Imp."				, { || aExps[oExpsBrw:nAt,05] }, "C", pesqPict("EEC","EEC_IMLOJA")	, 1, tamSx3("EEC_IMLOJA")[1]/2	,	, .F.})
 	oExpsBrw:addColumn({"Importador"			, { || aExps[oExpsBrw:nAt,06] }, "C", pesqPict("EEC","EEC_IMPODE")	, 1, tamSx3("EEC_IMPODE")[1]/2	,	, .F.})
 	oExpsBrw:addColumn({"Valor FOB"			    , { || aExps[oExpsBrw:nAt,07] }, "N", pesqPict("EEC","EEC_VLFOB")	, 1, tamSx3("EEC_VLFOB")[1]/2	,	, .F.})
@@ -202,17 +202,17 @@ DEFINE MSDIALOG oDlgDespes TITLE 'Despesas de Despachante : '+Alltrim(cDespachan
 	oDespesBrw:setOwner( oPanMd01 )
 
 	oDespesBrw:addColumn({"Despesa"			 , {||aDespes[oDespesBrw:nAt,nPosDesp        ]}, "C", pesqPict("ZEE","ZEE_CODDES")	, 1, tamSx3("ZEE_CODDES")[1]/2	,							, .F., , .F.,, ,, .F., .T.,, })
-	oDespesBrw:addColumn({"Descricao"		 , {||aDespes[oDespesBrw:nAt,nPosDesc        ]}, "C", "@!"	                        , 1, tamSx3("ZEE_DESPES")[1]/2	,							, .F., , .F.,, ,, .F., .T.,, })
+	oDespesBrw:addColumn({"Descrição"		 , {||aDespes[oDespesBrw:nAt,nPosDesc        ]}, "C", "@!"	                        , 1, tamSx3("ZEE_DESPES")[1]/2	,							, .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Valor Documento"	 , {||aDespes[oDespesBrw:nAt,nPosValor       ]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]    , .F., , .F.,, ,, .F., .T.,, })
-	oDespesBrw:addColumn({"Valor Prï¿½ Calculo", {||aDespes[oDespesBrw:nAt,nPosValorPre    ]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]	, .F., , .F.,, ,, .F., .T.,, })
+	oDespesBrw:addColumn({"Valor Pré Cálculo", {||aDespes[oDespesBrw:nAt,nPosValorPre    ]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]	, .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Moeda"			 , {||aDespes[oDespesBrw:nAt,nPosMoeda       ]}, "C", "@!"		                    , 1, tamSx3("ZEE_MOEDA ")[1]	,		                    , .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Taxa Neg."		 , {||aDespes[oDespesBrw:nAt,nPosTaxa 	     ]}, "N", "@E 999.9999"	                , 2, 8		                    , 4		                    , .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Valor Moeda"		 , {||aDespes[oDespesBrw:nAt,nPosValorMoeda  ]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]	, .F., , .F.,, ,, .F., .T.,, })
-	oDespesBrw:addColumn({"Tipo Calculo"     , {||aDespes[oDespesBrw:nAt,nPosTipo        ]}, "C", "@!"	                        , 1, 10		                    , 	                        , .F., , .F.,, ,, .F., .T.,, })
-	oDespesBrw:addColumn({"Forma de Calculo" , {||aDespes[oDespesBrw:nAt,nPosForma       ]}, "C", "@!"	                        , 1, 10	                        , 	                        , .F., , .F.,, ,, .F., .T.,, })
+	oDespesBrw:addColumn({"Tipo Cálculo"     , {||aDespes[oDespesBrw:nAt,nPosTipo        ]}, "C", "@!"	                        , 1, 10		                    , 	                        , .F., , .F.,, ,, .F., .T.,, })
+	oDespesBrw:addColumn({"Forma de Cálculo" , {||aDespes[oDespesBrw:nAt,nPosForma       ]}, "C", "@!"	                        , 1, 10	                        , 	                        , .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Fornecedor"		 , {||aDespes[oDespesBrw:nAt,nPosForn        ]}, "C", "@!"	                        , 1, 3							, 	                        , .F., , .F.,, ,, .F., .T.,, })
 	oDespesBrw:addColumn({"Folhas"        	 , {||aDespes[oDespesBrw:nAt,nPosFolhas      ]}, "N", "@E 99999"                    , 2, 5		                    , 0	                        , .F., , .F.,, ,, .F., .T.,, })
-	oDespesBrw:addColumn({"Observacao"       , {||aDespes[oDespesBrw:nAt,nPosObs         ]}, "C", "@!"                          , 1, 60	    					, 	                        , .T., , .F.,,"xValor" ,, .F., .T.,, })
+	oDespesBrw:addColumn({"Observação"       , {||aDespes[oDespesBrw:nAt,nPosObs         ]}, "C", "@!"                          , 1, 60	    					, 	                        , .T., , .F.,,"xValor" ,, .F., .T.,, })
 	
 	oDespesBrw:setEditCell( .T. , { || VldObs() } )
 	oDespesBrw:setInsert( .F. )
@@ -247,14 +247,14 @@ DEFINE MSDIALOG oDlgDespes TITLE 'Despesas de Despachante : '+Alltrim(cDespachan
 
 	oHistorBrw:addColumn({"EXP"					, {||aDespesLan[oHistorBrw:nAt,01]}, "C", pesqPict("EEC","EEC_PEDREF")	, 1, tamSx3("EEC_PEDREF")[1]/2	,							, .F.})
 	oHistorBrw:addColumn({"Despesa"				, {||aDespesLan[oHistorBrw:nAt,02]}, "C", pesqPict("ZEE","ZEE_CODDES")	, 1, tamSx3("ZEE_CODDES")[1]/2	,							, .T. , , .F.,, ,, .F., .T.,									, })
-	oHistorBrw:addColumn({"Descricao"			, {||aDespesLan[oHistorBrw:nAt,03]}, "C", pesqPict("ZEE","ZEE_DESPES")	, 1, tamSx3("ZEE_DESPES")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
-	oHistorBrw:addColumn({"Tabela Prï¿½ Calculo"	, {||aDespesLan[oHistorBrw:nAt,04]}, "C", pesqPict("ZEE","ZEE_CODIGO")	, 1, tamSx3("ZEE_CODIGO")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
-	oHistorBrw:addColumn({"Moeda Prï¿½ Calculo"	, {||aDespesLan[oHistorBrw:nAt,05]}, "C", pesqPict("ZEE","ZEE_MOEDA")	, 1, tamSx3("ZEE_MOEDA")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
-	oHistorBrw:addColumn({"Valor Prï¿½ Calculo"	, {||aDespesLan[oHistorBrw:nAt,06]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]	, .F. , , .F.,, ,, .F., .T.,									, })
+	oHistorBrw:addColumn({"Descrição"			, {||aDespesLan[oHistorBrw:nAt,03]}, "C", pesqPict("ZEE","ZEE_DESPES")	, 1, tamSx3("ZEE_DESPES")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
+	oHistorBrw:addColumn({"Tabela Pré Cálculo"	, {||aDespesLan[oHistorBrw:nAt,04]}, "C", pesqPict("ZEE","ZEE_CODIGO")	, 1, tamSx3("ZEE_CODIGO")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
+	oHistorBrw:addColumn({"Moeda Pré Cálculo"	, {||aDespesLan[oHistorBrw:nAt,05]}, "C", pesqPict("ZEE","ZEE_MOEDA")	, 1, tamSx3("ZEE_MOEDA")[1]/2	,							, .F. , , .F.,, ,, .F., .T.,									, })
+	oHistorBrw:addColumn({"Valor Pré Cálculo"	, {||aDespesLan[oHistorBrw:nAt,06]}, "N", pesqPict("ZEE","ZEE_VALOR")	, 2, tamSx3("ZEE_VALOR")[1]		, tamSx3("ZEE_VALOR")[2]	, .F. , , .F.,, ,, .F., .T.,									, })
 	oHistorBrw:addColumn({"Documento"			, {||aDespesLan[oHistorBrw:nAt,07]}, "C", pesqPict("SE2","E2_NUM")		, 1, tamSx3("E2_NUM")[1]		, tamSx3("E2_NUM")[2]		, .T. , , .F.,, ,, .F., .T.,									, })
 	oHistorBrw:addColumn({"Fornecedor Desp."	, {||aDespesLan[oHistorBrw:nAt,08]}, "C", pesqPict("EET","EET_ZFORN")	, 1, tamSx3("EET_ZFORN")[1]		, tamSx3("EET_ZFORN")[2]		, .T. , , .F.,, ,, .F., .T.,									, })
 	oHistorBrw:addColumn({"Nome Forncedor"		, {||aDespesLan[oHistorBrw:nAt,09]}, "C", pesqPict("EET","EET_ZNOMEF")	, 1, tamSx3("EET_ZNOMEF")[1]	, tamSx3("EET_ZNOMEF")[2]	, .T. , , .F.,, ,, .F., .T.,									, })
-	oHistorBrw:addColumn({"Emissao"				, {||aDespesLan[oHistorBrw:nAt,10]}, "D", pesqPict("SE2","E2_EMISSAO")	, 1, tamSx3("E2_EMISSAO")[1]	, tamSx3("E2_EMISSAO")[2]	, .T. , , .F.,, ,, .F., .T., 									, })
+	oHistorBrw:addColumn({"Emissão"				, {||aDespesLan[oHistorBrw:nAt,10]}, "D", pesqPict("SE2","E2_EMISSAO")	, 1, tamSx3("E2_EMISSAO")[1]	, tamSx3("E2_EMISSAO")[2]	, .T. , , .F.,, ,, .F., .T., 									, })
 	oHistorBrw:addColumn({"Valor Documento"		, {||aDespesLan[oHistorBrw:nAt,11]}, "N", pesqPict("SE2","E2_VALOR")	, 2, tamSx3("E2_VALOR")[1]		, tamSx3("E2_VALOR")[2]		, .T. , , .F.,, ,, .F., .T.,									, })
 	oHistorBrw:addColumn({"Moeda"				, {||aDespesLan[oHistorBrw:nAt,12]}, "C", pesqPict("EET","EET_ZMOED")	, 1, tamSx3("EET_ZMOED")[1]		, tamSx3("EET_ZMOED")[2]	, .T. , , .F.,, ,, .F., .T., { "1=R$","2=US$","3=EUR","4=GBP" }	, })
 	oHistorBrw:addColumn({"Taxa Neg."			, {||aDespesLan[oHistorBrw:nAt,13]}, "N", pesqPict("EET","EET_ZTX")		, 2, tamSx3("EET_ZTX")[1]		, tamSx3("EET_ZTX")[2]		, .T. , , .F.,, ,, .F., .T.,									, })
@@ -388,7 +388,7 @@ Local nI     		 := 0
 Local nLinha  		:= oDespesBrw:nAt  
 Local aRet			:= {}
 Local aParambox		:= {}
-Private  lTemPreC	:= .F.  // Tem prï¿½ calculo definido
+Private  lTemPreC	:= .F.  // Tem pré calculo definido
 
 IF !Empty(aDespes[nLinha,nPosDesp])
      IF MsgYesNo("Deseja Recalcular a Despesa ?") 
@@ -396,12 +396,12 @@ IF !Empty(aDespes[nLinha,nPosDesp])
 			lTemPreC	:= .T.
 		EndIf 
 
-		AAdd( aParambox,{3, "Rateio:"     , 1 , { "Sim" , "Nao" } , 070 , "" , .T. } )
+		AAdd( aParambox,{3, "Rateio:"     , 1 , { "Sim" , "Não" } , 070 , "" , .T. } )
 		AAdd( aParamBox,{1, "Taxa negoc." ,0       	 , "@E 9,999.9999999"	,,, IIF(!lTemPreC , ".F.",'') ,070,.F.})
 		AAdd( aParambox,{1, "Fornecedor:" ,Space(2)	 ,"@!"		      ," Vazio() .OR.  ExistCpo('SX5', 'Z1'+MV_PAR03)  "	,"Z1"	    ,"",050,.F.})
 		AAdd( aParamBox,{1, "Folhas:"     ,0         , "@E 999,999",     ,           , ".F." ,070,.F.})
 		AAdd( aParamBox,{1, "Valor:"   		,0       , "@E 999,999.9999"	,,, IIF(lTemPreC , ".F.",'') ,070,.F.})
-		If ParamBox(aParambox, "Tipo de Lancamento"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
+		If ParamBox(aParambox, "Tipo de Lançamento"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
 			Calcula_Desp(nLinha)
 			AtualizaBrowse()
          EndIf
@@ -436,19 +436,19 @@ Else
 		If SYB->YB_DESP $ cIncDesp 
 			lTemPreC	:= .T.
 		Else
-			MsgAlert("Despesa nao definida em prï¿½ cï¿½lculo, o pedido ficarï¿½ bloqueado !!")
+			MsgAlert("Despesa não definida em pré cálculo, o pedido ficará bloqueado !!")
 			bPreNota := .T.
 		EndIf 
-		AAdd( aParambox,{3, "Rateio:"     	,1		 , { "Sim" , "Nao"} , 070 , "" , .T. } )
+		AAdd( aParambox,{3, "Rateio:"     	,1		 , { "Sim" , "Não"} , 070 , "" , .T. } )
 		AAdd( aParamBox,{1, "Taxa negoc:"   ,0       , "@E 9,999.9999999"	,,, IIF(!lTemPreC , ".F.",'') ,070,.F.})
 		AAdd( aParambox,{1, "Fornecedor:" 	,Space(2),"@!"		      	," Vazio() .OR.  ExistCpo('SX5', 'Z1'+MV_PAR03)  "	,"Z1"	    ,"",050,.F.})
 		AAdd( aParamBox,{1, "Folhas:"		,0       , "@E 999,999"		,,,".F.",070,.F.})
 		AAdd( aParamBox,{1, "Valor:"   		,0       , "@E 999,999.9999"	,,, IIF(lTemPreC , ".F.",'') ,070,.F.})
 		
-		If ParamBox(aParambox, "Tipo de Lancamento"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
+		If ParamBox(aParambox, "Tipo de Lançamento"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
 			
 			IF AScan(aDespesLan ,{|x| Alltrim(x[2]) == Alltrim(SYB->YB_DESP) }) <> 0
-				 MsgAlert("Despesa jï¿½ lanï¿½ada para uma ou mais Exps, o pedido ficarï¿½ bloqueado !!")
+				 MsgAlert("Despesa já lançada para uma ou mais Exps, o pedido ficará bloqueado !!")
 				 bPreNota := .T.
 			EndIf
 			aDespes[nLinha, nPosDesp    	] := SYB->YB_DESP
@@ -517,7 +517,7 @@ For nI := 1 To Len(aExps)
 				QRY_CALC->(dbSkip())
 			End
 		EndIf
-	Else // Despesa nao cadastrada
+	Else // Despesa não cadastrada
 		nTotal := MV_PAR05
 		cTipo  := 'Fixo'
 	EndIf
@@ -590,7 +590,7 @@ For nI := 1 to len(aDespes)
 Next Ni
 IF !bTem
     bSair       := .F.
-    MsgAlert('Nao Existe Despesa para ser gerada Nota !!')
+    MsgAlert('Não Existe Despesa para ser gerada Nota !!')
     Return
 EndIF
 
@@ -600,10 +600,10 @@ AAdd( aParamBox,{1, "Despachante :"  ,cDespachante    				 ,"@!", ""  		 			 			
 AAdd( aParamBox,{1, "Cod.Forn.Nota:" ,cFornece     					 ,"@!", ""  		 									 ,      ,".F.", 030	, .T.	})
 AAdd( aParamBox,{1, "Loja :"         ,cLoja   						 ,"@!", ""  								             ,      ,".F.", 030	, .T.	})
 AAdd( aParamBox,{1, "Documento :"    ,Space(tamSx3("F1_DOC")[1])     ,"@!", "U_xEEC75Vld(1) "  								 ,      ,, 030	, .T.	})
-AAdd( aParamBox,{1, "Serie :"        ,Space(tamSx3("F1_SERIE")[1])   ,"@!", "U_xEEC75Vld(1) .AND. U_xEEC75Vld(2) "  		 ,      ,, 030	, .T.	})
-AAdd( aParamBox,{1, "Especie :"      ,Space(tamSx3("F1_ESPECIE")[1]) ,"@!", "U_xEEC75Vld(2) .AND. U_xEEC75Vld(3)"  			 ,      ,, 030	, .T.	})
-AAdd( aParamBox,{1, "Operacao :"     ,Space(tamSx3("D1_OPER")[1])    ,"@!", "U_xEEC75Vld(3)"  								 ,      ,, 030	, .T.	})
-AAdd( aParamBox,{1, "Emissao :"      ,dDtEmissao                	 ,"@D", ""  						                     ,      ,".F.", 050	, .T.	})
+AAdd( aParamBox,{1, "Série :"        ,Space(tamSx3("F1_SERIE")[1])   ,"@!", "U_xEEC75Vld(1) .AND. U_xEEC75Vld(2) "  		 ,      ,, 030	, .T.	})
+AAdd( aParamBox,{1, "Espécie :"      ,Space(tamSx3("F1_ESPECIE")[1]) ,"@!", "U_xEEC75Vld(2) .AND. U_xEEC75Vld(3)"  			 ,      ,, 030	, .T.	})
+AAdd( aParamBox,{1, "Operação :"     ,Space(tamSx3("D1_OPER")[1])    ,"@!", "U_xEEC75Vld(3)"  								 ,      ,, 030	, .T.	})
+AAdd( aParamBox,{1, "Emissão :"      ,dDtEmissao                	 ,"@D", ""  						                     ,      ,".F.", 050	, .T.	})
 AAdd( aParamBox,{1, "Valor Doc.:"    ,nValor              			 ,"@E 999,999,999.99",   ,,".F.", 070	, .T.	})
 AAdd( aParamBox,{1, "Vencimento :"   ,Ctod("  /  /  ")               ,"@D", "MV_PAR11 >= dDataBase"  						 ,      ,, 050	, .T.	})
 AAdd( aParamBox,{1, "Natureza :"     ,cNatureza                       ,"@!", "Vazio() .Or. ExistCpo('SED',MV_PAR12)"  		 ,"SED" ,, 050	, .T.	})
@@ -613,9 +613,9 @@ If ParamBox(aParambox, "Dados da Nota Fiscal"  , @aRet, , , .T. , 0, 0, , , .F. 
 	cCondPgtoX	:= ""
 	cCondPgtoX	:= getCndPgto(  MV_PAR11 , MV_PAR09 )
     IF Empty(cCondPgtoX)
-	    MsgAlert("Nao encontrado uma Condicao de Pagamento para a Data de Emissao e Vencimento!!")
+	    MsgAlert("Não encontrado uma Condição de Pagamento para a Data de Emissão e Vencimento!!")
 	Else
-		fwMsgRun(, { || Proc_Nota() }		, "Gerar Nota/Pedido", "Aguarde.... Processando a emissao da Nota/Pedido..." )
+		fwMsgRun(, { || Proc_Nota() }		, "Gerar Nota/Pedido", "Aguarde.... Processando a emissão da Nota/Pedido..." )
 	EndIf
 EndIF
 restArea( aAreaEEB )
@@ -651,7 +651,7 @@ Local cEETSeq		:= ""
 Local cQryEEB		:= ""
 Local aDocsPreCa	:= {}	// CONTEM OS DOCUMENTOS DO PRE CALCULO
 Local lPreCalc		:= .T.	// SE .T. PRE CALCULO OK
-Local aC7Num		:= {}	// CONTEM OS PEDIDOS USADOS - PARA GERAR GRADE SE NECESSï¿½RIO
+Local aC7Num		:= {}	// CONTEM OS PEDIDOS USADOS - PARA GERAR GRADE SE NECESSÁRIO
 Local aAgr          := {}
 Local aExpGrv       := {}
 Local cQuery        := ''
@@ -867,7 +867,7 @@ If !Empty( aDocsSC7 )
 
 	tcQuery cQrySC7 New Alias "QRYSC7"
 
-	// Se lanaï¿½amento de despesas estiver de acordo com o pre calculo gera Nota de Entrada + Titulo com Grade
+	// Se lanaçamento de despesas estiver de acordo com o pre calculo gera Nota de Entrada + Titulo com Grade
 	cDoctoAtu := ""
 	While !QRYSC7->(EOF())
 		aSF1 := {}
@@ -968,7 +968,7 @@ If !Empty( aDocsSC7 )
 			Else
 				conout( " MGFEEC75 - MATA140 - " + cErro )
 			EndIf
-			//Exclusao dos cadastros 
+			//Exclusão dos cadastros 
 			cQuery := " Delete "+RetSqlName("SC7")
 			cQuery += " Where C7_FILIAL  = '"+aExps[01,1]+"'"
 			cQuery += "   AND C7_NUM     IN	(" + cDocsSC7  + ")"	
@@ -1029,10 +1029,10 @@ If !Empty( aDocsSC7 )
 		EndIF
 		
 		If !Empty( cLogProc2 )
-			cLogProc += "Devido a divergï¿½ncias com o Prï¿½ Calculo, foram geradas as Prï¿½ Notas: " + CRLF + cLogProc2
+			cLogProc += "Devido a divergências com o Pré Cálculo, foram geradas as Pré Notas: " + CRLF + cLogProc2
 		EndIf
 
-		staticCall( MGFEEC64 , showLog , cLogProc , "Resultado do Lancamento" , "Resultado do Lancamento: " )
+		staticCall( MGFEEC64 , showLog , cLogProc , "Resultado do Lançamento" , "Resultado do Lançamento: " )
 	EndIf
 
 	If !empty( cErro )
@@ -1072,7 +1072,7 @@ IF nTipo == 1 // Nota fiscal = DOC e Serie
 		dbSelectArea("QRY_VLD")
 		QRY_VLD->(dbGoTop())
 		IF QRY_VLD->(!Eof())
-	         MsgAlert('Nota Fiscal/Serie jï¿½ lanï¿½ada para o Fornecedor !!')  	
+	         MsgAlert('Nota Fiscal/Serie já lançada para o Fornecedor !!')  	
 			 bRet  := .F.
 		EndIF
 	EndIf
@@ -1095,7 +1095,7 @@ ElseIF nTipo == 2 //  Especie = Serie e Especie
 		dbSelectArea("QRY_VLD")
 		QRY_VLD->(dbGoTop())
 		IF QRY_VLD->(Eof())
-			MsgStop('Especie deste documento nao esta cadastrada para este Fornecedor na tabela de Amarracao de Fornecedor x Especie NFE Talonario !!')  	
+			MsgStop('Espécie deste documento não está cadastrada para este Fornecedor na tabela de Amarração de Fornecedor x Especie NFE Talonário !!')  	
 			bRet := .F.
 		EndIF
 	EndIf
@@ -1116,7 +1116,7 @@ ElseIf nTipo == 3 // Operacao = Operacao e Especie
 		dbSelectArea("QRY_VLD")
 		QRY_VLD->(dbGoTop())
 		IF QRY_VLD->(Eof())
-			MsgStop('Nao existe amarracao do Tipo de Operacao X Especie NFE cadastrada para esta operacao !!')  	
+			MsgStop('Não existe amarração do Tipo de Operação X Espécie NFE cadastrada para esta operação !!')  	
 			bRet := .F.
 		EndIF
 	EndIf

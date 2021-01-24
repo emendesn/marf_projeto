@@ -3,10 +3,10 @@
 Programa.:              FA060TRF
 Autor....:              Atilio Amarilla
 Data.....:              22/12/2017
-Descricao / Objetivo:   PE acionado na transferencia de titulo - bloqueia titulo FIDC
+Descricao / Objetivo:   PE acionado na transferЙncia de tМtulo - bloqueia tМtulo FIDC
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE rotina FINA060
 =====================================================================================
 */
@@ -14,9 +14,9 @@ User Function FA060TRF()
 
 Local lRet := .T.
 
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-//О©╫GAP 19_20_21 FIDC - Bloqueia transferencia de titulos FIDC              О©╫
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+//ЁGAP 19_20_21 FIDC - Bloqueia transferЙncia de tМtulos FIDC              Ё
+//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 If ExistBlock("MGFFIN70")
 	lRet := U_MGFFIN70()
 EndIf

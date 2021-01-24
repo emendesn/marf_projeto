@@ -10,7 +10,7 @@ Data................: 08/03/2017
 Descricao / Objetivo: Ponto de entrada finalizar a Rami
 Doc. Origem.........: CRM- RAMI
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -18,11 +18,11 @@ user function MGFCRM49()
 
 	Local lRet 	 	 := .T.
 	Local nI   	 	 := 0
-	Local cProd 	 := " RAMI nao sera finalizada!!! Alguns produtos nao atenderam as condiï¿½ï¿½es para finalizar a RAMI !"
-	Local cAliasZAX	 := "" // RESOLUï¿½ï¿½O
+	Local cProd 	 := " RAMI não será finalizada!!! Alguns produtos não atenderam as condições para finalizar a RAMI !"
+	Local cAliasZAX	 := "" // RESOLUÇÃO
 	Local cQuery	 := ""
-	Local nQtdOco	 := 0 //Quantidade de ocorrencias
-	Local nQtdRes	 := 0 //Quantidade de Resoluï¿½ï¿½o
+	Local nQtdOco	 := 0 //Quantidade de ocorrências
+	Local nQtdRes	 := 0 //Quantidade de Resolução
 	Local nQuant	 := 0 //Quantidade de saldo
 	Local lFinaliza  := .F.
 	Local lNFinaliza := .F.
@@ -84,7 +84,7 @@ user function MGFCRM49()
 	If !Empty(ACOLS[n][nPosRami])
 		For nI := 1 to len(aCols)
 			if !aCols[nI,len(aHeader)+1]
-				///Grava resoluï¿½ï¿½o
+				///Grava resolução
 				ZAV->(DbGotop())
 				DbSelectArea('ZAV')
 				ZAV->(DbSetOrder(1))//ZAV_FILIAL+ZAV_CODIGO
@@ -230,7 +230,7 @@ Static Function xAltStau(cxFil,cCodRam)
 return lRet
 
 /*
-	Calculo Rami Resoluï¿½ï¿½o
+	Calculo Rami Resolução
 */
 Static Function xCaRamRes(cxFil,cCodRam,cItemNf)
 

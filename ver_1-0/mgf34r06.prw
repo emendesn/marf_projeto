@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF34R06	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½16/11/18	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Estoque em Transito  (Modulo 34-CTB)   							ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF34R06	ºAutor  ³ Geronimo Benedito Alves																	ºData ³16/11/18	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Estoque em Transito  (Módulo 34-CTB)   							º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF34R06()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -19,48 +19,48 @@ User Function MGF34R06()
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 	Private _aSelFilORI	:= {}
 
-	Aadd(_aDefinePl, "Contabilidade - Estoque em Transito" )	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
+	Aadd(_aDefinePl, "Contabilidade - Estoque em Transito" )	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	Aadd(_aDefinePl, "Estoque em Transito")						//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Estoque em Transito"} )					//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Estoque em Transito"} )					//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  	
+	Aadd(_aDefinePl, {}  )										//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} } )								//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  	
 	_nInterval	:= 92											//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""					
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02		  								 03							04	 05	 06	 07	 	08	 09	
 	Aadd(_aCampoQry, {"D1_FILORI"	,"EMPRESA_ORIGEM       as EMPRESAORI"	,"Empresa Origem"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"A1_NOME"		,"DESC_EMPRESA_ORIGEM  as DESCEMPORI"	,"Descricao Empresa Origem"	,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"A1_NOME"		,"DESC_EMPRESA_ORIGEM  as DESCEMPORI"	,"Descrição Empresa Origem"	,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"D1_FILORI"	,"EMPRESA_DESTINO      as EMPRESADES"	,"Empresa Destino"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"A2_NOME"		,"DESC_EMPRESA_DESTINO as DESCEMPDES"	,"Descricao Empresa Destino",""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"F3_NFISCAL"	,"NUM_NOTA"								,"Numero Nota"				,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"F3_SERIE"	,"SERIE"								,"Serie"					,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"F3_EMISSAO"	,"DATA_EMISSAO_NF as DTEMISSANF"		,"Data Emissao NF"			,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"A2_NOME"		,"DESC_EMPRESA_DESTINO as DESCEMPDES"	,"Descrição Empresa Destino",""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"F3_NFISCAL"	,"NUM_NOTA"								,"Número Nota"				,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"F3_SERIE"	,"SERIE"								,"Série"					,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"F3_EMISSAO"	,"DATA_EMISSAO_NF as DTEMISSANF"		,"Data Emissão NF"			,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_ITEM"		,"SEQ_ITEM"								,"Item"						,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"FT_PRODUTO"	,"COD_ITEM"								,"Cï¿½d Produto"				,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"B1_DESC"		,"DESC_ITEM"							,"Descricao Produto"		,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"FT_PRODUTO"	,"COD_ITEM"								,"Cód Produto"				,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"B1_DESC"		,"DESC_ITEM"							,"Descrição Produto"		,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"B1_UM"		,"UM"									,"Unidade Medida"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"FT_QUANT"	,"QTDE_SAIDA"							,"Quant. Saida"				,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"FT_QUANT"	,"QTDE_SAIDA"							,"Quant. Saída"				,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_PRCUNIT"	,"VALOR_UNITARIO as VALORUNITA"			,"Valor Unit."				,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_VALCONT"	,"VALOR_ITEM"							,"Valor Item"				,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"BM_DESC"		,"GRUPO_ESTOQUE as GRUPOESTOQ"			,"Grupo Estoque"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"FT_CFOP"		,"CODIGO_FISCAL as CODIGOFISC"			,"Codigo Fiscal"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"X5_DESCRI"	,"DESC_CODIGO_FISCAL as DESCODFISC"		,"Descricao Codigo Fiscal"	,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"FT_CFOP"		,"CODIGO_FISCAL as CODIGOFISC"			,"Código Fiscal"			,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"X5_DESCRI"	,"DESC_CODIGO_FISCAL as DESCODFISC"		,"Descrição Código Fiscal"	,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"F3_BASERET"	,"BASE_ICMS_RETIDO as BASICMSRET"		,"Base Icms Retido"			,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_VALICM"	,"VALOR_ICMS"							,"Valor Icms"				,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"F3_CLIEFOR"	,"CLIENTE"								,"Cliente"					,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"F3_LOJA"		,"LOJA"									,"Loja"						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_CHVNFE"	,"CHAVE_SEFAZ as CHAVESEFAZ"			,"Chave Sefaz"				,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"FT_ENTRADA"	,"DATA_ENTRADA as DATAENTRAD"			,"Data Entrega"				,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"D1_DTDIGIT"	,"SD1.D1_DTDIGIT AS DTDIGDEVOL"			,"Data Devolucao"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"D1_DOC"		,"SD1.D1_DOC     AS NFDEVOLUCA"			,"Nï¿½ nf Devolucao"			,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"D1_SERIE"	,"SD1.D1_SERIE   AS SERIEDEVOL"			,"Serie nf Devolucao"		,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"D1_DTDIGIT"	,"SD1.D1_DTDIGIT AS DTDIGDEVOL"			,"Data Devolução"			,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"D1_DOC"		,"SD1.D1_DOC     AS NFDEVOLUCA"			,"Nº nf Devolução"			,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"D1_SERIE"	,"SD1.D1_SERIE   AS SERIEDEVOL"			,"Série nf Devolução"		,""	,""	,""	,""		,""	,""	})
 	//	  				01			 02		  								 03							04	 05	 06	 07	 	08	 09	
 
 	aAdd(_aParambox,{1,"Data Entrada Inicial"	,Ctod("")	,""	,""												,""		,"",050,.T.})
@@ -70,13 +70,13 @@ User Function MGF34R06()
 
 	// Selecionar as empresas de ORIGEM das NFs de entrada
 	MsgInfo("Selecione as EMPRESAS DE ORIGEM das Notas Fiscais de Entrada. ")
-	AdmSelecFil("", 0 ,.F.,@_aSelFilORI,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFilORI  
+	AdmSelecFil("", 0 ,.F.,@_aSelFilORI,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFilORI  
 	If Empty(_aSelFilORI) ; Return ; Endif
 	cCODFILORI	:= U_Array_In(_aSelFilORI)
 
 	// Selecionar as empresas de DESTINO das trasnferencias
 	//MsgInfo("Selecione as EMPRESAS DE DESTINO das Notas Fiscais de Entrada. ")
-	//AdmSelecFil("", 0 ,.F.,@_aSelFilDES,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFilDES  
+	//AdmSelecFil("", 0 ,.F.,@_aSelFilDES,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFilDES  
 	//If Empty(_aSelFilDES) ; Return ; Endif
 	//cCODFILDES	:= U_Array_In(_aSelFilDES)
 	
@@ -85,29 +85,29 @@ User Function MGF34R06()
 	cQryEmpDes  += "  FROM " +  U_IF_BIMFR( "PROTHEUS", "SYS_COMPANY"  ) + " TMPSYSCOMPANY "
 	cQryEmpDes	+= "  WHERE TMPSYSCOMPANY.D_E_L_E_T_ = ' ' "
 	cQryEmpDes	+= "  ORDER BY M0_CODFIL"
-	aCpoEmpDes	:=	{	{ "M0_CODFIL"	, "Codigo Empresa"		,15		} ,;
-	aCpoEmpDes	:=		{ "M0_FILIAL"	, "Descricao Empresa"	,40 }	} 
+	aCpoEmpDes	:=	{	{ "M0_CODFIL"	, "Código Empresa"		,15		} ,;
+	aCpoEmpDes	:=		{ "M0_FILIAL"	, "Descrição Empresa"	,40 }	} 
 	cTitEmpDes	:= "Marque as empresas de destino das Transferencias "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: A6_COD
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 	//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botao cancelar da MarkGene 
-	_lInComAll	:= .T. 	//Se for .T. Indica que se na tela de MarkGene, usuario, marcar todos os itens, eles todos retornarï¿½o dentro da clausula IN. Se for .F. indica que se todos os itens forem marcados, retorna vazio nao criando a claï¿½sula IN.
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 	//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene 
+	_lInComAll	:= .T. 	//Se for .T. Indica que se na tela de MarkGene, usuário, marcar todos os itens, eles todos retornarão dentro da cláusula IN. Se for .F. indica que se todos os itens forem marcados, retorna vazio não criando a claúsula IN.
 	While .T.
 		cCODFILDES	:= U_Array_In( U_MarkGene(cQryEmpDes, aCpoEmpDes, cTitEmpDes, nPosRetorn, @_lCancProg ,_lInComAll ) )
 		If _lCancProg
 			Return
 		Endif       
 		If Empty(cCODFILDES)
-			MsgStop("ï¿½ obrigatorio a selecao de ao menos uma Empresa")
+			MsgStop("É obrigatório a seleção de ao menos uma Empresa")
 			Loop
 		Else
 			Exit
 		Endif
 	Enddo
 
-	_cQuery	:= " " + CRLF			// Limpa a parte jï¿½ criada da query para recria-la comeï¿½ando por " SELECT DISTINCT T.EMPRESA_ORIGEM ,EMPRESA_DESTINO ...."
+	_cQuery	:= " " + CRLF			// Limpa a parte já criada da query para recria-la começando por " SELECT DISTINCT T.EMPRESA_ORIGEM ,EMPRESA_DESTINO ...."
 	_cQuery	+= " SELECT DISTINCT T.EMPRESA_ORIGEM  as EMPRESAORI "                                                    + CRLF
 	_cQuery	+= "      , T.DESC_EMPRESA_ORIGEM      as DESCEMPORI "                                                    + CRLF  //NOVO CAMPO
 	_cQuery	+= "      , T.EMPRESA_DESTINO          as EMPRESADES "                                                    + CRLF
@@ -211,19 +211,19 @@ User Function MGF34R06()
 	_cQuery	+= "             WHERE LIVRO.D_E_L_E_T_<>'*' "                                                               + CRLF
 	_cQuery	+= "               AND LIVRO.F3_TIPO <> 'D' "                                                                + CRLF
 	_cQuery	+= "               AND LIVRO.F3_ENTRADA BETWEEN  '"     + _aRet[1] + "' AND '" + _aRet[2] + "' "			  + CRLF	//_cQuery	+= "            AND LIVRO.F3_ENTRADA BETWEEN '20180901' AND '20180930' "                                  + CRLF
-	// DIFERENCIAï¿½ï¿½O DE UNIDADES, POIS MARBRAND AO DAR ENTRADA ï¿½ COM OUTRO CODIGO PRODUTO "		//POR ISSO, QUANDO FOR ESSAS UNIDADES NAO TERï¿½ VINCULO DE PRODUTO "   + CRLF
+	// DIFERENCIAÇÃO DE UNIDADES, POIS MARBRAND AO DAR ENTRADA É COM OUTRO CODIGO PRODUTO "		//POR ISSO, QUANDO FOR ESSAS UNIDADES NÃO TERÁ VINCULO DE PRODUTO "   + CRLF
 	_cQuery	+= "        ) T  "                                                                                        + CRLF
 	_cQuery	+= "   LEFT JOIN " + U_IF_BIMFR( "PROTHEUS", RetSqlName("SD1") ) + " SD1 ON T.NUM_NOTA       = SD1.D1_NFORI "                      + CRLF
 	_cQuery	+= "                                AND T.SERIE          = SD1.D1_SERIORI "                               + CRLF
 	_cQuery	+= "                                AND T.CLIENTE        = SD1.D1_FORNECE  "                              + CRLF
 	_cQuery	+= "                                AND T.LOJA           = SD1.D1_LOJA "                                  + CRLF
 	_cQuery	+= "                                AND T.EMPRESA_ORIGEM = SD1.D1_FILORI "                                + CRLF
-	_cQuery	+= "                                AND SD1.D1_TIPO      = 'D' "                                          + CRLF 	// DEVOLUï¿½ï¿½O
-	_cQuery	+= "                                AND SD1.D1_FORMUL    = 'S' "                                          + CRLF	//FORMULï¿½RIO PRï¿½PRIO 
+	_cQuery	+= "                                AND SD1.D1_TIPO      = 'D' "                                          + CRLF 	// DEVOLUÇÃO
+	_cQuery	+= "                                AND SD1.D1_FORMUL    = 'S' "                                          + CRLF	//FORMULÁRIO PRÓPRIO 
 	_cQuery	+= "                                AND SD1.D_E_L_E_T_   <>  '*' "                                        + CRLF
 	_cQuery	+= "  WHERE     T.STATUS_NF <> 'Cancelada' "                                                              + CRLF
-	_cQuery += "        AND T.EMPRESA_ORIGEM  IN "       + cCODFILORI												  + CRLF	// OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += "        AND T.EMPRESA_DESTINO IN "       + cCODFILDES												  + CRLF	// OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
+	_cQuery += "        AND T.EMPRESA_ORIGEM  IN "       + cCODFILORI												  + CRLF	// OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
+	_cQuery += "        AND T.EMPRESA_DESTINO IN "       + cCODFILDES												  + CRLF	// OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
 	_cQuery	+= " "                                                                                                    + CRLF
 	_cQuery	+= "  UNION "                                                                                             + CRLF
 
@@ -326,27 +326,27 @@ User Function MGF34R06()
 	_cQuery	+= "                                            AND ENTRADA.FT_FILIAL   = LTRIM(RTRIM(ED.M0_CODFIL))  "   + CRLF
 	_cQuery	+= "                                            AND ENTRADA.FT_TIPOMOV  = 'E' "                           + CRLF
 	_cQuery	+= "                                            AND ENTRADA.D_E_L_E_T_  <> '*'   "                        + CRLF
-	_cQuery	+= "                                            AND ENTRADA.FT_EMISSAO  >= '" + _aRet[1] + "' "           + CRLF //SETAR COM A DATA INICIAL DA EMISSï¿½O
+	_cQuery	+= "                                            AND ENTRADA.FT_EMISSAO  >= '" + _aRet[1] + "' "           + CRLF //SETAR COM A DATA INICIAL DA EMISSÃO
 	_cQuery	+= "          WHERE LIVRO.D_E_L_E_T_<>'*' "                                                               + CRLF
 	_cQuery	+= "            AND LIVRO.F3_TIPO = 'D' "                                                                 + CRLF
 	_cQuery	+= "            AND LIVRO.F3_ENTRADA BETWEEN  '"     + _aRet[1] + "' AND '" + _aRet[2] + "' "			  + CRLF		//_cQuery	+= "            AND LIVRO.F3_ENTRADA BETWEEN '20180901' AND '20180930' "                                  + CRLF
-    //  DIFERENCIAï¿½ï¿½O DE UNIDADES, POIS MARBRAND AO DAR ENTRADA ï¿½ COM OUTRO CODIGO PRODUTO  //POR ISSO, QUANDO FOR ESSAS UNIDADES NAO TERï¿½ VINCULO DE PRODUTO
+    //  DIFERENCIAÇÃO DE UNIDADES, POIS MARBRAND AO DAR ENTRADA É COM OUTRO CODIGO PRODUTO  //POR ISSO, QUANDO FOR ESSAS UNIDADES NÃO TERÁ VINCULO DE PRODUTO
 	_cQuery	+= "        ) T "                                                                                         + CRLF
 	_cQuery	+= "   LEFT JOIN " + U_IF_BIMFR( "PROTHEUS", RetSqlName("SD1") ) + " SD1 ON T.NUM_NOTA = SD1.D1_NFORI "   + CRLF
 	_cQuery	+= "                                AND T.SERIE          = SD1.D1_SERIORI "                               + CRLF
 	_cQuery	+= "                                AND T.CLIENTE        = SD1.D1_FORNECE  "                              + CRLF
 	_cQuery	+= "                                AND T.LOJA           = SD1.D1_LOJA "                                  + CRLF
 	_cQuery	+= "                                AND T.EMPRESA_ORIGEM = SD1.D1_FILORI "                                + CRLF
-	_cQuery	+= "                                AND SD1.D1_TIPO      = 'D'  "                                         + CRLF	//DEVOLUï¿½ï¿½O
-	_cQuery	+= "                                AND SD1.D1_FORMUL    = 'S' 	 "                                        + CRLF	//--FORMULï¿½RIO PRï¿½PRIO 
+	_cQuery	+= "                                AND SD1.D1_TIPO      = 'D'  "                                         + CRLF	//DEVOLUÇÃO
+	_cQuery	+= "                                AND SD1.D1_FORMUL    = 'S' 	 "                                        + CRLF	//--FORMULÁRIO PRÓPRIO 
 	_cQuery	+= "                                AND SD1.D_E_L_E_T_   <>  '*' "                                        + CRLF
 	_cQuery	+= "  WHERE T.STATUS_NF <> 'Cancelada' "                                                                  + CRLF
-	_cQuery += "        AND T.EMPRESA_ORIGEM  IN "       + cCODFILORI												  + CRLF	// OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += "        AND T.EMPRESA_DESTINO IN "       + cCODFILDES												  + CRLF	// OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
+	_cQuery += "        AND T.EMPRESA_ORIGEM  IN "       + cCODFILORI												  + CRLF	// OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
+	_cQuery += "        AND T.EMPRESA_DESTINO IN "       + cCODFILDES												  + CRLF	// OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
 
 	//FILTROS:
-	//EMPRESA_ORIGEM IN ('010003','010005') --COMBO DE SELEï¿½ï¿½O
-	//EMPRESA_DESTINO IN ('010003','010005') --COMBO DE SELEï¿½ï¿½O
+	//EMPRESA_ORIGEM IN ('010003','010005') --COMBO DE SELEÇÃO
+	//EMPRESA_DESTINO IN ('010003','010005') --COMBO DE SELEÇÃO
 	//DATA ENTRADA BETWEEN '20180101' AND '20181001' --OBRIGATORIO / TRAVAR 3 MESES
 	
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)

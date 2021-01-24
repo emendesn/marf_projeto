@@ -5,10 +5,10 @@
 Programa............: FLTESTLT
 Autor...............: Joni Lima
 Data................: 21/11/2016
-Descricao / Objetivo: O ponto de entrada FLTESTLT faz o filtro antes da apresentacao da selcao de Lote
+Descrição / Objetivo: O ponto de entrada FLTESTLT faz o filtro antes da apresentação da selção de Lote
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/display/public/mp/CTB+-+Diversos+--+30155
 =====================================================================================
 */

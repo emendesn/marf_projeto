@@ -9,7 +9,7 @@ Descricao / Objetivo:   Rotina chamada pelo PE MT100AG
 Pedido Exportacao
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================
 */
 User Function MGFCOM86()

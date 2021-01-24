@@ -784,3 +784,41 @@ Static Function GetCFFRE()
 	RestArea(aAreaSC6)
 	RestArea(aArea)
 Return cCFFre
+
+
+/*/
+======================================================================================
+{Protheus.doc} OMS01A()
+Possibilitar limpar o campo tipo de operação da carga na Montagem de Carga Protheus OMS.
+@author Antonio Florêncio
+@since 15/09/2020
+@type Function 
+@param 
+@return
+/*/
+User Function OMS01A()
+	Local _aGetArea := GetArea()
+	If MsgYesNo("Confirma o Reset do tipo de operação da carga?")
+		begin transaction
+			DAK->(RecLock("DAK",.F.))
+			DAK->DAK_ZCDTPO := ' '
+			DAK->DAK_ZDESTP := ' '
+			DAK->DAK_ZMSG   := " "
+			DAK->DAK_ZEXSIM := " "
+			DAK->(MsUnlock())
+		
+			dbSelectArea('GWN')
+			dbSetOrder(1)
+
+			If DbSeek(xFilial('GWN')+DAK->DAK_COD + DAK->DAK_SEQCAR) //GWN->NRROM
+				GWN->(RecLock('GWN',.F.))
+					GWN->GWN_CALC   := "3"
+					GWN->GWN_CDTPOP := "**"
+				GWN->(MsUnlock())
+			EndIf
+			U_MGFOMS01()
+			MsgAlert('ATENÇÃO!! Reset efetuado com sucesso!')
+		End transaction
+	EndIf
+	RestArea(_aGetArea)
+Return

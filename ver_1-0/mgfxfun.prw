@@ -1,5 +1,8 @@
 #Include 'Protheus.ch'
 #Include 'Fileio.ch'
+#include "totvs.ch"
+#include "topconn.ch"
+#include "tbiconn.ch"
 
 #Define ENTER	Chr(13)+Chr(10) 
 
@@ -1089,4 +1092,260 @@ oDlg:SetCss(cEstilo0)
 End Sequence
 
 Return _lret
+
+/*
+============================================================================================
+Programa............: MGF_XJOB
+Autor...............: Josué Danich Prestes
+Data................: 11/09/2020
+Descrição / Objetivo: Execucao de job Master/Slave para economia de rpcsetenv
+Parametros..........: _ntipo - 1 Master sobe rpcsetenv e fica disponível para chamadas
+                               2 Slave - chama função indicada com ipcgo na thread do master
+					  _cnome - Nome do Job
+					  _cfuncao - userfunction que será chamada
+=============================================================================================
+*/
+User Function MGF_XJOB(_ntipo,_cnome,_cfuncao,xPar01,xPar02,xPar03,xPar04,xPar05,xPar06,xPar07,xPar08,xPar09,xPar10)
+
+
+Local _lret
+Local _cpars := ""
+Local _cmostra := ""
+Local _ntempo := 0
+Local _nvezes := 0
+
+Default _ntipo := "2"
+Default _cnome := "INDEFINIDO"
+Default _cfuncao := "INDEFINIDO"
+Default xPar01 := ""
+Default xPar02 := ""
+Default xPar03 := ""
+Default xPar04 := ""
+Default xPar05 := ""
+Default xPar06 := ""
+Default xPar07 := ""
+Default xPar08 := ""
+Default xPar09 := ""
+Default xPar10 := ""
+
+//monta parametros
+If valtype(xpar01) = "C" .and. !empty(xpar01)
+	_cpars += " xpar01 "
+	_cmostra += "'" + xpar01 + "'"
+Endif
+If valtype(xpar02) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar02 "
+	_cmostra += ",'" + xpar02 + "'"
+Endif
+If valtype(xpar03) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar03 "
+	_cmostra += ",'" + xpar03 + "'"
+Endif
+If valtype(xpar04) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar04 "
+	_cmostra += ",'" + xpar04 + "'"
+Endif
+If valtype(xpar05) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar05 "
+	_cmostra += ",'" + xpar05 + "'"
+Endif
+If valtype(xpar06) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar06 "
+	_cmostra += ",'" + xpar06 + "'"
+Endif
+If valtype(xpar07) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar07 "
+	_cmostra += "'" + xpar07 + "'"
+Endif
+If valtype(xpar08) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar08 "
+	_cmostra += ",'" + xpar08 + "'"
+Endif
+If valtype(xpar09) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar09 "
+	_cmostra += ",'" + xpar09 + "'"
+Endif
+If valtype(xpar10) = "C" .and. !empty(xpar02)
+	_cpars += " ,xpar10 "
+	_cmostra += ",'" + xpar10 + "'"
+Endif
+
+_cexecuta := "U_"+_cfuncao + "(" + _cpars + ")"
+_cmostra := "U_"+_cfuncao + "(" + _cmostra + ")"
+
+If _ntipo == "1" //Execução de master que fica aguardando chamadas slave já com o ambiente montado
+
+	U_MFCONOUT("Abrindo job master: " + _cnome + "...")
+
+	PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010041'
+
+	_ntempo := getmv("MGF_XJOBT",,5000)
+	_nvezes := getmv("MGF_XJOBV",,720)
+	_nii := 1
+
+ 	Do while !killapp() .and. _nii <= _nvezes 
+    
+		U_MFCONOUT("Aguardando chamadas para job master: " + _cnome + " - " + strzero(_nii,6) + " de " + strzero(_nvezes,6) + "...")
+		_nii++
+		
+		lRet := IpcWaitEx( _cnome, 5000, @_cfuncao, @xPar01,@xPar02,@xPar03,@xPar04,@xPar05,@xPar06,@xPar07,@xPar08,@xPar09,@xPar10 )
+    
+		if lRet
+
+			//monta parametros
+			_cpars := ""
+			_cmostra := ""
+			If valtype(xpar01) = "C" .and. !empty(xpar01)
+				_cpars += " xpar01 "
+				_cmostra += "'" + xpar01 + "'"
+			Endif
+			If valtype(xpar02) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar02 "
+				_cmostra += ",'" + xpar02 + "'"
+			Endif
+			If valtype(xpar03) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar03 "
+				_cmostra += ",'" + xpar03 + "'"
+			Endif
+			If valtype(xpar04) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar04 "
+				_cmostra += ",'" + xpar04 + "'"
+			Endif
+			If valtype(xpar05) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar05 "
+				_cmostra += ",'" + xpar05 + "'"
+			Endif
+			If valtype(xpar06) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar06 "
+				_cmostra += ",'" + xpar06 + "'"
+			Endif
+			If valtype(xpar07) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar07 "
+				_cmostra += "'" + xpar07 + "'"
+			Endif
+			If valtype(xpar08) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar08 "
+				_cmostra += ",'" + xpar08 + "'"
+			Endif
+			If valtype(xpar09) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar09 "
+				_cmostra += ",'" + xpar09 + "'"
+			Endif
+			If valtype(xpar10) = "C" .and. !empty(xpar02)
+				_cpars += " ,xpar10 "
+				_cmostra += ",'" + xpar10 + "'"
+			Endif
+
+			_cexecuta := "U_"+_cfuncao + "(" + _cpars + ")"
+			_cmostra := "U_"+_cfuncao + "(" + _cmostra + ")"
+
+ 			U_MFCONOUT("Recebeu chamada para job master: " + _cmostra + "...")
+			&_cexecuta
+			U_MFCONOUT("Completou chamada para job master: " + _cmostra + "...")
+ 
+     	endif
+  
+  	Enddo
+
+	RpcClearEnv()
+
+Elseif _ntipo == "2" //Execução de slave que envia execução de job para thread do master 
+
+	U_MFCONOUT("Enviando chamada para job master " + _cnome + ": " + _cmostra + "...")
+	
+	_lret := IPCGo( _cnome, _cfuncao,xPar01,xPar02,xPar03,xPar04,xPar05,xPar06,xPar07,xPar08,xPar09,xPar10 )
+
+	If _lret
+
+		U_MFCONOUT("Chamada para job master " + _cnome + ": " + _cmostra + " iniciada com sucesso.")
+
+	Else
+
+		U_MFCONOUT("Chamada para job master " + _cnome + ": " + _cmostra + " não encontrou job master disponível.")
+
+	Endif
+
+Endif
+
+
+Return
+
+/*
+============================================================================================
+Programa............: MGF_NOAC
+Autor...............: Josué Danich Prestes
+Data................: 11/09/2020
+Descrição / Objetivo: Retira caracteres especiais de string enviado
+Parametros..........: cstring - string que terá os caracteres especiais retirados
+=============================================================================================
+*/
+User FUNCTION MGF_NOAC(cString)
+	Local cChar  := ""
+	Local nX     := 0
+	Local nY     := 0
+	Local cVogal := "aeiouAEIOU"
+	Local cAgudo := "áéíóú"+"ÁÉÍÓÚ"
+	Local cCircu := "âêîôû"+"ÂÊÎÔÛ"
+	Local cTrema := "äëïöü"+"ÄËÏÖÜ"
+	Local cCrase := "àèìòù"+"ÀÈÌÒÙ"
+	Local cTio   := "ãõÃÕ"
+	Local cCecid := "çÇ"
+	Local cMaior := "&lt;"
+	Local cMenor := "&gt;"
+	Local cxBol1 := "Â°"
+	Local cxBol2 := "°"
+	Local _cexcep := getmv("MGF_NOACE",,"|.$%,/:")
+
+	cSring := StrTran(cString,cxBol1,".")
+	cSring := StrTran(cString,cxBol2,".")
+
+	For nX:= 1 To Len(cString)
+		cChar:=SubStr(cString, nX, 1)
+		IF cChar$cAgudo+cCircu+cTrema+cCecid+cTio+cCrase
+			nY:= At(cChar,cAgudo)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+			EndIf
+			nY:= At(cChar,cCircu)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+			EndIf
+			nY:= At(cChar,cTrema)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+			EndIf
+			nY:= At(cChar,cCrase)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr(cVogal,nY,1))
+			EndIf
+			nY:= At(cChar,cTio)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr("aoAO",nY,1))
+			EndIf
+			nY:= At(cChar,cCecid)
+			If nY > 0
+				cString := StrTran(cString,cChar,SubStr("cC",nY,1))
+			EndIf
+		Endif
+	Next
+
+	If cMaior$ cString
+		cString := strTran( cString, cMaior, "" )
+	EndIf
+	If cMenor$ cString
+		cString := strTran( cString, cMenor, "" )
+	EndIf
+
+	cString := StrTran( cString, CRLF, " " )
+
+	For nX:=1 To Len(cString)
+		cChar:=SubStr(cString, nX, 1)
+		If !(Asc(cChar) == 32 .OR. (Asc(cChar) >= 48 .AND. Asc(cChar) <= 57); //espaço e 0-9
+						  .Or. (Asc(cChar) >= 65 .AND. Asc(cChar) <= 90); //a-z
+						  .Or. (Asc(cChar) >= 97 .AND. Asc(cChar) <= 122); //A-Z
+						    ) .and. !cChar $ _cexcep //Exceções
+			cString:=StrTran(cString,cChar,".")
+		Endif
+	Next nX
+Return cString
 

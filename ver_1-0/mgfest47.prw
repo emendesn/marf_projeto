@@ -9,7 +9,7 @@ Data.....:              11/2018
 Descricao / Objetivo:   Tratamento solicit. armazem                        
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================================
 */
 User Function MGFEST47()
@@ -25,7 +25,7 @@ If Altera
 	cSolicit 	:= SUBSTR(UsrFullName(RETCODUSR()),1,25)
 
 	if CSOLIC <>  cSolicit
-		msgalert("Nao permitido Alterar S.As de outro Solicitante/Requisitante")
+		msgalert("Não permitido Alterar S.As de outro Solicitante/Requisitante")
 	    lRet := .F.
 	endif
 Endif

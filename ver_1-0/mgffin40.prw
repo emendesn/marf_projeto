@@ -5,10 +5,10 @@
 Programa............: MGFFIN40
 Autor...............: Barbieri
 Data................: 30/11/2016
-Descricao / Objetivo: Validacao para o fornecedor funcionï¿½rio utilizado no caixinha 
+Descrição / Objetivo: Validação para o fornecedor funcionário utilizado no caixinha 
 Doc. Origem.........: Contrato - GAP TS001
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -27,11 +27,11 @@ User Function MGFFIN40()
 			If (SA2->A2_ZTPRHE) == "F"
 				lRet := .T.
 			Else
-				MSGALERT("Fornecedor nao ï¿½ funcionï¿½rio!","Atencao")
+				MSGALERT("Fornecedor não é funcionário!","Atenção")
 				lRet := .F.
 			EndIf
 		Else
-			MSGALERT("Fornecedor nao cadastrado.","Atencao")
+			MSGALERT("Fornecedor não cadastrado.","Atenção")
 			lRet := .F.
 		EndIf
 	EndIf

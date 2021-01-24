@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF34R21	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½  13/07/18  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: Contabilidade Gerencial - Provisï¿½o   (Modulo 34-CTB)                             ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com elesï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																											   ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF34R21	ºAutor  ³ Geronimo Benedito Alves																	ºData ³  13/07/18  º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: Contabilidade Gerencial - Provisão   (Módulo 34-CTB)                             º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com elesº±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																											   º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF34R21()
 	 
@@ -19,21 +19,21 @@ User Function MGF34R21()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Contabilidade Gerencial - Provisï¿½o"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Provisï¿½o"								)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Provisï¿½o"}							)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Provisï¿½o"}							)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Contabilidade Gerencial - Provisão"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Provisão"								)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Provisão"}							)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Provisão"}							)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02						 03							 04	 05	  06  07	 08	 09		
 	Aadd(_aCampoQry, {"F1_FILIAL"	,"COD_FILIAL"			,""							,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"M0_FILIAL"	,"NOM_FILIAL"			,"Nome Filial"				,"C",40	,0	,""		,""	,""	})
@@ -58,14 +58,14 @@ User Function MGF34R21()
 	Aadd(_aCampoQry, {"E2_BAIXA"	,"DT_BAIXA"				,""							,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"E2_BAIXA"	,"DT_CONTAB  "			,""							,""	,""	,""	,""		,""	,""	})
 
-	aAdd(_aParambox,{1,"Data Emissao Inicial"		,Ctod("")						,""	,""														,""		,""	, 050,.F.})
-	aAdd(_aParambox,{1,"Data Emissao Final"			,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR01, MV_PAR02	,'Data Emissao')"		,""		,""	, 050,.F.})
+	aAdd(_aParambox,{1,"Data Emissão Inicial"		,Ctod("")						,""	,""														,""		,""	, 050,.F.})
+	aAdd(_aParambox,{1,"Data Emissão Final"			,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR01, MV_PAR02	,'Data Emissão')"		,""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Data Vencimento Inicial"	,Ctod("")						,""	,""														,""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Data Vencimento Final"		,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR03, MV_PAR04	,'Data Vencimento')"	,""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Data Baixa Inicial"			,Ctod("")						,""	,""														,""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Data Baixa Final"			,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR05, MV_PAR06	,'Data Baixa')"			,""		,""	, 050,.F.})
-	aAdd(_aParambox,{1,"Data Contabilizacao Inicial",Ctod("")						,""	,""														,""		,""	, 050,.F.})
-	aAdd(_aParambox,{1,"Data Contabilizacao Final"	,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR07, MV_PAR08	,'Data Contabilizacao')",""		,""	, 050,.F.})
+	aAdd(_aParambox,{1,"Data Contabilização Inicial",Ctod("")						,""	,""														,""		,""	, 050,.F.})
+	aAdd(_aParambox,{1,"Data Contabilização Final"	,Ctod("")						,""	,"U_VLFIMMAI(MV_PAR07, MV_PAR08	,'Data Contabilização')",""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Titulo"						,Space(tamSx3("E2_NUM")[1])		,"@!",""													,""		,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Codigo Fornecedor Inicial"	,Space(tamSx3("A2_COD")[1])		,"@!",""													,"SA2"	,""	, 050,.F.})
 	aAdd(_aParambox,{1,"Codigo Fornecedor Final"	,Space(tamSx3("A2_COD")[1])		,""	,"U_VLFIMMAI(MV_PAR10, MV_PAR11	,'Codigo Fornecedor')"	,"SA2"	,""	, 050,.F.})
@@ -74,19 +74,19 @@ User Function MGF34R21()
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
 	_cQuery += "  FROM " + U_IF_BIMFR( "IF_BIMFR", "V_CONTAB_PROVISAO"  )            + CRLF
-	_cQuery += U_WhereAnd(!empty(_cCODFILIA ),     " COD_FILIAL IN "                 + _cCODFILIA                               ) //OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
+	_cQuery += U_WhereAnd(!empty(_cCODFILIA ),     " COD_FILIAL IN "                 + _cCODFILIA                               ) //OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
 	_cQuery += U_WhereAnd(!empty(_aRet[2] ),       " DT_EMISSAO_FILTRO BETWEEN '"    + _aRet[1]  + "' AND '" + _aRet[2]  + "' " ) //NAO OBRIGATORIO
 	_cQuery += U_WhereAnd(!empty(_aRet[4] ),       " DT_VENCIMENTO_FILTRO BETWEEN '" + _aRet[3]  + "' AND '" + _aRet[4]  + "' " ) //NAO OBRIGATORIO
 	_cQuery += U_WhereAnd(!empty(_aRet[6] ),       " DT_BAIXA_FILTRO BETWEEN '"      + _aRet[5]  + "' AND '" + _aRet[6]  + "' " ) //NAO OBRIGATORIO
 	_cQuery += U_WhereAnd(!empty(_aRet[8] ),       " DT_CONTAB_FILTRO BETWEEN '"     + _aRet[7]  + "' AND '" + _aRet[8]  + "' " ) //NAO OBRIGATORIO
-	_cQuery += U_WhereAnd(!empty(_aRet[9] ),       " NUM_TITULO LIKE '%"             + _aRet[9]  + "%' "                        ) //NAO OBRIGATORIO - USUARIO DIGITA O NOME		
-	_cQuery += U_WhereAnd(!empty(_aRet[11] ),      " COD_FORNECEDOR  BETWEEN '"      + _aRet[10] + "' AND '" + _aRet[11] + "' " ) //NAO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE) 
-	_cQuery += U_WhereAnd(!empty(_aRet[13] ),      " COD_NATUREZA  BETWEEN '"        + _aRet[12] + "' AND '" + _aRet[13] + "' " ) //NAO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE) 
+	_cQuery += U_WhereAnd(!empty(_aRet[9] ),       " NUM_TITULO LIKE '%"             + _aRet[9]  + "%' "                        ) //NÃO OBRIGATORIO - USUARIO DIGITA O NOME		
+	_cQuery += U_WhereAnd(!empty(_aRet[11] ),      " COD_FORNECEDOR  BETWEEN '"      + _aRet[10] + "' AND '" + _aRet[11] + "' " ) //NÃO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE) 
+	_cQuery += U_WhereAnd(!empty(_aRet[13] ),      " COD_NATUREZA  BETWEEN '"        + _aRet[12] + "' AND '" + _aRet[13] + "' " ) //NÃO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE) 
 	
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MsgRun("Aguarde!!! Montando\Desconectando Tela"	,,{ ||U_TGridRel()})

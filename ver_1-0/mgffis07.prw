@@ -9,8 +9,8 @@ Data.....:              09/11/2016
 Descricao / Objetivo:   Ajuste Fiscal
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao no cadastro de Veï¿½culo
+Uso......:              Marfrig
+Obs......:              Manutenção no cadastro de Veículo
 =====================================================================================
 */
 
@@ -21,7 +21,7 @@ User Function MGFFIS07()
 	local cUsuario := SuperGetMv("MGF_UFIS40",.F.,"000000",)
 
 	If !(RetCodUsr() $ cUsuario)
-		MsgInfo("Usuario sem permissao para alteracao.","Atencao!")
+		MsgInfo("Usuário sem permissão para alteração.","Atenção!")
 		Return  
 	Else
 		DBSelectArea("DA3")
@@ -29,9 +29,9 @@ User Function MGFFIS07()
 
 		if DA3->( DBSeek( xFilial("DA3") + SF2->F2_VEICUL1 ) )
 			//UPDATE/ exclusao precisa estar possicionado
-			fwExecView("Alteracao", "MGFFIS07", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"Alteracao"
+			fwExecView("Alteração", "MGFFIS07", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"AlteraÃ§Ã£o"
 		else
-			msgAlert("Veï¿½culo da Nota nao encontrada!")
+			msgAlert("Veículo da Nota não encontrada!")
 		endif
 
 		DA3->(DBCloseArea())
@@ -55,7 +55,7 @@ static function ModelDef()
 	oModel := MPFormModel():New("XMGFFIS07", /*bPreValidacao*/,/*bPosValidacao*/, { |oModel| cmtDA3(oModel) }/*bCommit*/,/*bCancel*/ )
 	oModel:AddFields("DA3MASTER",/*cOwner*/,oStrDA3, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription('Alteracao do Veï¿½culo')
+	oModel:SetDescription('Alteração do Veículo')
 	//oModel:SetPrimaryKey({"ZZ5_FILIAL","ZZ5_CODIGO"}) // NecessÃ¡rio apenas quando nao X2_UNICO em branco
 
 return(oModel)

@@ -10,7 +10,7 @@ Data.....:              03/2018
 Descricao / Objetivo:   Alterar carteira para permitir baixa
 Doc. Origem:            Financeiro 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE FINA070
 ============================================================================================================================
 */ 

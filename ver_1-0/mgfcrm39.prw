@@ -13,7 +13,7 @@ Data.....:              04/07/2017
 Descricao / Objetivo:   Metas BI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -80,8 +80,8 @@ static function ModelDef()
 	oStruZBQ:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                                       // [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                                       // [04] Bloco de codigo de execução do gatilho
 
 
 	oStruZBI:SetProperty("*", MODEL_FIELD_OBRIGAT	, .F. )
@@ -135,7 +135,7 @@ static function ViewDef()
 	oView:SetOwnerView( 'VIEW_ZBI', 'VENDEDOR' )
 	oView:SetOwnerView( 'VIEW_ZBQ', 'METAS' )
 
-    //Habilitando titulo
+    //Habilitando título
     oView:EnableTitleView( 'ZBIMASTER', 'Vendedor' )
     oView:EnableTitleView( 'ZBQDETAIL', 'Metas' )
 
@@ -172,13 +172,13 @@ Static Function prevldZBQ(oModel, nLin, cPonto, cCpo, e)
 		if cCpo == 'ZBQ_DTINIC'
 			oMdlZBQ:goLine(nLin)
 			if !empty( oMdlZBQ:getValue( "ZBQ_DTFIM" ) ) .AND. E > oMdlZBQ:getValue( "ZBQ_DTFIM" )
-				Help( ,, 'Nao  permitido',, "Data inicial maior que a data final.", 1, 0 )
+				Help( ,, 'Não permitido',, "Data inicial maior que a data final.", 1, 0 )
 				xRet := .F.
 			endif
 		elseif cCpo == 'ZBQ_DTFIM'
 			oMdlZBQ:goLine(nLin)
 			if !empty( oMdlZBQ:getValue( "ZBQ_DTINIC" ) ) .AND. E < oMdlZBQ:getValue( "ZBQ_DTINIC" )
-				Help( ,, 'Nao  permitido',, "Data inicial maior que a data final.", 1, 0 )
+				Help( ,, 'Não permitido',, "Data inicial maior que a data final.", 1, 0 )
 				xRet := .F.
 			endif
 		endif

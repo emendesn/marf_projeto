@@ -11,6 +11,6 @@ user function FA550BUT()
 	aDel(axRotina,nPosCan)
 	aSize(axRotina,nTam)
 	
-	AADD(axRotina,{"Reposicao Cliente", "U_MGFFIN94" ,0,4})
+	AADD(axRotina,{"Reposição Marfrig", "U_MGFFIN94" ,0,4})
 	
 return axRotina

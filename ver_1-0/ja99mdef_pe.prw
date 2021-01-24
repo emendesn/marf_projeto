@@ -6,11 +6,11 @@
 Programa.:              JA99MDEF_PE
 Autor....:              Marcelo Carneiro
 Data.....:              27/03/2019
-Descricao / Objetivo:   Integracao Grade de Aprovacao SigaJuri
+Descricao / Objetivo:   Integração Grade de Aprovação SigaJuri
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
-Obs......:              PE para criar os botoes em despesas
+Uso......:              Marfrig
+Obs......:              PE para criar os botões em despesas
 =====================================================================================
 */
 User Function JA99MDEF()

@@ -5,10 +5,10 @@
 Programa............: M020ALT
 Autor...............: Adriano Tazava
 Data................: 20/10/2016 
-Descricao / Objetivo: Ponto de entrada apos a alteracao do fornecedor
+Descricao / Objetivo: Ponto de entrada apos a alteração do fornecedor
 Doc. Origem.........: Fiscal-FIS13
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

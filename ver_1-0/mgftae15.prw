@@ -8,11 +8,11 @@
 Programa.:              MGFTAE15
 Autor....:              Marcelo Carneiro
 Data.....:              22/11/2016
-Descricao / Objetivo:   Integracao TAURA - ENTRADAS
+Descricao / Objetivo:   Integração TAURA - ENTRADAS
 Doc. Origem:            Contrato GAPS - MIT044- TAURA PROCESSO DE ENTRADA
 Solicitante:            Cliente
 Uso......:              Marfrig
-Obs......:              MANUTENï¿½ï¿½O DO Boletim DE ABATE
+Obs......:              MANUTENÇÃO DO Boletim DE ABATE
 =============================================================================================
 */
 User Function MGFTAE15
@@ -27,7 +27,7 @@ Private aRotina   := { {"Pesquisar"          ,"AxPesqui"           ,0, 1} ,;
 		               {"Relatorio Abate"    ,"U_MGFINT26"         ,0, 2} ,;
 		               {"Controle de Acertos","U_MGFINT51"         ,0, 2} ,;
 		               {"Nota Promissoria"   ,"U_TAE15_NP"         ,0, 2} ,;
-		               {"Cancela Efetivaï¿½ï¿½o" ,"U_TAE15_EFETIVA(3)" ,0, 4} ,;
+		               {"Cancela Efetivação" ,"U_TAE15_EFETIVA(3)" ,0, 4} ,;
 		               {"Relatorio OUF"      ,"U_MGFINT50"         ,0, 2} ,;
 		               {"Terceiro"	         ,"U_TAE15_TER"        ,0, 3, 0, NIL},;
                        {"Legenda"   	     ,"U_TAE15_Legenda"    ,0, 2 }}
@@ -47,12 +47,12 @@ ChkFile("ZZP")
 ChkFile("ZZQ")
 ChkFile("ZDU")
 
-// Criacao dos SXB para melhoria de performance das consultas padrï¿½es especificas do programa
+// Criação dos SXB para melhoria de performance das consultas padrões especificas do programa
 cFuncao := 'u_zTAE_05()'
 u_zCriaCEsp("TAE_5A", "Nota Compl. de Valor", "SF1", cFuncao, "__cRetorn", {'F1_FILIAL','F1_FORNECE','F1_LOJA','F1_DOC','F1_SERIE'})
 
 cFuncao := 'u_zTAE_06()'
-u_zCriaCEsp("TAE_6A", "Nota Devolucao de Valor", "SF2", cFuncao, "__cRetorn", {'F2_FILIAL','F2_CLIENTE','F2_LOJA','F2_DOC','F2_SERIE'})
+u_zCriaCEsp("TAE_6A", "Nota Devolução de Valor", "SF2", cFuncao, "__cRetorn", {'F2_FILIAL','F2_CLIENTE','F2_LOJA','F2_DOC','F2_SERIE'})
 
 dbSelectArea("ZZM")
 dbSetOrder(1)
@@ -64,19 +64,6 @@ Return
 User Function TAE15_Legenda()
 Local aLegenda:= {}
 
-/*
-Private cFILNFE  := GetMV('MGF_TAE17',.F.,"")
-Private cFILDUPL   := GetMV('MGF_TAE15A',.F.,"")
-Private bEmite     := IIF(ZZM->ZZM_FILIAL $ cFILDUPL,IIF(ZZM->ZZM_EMITE=='S',.T.,.F.),IIF(ZZM->ZZM_FILIAL $ cFILNFE ,.F.,.T.))
-Private bPassou := .T.
-Processa( {|| Gera_Doc_Entrada(@bPassou) },'Aguarde...', 'Efetivando Boletim de Abate - Gerando Nota',.F. )
-Gera_Mov_OP()
-
-
-Processa( {|| U_CPA999(2) },'Aguarde...', 'Atualizando Dados Bancï¿½rios',.F. )
-
-  */
-
 
 AADD(aLegenda, {""	 ,'Produtor Emite nota fiscal Eletronica'})
 AADD(aLegenda, {""	 ,'-------------------------------------'})
@@ -84,15 +71,16 @@ AADD(aLegenda, {"ENABLE"	 ,'Falta Vincular Notas'})
 AADD(aLegenda, {"BR_AMARELO" ,'Quantidade Divergente'})
 AADD(aLegenda, {"BR_PINK"	 ,'Boletim Agrupado'})
 AADD(aLegenda, {"BR_AZUL"    ,'Pendente Movimento de Estoque '})
-AADD(aLegenda, {"DISABLE"	 ,'Diferenï¿½a de Valor'})
+AADD(aLegenda, {"DISABLE"	 ,'Diferença de Valor'})
 AADD(aLegenda, {"BR_CINZA"	 ,'Encerrado'})
-AADD(aLegenda, {""	 ,'Produtor NAO emite nota fiscal Eletronica'})
+AADD(aLegenda, {""	 ,'Produtor NÃO emite nota fiscal Eletronica'})
 AADD(aLegenda, {""	 ,'-----------------------------------------------'})
 AADD(aLegenda, {"ENABLE"	 ,'Processo Iniciado'})
 AADD(aLegenda, {"BR_AZUL"    ,'Notas Vinculadas'})
 AADD(aLegenda, {"BR_AMARELO" ,'Boletim Agrupado'})
 AADD(aLegenda, {"DISABLE"	 ,'Nota Emitida-Pendente Movi. Estoque'})
 AADD(aLegenda, {"BR_CINZA"	 ,'Encerrado'})
+
 BrwLegenda('Boletim de Abate','Taura',aLegenda)
 
 Return
@@ -126,27 +114,27 @@ Private aProdutor  := {}
 Private aRecProd   := {}
 Private bAlterou   := .F.
 
-IF nOpc == 3 //Alteracao
+IF nOpc == 3 //Alteração
 	IF ZZM->ZZM_STATUS == '5' .and. !Empty(ZZM->ZZM_DOC)
-		MsgAlert('Nao ï¿½ possivel alterar, Boletim encerrado !!')
+		MsgAlert('Não é possivel alterar, Boletim encerrado !!')
 		Return
 	EndIF
 	IF (ZZM->ZZM_STATUS == '2' .And. bEmite) .OR. (ZZM->ZZM_STATUS == '6' .And. !bEmite )
-		MsgAlert('Nao ï¿½ possivel alterar, Boletim Agrupado !!')
+		MsgAlert('Não é possivel alterar, Boletim Agrupado !!')
 		Return
 	EndIF
 	IF ZZM->ZZM_STATUS == '5' .and. Empty(ZZM->ZZM_DOC)
 		AAdd(aButtons , {"GTA" ,       {|| U_TAE15_GTA(.F.)},"Guia Transporte Animal","Guia Transporte Animal",{|| .T.}})
 		AAdd(aButtons , {"NF Produtor",{|| U_TAE15_Prod(.F.)},"Nota Fiscal Produtor","Nota Fiscal Produtor",{|| .T.}})
-		AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.F.)},"Nota fiscal Complementar/Devolucao","Nota fiscal Complementar/Devolucao",{|| .T.}})
+		AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.F.)},"Nota fiscal Complementar/Devolução","Nota fiscal Complementar/Devolução",{|| .T.}})
 	   aCpos :={"ZZM_VENCE", "ZZM_VLDESC","ZZM_VLACR","ZZM_VICMS",'ZZM_VNFP','ZZM_ICMSNP','ZZM_ROMAN','ZZM_DTROMA','ZZM_ADIAN','ZZM_DESPEC','ZZM_ICMSFR','ZZM_OBS'}
 	Else
 		AAdd(aButtons , {"GTA" ,       {|| U_TAE15_GTA(.T.)},"Guia Transporte Animal","Guia Transporte Animal",{|| .T.}})
 		AAdd(aButtons , {"NF Produtor",{|| U_TAE15_Prod(.T.)},"Nota Fiscal Produtor","Nota Fiscal Produtor",{|| .T.}})
 		IF !bEmite .And. ZZM->ZZM_STATUS == '4'
-			AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.T.)},"Nota fiscal Complementar/Devolucao","Nota fiscal Complementar/Devolucao",{|| .T.}})
+			AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.T.)},"Nota fiscal Complementar/Devolução","Nota fiscal Complementar/Devolução",{|| .T.}})
 		Else
-			AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.F.)},"Nota fiscal Complementar/Devolucao","Nota fiscal Complementar/Devolucao",{|| .T.}})
+			AAdd(aButtons , {"NF Compl/Devol",   {|| U_TAE15_NFC(.F.)},"Nota fiscal Complementar/Devolução","Nota fiscal Complementar/Devolução",{|| .T.}})
 			aCpos :={"ZZM_VENCE","ZZM_VLDESC","ZZM_VLACR","ZZM_VICMS",'ZZM_VNFP','ZZM_ICMSNP','ZZM_ROMAN','ZZM_DTROMA','ZZM_ADIAN','ZZM_DESPEC','ZZM_ICMSFR','ZZM_OBS'}
 			IF SUBSTR(ZZM->ZZM_PEDIDO,1,1) == 'T'
 				aCpos :={"ZZM_VENCE","ZZM_BANCO",'ZZM_TIPOC','ZZM_FAV',"ZZM_AGENCI","ZZM_CONTA","ZZM_VLDESC","ZZM_VLACR","ZZM_VICMS",'ZZM_VNFP','ZZM_ICMSNP',;
@@ -174,7 +162,7 @@ AAdd(aOBJ,{100,50,.T.,.T.})  //75
 aInfo := { aSize[1], aSize[2], aSize[3], aSize[4], 2, 2 }
 aPObj := MsObjSize( aInfo, aObj )
 
-//Montando o cabecalho
+//Montando o cabeçalho
 dbSelectArea( cAlias )
 dbSetOrder(1)
 For nI := 1 To FCount()
@@ -260,7 +248,7 @@ SB1->(dbSetOrder(1))
 IF nPos == nPosQTPE
 	IF M->ZZN_QTPE > oGet:aCols[oGet:nAt][nPosQTCab]
 		bRet := .F.
-		MsgAlert('A Quantidade de Perda nao pode ser maior que a quantidade de cabeï¿½as abatidas !!')
+		MsgAlert('A Quantidade de Perda não pode ser maior que a quantidade de cabeças abatidas !!')
 	EndIf
 EndIF
 
@@ -362,7 +350,7 @@ Local cQuery  := ''
 Local bContinua := .F.
 
 IF ZZM->ZZM_STATUS $ '45'
-	MsgAlert('Boletim de Abate jï¿½ efetivado, nao ï¿½ possivel estornar !!')
+	MsgAlert('Boletim de Abate já efetivado, não é possivel estornar !!')
 Else
 	IF !Empty(ZZM->ZZM_AGRUP) .And. SUBSTR(ZZM->ZZM_PEDIDO,1,1)<>'A'
 	     MsgAlert('Boletim de Abate sofreu um agrupamento, impossivel estornar !!')
@@ -441,9 +429,6 @@ Else
 				MsgAlert('Erro ao Excluir: '+TcSQLError())
 			EndIF
 
-			//IF SUBSTR(cPedido,1,1) <> 'A'
-			 //   U_MGFTAE17(cFILPED,cPedido,'3','','')
-			///EndIF
 		 END TRANSACTION
 		EndIF
 	EndIF
@@ -464,7 +449,7 @@ Dados_GTA()
 
 DEFINE MSDIALOG oDlg1 TITLE "GTA-Guia de Transporte Animal" FROM 000, 000  TO 300, 300 COLORS 0, 16777215 PIXEL
 
-	@ 007, 005 LISTBOX oListGTA	 Fields HEADER "Numero do GTA" SIZE 143,127 OF oDlg1 COLORS 0, 16777215 PIXEL
+	@ 007, 005 LISTBOX oListGTA	 Fields HEADER "Número do GTA" SIZE 143,127 OF oDlg1 COLORS 0, 16777215 PIXEL
 	oListGTA:SetArray(aGTA)
 	oListGTA:nAt := 1
 	oListGTA:bLine := { || {aGTA[oListGTA:nAt,1]}}
@@ -515,7 +500,7 @@ Local oButton2
 Static oDLG2
 
 
-DEFINE MSDIALOG oDLG2 TITLE "Entre com Numero do GTA" FROM 000, 000  TO 080, 296 COLORS 0, 16777215 PIXEL
+DEFINE MSDIALOG oDLG2 TITLE "Entre com Número do GTA" FROM 000, 000  TO 080, 296 COLORS 0, 16777215 PIXEL
 	@ 008, 002 SAY  "GTA :"   SIZE 028, 009 OF oDLG2              COLORS 0, 16777215 PIXEL
 	@ 006, 025 MSGET  cGTA    SIZE 123, 010 OF oDLG2 PICTURE "@!" COLORS 0, 16777215 PIXEL
 	oBtn := TButton():New( 021, 095 ,'Confirmar'    , oDlg2,{|| oDLG2:End() }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )
@@ -566,26 +551,7 @@ Private oListProd
 Private oListNF
 Private oListSel
 Private bQtdDirv  := .T.
-/*
-IF bEmite
 
-	Dados_Produtor()
-
-	DEFINE MSDIALOG oDlg1 TITLE "Nota Fiscal do Produtor" FROM 000, 000  TO 300, 300 COLORS 0, 16777215 PIXEL
-
-		@ 007, 005 LISTBOX oListProd Fields HEADER "Documento","Serie" SIZE 143,127 OF oDlg1 COLORS 0, 16777215 PIXEL
-		oListProd:SetArray(aProdutor)
-		oListProd:nAt := 1
-		oListProd:bLine := { || {aProdutor[oListProd:nAt,1], aProdutor[oListProd:nAt,2]}}
-
-		IF bInclui
-			oBtn := TButton():New( 137, 005 ,'Incluir'    , oDlg1,{|| Cad_Produtor() }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )
-			oBtn := TButton():New( 137, 090 ,'Excluir'    , oDlg1,{|| Exc_Produtor() }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )
-		EndIF
-
-	ACTIVATE MSDIALOG oDlg1 CENTERED
-Else
-*/
 IF ZZM->ZZM_STATUS == '3'
       bReabre := .T.
 EndIF
@@ -593,7 +559,7 @@ EndIF
          msgAlert('Existe produto sem agrupador ! Favor verificar!')
     Else
 		IF bAlterou
-		 	msgAlert('Foi alterado Agrapador, favor salvar os dados e retornar !!')
+		 	msgAlert('Foi alterado agrupador, favor salvar os dados e retornar !!')
 		 	Return
 		EndIF
 		IF ZZM->ZZM_STATUS == '3' .And. bReabre
@@ -607,13 +573,13 @@ EndIF
 
 		DEFINE MSDIALOG oDlg2 TITLE "Nota Fiscal do Produtor" FROM 000, 000  TO 300, 580 COLORS 0, 16777215 PIXEL
 
-			@ 007, 005 LISTBOX oListNF Fields HEADER "Produto","Descricao","Qtde. Total","Qtd. Selecionada" SIZE 283,50 OF oDlg2 COLORS 0, 16777215 PIXEL
+			@ 007, 005 LISTBOX oListNF Fields HEADER "Produto","Descrição","Qtde. Total","Qtd. Selecionada" SIZE 283,50 OF oDlg2 COLORS 0, 16777215 PIXEL
 			oListNF:SetArray(aListNF)
 			oListNF:nAt := 1
 			oListNF:bChange := {||Atu_dados_NF()}
 			oListNF:bLine := { || {aListNF[oListNF:nAt,1], aListNF[oListNF:nAt,2], aListNF[oListNF:nAt,3], aListNF[oListNF:nAt,4]}}
 
-			@ 065, 005 LISTBOX oListSel Fields HEADER "Documento","Serie","Prod.Auxiliar","Quantidade" SIZE 283,65 OF oDlg2 COLORS 0, 16777215 PIXEL
+			@ 065, 005 LISTBOX oListSel Fields HEADER "Documento","Série","Prod.Auxiliar","Quantidade" SIZE 283,65 OF oDlg2 COLORS 0, 16777215 PIXEL
 			oListSel:SetArray(aListNF[oListNF:nAt,5])
 			oListSel:nAt := 1
 			oListSel:bLine := { || {aListNF[oListNF:nAt,5][oListSel:nAt,1], aListNF[oListNF:nAt,5][oListSel:nAt,2], aListNF[oListNF:nAt,5][oListSel:nAt,3], aListNF[oListNF:nAt,5][oListSel:nAt,4]}}
@@ -856,7 +822,7 @@ Private cBuscaGado := GetMV('MGF_TAE15B',.F.,"'04B','05C'") //TES DE BUSCA DE GA
 
 
 IF aListNF[oListNF:nAt,4] == aListNF[oListNF:nAt,3]
-    msgAlert('Jï¿½ foi selecionado notas suficiente')
+    msgAlert('Já foi selecionado notas suficiente')
     Return
 EndIF
 
@@ -864,7 +830,7 @@ IF nTipoCod == 2
     AAdd(aParamBox, {1, "Produto:"          ,Space(tamSx3("B1_COD")[1])       , "@!",  ,"SB1" ,, 060	, .T.	})
 	IF ParamBox(aParambox, "Escolha um Produto Alternativo"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
     	IF SB1->(!dbSeek(xFilial('SB1')+MV_PAR01))
-			msgAlert('Produto nao cadastrado !!')
+			msgAlert('Produto não cadastrado !!')
 			Return
 		Else
 			cCodProc := SB1->B1_COD
@@ -942,7 +908,7 @@ While !QRY_NF->(EOF())
 EndDo
 
 IF len(aNFProd) == 0
-    msgAlert('Nao existe Nota para ser relacionada!!')
+    msgAlert('Não existe Nota para ser relacionada!!')
 Else
 
 	DEFINE MSDIALOG oDlg3 TITLE "Escolha Nota Fiscal Produtor" FROM 000, 000  TO 340, 300 COLORS 0, 16777215 PIXEL
@@ -1122,20 +1088,17 @@ Private bPassou := .T.
 
 IF nOpcEfetiva == 1
     IF !bEmite
-		MsgAlert('Fornecedor Emite Nota Fiscal Eletronica, nao ï¿½ possivel fazer a NF Entrada !!')
+		MsgAlert('Fornecedor Emite Nota Fiscal Eletronica, não é possivel fazer a NF Entrada !!')
 	    Return
     Else
     	IF !Empty(ZZM->ZZM_DOC)
-    		MsgAlert('Nota jï¿½ emitida!!')
+    		MsgAlert('Nota já emitida!!')
 	    	Return
     	EndIF
     	IF ZZM->ZZM_STATUS <> '3' .AND. ZZM->ZZM_STATUS <> '5'
-    		MsgAlert('Situacao do Boletim nao permite a emissao da Nota !!')
+    		MsgAlert('Situação do Boletim não permite a emissão da Nota !!')
 	    	Return
 	    Else
-	    	//IF ZZM->ZZM_STATUS == '5'
-	    	//    MsgAlert('Boletim encerrado e a Nota foi cancelada, sera emitida uma NF sem movimentar estoque !!')
-	    	//EndIF
 	    	Processa( {|| Gera_Doc_Entrada(@bPassou) },'Aguarde...', 'Efetivando Boletim de Abate - Gerando Nota',.F. )
 	    EndIF
 	EndIF
@@ -1143,17 +1106,17 @@ IF nOpcEfetiva == 1
 ElseIF nOpcEfetiva == 2
 	IF bEmite
 		IF ZZM->ZZM_STATUS <> '4'
-	    	MsgAlert('Situacao do Boletim nao permite a efetivaï¿½ï¿½o !!')
+	    	MsgAlert('Situação do Boletim não permite a efetivação !!')
 		    Return
 		EndIF
 	Else
 		IF ZZM->ZZM_STATUS <> '3'
-			MsgAlert('Situacao do Boletim nao permite a efetivaï¿½ï¿½o !!')
+			MsgAlert('Situação do Boletim não permite a efetivação !!')
 			Return
 		EndIF
 	EndIF
 	IF SUBSTR(ZZM->ZZM_PEDIDO,1,1)=='T'
-		MsgAlert('Boletim de Abate de Terceiro nao ï¿½ possivel Efetivar !!')
+		MsgAlert('Boletim de Abate de Terceiro não é possivel Efetivar !!')
 		Return
 	EndIF
 	IF MsgYESNO('Deseja efetivar o Boletim de Abate ?')
@@ -1162,23 +1125,23 @@ ElseIF nOpcEfetiva == 2
 		IF bPassou
 		    Processa( {|| Libera_Pag() },'Aguarde...', 'Liberando Pagamento',.F. )
 			IF !bEmite
-				Processa( {|| U_CPA999(2) },'Aguarde...', 'Atualizando Dados Bancï¿½rios',.F. )
+				Processa( {|| U_CPA999(2) },'Aguarde...', 'Atualizando Dados Bancários',.F. )
 			EndIF
 		EndIF
 	EndIF
 ElseIF nOpcEfetiva == 3
 	IF bEmite
 		IF ZZM->ZZM_STATUS <> '5'
-			MsgAlert('Boletim ainda nao efetivado, nao ï¿½ possivel cancelar a Efetivaï¿½ï¿½o !!')
+			MsgAlert('Boletim ainda não efetivado, não é possivel cancelar a Efetivação !!')
 			Return
 		EndIF
 	Else
 		IF ZZM->ZZM_STATUS <> '5' .AND. ZZM->ZZM_STATUS <> '4'
-			MsgAlert('Boletim ainda nao efetivado, nao ï¿½ possivel cancelar a Efetivaï¿½ï¿½o !!')
+			MsgAlert('Boletim ainda não efetivado, não é possivel cancelar a Efetivação !!')
 			Return
 		EndIF
 	EndIF
-	IF MsgYESNO('Deseja Cancelar a efetivaï¿½ï¿½o do Boletim de Abate ?')
+	IF MsgYESNO('Deseja Cancelar a efetivação do Boletim de Abate ?')
 		dbSelectArea("SD3")
 		Processa( {|| Can_Mov_OP() },'Aguarde...', 'Cancelando Movimentos Boletim de Abate',.F. )
 	EndIF
@@ -1209,7 +1172,6 @@ Local cTexto    := ''
 Local cBkMod    := cModulo
 Local nBkMod    := nModulo
 
-Private cOPAbate      	:= SUBSTR(DTOS(ZZM->ZZM_DTPROD),3,6)+'04001' //Ret_OP_DIA()
 Private cCarcaca 		:= GetMV('MGF_TAE05',.F.,"")
 Private cTMReq          := GetMV('MGF_TAE06',.F.,"")
 Private cTMProd         := GetMV('MGF_TAE07',.F.,"")
@@ -1250,36 +1212,45 @@ IF SUBSTR(ZZM->ZZM_PEDIDO,1,1) == 'A'
 Else
 	cPedAbate := "'"+Alltrim(ZZM->ZZM_PEDIDO)+"'"
 EndIF
-cQuery := " SELECT SUM(CASE WHEN ZZE_ACAO = '1' THEN ZZE_QUANT ELSE -ZZE_QUANT END ) ZZE_QUANT"
-cQuery += " FROM "+RetSqlName("ZZE")+" ZZE "
-cQuery += " WHERE ZZE.D_E_L_E_T_ = ' ' "
-cQuery += "   AND ZZE_FILIAL = '"+ZZM->ZZM_FILIAL+"' "
-cQuery += "   AND ZZE_PEDLOT in ( " + cPedAbate + ") "
-cQuery += "   AND ZZE_STATUS in ('A','1','P') "
-//cQuery += "   AND ZZE_CANCEL <> '1' "
-cQuery += "   AND ZZE_TPOP = '01' "
-cQuery += "   AND ZZE_TPMOV = '01' "
+cQuery := " SELECT D3_ZOPTAUR,D3_CF,D3_QUANT, R_E_C_N_O_ AS REC"
+cQuery += " FROM "+RetSqlName("SD3")+" SD3 "
+cQuery += " WHERE SD3.D_E_L_E_T_ = ' ' "
+cQuery += "   AND D3_FILIAL = '"+ZZM->ZZM_FILIAL+"' "
+cQuery += "   AND D3_ZPEDLOT in ( " + cPedAbate + ") "
+cQuery += "   AND D3_ESTORNO <> 'S' "
+
 If Select("QRY_OPAB") > 0
 	QRY_OPAB->(dbCloseArea())
 EndIf
+
 cQuery  := ChangeQuery(cQuery)
 dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),'QRY_OPAB',.T.,.F.)
 
-tcSetField('QRY_OPAB',"ZZE_QUANT",'N',TamSx3("ZZE_QUANT")[1],TamSx3("ZZE_QUANT")[2])
+
 QRY_OPAB->(dbGoTop())
 nTotZZE   := 0
-IF QRY_OPAB->(!EOF())
-	nTotZZE   := QRY_OPAB->ZZE_QUANT
-EndIF
+coptaura := ALLTRIM(QRY_OPAB->D3_ZOPTAUR)
+_cfilial := ZZM->ZZM_FILIAL
+_asd3 := {}
+
+Do while  QRY_OPAB->(!EOF())
+	nTotZZE   += QRY_OPAB->D3_QUANT
+	aadd(_asd3,QRY_OPAB->REC)
+	QRY_OPAB->(Dbskip())
+Enddo
+
 IF nTotZZE <> nSomaKG
-	 cTexto += 'Quantidade Total de Carcaca do Boletim esta diferente das integraï¿½ï¿½es recebidas : '+CRLF
+	 cTexto += 'Quantidade Total de Carcaça do Boletim está diferente das integrações recebidas : '+CRLF
 	 cTexto +=  'Boletim : '+Alltrim(STR(nSomaKG))+CRLF
-	 cTexto +=  'Integraï¿½ï¿½es : '+Alltrim(STR(nTotZZE))+CRLF
-	 cTexto +=  'Nao sera possivel efetivar o Boletim !!'
+	 cTexto +=  'Integrações : '+Alltrim(STR(nTotZZE))+CRLF
+	 cTexto +=  'Verifique as integrações da OP Taura ' + coptaura 
+	 cTexto += ' com diferença de ' + alltrim(str(nSomaKG-nTotZZE)) + 'kg no(s) lote(s) ' + strtran(cPedAbate,"'x','"," ") + '!!!'+CRLF
+	 cTexto +=  'Não será possivel efetivar o Boletim !!'
      MsgAlert(cTexto)
      bPassou := .F.
      Return bPassou
-EndIF
+EndIF	
+
 BEGIN TRANSACTION
 	cFilAnt := ZZM->ZZM_FILIAL
 	cModulo := 'EST'
@@ -1288,17 +1259,6 @@ BEGIN TRANSACTION
 	dbSelectArea("SB1")
 	SB1->(dbSetOrder(1))
 	SB1->(dbSeek(xFilial('SB1')+PADR(cCarcaca,TamSx3('B1_COD')[1])))
-
- /*
-    dbSelectArea("SB2")
-	SB2->(dbSetOrder(1))
-	IF SB2->(dbSeek(xFilial('SB2')+PADR(cCarcaca,TamSx3('B1_COD')[1])+SB1->B1_LOCPAD))
-	   IF SB2->B2_VATU1 < 0
-			RecLock("SB2",.F.)
-			SB2->B2_VATU1	:= 0
-			SB2->( msUnlock() )
-	    EndIF
-	EndIF */
 
 	// Faz o Desbloqueio do Produtos utilizados
 	For nI := 1 To Len(aBloqueio)
@@ -1311,190 +1271,64 @@ BEGIN TRANSACTION
 		EndIf
 	Next nI
 
-	IF SC2->(!dbSeek(ZZM->ZZM_FILIAL+cOPAbate))
-		aMata650  := {  {'C2_FILIAL'   ,ZZM->ZZM_FILIAL  ,NIL},;
-						{'C2_PRODUTO'  ,cCarcaca  		 ,NIL},;
-						{'C2_ITEM'     ,'04' 			 ,NIL},;
-						{'C2_SEQUEN'   ,SUBSTR(cOPAbate,9,3) ,NIL},;
-						{'C2_NUM'      ,SUBSTR(cOPAbate,1,6)  ,NIL},;
-						{'C2_QUANT'    ,nSomaKG          ,NIL},;
+	
+	//Mata241 para baixar o Boi
+	IF bContinua
+
+	
+		
+		aCab := {{'D3_TM'      ,cTMReq           ,NIL},;
+				 {'D3_FILIAL'  ,ZZM->ZZM_FILIAL     ,NIL},;
+		         {'D3_EMISSAO' ,ZZM->ZZM_DTPROD  ,NIL}}
+	
+		For nI := 1 To Len(aCodAgrup)
+
+			//Define sequencia, se op tem mais de 6 caracteres coloca caracteres adicionais no c2_sequen
+			If len(alltrim(cOPTaura)) <= 6
+				_cc2seque := '001'
+			Else
+				_cc2seque := padl(substr(alltrim(cOPTaura),7,3),3,"0")
+			Endif
+
+			_citem := "01"
+
+			//Define item a ser usado
+			SC2->(Dbsetorder(1)) //C2_FILIAL+C2_NUM+C2_ITEM
+	
+			If SC2->( dbSeek( _cfilial+cOPTaura ) )
+
+				Do while SC2->C2_FILIAL + alltrim(SC2->C2_ZOPTAUR) == _cfilial+cOPTaura
+
+					If SC2->C2_ITEM >= _citem
+						If SC2->C2_ITEM < '10'
+							_citem := strzero(val(SC2->C2_ITEM)+1,2)
+						Else
+							_citem := soma1(SC2->C2_ITEM)
+						Endif
+					Endif
+
+					SC2->(Dbskip())
+
+				Enddo
+
+			Endif
+	
+			SC2->(Dbsetorder(1)) //C2_FILIAL+C2_NUM+C2_ITEM
+	
+			IF SC2->(!dbSeek(_cfilial+cOPTaura+SPACE(6-LEN(COPTAURA))+_citem))
+				aMata650  := {  {'C2_FILIAL'   ,ZZM->ZZM_FILIAL  ,NIL},;
+						{'C2_PRODUTO'  ,aCodAgrup[nI,1]	 ,NIL},;
+						{'C2_ITEM'     ,_citem 			 ,NIL},;
+						{'C2_SEQUEN'   ,_cc2seque ,NIL},;
+						{'C2_NUM'      ,cOPTaura  ,NIL},;
+						{'C2_QUANT'    ,aCodAgrup[nI,2] ,NIL},;
 						{'C2_DATPRI'   ,ZZM->ZZM_DTPROD ,NIL},;
 						{"C2_DATPRF"   ,dDataBase        ,Nil},;
 						{"C2_TPOP"    , "F"              ,Nil},;
 						{"AUTEXPLODE" , "N"              ,Nil}}
-		lMsErroAuto := .F.
-		MSExecAuto({|x,Y| Mata650(x,Y)},aMata650,3)
-		IF lMsErroAuto
-			DisarmTransaction()
-			aErro := GetAutoGRLog()
-			cErro := ""
-			For nI := 1 to Len(aErro)
-				cErro += aErro[nI] + CRLF
-			Next nI
-			msgStop(cErro)
-			bContinua  := .F.
-			bPassou      := .F.
-		Else
-			bContinua   := .T.
-		Endif
-	EndIF
-	//Mata241 para baixar o Boi
-	IF bContinua
-		aCab := {{'D3_TM'      ,cTMReq           ,NIL},;
-				 {'D3_FILIAL'  ,ZZM->ZZM_FILIAL     ,NIL},;
-		         {'D3_EMISSAO' ,ZZM->ZZM_DTPROD  ,NIL}}
-		For nI := 1 To Len(aCodAgrup)
-			aItem	    := {}
-			Aadd(aItem,{'D3_COD'      ,aCodAgrup[nI,1] ,NIL})
-			Aadd(aItem,{'D3_UM'       ,aCodAgrup[nI,3] ,NIL})
-			Aadd(aItem,{'D3_QUANT'    ,aCodAgrup[nI,2] ,NIL})
-			Aadd(aItem,{'D3_LOCAL'    ,aCodAgrup[nI,4] ,NIL})
-			Aadd(aItem,{"D3_OP"       ,cOPAbate 	   ,NIL})
-			Aadd(aItem,{"D3_ZPEDLOT"  ,ZZM->ZZM_PEDIDO ,NIL})
-			Aadd(aItem,{"D3_ZORIGEM"  ,'ABATE'         ,NIL})
-			AAdd(aTotItem,aItem)
-		Next nI
-		MSExecAuto({|x,y,z| mata241(x,y,z)},aCab,aTotItem,3)
-		IF lMsErroAuto
-			DisarmTransaction()
-			aErro := GetAutoGRLog()
-			cErro := ""
-			For nI := 1 to Len(aErro)
-				cErro += aErro[nI] + CRLF
-			Next nI
-			msgStop(cErro)
-			bContinua   := .F.
-			bPassou      := .F.
-		Else
-			bContinua   := .T.
-		Endif
-	EndIF
-	//Apontamento de Producao MATA250
-	IF bContinua
-		aCab   :={ 	{"D3_TM"      ,cTMProd 				,NIL},;
-					{"D3_OP"      ,cOPAbate 		    ,NIL},;
-					{"D3_COD"     ,cCarcaca   		    ,NIL},;
-					{"D3_QUANT"   ,nSomaKG        		,NIL},;
-					{"D3_PARCTOT" ,'P' 					,NIL},;
-					{"D3_EMISSAO" ,ZZM->ZZM_DTPROD	    ,NIL},;
-					{"D3_ZPEDLOT" ,ZZM->ZZM_PEDIDO      ,NIL},;
-					{"D3_ZORIGEM" ,'ABATE'              ,NIL}}
-
-		MSExecAuto({|x, y| mata250(x, y)},aCab, 3 )
-		IF lMsErroAuto
-			DisarmTransaction()
-			aErro := GetAutoGRLog()
-			cErro := ""
-			For nI := 1 to Len(aErro)
-				cErro += aErro[nI] + CRLF
-			Next nI
-			msgStop(cErro)
-			bContinua   := .F.
-			bPassou      := .F.
-		Else
-			bContinua   := .T.
-		Endif
-	EndIF
-	//Requisiï¿½ï¿½o da carcaï¿½a em quilos nas OPs de
-	// de Abate de Producao
-	/*
-	IF bContinua
-		dbSetOrder(1)
-		SB1->(dbSeek(xFilial('SB1')+cCarcaca))
-		IF SUBSTR(ZZM->ZZM_PEDIDO,1,1) == 'A'
-		    cPedAbate := Ret_Agrup()
-		Else
-		    cPedAbate := "'"+Alltrim(ZZM->ZZM_PEDIDO)+"'"
-		EndIF
-		aTotItem := {}
-		aCab 	 := {{'D3_TM'      ,cTMReq           ,NIL},;
-		             {'D3_EMISSAO' ,ZZM->ZZM_DTPROD  ,NIL}}
-		cQuery := " SELECT  D3_OP , SUM(D3_QUANT) QUANT "
-		cQuery += " FROM "+RetSQLName("SD3")
-		cQuery += " WHERE D3_FILIAL  = '" + ZZM->ZZM_FILIAL + "' "
-		cQuery += "   AND D_E_L_E_T_ = ' ' "
-		cQuery += "   AND D3_ESTORNO <> 'S' "
-		cQuery += "   AND D3_OP      <> ' '"
-		cQuery += "   AND D3_ZPEDLOT in ( " + cPedAbate + ") "
-		cQuery += " GROUP BY  D3_OP "
-		If Select("QRY_OPAB") > 0
-			QRY_OPAB->(dbCloseArea())
-		EndIf
-		cQuery  := ChangeQuery(cQuery)
-		dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),"QRY_OPAB",.T.,.F.)
-		dbSelectArea("QRY_OPAB")
-		QRY_OPAB->(dbGoTop())
-		While QRY_OPAB->(!EOF())
-			aItem	    := {}
-			Aadd(aItem,{'D3_COD'      ,cCarcaca ,NIL})
-			Aadd(aItem,{'D3_UM'       ,SB1->B1_UM ,NIL})
-			Aadd(aItem,{'D3_QUANT'    ,QRY_OPAB->QUANT ,NIL})
-			Aadd(aItem,{'D3_LOCAL'    ,SB1->B1_LOCPAD,NIL})
-			Aadd(aItem,{"D3_OP"       ,QRY_OPAB->D3_OP ,NIL})
-			Aadd(aItem,{"D3_ZPEDLOT"  ,ZZM->ZZM_PEDIDO ,NIL})
-			AAdd(aTotItem,aItem)
-			QRY_OPAB->(dbSkip())
-		End
-		IF Len(aTotItem) > 0
-			MSExecAuto({|x,y,z| mata241(x,y,z)},aCab,aTotItem,3)
-			IF lMsErroAuto
-				DisarmTransaction()
-				aErro := GetAutoGRLog()
-				cErro := ""
-				For nI := 1 to Len(aErro)
-					cErro += aErro[nI] + CRLF
-				Next nI
-				msgStop(cErro)
-				bContinua   := .F.
-			Else
-				bContinua   := .T.
-			Endif
-		EndIF
-	EndIF
-	*/
-
-	IF bContinua
-		dbSetOrder(1)
-		SB1->(dbSeek(xFilial('SB1')+cCarcaca))
-		aTotItem := {}
-		cQuery := " SELECT ZZE_FILIAL, ZZE_GERACA, ZZE_CODPA, ZZE_TPOP, "
-		cQuery += "       SUM(CASE WHEN ZZE_ACAO = '1' THEN ZZE_QUANT ELSE -ZZE_QUANT END ) ZZE_QUANT, ZZE_PEDLOT "
-		cQuery += " FROM "+RetSqlName("ZZE")+" ZZE "
-		cQuery += " WHERE ZZE.D_E_L_E_T_ = ' ' "
-		cQuery += "   AND ZZE_FILIAL = '"+ZZM->ZZM_FILIAL+"' "
-		cQuery += "   AND ZZE_PEDLOT in ( " + cPedAbate + ") "
-		cQuery += "   AND ZZE_STATUS in ('A','1','P') "
-		//cQuery += "   AND ZZE_CANCEL <> '1' "
-		cQuery += "   AND ZZE_TPOP = '01' "
-		cQuery += "   AND ZZE_TPMOV = '01' "
-		cQuery += " GROUP BY ZZE_FILIAL, ZZE_GERACA, ZZE_CODPA, ZZE_TPOP, ZZE_PEDLOT "
-		cQuery += " Having SUM(CASE WHEN ZZE_ACAO = '1' THEN ZZE_QUANT ELSE -ZZE_QUANT END ) > 0"
-		If Select("QRY_OPAB") > 0
-			QRY_OPAB->(dbCloseArea())
-		EndIf
-
-		cQuery  := ChangeQuery(cQuery)
-		dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),'QRY_OPAB',.T.,.F.)
-
-		tcSetField('QRY_OPAB',"ZZE_QUANT",'N',TamSx3("ZZE_QUANT")[1],TamSx3("ZZE_QUANT")[2])
-		QRY_OPAB->(dbGoTop())
-		SC2->(dbSetOrder(9))
-		While QRY_OPAB->(!EOF()) .and. bContinua
-			// verifica se tem a OP criada
-			If SC2->(!dbSeek(xFilial("SC2")+Subs(QRY_OPAB->ZZE_GERACA,3,6)+"01"+QRY_OPAB->ZZE_CODPA))
-				cNumOP := TAE15CriaSC2()
-				aMata650  := {  {'C2_FILIAL'   ,ZZM->ZZM_FILIAL  ,NIL},;
-								{'C2_DATPRI'   ,sTod(QRY_OPAB->ZZE_GERACA)-3 ,NIL},;
-								{'C2_NUM'      ,Subs(cNumOP,1,6)  ,NIL},;
-								{'C2_ITEM'     ,'01' 			 ,NIL},;
-								{'C2_SEQUEN'   ,Subs(cNumOP,9,3) ,NIL},;
-								{'C2_PRODUTO'  ,QRY_OPAB->ZZE_CODPA  		 ,NIL},;
-								{'C2_QUANT'    ,QRY_OPAB->ZZE_QUANT          ,NIL},;
-								{"C2_DATPRF"   ,dDataBase        ,Nil},;
-								{"C2_TPOP"    , "F"              ,Nil},;
-								{"AUTEXPLODE" , "N"              ,Nil}}
 				lMsErroAuto := .F.
 				MSExecAuto({|x,Y| Mata650(x,Y)},aMata650,3)
+				
 				IF lMsErroAuto
 					DisarmTransaction()
 					aErro := GetAutoGRLog()
@@ -1503,42 +1337,34 @@ BEGIN TRANSACTION
 						cErro += aErro[nI] + CRLF
 					Next nI
 					msgStop(cErro)
-					bContinua   := .F.
+					bContinua  := .F.
 					bPassou      := .F.
 				Else
 					bContinua   := .T.
 				Endif
-			Else
-				cNumOP := SC2->C2_NUM+SC2->C2_ITEM+SC2->C2_SEQUEN
-				// verificar se OP estah encerrada, reabrindo para realizar os apontamentos
-				If !Empty(SC2->C2_DATRF)
-					aAdd(aEncerOP,{SC2->(Recno()),SC2->C2_DATRF})
-					SC2->(RecLock("SC2",.F.))
-					SC2->C2_DATRF := cTod("")
-					SC2->(MsUnLock())
-				Endif
-			Endif
+			EndIF
 
-			If bContinua
-				aItem	    := {}
-				Aadd(aItem,{'D3_COD'      ,cCarcaca ,NIL})
-				Aadd(aItem,{'D3_UM'       ,SB1->B1_UM ,NIL})
-				Aadd(aItem,{'D3_QUANT'    ,QRY_OPAB->ZZE_QUANT ,NIL})
-				Aadd(aItem,{'D3_LOCAL'    ,SB1->B1_LOCPAD,NIL})
-				Aadd(aItem,{"D3_OP"       ,cNumOP ,NIL})
-				Aadd(aItem,{"D3_ZPEDLOT"  ,ZZM->ZZM_PEDIDO ,NIL})
-				Aadd(aItem,{"D3_ZORIGEM"  ,'ABATE'         ,NIL})
-				AAdd(aTotItem,aItem)
-			Endif
-			QRY_OPAB->(dbSkip())
-		Enddo
-		QRY_OPAB->(dbCloseArea())
+			SC2->(Dbsetorder(1)) //C2_FILIAL+C2_NUM+C2_ITEM
+			SC2->(dbSeek(_cfilial+cOPTaura+SPACE(6-LEN(COPTAURA))+_citem))
+			cNumOrd	:= SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )
+	
+			aItem	    := {}
+			Aadd(aItem,{'D3_COD'      ,aCodAgrup[nI,1] ,NIL})
+			Aadd(aItem,{'D3_UM'       ,aCodAgrup[nI,3] ,NIL})
+			Aadd(aItem,{'D3_QUANT'    ,aCodAgrup[nI,2] ,NIL})
+			Aadd(aItem,{'D3_LOCAL'    ,aCodAgrup[nI,4] ,NIL})
+			Aadd(aItem,{"D3_OP"       ,cNumOrd	 	   ,NIL})
+			Aadd(aItem,{"D3_ZPEDLOT"  ,ZZM->ZZM_PEDIDO ,NIL})
+			Aadd(aitem,{"D3_ZOPTAUR"  ,coptaura        ,NIL})
+			Aadd(aItem,{"D3_ZORIGEM"  ,'ABATE'         ,NIL})
+			AAdd(aTotItem,aItem)
+		
+		Next nI
 
-		IF Len(aTotItem) > 0
-			aCab 	 := {{'D3_TM'      ,cTMReq           ,NIL},;
-						 {'D3_FILIAL'  ,ZZM->ZZM_FILIAL     ,NIL},;
-			             {'D3_EMISSAO' ,ZZM->ZZM_DTPROD  ,NIL}}
-			MSExecAuto({|x,y,z| mata241(x,y,z)},aCab,aTotItem,3)
+		If bContinua
+
+			MSExecAuto({|x,y,z| mata241(x,y,z)},aCab,aTotItem,3)	
+
 			IF lMsErroAuto
 				DisarmTransaction()
 				aErro := GetAutoGRLog()
@@ -1551,43 +1377,60 @@ BEGIN TRANSACTION
 				bPassou      := .F.
 			Else
 				bContinua   := .T.
+				_ncustoboi := SD3->D3_CUSTO1
 			Endif
-		EndIF
-		If bContinua
-			For nI := 1 To Len(aEncerOP)
-				SC2->(dbGoto(aEncerOP[nI][1]))
-				If SC2->(Recno()) == aEncerOP[nI][1]
-					SC2->(RecLock("SC2",.F.))
-					SC2->C2_DATRF := aEncerOP[nI][2]
-					SC2->(MsUnLock())
-				Endif
-			Next
-			/*cQuery := " Update "+RetSqlName("ZZE")
-			cQuery += " Set ZZE_STATUS = 'P' "
-			cQuery += "WHERE D_E_L_E_T_ = ' ' "
-			cQuery += "AND ZZE_FILIAL = '"+ZZM->ZZM_FILIAL+"' "
-			cQuery += "AND ZZE_PEDLOT in ( " + cPedAbate + ") "
-			cQuery += "AND ZZE_STATUS = 'A' "
-			IF (TcSQLExec(cQuery) < 0)
-				bContinua   := .F.
-				bPassou      := .F.
-				MsgStop(TcSQLError())
-			EndIF */
+	
 		Endif
-	Endif
+	
+	EndIF
 
+	//Rateia valor nas produçoes da OP
+	If bContinua
+
+		cQuery := " SELECT D3_CUSTO1 "
+		cQuery += " FROM "+RetSqlName("SD3")+" SD3 "
+		cQuery += " WHERE SD3.D_E_L_E_T_ = ' ' "
+		cQuery += "   AND D3_FILIAL = '"+ZZM->ZZM_FILIAL+"' "
+		cQuery += "   AND D3_ZPEDLOT = '" + alltrim(ZZM->ZZM_PEDIDO) + "'"
+		cQuery += "   AND D3_ESTORNO <> 'S' AND D3_ZORIGEM = 'ABATE' "
+
+		If Select("QRY_OPAB") > 0
+			QRY_OPAB->(dbCloseArea())
+		EndIf
+
+		cQuery  := ChangeQuery(cQuery)
+		dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),'QRY_OPAB',.T.,.F.)
+
+		_ncustoboi := 0
+		Do while !(QRY_OPAB->(Eof()))
+			_ncustoboi += QRY_OPAB->D3_CUSTO1
+			QRY_OPAB->(Dbskip())
+		Enddo
+
+		For _nnj := 1 to len(_asd3)
+
+			SD3->(Dbgoto(_asd3[_nnj]))
+			Reclock("SD3",.F.)
+			SD3->D3_CUSTO1 := (_ncustoboi/nSomaKG)*SD3->D3_QUANT
+			SD3->(Msunlock())
+
+		Next
+
+
+	Endif
+	
 	IF bContinua
 		IF bEmite
 			Reclock("ZZM",.F.)
 			ZZM->ZZM_STATUS := '5'
-			ZZM->ZZM_NUMOP  := cOPAbate
+			ZZM->ZZM_NUMOP  := cNumOrd
 			ZZM->(MsUnlock())
 			MsgAlert('Boletim encerrado com sucesso !')
 		Else
 			aDifValor := DifValor()
 			Reclock("ZZM",.F.)
 			ZZM->ZZM_STATUS := '5'
-			ZZM->ZZM_NUMOP  := cOPAbate
+			ZZM->ZZM_NUMOP  := cNumOrd
 			IF !aDifValor[1]
 				ZZM->ZZM_STATUS := '4'
 			Else
@@ -1596,9 +1439,8 @@ BEGIN TRANSACTION
 			ZZM->ZZM_ENVIA  := 'S'
 			ZZM->(MsUnlock())
 			IF !aDifValor[1]
-				MsgAlert('Boletim com diferenca de valor !'+CRLF+'Diferenï¿½a de : '+Transform(aDifValor[2],		"@e 9,999,999,999,999.99"))
+				MsgAlert('Boletim com diferença de valor !'+CRLF+'Diferença de : '+Transform(aDifValor[2],		"@e 9,999,999,999,999.99"))
 			Else
-				//TAE15_Lib_Fin()
 				MsgAlert('Boletim encerrado com sucesso !')
 			EndiF
 		EndIF
@@ -1630,7 +1472,6 @@ Local cEst       := GetAdvFVal( "SA2", "A2_EST", xFilial('SA2')+PADR(ALLTRIM(ZZM
 											     PADR(ALLTRIM(ZZM->ZZM_LOJA),TamSX3("A2_LOJA")[1]), 1, "" )
 Local cTES       := ''
 Local cOper      := Alltrim(GetMV('MGF_TAE08',.F.,"46"))
-//Local cOperSEM   := Alltrim(GetMV('MGF_TAE1501',.F.,''))
 Local aCodAgrup  := {}
 Local nPos       := 0
 Local nI         := 0
@@ -1657,33 +1498,21 @@ Private lAutoErrNoFile  := .T.
 Private aParamBox := {}
 Private aRet      := {}
 
-//IF ZZM->ZZM_STATUS == '5'
-//   IF Empty(cOperSEM)
-//	   MsgAlert('Parametro de Operacao para Boletim Encerrado nao cadastrado!!')
-//	   Return
-//   Else
- //    cOper := cOperSEM
- //  EndIF
-//EndIF
+
 IF !Sx5NumNota()
      bPassou := .F.
 Else
     SF1->(dbSetOrder(1))
     IF SF1->(dbSeek(ZZM->ZZM_FILIAL+cNumero+cSerie+Alltrim(ZZM->ZZM_FORNEC)+ZZM->ZZM_LOJA))
-    	msgAlert('Nï¿½meraï¿½ï¿½o da nota jï¿½ existe para este fornecedor !!')
+    	msgAlert('Númeração da nota já existe para este fornecedor !!')
     	bPassou := .F.
     Else
-        //bSel := ConPad1(,,,'DJ')
-	    //IF !bSel
-	   //      bPassou := .F.
-	  //  Else
-    	    //cOperTES   := SX5->X5_CHAVE
-    	    cNUM     := Ret_Pedido()
+     	    cNUM     := Ret_Pedido()
 			IF !Empty(cNUM)
 			    DbSelectArea('SC7')
 				SC7->(DbOrderNickName('IDZPTAURA'))
 				IF SC7->(DbSeek(ZZM->ZZM_FILIAL+cNUM))
-					msgAlert('A Condicao de Pagamento do Pedido de Compra ï¿½ : '+SC7->C7_COND)
+					msgAlert('A Condição de Pagamento do Pedido de Compra é : '+SC7->C7_COND)
 				EndIF
 		    EndIF
     	    bSel := ConPad1(,,,'SE4')
@@ -1710,11 +1539,6 @@ Else
 						EndIF
 						ZZN->(dbSkip())
 				End
-		    	//AAdd(aParamBox, {1, "Volume"      	    ,nTotCab , "@E 999999",                ,     , , 050	, .T.	})
-				//AAdd(aParamBox, {1, "Especie"           ,PADR('CABEï¿½AS',tamSx3("F1_ESPECI1")[1])  , "@!",  , ,, 060	, .T.	})
-				//AAdd(aParamBox, {1, "Peso Bruto"  	    ,nTotKG , "@E 999,999.9999"           ,     ,      ,, 050	, .T.	})
-				//AAdd(aParamBox, {1, "Peso Liquido"	    ,nTotKG , "@E 99,999,999.99999"       ,     ,      ,, 050	, .T.	})
-				//IF ParamBox(aParambox, "Dados de Volume / Peso"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 
 		    		cNumero := NxtSX5Nota(cSerie)
 	            	SB1->(dbSetOrder(1))
@@ -1733,7 +1557,7 @@ Else
 					Aadd(aCabSF1,{"F1_EST"        ,cEst     		,Nil})
 					Aadd(aCabSF1,{"F1_ZICMS"      ,ZZM->ZZM_VICMS   ,Nil})
 					Aadd(aCabSF1,{"F1_VOLUME1"    ,nTotCab         ,Nil})
-					Aadd(aCabSF1,{"F1_ESPECI1"    ,'Cabecas'         ,Nil})
+					Aadd(aCabSF1,{"F1_ESPECI1"    ,'Cabeças'         ,Nil})
 					Aadd(aCabSF1,{"F1_PBRUTO"     ,nTotKG         ,Nil})
 					Aadd(aCabSF1,{"F1_PLIQUI "    ,nTotKG         ,Nil})
 					//Adequando o Valor total com o acrescimo e descontog
@@ -1760,8 +1584,8 @@ Else
 					            aItem	   := {}
 						        cTes       := MaTesInt(1,Alltrim(cOperTES),PADR(ALLTRIM(ZZM->ZZM_FORNEC),TamSX3("A2_COD")[1]),PADR(ALLTRIM(ZZM->ZZM_LOJA),TamSX3("A2_LOJA")[1]),"F",PADR(ALLTRIM(aCodAgrup[nI,1]),TamSX3("B1_COD")[1]))
 								IF Empty(cTes)
-								    cMsg := "Pelas regras cadastradas de 'TES inteligente', nao foi encontrado 'TES' para os dados abaixo: "+CRLF+;
-									"Tipo de Operacao: "+cOperTES+CRLF+;
+								    cMsg := "Pelas regras cadastradas de 'TES inteligente', não foi encontrado 'TES' para os dados abaixo: "+CRLF+;
+									"Tipo de Operação: "+cOperTES+CRLF+;
 									"Fornecedor: "+ALLTRIM(ZZM->ZZM_FORNEC)+'-'+ALLTRIM(ZZM->ZZM_LOJA)+CRLF+;
 									"Produto: "+ALLTRIM(aCodAgrup[nI,1])
 									APMsgStop(cMsg)
@@ -1777,7 +1601,6 @@ Else
 								Aadd(aItem,{"D1_TOTAL"      , nValTot ,Nil})
 								Aadd(aItem,{"D1_TES"        ,cTES      		,Nil})
 								Aadd(aItem,{"D1_LOCAL"      ,SB1->B1_LOCPAD 	,Nil})
-								//Aadd(aItem,{"D1_OPER"       ,cOperTES 		,Nil})
 								Aadd(aItem,{"D1_NFORI"      ,ZZP->ZZP_DOC       	,Nil})
 								Aadd(aItem,{"D1_SERIORI"	,ZZP->ZZP_SERIE  		,Nil})
 								IF !Empty(ZZP->ZZP_CODAUX)
@@ -1791,7 +1614,7 @@ Else
 												PADR(ALLTRIM(ZZM->ZZM_FORNEC),TamSX3("D1_FORNECE")[1])+;
 												PADR(ALLTRIM(ZZM->ZZM_LOJA),TamSX3("D1_LOJA")[1])+;
 												PADR(ALLTRIM(cCodAux),TamSX3("ZZP_PRODUT")[1])))
-								     MsgAlert('Item da Nota de referencia nao encontrado !!')
+								     MsgAlert('Item da Nota de referencia não encontrado !!')
 								     bPassou := .F.
 								     Return
 								EndIF
@@ -1814,8 +1637,8 @@ Else
 						  		SB1->(dbSeek(xFilial('SB1')+ZZN->ZZN_CODAGR))
 								cTes := MaTesInt(1,Alltrim(cOperTES),PADR(ALLTRIM(ZZM->ZZM_FORNEC),TamSX3("A2_COD")[1]),PADR(ALLTRIM(ZZM->ZZM_LOJA),TamSX3("A2_LOJA")[1]),"F",PADR(ALLTRIM(ZZN->ZZN_CODAGR),TamSX3("B1_COD")[1]))
 								IF Empty(cTes)
-								    cMsg := "Pelas regras cadastradas de 'TES inteligente', nao foi encontrado 'TES' para os dados abaixo: "+CRLF+;
-									"Tipo de Operacao: "+cOperTES+CRLF+;
+								    cMsg := "Pelas regras cadastradas de 'TES inteligente', não foi encontrado 'TES' para os dados abaixo: "+CRLF+;
+									"Tipo de Operação: "+cOperTES+CRLF+;
 									"Fornecedor: "+ALLTRIM(ZZM->ZZM_FORNEC)+'-'+ALLTRIM(ZZM->ZZM_LOJA)+CRLF+;
 									"Produto: "+ALLTRIM(ZZN->ZZN_CODAGR)
 									APMsgStop(cMsg)
@@ -1854,13 +1677,10 @@ Else
 							EndIF
 							ZZM->ZZM_ENVIA  := 'S'
 							ZZM->(MsUnlock())
-							//U_FIS16_GNRE()  O recolhimento ï¿½ feito mensal, nao sera feito nota a nota. Carneiro 12/2017
 							U_CPA999(1) // Tipo 1 = emite a nota fiscal.
 						Endif
 
-				//EndIF
 			EndIF
-		//EndIF
 	EndIF
 EndIF
 Return
@@ -1905,7 +1725,7 @@ QRY_ZZP->(dbGoTop())
 IF  !QRY_ZZP->(EOF())
    nVZZP   := QRY_ZZP->VALOR_ZZP
 EndIF
-//IF nVZZN <> nVZZP
+
 IF (nVZZN  - nVZZP + ZZM->ZZM_VLACR - ZZM->ZZM_VLDESC + ZZM->ZZM_DESPEC  ) <> 0
     bRet := .F.
 EndIF
@@ -1931,22 +1751,22 @@ Private oNO       := LoadBitmap(GetResources(),'LBNO')
 
 IF !bEmite
     IF ZZM->ZZM_STATUS <>'1'
-        MsgAlert('Situacao do Boletim nao permite Agrupamento !')
+        MsgAlert('Situação do Boletim não permite Agrupamento !')
     	Return
     EndIF
 Else
     IF ZZM->ZZM_STATUS <>'1'
-		MsgAlert('Processo jï¿½ encerrado, nao ï¿½ possivel Agrupar !!')
+		MsgAlert('Processo já encerrado, não é possivel Agrupar !!')
 		Return
 	EndIF
 	IF SUBSTR(ZZM->ZZM_PEDIDO,1,1)=='T'
-		MsgAlert('Boletim de Abate de Terceiro nao ï¿½ possivel Agrupar !!')
+		MsgAlert('Boletim de Abate de Terceiro não é possivel Agrupar !!')
 		Return
 	EndIF
 EndIF
 Dados_AGR()
 IF Len(aAGR) ==0
-	msgAlert('Nao hï¿½ Boletins para agrupamento')
+	msgAlert('Não há Boletins para agrupamento')
 Else
 
 	DEFINE MSDIALOG oDlg1 TITLE "Agrupamentos de Boletins" FROM 000, 000  TO 300, 300 COLORS 0, 16777215 PIXEL
@@ -2105,7 +1925,6 @@ IF Len(aAGR) > 0
 		cNOME           := ZZM->ZZM_NOME
 		cVENCE          := ZZM->ZZM_VENCE
 		cFAV            := ZZM->ZZM_FAV
-		//cCNPJ           := ZZM->ZZM_CNPJ
 		cBANCO          := ZZM->ZZM_BANCO
 		cAGEN           := ZZM->ZZM_AGENCI
 		cCONTA          := ZZM->ZZM_CONTA
@@ -2139,7 +1958,6 @@ IF Len(aAGR) > 0
 		ZZM->ZZM_VLDUPL	:= nVLDUPL
 		ZZM->ZZM_VICMS  := nVICMS
 		ZZM->ZZM_FAV   	:= cFAV
-		//ZZM->ZZM_CNPJ  	:= cCNPJ
 		ZZM->ZZM_BANCO 	:= cBANCO
 		ZZM->ZZM_AGENCI	:= cAGEN
 		ZZM->ZZM_CONTA	:= cCONTA
@@ -2347,7 +2165,7 @@ IF SF1->(dbSeek(ZZM->ZZM_FILIAL+ZZM->ZZM_DOC+ZZM->ZZM_SERIE+Alltrim(ZZM->ZZM_FOR
 		                SF1->F1_TIPO, ;
 		                "1",          ;
 		                SuperGetMV("MV_ESTADO") })
-		GravaTit(.T. ,;//Gera titulo ICMS Antecipaï¿½ï¿½o
+		GravaTit(.T. ,;//Gera titulo ICMS Antecipação
 				 nValor,; //Valor do ICMS Antecipado.
 				 "ICMS", ;
 				 "IC",   ;
@@ -2428,7 +2246,6 @@ ElseIF nTipoCPA == 2
 	dbSelectArea("QRY_ZZP")
 	QRY_ZZP->(dbGoTop())
 	While !QRY_ZZP->(EOF())
-		//IF SF1->(dbSeek(QRY_ZZP->ZZP_FILIAL+QRY_ZZP->ZZP_DOC+QRY_ZZP->ZZP_SERIE+Alltrim(ZZM->ZZM_FORNEC)+ZZM->ZZM_LOJA))
 			cPrefixo := QRY_ZZP->ZZP_SERIE
 			cQuery := " Update "+RetSqlName("SE2")
 			cQuery += " Set E2_MSBLQL    = '2'"
@@ -2463,7 +2280,6 @@ ElseIF nTipoCPA == 2
 				bContinua   := .F.
 				MsgStop(TcSQLError())
 			EndIF
-		//EndIF
 		QRY_ZZP->(dbSkip())
 	End
 EndIF
@@ -2471,31 +2287,6 @@ EndIF
 Return
 
 **********************************************************************************************************************************************************
-/*
-Static Function Ret_OP_DIA()
-
-Local cOP    := '000'
-Local cQuery := ''
-
-cQuery := " SELECT MAX(C2_SEQUEN) MXSEQ  "
-cQuery += " FROM "+RetSQLName("SC2")
-cQuery += " WHERE C2_FILIAL  = '" + ZZM->ZZM_FILIAL + "' "
-cQuery += "   AND C2_NUM+C2_ITEM = '" + SUBSTR(DTOS(ZZM->ZZM_EMISSA),3,6)+'04' + "' "
-cQuery += "   AND D_E_L_E_T_ = ' ' "
-If Select("QRY_NUMOP") > 0
-	QRY_NUMOP->(dbCloseArea())
-EndIf
-cQuery  := ChangeQuery(cQuery)
-dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),"QRY_NUMOP",.T.,.F.)
-dbSelectArea("QRY_NUMOP")
-QRY_NUMOP->(dbGoTop())
-IF QRY_NUMOP->(!EOF())
-     cOP    := SOMA1(QRY_NUMOP->MXSEQ)
-EndIF
-QRY_NUMOP->(dbCloseArea())
-
-Return cOP*/
-************************************************************************************************************
 Static Function Ret_Agrup()
 
 Local cAgrup := "'x'"
@@ -2675,12 +2466,12 @@ dbSelectArea("QRY_PEDABATE")
 QRY_PEDABATE->(dbGoTop())
 IF QRY_PEDABATE->(!EOF())
 	lRet := .F.
-	IF MsgYESNO('Boletim de Abate jï¿½ encerrado, Deseja realmente excluir a Nota ?')
+	IF MsgYESNO('Boletim de Abate já encerrado, Deseja realmente excluir a Nota ?')
 		lRet := .T.
 	EndIF
 EndIF
 QRY_PEDABATE->(dbCloseArea())
-// Verifica se a esta referenciada de Produtor no Boletim de Abate
+// Verifica se a está referenciada de Produtor no Boletim de Abate
 IF lRet
 	cQuery := " SELECT * "
 	cQuery += " FROM "+RetSQLName("ZZM")+" ZZM, "+RetSQLName("ZZP")+" ZZP "
@@ -2726,7 +2517,7 @@ if lIsBlind
 
 
 	If !LockByName("TAE15ENV")
-		Conout("JOB jï¿½ em Execucao : TAE15ENV" + DTOC(dDATABASE) + " - " + TIME() )
+		Conout("JOB já em Execução : TAE15ENV" + DTOC(dDATABASE) + " - " + TIME() )
 		RpcClearEnv()
 		Return
 	EndIf
@@ -2843,6 +2634,7 @@ Local nAdian       := 0
 Local cNome        := ''
 Local nFundec	   := 0
 
+Private lSeekSF1 	   := .F.	//Existe documento de entrada (SF1)
 Private cFILNFE   := GetMV('MGF_TAE17',.F.,"")
 Private cFILDUPL   := GetMV('MGF_TAE15A',.F.,"")
 Private bEmite     := IIF(ZZM->ZZM_FILIAL $ cFILDUPL,IIF(ZZM->ZZM_EMITE=='S',.T.,.F.),IIF(ZZM->ZZM_FILIAL $ cFILNFE ,.F.,.T.))
@@ -2863,10 +2655,11 @@ dbSetOrder(1)
 SF1->(dbSetOrder(1))
 IF bEmite
 	IF Empty(ZZM->ZZM_DOC+ZZM->ZZM_SERIE)
-		msgAlert('Nota fiscal nao emitida !!')
+		msgAlert('Nota fiscal não emitida !!')
 		Return
 	EndIF
 	IF SF1->(dbSeek(ZZM->ZZM_FILIAL+ZZM->ZZM_DOC+ZZM->ZZM_SERIE+Alltrim(ZZM->ZZM_FORNEC)+ZZM->ZZM_LOJA))
+		lSeekSF1 := .T.	//Existe documento de entrada (SF1)
 		nFundec := xFUNDEPEC(SF1->F1_FILIAL,SF1->F1_DOC,SF1->F1_SERIE,SF1->F1_FORNECE,SF1->F1_LOJA)
 		IF ZZM->ZZM_ADIAN > 0
 			nAdian := ZZM->ZZM_ADIAN
@@ -2875,24 +2668,15 @@ IF bEmite
 				nAdian := ZZM->ZZM_DESPEC
 			EndIF
 		EndIF
-		nTotNF  := SF1->F1_VALBRUT - SF1->F1_CONTSOC - nAdian - nFundec  - SF1->F1_VALFUND - SF1->F1_VLSENAR//- SF1->F1_VALFUND Jï¿½ descontado no Valor Bruto
+		nTotNF  := SF1->F1_VALBRUT - SF1->F1_CONTSOC - nAdian - nFundec  - SF1->F1_VALFUND - SF1->F1_VLSENAR//- SF1->F1_VALFUND Já descontado no Valor Bruto
 		cEmissao  := DTOC(SF1->F1_EMISSAO)
 	EndIF
 Else
 	IF ZZM->ZZM_STATUS == "1" .OR. ZZM->ZZM_STATUS == "2"
-		msgAlert('Situacao nao permite emitir NP !!')
+		msgAlert('Situação não permite emitir NP !!')
 		Return
 	EndIF
-	//IF ZZM->ZZM_ADIAN > 0
-	//	IF ZZM->ZZM_ADIAN > 0
-	//		nAdian := ZZM->ZZM_ADIAN
-	//	Else
-	//		IF ZZM->ZZM_DESPEC > 0
-	//			nAdian := ZZM->ZZM_DESPEC
-	//		EndIF
-	//	EndIF
-	//EndIF
-	nTotNF  := TotalNFC() //- nAdian
+	nTotNF  := TotalNFC() 
 	cEmissao  := '  /  /  '
 EndIF
 cFiltro  += "         ZDH_FILIAL   == '"+ZZM->ZZM_FILIAL+"'"
@@ -2922,9 +2706,17 @@ Return
 **************************************************************************************************************************************
 User Function TAE15_INP(nAcao)
 
-Local dVencimento := CTOD('  /  /  ')
-Local nValor      := 0
+Local dVencimento	:= CTOD('  /  /  ')
+Local nValor     	:= 0
+Local lMGFTAE15C	:= SuperGetMV("MGF_TAE15C",.T.,.T.) //Habilita a validação de títulos, conforme RITM0037283 - Natanael Filho
+Local nOpca			:= 0
+Local oGet1		:= Nil
+Local oGet2		:= Nil
+Local oDlg		:= Nil
 
+Private nValDup   := 0						// Valor da Duplicata
+Private dVencDup  := CTOD('  /  /  ')		// Vencimento da duplicata
+Private lSeekSE2  := .F.					// Encontrado o título da SE2
 Private aParamBox := {}
 Private aRet      := {}
 Private cTitulo   := "Nota Promissoria Rural"
@@ -2940,31 +2732,60 @@ Private oFonte08  := TFont():New('Courier New',,13,,.F.,,,,,.F.,.F.)
 Private oFonte09  := TFont():New('Courier New',,14,,.F.,,,,,.F.,.F.)
 
 IF nAcao == 3 // Opcao Incluir
-	msgAlert('Saldo R$ '+Alltrim(STR(nTotNF - nTotNP)))
-	AAdd(aParamBox, {1, "Vencimento :"	        , dVencimento , "@!", , '',, 070	, .T.	})
-	AAdd(aParamBox, {1, "Valor :"               , nValor   , "@E 999,999,999.99", , ,, 070	, .T.	})
-	IF ParamBox(aParambox, "Nota Promissoria Fiscal"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
-        IF 1==2 //ZDH->(dbSeek(ZZM->ZZM_FILIAL+ZZM->ZZM_PEDIDO+DTOS(MV_PAR01)))
-             msgAlert('Jï¿½ existe Parcela nesta Data !!')
-             Return
-        Else
-           IF MV_PAR02+ nTotNP > nTotNF
-           		msgAlert('Valor Ultrapassa o valor da NF !! NF = R$ '+Alltrim(STR(nTotNF)))
-                Return
-           Else
-           		RecLock("ZDH",.T.)
-				ZDH->ZDH_FILIAL  := ZZM->ZZM_FILIAL
-				ZDH->ZDH_PEDIDO  := ZZM->ZZM_PEDIDO
-				ZDH->ZDH_DATA    := MV_PAR01
-				ZDH->ZDH_VALOR   := MV_PAR02
-				ZDH->(MsUnLock())
-				msgAlert('Saldo R$ '+Alltrim(STR(nTotNF-(MV_PAR02+ nTotNP))))
-				Refaz_Parcela()
-           EndIF
-        EndIF
-    EndIF
-    Return
-EndIF
+
+	//Verifica se há Salto para incluir uma Nota promissória
+	If nTotNF - nTotNP = 0
+		msgAlert("Não há mais saldo para inclusão de uma nova Nota Promissória.")
+		Return
+	EndIf
+	
+	//Procura título do Documento de entrada - RITM0037283 - Natanael Filho
+	If lSeekSF1 .AND. lMGFTAE15C //Existe documento de entrada (SF1), Então procura o título
+		lSeekSE2 := nGetDup()	//Atualiza a data de vencimento e valor, conforme título a pagar / duplicata.
+	EndIf
+	
+	 //Se Houver título a pagar, o valor não deve ser alterado - RITM0037283 - Natanael Filho
+	If lSeekSE2
+		dVencimento := dVencDup
+		nValor := nValDup
+	EndIf
+
+	If lSeekSE2
+		u_MGFmsg("O valor e vencimento será o mesmo do título a pagar, não podendo ser alterado.","Atenção",,1)
+	Else
+		u_MGFmsg("Saldo R$ "+Alltrim(STR(nTotNF - nTotNP)),"Atenção",,1)
+	EndIf
+
+	DEFINE MSDIALOG oDlg TITLE "Nota Promissoria Fiscal" FROM 100,181 TO 250,500 PIXEL
+
+		@020,003 Say "Vencimento :"		Size 112,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!" 
+		@020,050 MsGet		oGet1		Var dVencimento		Size 70,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!" WHEN !lSeekSE2
+		@036,003 Say "Valor :"		Size 112,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
+		@036,050 MsGet		oGet2		Var nValor		Size 70,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@E 999,999,999.99" WHEN !lSeekSE2
+		
+		DEFINE SBUTTON FROM 055,50 TYPE 1 ENABLE ACTION ( nOpca := 1 , oDlg:End() ) OF oDlg
+		DEFINE SBUTTON FROM 055,86 TYPE 2 ENABLE ACTION ( nOpca := 0 , oDlg:End() ) OF oDlg
+
+	ACTIVATE MSDIALOG oDlg CENTERED
+
+	If nOpca == 1
+		IF nValor + nTotNP > nTotNF
+			u_MGFmsg("Valor digitado ultrapassa o valor da Nota Fiscal.","Atenção",,1)
+			Return
+		Else
+			RecLock("ZDH",.T.)
+			ZDH->ZDH_FILIAL  := ZZM->ZZM_FILIAL
+			ZDH->ZDH_PEDIDO  := ZZM->ZZM_PEDIDO
+			ZDH->ZDH_DATA    := dVencimento
+			ZDH->ZDH_VALOR   := nValor
+			ZDH->(MsUnLock())
+			msgAlert('Saldo R$ '+Alltrim(STR(nTotNF-(nValor + nTotNP))))
+			Refaz_Parcela()
+		EndIF
+	EndIf
+	Return
+EndIf
+
 IF nAcao == 4 // Opcao Excluir
     IF MsgYESNO('Deseja excluir a Parcela ?')
         Reclock("ZDH",.F.)
@@ -2974,25 +2795,11 @@ IF nAcao == 4 // Opcao Excluir
 	EndIF
 	Return
 EndIF
-/*
-IF !FILE(GetTempPath()+"MGF_LOGO.bmp")
-	IF !CpyS2T("MGF_LOGO.bmp",GetTempPath(),.F.)
-	  Alert("Nao foi possivel utilizar o Logo da Marfrig...")
-	  Return
-	EndIF
-EndIF
 
-//MsgAlert(GetSrvProfString("Rootpath","")+GetSrvProfString("Startpath","")+"MGF_LOGO.bmp")
- */
+
 oPrn:=FWMSPrinter():New('MGF_NFP',6,,,.T.,)
 oPrn:SetPortrait()
 oPrn:SetPaperSize(DMPAPER_A4)
-
-
-//oPrn := TMSPrinter():New(cTitulo)
-//oPrn:Setup()
-//oPrn:SetPortrait()
-//oPrn:SetPaperSize(DMPAPER_A4)
 
 IF nAcao == 1
 	Gera_NFP()
@@ -3037,18 +2844,13 @@ Private nLin   := 480
 
 
 oPrn:StartPage()
-//Colocar o Logotipo na system do Protheus_data
-//
-
 
 oPrn:Box(050,0050,0500,2200)
 oPrn:Box(060,1400,0490,2190)
-//oPrn:SayBitmap(060,060,"MGF_LOGO.bmp",480,420)
+
 oPrn:SayBitmap(060,060,GetSrvProfString("Startpath","") + "LGMID" + ".PNG",420,380)
 
-
-oPrn:Say(090,550,'CLIENTE GLOBAL FOODS S/A', oFonte01)
-//oPrn:Say(080,890,'ALIMENTOS S.A.',oFonte02)
+oPrn:Say(090,550,'MARFRIG GLOBAL FOODS S/A', oFonte01)
 
 oPrn:Say(180,550,Alltrim(SM0->M0_CODFIL)+" - "+SM0->M0_FILIAL,oFonte09)
 oPrn:Say(280,570,SM0->M0_ENDCOB,oFonte08)
@@ -3056,8 +2858,8 @@ oPrn:Say(330,570,ALLTRIM(SM0->M0_CIDENT)+'-'+SM0->M0_ESTENT+'  CEP:'+SM0->M0_CEP
 oPrn:Say(380,570,'('+SUBSTR(ALLTRIM(SM0->M0_TEL),1,2)+')'+SUBSTR(SM0->M0_TEL,3,Len(SM0->M0_TEL)),oFonte08)
 oPrn:Say(430,570,Transform(Substr('0'+SM0->M0_CGC,1,9),"@R 999.999.999")+"/"+Transform(Substr('0'+SM0->M0_CGC,10,6),"@R 9999-99"),oFonte08)
 
-oPrn:Say(090,1420,'NOTA PROMISSï¿½RIA RURAL' ,oFonte03)
-oPrn:Say(190,1440,"N ï¿½ M E R O :",oFonte07)
+oPrn:Say(090,1420,'NOTA PROMISSÓRIA RURAL' ,oFonte03)
+oPrn:Say(190,1440,"N Ú M E R O :",oFonte07)
 oPrn:Say(290,1440,"VENCIMENTO:",oFonte07)
 oPrn:Say(390,1440,"VALOR R$:",oFonte07)
 
@@ -3069,25 +2871,25 @@ EndIF
 oPrn:Say(290,1700,DTOC(ZDH->ZDH_DATA),oFonte08)
 oPrn:Say(390,1700,Alltrim(Transform(ZDH->ZDH_VALOR, '@E 999,999,999.99')),oFonte08)
 
-nTam := Ret_Tam("PAGAREI(EMOS) POR ESTA NOTA PROMISSï¿½RIA RURAL, ï¿½",oFonte07)+60
+nTam := Ret_Tam("PAGAREI(EMOS) POR ESTA NOTA PROMISSÓRIA RURAL, À",oFonte07)+60
 
 
 nLin +=70
 oPrn:Say(nLin,0060,"Ao(S)",oFonte07)
 oPrn:Say(nLin,0260,dia_extenso(Day(ZDH->ZDH_DATA)),oFonte08)
-oPrn:Say(nLin,nTam - Ret_Tam("DIAS DO Mï¿½S DE",oFonte07),"DIAS DO Mï¿½S DE",oFonte07)
+oPrn:Say(nLin,nTam - Ret_Tam("DIAS DO MÊS DE",oFonte07),"DIAS DO MÊS DE",oFonte07)
 oPrn:Say(nLin,1120,MesExtenso(ZDH->ZDH_DATA),oFonte08)
 oPrn:Say(nLin,1500,"DE",oFonte07)
 oPrn:Say(nLin,1600,SubStr(DTOS(ZDH->ZDH_DATA),1,4),oFonte08)
 nLin +=70
-oPrn:Say(nLin,060,"PAGAREI(EMOS) POR ESTA NOTA PROMISSï¿½RIA RURAL, ï¿½",oFonte07)
+oPrn:Say(nLin,060,"PAGAREI(EMOS) POR ESTA NOTA PROMISSÓRIA RURAL, À",oFonte07)
 oPrn:Say(nLin,1120,Alltrim(ZZM->ZZM_FAV) ,oFonte08)
 nLin +=70
 oPrn:Say(nLin,nTam - Ret_Tam("CNPJ/CPF",oFonte07),"CNPJ/CPF",oFonte07)
 cCGC      := GetAdvFVal( "SA2", "A2_CGC", xFilial('SA2')+PADR(ALLTRIM(ZZM->ZZM_FORNEC),TamSX3("A2_COD")[1])+PADR(ALLTRIM(ZZM->ZZM_LOJA),TamSX3("A2_LOJA")[1]), 1, "" )
 oPrn:Say(nLin,1120,Alltrim(cCGC) ,oFonte08)
 nLin +=70
-oPrn:Say(nLin,060,"OU A SUA ORDEM NA PRAï¿½A DE",oFonte07)
+oPrn:Say(nLin,060,"OU A SUA ORDEM NA PRAÇA DE",oFonte07)
 oPrn:Say(nLin,650,ALLTRIM(SM0->M0_CIDENT) ,oFonte08)
 nLin +=70
 aVExtenso := ConvTexto(ZDH->ZDH_VALOR)
@@ -3100,7 +2902,7 @@ oPrn:Say(nLin,060,aVExtenso[03],oFonte08)
 nLin +=70
 oPrn:Say(nLin,060,"PELO VALOR DA COMPRA QUE LHE FIZEMOS DE BOVINOS PARA ABATE CONFORME NOTA(S) FISCAL(IS) DE ENTRADA DE",oFonte07)
 nLin +=70
-oPrn:Say(nLin,060,"MERCADORIAS Nï¿½(S)",oFonte07)
+oPrn:Say(nLin,060,"MERCADORIAS Nº(S)",oFonte07)
 IF bEmite
 	oPrn:Say(nLin,420,ZZM->ZZM_DOC+' de '+cEmissao  ,oFonte08)
 Else
@@ -3124,16 +2926,16 @@ oPrn:Say(nLin,1370,MesExtenso(dDataBase)     ,oFonte08)
 oPrn:Say(nLin,1780,SubStr(DTOS(dDataBase),1,4),oFonte08)
 
 nLin +=50
-oPrn:Say(nLin,060,"informacao sera depositado na conta: "+Alltrim(ZZM->ZZM_CONTA),oFonte06)
+oPrn:Say(nLin,060,"informação será depositado na conta: "+Alltrim(ZZM->ZZM_CONTA),oFonte06)
 oPrn:Say(nLin,1100,"_________ de _______________________ de ___________",oFonte07)
 nLin +=50
 oPrn:Say(nLin,060,"Banco : "+Alltrim(ZZM->ZZM_BANCO)+" Agencia : "+Alltrim(ZZM->ZZM_AGENCI),oFonte06)
 nLin +=200
-oPrn:Say(nLin,060,"(ANTECIPAï¿½ï¿½O DA NPR FAVOR SOLICITAR",oFonte05)
+oPrn:Say(nLin,060,"(ANTECIPAÇÃO DA NPR FAVOR SOLICITAR",oFonte05)
 oPrn:Say(nLin,1200,"___________________________________________",oFonte04)
 nLin +=70
-oPrn:Say(nLin,060,"COM 7(SETE) DIAS DE ANTECEDï¿½NCIA)",oFonte05)
-oPrn:Say(nLin,1300,"Cliente Global Foods S/A",oFonte04)
+oPrn:Say(nLin,060,"COM 7(SETE) DIAS DE ANTECEDÊNCIA)",oFonte05)
+oPrn:Say(nLin,1300,"MARFRIG GLOBAL FOODS S/A",oFonte04)
 
 
 
@@ -3353,12 +3155,12 @@ AAdd(aParamBox, {1, "Romaneio:"      	,Space(20)                            , "@
 AAdd(aParamBox, {1, "Dt.Romaneiro:"	    ,CTOD('  /  /  ')                     , "@!",,      ,, 050	, .T.	})
 IF ParamBox(aParambox, "Inclui Abate de Terceiros"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 	If SA2->(!dbSeek(xFilial('SA2')+MV_PAR01+MV_PAR02))
-		msgAlert('Forncedor nao Cadastrado !!')
+		msgAlert('Forncedor não Cadastrado !!')
 		Return
 	Else
 	    cNomeFor := SA2->A2_NREDUZ
 		IF SA2->(!dbSeek(xFilial('SA2')+MV_PAR03+MV_PAR04))
-			msgAlert('Abatedouro nao Cadastrado !!')
+			msgAlert('Abatedouro não Cadastrado !!')
 			Return
 		Else
 			Reclock("ZZM",.T.)
@@ -3391,17 +3193,17 @@ Private aParamBox := {}
 Private aRet      := {}
 
 
-IF nTipo == 1 // Inclusao
+IF nTipo == 1 // Inclusão
 	SB1->(dbSetOrder(1))
 	AAdd(aParamBox, {1, "Produto:"          ,Space(tamSx3("B1_COD")[1])       , "@!",  ,"SB1" ,, 060	, .T.	})
-	AAdd(aParamBox, {1, "Qtd. Cabecas"	    ,0 , "@E 99,999,999,999,999.99",                           ,      ,, 050	, .T.	})
+	AAdd(aParamBox, {1, "Qtd. Cabeças"	    ,0 , "@E 99,999,999,999,999.99",                           ,      ,, 050	, .T.	})
 	AAdd(aParamBox, {1, "Qtd. em KG  "	    ,0 , "@E 99,999,999,999,999.99",                           ,      ,, 050	, .T.	})
 	AAdd(aParamBox, {1, "Qtd. Perda  "	    ,0 , "@E 9,999,999 "           ,                           ,      ,, 050	, .F.	})
 	AAdd(aParamBox, {1, "Vl Arroba   "	    ,0 , "@E 99,999,999,999,999.99",                           ,      ,, 050	, .T.	})
 	AAdd(aParamBox, {1, "Valor Total "	    ,0 , "@E 99,999,999,999,999.99",                           ,      ,, 050	, .T.	})
 	IF ParamBox(aParambox, "Inclui Abate de Terceiros"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 		IF SB1->(!dbSeek(xFilial('SB1')+MV_PAR01))
-			msgAlert('Produto nao cadastrado !!')
+			msgAlert('Produto não cadastrado !!')
 			Return
 		EndIF
 		Reclock("ZZN",.T.)
@@ -3429,7 +3231,6 @@ IF nTipo == 1 // Inclusao
 		aCols[Len(aCols),Len(aHeader)+1] := .F.
 		oGet:SetArray(aCols,.T.)
 		oGet:ForceRefresh()
-		//MsNewGetDados(): AddLine(.T.,.F.)
 	EndIF
 Else
    IF MsgYESNO('Deseja excluir o Item ?')
@@ -3462,7 +3263,6 @@ cQuery += "WHERE SC2.D_E_L_E_T_ = ' ' "+CRLF
 cQuery += "	AND C2_FILIAL = '"+ QRY_OPAB->ZZE_FILIAL +"' "+CRLF
 cQuery += "	AND C2_NUM = '"+Subs(QRY_OPAB->ZZE_GERACA,3,6)+"' "+CRLF
 cQuery += "	AND C2_ITEM = '01' "
-//cQuery += "	AND C2_PRODUTO = '"+QRY_OPAB->ZZE_CODPA+"' "+CRLF
 
 cQuery	:= ChangeQuery( cQuery )
 If Select("QRY_NUMOP") > 0
@@ -3477,8 +3277,6 @@ Else
 	cRet	:=  Subs(QRY_OPAB->ZZE_GERACA,3,6) + "01" + cSeq
 EndIf
 
-//QRY_NUMOP->(dbCloseArea())
-
 Return( cRet )
 **************************************************************************************************************************************************************
 User Function TAE15_MG
@@ -3489,7 +3287,7 @@ Private aParamBox := {}
 Private aRet      := {}
 
 IF Dados_Produtor()
-   MsgAlert('Existe nota fiscal relacionada, favor tirar o vinculo de todas para fazer a alteracao !!')
+   MsgAlert('Existe nota fiscal relacionada, favor tirar o vinculo de todas para fazer a alteração !!')
    Return
 EndIF
 
@@ -3497,7 +3295,7 @@ SB1->(dbSetOrder(1))
 AAdd(aParamBox, {1, "Produto:"          ,Space(tamSx3("B1_COD")[1])       , "@!",  ,"MGFSB1" ,, 060	, .T.	})
 IF ParamBox(aParambox, "Modifica codigo Agrupador"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 	IF SB1->(!dbSeek(xFilial('SB1')+MV_PAR01))
-		msgAlert('Produto nao cadastrado !!')
+		msgAlert('Produto não cadastrado !!')
 		Return
 	EndIF
 	aCols[oGet:nAt,Len(aHeader)]   := SB1->B1_COD
@@ -3520,7 +3318,7 @@ Private bEncerrou := .F.
 
 Dados_NFC()
 
-DEFINE MSDIALOG oDlg1 TITLE "Nota fiscal Complementar/Devolucao" FROM 000, 000  TO 300, 300 COLORS 0, 16777215 PIXEL
+DEFINE MSDIALOG oDlg1 TITLE "Nota fiscal Complementar/Devolução" FROM 000, 000  TO 300, 300 COLORS 0, 16777215 PIXEL
 
 	@ 007, 005 LISTBOX oListNFC	 Fields HEADER "Doc","Serie","Tipo" SIZE 143,127 OF oDlg1 COLORS 0, 16777215 PIXEL
 	oListNFC:SetArray(aNFC)
@@ -3586,6 +3384,7 @@ IF MsgYESNO('Nota fiscal de complemento ?')
 Else
 	bSel := ConPad1(,,,'TAE_6A') //ConPad1(,,,'TAE_06')
 EndIF
+
 IF bCompl
 	IF bSel
 		dbSelectArea('SF1')
@@ -3599,15 +3398,7 @@ IF bCompl
 		bContinua := .T.
 		EndIf
 	EndIf
-/*	IF bSel  .And. SF1->(!EOF()) .AND. ;
-		SF1->F1_FILIAL   == ZZM->ZZM_FILIAL .AND. ;
-		Alltrim(SF1->F1_FORNECE)  == Alltrim(ZZM->ZZM_FORNECE) .AND. ;
-		SF1->F1_LOJA     == ZZM->ZZM_LOJA .AND. ;
-		SF1->F1_TIPO     =='C'
 
-		bContinua := .T.
-	EndIF
-*/
 Else
 	IF bSel
 		dbSelectArea('SF2')
@@ -3621,15 +3412,9 @@ Else
 		bContinua := .T.
 		EndIf
 	EndIf
-/* 	IF bSel  .And. SF2->(!EOF()) .AND. ;
-		SF2->F2_FILIAL   == ZZM->ZZM_FILIAL .AND. ;
-		Alltrim(SF2->F2_CLIENTE)  == Alltrim(ZZM->ZZM_FORNECE) .AND. ;
-		SF2->F2_LOJA     == ZZM->ZZM_LOJA .AND. ;
-		SF2->F2_TIPO     =='D'
-		bContinua := .T.
-	EndIF
-*/
+
 EndIF
+
 IF bContinua
    ZDU->(dbSeek(ZZM->ZZM_FILIAL+ZZM->ZZM_PEDIDO))
    While ZDU->(!Eof()) .AND.;
@@ -3638,7 +3423,7 @@ IF bContinua
       IF ZDU->ZDU_DOC    == IIF(bCompl ,SF1->F1_DOC  ,SF2->F2_DOC) .AND. ;
 		 ZDU->ZDU_SERIE  == IIF(bCompl ,SF1->F1_SERIE,SF2->F2_SERIE).AND. ;
 		 ZDU->ZDU_TIPO   == IIF(bCompl ,'E','S')
-      	 MsgAlert('Nota jï¿½ incluida !!')
+      	 MsgAlert('Nota já incluida !!')
       	 bContinua := .F.
       EndIF
       ZDU->(dbSkip())
@@ -3695,7 +3480,7 @@ Static Function TotalNFC
 Local cQuery := ''
 Local nTotal := 0
 
-cQuery := " SELECT  SUM(F1_VALBRUT - F1_CONTSOC - F1_VALFUND - F1_VLSENAR ) TOTAL" // * - F1_VALFUND, Jï¿½ Retirado no valor Bruto
+cQuery := " SELECT  SUM(F1_VALBRUT - F1_CONTSOC - F1_VALFUND - F1_VLSENAR ) TOTAL" // * - F1_VALFUND, Já Retirado no valor Bruto
 cQuery += " FROM "+RetSQLName("ZDU")+" A, "+RetSQLName("SF1")+" B"
 cQuery += " WHERE A.D_E_L_E_T_ = ' ' "
 cQuery += "   AND B.D_E_L_E_T_ = ' ' "
@@ -3719,7 +3504,7 @@ IF !QRYZDU->(EOF())
 EndIF
 
 
-cQuery := " SELECT  SUM(F2_VALBRUT - F2_CONTSOC - F2_VLSENAR ) TOTAL" // * - F1_VALFUND, Jï¿½ Retirado no valor Bruto
+cQuery := " SELECT  SUM(F2_VALBRUT - F2_CONTSOC - F2_VLSENAR ) TOTAL" // * - F1_VALFUND, Já Retirado no valor Bruto
 cQuery += " FROM "+RetSQLName("ZDU")+" A, "+RetSQLName("SF2")+" B"
 cQuery += " WHERE A.D_E_L_E_T_ = ' ' "
 cQuery += "   AND B.D_E_L_E_T_ = ' ' "
@@ -3758,8 +3543,6 @@ QRY_ZZP->(dbGoTop())
 IF  !QRY_ZZP->(EOF())
    nTotal   += QRY_ZZP->VALOR_ZZP
 EndIF
-
-//nTotal += xFunD2(ZZM->ZZM_FILIAL,ZZM->ZZM_PEDIDO,Alltrim(ZZM->ZZM_FORNEC),ZZM->ZZM_LOJA)
 
 nTotal -= U_TAE15_IM()
 
@@ -4040,7 +3823,6 @@ cQuery += "   AND D_E_L_E_T_ = ' ' "
 cQuery += "   AND D3_ESTORNO <> 'S' "
 cQuery += "   AND D3_ZPEDLOT = '"+ZZM->ZZM_PEDIDO+"'"
 cQuery += "   AND D3_ZORIGEM = 'ABATE'   "
-//cQuery += " Order by D3_TM desc "
 cQuery += " Order by R_E_C_N_O_ desc "
 If Select("QRY_MOVD3") > 0
 	QRY_MOVD3->(dbCloseArea())
@@ -4050,7 +3832,7 @@ dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),"QRY_MOVD3",.T.,.F.)
 dbSelectArea("QRY_MOVD3")
 QRY_MOVD3->(dbGoTop())
 IF QRY_MOVD3->(EOF())
-     MsgAlert('Nao hï¿½ movimentos para estorno !!')
+     MsgAlert('Não há movimentos para estorno !!')
      Return
 EndIF
 
@@ -4107,9 +3889,6 @@ BEGIN TRANSACTION
 						 	   {"D3_ESTORNO"  , 'S'        , NIL}})
 			Next nC
 
-         //aadd(aItem, {"D3_QUANT"    , ESTSAIDA->Qty         , NIL})
-         //aadd(aItem, {"D3_LOCAL"    , ESTSAIDA->D3LOCAL        , NIL})
-
 			msExecAuto({|x,Y,z| Mata241(x,Y,z)},aCab,aDados,6)
 		EndIf
 		Lib_OPSB1(2,nI)
@@ -4134,7 +3913,7 @@ END TRANSACTION
         	ZZM->ZZM_STATUS := '3'
         EndIF
 		ZZM->(MsUnlock())
-		MsgAlert('Cancelamento da efetivaï¿½ï¿½o realizada com sucesso !')
+		MsgAlert('Cancelamento da efetivação realizada com sucesso !')
 	EndIF
 
 cFilAnt := bkFil
@@ -4196,3 +3975,25 @@ User Function zTAE_06()
 lOk := u_zConsSQL("SELECT DISTINCT F2_FILIAL, F2_CLIENTE, F2_LOJA, F2_DOC, F2_SERIE, SF2.R_E_C_N_O_ SF2RECNO FROM " + RetSqlName("SF2") + " SF2 INNER JOIN " + RetSqlName("ZZM") + " ZZM ON ZZM_FILIAL = F2_FILIAL AND ZZM_FORNEC = F2_CLIENTE AND ZZM_LOJA = F2_LOJA AND ZZM.D_E_L_E_T_ = ' ' WHERE 1=1 AND F2_FILIAL ='"+XFILIAL("SF2")+"' AND F2_TIPO='D' AND F2_CLIENTE = '"+ZZM->ZZM_FORNEC+"' AND F2_LOJA = '"+ZZM->ZZM_LOJA+"' AND SF2.D_E_L_E_T_ = ' '" , "SF2RECNO", "", "")'
 
 Return(lOk)
+
+/*/{Protheus.doc} nGetDup
+	Atualiza a data de vencimento e valor, conforme título a pagar / duplicata.
+	@type  Static Function
+	@author user
+	@since 08/09/2020
+	@version 12.1.17
+	@return _lRet, Logíco, Retorna se o título foi encotrado
+	/*/
+Static Function nGetDup()
+	Local _lRet	:= .F.
+
+	SE2->(dbSetOrder(6)) //E2_FILIAL+E2_FORNECE+E2_LOJA+E2_PREFIXO+E2_NUM+E2_PARCELA+E2_TIPO
+	If SE2->(dbSeek(SF1->(F1_FILIAL+F1_FORNECE+F1_LOJA+F1_SERIE+F1_DOC)))
+		_lRet := .T.
+		nValDup	:= SE2->E2_VALOR
+		dVencDup := SE2->E2_VENCREA
+	EndIf
+
+
+	
+Return _lRet

@@ -199,6 +199,11 @@ User Function GravarCarga(cCarga,Carga)
 		Endif	
 	Endif	
 
+	//--------------| Verifica existência de parâmetros e caso não exista, cria. |-----
+	If !ExisteSx6("MGF_TAS02A")
+		CriarSX6("MGF_TAS02A", "L", "Exclui Romaneios Filhos?",".T." )	
+	EndIf
+
 	ConOut("Ordem de Embarque N.: "+Carga:Cabecalho:Ordem_Embarque)
 	//ConOut("Operação: "+IIf(Carga:Cabecalho:Acao=="1","Inclusão",IIf(Carga:Cabecalho:Acao=="3","Exclusão",IIf(Carga:Cabecalho:Acao=="4","Alteração-Inclusão",IIf(Carga:Cabecalho:Acao=="5","Alteração-Exclusão","Indefinido")))))
 	ConOut("Operação: "+IIf(Carga:Cabecalho:Acao=="1","Inclusão",IIf(Carga:Cabecalho:Acao=="3","Exclusão",IIf(Carga:Cabecalho:Acao=="4","Alteração-Inclusão","Indefinido"))))
@@ -1328,7 +1333,15 @@ Static Function IncCarga(Carga,aPV,aQtdLib,aCabCargaERP,aSif)
 						GWN->(dbSetOrder(1))
 						If GWN->(dbSeek(xFilial("GWN")+DAK->DAK_COD+DAK->DAK_SEQCAR))
 							GWN->(RecLock("GWN",.F.))
-							GWN->GWN_DISTAN	:= Carga:Cabecalho:Distancia
+							If AllTrim(Carga:Cabecalho:Ordem_Embarque) = AllTrim(Carga:Cabecalho:OEReferencia) 
+								cMensTime := "ORDEM EMBARQUE: "+Carga:Cabecalho:Ordem_Embarque+" - DISTÂNCIA EM ROMANEIO ( INCLUSÃO ): "+ElapTime(cTime1,cTime2)+" - Time: "+Time()+CRLF
+								GWN->GWN_DISTAN	:= Carga:Cabecalho:Distancia	
+							Else
+								If GetMv("MGF_TAS02A",,.T.)	//Se exclui os romaneios filhos
+									cMensTime := "ORDEM EMBARQUE: "+Carga:Cabecalho:Ordem_Embarque+" - EXCLUINDO ROMANEIO FILHO ( INCLUSÃO ): "+"OE REFERÊNCIA: "+Carga:Cabecalho:OEReferencia+ElapTime(cTime1,cTime2)+" - Time: "+Time()+CRLF
+									GWN->(dbDelete())
+								EndIf
+							EndIf
 							GWN->(MsUnlock())
 						Endif	
 					EndIf

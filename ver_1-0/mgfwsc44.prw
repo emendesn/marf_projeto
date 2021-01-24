@@ -18,15 +18,12 @@ Em produção flag no campo CTT_ZPEDME e não flag CTT_BLOQ  = 1
 
 User function MGFWSC44()
 
-	RPCSetType(3)
-
 	PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010001"
 
 	conout('[MGFWSC44] Iniciada Threads (CENTRO DE CUSTO) - ' + dToC(dDataBase) + " - " + time())
 
 	RUNINTEG44()
 
-	RESET ENVIRONMENT
 return
 
 
@@ -152,7 +149,7 @@ Static Function RUNINTEG44()
 		cjson +='  	"BORGITENS": [{                                                                 '
 		cjson +='	"ISLOADED":false                                                               ,'
 		cjson +='	"CAMPOVENT":"EMPRESA"                                                           ,'
-		cjson +='	"CODIGOBORG": "010001"                                                  ,'
+		cjson +='	"CODIGOBORG": "01"                                                  ,'
 		cjson +='	"CENTROCUSTO":"' + alltrim((cAliasTrb)->CTT_CUSTO) + '"                         '
 		//cjson +='			}]}}                                                                    '
 		cjson +='			},                                                                    '
@@ -161,7 +158,7 @@ Static Function RUNINTEG44()
 		// Foi chumbado pois não tem uma lógica , para buscar 020001/030001 . 
 		cjson +='	"ISLOADED":false                                                               ,'
 		cjson +='	"CAMPOVENT":"EMPRESA"                                                           ,'
-		cjson +='	"CODIGOBORG": "020001"                                                       ,'
+		cjson +='	"CODIGOBORG": "02"                                                       ,'
 		cjson +='	"CENTROCUSTO":"' + alltrim((cAliasTrb)->CTT_CUSTO) + '"                         '
 
 		cjson +='			},                                                                    '
@@ -170,7 +167,7 @@ Static Function RUNINTEG44()
 		// Foi chumbado pois não tem uma lógica . 
 		cjson +='	"ISLOADED":false                                                               ,'
 		cjson +='	"CAMPOVENT":"EMPRESA"                                                           ,'
-		cjson +='	"CODIGOBORG": "030001"                                                  ,'
+		cjson +='	"CODIGOBORG": "03"                                                  ,'
 		cjson +='	"CENTROCUSTO":"' + alltrim((cAliasTrb)->CTT_CUSTO) + '"                         '
 
 		cjson +='			   }                                                                '

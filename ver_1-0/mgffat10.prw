@@ -16,11 +16,11 @@ Static _cFilCab
 Programa............: MGFFAT10
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Aprovacao de Pedidos
+Descrição / Objetivo: Aprovação de Pedidos
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela de Aprovacao de Pedidos
+Uso.................: Marfrig
+Obs.................: Tela de Aprovação de Pedidos
 =====================================================================================
 */
 User Function MGFFAT10()
@@ -39,10 +39,10 @@ User Function MGFFAT10()
 		If Pergunte(cPerg,.t.)
 			lItem     := MV_PAR01 == 1
 
-			Processa({||U_xMF10MntBr(lItem,aRegras)},"Validando regras de aprovacao, aguarde!")
+			Processa({||U_xMF10MntBr(lItem,aRegras)},"Validando regras de aprovação, aguarde!")
 		EndIf
 	ElseIf !(aRet[1])
-		MSGINFO( 'Aprovador', 'Usuario nao esta vinculado a um aprovador e/ou a Regra' )
+		MSGINFO( 'Aprovador', 'Usuario não esta vinculado a um aprovador e/ou a Regra' )
 	EndIf
 
 	RestArea(aArea)
@@ -54,10 +54,10 @@ Return
 Programa............: xMF10Reg
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Trazer as Regras que o usuario pode aprovar
+Descrição / Objetivo: Trazer as Regras que o usuario pode aprovar
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta das regras que usuario pode aprovar
 =====================================================================================
 */
@@ -91,7 +91,7 @@ Static Function xMF10Reg()
 
 
 	EndSql
-	//Alert('Query funcao  xMF10Reg' + TIME())
+	//Alert('Query função  xMF10Reg' + TIME())
 	(cNextAlias)->(DbGoTop())
 
 	(cNextAlias)->(DbEval( {|| AADD(aRet,{ZU_FILIAL,ZU_CODRGA})} ))
@@ -109,10 +109,10 @@ Return {lAprExis,aRet}
 Programa............: xMF10FilCb
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Montar Filtro de Pedidos/itens que serao apresentados no browse
+Descrição / Objetivo: Montar Filtro de Pedidos/itens que serão apresentados no browse
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Montar o Filtro do browse da parte superior
 =====================================================================================
 */
@@ -197,7 +197,7 @@ Static Function xMF10FilCb(aRegra)
 					   SC5.C5_ZBLQRGA = 'B')
 	EndSql
 
-	//Alert('Query funcao  xMF10FilCb' + TIME())
+	//Alert('Query função  xMF10FilCb' + TIME())
 
 	(cNextAlias)->(DbGoTop())
 
@@ -221,7 +221,7 @@ Static Function xMF10FilCb(aRegra)
 		Else
 			cRet :=  '(C5_NUM) == "      "'
 		EndIf
-		Alert('Nao existe Pedidos para Aprovacao')
+		Alert('Não existe Pedidos para Aprovação')
 	EndIf
 
 	(cNextAlias)->(dbCloseArea())
@@ -244,10 +244,10 @@ Return cFil
 Programa............: SetBrwUp
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Seta o Browse UP na variavel statica _oBrwUp
+Descrição / Objetivo: Seta o Browse UP na variavel statica _oBrwUp
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Seta Browse Up
 =====================================================================================
 */
@@ -260,10 +260,10 @@ Return
 Programa............: GetBrwUp
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Retorna o Browse UP da variavel statica _oBrwUp
+Descrição / Objetivo: Retorna o Browse UP da variavel statica _oBrwUp
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Get Browse Up
 =====================================================================================
 */
@@ -275,10 +275,10 @@ Return _oBrwUp
 Programa............: SetBrwDown
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Seta o Browse UP na variavel statica _oBrwDown
+Descrição / Objetivo: Seta o Browse UP na variavel statica _oBrwDown
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Seta Browse Down
 =====================================================================================
 */
@@ -291,10 +291,10 @@ Return
 Programa............: GetBrwDown
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Retorna o Browse UP da variavel statica _oBrwDown
+Descrição / Objetivo: Retorna o Browse UP da variavel statica _oBrwDown
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Get Browse Down
 =====================================================================================
 */
@@ -306,10 +306,10 @@ Return _oBrwDown
 Programa............: xMF10FilZv
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Montar Filtro de regras que serao apresentado no grid de bloqueio
+Descrição / Objetivo: Montar Filtro de regras que serão apresentado no grid de bloqueio
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Montar o Filtro do browse da parte inferior
 =====================================================================================
 */
@@ -347,10 +347,10 @@ Return cFil
 Programa............: xMF10PFil
 Autor...............: Joni Lima
 Data................: 28/10/2016
-Descricao / Objetivo: Montar Filtro conforme parametros
+Descrição / Objetivo: Montar Filtro conforme parametros
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Montar o Filtro Conforme parametros.
 =====================================================================================
 */
@@ -397,7 +397,7 @@ Static Function xMF10PFil(cxAlias)
 	EndIF
 
 	If cxAlias == 'SA1'
-		If !(Empty(MV_PAR08) .and. (MV_PAR09 ==  REPLICATE('Z',Len(SA1->A1_REGIAO)) .or. Empty(MV_PAR09) ))//Regiao
+		If !(Empty(MV_PAR08) .and. (MV_PAR09 ==  REPLICATE('Z',Len(SA1->A1_REGIAO)) .or. Empty(MV_PAR09) ))//Região
 			cFld := 'A1_REGIAO'
 			cFil += '(' + cFld + ' >= "' + MV_PAR08 + '" .And. ' + cFld + '<= "' + MV_PAR09 + '" )'
 		EndIf
@@ -416,11 +416,11 @@ Return cFil
 Programa............: xMF10MntBr
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Montar o Browse para apresentacao dos pedidos e dos bloqueios
+Descrição / Objetivo: Montar o Browse para apresentação dos pedidos e dos bloqueios
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Monta o browse de aprovacao.
+Uso.................: Marfrig
+Obs.................: Monta o browse de aprovação.
 =====================================================================================
 */
 User Function xMF10MntBr(lItem,aRegras)
@@ -438,7 +438,7 @@ User Function xMF10MntBr(lItem,aRegras)
 	Local aFieldCab		:= {}
 	Local aStruCab		:= {}
 
-	Local cTitle    	:= 'Liberacao de Pedidos'
+	Local cTitle    	:= 'Liberação de Pedidos'
 	Local cxAlias		:= IIF(lItem,'SC6','SC5')
 	Local cxDesc		:= IIF(lItem,'Itens Pedidos','Pedidos')
 	Local cFilCab		:= xFil10RGA(aRegras)//'U_xMF10xFCb()'//xMF10FilCb(aRegras)
@@ -504,7 +504,7 @@ User Function xMF10MntBr(lItem,aRegras)
 
 	Define MsDialog oDlgPrinc Title cTitle From aCoors[1], aCoors[2] To aCoors[3], aCoors[4] Pixel
 
-	// Cria o conteiner onde serao colocados os browses
+	// Cria o conteiner onde serão colocados os browses
 	oFWLayer:= FWLayer():New()
 	oFWLayer:Init( oDlgPrinc, .F., .T. )
 
@@ -526,12 +526,12 @@ User Function xMF10MntBr(lItem,aRegras)
 	oBwUp:SetDescription( cxDesc ) // 'Bilhetes'
 	oBwUp:SetAlias( cxAlias )
 	oBwUp:SetFieldMark( cFldMark )
-	oBwUp:SetMenuDef( 'MGFFAT10' )     // Define de onde virao os botoes deste browse
+	oBwUp:SetMenuDef( 'MGFFAT10' )     // Define de onde virão os botoes deste browse
 	oBwUp:SetFields( aStruCab )
 	oBwUp:SetOnlyFields( aFieldCab )
 	oBwUp:SetProfileID( '1' )        // Identificador (ID) para o Browse
 	oBwUp:DisableDetails( )
-	oBwUp:ForceQuitButton( )          // Forca exibicao do botao [Sair]
+	oBwUp:ForceQuitButton( )          // Força exibição do botão [Sair]
 
 
 	oBwUp:AddFilter( 'Filtro Par Cab',cFilParSC5,.T.,.T.,IIF( lItem,'SC6','SC5' ) )
@@ -551,7 +551,7 @@ User Function xMF10MntBr(lItem,aRegras)
 		oBwUp:oBrowse:FwFilter():AddLevel('Cod ADD',cFilCab,cFilQCab,,.T.,.T.,.T.,"SZV","",.F.)
 		oBwUp:ExecuteFilter()
 	Else
-		MsgInfo("Solicite a Sustentaï¿½ï¿½o, Que inclua a Tabela SZV em seu menu","Atencao")
+		MsgInfo("Solicite a Sustentação, Que inclua a Tabela SZV em seu menu","Atenção")
 	EndIf
 
 	(oBwUp:Alias())->(DbGoTop())
@@ -562,7 +562,7 @@ User Function xMF10MntBr(lItem,aRegras)
 	oBwDown:SetDescription( 'Bloqueios' ) // 'Forma Pagamento'
 	oBwDown:SetAlias( 'SZV' )
 	oBwDown:SetFieldMark('ZV_MARK')
-	oBwDown:SetMenuDef( '' ) 			// Referencia vazia para que nao exiba nenhum botao.
+	oBwDown:SetMenuDef( '' ) 			// Referencia vazia para que nao exiba nenhum botão.
 	oBwDown:SetProfileID( '2' )
 	oBwDown:DisableDetails( )
 	oBwDown:SetOnlyFields( aFieldSZV )
@@ -578,9 +578,9 @@ User Function xMF10MntBr(lItem,aRegras)
 	oBwDown:AddLegend( "Empty(ZV_DTAPR).AND.Empty(ZV_DTRJC).and. ZV_CODRGA <> '000099'" , "YELLOW"  , "Bloqueado" )
 	oBwDown:AddLegend( "Empty(ZV_DTAPR).AND.!Empty(ZV_DTRJC).and. ZV_CODRGA <> '000099'", "RED"	 , "Rejeitado" )
 
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC) .and. Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BR_LARANJA"	 , "Bloqueado S/ Classificacao" )
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BLUE"	 , "Bloqueado C/ Classificacao" )
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. !Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'","BR_MARROM"	 , "Rejeitado C/ Classificacao" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC) .and. Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BR_LARANJA"	 , "Bloqueado S/ Classificação" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BLUE"	 , "Bloqueado C/ Classificação" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. !Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'","BR_MARROM"	 , "Rejeitado C/ Classificação" )
 
 	oBwDown:Activate()
 
@@ -611,11 +611,11 @@ Return
 Programa............: xMF10AMkCB
 Autor...............: Joni Lima
 Data................: 11/10/2016
-Descricao / Objetivo: Marcacao de todos os Registro do Browse do cabecalho
+Descrição / Objetivo: Marcação de todos os Registro do Browse do cabeçalho
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a marcacao de todos os Registros do Browse
+Uso.................: Marfrig
+Obs.................: Realiza a marcação de todos os Registros do Browse
 =====================================================================================
 */
 Static Function xMF10AMkCB(cField)
@@ -632,7 +632,7 @@ Static Function xMF10AMkCB(cField)
 	Eval(bExcRel)
 
 	While (cAlias)->(!Eof())
-		xMF10MkCab(cField)  // chama a rotina de marcacao simples
+		xMF10MkCab(cField)  // chama a rotina de marcação simples
 		(cAlias)->(DbSkip())
 		If (cAlias)->(!Eof())
 			Eval(bExcRel)
@@ -652,11 +652,11 @@ Return .T.
 Programa............: xMF10MkCab
 Autor...............: Joni Lima
 Data................: 11/10/2016
-Descricao / Objetivo: Marcacao de Registro do Cabeaalho
+Descrição / Objetivo: Marcação de Registro do Cabeçalho
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a marcacao do Browse, ja dispara e marca dos itens do bloqueio
+Uso.................: Marfrig
+Obs.................: Realiza a marcação do Browse, ja dispara e marca dos itens do bloqueio
 =====================================================================================
 */
 Static Function xMF10MkCab(cField)
@@ -670,7 +670,7 @@ Static Function xMF10MkCab(cField)
 
 	If !Empty(cField)
 		cFldMrk := cAlias + '->' + cField
-		// Verifica se o item esta sendo marcado ou desmarcado
+		// Verifica se o item está sendo marcado ou desmarcado
 		If ( !oBwUp:IsMark() )
 			RecLock(cAlias,.F.)
 			&cFldMrk  := oBwUp:Mark()
@@ -694,11 +694,11 @@ Return .T.
 Programa............: xMF10AMkZV
 Autor...............: Joni Lima
 Data................: 11/10/2016
-Descricao / Objetivo: Marcacao de todos os Registro do Browse de Bloqueio Registro
+Descrição / Objetivo: Marcação de todos os Registro do Browse de Bloqueio Registro
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a marcacao de todos os Registros do Browse
+Uso.................: Marfrig
+Obs.................: Realiza a marcação de todos os Registros do Browse
 =====================================================================================
 */
 Static Function xMF10AMkZV(lCab,lMark,cField)
@@ -717,7 +717,7 @@ Static Function xMF10AMkZV(lCab,lMark,cField)
 //	(cAlias)->(DbSeek(xFilial(cAlias)))
 //	(cAlias)->(DbSeek((cAlias)->ZV_FILIAL))
 	While (cAlias)->(!Eof())
-		xMF10MkSZV(lCab,lMark,cField,.T.)  // chama a rotina de marcacao simples
+		xMF10MkSZV(lCab,lMark,cField,.T.)  // chama a rotina de marcação simples
 		(cAlias)->(DbSkip())
 	EndDo
 
@@ -741,11 +741,11 @@ Return .T.
 Programa............: xMF10MkSZV
 Autor...............: Joni Lima
 Data................: 11/10/2016
-Descricao / Objetivo: Marcacao de Registro
+Descrição / Objetivo: Marcação de Registro
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a marcacao do Browse
+Uso.................: Marfrig
+Obs.................: Realiza a marcação do Browse
 =====================================================================================
 */
 Static Function xMF10MkSZV(lCab,lMark,cField,lAMkZV)
@@ -763,7 +763,7 @@ Static Function xMF10MkSZV(lCab,lMark,cField,lAMkZV)
 	Default lAMkZV	:= .F.
 
 	If !(lCab)
-		// Verifica se o item esta sendo marcado ou desmarcado
+		// Verifica se o item está sendo marcado ou desmarcado
 		lNotMar := !oBwDown:IsMark()
 
 		RecLock(cAlias,.F.)
@@ -806,11 +806,11 @@ Return .T.
 Programa............: xMF10VMark
 Autor...............: Joni Lima
 Data................: 11/10/2016
-Descricao / Objetivo: Marcacao de Registro do Cabeaalho baseando-se nos bloqueios
+Descrição / Objetivo: Marcação de Registro do Cabeçalho baseando-se nos bloqueios
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a marcacao do Browse
+Uso.................: Marfrig
+Obs.................: Realiza a marcação do Browse
 =====================================================================================
 */
 Static Function xMF10VMark(oBwDown,oBwUp,cFldMrk,lAlMark)
@@ -864,11 +864,11 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -881,7 +881,7 @@ Static Function MenuDef()
 	ADD OPTION aRotina TITLE "Cons. Bloqueio" 	 ACTION "U_xMF10BlCon"  OPERATION 5	 ACCESS 0
 	ADD OPTION aRotina TITLE "Posicao Cliente" 	 ACTION "U_xMF10ClCon"  OPERATION 6   ACCESS 0
 	ADD OPTION aRotina TITLE "Perda" 	         ACTION "U_xMF10LcPerd"   OPERATION 7   ACCESS 0
-	ADD OPTION aRotina TITLE "Rejeicao Pedidos"  ACTION "U_xMF10PrRjc"  OPERATION 8   ACCESS 0
+	ADD OPTION aRotina TITLE "Rejeição Pedidos"  ACTION "U_xMF10PrRjc"  OPERATION 8   ACCESS 0
 	//ADD OPTION aRotina TITLE "TESTE NAO USAR"  ACTION "U_xTESFT10"  OPERATION 9   ACCESS 0
 	/*ADD OPTION aRotina TITLE "Incluir"    		ACTION "VIEWDEF.MGFFAT10" OPERATION MODEL_OPERATION_INSERT ACCESS 0
 	ADD OPTION aRotina TITLE "Alterar"    		ACTION "VIEWDEF.MGFFAT10" OPERATION MODEL_OPERATION_UPDATE ACCESS 0
@@ -900,10 +900,10 @@ return
 Programa............: xMF10StrCa
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Adiciona campos no browse Superior
+Descrição / Objetivo: Adiciona campos no browse Superior
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona os campos de Nome e valor no browse superior
 =====================================================================================
 */
@@ -929,10 +929,10 @@ Return
 Programa............: xMF10CalPd
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Calculo do total do Pedido
+Descrição / Objetivo: Calculo do total do Pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza calculo de todos os itens do pedido
 =====================================================================================
 */
@@ -959,10 +959,10 @@ Return nRet
 Programa............: xMF10CdBlq
 Autor...............: Joni Lima
 Data................: 14/10/2016
-Descricao / Objetivo: Cadastra o Bloqueio do Item
+Descrição / Objetivo: Cadastra o Bloqueio do Item
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: insere na tabela SZV o Bloqueio conforme parametros.
 =====================================================================================
 */
@@ -1070,24 +1070,24 @@ Return lRet
 Programa............: xMF10PrLib
 Autor...............: Joni Lima
 Data................: 18/10/2016
-Descricao / Objetivo: Chama funcao para liberar pedidos
+Descrição / Objetivo: Chama função para liberar pedidos
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Liberacao dos pedidos
+Uso.................: Marfrig
+Obs.................: Realiza Liberação dos pedidos
 =====================================================================================
 */
 User Function xMF10PrLib()
 	If Len(_aRegProc) > 0
-		If 	Aviso("Liberacao", "Sera Realizado a Liberacao de todos os Itens Marcados Deseja Continuar",;
+		If 	Aviso("Liberação", "Sera Realizado a Liberação de todos os Itens Marcados Deseja Continuar",;
 		{ "Continuar", "Cancelar" }, 1) == 1
-			Processa({|| xMF10AtSZV(.T.)},"Aguarde...","Processando a Liberacao...",.F.)
+			Processa({|| xMF10AtSZV(.T.)},"Aguarde...","Processando a Liberação...",.F.)
 			If _lFech
 				_oDlgPric:End()
 			EndIf
 		EndIf
 	Else
-		Alert('Nao Foi Selecionado Nenhum Registro para Liberacao')
+		Alert('Não Foi Selecionado Nenhum Registro para Liberação')
 	EndIf
 Return
 
@@ -1096,21 +1096,21 @@ Return
 Programa............: xMF10PrRjc
 Autor...............: Joni Lima
 Data................: 18/10/2016
-Descricao / Objetivo: Chama funcao para rejeitar pedidos
+Descrição / Objetivo: Chama função para rejeitar pedidos
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Rejeicao dos pedidos
+Uso.................: Marfrig
+Obs.................: Realiza Rejeição dos pedidos
 =====================================================================================
 */
 User Function xMF10PrRjc()
 	If Len(_aRegProc) > 0
-		If 	Aviso("Rejeicao", "Sera Realizado a Rejeicao de todos os Itens Marcados Deseja Continuar",;
+		If 	Aviso("Rejeição", "Sera Realizado a Rejeição de todos os Itens Marcados Deseja Continuar",;
 		{ "Continuar", "Cancelar" }, 1) == 1
-			Processa({|| xMF10AtSZV(.F.)},"Aguarde...","Processando a Rejeicao...",.F.)
+			Processa({|| xMF10AtSZV(.F.)},"Aguarde...","Processando a Rejeição...",.F.)
 		EndIf
 	Else
-		Alert('Nao Foi Selecionado Nenhum Registro para Rejeicao')
+		Alert('Não Foi Selecionado Nenhum Registro para Rejeição')
 	EndIf
 Return
 
@@ -1119,11 +1119,11 @@ Return
 Programa............: xMF10AtSZV
 Autor...............: Joni Lima
 Data................: 18/10/2016
-Descricao / Objetivo: Percorre os Browse executando Liberacao do Pedido ou Rejeicao
+Descrição / Objetivo: Percorre os Browse executando Liberação do Pedido ou Rejeição
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Varredura dos Browses para Liberacao
+Uso.................: Marfrig
+Obs.................: Realiza Varredura dos Browses para Liberação
 =====================================================================================
 */
 Static Function xMF10AtSZV(lLibera)
@@ -1163,7 +1163,7 @@ Static Function xMF10AtSZV(lLibera)
 			SC5->(dbSetOrder(1))//C5_FILIAL + C5_NUM
 			If SC5->(dbSeek(_aRegProc[ni,1] + _aRegProc[ni,2]))
 
-				//Liberacao do WebService
+				//Liberação do WebService
 				If xLibWS()
 					RecLock('SC5',.F.)
 					SC5->C5_ZCONWS := 'S'
@@ -1172,10 +1172,10 @@ Static Function xMF10AtSZV(lLibera)
 
 				lLib := !(U_xMF10ExiB(_aRegProc[ni,1],_aRegProc[ni,2]))
 
-				//Realiza Liberacao ou bloqueio
+				//Realiza Liberação ou bloqueio
 				RecLock('SC5',.F.)
 
-				If lLib //Liberacao
+				If lLib //Liberação
 					lEnv := SC5->C5_ZBLQRGA <> 'L'
 					SC5->C5_ZBLQRGA := 'L'
 				Else
@@ -1198,7 +1198,7 @@ Static Function xMF10AtSZV(lLibera)
 	Next ni
 
 	If !Empty(cMsg)
-		AVISO("Bloqueios sem Classificacao", cMsg, { "OK" }, 3)
+		AVISO("Bloqueios sem Classificação", cMsg, { "OK" }, 3)
 	EndIf
 
 	//cFilCab := xMF10FilCb(_aRegras)
@@ -1268,11 +1268,11 @@ return lCont
 Programa............: xMF10VerCl
 Autor...............: Joni Lima
 Data................: 28/11/2016
-Descricao / Objetivo: Realiza a Verificacao de classificacao de Perda
+Descrição / Objetivo: Realiza a Verificação de classificação de Perda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Retorna se existe e uma descricao do problema.
+Uso.................: Marfrig
+Obs.................: Retorna se existe e uma descrição do problema.
 =====================================================================================
 */
 Static Function xMF10VerCl(cxFil,cPedido,cItem,cRegra)
@@ -1283,7 +1283,7 @@ Static Function xMF10VerCl(cxFil,cPedido,cItem,cRegra)
 	If Empty(Posicione('SZV',1,cxFil + cPedido + cItem + cRegra,'ZV_CODPER'))
 		lRet := .F.
 		cRet := 'Filial: ' + cxFil + ', Pedido: ' + cPedido + ', Item: ' + cItem + ', Regra: ' + cRegra  + CRLF
-		cRet += 'Bloqueio esta sem Classificacao de Perda, Favor Classificar'
+		cRet += 'Bloqueio esta sem Classificação de Perda, Favor Classificar'
 	EndIf
 
 Return {lRet,cRet}
@@ -1293,11 +1293,11 @@ Return {lRet,cRet}
 Programa............: xMF10LbRj
 Autor...............: Joni Lima
 Data................: 14/10/2016
-Descricao / Objetivo: Realiza a liberacao do Item
+Descrição / Objetivo: Realiza a liberação do Item
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: altera a tabela SZV a aprovacao do Bloqueio
+Uso.................: Marfrig
+Obs.................: altera a tabela SZV a aprovação do Bloqueio
 =====================================================================================
 */
 User Function xMF10LbRj(cPedido,cItem,cReg,cAprav,lLib)
@@ -1388,11 +1388,11 @@ return
 Programa............: xMF10ExiB
 Autor...............: Joni Lima
 Data................: 14/10/2016
-Descricao / Objetivo: Verifica se existe bloqueio nao aprovado para o pedido
+Descrição / Objetivo: Verifica se existe bloqueio não aprovado para o pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica na se existe bloqueio para o pedido SZV sem Data de aprovacao
+Uso.................: Marfrig
+Obs.................: Verifica na se existe bloqueio para o pedido SZV sem Data de aprovação
 =====================================================================================
 */
 User Function xMF10ExiB(cxFil,cPedido)
@@ -1439,11 +1439,11 @@ Return lRet
 Programa............: xMF10VisPe
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Rotina para visualizacao dos pedidos
+Descrição / Objetivo: Rotina para visualização dos pedidos
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a visualizacao do pedido possicionado
+Uso.................: Marfrig
+Obs.................: Faz a visualização do pedido possicionado
 =====================================================================================
 */
 User Function xMF10VisPe()
@@ -1457,16 +1457,16 @@ User Function xMF10VisPe()
 	private aRotina := {	{"Pesquisar","PesqBrw"		, 0 , 1 , 0 , .F.},;	// "Pesquisar"
 	{"Visualizar","A410Visual"	, 0 , 2 , 0 , NIL},;	// "Visualizar"
 	{"Liberar","A440Libera"		, 0 , 6 , 0 , NIL},;	// "Liberar"
-	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Automatico"
+	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Autom tico"
 	{"Legenda","A410Legend"		, 0 , 0 , 0 , .F.}}		// "Legenda"
 
-	If MV_PAR01 == 1	//visualizacao por item
+	If MV_PAR01 == 1	//visualização por item
 		dbSelectArea('SC5')
 		SC5->(dbSetOrder(1))//C5_FILIAL, C5_NUM
 		If SC5->(dbSeek(xFilial('SC5') + SC6->C6_NUM))
 			A410Visual('SC5',SC5->(RecNO()),2)
 		EndIf
-	Else //visualizacao por pedido
+	Else //visualização por pedido
 		A410Visual('SC5',SC5->(RecNO()),2)
 	EndIf
 
@@ -1484,11 +1484,11 @@ Return
 Programa............: xMF10ConBl
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Chama rotina para visualizacao dos bloqueios
+Descrição / Objetivo: Chama rotina para visualização dos bloqueios
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a visualizacao dos bloqueios existenste no item do pedido ou pedido
+Uso.................: Marfrig
+Obs.................: Faz a visualização dos bloqueios existenste no item do pedido ou pedido
 =====================================================================================
 */
 User Function xMF10BlCon()
@@ -1513,11 +1513,11 @@ Return
 Programa............: xMF10ClCon
 Autor...............: Joni Lima
 Data................: 10/10/2016
-Descricao / Objetivo: Chama rotina de posicao do Cliente
+Descrição / Objetivo: Chama rotina de posição do Cliente
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a visualizacao das consultas dos clientes
+Uso.................: Marfrig
+Obs.................: Faz a visualização das consultas dos clientes
 =====================================================================================
 */
 User Function xMF10ClCon()
@@ -1533,7 +1533,7 @@ User Function xMF10ClCon()
 	Private aRotina := {	{"Pesquisar","PesqBrw"		, 0 , 1 , 0 , .F.},;	// "Pesquisar"
 	{"Visualizar","A410Visual"	, 0 , 2 , 0 , NIL},;	// "Visualizar"
 	{"Liberar","A440Libera"		, 0 , 6 , 0 , NIL},;	// "Liberar"
-	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Automatico"
+	{"Automatico","A440Automa"	, 0 , 0 , 0 , NIL},;	// "Autom tico"
 	{"Legenda","A410Legend"		, 0 , 0 , 0 , .F.}}		// "Legenda"
 
 	dbSelectArea('SA1')
@@ -1561,10 +1561,10 @@ Return
 Programa............: xMF10JAllR
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Executa todos as Regras para um Pedido de Venda em outra thread ,
+Descrição / Objetivo: Executa todos as Regras para um Pedido de Venda em outra thread ,
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza todas as regras para o Pedido em uma outra thread.
 =====================================================================================
 */
@@ -1587,7 +1587,7 @@ User Function xMF10JAllR(cPedido,aRegra,cEmp,cFil,cModulo)
 		Conout('Terminou Processo: ' + DtoC(Date()) + ' Horas: ' + TIME())
 
 		RECOVER
-		Conout('Deu Problema na Execucao' + ' Horas: ' + TIME() )
+		Conout('Deu Problema na Execução' + ' Horas: ' + TIME() )
 	END SEQUENCE
 
 	ErrorBlock( bError )
@@ -1608,10 +1608,10 @@ Return Nil
 Programa............: xMF10AllRg
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Executa todos as Regras para um Pedido de Venda,
+Descrição / Objetivo: Executa todos as Regras para um Pedido de Venda,
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza todas as regras para o Peiddo
 =====================================================================================
 */
@@ -1639,7 +1639,7 @@ User Function xMF10AllRg(cPedido,aRegra)
 
 	If SZT->(dbSeek(cCorFil)).and. !Empty(cPedido)
 		While SZT->(!EOF()).and. SZT->ZT_FILIAL == cCorFil
-			IF SZT->ZT_CODIGO <> '000088' .AND. SZT->ZT_CODIGO <> '000089' // Linha incluida Carneiro 11/2017 para nao incluir as regras 88 e 89
+			IF SZT->ZT_CODIGO <> '000088' .AND. SZT->ZT_CODIGO <> '000089' // Linha incluida Carneiro 11/2017 para não incluir as regras 88 e 89
 				If SZT->ZT_MSBLQL <> '1'
 					If lFilRga
 						lCont := Ascan(aRegra,{|x| AllTrim(UPPER(x)) == AllTrim(UPPER(SZT->ZT_CODIGO))}) > 0
@@ -1661,7 +1661,7 @@ User Function xMF10AllRg(cPedido,aRegra)
 
 		RecLock('SC5',.F.)
 
-		If lLib //Liberacao
+		If lLib //Liberação
 			lEnv := SC5->C5_ZBLQRGA <> 'L'
 			SC5->C5_ZBLQRGA := 'L'
 		Else
@@ -1696,11 +1696,11 @@ Return
 Programa............: xMF10AtSC5
 Autor...............: Joni Lima
 Data................: 28/11/2016
-Descricao / Objetivo: Atualiza os Dados do Pedido de Venda
+Descrição / Objetivo: Atualiza os Dados do Pedido de Venda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Atualizaï¿½ï¿½o de alguns campos do Pedido de Venda
+Uso.................: Marfrig
+Obs.................: Realiza Atualização de alguns campos do Pedido de Venda
 =====================================================================================
 */
 Static Function xMF10AtSC5(cxFil,cPedido,cBlqRga,cConFis,cConRGA,cConWS)
@@ -1759,7 +1759,7 @@ Static Function xMF10AtSC5(cxFil,cPedido,cBlqRga,cConFis,cConRGA,cConWS)
 			EndIf
 		EndIf
 
-		//Libera Alteracao
+		//Libera Alteração
 		If SC5->C5_ZCONWS=='S' .and. SC5->C5_ZCONRGA=='S' .and. !(SC5->C5_ZTAURA $ '0|1')
 			SC5->C5_ZLIBALT := 'S'
 		EndIf
@@ -1778,11 +1778,11 @@ Return
 Programa............: xMF10ExcRg
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Executa a Regra para o pedido
+Descrição / Objetivo: Executa a Regra para o pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a Verificacao e cadastro do bloqueio caso exista.
+Uso.................: Marfrig
+Obs.................: Faz a Verificação e cadastro do bloqueio caso exista.
 =====================================================================================
 */
 User Function xMF10ExcRg(cPedido,cCodRga)
@@ -1810,7 +1810,7 @@ User Function xMF10ExcRg(cPedido,cCodRga)
 	SC6->(dbSetOrder(1))//C6_FILIAL, C6_NUM, C6_ITEM, C6_PRODUTO
 
 	If (SZT->(dbSeek(xFilial('SZT') + cCodRga ))) //Posiciona na Regra
-		If SZT->ZT_MSBLQL <> '1'//Verifica se Regra nao esta Bloqueada
+		If SZT->ZT_MSBLQL <> '1'//Verifica se Regra não esta Bloqueada
 			If SC5->(DbSeek(xFilial('SC5') + cPedido)) .and. SA1->(DbSeek(xFilial('SA1') + SC5->(C5_CLIENTE + C5_LOJACLI)))//Posiciona no Pedido e no Cliente
 				If SZT->ZT_TIPO == '1' .or. SZT->ZT_TIPO == '2'//Pedido de Venda ou Cliente
 					bFunc := &('{||' + Alltrim(SZT->ZT_FUNCAO) + '}')
@@ -1821,9 +1821,9 @@ User Function xMF10ExcRg(cPedido,cCodRga)
 						EndIf
 					Else
 						If !IsBlind()
-							Alert('A Funcao da regra: ' + cCodRga + ', nao esta retornando um valor logico. favor verificar')
+							Alert('A Funcao da regra: ' + cCodRga + ', não esta retornando um valor logico. favor verificar')
 						Else
-							Conout('A Funcao da regra: ' + cCodRga + ', nao esta retornando um valor logico. favor verificar')
+							Conout('A Funcao da regra: ' + cCodRga + ', não esta retornando um valor logico. favor verificar')
 						EndIf
 					EndIf
 				ElseIf SZT->ZT_TIPO == '3'//Produto
@@ -1837,25 +1837,25 @@ User Function xMF10ExcRg(cPedido,cCodRga)
 								EndIf
 							Else
 								If !IsBlind()
-									Alert('A Funcao da regra: ' + cCodRga + ', nao esta retornando um valor logico. favor verificar')
+									Alert('A Funcao da regra: ' + cCodRga + ', não esta retornando um valor logico. favor verificar')
 								Else
-									Conout('A Funcao da regra: ' + cCodRga + ', nao esta retornando um valor logico. favor verificar')
+									Conout('A Funcao da regra: ' + cCodRga + ', não esta retornando um valor logico. favor verificar')
 								EndIf
 							EndIf
 							SC6->(DbSkip())
 						EndDo
 					Else
-						cMsgErro := 'Nao Foi encontrado o itens para o Pedido: ' + cPedido
+						cMsgErro := 'Não Foi encontrado o itens para o Pedido: ' + cPedido
 					EndIf
 				EndIf
 			Else
-				cMsgErro := 'Nao Foi encontrado o Pedido: ' + cPedido
+				cMsgErro := 'Não Foi encontrado o Pedido: ' + cPedido
 			EndIf
 		Else
 			cMsgErro := 'Regra: ' + cCodRga + ' encontra-se Bloqueada'
 		EndIf
 	Else
-		cMsgErro := 'Nao Foi encontrado a Regra de Bloqueio: ' + cCodRga
+		cMsgErro := 'Não Foi encontrado a Regra de Bloqueio: ' + cCodRga
 	EndIf
 
 	If !Empty(cMsgErro)
@@ -1880,11 +1880,11 @@ Return
 Programa............: xMF10LbCE
 Autor...............: Joni Lima
 Data................: 24/10/2016
-Descricao / Objetivo: Realiza a Liberacao do Pedido de Venda
+Descrição / Objetivo: Realiza a Liberação do Pedido de Venda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a Liberacao do Pedido de Venda
+Uso.................: Marfrig
+Obs.................: Faz a Liberação do Pedido de Venda
 =====================================================================================
 */
 User Function xMF10LbPd(cxFil,cPedido)
@@ -1930,11 +1930,11 @@ Return
 Programa............: xMF10LbCE
 Autor...............: Joni Lima
 Data................: 24/10/2016
-Descricao / Objetivo: Realiza a Liberacao de Credito e Estoque
+Descrição / Objetivo: Realiza a Liberação de Credito e Estoque
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a Liberacao de Credito e Estoque
+Uso.................: Marfrig
+Obs.................: Faz a Liberação de Credito e Estoque
 =====================================================================================
 */
 Static Function xMF10LbCE(cxFil,cPedido)
@@ -1978,11 +1978,11 @@ Return
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 06/10/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro de Bloqueios
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro de Bloqueios
 =====================================================================================
 */
 Static Function ModelDef()
@@ -2013,11 +2013,11 @@ Return(oModel)
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 06/10/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizacao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function Viewdef()
@@ -2056,11 +2056,11 @@ Return oView
 Programa............: xMF10SZTE
 Autor...............: Joni Lima
 Data................: 21/10/2016
-Descricao / Objetivo: Validacao do codigo da Regra
+Descrição / Objetivo: Validação do codigo da Regra
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Validacao
+Uso.................: Marfrig
+Obs.................: Realiza Validação
 =====================================================================================
 */
 User Function xMF10SZTE(oModel,cField,xValue,nLin)
@@ -2084,11 +2084,11 @@ Return lRet
 Programa............: xMF10SZSE
 Autor...............: Joni Lima
 Data................: 21/10/2016
-Descricao / Objetivo: Validacao do codigo do aprovador
+Descrição / Objetivo: Validação do codigo do aprovador
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza Validacao
+Uso.................: Marfrig
+Obs.................: Realiza Validação
 =====================================================================================
 */
 User Function xMF10SZSE(oModel,cField,xValue,nLin)
@@ -2112,10 +2112,10 @@ Return lRet
 Programa............: xMF10EMVC
 Autor...............: Joni Lima
 Data................: 21/10/2016
-Descricao / Objetivo: Monta string de erro
+Descrição / Objetivo: Monta string de erro
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Monta a String de erro
 =====================================================================================
 */
@@ -2143,11 +2143,11 @@ Return cRet
 Programa............: xMF10LcPerd
 Autor...............: Joni Lima
 Data................: 29/10/2016
-Descricao / Objetivo: Abre a tela de perda para classificacao
+Descrição / Objetivo: Abre a tela de perda para classificação
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a chamada da tela de classificacao de perda
+Uso.................: Marfrig
+Obs.................: Faz a chamada da tela de classificação de perda
 =====================================================================================
 */
 User Function xMF10LcPerd()
@@ -2163,7 +2163,7 @@ User Function xMF10LcPerd()
 
 	If (cAliasSZV)->ZV_CODRGA == '000099'
 		If SZV->(dbGoto(nRecSZV))
-			FWExecView("Adicionar Tipo de Perda", "MGFFAT10", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)	//"Alteracao"
+			FWExecView("Adicionar Tipo de Perda", "MGFFAT10", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)	//"Alteração"
 		EndIf
 	Else
 		Help(" ",1,"Perda",,"Vinculo de Perda apenas para Regra '000099' ",1,0)
@@ -2178,10 +2178,10 @@ Return
 Programa............: xMF10xFCb
 Autor...............: Joni Lima
 Data................: 29/10/2016
-Descricao / Objetivo: Abre a tela de aprovacao de pedido
+Descrição / Objetivo: Abre a tela de aprovação de pedido
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Filtro da parte superior
 =====================================================================================
 */

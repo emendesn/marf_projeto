@@ -8,7 +8,7 @@ Data.....:              09/11/2018
 Descricao / Objetivo:   Sinalizar o termino do processamento de custo                        
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================================
 */
 User Function MGFEST54()

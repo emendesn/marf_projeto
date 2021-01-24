@@ -7,11 +7,11 @@
 Programa.:              M410PVNF
 Autor....:              Marcelo Carneiro / Barbieri
 Data.....:              09/11/2016 
-Descricao / Objetivo:   Integracao TAURA - SAIDAS / FAT14
+Descricao / Objetivo:   Integração TAURA - SAIDAS / FAT14
 Doc. Origem:            TAURA / FAT14
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de Entrada para Nao Liberar PV do Taura / Bloqueados pelo FAT14
+Uso......:              Marfrig
+Obs......:              Ponto de Entrada para Não Liberar PV do Taura / Bloqueados pelo FAT14
 =============================================================================================
 */
 User Function M410PVNF
@@ -30,6 +30,12 @@ Endif
 If bRet
 	If FindFunction("U_MGFFAT45")
 		 bRet := U_MGFFAT45()
+	Endif
+Endif
+
+If bRet
+	If FindFunction("U_MGFFATC0")
+		 bRet := U_MGFFATC0()
 	Endif
 Endif
 

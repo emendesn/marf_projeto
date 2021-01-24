@@ -11,7 +11,7 @@ Solicitante.........: Cliente
 Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
-10/07/2020 - Paulo da Mata - RTASK0010971 - Recriacao para PRD em 13/07/2020
+10/07/2020 - Paulo da Mata - RTASK0010971 - Recriação para PRD em 13/07/2020
 */
 User function MT103Fim()
 
@@ -49,7 +49,7 @@ User function MT103Fim()
 		U_CTB32FIM()
 	EndIf
 
-	// Paulo da Mata - 23/06/2020 - Sï¿½ passa por aqui, no ato da entrada da note, via importacao do CTE	
+	// Paulo da Mata - 23/06/2020 - Só passa por aqui, no ato da entrada da note, via importação do CTE	
 	If Isincallstack('GFEA118') .Or. Isincallstack('GFEA065')
 
 		// Paulo da Mata - 15/04/2020 - Inclui a data de vencimento do CTE
@@ -71,19 +71,19 @@ User function MT103Fim()
 		EndIf
 	EndIf
 
-	// Funcao para finalizar a RAMI
+	// Funï¿½ï¿½o para finalizar a RAMI
 	If FindFunction("U_MGFCRM49")
-		If PARAMIXB[2] == 1 // Se o usuario confirmou a operacao de gravacao da NFECODIGO DE APLICAï¿½ï¿½O DO USUARIO
-			If PARAMIXB[1] == 3 // 3:Inclusao, 5: Estorno de classificacao
+		If PARAMIXB[2] == 1 // Se o usuario confirmou a operaï¿½ï¿½o de gravaï¿½ï¿½o da NFECODIGO DE APLICAï¿½ï¿½O DO USUARIO
+			If PARAMIXB[1] == 3 // 3:Inclusï¿½o, 5: Estorno de Classificaï¿½ï¿½o
 				U_MGFCRM49() // 2 - Gera a NCC para o cliente no valor do Documento de Entrada. 			
 			EndIf
 		EndIf
 	EndIf	
 	
-	//GAP358, Natanael: Localiza na SA1 o registro que possui o mesmo CNPJ do Fornecedor (SA2) informado no Documento de Entrada de complemento de ICMS e incluira uma NCC para esse cliente.
+	//GAP358, Natanael: Localiza na SA1 o registro que possui o mesmo CNPJ do Fornecedor (SA2) informado no Documento de Entrada de complemento de ICMS e incluirï¿½ uma NCC para esse cliente.
 	If FindFunction("U_MGFFIS36") .AND. IsInCallStack("MATA103")
-		If PARAMIXB[2] == 1 // Se o usuario confirmou a operacao de gravacao da NFECODIGO DE APLICAï¿½ï¿½O DO USUARIO
-			If PARAMIXB[1] == 3 // 3:Inclusao, 5: Estorno de classificacao
+		If PARAMIXB[2] == 1 // Se o usuario confirmou a operaï¿½ï¿½o de gravaï¿½ï¿½o da NFECODIGO DE APLICAï¿½ï¿½O DO USUARIO
+			If PARAMIXB[1] == 3 // 3:Inclusï¿½o, 5: Estorno de Classificaï¿½ï¿½o
 			   U_MGFFIS36(2) // 2 - Gera a NCC para o cliente no valor do Documento de Entrada.
 			EndIf
 		EndIf

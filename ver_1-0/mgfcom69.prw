@@ -11,7 +11,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MATA094
 =====================================================================================
 */
@@ -59,7 +59,7 @@ Return(uRet)
 User Function COM69Des()
 
 Local oDlg                 
-Local cTit := OemToAnsi("Motivo de Liberacao - Bloqueio por Divergencia de Valor Total da Nota - Marfrig")
+Local cTit := OemToAnsi("Motivo de Liberação - Bloqueio por Divergência de Valor Total da Nota - Marfrig")
 Local oBut1
 //Local oBut2
 Local nOpcA := 0
@@ -76,7 +76,7 @@ If lRet
 			
 	DEFINE MSDIALOG oDlg TITLE cTit FROM 200,001 TO 300,450 OF oMainWnd PIXEL 
 	
-	@ 10,05	SAY OemToAnsi("Motivo da Liberacao:") OF oDlg SIZE 50,10 PIXEL
+	@ 10,05	SAY OemToAnsi("Motivo da Liberação:") OF oDlg SIZE 50,10 PIXEL
 	@ 10,60 MSGET cMotDesblo Picture "@!" WHEN lWhen Valid !Empty(cMotDesblo) SIZE 160,10 PIXEL
 		
 	DEFINE SBUTTON oBut1 FROM 30,100 TYPE 1 ACTION IIf(!Empty(cMotDesblo),(nOpcA := 1,oDlg:End()),.F.) ENABLE OF oDlg
@@ -84,8 +84,8 @@ If lRet
 		
 	ACTIVATE MSDIALOG oDlg CENTERED
 Else
-	APMsgAlert("Documento nao ï¿½ tipo 'NF' ou nao foi bloqueado pela divergencia de valor total."+CRLF+;
-	"Nao  sera permitido informar o motivo.")	
+	APMsgAlert("Documento não é tipo 'NF' ou não foi bloqueado pela divergência de valor total."+CRLF+;
+	"Não será permitido informar o motivo.")	
 Endif
 				
 Return()		
@@ -101,8 +101,8 @@ lValida := COM69NFDiv()
 
 If lValida .and. Empty(cMotDesblo)
 	lRet := .F.
-	APMsgAlert("Nao  foi informado o motivo do desbloqueio."+CRLF+;
-	"Acesse no menu 'Outras Acoes' a opcao 'Mot. Desbloq. Div. Valor Total' e informe o motivo.")
+	APMsgAlert("Não foi informado o motivo do desbloqueio."+CRLF+;
+	"Acesse no menu 'Outras Ações' a opção 'Mot. Desbloq. Div. Valor Total' e informe o motivo.")
 Endif
 
 Return(lRet)	
@@ -134,7 +134,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MT094END
 =====================================================================================
 */

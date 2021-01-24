@@ -6,10 +6,10 @@
 Programa............: MGFEST27
 Autor...............: Mauricio Gresele
 Data................: 24/05/2017
-Descricao / Objetivo: Tratamento para gravacao do campo N1_DESCR
+Descrição / Objetivo: Tratamento para gravacao do campo N1_DESCR
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     

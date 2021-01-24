@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝอป๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝPrograma  ๏ฟฝ MGF29R10	๏ฟฝAutor  ๏ฟฝ Geronimo Benedito Alves																	๏ฟฝData ๏ฟฝ08/01/18	๏ฟฝ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝอน๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝDesc.		๏ฟฝ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control -EXPORTACAO - Faturado Sem BL (Modulo 29)		๏ฟฝ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ			๏ฟฝ Os dados sao obtidos e mostrados na tela atravez da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ๏ฟฝ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝอน๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝUso		๏ฟฝ Cliente Global Foods																												๏ฟฝ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝอผ๏ฟฝ๏ฟฝ
-//๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ๏ฟฝ
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//ฑฑษออออออออออัออออออออออออหอออออออัอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออหอออออัออออออออออออปฑฑ
+//ฑฑบPrograma  ณ MGF29R10	บAutor  ณ Geronimo Benedito Alves																	บData ณ08/01/18	บฑฑ
+//ฑฑฬออออออออออุออออออออออออสอออออออฯอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออสอออออฯออออออออออออนฑฑ
+//ฑฑบDesc.		ณ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control -EXPORTACAO - Faturado Sem BL (M๓dulo 29)		บฑฑ
+//ฑฑบ			ณ Os dados sao obtidos e mostrados na tela atrav้z da execu็ใo de query, e depois, o usuario pode gerar uma planilha excel com eles บฑฑ
+//ฑฑฬออออออออออุอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออนฑฑ
+//ฑฑบUso		ณ Marfrig Global Foods																												บฑฑ
+//ฑฑศออออออออออฯอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออฯอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผฑฑ
+//฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿฿
 
 User Function MGF29R10()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -18,21 +18,21 @@ User Function MGF29R10()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "EXPORTACAO - Faturado sem BL"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecer๏ฟฝ na regua de processamento.
+	Aadd(_aDefinePl, "EXPORTAวรO - Faturado sem BL"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerแ na regua de processamento.
 	Aadd(_aDefinePl, "Faturado sem BL"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Faturado sem BL"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Faturado sem BL"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}								)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }					)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, {}								)	//05-	Array de Arrays que define quais colunas serใo mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, serแ mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }					)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluํdo naquela aba  
 	_nInterval	:= 35									//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ๏ฟฝ usado alguma funcao (Sum,Count,max,Coalesc,etc), ๏ฟฝ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ้ usado alguma fun็ใo (Sum,Count,max,Coalesc,etc), ้ dado a ele um apelido indicado    
+	//pela clausula "as" que serแ transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sใo sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serใo preservados.
 	//					01			 02										 03							 04	 05		 06	 07							08	 09	
 	Aadd(_aCampoQry, {"EEC_ZEXP"	,"NUM_EXP"								,"Exp #"					,"C",013	,0	,""							,0	,""	})
 	Aadd(_aCampoQry, {"EEC_ZANOEX"	,"ANO_EXP"								,"Year"						,"C",002	,0	,""							,0	,""	})
@@ -67,7 +67,7 @@ User Function MGF29R10()
 	Aadd(_aCampoQry, {"ZZR_TOTCAI"	,"TOTAL_CAIXA			as TOTALCAIXA"	,"Total Amount"				,"N",015	,2	,"@E 999,999,999,999.99"	,2	,""	})
 	Aadd(_aCampoQry, {"EE9_PRCINC"	,"TOTAL_ROMANEIO		as TOTROMANEI"	,"Total Invoiced"			,"N",015	,2	,"@E 999,999,999,999.99"	,2	,""	})
 	Aadd(_aCampoQry, {"D2_DOC"		,"NUM_NF"								,"NF"						,"C",009	,0	,""							,0	,""	})
-	Aadd(_aCampoQry, {"D2_EMISSAO"	,"DATA_EMISSAO			as DATAEMISSA"	,"Data Emissao NF"			,"D",008	,0	,""							,0	,""	})
+	Aadd(_aCampoQry, {"D2_EMISSAO"	,"DATA_EMISSAO			as DATAEMISSA"	,"Data Emissใo NF"			,"D",008	,0	,""							,0	,""	})
 	Aadd(_aCampoQry, {"M2_MOEDA2"	,"TAXA"									,"Taxa NF"					,"N",011	,4	,"@E 999,999.9999"			,4	,""	})
 	Aadd(_aCampoQry, {"D2_TOTAL"	,"VALOR_NF"								,"Val NF"					,"N",017	,2	,"@E 99,999,999,999.99"		,2	,""	})
 	Aadd(_aCampoQry, {"ZZR_PERDE"	,"DATA_PRODUCAO_DE		as DTPRODUDE"	,"Production Date (From)"	,"D",008	,0	,""							,0	,""	})
@@ -78,7 +78,7 @@ User Function MGF29R10()
 	aAdd(_aParambox,{1,"Nome Importador"			,Space(tamSx3("A1_NOME")[1])	,"@!"	,""												,"VSA1"		,"",115,.F.})													
 	aAdd(_aParambox,{1,"Nome Consignee"				,Space(tamSx3("A1_NOME")[1])	,"@!"	,""												,"VSA1"		,"",115,.F.})													
 	aAdd(_aParambox,{1,"Nome Buyer"					,Space(tamSx3("A1_NOME")[1])	,"@!"	,""												,"VSA1"		,"",115,.F.})													
-	aAdd(_aParambox,{1,"Pa๏ฟฝs Destino (em portugues)",Space(tamSx3("YA_DESCR")[1])	,""		,""												,"SYAEXP"	,"",100,.F.})
+	aAdd(_aParambox,{1,"Paํs Destino (em portugues)",Space(tamSx3("YA_DESCR")[1])	,""		,""												,"SYAEXP"	,"",100,.F.})
 	aAdd(_aParambox,{1,"Tipo Pagamento"				,Space(tamSx3("YP_TEXTO")[1])	,"@!"	,""												,""			,"",100,.F.})
 	aAdd(_aParambox,{1,"Administrador"				,Space(tamSx3("EEC_RESPON")[1])	,"@!"	,""												,""			,"",100,.F.}) // retirada a consulta SXB E33
 	aAdd(_aParambox,{1,"ETA Origem Inicial"			,Ctod("")						,""		,""												,""			,"",050,.F.})
@@ -88,22 +88,22 @@ User Function MGF29R10()
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecao das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecใo das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 	
 	_cQuery += "	FROM " + U_IF_BIMFR( "IF_BIMFR", "V_EX_FATURADOSEMBL" ) + CRLF
-	_cQuery += U_WhereAnd( !empty(_cCODFILIA),     " FILIAL_FILTRO IN "           + _cCODFILIA                              ) //OBRIGATORIO (SELECAO DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += U_WhereAnd( !empty(_aRet[1]),       " NOME_TRADING LIKE '%"        + _aRet[1]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[2]),       " NOME_IMPORTADOR LIKE '%"     + _aRet[2]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[3]),       " NOME_CONSIGNEE LIKE '%"      + _aRet[3]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[4]),       " NOME_BUYER LIKE '%"          + _aRet[4]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[5]),       " PAIS_DESTINO_FILTRO LIKE '%" + _aRet[5]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[6]),       " TIPO_PAGAMENTO LIKE '%"      + _aRet[6]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[7]),       " ADMINISTRADOR LIKE '%"       + _aRet[7]  + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[8]),       " ETA_ORIGEM_FILTRO BETWEEN '" + _aRet[8]  + "' AND '" + _aRet[9] + "' " ) //NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[10]),      " PORTO_ORIGEM  LIKE '%"       + _aRet[10] + "%' "                       )// NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[11]),      " DESPACHANTE LIKE '%"         + _aRet[11] + "%' "                       )// NAO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_cCODFILIA),     " FILIAL_FILTRO IN "           + _cCODFILIA                              ) //OBRIGATORIO (SELEวรO DO COMBO)  CAMPO FILIAL(06 posi็๕es)
+	_cQuery += U_WhereAnd( !empty(_aRet[1]),       " NOME_TRADING LIKE '%"        + _aRet[1]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[2]),       " NOME_IMPORTADOR LIKE '%"     + _aRet[2]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[3]),       " NOME_CONSIGNEE LIKE '%"      + _aRet[3]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[4]),       " NOME_BUYER LIKE '%"          + _aRet[4]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[5]),       " PAIS_DESTINO_FILTRO LIKE '%" + _aRet[5]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[6]),       " TIPO_PAGAMENTO LIKE '%"      + _aRet[6]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[7]),       " ADMINISTRADOR LIKE '%"       + _aRet[7]  + "%' "                       ) //NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[8]),       " ETA_ORIGEM_FILTRO BETWEEN '" + _aRet[8]  + "' AND '" + _aRet[9] + "' " ) //NรO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[10]),      " PORTO_ORIGEM  LIKE '%"       + _aRet[10] + "%' "                       )// NรO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[11]),      " DESPACHANTE LIKE '%"         + _aRet[11] + "%' "                       )// NรO OBRIGATORIO (USUARIO DIGITA )
 
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MsgRun("Aguarde!!! Montando\Desconectando Tela"	,,{ ||U_TGridRel()})

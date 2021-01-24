@@ -5,10 +5,10 @@
 Programa............: MGFEST34
 Autor...............: Gresele
 Data................: Nov/2017
-Descricao / Objetivo: Rotina chamada pelo ponto de entrada MA650ENOT
+Descrição / Objetivo: Rotina chamada pelo ponto de entrada MA650ENOT
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -37,14 +37,14 @@ cQ += "AND DC_ORIGEM = 'SC2' "
 cQ += "AND "
 cQ += "( "
 cQ += "DC_OP = '"+cOp+"' "
-cQ += "OR DC_OP = " // opï¿½s excluidas e que tenham ficado empenho
+cQ += "OR DC_OP = " // op´s excluidas e que tenham ficado empenho
 cQ += "		(SELECT C2_NUM || C2_ITEM || C2_SEQUEN "
 cQ += "		FROM "+RetSqlName("SC2")+" SC2 "
-cQ += "		WHERE SC2.D_E_L_E_T_ = '*' " // OBS: somente opï¿½s excluidas
+cQ += "		WHERE SC2.D_E_L_E_T_ = '*' " // OBS: somente op´s excluidas
 cQ += "		AND C2_FILIAL = '"+xFilial("SC2")+"' "
 cQ += "		AND C2_NUM || C2_ITEM || C2_SEQUEN = DC_OP "
 cQ += "		AND ROWNUM = 1) "
-cQ += "OR DC_OP = " // opï¿½s encerradas
+cQ += "OR DC_OP = " // op´s encerradas
 cQ += "		(SELECT C2_NUM || C2_ITEM || C2_SEQUEN "
 cQ += "		FROM "+RetSqlName("SC2")+" SC2 "
 cQ += "		WHERE SC2.D_E_L_E_T_ = ' ' "

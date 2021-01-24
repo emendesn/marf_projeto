@@ -7,10 +7,10 @@
 Programa.:              MGFEST58
 Autor....:              Tarcisio Galeano
 Data.....:              Dez/2018
-Descricao / Objetivo:   Grava obs da medicao no Pedido de compras.
+Descricao / Objetivo:   Grava obs da medição no Pedido de compras.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

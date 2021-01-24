@@ -8,11 +8,11 @@
 Programa.:              F010CQTA - PE
 Autor....:              Antonio Carlos        
 Data.....:              03/10/2016
-Descricao / Objetivo:   incluir informacoes de Titulos Abertos Credito da Rede
+Descricao / Objetivo:   incluir informações de Títulos Abertos Credito da Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Titulos Abertos por Rede
+Uso......:              Marfrig
+Obs......:              Títulos Abertos por Rede
 =====================================================================================
 */
 User Function F010CQTA()

@@ -8,7 +8,7 @@ STATIC cDesTab	:= ""	//Codigo da Loja
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 14/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
 Obs.................: Consulta especifica para chamada da rotina no F3 do campo
@@ -19,7 +19,7 @@ User Function MGFFAT05(	xVendedor	,xCliente, xLoja, xTipoPed, lValida	)
 	Local cEstado		:= ""
 	Local cDepto		:= ""
 	Local cRegiao		:= ""
-	Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o pela regra
+	Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão pela regra
 	Local lEspecie		:= !(M->C5_ZTIPPED $ cEspeciePed) //.T.
 	Local _cUsuario		:= ""
 	Local aDadosUsu		:= {}										// Armazena os dados do usuario
@@ -58,7 +58,7 @@ User Function MGFFAT05(	xVendedor	,xCliente, xLoja, xTipoPed, lValida	)
 		lContinua := .F.
 	Endif
 
-	// inclusao de Carga Taura
+	// inclusão de Carga Taura
 	If IsInCallStack("GravarCarga") .or. IsInCallStack("U_TAS02EECPA100") .or. IsInCallStack("U_GravarCarga") .or. IsInCallStack("U_xGravarCarga") .or. IsInCallStack("U_xTAS02EECPA100")
 		lContinua := .F.
 	Endif
@@ -76,19 +76,19 @@ User Function MGFFAT05(	xVendedor	,xCliente, xLoja, xTipoPed, lValida	)
 		.AND. lEspecie .AND. M->C5_TIPOCLI <> 'X';
 		.and. !IsInCallStack("importaPedidoVenda") .and. !IsInCallStack("U_MGFFAT51") .and. !IsInCallStack("U_MGFFAT53") .and. !isInCallStack("U_runFAT53") .and. !isInCallStack("U_runFATA5")
 
-		// Busca dados do usuario para saber qtos digitos usa no ANO.
+		// Busca dados do usuário para saber qtos digitos usa no ANO.
 		PswOrder(2)
 		If PswSeek( _cNomUsr, .T. )
-			aDadosUsu := PswRet() // Retorna vetor com informacoes do usuario
+			aDadosUsu := PswRet() // Retorna vetor com informações do usuário
 			_cUsuario:= aDadosUsu[1][1]
 		EndIf
 
 
 		If Empty(xVendedor)
 			If IsBlind()
-				Help(" ",1,'NOVENDEDOR',,'Preencha o campo codigo do Vendedor!',1,0)
+				Help(" ",1,'NOVENDEDOR',,'Preencha o campo código do Vendedor!',1,0)
 			Else
-				APMsgInfo("Preencha o campo codigo do Vendedor!","Atencao")
+				APMsgInfo("Preencha o campo código do Vendedor!","Atenção")
 			EndIf
 			lRet	:= .F.
 
@@ -96,14 +96,14 @@ User Function MGFFAT05(	xVendedor	,xCliente, xLoja, xTipoPed, lValida	)
 			If IsBlind()
 				Help(" ",1,'NOCLILOJ',,'Preencha o campo Cliente/Loja!',1,0)
 			Else
-				APMsgInfo("Preencha o campo Cliente/Loja!","Atencao")
+				APMsgInfo("Preencha o campo Cliente/Loja!","Atenção")
 			EndIf
 			lRet	:= .F.
 		ElseIf Empty(xTipoPed)
 			If IsBlind()
 				Help(" ",1,'NOESPECIE',,'Preencha o campo Especie do Pedido!',1,0)
 			Else
-				APMsgInfo("Preencha o campo Especie do Pedido!","Atencao")
+				APMsgInfo("Preencha o campo Especie do Pedido!","Atenção")
 			EndIf
 			lRet	:= .F.
 		Endif
@@ -118,17 +118,17 @@ User Function MGFFAT05(	xVendedor	,xCliente, xLoja, xTipoPed, lValida	)
 				cEstado	:= SA1->A1_EST
 				cRegiao	:= SA1->A1_ZREGIAO
 				If Empty(cRegiao)
-					APMsgInfo("O campo regiï¿½o nao esta preenchido no cadastro do cliente !","Atencao")
+					APMsgInfo("O campo região não está preenchido no cadastro do cliente !","Atenção")
 					lRet	:= .F.
 				ElseIf Empty(cEstado)
-					APMsgInfo("O campo estado nao esta preenchido no cadastro do cliente !","Atencao")
+					APMsgInfo("O campo estado não está preenchido no cadastro do cliente !","Atenção")
 					lRet	:= .F.
 				Endif
 			Endif
 		Endif
 
 		//-------------------------------------------------------------------------------------
-		//Busca Departamento do usuario
+		//Busca Departamento do usuário
 		//-------------------------------------------------------------------------------------
 		If lRet
 			DbSelectArea("SZE")
@@ -162,10 +162,10 @@ Return(lRet)
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 29/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela da consulta
 ========================================================================================
 */
@@ -191,10 +191,10 @@ Return(bRet)
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 03/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Monta a tela
 ========================================================================================
 */
@@ -221,11 +221,11 @@ Static Function FiltraZA(xTipoPed, xVendedor, xDepto, xCliente, xLoja, xEstado, 
 		iif(nList = 0,nList := 1,nList)
 
 		//--Montagem da Tela
-		Define MsDialog oDlgZZY Title "Consulta Tabela de Preï¿½os" From 0,0 To 280, 500 Of oMainWnd Pixel
+		Define MsDialog oDlgZZY Title "Consulta Tabela de Preços" From 0,0 To 280, 500 Of oMainWnd Pixel
 
 		@ 5,5 LISTBOX oLstZZY ;
 		VAR lVarMat ;
-		Fields HEADER "Codigo", "Descricao" ;
+		Fields HEADER "Codigo", "Descrição" ;
 		SIZE 245,110 On DblClick ( ConfZZY(oLstZZY:nAt, @aDadosDA0, @_bRet) ) ;
 		OF oDlgZZY PIXEL
 
@@ -250,11 +250,11 @@ Return _bRet
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 29/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Atribui os valores selecionados ï¿½s variaveis staticas para retorno
+Uso.................: Marfrig
+Obs.................: Atribui os valores selecionados às variaveis staticas para retorno
 ========================================================================================
 */
 Static Function ConfZZY(_nPos, aDadosDA0, _bRet)
@@ -263,8 +263,8 @@ Static Function ConfZZY(_nPos, aDadosDA0, _bRet)
 
 	//aCols[n,nPosMarca] := cCodigo
 
-	cCodTab := aDadosDA0[_nPos,1]    			//Nao esquecer de alimentar essa variavel quando for f3 pois ela ï¿½ o retorno
-	cDesTab	:= Alltrim(aDadosDA0[_nPos,2])		//Nao esquecer de alimentar essa variavel quando for f3 pois ela ï¿½ o retorno
+	cCodTab := aDadosDA0[_nPos,1]    			//Não esquecer de alimentar essa variável quando for f3 pois ela é o retorno
+	cDesTab	:= Alltrim(aDadosDA0[_nPos,2])		//Não esquecer de alimentar essa variável quando for f3 pois ela é o retorno
 
 	_bRet := .T.
 
@@ -277,10 +277,10 @@ Return
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 29/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o codigo da tabela de preco
 =====================================================================================
 */
@@ -293,10 +293,10 @@ Return(cCodTab)
 Programa............: MGFFAT05
 Autor...............: Marcos Andrade
 Data................: 29/09/2016
-Descricao / Objetivo: Filtrar Tabelas de preco conforme perfil do ususario
+Descricao / Objetivo: Filtrar Tabelas de preço conforme perfil do ususario
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna a descricao da tabela de preco
 =====================================================================================
 */
@@ -312,7 +312,7 @@ Data................: 29/09/2016
 Descricao / Objetivo: Gatilhar o preco unitario e preco base
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Utilizar o menor desconto
 =====================================================================================
 */
@@ -327,7 +327,7 @@ User Function T05Desconto(xProduto, xTab, xValor, xQtde,lAlteracao,xLin)
 	Local nPosPRUNIT	:= AScan(aHeader, {|x| alltrim(x[2]) == "C6_PRUNIT"})
 	Local nUsado2 		:= Len(aHeader)
 	Local nAcres		:= 0
-	Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o pela regra
+	Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão pela regra
 	Local lEspecie		:= !(M->C5_ZTIPPED $ cEspeciePed) //.T.
 
 	DEFAULT xQtde		:= 1
@@ -354,7 +354,7 @@ User Function T05Desconto(xProduto, xTab, xValor, xQtde,lAlteracao,xLin)
 		Return(xValor)
 	Endif
 
-	// inclusao de Carga Taura
+	// inclusão de Carga Taura
 	If IsInCallStack("GravarCarga") .or. IsInCallStack("U_TAS02EECPA100") .or. IsInCallStack("U_GravarCarga") .or. IsInCallStack("U_xGravarCarga") .or. IsInCallStack("U_xTAS02EECPA100")
 		Return(xValor)
 	Endif
@@ -368,7 +368,7 @@ User Function T05Desconto(xProduto, xTab, xValor, xQtde,lAlteracao,xLin)
 		Return(xValor)
 	Endif
 
-	// pedidos com C5_ZDESC > 0 nao deve avaliar regras
+	// pedidos com C5_ZDESC > 0 não deve avaliar regras
 	If M->C5_ZDESC > 0
 		Return(xValor)
 	Endif
@@ -404,7 +404,7 @@ User Function T05Desconto(xProduto, xTab, xValor, xQtde,lAlteracao,xLin)
 			oGetDad:Refresh()
 		Else
 			If EMPTY(M->C5_MDCONTR) .AND. EMPTY(M->C5_MDNUMED) .AND. lEspecie
-				APMsgInfo("Produto nao encontrado na tabela de preco informada!","Atencao")
+				APMsgInfo("Produto não encontrado na tabela de preço informada!","Atenção")
 			Endif
 		Endif
 		//	xValor :=	SB1->B1_PRV1
@@ -440,7 +440,7 @@ Data................: 29/09/2016
 Descricao / Objetivo: Valida Tabela de Preco - Valid User do Campo
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se existe tabela de preco
 =====================================================================================
 */
@@ -452,7 +452,7 @@ Static Function T05ValTab( xTipoPed, xVendedor, xDepto, xCliente, xLoja, xEstado
 		lRet	:= T05ItTab(_aDados, xTipoPed, xVendedor, xDepto, xCliente, xLoja, xEstado, xRegiao, xTab)
 
 		If !lRet
-			APMsgInfo("Tabela de Preco nao disponivel!","Atencao")
+			APMsgInfo("Tabela de Preço não disponível!","Atenção")
 		Endif
 
 	Endif
@@ -468,7 +468,7 @@ Data................: 29/09/2016
 Descricao / Objetivo: Busca tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -494,13 +494,13 @@ Static Function T05PesTab(aDadosDA0, xTipoPed, xVendedor, xDepto, xCliente, xLoj
 		DA0->(DbsKip())
 	End
 	
-	//Tabela de preco deve ser fornecida pelo E-commerce
+	//Tabela de preço deve ser fornecida pelo E-commerce
 	If IsInCallStack("U_runFATA5")
 		lRet := .T.
 	EndIf
 	
 	If !lRet
-		APMsgInfo( "Nao encontrado nenhuma tabela de preco disponivel!", "Atencao" )
+		APMsgInfo( "Não encontrado nenhuma tabela de preço disponível!", "Atenção" )
 	Endif
 
 Return(lRet)
@@ -508,7 +508,7 @@ Return(lRet)
 Static Function T05ItTab(aDadosDA0, xTipoPed, xVendedor, xDepto, xCliente, xLoja, xEstado, xRegiao, xTab)
 	Local 	cQuery		:= ""
 	Local 	lContinua	:= .T.
-	Local 	cEspeciePed := SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o pela regra
+	Local 	cEspeciePed := SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão pela regra
 	Local 	lEspecie	:= !(M->C5_ZTIPPED $ cEspeciePed) //.T.
 	Local 	cAlias1
 	local cTpPedEcom	:= allTrim( superGetMv( "MGF_PVECOM", , "EC" ) )

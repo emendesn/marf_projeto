@@ -9,11 +9,11 @@
 Programa............: MGFFAT46
 Autor...............: Atilio Amarilla
 Data................: 04/07/2017
-Descricao / Objetivo: Rotina para impressao/envio para sistema WinPrint
+Descricao / Objetivo: Rotina para impress�o/envio para sistema WinPrint
 Doc. Origem.........: FAT WINPRINT
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Integracao Protheus Faturamento x WinPrint
+Uso.................: Marfrig
+Obs.................: Integra��o Protheus Faturamento x WinPrint
 =====================================================================================
 */
 
@@ -50,12 +50,12 @@ nPrintType      := aScan(aDevice,{|x| x == cDevice })
 lAdjustToLegacy := .F.
 lDisableSetup  := .T.
 oPrinter := FWMSPrinter():New("Danfe.rel", IMP_PDF, lAdjustToLegacy, , lDisableSetup)
-// Ordem obrig�toria de configura��o do relatorio
+// Ordem obrig�toria de configura��o do relat�rio
 oPrinter:SetResolution(72)
 oPrinter:SetPortrait()
 oPrinter:SetPaperSize(DMPAPER_A4)
 oPrinter:SetMargin(60,60,60,60) // nEsquerda, nSuperior, nDireita, nInferior 
-oPrinter:cPathPDF := "c:\directory\" // Caso seja utilizada impressao em IMP_PDF
+oPrinter:cPathPDF := "c:\directory\" // Caso seja utilizada impress�o em IMP_PDF
 */
 
 oSetup:=FWPrintSetup():New(nFlags, "DANFE")

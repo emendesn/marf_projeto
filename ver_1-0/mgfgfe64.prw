@@ -7,9 +7,9 @@
 Criado em: 15/04/2020
 Por: Paulo da Mata
 Task : RTASK0010971
-Objetivo: Salvar a data de vencimento, de forma AUTOMï¿½TICA, oriundo da tabela GWN, via importacao do XML do CT-e
+Objetivo: Salvar a data de vencimento, de forma AUTOMï¿½TICA, oriundo da tabela GWN, via importaï¿½ï¿½o do XML do CT-e
 
-10/07/2020 - Paulo da Mata - RTASK0010971 - Recriacao para PRD em 13/07/2020
+10/07/2020 - Paulo da Mata - RTASK0010971 - Recriação para PRD em 13/07/2020
 */ 
 User Function MGFGFE64()
 
@@ -51,11 +51,11 @@ User Function MGFGFE64()
 Return
 
 /*
-Funcao GATGFE64
+Funï¿½ï¿½o GATGFE64
 Criado em: 15/04/2020
 Por: Paulo da Mata
 Task : RTASK0010971
-Objetivo: Salvar o numero do romaneio, oriundo da tabela GWN, quando da inclusao manual da chave da DANFE
+Objetivo: Salvar o numero do romaneio, oriundo da tabela GWN, quando da inclusï¿½o manual da chave da DANFE
 */ 
 
 User Function GATGFE64
@@ -93,11 +93,11 @@ User Function GATGFE64
 Return(cNumRm)
 
 /*
-Funcao GFEGAT64
+Funï¿½ï¿½o GFEGAT64
 Criado em: 11/05/2020
 Por: Paulo da Mata
 Task : RTASK0010971
-Objetivo: Salvar a data do vencimento do titulo, oriundo da tabela SE2, quando da inclusao ou alteracao manual da chave da DANFE
+Objetivo: Salvar a data do vencimento do titulo, oriundo da tabela SE2, quando da inclusï¿½o ou alteraï¿½ï¿½o manual da chave da DANFE
 */ 
 
 User Function GFEGAT64

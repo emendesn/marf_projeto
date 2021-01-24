@@ -6,7 +6,7 @@ Data.....:              30/11/2016
 Descricao / Objetivo:   PE Verifica se a Ordem de Producao possui saldo em processo
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -16,12 +16,12 @@ Local lRet := NIL
 Local aParam	:= ParamIXB
 Local cQuery := ""
 
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљƒњ
-//пњљGAP TAURA                                                               пњљ
-//пњљIntegracao PROTHEUS x Taura - Processos Produtivos                      пњљ
-//пњљVerifica se a Ordem de Producao possui saldo em processo.               пњљ
-//пњљPadrao: informa saldo em processo (req c/ D3_EMISSAO > ultimo apontam.) пњљ
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљ
+//Џƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒњ
+//≥GAP TAURA                                                               ≥
+//≥Integraзгo PROTHEUS x Taura - Processos Produtivos                      ≥
+//≥Verifica se a Ordem de Producao possui saldo em processo.               ≥
+//≥Padrгo: informa saldo em processo (req c/ D3_EMISSAO > ъltimo apontam.) ≥
+//јƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒў
 If ExistBlock("MGFTAP10") .And. FunName() == "MGFTAP10"
 	lRet := U_MGFTAP10()
 	//ConOut("IN "+FunName())

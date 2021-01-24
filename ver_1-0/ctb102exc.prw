@@ -5,10 +5,10 @@
 Programa............: CTB102EXC
 Autor...............: Joni Lima
 Data................: 16/11/2016
-Descricao / Objetivo: O ponto de entrada CTB102EXC  ï¿½ utilizado antes da exclusao.
+Descrição / Objetivo: O ponto de entrada CTB102EXC  é utilizado antes da exclusão.
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action;jsessionid=BB8BBD05F441DCF442E831DC83A7861A?pageId=6068667
 =====================================================================================
 */

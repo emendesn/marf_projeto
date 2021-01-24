@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo PE M410VRES
 Doc. Origem.........: Faturamento
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Validar execucao da rotina de eliminacao de residuos pela tela de pedido de venda
 =====================================================================================
 */
@@ -19,8 +19,8 @@ Local cUserRot := GetMv("MGF_FAT801")
 
 If !Alltrim(__cUserId) $ cUserRot
 	lRet := .F.
-	APMsgAlert("Opcao nao deve ser usada pela Marfrig."+CRLF+;
-	"Residuo nao sera eliminado.")
+	APMsgAlert("Opção não deve ser usada pela Marfrig."+CRLF+;
+	"Resíduo não será eliminado.")
 Endif	
 
 // o kleiton pediu em 18/06/18, para que esta rotina nao fosse mais acessado pelos usuarios
@@ -34,7 +34,7 @@ SZJ->(dbSetOrder(1))
 If SZJ->(dbSeek(xFilial("SZJ")+SC5->C5_ZTIPPED))
 	If SZJ->ZJ_TAURA == "S"
 		lPula := .T.
-		APMsgAlert("Pedido integra com o Taura, sera executada rotina sem eliminar reservas da tabela SC9.")
+		APMsgAlert("Pedido integra com o Taura, será executada rotina sem eliminar reservas da tabela SC9.")
 	Endif
 Endif
 

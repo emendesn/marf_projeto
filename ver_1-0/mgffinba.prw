@@ -7,11 +7,11 @@
 Programa.:              MGFFINBA
 Autor....:              Natanael Filho
 Data.....:              09/04/2019
-Descricao / Objetivo:   Geracao dos arquivos XML das NF-e relacinadas aos titulos do FIDC
+Descricao / Objetivo:   Geração dos arquivos XML das NF-e relacinadas aos títulos do FIDC
 Doc. Origem:
 Solicitante:            Cliente: Eder Dias - Contas a Pagar
-Uso......:              
-Obs......:              Chamado atraves do Menudef do MGFFIN43
+Uso......:              Marfrig
+Obs......:              Chamado através do Menudef do MGFFIN43
 =====================================================================================
 */
 User Function MGFFINBA()
@@ -23,27 +23,27 @@ Return
 Static Function MGFFINBA01()
 
 	Local cStatPerm	:= Alltrim(SuperGetMV("MGF_FINBAA",.T.,"1/2")) // 1=Envio Pendente;2=Enviado;3=Reenvio Pendente;4=Reenviado;5=Cancelado
-	Local cLocal  := GetMv("MGF_FIN90A",,"X:\CNABCOB\") // Local para geracao dos arquivos
+	Local cLocal  := GetMv("MGF_FIN90A",,"X:\CNABCOB\") // Local para geração dos arquivos
 	Local cAlias
 	Local nQtdRec // Quantidade de Registros resultante da Query
 	Local nLinAtu := 0 //Linha Da Query
 	Local cCodBco := ""
 
-	// Verifica o estado do bordero/Remessa que permitira a impressao do XML
+	// Verifica o estado do borderô/Remessa que permitirá a impressão do XML
 	If !(ZA7->ZA7_STATUS $ cStatPerm) //1=Envio Pendente;2=Enviado;3=Reenvio Pendente;4=Reenviado;5=Cancelado
-		Help( ,, ProcName() + ' - ' + Str(ProcLine()),, 'Os arquivos *.xml sï¿½ podem ser gerados para os status ' + cStatPerm + ".", 1, 0)
+		Help( ,, ProcName() + ' - ' + Str(ProcLine()),, 'Os arquivos *.xml só podem ser gerados para os status ' + cStatPerm + ".", 1, 0)
 		Return
-	ElseIf 1 != Aviso("FIDC - Geracao de Arquivo","Deseja gerar os arquivos *.XMLs de NF-e?"+CRLF+;
-					  "Esse processo pode levar muito tempo para ser concluido.",{"Sim","Nao"})
+	ElseIf 1 != Aviso("FIDC - Geração de Arquivo","Deseja gerar os arquivos *.XMLs de NF-e?"+CRLF+;
+					  "Esse processo pode levar muito tempo para ser concluído.",{"Sim","Não"})
 		Return
 	EndIf
 	
-	// Verifica se o diretorio MGF_FIN90A esta pode ser criado ou jï¿½ existe.
+	// Verifica se o diretório MGF_FIN90A está pode ser criado ou já existe.
 	If !U_zMakeDir(Alltrim(cLocal) + "\","XMLs - Local em MGF_FIN90A")
 		Return
 	EndIf
 
-	// Query para relacionar com a tabela SE1 e retornar as informacoes das Notas Fiscais
+	// Query para relacionar com a tabela SE1 e retornar as informações das Notas Fiscais
 	cAlias	:= GetNextAlias()
 	BeginSQL Alias cAlias
 
@@ -76,7 +76,7 @@ Static Function MGFFINBA01()
 		
 		cCodBco := (cAlias)->ZA8_BANCO
 
-		// Criacao dos XMLs
+		// Criação dos XMLs
 		U_xMFT90Gr((cAlias)->E1_RECNO, AllTrim(ZA7->ZA7_FILIAL) + ZA7->ZA7_CODREM,cLocal,cCodBco)
 
 		(cAlias)->(dbSkip())

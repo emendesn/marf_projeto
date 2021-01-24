@@ -5,10 +5,10 @@
 Programa............: MA410LEG
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Ponto de entrada para ajuste de legenda
+Descrição / Objetivo: Ponto de entrada para ajuste de legenda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ajusta e adiciona Legenda no Browse de pedidos de venda
 =====================================================================================
 */

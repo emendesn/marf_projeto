@@ -5,10 +5,10 @@
 Programa............: FINALEG
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: O ponto de entrada FINALEG ï¿½ utilizado para customizar as legendas de Mbrowse do modulo Financeiro.O resultado deste ponto de entrada substitui as legendas padrï¿½es do sistema.
+Descrição / Objetivo: O ponto de entrada FINALEG é utilizado para customizar as legendas de Mbrowse do módulo Financeiro.O resultado deste ponto de entrada substitui as legendas padrões do sistema.
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/display/public/mp/FINALEG+-+Customiza+legenda+de+Mbrowse+--+23046
 =====================================================================================
 */

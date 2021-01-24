@@ -10,15 +10,15 @@
 Programa............: MA050TTS
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: Contrato GAPS - MIT044- Cadastro de Transportadora
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada no final do cadastro de transportadora
 =====================================================================================
-@alteracoes 21/10/2019 - Henrique Vidal
-	Chamada da funcao MGFCOM88
-	RTASK0010137 - Apagar cadastro com pendencia na Grade de aprovacao.
+@alterações 21/10/2019 - Henrique Vidal
+	Chamada da função MGFCOM88
+	RTASK0010137 - Apagar cadastro com pendência na Grade de aprovação.
 */
 
 User Function MA050TTS(nOpc)

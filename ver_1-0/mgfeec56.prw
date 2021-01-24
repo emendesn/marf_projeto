@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada EECAP100
 Doc. Origem.........: Comex
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Valida exclusao de pedido de exportacao
 =====================================================================================
 */
@@ -52,7 +52,7 @@ If !(IsInCallStack("GravarCarga") .or. IsInCallStack("U_GravarCarga") .or. IsInC
 						lRet := .F.
 						APMsgStop("Pedido integra com Taura e tem Carga gerada (Ordem de Embarque)."+CRLF+;
 						"Carga: "+(cAliasTrb)->DAI_COD+CRLF+;
-						"Solicite a exclusao da Ordem de Embarque pelo sistema Taura.")
+						"Solicite a exclusão da Ordem de Embarque pelo sistema Taura.")
 					Endif		
 					
 					(cAliasTrb)->(dbCloseArea())	

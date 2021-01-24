@@ -5,11 +5,11 @@
 Programa............: MGFCTB02
 Autor...............: Joni Lima
 Data................: 09/11/2016
-Descricao / Objetivo: Validacao para os itens da consulta padrao. 
+Descrição / Objetivo: Validação para os itens da consulta padrão. 
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Utilizado na Conulsta Padrï¿½o 'CTJ'
+Uso.................: Marfrig
+Obs.................: Utilizado na Conulsta Padrão 'CTJ'
 =====================================================================================
 */
 User Function MGFCTB02()
@@ -28,11 +28,11 @@ Return lRet
 Programa............: xMC02VlFD
 Autor...............: Joni Lima
 Data................: 09/11/2016
-Descricao / Objetivo: Validacao para o Campo CTJ_ZFILDES 
+Descrição / Objetivo: Validação para o Campo CTJ_ZFILDES 
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: So aceita ser preenhido informacoes na rotina CTBA120 e faz validacao para verificar se a Filial Existe
+Uso.................: Marfrig
+Obs.................: So aceita ser preenhido informações na rotina CTBA120 e faz validação para verificar se a Filial Existe
 =====================================================================================
 */
 User Function xMC02VlFD()
@@ -43,7 +43,7 @@ User Function xMC02VlFD()
 		If ALLTRIM(UPPER(FUNNAME())) == 'CTBA120'
 			lRet := ExistCpo("SM0",cEmpAnt + FwFldGet('CTJ_ZFILDE'))
 		Else
-			Alert('Campo sï¿½ pode ser utilizado, nas rotinas referentes a ')	
+			Alert('Campo só pode ser utilizado, nas rotinas referentes a ')	
 		EndIf
 	EndIf
                                                                   

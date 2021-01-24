@@ -6,9 +6,9 @@
 Programa............: EECAE102
 Autor...............: Joni Lima
 Data................: 27/12/2019
-Descricao / Objetivo: Ponto de entrada na Rotina de Embarque
+Descrição / Objetivo: Ponto de entrada na Rotina de Embarque
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada para a Rotina de processos a Embarcar fonte: EECAE102
 =====================================================================================
 */

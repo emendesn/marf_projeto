@@ -13,7 +13,7 @@ Data.....:              25/10/2016
 Descricao / Objetivo:   
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -29,8 +29,8 @@ user function MGFFAT22()
 		endif
 	endif
    
-    //Integracao com Salesforce
-    //Verificar se o tipo do titulo esta na regra de integracao.
+    //Integração com Salesforce
+    //Verificar se o tipo do título está na regra de integração.
     if ALLTRIM(SE1->E1_TIPO) $ cTipos
        If vldCli() //Validar Cliente
 			recLock("SE1", .F.)
@@ -93,7 +93,7 @@ return lRetSFA
 /*/
 ==============================================================================================================================================================================
 {Protheus.doc} vldCli()
-Valida se ï¿½ um cliente ï¿½ valido p/ integrar o seu titulo com Salesforce
+Valida se é um cliente é válido p/ integrar o seu título com Salesforce
 @type function
 @author Rogerio Almeida
 @since 21/01/2020

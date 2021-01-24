@@ -9,20 +9,20 @@ Data.....:              Out/2016
 Descricao / Objetivo:   Browse para cadastrar os documentos   
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
 
-//=============================== Relacao das Functions =================================
-// 01 - Funcao Principal - Cadastro de Documentos -  MGFEEC03()
+//=============================== Relação das Functions =================================
+// 01 - Função Principal - Cadastro de Documentos -  MGFEEC03()
 // 02 - Legendas - LEGEEC03() 
 //=======================================================================================
 
 
 User Function MGFEEC03()
 
-Private cCadastro := "Cadastro de Doc/Ativ Exportacao"
+Private cCadastro := "Cadastro de Doc/Ativ Exportação"
 
 Private aRotina := {}
 
@@ -64,10 +64,10 @@ Return
 Programa............: DELDOCEX
 Autor...............: Barbieri         
 Data................: 22/11/2016 
-Descricao / Objetivo: Validacao de exclusao de documentos de exportacao
+Descricao / Objetivo: Validação de exclusão de documentos de exportação
 Doc. Origem.........: GAP EEC03
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -88,9 +88,9 @@ User Function DELDOCEX()
 	DbSelectArea("ZZ2")
 	DbSetOrder(1)
 	If DbSeek(xFilial("ZZ2")+SZZ->ZZ_CODDOC)
-		MsgInfo("Nao e possivel excluir este doc/ativ, existe relacionamento com cliente!","Atencao")
+		MsgInfo("Não é possivel excluir este doc/ativ, existe relacionamento com cliente!","Atenção")
 	ElseIf !(cAliasZZJ)->(Eof())
-		MsgInfo("Nao e possivel excluir este doc/ativ, existe relacionamento com Pedido!","Atencao")
+		MsgInfo("Não é possivel excluir este doc/ativ, existe relacionamento com Pedido!","Atenção")
 	Else   
 		If MsgYesNo("Deseja excluir o documento "+SZZ->ZZ_CODDOC+"?")
 			DbSelectArea("SZZ")

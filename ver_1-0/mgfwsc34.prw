@@ -101,7 +101,7 @@ cCnpjCli - Caracter - CNPJ do cliente que será integrado, opcional
 @menu
  Sem menu
 /*/
-static function runInteg34( cCnpjCli )
+static procedure runInteg34( cCnpjCli )
 	// MOCK - POST		- https://anypoint.mulesoft.com/mocking/api/v1/links/a4551bd0-51cd-40f2-9882-fd1e5d9266ea/clientes
 	// MOCK - PUT		- https://anypoint.mulesoft.com/mocking/api/v1/links/a4551bd0-51cd-40f2-9882-fd1e5d9266ea/clientes/{id}
 	// MOCK - DELETE	- https://anypoint.mulesoft.com/mocking/api/v1/links/a4551bd0-51cd-40f2-9882-fd1e5d9266ea/clientes/{id}
@@ -150,9 +150,12 @@ static function runInteg34( cCnpjCli )
 
 		aHeadStr := {}
 
-		aadd( aHeadStr , 'x-marfrig-client-id: ' + cIDMgf  )
-		aadd( aHeadStr , 'Content-Type: application/json'  )
-		aadd( aHeadStr , 'x-correlation-id: ' + cIdInteg   )
+		aadd( aHeadStr , 'x-marfrig-client-id: ' + cIDMgf								)
+		aadd( aHeadStr , 'Content-Type: application/json'								)
+		aadd( aHeadStr , 'x-correlation-id: ' + cIdInteg								)
+		aadd( aHeadStr , 'pais: br'														)
+		aadd( aHeadStr , 'origem-criacao: ' + allTrim( lower( QRYWSC34->A1_XORIGEM ) )	)
+		aadd( aHeadStr , 'origem-alteracao: protheus'									)
 
 		oJson := nil
 		oJson := JsonObject():new()
@@ -189,6 +192,7 @@ static function runInteg34( cCnpjCli )
 			conout(" [SALESFORCE] [MGFWSC34] URL..........................: " + cURLUse 								)
 			conout(" [SALESFORCE] [MGFWSC34] HTTP Method..................: " + cHTTPMetho								)
 			conout(" [SALESFORCE] [MGFWSC34] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 			)
+			conout(" [SALESFORCE] [MGFWSC34] Envio Headers................: " + varInfo( "aHeadStr" , aHeadStr ) 		)
 			conout(" [SALESFORCE] [MGFWSC34] Envio........................: " + cJson 									)
 			conout(" [SALESFORCE] [MGFWSC34] * * * * * * * * * * * * * * * * * * * * "									)
 
@@ -280,7 +284,7 @@ cCnpjCli - Caracter - CNPJ do cliente, opcional
 @menu
  Sem menu
 /*/
-static function getSA1( cCnpjCli )
+static procedure getSA1( cCnpjCli )
 	local cQryWSC34 := ""
 	local lFilPes := superGetMv( "MGFWSC34D" , , .T.) //Filtro para filtrar pessoa Juridica
 
@@ -364,10 +368,18 @@ static function getSA1( cCnpjCli )
 	cQryWSC34 += " A1_ZVIDAUT				,"										+ CRLF
 
 	cQryWSC34 += " ZQ_DESCR					,"										+ CRLF
+	cQryWSC34 += " A1_PAIS					,"										+ CRLF
+	cQryWSC34 += " YA_ZSIGLA				,"										+ CRLF
 	//cQryWSC34 += " UTL_RAW.CAST_TO_VARCHAR2( A1_ZALTCRE ) A1_ZALTCRE				,"	+ CRLF
 
 	cQryWSC34 += " SA1.R_E_C_N_O_ SA1RECNO"											+ CRLF
 	cQryWSC34 += " FROM "		+ retSQLName( "SA1" ) + " SA1"						+ CRLF
+
+	cQryWSC34 += " LEFT JOIN "	+ retSQLName( "SYA" ) + " SYA"						+ CRLF
+	cQryWSC34 += " ON"																+ CRLF
+	cQryWSC34 += " 		SYA.YA_CODGI	=	SA1.A1_PAIS"							+ CRLF
+	cQryWSC34 += " 	AND	SYA.YA_FILIAL	=	'" + xFilial( "SYA" ) + "'"				+ CRLF
+	cQryWSC34 += " 	AND SYA.D_E_L_E_T_	<>	'*'"									+ CRLF
 
 	cQryWSC34 += " LEFT JOIN "	+ retSQLName( "ZE9" ) + " ZE9"						+ CRLF
 	cQryWSC34 += " ON"																+ CRLF
@@ -394,7 +406,6 @@ static function getSA1( cCnpjCli )
 	cQryWSC34 += " 	AND	SA1.A1_XINTSFO	=	'P'"									+ CRLF // Integrado SALESFORCE	-> 0=Nao;1=Sim
 	cQryWSC34 += " 	AND	SA1.A1_XENVSFO	=	'S'"									+ CRLF // Envia SALESFORCE		-> 0=Nao;1=Sim
 	cQryWSC34 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"				+ CRLF
-	cQryWSC34 += " 	AND	SA1.A1_EST	<>	'EX' "								        + CRLF
 
 	if lFilPes
 		cQryWSC34 += "	AND	SA1.A1_PESSOA = 'J' "							        + CRLF
@@ -429,7 +440,10 @@ Carrega objeto JSON
 @menu
  Sem menu
 /*/
-static function setSA1()
+static procedure setSA1()
+
+local nI
+
 	oJson["IDPROTHEUS"	]	:= iif( !empty( QRYWSC34->A1_COD		)	, allTrim( QRYWSC34->A1_COD		) + allTrim( QRYWSC34->A1_LOJA	)	, nil )
 	oJson["A1_TIPO"		]	:= iif( !empty( QRYWSC34->A1_TIPO		)	, allTrim( QRYWSC34->A1_TIPO	)									, nil )
 	oJson["A1_PESSOA"	]	:= iif( !empty( QRYWSC34->A1_PESSOA		)	, allTrim( QRYWSC34->A1_PESSOA	)									, nil )
@@ -452,7 +466,7 @@ static function setSA1()
 	oJson["A1_DDI"		]	:= iif( !empty( QRYWSC34->A1_DDI		)	, allTrim( QRYWSC34->A1_DDI		)									, nil )
 	oJson["A1_TEL"		]	:= iif( !empty( QRYWSC34->A1_TEL		)	, allTrim( QRYWSC34->A1_TEL		)									, nil )
 	oJson["A1_EMAIL"	]	:= iif( !empty( QRYWSC34->A1_EMAIL		)	, allTrim( QRYWSC34->A1_EMAIL	)									, nil )
-	oJson["A1_ZSUGELC"	]	:= iif( !empty( QRYWSC34->A1_ZSUGELC	)	, allTrim( QRYWSC34->A1_ZSUGELC	)									, nil )
+	oJson["A1_ZSUGELC"	]	:= iif( !empty( QRYWSC34->A1_ZSUGELC	)	, QRYWSC34->A1_ZSUGELC												, nil )
 	oJson["A1_ZSUGPRZ"	]	:= iif( !empty( QRYWSC34->A1_ZSUGPRZ	)	, allTrim( QRYWSC34->A1_ZSUGPRZ	)									, nil )
 	oJson["A1_INSCR"	]	:= iif( !empty( QRYWSC34->A1_INSCR		)	, allTrim( QRYWSC34->A1_INSCR	)									, nil )
 	oJson["A1_CNAE"		]	:= iif( !empty( QRYWSC34->A1_CNAE		)	, allTrim( QRYWSC34->A1_CNAE	)									, nil )
@@ -538,14 +552,19 @@ Rotina de retorno do Desconto
 /*/
 static function getDesc( condPg , codigo , loja )
 	local cAlias	:= GetNextAlias()
-	local cQryDes	:= ""
+	local cQryDes
 	local nDesc		:= 0
 	local _xcFil	:= Alltrim(GetMV('MGF_CT09FI',.F.,"010001"))
 
-	cQryDes := " SELECT CN9_ZTOTDE, CN9_DTINIC , CN9_DTFIM"							+ CRLF
+	cQryDes := " SELECT CN9_ZTOTDE, CN9_ZDESCF, CN9_ZACORD, CN9_DTINIC , CN9_DTFIM"	+ CRLF
 	cQryDes += " FROM"																+ CRLF
 	cQryDes += " ("																	+ CRLF
-	cQryDes += "	SELECT MAX( CN9_ZTOTDE ) CN9_ZTOTDE , CN9_DTINIC , CN9_DTFIM"	+ CRLF
+	cQryDes += "	SELECT MAX( CN9_ZTOTDE ) CN9_ZTOTDE,"                           + CRLF
+	cQryDes += "	       MAX( CN9_ZDESCF ) CN9_ZDESCF,"	                        + CRLF
+	cQryDes += "	       SUM( CN9_ZACORD ) CN9_ZACORD,"                           + CRLF
+	cQryDes += "	       CNA.CNA_CLIENT, CNA.CNA_LOJACL,"                         + CRLF
+	cQryDes += "	       MIN(CN9_DTINIC) CN9_DTINIC,"                             + CRLF
+	cQryDes += "	       MAX(CN9_DTFIM) CN9_DTFIM"                                + CRLF	
 	cQryDes += "	FROM "			+ retSQLName("CN9") + " CN9"					+ CRLF
 	cQryDes += "	INNER JOIN "	+ retSQLName("CNA") + " CNA"					+ CRLF
 	cQryDes += "	ON"																+ CRLF
@@ -557,12 +576,16 @@ static function getDesc( condPg , codigo , loja )
 	cQryDes += "		CNA.D_E_L_E_T_	<>	'*'"									+ CRLF
 	cQryDes += "	WHERE"															+ CRLF
 	cQryDes += "		CN9.CN9_ESPCTR	=	'2'					AND"				+ CRLF // 1=Compra;2=Venda
-	cQryDes += "		CN9.CN9_ZTOTDE	>	0					AND"				+ CRLF
+	cQryDes += "		(CN9.CN9_ZTOTDE >	0					OR"				    + CRLF
+	cQryDes += "		 CN9.CN9_ZDESCF >	0					OR"				    + CRLF
+	cQryDes += "		 CN9.CN9_ZACORD >	0)					AND"				+ CRLF
 	cQryDes += "		CN9.CN9_FILIAL	=	'" + _xcFil	+ "'	AND"				+ CRLF
 	cQryDes += "		CN9.CN9_CONDPG	=	'" + condPg	+ "'	AND"				+ CRLF
 	cQryDes += "		CN9.CN9_SITUAC	=	'05'				AND"				+ CRLF
+	cQryDes += "		'" + dtos( dDatabase ) + "' BETWEEN CN9.CN9_DTINIC AND"		+ CRLF
+	cQryDes += "		                                    CN9.CN9_DTFIM AND"		+ CRLF
 	cQryDes += "		CN9.D_E_L_E_T_	<>	'*'"									+ CRLF
-	cQryDes += "	GROUP BY CN9_DTINIC , CN9_DTFIM"								+ CRLF
+	cQryDes += "	GROUP BY CNA.CNA_CLIENT, CNA.CNA_LOJACL"	                    + CRLF	
 	cQryDes += "	ORDER BY CN9_ZTOTDE DESC"										+ CRLF
 	cQryDes += " )"																	+ CRLF
 	cQryDes += " WHERE ROWNUM = 1"													+ CRLF
@@ -572,7 +595,7 @@ static function getDesc( condPg , codigo , loja )
 	tcQuery cQryDes alias &cAlias new
 
 	if !( cAlias )->( EOF() )
-		oJson['CN9_ZTOTDE']	:= ( cAlias )->CN9_ZTOTDE
+		oJson['CN9_ZTOTDE']	:= ( ( cAlias )->CN9_ZTOTDE + ( cAlias )->CN9_ZDESCF ) + ( cAlias )->CN9_ZACORD
 		oJson['CN9_DTINIC']	:= left( fwTimeStamp( 3 , sToD( ( cAlias )->CN9_DTINIC	) ) , 10 )
 		oJson['CN9_DTFIM']	:= left( fwTimeStamp( 3 , sToD( ( cAlias )->CN9_DTFIM	) ) , 10 )
 	else

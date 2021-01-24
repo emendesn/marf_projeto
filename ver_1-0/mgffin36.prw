@@ -9,7 +9,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para Filtro dos titulos e interacao da area de cobranca
 =====================================================================================
 */
@@ -25,8 +25,8 @@ User Function MGFFIN36()
 	Private aColunas	:= {}
 	Private cPicVal	:= PesqPict("SE1","E1_VALOR")
 /*
-	Private cPatSrv	:= GetMv("MGF_FIN36A",,"\MGF\CRE25\") 		 // Path de gravacao de Arquivos (Server)
-	Private cPatLoc	:= GetMv("MGF_FIN36B",,"C:\PROTHEUS\CRE25\") // Path de gravacao de Arquivos (Local)
+	Private cPatSrv	:= GetMv("MGF_FIN36A",,"\MGF\CRE25\") 		 // Path de gravação de Arquivos (Server)
+	Private cPatLoc	:= GetMv("MGF_FIN36B",,"C:\PROTHEUS\CRE25\") // Path de gravação de Arquivos (Local)
 
 	If !U_zMakeDir( cPatSrv , "Pasta Servidor" )
 
@@ -69,21 +69,21 @@ User Function MGFFIN36()
 		{"Loja" ,"LOJA" ,"C",4,0,"@!"},;
 		{"Nome" ,"NOME" ,"C",40,0,"@!"},;
 		{"Produto" ,"PRODUTO","C",15,0,"@!"},;
-		{"Descricao" ,"DESCRIC","C",30,0,"@!"},;
+		{"Descrição" ,"DESCRIC","C",30,0,"@!"},;
 		{"Armazem" ,"LOCAL" ,"C",2,0,"@!"},;
 		{"Peso Liquido","PLIQUI" ,"N",14,2,"@E 999,999,999.99"}}
 	*/
 	//aColunas :={{"Email" ,{ || GetAdvFVal("SA1","A1_EMAIL",xFilial("SA1")+SE1->E1_CLIENTE,1,"") } ,"C","@!",1,40,0}}
-	// Campos Padrï¿½o - Habilitar Browse
+	// Campos Padrão - Habilitar Browse
 	//	"Nome"
 	// E1_NOMCLI
 
 	/*
 	Estrutura do array
-	[n][01] Titulo da coluna
+	[n][01] Título da coluna
 	[n][02] Code-Block de carga dos dados
 	[n][03] Tipo de dados
-	[n][04] Mascara
+	[n][04] Máscara
 	[n][05] Alinhamento (0=Centralizado, 1=Esquerda ou 2=Direita)
 	[n][06] Tamanho
 	[n][07] Decimal
@@ -96,8 +96,8 @@ User Function MGFFIN36()
 	aAdd( aColunas , {"Saldo"		,{ || SE1->E1_SALDO } ,"N",cPicVal,2/* */,aTamVal[1],aTamVal[2]} )
 	//	"Valor Desconto"
 	// E1_DESCFIN - Habilitar Browse
-	//	"Valor Devolucao"
-	//aColunas :={{"Valor Devolucao"	,{ || nValDev } ,"N",cPicVal,2/* */,aTamVal[1],aTamVal[2]}}
+	//	"Valor Devolução"
+	//aColunas :={{"Valor Devolução"	,{ || nValDev } ,"N",cPicVal,2/* */,aTamVal[1],aTamVal[2]}}
 	//	"Valor Saldo"
 	// E1_SALDO
 	//	"% Pago"
@@ -173,8 +173,8 @@ User Function MGFFIN36()
 
 	//oBrowse:ColumnsFields(aColunas)
 
-	//descricao do browse
-	oBrowse:SetDescription("Acompanhamento Cobranca")
+	//descrição do browse
+	oBrowse:SetDescription("Acompanhamento Cobrança")
 
 	//tabela temporaria
 	oBrowse:SetAlias('SE1')
@@ -248,10 +248,10 @@ Static Function ModelDef()
 	oStrZZB:setproperty("ZZB_ZATEN"		, MODEL_FIELD_INIT, { || SE1->E1_ZATEND		})
 	oStrZZB:setproperty("ZZB_ZSEGME"	, MODEL_FIELD_INIT, { || SE1->E1_ZSEGMEN	})
 	oStrZZB:setproperty("ZZB_ZDESRE"	, MODEL_FIELD_INIT, { || SE1->E1_ZDESRED	})
-	// Busca dados do usuario para saber qtos digitos usa no ANO.
+	// Busca dados do usuário para saber qtos digitos usa no ANO.
 	PswOrder(2)
 	If PswSeek( _cNomUsr, .T. )
-		aDadosUsu := PswRet() // Retorna vetor com informacoes do usuario
+		aDadosUsu := PswRet() // Retorna vetor com informações do usuário
 		oStrZZB:setproperty("ZZB_USUARI"		, MODEL_FIELD_INIT, { || aDadosUsu[1][1] })
 		oStrZZB:setproperty("ZZB_USRNOM"		, MODEL_FIELD_INIT, { || aDadosUsu[1][2] })
 		oStrZZB:setproperty("ZZB_CONTAT"		, MODEL_FIELD_INIT, { || aDadosUsu[1][4] })
@@ -293,18 +293,18 @@ Return oView
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½MGFFIN36  ï¿½Autor  ï¿½Microsiga           ï¿½ Data ï¿½  11/01/16   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ AP                                                        ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³MGFFIN36  ºAutor  ³Microsiga           º Data ³  11/01/16   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³                                                            º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP                                                        º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 Static Function FIN36Monta()
@@ -316,7 +316,7 @@ Static Function FIN36Monta()
 	Private oDlg
 	Private lCheckBox1  := .f.
 
-	DEFINE MSDIALOG oDlg TITLE "Acompanhamento Cobranca" FROM 000, 000  TO 500, 1100 COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg TITLE "Acompanhamento Cobrança" FROM 000, 000  TO 500, 1100 COLORS 0, 16777215 PIXEL
 
 	@ 005, 011 GROUP oGroup1 TO 224, 540 OF oDlg COLOR 0, 16777215 PIXEL
 
@@ -332,7 +332,7 @@ Static Function FIN36Monta()
 	"Valor Titulo"							,;	//09
 	"Valor Pago"   							,;	//10
 	"Valor Desconto"						,;	//11
-	"Valor Devolucao"						,;	//12
+	"Valor Devolução"						,;	//12
 	"Valor Saldo"							,;	//13
 	"% Pago"								,;	//14
 	"Nosso Numero"							,;	//15
@@ -419,18 +419,18 @@ Return
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½MGFFIN36  ï¿½Autor  ï¿½Microsiga           ï¿½ Data ï¿½  11/01/16   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ AP                                                        ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³MGFFIN36  ºAutor  ³Microsiga           º Data ³  11/01/16   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³                                                            º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP                                                        º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function MarcaItem(aListBox1, oListBox1, lMarcaTodos)
 
@@ -453,18 +453,18 @@ Return Nil
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½MGFFIN36  ï¿½Autor  ï¿½Microsiga           ï¿½ Data ï¿½  11/01/16   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ AP                                                        ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³MGFFIN36  ºAutor  ³Microsiga           º Data ³  11/01/16   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³                                                            º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP                                                        º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function fListBox1()
 
@@ -566,7 +566,7 @@ Static Function fListBox1()
 				Endif
 			Else
 				//-----------------------------------
-				//Se nao houver no Pedido, busca cliente
+				//Se não houver no Pedido, busca cliente
 				//-----------------------------------
 
 				DbSelectArea("SA1")
@@ -778,7 +778,7 @@ Static Function fListBox1()
 			Transform((_cAlias1)->E1_VALOR,cPicE1_Val)	,;	//09 Valor do Titulo
 			Transform(nValPag,cPicE1_Val)				,;	//10 Valor Pago
 			Transform((_cAlias1)->E1_DESCFIN,cPicE1_Val),;	//11 Desconto
-			Transform(nValDev,cPicE1_Val)				,;	//12 Valor devolucao		??da onde pegar
+			Transform(nValDev,cPicE1_Val)				,;	//12 Valor devolução		??da onde pegar
 			Transform((_cAlias1)->E1_SALDO,cPicE1_Val)	,;	//13 Saldo
 			Transform(nPerPag,cPicE1_Val)				,;	//14 Percentual Pago
 			(_cAlias1)->E1_NUMBCO						,;	//15 Nosso Numero
@@ -797,7 +797,7 @@ Static Function fListBox1()
 			cZZ9Contado									,;  //28 Contatado por
 			cZZ9Resp									,;  //29 Resposta do Cliente
 			cZZ9NFD										,;  //30 Nota Fiscal de Devolucao
-			cZZ9Posicao									,;  //31 Posicao de cobranca
+			cZZ9Posicao									,;  //31 Posicao de cobrança
 			cZZ9Modif									,;  //32 Usuario que modificou
 			Transform(nZZ9Custa,cPicE1_Val)				,;  //33 Custa de Cartorio
 			cZZ9Repres									,;	//34 Representante
@@ -866,7 +866,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Acompanhamento de cobranca
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gerar Excel
 =====================================================================================
 */
@@ -903,7 +903,7 @@ Static Function MGFIN36AA(xOpc)
 
 	//oBrowse
 
-	// Sumï¿½rio
+	// Sumário
 	oExcel:AddworkSheet(cWorkSheet)			//Cria Planilha
 	oExcel:AddTable(cWorkSheet, cTable) 	//Cria Tabela
 
@@ -950,8 +950,8 @@ Static Function MGFIN36AA(xOpc)
 
 	cFilSE1	:= oBrowse:FWFILTER():GETEXPRADVPL()
 	If Empty(cFilSE1)
-		APMsgStop("Para usar a exportacao para Excel, ï¿½ necessario realizar um Filtro antes no Browse."+CRLF+;
-		"Utilize o botao 'Filtrar' localizado no canto direito de cima do Browse.")
+		APMsgStop("Para usar a exportação para Excel, é necessário realizar um Filtro antes no Browse."+CRLF+;
+		"Utilize o botão 'Filtrar' localizado no canto direito de cima do Browse.")
 		Return()
 	Endif
 
@@ -964,7 +964,7 @@ Static Function MGFIN36AA(xOpc)
 	SE1->(dbEval( { || nCount++ },,{ || !Eof() } ))
 
 	If !APMsgYesNo("Foram identificados '"+Alltrim(Str(nCount))+"' para serem exportados para o Excel."+CRLF+;
-	"Para uma quantidade grande de registros a exportacao pode ser demorada."+CRLF+;
+	"Para uma quantidade grande de registros a exportação pode ser demorada."+CRLF+;
 	"Deseja continuar ?")
 		If !Empty( cFilSE1 )
 			SE1->( DBClearFilter() )
@@ -1023,7 +1023,7 @@ Static Function MGFIN36AA(xOpc)
 					If !Empty(AllTrim(xTo))
 						EnvEmail(xTo, "\System\"+cArq)
 					Else
-						Alert("Nao existe destinatï¿½rio cadastrado nessa selecao!")
+						Alert("Não existe destinatário cadastrado nessa seleção!")
 					EndIf
 
 					oExcelApp	:= MsExcel():New()
@@ -1051,7 +1051,7 @@ Static Function MGFIN36AA(xOpc)
 						Endif
 					Endif
 
-					// Sumï¿½rio
+					// Sumário
 					oExcel:AddworkSheet(cWorkSheet)			//Cria Planilha
 					oExcel:AddTable(cWorkSheet, cTable) 	//Cria Tabela
 
@@ -1158,7 +1158,7 @@ Static Function MGFIN36AA(xOpc)
 		//aadd(aLinha, (cAliasB)->ZZB_CONTAT	) //28 Contatado por
 		aadd(aLinha, (cAliasB)->ZZB_RESPOS	) //29 Resposta do Cliente
 		aadd(aLinha, (cAliasB)->ZZB_NRONFD	) //30 Nota Fiscal de Devolucao
-		aadd(aLinha, GetAdvFVal("ZZ9","ZZ9_DESPOS",xFilial("ZZ9")+(cAliasB)->ZZB_CODPOS,1,"")	) //31 Posicao de cobranca
+		aadd(aLinha, GetAdvFVal("ZZ9","ZZ9_DESPOS",xFilial("ZZ9")+(cAliasB)->ZZB_CODPOS,1,"")	) //31 Posicao de cobrança
 
 		cNome   := ''
 	    cNextAlias := GetNextAlias()
@@ -1222,13 +1222,13 @@ Static Function MGFIN36AA(xOpc)
 		oExcel:GetXMLFile(cArq)
 
 		If xOpc == "2"
-			cLocArq := cGetFile("Todos os Arquivos|*.*", OemToAnsi("Informe o diretorio para gravacao do arquivo Excel"), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY)
+			cLocArq := cGetFile("Todos os Arquivos|*.*", OemToAnsi("Informe o diretório para gravacao do arquivo Excel"), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY)
 			if __CopyFile(cArq, cLocArq + cArq)
-				MsgInfo("Relatorio gerado em: " + cLocArq + cArq)
+				MsgInfo("Relatório gerado em: " + cLocArq + cArq)
 				oExcelApp:WorkBooks:Open(cLocArq + cArq)
 				oExcelApp:SetVisible(.T.)
 			else
-				MsgInfo("Arquivo nao copiado para o Diretorio " + cLocArq + cArq)
+				MsgInfo("Arquivo não copiado para o Diretorio " + cLocArq + cArq)
 			endif
 		Else
 			//------------------------
@@ -1238,7 +1238,7 @@ Static Function MGFIN36AA(xOpc)
 			If !Empty(AllTrim(xTo))
 				EnvEmail( xTo, "\System\"+cArq)
 			Else
-				Alert("Nao existe destinatï¿½rio cadastrado nessa selecao!")
+				Alert("Não existe destinatário cadastrado nessa seleção!")
 			EndIf
 			//EnvEmail( xTo, "C:\Temp\"+cArq)
 			MsgAlert("Processamento Finalizado!!!")
@@ -1255,7 +1255,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Acompanhamento de cobranca
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Envia Email
 =====================================================================================
 */
@@ -1264,7 +1264,7 @@ Static Function EnvEmail(xTo, xArq)
 	Local cUser 	:= Alltrim(SUPERGETMV("MGF_USER2"  ,,"teste.any"))	//sp01\xxx
 	Local cPass 	:= Alltrim(SUPERGETMV("MGF_PASS2"  ,,"T3ste@n123"))//SUPERGETMV("MGF_PASS2"		,,"T3ste@m123"/*"Marfrig@999"*/)         				//xxx
 	Local cSendSrv 	:= Alltrim(SUPERGETMV("MGF_SMTPSV" ,,"smtp.marfrig-ad.local"))//SUPERGETMV("MGF_SMTPSV"		,,"smtp.marfrig-ad.local"/*"10.115.242.242"*/) 					//"mail.totvs.com.br"
-	Local cEmail	:= Alltrim(SUPERGETMV("MGF_EMAIL"  ,,"teste.any@marfrig.com.br")) //SUPERGETMV("MGF_EMAIL"		,,"teste.any@marfrig.com.br"/*""*/)  									//email que sera incluido no FROM
+	Local cEmail	:= Alltrim(SUPERGETMV("MGF_EMAIL"  ,,"teste.any@marfrig.com.br")) //SUPERGETMV("MGF_EMAIL"		,,"teste.any@marfrig.com.br"/*""*/)  									//email que será incluido no FROM
 	Local cMsg 		:= ""
 	Local nSendPort := 0
 	Local nSendSec  := SUPERGETMV("MGF_PROT2"  ,,2)//2	//criar parametro
@@ -1333,7 +1333,7 @@ Static Function EnvEmail(xTo, xArq)
 	oMessage:cFrom 		:= cEmail
 	oMessage:cTo 			:= xTo
 	oMessage:cSubject 	:= "Acompanhamento de Cobranca"
-	oMessage:cBody 		:= "Segue arquivo para acompanhamento de cobranca."
+	oMessage:cBody 		:= "Segue arquivo para acompanhamento de cobrança."
 
 	xRet := oMessage:AttachFile(xArq)
 
@@ -1410,7 +1410,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Atendente
 =====================================================================================
 */
@@ -1440,7 +1440,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Atendente
 =====================================================================================
 */
@@ -1459,7 +1459,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de SEGMENTO (SX5)
 =====================================================================================
 */
@@ -1477,7 +1477,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Portador
 =====================================================================================
 */
@@ -1496,7 +1496,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Portador
 =====================================================================================
 */
@@ -1515,7 +1515,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Rede
 =====================================================================================
 */
@@ -1534,7 +1534,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta de Representante (Vendedor)
 =====================================================================================
 */
@@ -1553,7 +1553,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Consulta Especifica
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: RETORNO DAS CONSULTAS
 =====================================================================================
 */
@@ -1755,10 +1755,10 @@ Return
 Programa............: SEGMSE1
 Autor...............: Barbieri
 Data................: 07/02/2017
-Descricao / Objetivo: Gatilho para campo E1_ZCODSEG
+Descrição / Objetivo: Gatilho para campo E1_ZCODSEG
 Doc. Origem.........: GAP CRE25
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -1828,7 +1828,7 @@ Static Function MGFFIN3601()
 
 Return
 
-/* Funcao que retorna as interacoes de cobranca*/
+/* Função que retorna as interações de cobrança*/
 
 User Function MGFIN36B()
 
@@ -1858,7 +1858,7 @@ cQuery += " AND SE1.E1_PARCELA = '" + cParcela + "' "
 cQuery += " AND SE1.E1_TIPO = '" + cTipo + "' "
 cQuery += " AND SE1.E1_CLIENTE = '" + cCliente + "' "
 cQuery += " AND SE1.E1_LOJA = '" + cLoja + "' "
-/* retirado por Paulo Fernandes devido ao join nao estar atendendo a pesquisa 21/05/2018
+/* retirado por Paulo Fernandes devido ao join não estar atendendo a pesquisa 21/05/2018
 cQuery += " AND SE1.E1_ZATEND = ZZB.ZZB_ZATEN	 "
 cQuery += " AND SE1.E1_ZSEGMEN= ZZB.ZZB_ZSEGME	 "
 cQuery += " AND SE1.E1_ZDESRED= ZZB.ZZB_ZDESRE  "
@@ -1886,7 +1886,7 @@ Static Function ListBoxMar(aVetor)
 
 Local cVar     := Nil
 Local oDlg     := Nil
-Local cTitulo  := "Consulta acompanhamentos de cobranca"
+Local cTitulo  := "Consulta acompanhamentos de cobrança"
 Local oOk      := LoadBitmap( GetResources(), "CHECKED" )   //CHECKED    //LBOK  //LBTIK
 Local oNo      := LoadBitmap( GetResources(), "UNCHECKED" ) //UNCHECKED  //LBNO
 Local oChk     := Nil
@@ -1895,7 +1895,7 @@ Local cNrom	   := ""
 Local nLinha	:= 0
 Local nTotLinha	:= 0
 Local cSveFil	:= cFilAnt
-Private cCadastro := "Acompanhamento de cobranca"
+Private cCadastro := "Acompanhamento de cobrança"
 Private lChk   := .F.
 Private oLbx   := Nil
 
@@ -1905,13 +1905,13 @@ aVetor1 := aVetor
 //| Monta a tela para usuario visualizar consulta |
 //+-----------------------------------------------+
 If Len( aVetor1 ) == 0
-   Aviso( cTitulo, "Nao hï¿½ interacoes", {"Ok"} )
+   Aviso( cTitulo, "Nao há interações", {"Ok"} )
 Else
 
 
 DEFINE MSDIALOG oDlg TITLE cTitulo FROM 0,0 TO 240,500 PIXEL
 dBselectArea('ZZB')
-@ 10,10 LISTBOX oLbx VAR cVar FIELDS HEADER "Titulo", "Parcela", "Tipo", "Data interacao", "Hora interacao", "Recno" SIZE 230,095 OF oDlg PIXEL ;
+@ 10,10 LISTBOX oLbx VAR cVar FIELDS HEADER "Título", "Parcela", "Tipo", "Data interação", "Hora interação", "Recno" SIZE 230,095 OF oDlg PIXEL ;
   ON dblClick(ZZB->(dBgoto(aVetor1[oLbx:nAt,6])),cSveFil:=cFilAnt,cFilAnt:=aVetor1[oLbx:nAt,7],aXvisual("ZZB",aVetor1[oLbx:nAt,6],2),cFilAnt:=cSveFil)
 
 oLbx:SetArray( aVetor1 )

@@ -5,10 +5,10 @@
 Programa............: MGFFIN96
 Autor...............: Joni Lima
 Data................: 02/04/2016
-Descricao / Objetivo: ExecAuto Inclusao do Movimento do Caixinha
+Descrição / Objetivo: ExecAuto Inclusão do Movimento do Caixinha
 Doc. Origem.........: Contrato - GAP Caixinha
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Execauto da rotina FINA560
 =====================================================================================
 */
@@ -53,7 +53,7 @@ User Function MG97I560(aArray,nOpc)
 	MsExecAuto( { |x,y,z| FINA560(x,y,z)} ,nil , aArray, nOpc)
 
 	If lMsErroAuto
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -74,10 +74,10 @@ Return
 Programa............: MGFFIN96
 Autor...............: Joni Lima
 Data................: 02/04/2016
-Descricao / Objetivo: ExecAuto Inclusao do Movimento do Caixinha
+Descrição / Objetivo: ExecAuto Inclusão do Movimento do Caixinha
 Doc. Origem.........: Contrato - GAP Caixinha
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Execauto da rotina FINA560
 =====================================================================================
 */
@@ -96,10 +96,10 @@ User Function MG97I050(aArray)
 	//            { "E2_VENCREA"  , CtoD("17/02/2012"), NIL },;
 	//            { "E2_VALOR"    , 5000              , NIL } }
 
-	MsExecAuto( { |x,y,z| FINA050(x,y,z)}, aArray,, 3)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao
+	MsExecAuto( { |x,y,z| FINA050(x,y,z)}, aArray,, 3)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão
 
 	If lMsErroAuto
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -108,7 +108,7 @@ User Function MG97I050(aArray)
 	        ConOut("Error: "+ cError)
 	    EndIf
 	Else
-		//Alert("Titulo incluido com sucesso!")
+		//Alert("Título incluído com sucesso!")
 	Endif
 
 	RestArea(aArea)
@@ -125,10 +125,10 @@ User Function MG97I550(aArray)
 	//            { "nVlrRep"  , 200           	   , NIL },;
 	//            { "nTxRep"   , 1				   , NIL }}
 
-	MsExecAuto( { |x,y,z| FINA550(x,y,z)}, 6,.T.)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao, 6 Reposicao
+	MsExecAuto( { |x,y,z| FINA550(x,y,z)}, 6,.T.)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão, 6 Reposição
 
 	If lMsErroAuto
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -137,7 +137,7 @@ User Function MG97I550(aArray)
 	        ConOut("Error: "+ cError)
 	    EndIf
 	Else
-		//Alert("Titulo incluido com sucesso!")
+		//Alert("Título incluído com sucesso!")
 	Endif
 
 
@@ -154,7 +154,7 @@ Return
 ///*/
 //User Function MGFFIN97()
 //
-//	Local aArray := { 	{ "E2_PREFIXO"  , GetMv("MGF_FIN97", , "CX1")	, NIL },; //Parametro padrao prefixo do caixinha
+//	Local aArray := { 	{ "E2_PREFIXO"  , GetMv("MGF_FIN97", , "CX1")	, NIL },; //Parâmetro padrão prefixo do caixinha
 //						{ "E2_NUM"      , SEU->EU_NUM          			, NIL },;
 //						{ "E2_TIPO"     , SEU->EU_TIPO         			, NIL },;
 //						{ "E2_NATUREZ"  , SEU->EU_ZNATUR       			, NIL },;
@@ -169,7 +169,7 @@ Return
 //Return
 //
 ///*/{Protheus.doc} MGF97DEL
-////TODO Delecao registo do SE2
+////TODO Deleção registo do SE2
 //@author leonardo.kume
 //@since 31/03/2018
 //@version 6
@@ -223,7 +223,7 @@ User Function MGF97DEL()
 		MsExecAuto( { |x,y,z| FINA560(x,y,z)} ,nil , aArray, 5)
 
 		If lMsErroAuto
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 			MostraErro()
 		    Else // EM ESTADO DE JOB
 		        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -370,13 +370,13 @@ return
 	//            { "E2_VENCREA"  , CtoD("17/02/2012"), NIL },;
 	//            { "E2_VALOR"    , 5000              , NIL } }
 //
-//	MsExecAuto( { |x,y,z| FINA050(x,y,z)}, aArray,, 3)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao
+//	MsExecAuto( { |x,y,z| FINA050(x,y,z)}, aArray,, 3)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão
 //
 //
 //	If lMsErroAuto
 //		MostraErro()
 //	Else
-//		Alert("Titulo incluido com sucesso!")
+//		Alert("Título incluído com sucesso!")
 //	Endif
 //
 //Return se2->(Recno())

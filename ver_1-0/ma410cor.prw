@@ -5,10 +5,10 @@
 Programa............: MA410COR
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Ponto de Entrada para Ajuste de Legenda
+Descrição / Objetivo: Ponto de Entrada para Ajuste de Legenda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ajusta Legenda do Browse de Pedido de Venda
 =====================================================================================
 */

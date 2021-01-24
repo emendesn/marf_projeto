@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF06R02	ï¿½Autor  ï¿½Geronimo Benedito Alves																	ï¿½Data ï¿½08/12/17	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: Financeiro - Contas a Receber - Clientes por Condicao de Pagamento (Modulo 06-FIN)ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravez da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF06R02	ºAutor  ³Geronimo Benedito Alves																	ºData ³08/12/17	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: Financeiro - Contas a Receber - Clientes por Condição de Pagamento (Módulo 06-FIN)º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF06R02()
 	Local	_nI
@@ -18,61 +18,70 @@ User Function MGF06R02()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "CONTA A RECEBER - Clientes por Condicao de Pagamento" )	//01-  _cTitulo	- Titulo da planilha a ser gerada. Aparecera na regua de processamento.
-	Aadd(_aDefinePl, "Clientes por Condicao Pagamento"						)	//02-  _cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Clientes por Condicao Pagamento"}					)	//03-  _cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Clientes por Condicao Pagamento"}					)	//04-  _cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}														)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }											)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "CONTA A RECEBER - Clientes por Condição de Pagamento" )	//01-  _cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Clientes por Condição Pagamento"						)	//02-  _cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Clientes por Condição Pagamento"}					)	//03-  _cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Clientes por Condição Pagamento"}					)	//04-  _cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}														)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }											)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 
 	_aCpoExce	:= {}
 	_cTmp01		:= ""					
 	
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02												 03								 04	 05		 06	 07						 08 09		
-	Aadd(_aCampoQry, {"A1_COD"		,"COD_CLIENTE					as CODCLIENTE"	,"Cod. do Cliente"				,"C",006	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"A1_LOJA"		,"COD_LOJA"										,"Cod. da Loja"					,"C",002	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_COD"		,"COD_CLIENTE					as CODCLIENTE"	,"Cód. do Cliente"				,"C",006	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_LOJA"		,"COD_LOJA"										,"Cód. da Loja"					,"C",002	,0	,""						,""	,""	 })
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOM_CLIENTE					as NOMCLIENTE"	,"Nome do Cliente"				,"C",Space(tamSx3("A1_NOME")[1])	,0	,""						,""	,""	 })
 	Aadd(_aCampoQry, {"A2_CGC"		,"CNPJ_CLIENTE 				as CNPJCLIENT"	, "CNPJ do Cliente"				,"C",018	,0	,"@!"					,""	,"@!"	 })
 	Aadd(_aCampoQry, {"NOM_MUNICIPIO"		,"NOM_MUNICIPIO"  , "Municipio"				,"C",60	,0	,"@!"					,""	,"@!"	 })
 	Aadd(_aCampoQry, {"NOM_ESTADO"	    	,"NOM_ESTADO"	  , "Estado"				,"C",20	,0	,"@!"					,""	,"@!"	 })
- 	Aadd(_aCampoQry, {"AOV_CODSEG"	,"COD_SEGMENTO				as CODSEGMENT"	,"Cod. do Segmento"				,"C",006	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"AOV_DESSEG"	,"DESC_SEGMENTO				as DESCSEGMEN"	,"Descricao do Segmento"			,"C",040	,0	,""						,""	,""	 }) 
-	Aadd(_aCampoQry, {"E4_CODIGO"	,"COD_COND_PGTO				as CODCONDPGT"	,"Condicao de Pagamento"			,"C",003	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"E4_DESCRI"	,"DESC_COND_PGTO				as DESCCONDPG"	,"Descricao Condicao de Pagto"	,"C",015	,0	,""						,""	,""	 })
-	//Aadd(_aCampoQry, {"ZQ_COD"	,"COD_REDE"										,"Cod. Rede"						,"C",003	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"ZQ_DESCR"	,"DESC_REDE"										,"Descricao Rede"					,"C",040	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"EXPOSICAO"	,"EXPOSICAO"										,"Exposiï¿½ï¿½o"					,"N",13	,2	,""						,""	,""	 })
+ 	Aadd(_aCampoQry, {"AOV_CODSEG"	,"COD_SEGMENTO				as CODSEGMENT"	,"Cód. do Segmento"				,"C",006	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"AOV_DESSEG"	,"DESC_SEGMENTO				as DESCSEGMEN"	,"Descrição do Segmento"			,"C",040	,0	,""						,""	,""	 }) 
+	Aadd(_aCampoQry, {"E4_CODIGO"	,"COD_COND_PGTO				as CODCONDPGT"	,"Condição de Pagamento"			,"C",003	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"E4_DESCRI"	,"DESC_COND_PGTO				as DESCCONDPG"	,"Descrição Condição de Pagto"	,"C",015	,0	,""						,""	,""	 })
+	//Aadd(_aCampoQry, {"ZQ_COD"	,"COD_REDE"										,"Cód. Rede"						,"C",003	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"ZQ_DESCR"	,"DESC_REDE"										,"Descrição Rede"			,"C",040	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"EXPOSICAO"	,"EXPOSICAO"										,"Exposição"				,"N",13	,2	,""						,""	,""	 })
 	//Aadd(_aCampoQry, {"CT2_TAXA"	,"PERC_DESCONTO					as PERCDESCON"	,"% Desconto"					,"N",006	,2	,"@E 999.99"			,""	,""	 }) 
-	Aadd(_aCampoQry, {"A1_LC"		,"VLR_LIMITE_CREDITO_CLIENTE as VLRLIMICLI"	,"Vlr. Limite Credito Cliente"	,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
+	Aadd(_aCampoQry, {"A1_LC"		,"VLR_LIMITE_CREDITO_CLIENTE as VLRLIMICLI"	,"Vlr. Limite Credito Cliente"		,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
 	Aadd(_aCampoQry, {"A1_VENCLC"	,"DT_VENC_LIMITE_CREDITO		as DTVENCLIMI"	,"Data Limite Credito Cliente"	,"D",008	,0	, ""					,""	,""	 })
 	Aadd(_aCampoQry, {"A1_DTCAD"	,"DT_CADASTRO					as DTCADASTRO"	,"Data de Cadastro"				,"D",008	,0	, ""					,""	,""	 })
-	Aadd(_aCampoQry, {"A1_MSBLQL"	,"STATUS_CLIENTE				as STATUSCLIE"	,"Status do Cliente"				,"C",010	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"A1_ZGDERED"	,"FLG_GRANDES_REDES			as FLGGRNDRED"	,"Flg. Grandes Redes"			,"C",002	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"YA_DESCR"	,"NOM_PAIS						as NOMEDOPAIS"	,"Nome do Pais"					,"C",020	,0	,""						,""	,""	 })
-	Aadd(_aCampoQry, {"A1_VACUM"	,"VLR_ACUMULADO 				as VLRACUMULA"	,"Vlr. Acumulado"					,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
-	Aadd(_aCampoQry, {"A1_MCOMPRA"	,"VLR_MAIOR_COMPRA			as VLRMAIORCM"	,"Vlr. Maior Compra"				,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
-	Aadd(_aCampoQry, {"F2_VALFAT"	,"VLR_ULT_180_D				as VLRULT180D"  ,"VLR_ULT_180_D"					,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })//Rafael 30/07/19
+	Aadd(_aCampoQry, {"A1_MSBLQL"	,"STATUS_CLIENTE				as STATUSCLIE"	,"Status do Cliente"			,"C",010	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_ZGDERED"	,"FLG_GRANDES_REDES				as FLGGRNDRED"	,"Flg. Grandes Redes"			,"C",003	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"YA_DESCR"	,"NOM_PAIS						as NOMEDOPAIS"	,"Nome do País"					,"C",020	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_VACUM"	,"VLR_ACUMULADO 				as VLRACUMULA"	,"Vlr. Acumulado"				,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
+	Aadd(_aCampoQry, {"A1_MCOMPRA"	,"VLR_MAIOR_COMPRA				as VLRMAIORCM"	,"Vlr. Maior Compra"			,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })
+	Aadd(_aCampoQry, {"F2_VALFAT"	,"VLR_ULT_180_D					as VLRULT180D"  ,"Vlr. Ult. Compra 180 Dias"	,"N",017	,2	,"@E 99,999,999,999.99"	,""	,""	 })//Rafael 30/07/19
 	
-	
+	Aadd(_aCampoQry, {"A1_ZREDE"	, "A1_COD_REDE          		as CODREDECLI" ,"Código de rede" 		, "C" , tamSx3("A1_ZREDE")[1] 	,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_ZBOLETO"	, "GERA_BOLETO					as GERABOLETO" ,"Gera Boleto" 			, "C" , 003 					,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_XPENFIN"	, "PENDENCIA_FINANCEIRA			as PEDNFINANC" ,"Pendência Financeira" 	, "C" , 003 					,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_ZINATIV"	, "INATIVIDADE_COMPRA			as INITCOMPRA" ,"Inatividade de Compra" , "C" , 003 					,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_XMAILCO"	, "EMAIL_COBRANCA				as EMAILCOBRA" ,"E-mail Cobrança" 		, "C" , tamSx3("A1_XMAILCO")[1] ,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_XTEMPOR"	, "AUTORIZACAO_TEMPORARIA		as AUTTEMPOR"  ,"Autoriz. Temp."		, "C" , 003 					,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_ZCLASSE"  , "CLASSE_CLIENTE				as CLASSECLI"  ,"Classe Cliente" 		, "C" , tamSx3("A1_ZCLASSE")[1] ,0	,""						,""	,""	 })
+	Aadd(_aCampoQry, {"A1_XBLQREC"  , "BLOQUEIO_RECEITA_SINTEGRA	as BLQRECSINT" ,"Bloq Sintegra" 		, "C" , 003						,0	,""						,""	,""	 })	
+	Aadd(_aCampoQry, {"A1_ZALTCRED" , "OBSERV" 									   ,"Observação" 			, "C" , tamSx3("A1_ZALTCRED")[1] ,0	,""						,""	,""	 })	
+
 	aAdd(_aParambox,{1,"Cod. Cliente Inicial"			,Space(tamSx3("A1_COD")[1])		,"@!", 														,"SA1"	,,070,.F.})  	//01
 	aAdd(_aParambox,{1,"Cod. Cliente Final"				,Space(tamSx3("A1_COD")[1])		,"@!","U_VLFIMMAI(MV_PAR01, MV_PAR02, 'Cod. Cliente')"		,"SA1"	,,070,.F.})		//02										
-	aAdd(_aParambox,{1,"Cod. Municipio"					,Space(tamSx3("CC2_CODMUN")[1])	,"@!", 														,"CC2"	,,050,.F.})  	//03
+	aAdd(_aParambox,{1,"Cod. Município"					,Space(tamSx3("CC2_CODMUN")[1])	,"@!", 														,"CC2"	,,050,.F.})  	//03
 	aAdd(_aParambox,{3,"Status Clientes" 				,iif(Set(_SET_DELETED),1,2)		, {'Ativo','Inativo','Ambos'}								,100,"",.T.})			//04
-	aAdd(_aParambox,{3,"Grandes Redes" 					,iif(Set(_SET_DELETED),1,2)		, {'Sim','Nao','Todos'}										,100,"",.T.})			//05
+	aAdd(_aParambox,{3,"Grandes Redes" 					,iif(Set(_SET_DELETED),1,2)		, {'Sim','Não','Todos'}										,100,"",.T.})			//05
 	aAdd(_aParambox,{1,"Data Ult. Compra De"			,Ctod("")						,""		,""													,""		,""	,050,.F.})	//06
-	aAdd(_aParambox,{1,"Data Ult. Compra Ate"			,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR06, MV_PAR07, 'Data Ult Comp')"	,""		,""	,050,.F.})	//07
-	aAdd(_aParambox,{1,"Data Venc. Limite Credito De"	,Ctod("")						,""		,""													,""		,""	,050,.F.})	//08
-	aAdd(_aParambox,{1,"Data Venc. Limite Credito Ate"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR08, MV_PAR09, 'Data Venc Cred')"	,""		,""	,050,.F.})	//09
+	aAdd(_aParambox,{1,"Data Ult. Compra Até"			,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR06, MV_PAR07, 'Data Ult Comp')"	,""		,""	,050,.F.})	//07
+	aAdd(_aParambox,{1,"Data Venc. Limite Crédito De"	,Ctod("")						,""		,""													,""		,""	,050,.F.})	//08
+	aAdd(_aParambox,{1,"Data Venc. Limite Crédito Até"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR08, MV_PAR09, 'Data Venc Cred')"	,""		,""	,050,.F.})	//09
 	
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 	
-	//===		C O N D I ï¿½ ï¿½ O 		D E 	P A G A M E N T O  -- Bruno Tamanaka - Filtros 04/06/2019
+	//===		C O N D I Ç Ã O 		D E 	P A G A M E N T O  -- Bruno Tamanaka - Filtros 04/06/2019
 	cQryCondPg	:= "SELECT '	' as E4_CODIGO, '	' as E4_DESCRI FROM DUAL UNION ALL "
 	cQryCondPg	+= "SELECT DISTINCT E4_CODIGO, E4_DESCRI "
 	//cQryCondPg  += "  FROM " +  U_IF_BIMFR( "PROTHEUS", RetSqlName("SE4")  ) + " TMPSE4 "
@@ -82,19 +91,19 @@ User Function MGF06R02()
 
 	aCpoCondPg	:=	{	{ "E4_CODIGO"	,U_X3Titulo("E4_CODIGO")	,TamSx3("E4_CODIGO")[1] },;
 	aCpoCondPg	:=		{ "E4_DESCRI"	,U_X3Titulo("E4_DESCRI")	,TamSx3("E4_DESCRI")[1] }	} 
-	cTitCondPg	:= "Condicao de Pagamento: "
+	cTitCondPg	:= "Condição de Pagamento: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: E4_CODIGO
 	
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	_cCondPg	:= U_Array_In( U_MarkGene(cQryCondPg, aCpoCondPg, cTitCondPg, nPosRetorn, @_lCancProg ) )
 	If _lCancProg
 		Return
 	Endif 
 	
-		//===		C ï¿½ D I G O 		R E D E
+		//===		C Ó D I G O 		R E D E
 	cQryCodRed	:= "SELECT '	' as ZQ_COD, '	' as ZQ_DESCR FROM DUAL UNION ALL "
 	cQryCodRed	+= "SELECT DISTINCT ZQ_COD, ZQ_DESCR "
 	//cQryCodRed  += "  FROM " +  U_IF_BIMFR( "PROTHEUS", RetSqlName("SZQ")  ) + " TMPSZQ "
@@ -104,13 +113,13 @@ User Function MGF06R02()
 
 	aCpoCodRed	:=	{	{ "ZQ_COD"		,U_X3Titulo("ZQ_COD")	,TamSx3("ZQ_COD")[1] },;
 	aCpoCodRed	:=		{ "ZQ_DESCR"	,U_X3Titulo("ZQ_DESCR")	,TamSx3("ZQ_DESCR")[1] }	} 
-	cTitCodRed	:= "Codigo Rede: "
+	cTitCodRed	:= "Código Rede: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: ZQ_COD
 	
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	_cCodRed	:= U_Array_In( U_MarkGene(cQryCodRed, aCpoCodRed, cTitCodRed, nPosRetorn, @_lCancProg ) )
 	If _lCancProg
 		Return
@@ -128,10 +137,10 @@ User Function MGF06R02()
 	cTitUfClie	:= "UF Cliente: "
 	nPosRetorn	:= 1		// Quero que seja retornado o segundo campo: X5_CHAVE
 
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	aUfClie	:= U_MarkGene(cQryUfClie, aCpoUfClie, cTitUfClie, nPosRetorn, @_lCancProg )
 	If _lCancProg
 		Return
@@ -142,7 +151,7 @@ User Function MGF06R02()
 	_cUfClie	:= U_Array_In( aUfClie )
 	
 	
-			//===		C ï¿½ D I G O 		S E G M E N T O
+			//===		C Ó D I G O 		S E G M E N T O
 	cQryCodSeg	:= "SELECT '	' as AOV_CODSEG, '	' as AOV_DESSEG FROM DUAL UNION ALL "
 	cQryCodSeg	+= "SELECT DISTINCT AOV_CODSEG, AOV_DESSEG "
 	//cQryCodSeg  += "  FROM " +  U_IF_BIMFR( "PROTHEUS", RetSqlName("AOV")  ) + " TMPAOV "
@@ -152,13 +161,13 @@ User Function MGF06R02()
 
 	aCpoCodSeg	:=	{	{ "AOV_CODSEG"	,U_X3Titulo("AOV_CODSEG")	,TamSx3("AOV_CODSEG")[1] },;
 	aCpoCodSeg	:=		{ "AOV_DESSEG"	,U_X3Titulo("AOV_DESSEG")	,TamSx3("AOV_DESSEG")[1] }	} 
-	cTitCodSeg	:= "Codigo Segmento: "
+	cTitCodSeg	:= "Código Segmento: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: ZQ_COD
 	
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	_cCodSeg	:= U_Array_In( U_MarkGene(cQryCodSeg, aCpoCodSeg, cTitCodSeg, nPosRetorn, @_lCancProg ) )
 	If _lCancProg
 		Return

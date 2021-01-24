@@ -8,7 +8,7 @@ Data................: 18/11/2016
 Descricao / Objetivo: Desfazer o tratamento executado no fonte MGFFAT11
 Doc. Origem.........: Faturamento - GAP FAT19
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Desfazer: Gerar residuo dos itens do pedido que nao foram faturados
 =====================================================================================
 */

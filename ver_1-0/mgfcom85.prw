@@ -8,10 +8,10 @@ Programa............: MGFCOM85()
 Autor...............: Tarcisio Galeano
 Data................: 26/04/18
 17
-Descricao / Objetivo: Criacao de autorizaï¿½ï¿½o de entrega por varias scs
+Descricao / Objetivo: Criação de autorização de entrega por varias scs
 Doc. Origem.........: Compras - COM03
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: teve como base o MGFCOM28
 =====================================================================================
 */
@@ -28,7 +28,7 @@ User function MGFCOM85()
 	local dtde  := ddatabase
 	local dtate := ddatabase
 
-	DEFINE MSDIALOG oDLG2 TITLE "Filtro para Solicitacoes" FROM 000, 000  TO 250, 395 COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDLG2 TITLE "Filtro para Solicitações" FROM 000, 000  TO 250, 395 COLORS 0, 16777215 PIXEL
 	@ 008, 002 SAY  "Filial de:"    SIZE 028, 009 OF oDLG2 			 COLORS 0, 16777215 PIXEL //alterado Rafael 27/12/2018
 	@ 007, 030 MSGET  xfilde     SIZE 50, 010 OF oDLG2 PICTURE "@!" COLORS 0, 16777215 PIXEL
 	
@@ -55,7 +55,7 @@ User function MGFCOM85()
 	ACTIVATE MSDIALOG oDLG2 CENTERED
 
 	if bPassou
-		MsAguarde({|| rodasc(xfilde,xfilate,scde,scate,dtde,dtate)},"Verificando geracao de Autorizacao de Entrega, aguarde...")
+		MsAguarde({|| rodasc(xfilde,xfilate,scde,scate,dtde,dtate)},"Verificando geração de Autorização de Entrega, aguarde...")
 	endif
 
 Return()
@@ -209,12 +209,12 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 
 		(cAlias1)->(dbGoTop())
 		While (cAlias1)->(!EOF())
-			if alltrim((cAlias1)->C1_CLVL)<>"" //alteracao  Rafael 21/12/2018
+			if alltrim((cAlias1)->C1_CLVL)<>"" //alteração  Rafael 21/12/2018
 				dbselectArea("CTH") 
 				DBSETORDER(1)
 				IF DBSEEK(XFILIAL("CTH")+(cAlias1)->C1_CLVL)
 					IF DATE()> CTH->CTH_DTEXSF
-						cMsg += "SC numero "+(cAlias1)->C1_NUM+" nao sera processada pois a Classe de Valor "+chr(13)+chr(10)
+						cMsg += "SC numero "+(cAlias1)->C1_NUM+" não sera processada pois a Classe de Valor "+chr(13)+chr(10)
 						cMsg += (cAlias1)->C1_CLVL+" esta expirada,entrar em contato com a Contabilidade!"+chr(13)+chr(10)		
 						(cAlias1)->(dbskip())
 						lcont:= .f.
@@ -225,7 +225,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 			else
 				lCont:=.t.
 			endif	
-			if 	lCont	// fim alteracao Rafael 21/12/2018
+			if 	lCont	// fim alteração Rafael 21/12/2018
 				Begin Transaction 
 
 					cChave := (cAlias1)->C3_FORNECE
@@ -247,7 +247,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 						ENDIF
 					ENDIF 
 
-					//Alterado se nao achar registro no ZD5 mas houver no SC3 vai rodar pelo contraro global. 
+					//Alterado se não achar registro no ZD5 mas houver no SC3 vai rodar pelo contraro global. 
 					//DbCloseArea("TEMP2")
 
 					If (cAlias1)->(!EOF()) .AND. lConf 
@@ -289,7 +289,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 						aItem  := {}
 						ccont  :=0 
 
-						While (cAlias1)->(!EOF())  .AND. cChave == (cAlias1)->C3_FORNECE  //alteracao de MIT
+						While (cAlias1)->(!EOF())  .AND. cChave == (cAlias1)->C3_FORNECE  //alteração de MIT
 							//--------------------FILIAL ENTREGA-------------------------------------------------------
 							if empty((cAlias1)->ZD5_CONTRA)
 
@@ -297,7 +297,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 								_cContr := (cAlias1)->C3_NUM
 								_cItContr := (cAlias1)->C3_ITEM
 							else
-								_cContr := PADR((cAlias1)->ZD5_CONTRA,TAMSX3("C3_NUM")[1]) //Padrozina o tamanho do conteudo para o campo C3_NUM
+								_cContr := PADR((cAlias1)->ZD5_CONTRA,TAMSX3("C3_NUM")[1]) //Padrozina o tamanho do conteúdo para o campo C3_NUM
 								_cItContr := (cAlias1)->C3_ITEM
 							endif
 
@@ -530,7 +530,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 
 					Else
 						//If xRet <> .T.
-						//MsgAlert("Nao  sera gerado a Autorizacao de entrega, pois nao hï¿½ contrato de parceria vigente para os Produtos da Solicitacao de compras! " )
+						//MsgAlert("Não será gerado a Autorização de entrega, pois não há contrato de parceria vigente para os Produtos da Solicitação de compras! " )
 						//EndIf
 						Return
 					EndIf
@@ -545,7 +545,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 							alert(aCont[2])
 							RollbackSx8()
 							DisarmTransaction()
-							cMsg += "SC numero "+cNumSol+" nao processada(erro) "+chr(13)+chr(10)
+							cMsg += "SC numero "+cNumSol+" não processada(erro) "+chr(13)+chr(10)
 
 						Else
 							cMsg += "SC numero "+cNumSol+" processada "+chr(13)+chr(10)
@@ -597,7 +597,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 
 
 		//If xRet <> .T.
-		//	//MsgAlert("Nao  sera gerado a Autorizacao de entrega, pois nao hï¿½ contrato de parceria vigente para os Produtos da Solicitacao de compras! " )
+		//	//MsgAlert("Não será gerado a Autorização de entrega, pois não há contrato de parceria vigente para os Produtos da Solicitação de compras! " )
 		//EndIf
 		//DbCloseArea(cAlias1)
 		(cAlias1)->(DbClosearea())
@@ -654,8 +654,8 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 		//EndDo
 
 
-		//MsgAlert("Nao  gerou AE para o Produto: " + (cAlias2)->C1_PRODUTO +" "+_MSG+" ")
-		//Liberar o item como nao atendido na tabela SCR CR_STATUS=02
+		//MsgAlert("Não gerou AE para o Produto: " + (cAlias2)->C1_PRODUTO +" "+_MSG+" ")
+		//Liberar o item como não atendido na tabela SCR CR_STATUS=02
 		//_cQrySOL	:= "UPDATE " + RetSqlName("SCR") + " SET CR_STATUS='02' "
 		//_cQrySOL	+= "WHERE CR_NUM = '"+cNumsol+"' "
 		//TcSqlExec(_cQrySOL)
@@ -674,7 +674,7 @@ Static Function rodasc(xfilde,xfilate,scde,scate,dtde,dtate)
 	xfil := SPACE(06)
 	scde := SPACE(06)
 	scate :=SPACE(06)
-	if alltrim(cMsg)<>"" //alteracao  Rafael 21/12/2018
+	if alltrim(cMsg)<>"" //alteração  Rafael 21/12/2018
 		alert(cMsg)
 	endif 
 Return
@@ -764,7 +764,7 @@ Static Function xIncPedx(aCab,aItens,aRateio)
 	MsExecAuto({|v,x,y,z,w,a| Mata120(v,x,y,z,w,a)},2,aCab,aItens,3)
 
 	If lMsErroAuto
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		cRet := MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO

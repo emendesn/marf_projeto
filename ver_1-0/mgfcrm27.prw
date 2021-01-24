@@ -12,7 +12,7 @@
 //
 //
 /*/{Protheus.doc} MGFCRM27
-//TODO Descricao auto-gerada.
+//TODO Descrição auto-gerada.
 @author thiago.queiroz
 @since 02/10/2019
 @version 1.0
@@ -152,7 +152,7 @@ static function CRM27POS( oModel )
 		dbUseArea(.T., "TOPCONN", TCGENQRY(,,cQryZBJ), "QRYZBJ" , .F. , .T. )
 
 		if !QRYZBJ->(EOF())
-			Help( ,, "MGFCRM27_1",, "Este Roteiro jï¿½ esta em uso pela Estrutura de Cliente.", 1, 0 )
+			Help( ,, "MGFCRM27_1",, "Este Roteiro jï¿½ estï¿½ em uso pela Estrutura de Cliente.", 1, 0 )
 			lRet := .F.
 		endif
 
@@ -210,7 +210,7 @@ Static Function CRM27Commit( oModel )
 		cUpdTbl += " 		A3_COD = '" + oModel:getValue('ZBIMASTER' , 'ZBI_REPRES' ) + "'"	+ CRLF
 
 		if tcSQLExec( cUpdTbl ) < 0
-			conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+			conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
 
 		If nOper == 4
@@ -265,7 +265,7 @@ Static Function CRM27Commit( oModel )
 					SA1->A1_XINTEGX	:= "P" // STATUS PARA O CLIENTE SER ENVIADO AO SFA
 					SA1->A1_XINTECO	:= "0" // STATUS PARA O CLIENTE SER ENVIADO AO E-COMMERCE
 
-					if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+					if SA1->A1_PESSOA == "J"
 						SA1->A1_XINTSFO	:= "P" // STATUS PARA O CLIENTE SER ENVIADO AO SALESFORCE
 					endif
 
@@ -308,7 +308,7 @@ static function chkDescri(oMdl, cField, xValue, xOldValue)
 
 	if allTrim(cField) == "ZBI_DESCRI"
 		if "/" $ xValue
-			Help( ,, "MGFCRM27",, "Nao ï¿½ permitida o carecter / (barra) neste campo.", 1, 0 )
+			Help( ,, "MGFCRM27",, "Nï¿½o ï¿½ permitida o carecter / (barra) neste campo.", 1, 0 )
 			lRet := .F.
 		endif
 	endif

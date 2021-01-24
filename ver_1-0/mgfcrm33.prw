@@ -13,7 +13,7 @@ Data.....:              18/04/2017
 Descricao / Objetivo:   Estrutura de Vendas Transferencia
 Doc. Origem:            GAP CRM20
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

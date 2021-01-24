@@ -3,12 +3,12 @@
 /*
 =====================================================================================
 Programa.:              FA040INC
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              21/10/2016
 Descricao / Objetivo:   Ponto de entrada para validar inclusao do titulo a receber
 Doc. Origem:            GAP FIN_CRE029_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS25
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de Familia
+Descrição / Objetivo.....: Cadastro de Família
 Doc. Origem..............: GAP
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -24,7 +24,7 @@ User Function MGFFIS25()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZDD")
-	oMBrowse:SetDescription("Cadastro de Familia")
+	oMBrowse:SetDescription("Cadastro de Família")
 
 	oMBrowse:AddLegend("ZDD_STATUS=='1'", "GREEN", "Liberado " )
 	oMBrowse:AddLegend("ZDD_STATUS=='2'", "RED"  , "Bloqueado" )
@@ -60,11 +60,11 @@ Static Function ModelDef()
 
 	oModel:AddFields( 'ZDDMASTER', /*cOwner*/, oStruZDD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription( 'cadastro de Familia' )
+	oModel:SetDescription( 'cadastro de Família' )
 
 	oModel:SetPrimaryKey({"ZDD_FILIAL"})
 
-	oModel:GetModel( 'ZDDMASTER' ):SetDescription( 'Cadastro de Familia' )
+	oModel:GetModel( 'ZDDMASTER' ):SetDescription( 'Cadastro de Família' )
 
 Return oModel
 
@@ -81,7 +81,7 @@ Static Function ViewDef()
 
 	oStruZDD:AddGroup( 'GRP01', '                                ', '', 1 )
 	oStruZDD:AddGroup( 'GRP02', 'Relacionar um SubGrupo a Familia', '', 2 )
-	oStruZDD:AddGroup( 'GRP03', 'Relacionar um Grupo a Familia '  , '', 3 )
+	oStruZDD:AddGroup( 'GRP03', 'Relacionar um Grupo a Família '  , '', 3 )
 
 	oStruZDD:SetProperty( 'ZDD_COD'   , MVC_VIEW_GROUP_NUMBER, 'GRP01' )
 	oStruZDD:SetProperty( 'ZDD_DESCR' , MVC_VIEW_GROUP_NUMBER, 'GRP01' )
@@ -104,7 +104,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 User Function MGFBLQF()
 
@@ -115,13 +115,13 @@ User Function MGFBLQF()
 		ZDD->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 Static Function MGFLIBF()
 
@@ -133,14 +133,14 @@ Static Function MGFLIBF()
 		
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return
 
 
 /*===============================================
-Valida alteracao do cadastro.
+Valida alteração do cadastro.
 ================================================*/
 Static Function ValidAlt(oModel)
 Local nOperation := oModel:GetOperation()
@@ -155,7 +155,7 @@ If nOperation == MODEL_OPERATION_UPDATE
 	DBSelectArea(cAliasTMP1)
 	If !EOF()
 		lRet := .F.
-		Help( ,, 'MGFFIS25',, 'O Registro jï¿½ foi relacionado a um Produto. O mesmo nao podera ser alterado', 1, 0 )
+		Help( ,, 'MGFFIS25',, 'O Registro já foi relacionado a um Produto. O mesmo não poderá ser alterado', 1, 0 )
 	EndIf
 	DBCloseArea()
 EndIf

@@ -22,7 +22,7 @@ User Function MGFINT45
 	Local bRet    := .T. 
 	Local aCodErp := {}
 
-	IF IsInCallStack("U_XEXEC")
+	IF IsInCallStack("MGFINT81") //Não terá validação para origens do cadastro pela rotina de integração automática (Salesforce).
 		Return .T.
 	EndIF
 

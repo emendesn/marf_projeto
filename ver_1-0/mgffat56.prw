@@ -8,7 +8,7 @@ Data................: Out/2017
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada OM010QRY
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

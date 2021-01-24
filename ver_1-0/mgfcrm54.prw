@@ -10,7 +10,7 @@
 Tela que permite alterar os ajustes de direcionamento
 
 @description
-Cadastra regra para Vendas interestaduais x Grupo tributÃ¡rio
+Cadastra regra para Vendas interestaduais x Grupo tributário
 Regra verificada pelo ponto de entrada
 
 @author Wagner Nevers
@@ -18,7 +18,7 @@ Regra verificada pelo ponto de entrada
 @type User Function
 
 @table
-ZAV - CabeÃ§alho
+ZAV - Cabeçalho
 ZAW - Itens
 SD1 -
 
@@ -39,7 +39,14 @@ User Function MGFCRM54()
     Local oBrowse		:= Nil
     Local aBKRotina		:= {}
 
+
+
     Private _cAlias	:=	"ZAV"
+    Private aAR           := { } //AR vinculado ao RAMI e Documento de entrada. Será utilizado para validar é permitido alterar o motivo e para atualizar também o AR, se permitido.
+    Private _cCodMot      := ' '
+    Private _Motivo       := ' '
+    Private _CodJus       := ' '
+    Private _Justif       := ' '
 
     If Type('aRotina') <> 'U'
         aBKRotina		:= aRotina
@@ -101,8 +108,8 @@ Static Function ModelDef()
     oSTRZAWITE:AddTrigger( ;
         aAux[1], ;                                      // [01] Id do campo de origem
     aAux[2], ;                                          // [02] Id do campo de destino
-    aAux[3], ;                                          // [03] Bloco de codigo de validaÃ§Ã£o da execuÃ§Ã£o do gatilho
-    aAux[4] )                                     		// [04] Bloco de codigo de execuÃ§Ã£o do gatilho
+    aAux[3], ;                                          // [03] Bloco de codigo de validação da execução do gatilho
+    aAux[4] )                                     		// [04] Bloco de codigo de execução do gatilho
 
     aAux := FwStruTrigger(;
         'ZAW_DIRECI'							,;	    // DOMINIO
@@ -117,11 +124,11 @@ Static Function ModelDef()
     oSTRZAWITE:AddTrigger( ;
     aAux[1]			                            ,;		// [01] Id do campo de origem
     aAux[2]			                            ,;		// [02] Id do campo de destino
-    aAux[3]			                            ,;		// [03] Bloco de codigo de validaÃ§Ã£o da execuÃ§Ã£o do gatilho
-    aAux[4] )                                     		// [04] Bloco de codigo de execuÃ§Ã£o do gatilho
+    aAux[3]			                            ,;		// [03] Bloco de codigo de validação da execução do gatilho
+    aAux[4] )                                     		// [04] Bloco de codigo de execução do gatilho
 
 
-// Propriedades cabeÃ§alho
+// Propriedades cabealho
     oSTRZAVCAB:SetProperty( "ZAV_CODIGO" 	, MODEL_FIELD_WHEN,{ ||If(ALTERA,.F.,.F.) } )
     oSTRZAVCAB:SetProperty( "ZAV_TPFLAG" 	, MODEL_FIELD_WHEN,{ ||If(ALTERA,.F.,.F.) } )
     oSTRZAVCAB:SetProperty( "ZAV_TPFLAG"    , MODEL_FIELD_OBRIGAT,  .F. )
@@ -159,7 +166,7 @@ Static Function ModelDef()
     oStrZAWIte:SetProperty('ZAW_MOTAFE'		,MODEL_FIELD_WHEN,{ ||If(ALTERA,.F.,.F.) } )
     oStrZAWIte:SetProperty('ZAW_RESPAF'		,MODEL_FIELD_WHEN,{ ||If(ALTERA,.F.,.F.) } )
 
-    oModel:=MPFormModel():New("MODELO", Nil, Nil, { |oMdl| bCommit( oMdl ) } )
+    oModel:=MPFormModel():New("MODELO", Nil /*bPre*/, { |oMdl| bPost( oMdl ) } /*bPost*/, { |oMdl| bCommit( oMdl ) }/*bCommit*/, Nil /*bCancel*/ )
     oModel:AddFields("MODEL_ZAV_CAB", Nil, oSTRZAVCAB)
     oModel:AddGrid("MODEL_ZAW_ITE", "MODEL_ZAV_CAB", oSTRZAWITE, bLinPreZAW)
     oModel:SetPrimaryKey({"ZAV_CODIGO"})
@@ -285,7 +292,6 @@ Static Function bCommit( oModel )
     Local _cFilial      := ' '
     Local _cItemNf      := ' '
     Local _cCdRami      := ' '
-    Local _cNovodir     := ' '
     Begin Transaction
 
         If  nOperation == MODEL_OPERATION_UPDATE
@@ -350,13 +356,21 @@ Static Function bCommit( oModel )
                     ENDDO
                 ENDIF
 
-                //Se houve alteraÃ§Ã£o grava SD1t1005551
-                If _lRes
-                    _cNovoDir := oModelITE:GetValue( 'ZAW_DIRECI')
+                //Se houve alteração grava SD1 e ZZI (Item AR), t1005551 
+                If _lRes .AND. ;
+                        RetornaZau(_cFilial,oModelITE:GetValue( 'ZAW_DIRECI')) //Preenche os codigos e descrição dos motivos e justificativas conforma o novo direcionamento 
+                        
                     _cProd    := oModelITE:GetValue( 'ZAW_CDPROD')
                     _cQtd     := oModelITE:GetValue( 'ZAW_QTD')
 
-                    zGravSd1(_cNovodir,_cCdRami,_cItemNf,_cProd,_cQtd)
+                    zGravSd1(_cCdRami,_cItemNf,_cProd,_cQtd)
+
+                    // Atualiza o motivo do AR.
+                    If !Empty(aAR)
+                        If !UpdateAR(aAR[1],aAR[2],_cProd) //Filial AR, Numero AR, Produto, Justificativa
+                            Help(,,"MGFCRM54 - Validação do AR",,"Não foi possível Atualziar o AR "+ aAR[1] + " .",1,0,,,,,,{"Verifique se o AR já está encerrado"})
+                        EndIf
+                    EndIf
 
                     If CV8->(FieldPos("CV8_IDMOV")) > 0 .And. !Empty(CV8->(IndexKey(5)))
                         __cIdCV8:= GetSXENum("CV8","CV8_IDMOV",,5)
@@ -364,7 +378,7 @@ Static Function bCommit( oModel )
                         ConfirmSX8()
                     EndIf
                     
-                    cMsg := "Alteracao : Item "+STRZERO(VAL(_cItemNf),4)+" - Direcionamneto de "+Alltrim(_cDireci)+" para "+Alltrim(_cDirNovo)
+                    cMsg := "Alteração : Item "+STRZERO(VAL(_cItemNf),4)+" - Direcionamento de "+Alltrim(_cDireci)+" para "+Alltrim(_cDirNovo)
 
                     xGravCV8("A",ZAV->ZAV_CODIGO,cMsg,Nil,"MGFCRM54",Nil,Nil,__cIdCV8)
                                         
@@ -416,7 +430,7 @@ Return
 
 @param		oGridModel		, Objeto	, Grid
 @param		nLine			, Numerico	, Linha do grid
-@param		cAction			, Caracter	, AÃ§Ã£o UNDELETE / DELETE / SETVALUE / CANSETVALUE
+@param		cAction			, Caracter	, Ação UNDELETE / DELETE / SETVALUE / CANSETVALUE
 @param		cIDField		, Caracter	, Campo Sendo atualizado
 @param		xValue			, Indefinido, Novo valor
 @param		xCurrentValue	, Indefinido, Valor antigo
@@ -448,7 +462,7 @@ Static Function LinePreZAW( oGridModel, nLine, cAction, cIDField, xValue, xCurre
 
                         If xValue == oModelITE:GetValue( 'ZAW_CDRAMI' )
 
-                            oModel:SetErrorMessage(, , , ,'LinePreZAW' , "Codigo jÃ¡ informado no item: " + oModelITE:GetValue( 'ZAW_ID' ), "Alterar Grupo de TributaÃ§Ã£o jÃ¡ informado", , )
+                            oModel:SetErrorMessage(, , , ,'LinePreZAW' , "Codigo já informado no item: " + oModelITE:GetValue( 'ZAW_ID' ), "Alterar Grupo de Tributação já informado", , )
                             lRet := .F.; Break
 
                         Endif
@@ -465,19 +479,281 @@ Static Function LinePreZAW( oGridModel, nLine, cAction, cIDField, xValue, xCurre
 Return( lRet )
 
 
-Static Function zGravSd1(_cNovodir,_cCdRami,_cItemNf,_cProd,_cQtd)
-    Local _cCodMot      := ' '
-    Local _Motivo       := ' '
-    Local _CodJus       := ' '
-    Local _Justif       := ' '
-    Local cFilialZAU    := xFilial("ZAU")
+/*/{Protheus.doc} zGravSd1
+Atualiza os itens do Documento de entrada com os novos motivos e justificativas
+@type  Static Function
+@author Natanael Filho
+@since 02/07/2020
+@version 12.1.17
+@param _cCdRami, char, Numero da RAMI
+@param _cItemNf, char, Item da Nota fiscal
+@param _cProd, char, Código do Produto
+@param _cQtd, char, Quantidade do Produto
+@example
+(examples)
+@see (links_or_references)
+/*/
+Static Function zGravSd1(_cCdRami,_cItemNf,_cProd,_cQtd)
+
     Local cFilialZAW    := xFilial("ZAW")
-    Local cAliasZau     := GetNextAlias()
     Local cAliasSd1     := GetNextAlias()
+    Local nSd1          := 0
+
+    If Select(cAliasSd1) > 0
+        (cAliasSd1)->(DbClosearea())
+    Endif
+  
+    BeginSql Alias cAliasSd1
+        Select 
+            zaw_filial filial,zaw_cdrami rami,zaw_itemnf itemnf,count(*) contador
+        FROM 
+            %Table:ZAW% ZAW
+        WHERE 
+            zaw.%notdel% AND
+            zaw_filial=%EXP:cFilialZAW% AND
+            zaw_cdrami=%EXP:_cCdRami%
+            having count(*) > 1
+            group by zaw_filial,zaw_cdrami,zaw_itemnf
+    EndSql
+
+    Count To nSd1
+
+    (cAliasSd1)->(DbGoTop())
+    If nSd1 > 0 .And. (cAliasSd1)->Contador > 1     
+        cQuery := " Update "+RetSqlName("SD1")
+        cQuery += " Set "
+        cQuery += " D1_ZCODMOT='"+_cCodMot+"',"
+        cQuery += "D1_ZDESCMO='"+_Motivo+"',"
+        cQuery += "D1_ZCODJUS='"+_CodJus+"',"
+        cQuery += "D1_ZDESCJU='"+_Justif+"'"
+        cQuery += " Where D1_FILIAL = '"+xFilial('SD1')+"'"
+        cQuery += " AND D1_ZRAMI = '"+_cCdRami+"'"
+        cQuery += " AND D1_ITEMORI ='"+_cItemNf+"'"
+        cQuery += " AND D1_COD ='"+_cProd+"'"
+        cQuery += " AND D1_QUANT ='"+Alltrim(STR(_cQtd))+"'"
+        cQuery += " AND d_e_l_e_t_ = ' '"
+        IF (TcSQLExec(cQuery) < 0)
+            bContinua   := .F.
+            MsgStop(TcSQLError())
+        ENDIF
+    else
+        cQuery := " Update "+RetSqlName("SD1")
+        cQuery += " Set "
+        cQuery += " D1_ZCODMOT='"+_cCodMot+"',"
+        cQuery += "D1_ZDESCMO='"+_Motivo+"',"
+        cQuery += "D1_ZCODJUS='"+_CodJus+"',"
+        cQuery += "D1_ZDESCJU='"+_Justif+"'"
+        cQuery += " Where D1_FILIAL = '"+xFilial('SD1')+"'"
+        cQuery += " AND D1_ZRAMI = '"+_cCdRami+"'"
+        cQuery += " AND D1_ITEMORI ='"+_cItemNf+"'"
+        cQuery += " AND d_e_l_e_t_ = ' '"
+        IF (TcSQLExec(cQuery) < 0)
+            bContinua   := .F.
+            MsgStop(TcSQLError())
+        ENDIF
+    endif
+
+    (cAliasSd1)->(DbClosearea())
+
+Return
+    
+User Function zVisLog1()
+_cRecno := ZAV->(Recno())
+ProcLogView(cFilAnt,ZAV->ZAV_CODIGO,"MGFCRM54")
+Go _cRecno
+Return
+
+
+/*/{Protheus.doc} bPost
+    Validação pós validação do Modelo, Equivale ao "Tudo OK"
+    @type  Static Function
+    @author Natanael Filho
+    @since 01/07/2020
+    @version 12.1.17
+    @param oModel, Object FWFormModel, Modelo MVC
+    @return lRet, Bolean, Confirma ou não o commit
+    @example
+    -
+    @see (links_or_references)
+    -
+    /*/
+Static Function bPost(oModel)
+
+    Local oModelCAB		:= oModel:GetModel('MODEL_ZAV_CAB')
+    Local oModelITE		:= oModel:GetModel('MODEL_ZAW_ITE')
+    Local nOperation    := oModel:GetOperation()
+    Local cFilialZAV	:= xFilial("ZAV")
+    Local cFilialZAW	:= xFilial("ZAW")
+    Local nTamArray1	:= oModelITE:Length() // Quantidade de linhas do Grid
+    Local lRet := .T.
+    Local aRetTaura     := { } //Array de Retorno Taura referente ao AR.{Cod}
+    Local aProdJus       := { } //Array com Produto e Justificativa para ser enviado ao Taura
+    Local cNota := ' ',cSerie := ' ',cCodFor := ' ',cLojFor := ' ' //Documento, Serie, Fornecedor/Cliente / Loja For/Cli
+
+    //Valida apenas alterações
+    If nOperation == MODEL_OPERATION_UPDATE .AND. lRet
+        cNota   := oModelcab:GetValue("ZAV_NOTA")
+        cSerie  := oModelcab:GetValue("ZAV_SERIE")
+        cCodFor := oModelcab:GetValue("ZAV_CLIENT")
+        cLojFor := oModelcab:GetValue("ZAV_LOJA")
+        cDireci := oModelIte:GetValue("ZAW_DIRECI") //Motivo x Justificativa
+
+    //Caso não esteja finalizada, prosseguir normalmente com a atualização da RAMI no Protheus e não será necessária a integração pois a informação ainda não existe no Taura
+        If (oModelcab:GetValue("ZAV_STATUS") == '1'; //1: Finalizado
+            .AND. oModelcab:GetValue("ZAV_TPFLAG") != '1' ); //1: devolução ; 2: Reclamação
+             .AND. lRet
+            
+            //O programa deverá verificar se a RAMI possui um AR vinculado
+            aAR:= aGetAR(cFilialZAV,cNota,cSerie,cCodFor,cLojFor) // {AR,Status}
+            
+            //Caso não exista um AR, prosseguir com a atualização da RAMI no Protheus e não será necessária a integração pois a informação não existe no Taura.
+            If !EMPTY(aAR)
+                If aAR[3] != '0' // AR já enviado ao Taura. Se não foi enviado ainda "0", pode deixar alterar normalmente.
+
+                    //Monta o array com Produto e Justificativa para ser enviado ao Taura
+                    For nCount := 1 to oModelITE:Length()
+                        oModelITE:GoLine(nCount)
+
+                        If RetornaZau(cFilialZAV,oModelITE:GetValue( 'ZAW_DIRECI')) //Preenche os codigos e descrição dos motivos e justificativas conforma o novo direcionamento 
+                            Aadd(aProdJus,{;
+                                    Alltrim(oModelITE:GetValue("ZAW_CDPROD")),; //Produto
+                                    Alltrim(_CodJus)}) //Justificativa
+                        Else
+                            Help(,,"[MGFCRM54] Validação do AR Taura",,"Direcionamento não encontrado na tabela de MOTIVO X JUSTIFICATIVA RAMI (ZAU)"/*Mensagem de retorno do Taura*/,1,0)
+                        EndIf
+                    Next nCount
+
+                    FWMSGRUN( , {|| aRetTaura := U_MGFTAE30(aAR[1]/*Filial*/,aAR[2]/*AR*/,aProdJus/*{{Produtos,Justificativa},{Produtos,Justificativa}}*/); //Consulta se o AR pode ser alterado no Taura.
+                                             }, "Aguarde!" , 'Validando a alteração do AR no Taura.' )
+                    If !Empty(aRetTaura)
+                        If aRetTaura[1] = 2 // Status 2, houve mensagem de erro do Taura
+                            lRet := .F.
+                            Help(,,"[MGFCRM54] Validação do AR Taura",,aRetTaura[2]/*Mensagem de retorno do Taura*/,1,0)
+                        EndIf    
+                    EndIf
+                EndIf
+            EndIf
+        EndIf
+
+    EndIf
+
+    
+Return lRet
+
+
+/*/{Protheus.doc} aGetAR
+    Verifica se existe AR para a RAMI/Doc de Devolução
+    @type  Static Function
+    @author Natanael Filho
+    @since 02/07/2020
+    @version 12.1.17
+    @param cFilDoc, char, Filial
+    @param cNota, char, Documento de Entrada
+    @param cSerie, char, Serie do Documento de Entrada
+    @param cCodFor, char, Forcedor / Cliente
+    @param cLojFor, char, Loja Forcedor / Cliente
+    @return aRet, Array, Retorna o AR e o Status
+    @example
+    (examples)
+    @see (links_or_references)
+    /*/
+Static Function aGetAR(cFilDoc,cNota,cSerie,cCodFor,cLojFor)
+
+    Local cNextAlias:= GetNextAlias()
+    Local aRet := {}
+
+    If Select(cNextAlias) > 0
+        (cNextAlias)->(DbClosearea())
+    Endif
+
+
+    BeginSql Alias cNextAlias
+
+        SELECT ZZH_FILIAL, ZZH_AR, ZZH_STATUS
+        FROM 
+            %Table:ZZH% ZZH
+        WHERE
+            ZZH.%NotDel% AND
+            ZZH.ZZH_FILIAL = %Exp:cFilDoc% AND
+            ZZH.ZZH_DOC = %Exp:cNota% AND
+            ZZH.ZZH_SERIE = %Exp:cSerie% AND	
+            ZZH.ZZH_FORNEC = %Exp:cCodFor% AND
+            ZZH.ZZH_LOJA = %Exp:cLojFor%
+        EndSql
+
+        (cNextAlias)->(DbGoTop())
+
+        If (cNextAlias)->(!EOF())
+            aADD(aRet,(cNextAlias)->ZZH_FILIAL)
+            aADD(aRet,(cNextAlias)->ZZH_AR)
+            aADD(aRet,(cNextAlias)->ZZH_STATUS)
+        EndIf
+
+        (cNextAlias)->(DbClosearea())
+
+Return aRet
+
+/*/{Protheus.doc} UpdateAR
+    Atualiza o AR, se existente, com os novos motivos
+    @type  Static Function
+    @author Natanael Filho
+    @since 02/07/2020
+    @version 12.1.17
+    @param cFilDoc, char, Filial
+    @param cAR, char, Numero do AR
+    @param cProd, char, Produto
+    @param cNovodir, char, Justificativa
+    @example
+    (examples)
+    @see (links_or_references)
+    /*/
+Static Function UpdateAR(cFilAR,cAR,cProd)
+
+    Local lARRet        := .F.
+
+    //ZZI: AR ITENS
+    cQuery := " Update "+RetSqlName("ZZI")
+    cQuery += " Set "
+    cQuery += " ZZI_CODMOT='"+_cCodMot+"',"
+    cQuery += " ZZI_CODJUS='"+_CodJus+"' "
+    cQuery += " Where ZZI_FILIAL = '" + cFilAR + "'"
+    cQuery += " AND ZZI_AR = '" + cAR + "'"
+    cQuery += " AND ZZI_PRODUT ='"+ cProd +"'"
+    cQuery += " AND D_E_L_E_T_ = ' '"
+    IF (TcSQLExec(cQuery) < 0)
+        bContinua   := .F.
+        MsgStop(TcSQLError())
+    Else
+        lARRet := .T.
+    EndIf
+
+
+Return lARRet
+
+
+/*/{Protheus.doc} aRetZau
+Preenche os codigos e descrição dos motivos e justificativas conforma o novo direcionamento
+@type  Static Function
+@author Natanael Filho
+@since 02/07/2020
+@version 12.1.17
+@param cFilialZAU, char, Filial ZAU
+@param _cNovodir, char, Novo Direcionamento
+@return		lRetZau, Boolean, Retorna se foi encontrado ou não o registro na ZAU
+@example
+(examples)
+@see (links_or_references)
+/*/
+Static Function RetornaZau(cFilialZAU,_cNovodir)
+
+   Local cAliasZau     := GetNextAlias()
+   Local lRetZau       := .F.
+   Local nZau          := 0
 
     If Select(cAliasZau) > 0
         (cAliasZau)->(DbClosearea())
     Endif
+
     BeginSql Alias cAliasZAU
     SELECT  
         ZAU_CODIGO,ZAU_CODMOT,ZAU_MOTIVO,ZAU_CODJUS,ZAU_JUSTIF
@@ -488,67 +764,18 @@ Static Function zGravSd1(_cNovodir,_cCdRami,_cItemNf,_cProd,_cQtd)
         ZAU.ZAU_CODIGO  = %EXP:_cNovoDir%  AND
         ZAU.%notdel%
     EndSql
+    
     Count To nZau
     (cAliasZAU)->(DbGoTop())
+
     If nZau > 0
-  
         _cCodMot :=ALLTRIM((cAliasZAU)->ZAU_CODMOT) //D1_ZCODMOT
         _Motivo := ALLTRIM((cAliasZAU)->ZAU_MOTIVO) //D1_ZDESCMO
         _CodJus := ALLTRIM((cAliasZAU)->ZAU_CODJUS) //D1_ZCODJUS
-        _Justif := ALLTRIM((cAliasZAU)->ZAU_JUSTIF) //D1_ZDESCJU        
-        
-        BeginSql Alias cAliasSd1
-            Select 
-                zaw_filial filial,zaw_cdrami rami,zaw_itemnf itemnf,count(*) contador
-            FROM 
-                %Table:ZAW% ZAW
-            WHERE 
-                zaw.%notdel% AND
-                zaw_filial=%EXP:cFilialZAW% AND
-                zaw_cdrami=%EXP:_cCdRami%
-                having count(*) > 1
-                group by zaw_filial,zaw_cdrami,zaw_itemnf
-        EndSql
-        Count To nSd1        
-        (cAliasSd1)->(DbGoTop())
-        If nSd1 > 0 .And. (cAliasSd1)->Contador > 1     
-            cQuery := " Update "+RetSqlName("SD1")
-            cQuery += " Set "
-            cQuery += " D1_ZCODMOT='"+_cCodMot+"',"
-            cQuery += "D1_ZDESCMO='"+_Motivo+"',"
-            cQuery += "D1_ZCODJUS='"+_CodJus+"',"
-            cQuery += "D1_ZDESCJU='"+_Justif+"'"
-            cQuery += " Where D1_FILIAL = '"+xFilial('SD1')+"'"
-            cQuery += " AND D1_ZRAMI = '"+_cCdRami+"'"
-            cQuery += " AND D1_ITEMORI ='"+_cItemNf+"'"
-            cQuery += " AND D1_COD ='"+_cProd+"'"
-            cQuery += " AND D1_QUANT ='"+Alltrim(STR(_cQtd))+"'"
-            cQuery += " AND d_e_l_e_t_ = ' '"
-            IF (TcSQLExec(cQuery) < 0)
-                bContinua   := .F.
-                MsgStop(TcSQLError())
-            ENDIF
-        else
-            cQuery := " Update "+RetSqlName("SD1")
-            cQuery += " Set "
-            cQuery += " D1_ZCODMOT='"+_cCodMot+"',"
-            cQuery += "D1_ZDESCMO='"+_Motivo+"',"
-            cQuery += "D1_ZCODJUS='"+_CodJus+"',"
-            cQuery += "D1_ZDESCJU='"+_Justif+"'"
-            cQuery += " Where D1_FILIAL = '"+xFilial('SD1')+"'"
-            cQuery += " AND D1_ZRAMI = '"+_cCdRami+"'"
-            cQuery += " AND D1_ITEMORI ='"+_cItemNf+"'"
-            cQuery += " AND d_e_l_e_t_ = ' '"
-            IF (TcSQLExec(cQuery) < 0)
-                bContinua   := .F.
-                MsgStop(TcSQLError())
-            ENDIF
-        endif
+        _Justif := ALLTRIM((cAliasZAU)->ZAU_JUSTIF) //D1_ZDESCJU 
+       lRetZau  := .T. 
     EndIf
-Return
-    
-User Function zVisLog1()
-_cRecno := ZAV->(Recno())
-ProcLogView(cFilAnt,ZAV->ZAV_CODIGO,"MGFCRM54")
-Go _cRecno
-Return
+
+    (cAliasZau)->(DbClosearea())
+
+Return lRetZau

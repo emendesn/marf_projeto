@@ -2,12 +2,12 @@
 =====================================================================================
 Programa............: F330AE5E
 Autor...............: Totvs
-Data................: Marco/2018
+Data................: Março/2018
 Descricao / Objetivo: Financeiro
 Doc. Origem.........: Financeiro
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Ponto de Entrada para alteracao do historico da movimentacao na SE5 no momento do estorno de uma compensacao do contas a receber.
+Uso.................: Marfrig
+Obs.................: Ponto de Entrada para alteração do histórico da movimentação na SE5 no momento do estorno de uma compensação do contas a receber.
 =====================================================================================
 */
 User Function F330AE5E()

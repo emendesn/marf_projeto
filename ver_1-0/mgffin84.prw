@@ -4,11 +4,11 @@
 =====================================================================================
 Programa.:              MGFFIN84
 Autor....:              Totvs
-Data.....:              Marco/2018
+Data.....:              Março/2018
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada F330SE5
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -40,15 +40,15 @@ Local cCRLoja		:= SubStr(cNFDocumen,18,2)
 Local dCRData		:= SE5->E5_DATA
 Local cHistorico	:= ""
 /*
-Aviso("Dados Compensacao","Tipo/TipoDoc/Pref/Titulo/Parc/Seq/Cliente :" + cTitulo + CHR(10)+CHR(13) +;
+Aviso("Dados Compensação","Tipo/TipoDoc/Pref/Titulo/Parc/Seq/Cliente :" + cTitulo + CHR(10)+CHR(13) +;
  	  "Valor : "+Transform(SE5->E5_VALOR,"@E 999,999,999.99") + CHR(10)+CHR(13) +;
- 	  "Historico : " + SE5->E5_HISTOR + CHR(10)+CHR(13) +;
+ 	  "Histórico : " + SE5->E5_HISTOR + CHR(10)+CHR(13) +;
  	  "Documento : " + SE5->E5_DOCUMEN + CHR(10)+CHR(13) +;
  	  "FUNNAME() : " + FUNNAME(),{"Ok"})
 */
 If "RA" $ cNFDocumen
 	cComplHist := AllTrim(SuperGetMv("MGF_TXTADT",,"ADTO - "))
-	cHistorico	:= "Baixa por Compensacao"
+	cHistorico	:= "Baixa por Compensação"
 ElseIf "NCC" $ cNFDocumen .Or. SE5->E5_TIPO == "NCC"
 	If !("MAN"$cNFDocumen) .AND. SE5->E5_PREFIXO != "MAN" //Removido o cComplHist das NCC incluidas manualmente, conforme GAP 566 
 		cComplHist := AllTrim(SuperGetMv("MGF_TXTDEV",,"DEVOL - "))
@@ -56,7 +56,7 @@ ElseIf "NCC" $ cNFDocumen .Or. SE5->E5_TIPO == "NCC"
 	cHistorico := "Comp. p/Prestacao de Contas"
 Endif
 
-// atualiza historico do titulo posicionado
+// atualiza histórico do titulo posicionado
 If !(cComplHist $ SE5->E5_HISTOR)
 	dbSelectArea("SE5")
 	RecLock("SE5",.F.)
@@ -64,7 +64,7 @@ If !(cComplHist $ SE5->E5_HISTOR)
 	SE5->(MsUnLock())
 Endif
 If FUNNAME() $ "FINA330|FINA740|"
-	// atualiza historico titulo RA / NCC
+	// atualiza histórico titulo RA / NCC
 	dbSetOrder(2)		//FILIAL+TIPODOC+PREFIXO+NUMERO+PARCELA+TIPO+DATA+CLIENTE+LOJA+SEQ
 	If SE5->(dbSeek(cNFFilial+cCRTipoDoc+cCRPrefixo+cCRTitulo+cCRParcela+cCRTipo+Dtos(dCRData)+cCRCliente+cCRLoja+cCRSequen))
 		If !(cComplHist $ SE5->E5_HISTOR)

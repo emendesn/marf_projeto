@@ -26,8 +26,31 @@ User Function MGFINT39(nTipo,cTab,cCampo)
 	Local aRet			:= {}
 	local cZB1USER		:= ""
 	local cUsrSaForc	:= AllTrim( superGetMv( "MGF_INT39A" , , "004703" ) )
+	local cUsrSFSA2		:= AllTrim( superGetMv( "MGF_INT39F" , , "004747" ) )
+	local ColabFilial   := ""
+	local cUnit         := ""
 
-	If !IsInCallStack("U_MGFIMP01") .And. !IsInCallStack("U_XEXEC")
+	If !ExisteSx6("MGF_INT39F")
+			CriarSX6("MGF_INT39F", "C", "Usuário para a grade - integração salesforce"	, "004747" )
+	End
+
+	//Se é cliente vindo pela integração de cadastro de funcionário
+	//e for cliente de loja montana, não passa pela grade
+	If isincallstack("U_MGFINT02") .and. cTab == "SA1" 
+
+	  colabfilial := alltrim(M->A1_ZCFIL)
+	  cunit := AllTrim( SuperGetMv( "MGF_INT39E" , , "010001/010065/010041/010039/010042/010045/020003/010069/010068/010070/010067" ) ) 
+
+	  if AllTrim(ColabFilial)$cUnit
+
+		Return .T.
+
+	  Endif
+
+	Endif
+
+
+	If !IsInCallStack("U_MGFIMP01") .And. !IsInCallStack("U_XEXEC") 
 
 		IF nTipo == 1
 			IF &(cTab+"->"+cCampo) == '1'
@@ -53,6 +76,9 @@ User Function MGFINT39(nTipo,cTab,cCampo)
 			if isInCallStack( "INSERTORUPDATECUSTOMER" ) .AND. FunName() == "MGFWSS11" .AND. cTab == "SA1"
 				// SE ORIGEM SALESFORCE COLOCA CODIGO DO VENDEDOR
 				cZB1USER := cUsrSaForc
+
+			ElseIf FunName() == "SALESFORCE" .AND. cTab == "SA2"
+				cZB1USER := cUsrSFSA2
 			else
 				cZB1USER := RetCodUsr()
 			endif
@@ -131,6 +157,25 @@ User Function MGFINT39(nTipo,cTab,cCampo)
 				   &(cTab+"->"+cCampo+'_MSBLQL') := '1'
 				ElseIf cTab == 'SA2'
 				   &(cTab+"->"+cCampo) := '1'
+
+				   //inclui controle para envio do fornecedor ao SalesForce
+
+					dbSelectArea("ZH3")
+					RecLock("ZH3",.t.)
+
+					ZH3->ZH3_HASH	:=fwUUIDv4()
+					ZH3->ZH3_CHAVE	:=xfilial("SA2")+SA2->A2_COD+SA2->A2_LOJA
+					ZH3->ZH3_CODID	:=SA2->A2_ZIDCRM
+					ZH3->ZH3_CODINT	:='008'
+					ZH3->ZH3_CODTIN	:='018'
+					ZH3->ZH3_REQUES :=''
+					ZH3->ZH3_DTRECE	:=DtoC(date())
+					ZH3->ZH3_HRRECE	:=time()
+					ZH3->ZH3_RESULT	:='ALTERAÇÃO FORNECEDOR - MGFINT39'
+					ZH3->ZH3_STATUS	:='6' //bloqueado na grade - envio para o Salesforce
+					
+					MsUnlock()
+
 				EndIf
 				&(cTab+"->(msUnlock())")
 			EndIF

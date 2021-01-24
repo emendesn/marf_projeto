@@ -40,7 +40,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFGFE49 DESCRIPTION "Integracao Protheus x Multiembarcador -Dados Filial" NameSpace "http://totvs.com.br/MGFGFE49.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos par�metros de entrada
 	WSDATA MGFGFE49RECEBEfilial AS MGFGFE49RECfilial
 	// Retorno (array)
 	WSDATA MGFGFE49RETORNOFILIAL AS MGFGFE49RetFILIAL

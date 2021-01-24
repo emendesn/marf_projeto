@@ -7,7 +7,7 @@ Data.....:              20/09/2016
 Descricao / Objetivo:   Chamada do P.E. F240FIL - permitir filtro por tipo de titulo, na geracao do bordero
 Doc. Origem:            Contrato - GAP MGFFIN05
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

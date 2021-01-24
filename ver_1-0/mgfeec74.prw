@@ -4,10 +4,10 @@
 /*/
 ==============================================================================================================================================================================
 {Protheus.doc} MGFEEC74 
-Inclusao na tabela SX5 Z1
+Inclusão na tabela SX5 Z1
 
 @description
-Tabela Z1 da SX5 que sera utilizada na funcionalidade de despesas de despachante EEC
+Tabela Z1 da SX5 que será utilizada na funcionalidade de despesas de despachante EEC
 
 
 @author Marcelo de Almeida Carneiro
@@ -22,7 +22,7 @@ Tabela Z1 da SX5 que sera utilizada na funcionalidade de despesas de despachante
 @return
     
 @menu
-    EEC - Atualizacoes - Especificos Marfrig - Fornecedor Despesa
+    EEC - Atualizações - Especificos Marfrig - Fornecedor Despesa
 
 @history
 
@@ -32,7 +32,7 @@ User Function MGFEEC74()
 
 Local oBrowse
 
-Private cTitulo  := "Inclusao de Fornecedores da Despesa"
+Private cTitulo  := "Inclusão de Fornecedores da Despesa"
 Private cTab     := 'Z1'
 
 DbSelectArea('SX5')
@@ -65,13 +65,13 @@ Static Function ModelDef()
 Local oModel := Nil
 Local oStSX5 := FWFormStruct(1, "SX5")
     
-//Editando caracterï¿½sticas do dicionï¿½rio
-oStSX5:SetProperty('X5_TABELA',   MODEL_FIELD_WHEN,    FwBuildFeature(STRUCT_FEATURE_WHEN,    '.F.'))                       //Modo de Ediï¿½ï¿½o
-oStSX5:SetProperty('X5_TABELA',   MODEL_FIELD_INIT,    FwBuildFeature(STRUCT_FEATURE_INIPAD,  'cTab'))                     //Ini Padrï¿½o
-oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_WHEN,    FwBuildFeature(STRUCT_FEATURE_WHEN,    'Iif(INCLUI, .T., .F.)'))     //Modo de Ediï¿½ï¿½o
-oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_VALID,   FwBuildFeature(STRUCT_FEATURE_VALID,   'u_zSX5Chv()'))               //Validacao de Campo
-oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_OBRIGAT, .T. )                                                                //Campo Obrigatorio
-oStSX5:SetProperty('X5_DESCRI',   MODEL_FIELD_OBRIGAT, .T. )                                                                //Campo Obrigatorio
+//Editando características do dicionário
+oStSX5:SetProperty('X5_TABELA',   MODEL_FIELD_WHEN,    FwBuildFeature(STRUCT_FEATURE_WHEN,    '.F.'))                       //Modo de Edição
+oStSX5:SetProperty('X5_TABELA',   MODEL_FIELD_INIT,    FwBuildFeature(STRUCT_FEATURE_INIPAD,  'cTab'))                     //Ini Padrão
+oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_WHEN,    FwBuildFeature(STRUCT_FEATURE_WHEN,    'Iif(INCLUI, .T., .F.)'))     //Modo de Edição
+oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_VALID,   FwBuildFeature(STRUCT_FEATURE_VALID,   'u_zSX5Chv()'))               //Validação de Campo
+oStSX5:SetProperty('X5_CHAVE',    MODEL_FIELD_OBRIGAT, .T. )                                                                //Campo Obrigatório
+oStSX5:SetProperty('X5_DESCRI',   MODEL_FIELD_OBRIGAT, .T. )                                                                //Campo Obrigatório
         
 oModel := MPFormModel():New("zCadSX5M",/*bPre*/,/*bPos*/,/*bCommit*/,/*bCancel*/) 
 oModel:AddFields("FORMSX5",/*cOwner*/,oStSX5)
@@ -106,7 +106,7 @@ Local lRet     := .T.
 Local cX5Chave := M->X5_CHAVE
     
 If SX5->(DbSeek(FWxFilial('SX5') +  cTab + cX5Chave))
-    Help('',1, 'Chave duplicada' ,, 'Jï¿½ existe chave para o codigo !',1,0)  
+    Help('',1, 'Chave duplicada' ,, 'Já existe chave para o codigo !',1,0)  
     lRet := .F.
 EndIf
     

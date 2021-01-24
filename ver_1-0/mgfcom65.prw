@@ -10,7 +10,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MA103BUT
 =====================================================================================
 */
@@ -138,7 +138,7 @@ If Altera
 					SCR->(dbSkip())
 				Enddo
 			Endif
-			//.T. = Estï¿½ liberado, .F. = nao esta liberdado.
+			//.T. = Está liberado, .F. = não está liberdado.
 			cDocto1 := cDocto+"_VALOR_NFE"
 			lLib := StaticCall(MGFCOM72,_MtGLastSCR,"NF",cDocto) .and. StaticCall(MGFCOM72,_MtGLastSCR,"NF",cDocto+"_VALOR_NFE")
 			SF1->(RecLock("SF1",.F.))

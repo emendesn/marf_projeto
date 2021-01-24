@@ -28,7 +28,7 @@ Static s_ESCPED   := SuperGetMV("MV_ESCPED", .F. , "2")
 //
 //
 /*/{Protheus.doc} UGFEA065
-//TODO Descricao auto-gerada.
+//TODO Descrição auto-gerada.
 @author thiago.queiroz
 @since 02/10/2019
 @version 1.0
@@ -50,7 +50,7 @@ User Function UGFEA065()
 	aAdd(aLegenda, {"GW3_SIT=='1'", "BLACK", "Recebido"})
 	aAdd(aLegenda, {"GW3_SIT=='2'", "RED"  , "Bloqueado"})
 	aAdd(aLegenda, {"GW3_SIT=='3'", "GREEN", If( cPaisLoc $ "ANG|PTG", "Aprovado pelo sistema", "Aprovado pelo Sistema" )})
-	aAdd(aLegenda, {"GW3_SIT=='4'", "BLUE" , If( cPaisLoc $ "ANG|PTG", "Aprovado pelo utilizador", "Aprovado pelo Usuario" )})
+	aAdd(aLegenda, {"GW3_SIT=='4'", "BLUE" , If( cPaisLoc $ "ANG|PTG", "Aprovado pelo utilizador", "Aprovado pelo Usuário" )})
 
 	
 	For nI := 1 To Len(aLegenda)
@@ -83,14 +83,14 @@ Static Function MenuDef()
 	Aadd( aRotina, { "Atualizar Fiscal ERP", "u_GFE65XF(.F., '1', .T. )", 0, 10, 0,,, })
 
 	If cERPGFE == "2"
-		Aadd( aRotina, { "Atualizar Pre Nota", "u_GFE65XF(.F., '4' )", 0, 10, 0,,, })
+		Aadd( aRotina, { "Atualizar Prï¿½ Nota", "u_GFE65XF(.F., '4' )", 0, 10, 0,,, })
 	EndIf
 
 	Aadd( aRotina, { "Desatualiz Fiscal ERP", "u_GFE65XD('1')", 0, 10, 0,,, })
 	Aadd( aRotina, { "Atualizar Aprop Desp ERP", "u_GFE65XC(.F., '2', .T.)", 0, 11, 0,,, })
 
 	If cERPGFE == "2"
-		Aadd( aRotina, { "Atualizar Pre CT", "u_GFE65XC(.F., '5')", 0, 11, 0,,, })
+		Aadd( aRotina, { "Atualizar Prï¿½ CT", "u_GFE65XC(.F., '5')", 0, 11, 0,,, })
 	EndIf
 
 	Aadd( aRotina, { "Desatualiz Aprop Desp ERP", "U_GFE65XD('2')", 0, 11, 0,,, })
@@ -98,7 +98,7 @@ Static Function MenuDef()
 	Aadd( aRotina, { "Gerar Doc Complementar", "u_GFE65CC()", 0, 12, 0,,, })
 
 	If cERPGFE == "2"
-		Aadd( aRotina, { "Dados Integracao ERP", "U_GFE65IPR()", 0, 13, 0,,, })
+		Aadd( aRotina, { "Dados Integraï¿½ï¿½o ERP", "U_GFE65IPR()", 0, 13, 0,,, })
 	EndIf
 
 Return aRotina
@@ -113,8 +113,8 @@ Static Function ModelDef()
 
 
 
-	oStructGW3:AddField (If( cPaisLoc $ "ANG|PTG", "Aliquota PIS", "Aliquota PIS" ), If( cPaisLoc $ "ANG|PTG", "Aliquota PIS", "Aliquota PIS" ), "GW3_PCPIS" , "N", 12, 2, , {|| .F. }, , .F. , {||UGFEA065PCD("PIS")}, .F. , , .T. )
-	oStructGW3:AddField (If( cPaisLoc $ "ANG|PTG", "Aliquota COFINS", "Aliquota COFINS" ), If( cPaisLoc $ "ANG|PTG", "Aliquota COFINS", "Aliquota COFINS" ), "GW3_PCCOFI", "N", 12, 2, , {|| .F. }, , .F. , {||UGFEA065PCD("COFINS")}, .F. , , .T. )
+	oStructGW3:AddField (If( cPaisLoc $ "ANG|PTG", "Alíquota PIS", "Aliquota PIS" ), If( cPaisLoc $ "ANG|PTG", "Alíquota PIS", "Aliquota PIS" ), "GW3_PCPIS" , "N", 12, 2, , {|| .F. }, , .F. , {||UGFEA065PCD("PIS")}, .F. , , .T. )
+	oStructGW3:AddField (If( cPaisLoc $ "ANG|PTG", "Alíquota COFINS", "Aliquota COFINS" ), If( cPaisLoc $ "ANG|PTG", "Alíquota COFINS", "Aliquota COFINS" ), "GW3_PCCOFI", "N", 12, 2, , {|| .F. }, , .F. , {||UGFEA065PCD("COFINS")}, .F. , , .T. )
 
 
 
@@ -179,10 +179,10 @@ Static Function ViewDef()
 	Local lCpoTES		:= u_GFE65INP()
 
 	
-	oStructGW3:AddField("GW3_PCPIS" , AllTrim(Str(Val(oStructGW3:GetFields()[AScan(oStructGW3:GetFields(), {|x| x[1] == "GW3_BASPIS"})][2]) + 1)), If( cPaisLoc $ "ANG|PTG", "Aliquota PIS", "Aliquota PIS" ), "", {If( cPaisLoc $ "ANG|PTG", "Aliquota PIS", "Aliquota PIS" )}, "N", "@E 999,999,999.99", , , , "1", "GrpImp", , , " ", .T. , , )
-	oStructGW3:AddField("GW3_PCCOFI", AllTrim(Str(Val(oStructGW3:GetFields()[AScan(oStructGW3:GetFields(), {|x| x[1] == "GW3_BASCOF"})][2]) + 1)), If( cPaisLoc $ "ANG|PTG", "Aliquota COFINS", "Aliquota COFINS" ), "", {If( cPaisLoc $ "ANG|PTG", "Aliquota COFINS", "Aliquota COFINS" )}, "N", "@E 999,999,999.99", , , , "1", "GrpImp", , , " ", .T. , , )
+	oStructGW3:AddField("GW3_PCPIS" , AllTrim(Str(Val(oStructGW3:GetFields()[AScan(oStructGW3:GetFields(), {|x| x[1] == "GW3_BASPIS"})][2]) + 1)), If( cPaisLoc $ "ANG|PTG", "Alíquota PIS", "Aliquota PIS" ), "", {If( cPaisLoc $ "ANG|PTG", "Alíquota PIS", "Aliquota PIS" )}, "N", "@E 999,999,999.99", , , , "1", "GrpImp", , , " ", .T. , , )
+	oStructGW3:AddField("GW3_PCCOFI", AllTrim(Str(Val(oStructGW3:GetFields()[AScan(oStructGW3:GetFields(), {|x| x[1] == "GW3_BASCOF"})][2]) + 1)), If( cPaisLoc $ "ANG|PTG", "Alíquota COFINS", "Aliquota COFINS" ), "", {If( cPaisLoc $ "ANG|PTG", "Alíquota COFINS", "Aliquota COFINS" )}, "N", "@E 999,999,999.99", , , , "1", "GrpImp", , , " ", .T. , , )
 
-	oStructGW3:AddGroup("GrpId" , "Identificacao", "1", 2)
+	oStructGW3:AddGroup("GrpId" , "Identificação", "1", 2)
 	oStructGW3:AddGroup("GrpOri", "Origem/Destino", "1", 2)
 	oStructGW3:AddGroup("GrpVal", "Valores", "1", 2)
 	oStructGW3:AddGroup("GrpDtC", "Dados da Carga", "1", 2)
@@ -199,15 +199,15 @@ Static Function ViewDef()
 		oStructGW3:AddGroup("GrpDFt", "Dados da Fatura", "4", 2)
 		oStructGW3:AddGroup("GrpFtA", "Faturamento Avulso", "4", 2)
 
-		oStructGW3:AddGroup("GrpCsg", "Consignatï¿½rio", "5", 2)
+		oStructGW3:AddGroup("GrpCsg", "Consignatário", "5", 2)
 		oStructGW3:AddGroup("GrpDFO", "Documento de Frete de Origem", "5", 2)
 	Else
 		oStructGW3:AddGroup("GrpDFt", "Dados da Fatura", "3", 2)
 		oStructGW3:AddGroup("GrpFtA", "Faturamento Avulso", "3", 2)
 
-		oStructGW3:AddGroup("GrpCsg", "Consignatï¿½rio", "4", 2)
+		oStructGW3:AddGroup("GrpCsg", "Consignatário", "4", 2)
 		oStructGW3:AddGroup("GrpDFO", "Documento de Frete de Origem", "4", 2)
-		oStructGW3:AddGroup("GrpInt", "Integraï¿½ï¿½es", "4", 2)
+		oStructGW3:AddGroup("GrpInt", "Integrações", "4", 2)
 	EndIf
 
 	oStructGW3:SetProperty("GW3_CDESP" , 12, "GrpId")
@@ -623,24 +623,24 @@ User Function UGFEAVP(oModel,oViewImp)
 
 		If !empty(cChvCte) .And.  lEspCTe .And.  lEmiCTe
 			If u_GFE065VLDV(cChvCte) .and.  Empty(cTpCte) .and.  !IsInCallStack("GFEA115PRO")
-				oModel:SetErrorMessage(,,,,,"Tipo do CT-e em branco.","ï¿½ necessario preencher o tipo do CT-e.")
+				oModel:SetErrorMessage(,,,,,"Tipo do CT-e em branco.","ï¿½ necessï¿½rio preencher o tipo do CT-e.")
 				Return .F.
 			EndIf
 		EndIf
 
 		If oModelGW3:GetValue("GW3_TPDF") <> "3" .And.  oModelGW3:GetValue("GW3_VLDF") == 0
-			Help( ,, "HELP",, "Nao ï¿½ permitido criar um documento de frete deste tipo com valor zerado.", 1, 0)
+			Help( ,, "HELP",, "Nï¿½o ï¿½ permitido criar um documento de frete deste tipo com valor zerado.", 1, 0)
 			Return .F.
 		EndIf
 
 		If GFXTB12117("GWC") .And.  u_UGFEACTA()
 			If AllTrim(FwFldGet("GW3_DESCUS")) == ""
-				Help( ,, "HELP",, "Necessario preencher o Codigo da despesa de custo de frete.", 1, 0)
+				Help( ,, "HELP",, "Necessï¿½rio preencher o cï¿½digo da despesa de custo de frete.", 1, 0)
 				Return .F.
 			EndIf
 
 			If AllTrim(Posicione("DT7",1,xFilial("DT7")+FwFldGet("GW3_DESCUS"), "DT7_CODDES")) == ""
-				Help( ,, "HELP",, "Despesa de custo de frete nao cadastrado no Protheus.", 1, 0)
+				Help( ,, "HELP",, "Despesa de custo de frete nï¿½o cadastrado no Protheus.", 1, 0)
 				Return .F.
 			EndIf
 		EndIf
@@ -671,7 +671,7 @@ User Function UGFEAVP(oModel,oViewImp)
 				EndIf
 
 				If Len(cNrDF) > nQtAlg
-					oModel:SetErrorMessage(,,,,,"A quantidade de caracteres no Numero do Documento de Frete ultrapassa o delimitado no cadastro da Especie.","Informe um numero com quantidade menor de caracteres.")
+					oModel:SetErrorMessage(,,,,,"A quantidade de caracteres no Nï¿½mero do Documento de Frete ultrapassa o delimitado no cadastro da Espï¿½cie.","Informe um nï¿½mero com quantidade menor de caracteres.")
 					Return .F.
 				EndIf
 
@@ -686,10 +686,10 @@ User Function UGFEAVP(oModel,oViewImp)
 
 				If  lAspaInic .Or.  lAspaFim
 					If GVT->GVT_FORMNM == "1"
-						oModel:SetErrorMessage(,,,,,"Numero do Documento de Frete com algarismos em formato diferente do parametrizado no cadastro de Especie.","Informe um numero com algarismos em formato compatï¿½vel com o parametrizado no cadastro de Especie do Documento de Frete.")
+						oModel:SetErrorMessage(,,,,,"Nï¿½mero do Documento de Frete com algarismos em formato diferente do parametrizado no cadastro de Espï¿½cie.","Informe um nï¿½mero com algarismos em formato compatï¿½vel com o parametrizado no cadastro de Espï¿½cie do Documento de Frete.")
 						Return .F.
 					ElseIf GVT->GVT_FORMNM == "2"
-						oModel:SetErrorMessage(,,,,,"Numero do Documento de Frete com algarismos ou letras em formato diferente do parametrizado no cadastro de Especie.","Informe um numero com algarismos ou letras em formato compatï¿½vel com o parametrizado no cadastro de Especie do Documento de Frete.")
+						oModel:SetErrorMessage(,,,,,"Nï¿½mero do Documento de Frete com algarismos ou letras em formato diferente do parametrizado no cadastro de Espï¿½cie.","Informe um nï¿½mero com algarismos ou letras em formato compatï¿½vel com o parametrizado no cadastro de Espï¿½cie do Documento de Frete.")
 						Return .F.
 
 					ElseIf GVT->GVT_FORMNM == "3"
@@ -704,10 +704,10 @@ User Function UGFEAVP(oModel,oViewImp)
 				EndIf
 
 				If GVT->GVT_FORMNM == "1" .And.  !GFEVldForm(AllTrim(oModelGW3:GetValue("GW3_NRDF")), "IsDigit")
-					oModel:SetErrorMessage(,,,,,"Numero do Documento de Frete com algarismos em formato diferente do parametrizado no cadastro de Especie.","Informe um numero com algarismos em formato compatï¿½vel com o parametrizado no cadastro de Especie do Documento de Frete.")
+					oModel:SetErrorMessage(,,,,,"Nï¿½mero do Documento de Frete com algarismos em formato diferente do parametrizado no cadastro de Espï¿½cie.","Informe um nï¿½mero com algarismos em formato compatï¿½vel com o parametrizado no cadastro de Espï¿½cie do Documento de Frete.")
 					Return .F.
 				ElseIf GVT->GVT_FORMNM == "2" .And.  !GFEVldForm(AllTrim(oModelGW3:GetValue("GW3_NRDF")), "LetterOrNum")
-					oModel:SetErrorMessage(,,,,,"Numero do Documento de Frete com algarismos ou letras em formato diferente do parametrizado no cadastro de Especie.","Informe um numero com algarismos ou letras em formato compatï¿½vel com o parametrizado no cadastro de Especie do Documento de Frete.")
+					oModel:SetErrorMessage(,,,,,"Nï¿½mero do Documento de Frete com algarismos ou letras em formato diferente do parametrizado no cadastro de Espï¿½cie.","Informe um nï¿½mero com algarismos ou letras em formato compatï¿½vel com o parametrizado no cadastro de Espï¿½cie do Documento de Frete.")
 					Return .F.
 				EndIf
 
@@ -733,7 +733,7 @@ User Function UGFEAVP(oModel,oViewImp)
 			GW3->( dbSetOrder(11) )
 			If GW3->( dbSeek(aFil[nI][1] + oModelGW3:GetValue("GW3_CDESP") + oModelGW3:GetValue("GW3_EMISDF") + cChaveDF) )
 
-				oModel:SetErrorMessage(,,,,,"Jï¿½ existe Documento de Frete cadastrado com a chave informada na Filial " + Iif(aFil[nI][1] == cFilAnt, "corrente", aFil[nI][1] + " - " + aFil[nI][2]),"Verifique se os dados informados estao corretos.")
+				oModel:SetErrorMessage(,,,,,"Jï¿½ existe Documento de Frete cadastrado com a chave informada na Filial " + Iif(aFil[nI][1] == cFilAnt, "corrente", aFil[nI][1] + " - " + aFil[nI][2]),"Verifique se os dados informados estï¿½o corretos.")
 
 				RestArea(aAreaGW3)
 				RestArea(aAreaGW4)
@@ -882,11 +882,11 @@ User Function UGFEAVP(oModel,oViewImp)
 					oModelGW4:GoLine(nLine)
 
 					If !lTemDC
-						oModel:SetErrorMessage(,,,,,"Nao existem Documentos de Carga relacionados ao Documento de Frete.","O Documento de Frete deve possuir Documentos de Carga relacionados.")
+						oModel:SetErrorMessage(,,,,,"Nï¿½o existem Documentos de Carga relacionados ao Documento de Frete.","O Documento de Frete deve possuir Documentos de Carga relacionados.")
 						Return .F.
 					EndIf
 				Else
-					oModel:SetErrorMessage(,,,,,"Nao existem Documentos de Carga relacionados ao Documento de Frete.","O Documento de Frete deve possuir Documentos de Carga relacionados.")
+					oModel:SetErrorMessage(,,,,,"Nï¿½o existem Documentos de Carga relacionados ao Documento de Frete.","O Documento de Frete deve possuir Documentos de Carga relacionados.")
 					Return .F.
 				EndIf
 
@@ -904,7 +904,7 @@ User Function UGFEAVP(oModel,oViewImp)
 			If FwFldGet("GW3_TPDF") <> "3"
 
 				If nBasImp > 0 .And.  nBasImp <> nVlDf .And.  !(cTrbImp $ "53") .And.  Abs(nBasImp - nVlDf) <> nPedag
-					oModel:SetErrorMessage(,,,,,"Documentos com Base de Imposto menor que o valor do documento devem ter tipo de tributaï¿½ï¿½o Reduzido","Informe uma Base de Imposto maior ou altere o tipo de tributaï¿½ï¿½o do documento.")
+					oModel:SetErrorMessage(,,,,,"Documentos com Base de Imposto menor que o valor do documento devem ter tipo de tributação Reduzido","Informe uma Base de Imposto maior ou altere o tipo de tributaï¿½ï¿½o do documento.")
 					Return .F.
 				EndIf
 			EndIf
@@ -912,7 +912,7 @@ User Function UGFEAVP(oModel,oViewImp)
 
 			If !Empty(FwFldGet("GW3_CDCONS"))
 				If Posicione("GU3", 1, xFilial("GU3") + FwFldGet("GW3_CDCONS"), "GU3_EMFIL") == "2"
-					oModel:SetErrorMessage(,,,,,"O consignatï¿½rio do frete nao ï¿½ Filial.","O consignatï¿½rio deve ser Filial")
+					oModel:SetErrorMessage(,,,,,"O consignatï¿½rio do frete nï¿½o ï¿½ Filial.","O consignatário deve ser Filial")
 					Return .F.
 				EndIf
 			EndIf
@@ -934,17 +934,17 @@ User Function UGFEAVP(oModel,oViewImp)
 
 			If FwFldGet("GW3_TRBIMP") == "2"
 				If FwFldGet("GW3_VLIMP") <> 0.OR.FwFldGet("GW3_BASIMP") <> 0
-					oModel:SetErrorMessage(,,,,,"Valor e Base de Imposto maiores que zero.","Quando a tributaï¿½ï¿½o informada for 'Isento/Nao-tributado', o Valor e a Base de Imposto devem ser iguais a zero.")
+					oModel:SetErrorMessage(,,,,,"Valor e Base de Imposto maiores que zero.","Quando a tributaï¿½ï¿½o informada for 'Isento/Nï¿½o-tributado', o Valor e a Base de Imposto devem ser iguais a zero.")
 					Return .F.
 				EndIf
 			ElseIf FwFldGet("GW3_TRBIMP") == "6"
 				If FwFldGet("GW3_BASIMP") == 0
-					oModel:SetErrorMessage(,,,,,"Base de Imposto nao informada.","Quando a tributaï¿½ï¿½o for 'Outros', a Base de Imposto deve ser informada.")
+					oModel:SetErrorMessage(,,,,,"Base de Imposto nï¿½o informada.","Quando a tributaï¿½ï¿½o for 'Outros', a Base de Imposto deve ser informada.")
 					Return .F.
 				EndIf
 			Else
 				If FwFldGet("GW3_VLIMP") == 0 .Or.  FwFldGet("GW3_BASIMP") == 0 .Or.  FwFldGet("GW3_PCIMP") == 0
-					oModel:SetErrorMessage(,,,,,"Valor, Base e Aliquota de Imposto nao informados.","Quando a tributaï¿½ï¿½o for 'Tributado', 'Substituicao Tributaria', 'Diferido' ou 'Presumido', o Valor, a Base e a Aliquota do Imposto devem ser informados.")
+					oModel:SetErrorMessage(,,,,,"Valor, Base e Alï¿½quota de Imposto nï¿½o informados.","Quando a tributaï¿½ï¿½o for 'Tributado', 'Substituiï¿½ï¿½o Tributï¿½ria', 'Diferido' ou 'Presumido', o Valor, a Base e a Alï¿½quota do Imposto devem ser informados.")
 					Return .F.
 				EndIf
 			EndIf
@@ -1073,10 +1073,10 @@ User Function UGFEAVP(oModel,oViewImp)
 				If GVT->GVT_TPIMP == "1"
 					If Empty(oModelGW3:GetValue("GW3_CTE"))
 						If lChvCte .And.  ( Posicione("GU3", 1, xFilial("GU3")+oModelGW3:GetValue("GW3_EMISDF"), "GU3_CTE")) == "1" .And.  GVT->GVT_CHVCTE == "1"
-							oModel:SetErrorMessage(,,,,,"A Chave do CT-e nao foi informada.","A Especie do Documento de Frete obriga a digitacao do campo Chave CT-e.")
+							oModel:SetErrorMessage(,,,,,"A Chave do CT-e nï¿½o foi informada.","A Espï¿½cie do Documento de Frete obriga a digitaï¿½ï¿½o do campo Chave CT-e.")
 							Return .F.
 						ElseIf Posicione("GU3", 1, xFilial("GU3")+oModelGW3:GetValue("GW3_EMISDF"), "GU3_CTE") == "1" .And.  GVT->GVT_CHVCTE == "1"
-							oModel:SetErrorMessage(,,,,,"A Chave do CT-e nao foi informada.","O Emissor do Documento de Frete esta parametrizado para emitir CT-e. O campo Chave CT-e deve ser preenchido.")
+							oModel:SetErrorMessage(,,,,,"A Chave do CT-e nï¿½o foi informada.","O Emissor do Documento de Frete estï¿½ parametrizado para emitir CT-e. O campo Chave CT-e deve ser preenchido.")
 							Return .F.
 						EndIf
 					EndIf
@@ -1084,10 +1084,10 @@ User Function UGFEAVP(oModel,oViewImp)
 					aRetVldCte := u_GFE065VCTE(cChvCte, cEmissor, cSerie, cNumero, dDataEmis)
 					If !aRetVldCte[1]
 						If !(Empty(oModelGW3:GetValue("GW3_CTE"))) .and.  (GVT->GVT_CHVCTE == "2") .And.  Posicione("GU3", 1, xFilial("GU3")+oModelGW3:GetValue("GW3_EMISDF"), "GU3_CTE") == "1"
-							oModel:SetErrorMessage(,,,,,"Chave Ct-e invï¿½lida:" + Chr(13)+Chr(10) + aRetVldCte[2],"Informe uma Chave de CT-e valida.")
+							oModel:SetErrorMessage(,,,,,"Chave Ct-e invï¿½lida:" + Chr(13)+Chr(10) + aRetVldCte[2],"Informe uma Chave de CT-e vï¿½lida.")
 							Return .F.
 						elseif ((!lChvCte) .Or.  (GVT->GVT_CHVCTE == "1")) .And.  Posicione("GU3", 1, xFilial("GU3")+oModelGW3:GetValue("GW3_EMISDF"), "GU3_CTE") == "1"
-							oModel:SetErrorMessage(,,,,,"Chave Ct-e invï¿½lida:" + Chr(13)+Chr(10) + aRetVldCte[2],"Informe uma Chave de CT-e valida.")
+							oModel:SetErrorMessage(,,,,,"Chave Ct-e invï¿½lida:" + Chr(13)+Chr(10) + aRetVldCte[2],"Informe uma Chave de CT-e vï¿½lida.")
 							Return .F.
 						EndIf
 					Else
@@ -1112,7 +1112,7 @@ User Function UGFEAVP(oModel,oViewImp)
 
 								If  GW3->GW3_CDESP        + GW3->GW3_EMISDF         + GW3->GW3_SERDF        + GW3->GW3_NRDF        + DtoS(GW3->GW3_DTEMIS) <> FwFldGet("GW3_CDESP") + FwFldGet("GW3_EMISDF")  + FwFldGet("GW3_SERDF") + FwFldGet("GW3_NRDF") + DtoS(FwFldGet("GW3_DTEMIS"))
 									If GW3->GW3_TPDF == FwFldGet("GW3_TPDF")
-										oModel:SetErrorMessage(,,,,,"Tentativa de vincular o mesmo Documento de Carga em mais de um Documento de Frete do mesmo tipo.","Por favor, verifique as informacoes:"+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Documento de carga "+alltrim(GW4->GW4_NRDC)+" cd. Emissor "+alltrim(GW4->GW4_EMISDC)+" vinculado ao documento de frete "+alltrim(GW3->GW3_NRDF)+".")
+										oModel:SetErrorMessage(,,,,,"Tentativa de vincular o mesmo Documento de Carga em mais de um Documento de Frete do mesmo tipo.","Por favor, verifique as informaï¿½ï¿½es:"+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Documento de carga "+alltrim(GW4->GW4_NRDC)+" cd. Emissor "+alltrim(GW4->GW4_EMISDC)+" vinculado ao documento de frete "+alltrim(GW3->GW3_NRDF)+".")
 										Return .F.
 									EndIf
 								EndIf
@@ -1183,7 +1183,7 @@ User Function UGFEAVP(oModel,oViewImp)
 			cParamRat := SuperGetMV("MV_CRIRAT", .F. ,"5")
 
 			If cParamRat == "5"
-				GFEMsgErro(If( cPaisLoc $ "ANG|PTG", "Parametro MV_CRIRAT (Critï¿½rio de Rateio) nao esta registado", "Parametro MV_CRIRAT (Critï¿½rio de Rateio) nao esta cadastrado" ))
+				GFEMsgErro(If( cPaisLoc $ "ANG|PTG", "Parâmetro MV_CRIRAT (Critério de Rateio) não está registado", "Parâmetro MV_CRIRAT (Critério de Rateio) não está cadastrado" ))
 			EndIf
 
 			If cParamRat $ "1;4"
@@ -1269,7 +1269,7 @@ User Function UGFEAVP(oModel,oViewImp)
 								GV5->(DbSetOrder(1))
 								If GU3->(DbSeek(xFilial("GU3")+oModelGW3:getValue("GW3_EMISDF"))) .And.  GV5->(DbSeek(xFilial("GV5")+GW1->GW1_CDTPDC))
 									If GWU->GWU_CDTRP == oModelGW3:getValue("GW3_EMISDF") .And.  Empty(GWU->GWU_DTENT) .And.  GU3->GU3_ENTOBR == "1" .And.  GV5->GV5_SENTID $ "23"
-										oModel:SetErrorMessage(,,,,,"Tentativa de vincular um Documento de Carga sem entrega para esse Emissor.","ï¿½ necessario realizar a entrega do Documento de Carga: "+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Serie: " +alltrim(GW1->GW1_SERDC) + " Documento de carga: "+alltrim(GW1->GW1_NRDC)+".")
+										oModel:SetErrorMessage(,,,,,"Tentativa de vincular um Documento de Carga sem entrega para esse Emissor.","ï¿½ necessï¿½rio realizar a entrega do Documento de Carga: "+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Sï¿½rie: " +alltrim(GW1->GW1_SERDC) + " Documento de carga: "+alltrim(GW1->GW1_NRDC)+".")
 										Return .F.
 									EndIf
 									lTrechoEmi := .T.
@@ -1282,7 +1282,7 @@ User Function UGFEAVP(oModel,oViewImp)
 						EndIf
 
 						If !lTrechoEmi
-							oModel:SetErrorMessage(,,,,,"Tentativa de inclusao de Documentos de Carga sem trecho atendido pelo Emissor.","Verifique se existem cï¿½lculos vinculados ao Documento de Carga.")
+							oModel:SetErrorMessage(,,,,,"Tentativa de inclusï¿½o de Documentos de Carga sem trecho atendido pelo Emissor.","Verifique se existem cï¿½lculos vinculados ao Documento de Carga.")
 							Return .F.
 						EndIf
 						If lTrechoEmi
@@ -1809,37 +1809,37 @@ User Function UGFE5VL(oModel)
 
 
 		If GW3->GW3_SITFIS == "2" .And.  !lCteSubs
-			Help( ,, "HELP",, "O Documento de Frete esta pendente no Fiscal, portanto, nao podera ser excluido nem alterado.", 1, 0)
+			Help( ,, "HELP",, "O Documento de Frete estï¿½ pendente no Fiscal, portanto, nï¿½o poderï¿½ ser excluï¿½do nem alterado.", 1, 0)
 			Return .F.
 		EndIf
 
 
 		If GW3->GW3_SITFIS == "4" .AND.  !lGfeAtu .And.  !lCteSubs
-			Help( ,, "HELP",, "O Documento de Frete esta atualizado no Fiscal. Primeiramente o Documento de Frete deve ser desatualizado para entao poder ser excluido ou alterado.", 1, 0)
+			Help( ,, "HELP",, "O Documento de Frete estï¿½ atualizado no Fiscal. Primeiramente o Documento de Frete deve ser desatualizado para entï¿½o poder ser excluï¿½do ou alterado.", 1, 0)
 			Return .F.
 		EndIf
 
 
 		If GW3->GW3_SITFIS == "5"
-			Help( ,, "HELP",, "O Documento de Frete esta Pendente de Desatualizaï¿½ï¿½o no Fiscal, ï¿½ necessario aguardar retorno.", 1, 0)
+			Help( ,, "HELP",, "O Documento de Frete estï¿½ Pendente de Desatualizaï¿½ï¿½o no Fiscal, ï¿½ necessï¿½rio aguardar retorno.", 1, 0)
 			Return .F.
 		EndIf
 
 
 		If GW3->GW3_SITREC == "2"
-			Help( ,, "HELP",, "O Documento de Frete esta pendente no Recebimento, portanto, nao podera ser excluido nem alterado.", 1, 0)
+			Help( ,, "HELP",, "O Documento de Frete estï¿½ pendente no Recebimento, portanto, nï¿½o poderï¿½ ser excluï¿½do nem alterado.", 1, 0)
 			Return .F.
 		EndIf
 		
 
 		If GW3->GW3_SITREC == "4"
-			Help( ,, "HELP",, "O Documento de Frete esta atualizado no Recebimento. Primeiramente o Documento de Frete deve ser desatualizado para entao poder ser excluido ou alterado.", 1, 0)
+			Help( ,, "HELP",, "O Documento de Frete estï¿½ atualizado no Recebimento. Primeiramente o Documento de Frete deve ser desatualizado para entï¿½o poder ser excluï¿½do ou alterado.", 1, 0)
 			Return .F.
 		EndIf
 
 
 		If GW3->GW3_SITREC == "5"
-			Help( ,, "HELP",, "O Documentos de Frete esta Pendente de Desatualizaï¿½ï¿½o no Recebimento, ï¿½ necessario aguardar retorno.", 1, 0)
+			Help( ,, "HELP",, "O Documentos de Frete estï¿½ Pendente de Desatualizaï¿½ï¿½o no Recebimento, ï¿½ necessï¿½rio aguardar retorno.", 1, 0)
 			Return .F.
 		EndIf
 
@@ -1849,7 +1849,7 @@ User Function UGFE5VL(oModel)
 			If GW6->( dbSeek(GW3->GW3_FILFAT + GW3->GW3_EMIFAT + GW3->GW3_SERFAT + GW3->GW3_NRFAT + DToS(GW3->GW3_DTEMFA)) )
 				If GW6->GW6_SITAPR $ "3;4"
 
-					Help( ,, "HELP",, "O Documento de Frete nao pode ser alterado, pois esta vinculado a uma Fatura aprovada." + "ï¿½ necessario que o Documento de Frete seja desvinculado da Fatura para que possa ser efetuada a alteracao.", 1, 0)
+					Help( ,, "HELP",, "O Documento de Frete nï¿½o pode ser alterado, pois estï¿½ vinculado a uma Fatura aprovada." + "ï¿½ necessï¿½rio que o Documento de Frete seja desvinculado da Fatura para que possa ser efetuada a alteraï¿½ï¿½o.", 1, 0)
 					Return .F.
 				EndIf
 			EndIf
@@ -1859,22 +1859,22 @@ User Function UGFE5VL(oModel)
 	If nOpc == 5
 
 		If !Empty(GW3->GW3_NRFAT)
-			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Nao ï¿½ possivel excluir quando o documento de frete estiver vinculado em uma factura", "Nao ï¿½ possivel excluir quando o documento de frete estiver vinculado em uma fatura" ), 1, 0)
+			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Não é possível excluir quando o documento de frete estiver vinculado em uma factura", "Não é possível excluir quando o documento de frete estiver vinculado em uma fatura" ), 1, 0)
 			Return .F.
 		EndIf
 
 		If GW3->GW3_SITREC == "2" .OR.  GW3->GW3_SITREC == "4" .OR.  GW3->GW3_SITREC == "5"
-			Help( ,, "HELP",, "Nao ï¿½ possivel excluir quando a situacao do Recebimento estiver 'Pendente' ou 'Atualizado' ", 1, 0)
+			Help( ,, "HELP",, "Nï¿½o ï¿½ possï¿½vel excluir quando a situaï¿½ï¿½o do Recebimento estiver 'Pendente' ou 'Atualizado' ", 1, 0)
 			Return .F.
 		ElseIf ( GW3->GW3_SITFIS == "2" .OR.  GW3->GW3_SITFIS == "4" .OR.  GW3->GW3_SITFIS == "5" ) .And.  !lCteSubs
-			Help( ,, "HELP",, "Nao ï¿½ possivel excluir quando a situacao do Fiscal estiver 'Pendente' ou 'Atualizado'", 1, 0)
+			Help( ,, "HELP",, "Nï¿½o ï¿½ possï¿½vel excluir quando a situaï¿½ï¿½o do Fiscal estiver 'Pendente' ou 'Atualizado'", 1, 0)
 			Return .F.
 		EndIf
 
 		If GfeVerCmpo({"GW3_SITMLA"})
 
 			If lAprovMLA .And.  !(GW3->GW3_SITMLA $ "1|6" .Or.  Empty(GW3->GW3_SITMLA))
-				Help(,,"HELP",,"Documento de Frete esta integrado ao MLA ou pendente de Integracao, realize a desatualizaï¿½ï¿½o para esta operacao.",1,0)
+				Help(,,"HELP",,"Documento de Frete estï¿½ integrado ao MLA ou pendente de integraï¿½ï¿½o, realize a desatualizaï¿½ï¿½o para esta operaï¿½ï¿½o.",1,0)
 				Return .F.
 			EndIf
 		EndIf
@@ -1906,7 +1906,7 @@ Static Function GW4_VAL1(cTipo, nLine)
 
 				If  GW3->GW3_CDESP        + GW3->GW3_EMISDF         + GW3->GW3_SERDF        + GW3->GW3_NRDF        + DtoS(GW3->GW3_DTEMIS) <> FwFldGet("GW3_CDESP") + FwFldGet("GW3_EMISDF")  + FwFldGet("GW3_SERDF") + FwFldGet("GW3_NRDF") + DtoS(FwFldGet("GW3_DTEMIS"))
 					If GW3->GW3_TPDF == FwFldGet("GW3_TPDF")
-						Help( ,, "HELP",, "Nao ï¿½ possivel vincular o mesmo Documento de Carga em mais de um Documento de Frete do mesmo tipo."+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Documento de carga "+alltrim(GW4->GW4_NRDC)+" cd. Emissor "+alltrim(GW4->GW4_EMISDC)+" vinculado ao documento de frete "+alltrim(GW3->GW3_NRDF)+".", 1, 0)
+						Help( ,, "HELP",, "Nï¿½o ï¿½ possï¿½vel vincular o mesmo Documento de Carga em mais de um Documento de Frete do mesmo tipo."+Chr(13)+Chr(10)+Chr(13)+Chr(10)+"- Documento de carga "+alltrim(GW4->GW4_NRDC)+" cd. Emissor "+alltrim(GW4->GW4_EMISDC)+" vinculado ao documento de frete "+alltrim(GW3->GW3_NRDF)+".", 1, 0)
 						lRet := .F.
 					EndIf
 				EndIf
@@ -1929,7 +1929,7 @@ User Function G065GW4VPR(oModel)
 
 
 	If !Empty(FwFldGet("GW3_EMIFAT")) .Or.  !Empty(FwFldGet("GW3_SERFAT")) .Or.  !Empty(FwFldGet("GW3_NRFAT")) .Or.  !Empty(FwFldGet("GW3_DTEMFA")) .Or.  !Empty(FwFldGet("GW3_FILFAT"))
-		Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Nao ï¿½ possivel vincular/desvincular Documentos de Carga quando o documento de Factura estiver vinculado em uma factura", "Nao ï¿½ possivel vincular/desvincular Documentos de Carga, quando o documento de Fatura estiver vinculado em uma fatura" ), 1, 0)
+		Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Não é possível vincular/desvincular Documentos de Carga quando o documento de Factura estiver vinculado em uma factura", "Não é possível vincular/desvincular Documentos de Carga, quando o documento de Fatura estiver vinculado em uma fatura" ), 1, 0)
 		lRet := .F.
 	EndIf
 	RestArea( aArea )
@@ -1956,7 +1956,7 @@ User Function G065GW4VP(oModel)
 		dbSelectArea("GW1")
 		dbSetOrder(1)
 		If !dbSeek(If(Empty(FwFldGet("GW4_FILIAL")),xFilial("GW4"),FwFldGet("GW4_FILIAL"))+FwFldGet("GW4_TPDC")+FwFldGet("GW4_EMISDC")+FwFldGet("GW4_SERDC")+FwFldGet("GW4_NRDC"))
-			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "O documento de carga nao existe", "Documento de Carga nao existe" ), 1, 0)
+			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "O documento de carga não existe", "Documento de Carga não existe" ), 1, 0)
 			lRet := .F.
 		Else
 			dbSelectArea("GWN")
@@ -1981,7 +1981,7 @@ User Function G065GW4VP(oModel)
 		dbSetOrder(1)
 		dbSeek(If(Empty(FwFldGet("GW4_FILIAL")),xFilial("GW4"),FwFldGet("GW4_FILIAL"))+FwFldGet("GW4_TPDC")+FwFldGet("GW4_EMISDC")+FwFldGet("GW4_SERDC")+FwFldGet("GW4_NRDC"))
 		If GW1_SIT == "7"
-			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Nao ï¿½ possivel vincular um Documento de Carga cancelado", "Nao ï¿½ possivel vincular um Documento de Carga Cancelado" ), 1, 0)
+			Help( ,, "HELP",, If( cPaisLoc $ "ANG|PTG", "Não é possível vincular um Documento de Carga cancelado", "Não é possível vincular um Documento de Carga Cancelado" ), 1, 0)
 			lRet := .F.
 		EndIf
 	EndIf
@@ -2005,7 +2005,7 @@ User Function G065GW4VP(oModel)
 				If GU3->(DbSeek(xFilial("GU3")+FwFldGet("GW3_EMISDF"))) .And.  GV5->(DbSeek(xFilial("GV5")+GW1->GW1_CDTPDC))
 					If GWU->GWU_CDTRP == FwFldGet("GW3_EMISDF") .And.  Empty(GWU->GWU_DTENT) .And.  GU3->GU3_ENTOBR == "1" .And.  GV5->GV5_SENTID $ "23"
 						If !IsBlind()
-							Help( ,, "HELP",, "Nao ï¿½ possivel vincular um Documento de Carga sem entrega para esse Emissor", 1, 0)
+							Help( ,, "HELP",, "Nï¿½o ï¿½ possï¿½vel vincular um Documento de Carga sem entrega para esse Emissor", 1, 0)
 							lRet := .F.
 						EndIf
 					EndIf
@@ -2019,7 +2019,7 @@ User Function G065GW4VP(oModel)
 		EndIf
 
 		If !lTrechoEmi
-			Help( ,, "HELP",, "Sï¿½ permite incluir Documentos de Cargas, se algum trecho for o Emissor. Verificar se existe calculo vinculado ao Documento de Carga", 1, 0)
+			Help( ,, "HELP",, "Sï¿½ permite incluir Documentos de Cargas, se algum trecho for o Emissor. Verificar se existe cï¿½lculo vinculado ao Documento de Carga", 1, 0)
 			lRet := .F.
 		EndIf
 	EndIf
@@ -2079,7 +2079,7 @@ User Function G065GW4VP(oModel)
 
 
 
-			If Iif(FindFunction("APMsgYesNo"), APMsgYesNo("Deseja utilizar remetente e destinatï¿½rio deste documento de carga para o documento de frete?"+Chr(13)+Chr(10)+"Remetente:"+AllTrim(cRem)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cRem,"GU3_NMEMIT"))+Chr(13)+Chr(10)+"Destinatario:"+AllTrim(cDest)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cDest,"GU3_NMEMIT"))+Chr(13)+Chr(10), "Ajuda"), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("Deseja utilizar remetente e destinatï¿½rio deste documento de carga para o documento de frete?"+Chr(13)+Chr(10)+"Remetente:"+AllTrim(cRem)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cRem,"GU3_NMEMIT"))+Chr(13)+Chr(10)+"Destinatario:"+AllTrim(cDest)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cDest,"GU3_NMEMIT"))+Chr(13)+Chr(10), "Ajuda")))
+			If Iif(FindFunction("APMsgYesNo"), APMsgYesNo("Deseja utilizar remetente e destinatï¿½rio deste documento de carga para o documento de frete?"+Chr(13)+Chr(10)+"Remetente:"+AllTrim(cRem)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cRem,"GU3_NMEMIT"))+Chr(13)+Chr(10)+"Destinatï¿½rio:"+AllTrim(cDest)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cDest,"GU3_NMEMIT"))+Chr(13)+Chr(10), "Ajuda"), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("Deseja utilizar remetente e destinatï¿½rio deste documento de carga para o documento de frete?"+Chr(13)+Chr(10)+"Remetente:"+AllTrim(cRem)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cRem,"GU3_NMEMIT"))+Chr(13)+Chr(10)+"Destinatï¿½rio:"+AllTrim(cDest)+"-"+AllTrim(Posicione("GU3",1,xFilial("GU3")+cDest,"GU3_NMEMIT"))+Chr(13)+Chr(10), "Ajuda")))
 
 				FwFldPut("GW3_CDREM", cRem)
 				FwFldPut("GW3_CDDEST", cDest)
@@ -2198,13 +2198,13 @@ User Function UGFE5CO(oModel)
 								If GU3->GU3_ACOCO == "1" .and.  GWD->GWD_CDTRP == FwFldGet("GW3_EMISDF")
 									If GU5->GU5_ACAODF == "3"
 										lRet := .F.
-										cMotBloq := "Hï¿½ Registro de Ocorrencia para o(s) Documento(s) de Carga do Documento de Frete com acao de bloqueio."
+										cMotBloq := "Hï¿½ Registro de Ocorrï¿½ncia para o(s) Documento(s) de Carga do Documento de Frete com aï¿½ï¿½o de bloqueio."
 										lMsgOco := .T.
 										GFEA115Msg(lMsgOco)
 										Exit
 									ElseIf GU5->GU5_ACAODF == "2"
 										If !IsInCallStack("GFEA115") .And.  !IsInCallStack("GFEA118")
-											Alert("Atencao: Documento de Carga " + AllTrim(GW1->GW1_NRDC) + " possui ocorrencia!")
+											Alert("Atenï¿½ï¿½o: Documento de Carga " + AllTrim(GW1->GW1_NRDC) + " possui ocorrï¿½ncia!")
 											Exit
 										Else
 											lMsgOco := .T.
@@ -2214,7 +2214,7 @@ User Function UGFE5CO(oModel)
 									EndIf
 								ElseIf GU3->GU3_ACOCO == "3"
 									If GU5->GU5_ACAODF == "2" .Or.  GU5->GU5_ACAODF == "3"
-										Alert("Atencao: Documento de Carga " + AllTrim(GW1->GW1_NRDC) + " possui ocorrencia!")
+										Alert("Atenï¿½ï¿½o: Documento de Carga " + AllTrim(GW1->GW1_NRDC) + " possui ocorrï¿½ncia!")
 										Exit
 									EndIf
 								EndIf
@@ -2388,7 +2388,7 @@ User Function UGFE5CO(oModel)
 
 			If AScan(aDocRel, {|x| x == GWH->GWH_CDTPDC+GWH->GWH_EMISDC+GWH->GWH_SERDC+GWH->GWH_NRDC}) == 0
 				lRet := .F.
-				cMotBloq += " Nem todos os Documentos de Carga do Calculo " + GWH->GWH_NRCALC + " foram relacionados ao Documento de Frete."
+				cMotBloq += " Nem todos os Documentos de Carga do Cï¿½lculo " + GWH->GWH_NRCALC + " foram relacionados ao Documento de Frete."
 				Exit
 			EndIf
 
@@ -2408,63 +2408,63 @@ User Function UGFE5CO(oModel)
 
 		If FwFldGet("GW3_QTVOL") <> iQT_VOL
 			lRet := .F.
-			cMotBloq := cMotBloq + If( cPaisLoc $ "ANG|PTG", "Hï¿½ diferenca na Quantidade de Volume", "Hï¿½ diferenca no Quantidade de Volume" )
+			cMotBloq := cMotBloq + If( cPaisLoc $ "ANG|PTG", "Há diferença na Quantidade de Volume", "Há diferença no Quantidade de Volume" )
 		EndIf
 
 
 		If FwFldGet("GW3_PESOR") <> iPESO_REAL
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Peso Real"
+			cMotBloq := cMotBloq + " Há diferença no Peso Real"
 		EndIf
 
 
 		If FwFldGet("GW3_PESOC") <> iPESO_CUBA
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Peso Cubado"
+			cMotBloq := cMotBloq + " Há diferença no Peso Cubado"
 		EndIf
 
 
 		If FwFldGet("GW3_VOLUM") <> iVOLUME
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Volume"
+			cMotBloq := cMotBloq + " Há diferença no Volume"
 		EndIf
 
 
 		If FwFldGet("GW3_VLCARG") <> iVALOR
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Valor dos Itens"
+			cMotBloq := cMotBloq + " Há diferença no Valor dos Itens"
 		EndIf
 	EndIf
 
 
 	If Empty(FwFldGet("GW3_CFOP")) .and.  lIntGFE == .T.  .And.  cIntGFE2 $ "1S"
 		lRet := .F.
-		cMotBloq := cMotBloq + "Campo CFOP deve ser preenchido quando sistema parametrizado para realizar Integracao."
+		cMotBloq := cMotBloq + "Campo CFOP deve ser preenchido quando sistema parametrizado para realizar integraï¿½ï¿½o."
 	EndIf
 
 	If SuperGetMV("MV_DCABE", .F. ,"N") $ "1S"
 
 		If AbaixoTol(FwFldGet("GW3_FRPESO"), iFRET_UNID)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Frete Unidade"
+			cMotBloq := cMotBloq + " Há diferença no Frete Unidade"
 		EndIf
 
 
 		If AbaixoTol(FwFldGet("GW3_FRVAL"), iFRET_VAL)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Frete Valor"
+			cMotBloq := cMotBloq + " Há diferença no Frete Valor"
 		EndIf
 
 
 		If AbaixoTol(FwFldGet("GW3_TAXAS"), iTAXAS)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca nas Taxas"
+			cMotBloq := cMotBloq + " Hï¿½ diferenï¿½a nas Taxas"
 		EndIf
 
 
 		If AbaixoTol(FwFldGet("GW3_PEDAG"), iVAL_PEDA)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Valor do Pedï¿½gio"
+			cMotBloq := cMotBloq + " Há diferença no Valor do Pedágio"
 		EndIf
 	EndIf
 
@@ -2473,19 +2473,19 @@ User Function UGFE5CO(oModel)
 
 		If AbaixoTol(FwFldGet("GW3_VLDF"), iVAL_FRETE)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Valor Total do Frete"
+			cMotBloq := cMotBloq + " Há diferença no Valor Total do Frete"
 		EndIf
 
 
 		If FwFldGet("GW3_PCIMP") <> iALIQUOTA
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca na Aliquota"
+			cMotBloq := cMotBloq + " Hï¿½ diferenï¿½a na Alï¿½quota"
 		EndIf
 
 
 		If AbaixoTol(Round(FwFldGet("GW3_VLIMP"), 2), iVAL_IMPO)
 			lRet := .F.
-			cMotBloq := cMotBloq + " Hï¿½ diferenca no Valor do Imposto"
+			cMotBloq := cMotBloq + " Há diferença no Valor do Imposto"
 		EndIf
 	EndIf
 
@@ -2685,10 +2685,10 @@ User Function GFEA65CAL(oModelGW4)
 			EndIf
 
 			If !lVldCalc .and.  !(IsInCallStack("GFEA115") .or.  IsInCallStack("GFEA118"))
-				Help( ,, "HELP",, "ï¿½ necessario que haja um Calculo de Frete para o Documento de Carga que possua o mesmo Tipo do Documento de Frete e Transportador do Calculo igual ao Emissor do Documento de Frete.", 1, 0)
+				Help( ,, "HELP",, "ï¿½ necessï¿½rio que haja um Cï¿½lculo de Frete para o Documento de Carga que possua o mesmo Tipo do Documento de Frete e Transportador do Cï¿½lculo igual ao Emissor do Documento de Frete.", 1, 0)
 				lRet := .F.
 			ElseIf !lVldCalc .and.  (IsInCallStack("GFEA115") .or.  IsInCallStack("GFEA118"))
-				Help( ,, "HELP",, "ï¿½ necessario que haja um Calculo de Frete para o Documento de Carga (Emissor: "+ GW1->GW1_EMISDC + "Tipo: "+ GW1->GW1_CDTPDC +  "Serie; "+ GW1->GW1_SERDC +" e Numero: " + GW1->GW1_NRDC +") que possua o mesmo Tipo do Documento de Frete e Transportador do Calculo igual ao Emissor do Documento de Frete." , 1, 0)
+				Help( ,, "HELP",, "ï¿½ necessï¿½rio que haja um Cï¿½lculo de Frete para o Documento de Carga (Emissor: "+ GW1->GW1_EMISDC + "Tipo: "+ GW1->GW1_CDTPDC +  "Serie; "+ GW1->GW1_SERDC +" e Nï¿½mero: " + GW1->GW1_NRDC +") que possua o mesmo Tipo do Documento de Frete e Transportador do Cï¿½lculo igual ao Emissor do Documento de Frete." , 1, 0)
 				lRet := .F.
 				Return .F.
 			EndIf
@@ -2756,13 +2756,13 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 	If !lAutom
 
 		If dData <= dDtUlFe .and.  cERPGFE == "2"
-			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacï¿½ï¿½o deve ser posterior a data do ultimo fechamento: ", "Data de transacao deve ser posterior a data do ultimo fechamento: " ) + DToC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacção deve ser posterior a data do último fechamento: ", "Data de transação deve ser posterior a data do último fechamento: " ) + DToC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 			Return .F.
 		EndIf
 
 
 		If GW3->GW3_SITFIS <> "1" .AND. GW3->GW3_SITFIS <> "3"
-			Help( ,, "Help",, "Somente Documentos de Frete Nao-Enviado ou Rejeitado podem ser integrados", 1, 0 )
+			Help( ,, "Help",, "Somente Documentos de Frete Não-Enviado ou Rejeitado podem ser integrados", 1, 0 )
 			Return .F.
 		EndIf
 
@@ -2796,7 +2796,7 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 			EndIf
 
 			If	nVlMov <> GW3->GW3_VLDF
-				Help( ,, "Help",, "No modo de Integracao fiscal pelo Recebimento, o valor do documento: "+ cValToChar(GW3->GW3_VLDF) +" deve ser igual ao total dos rateios contabeis: "+ cValToChar(nVlMov) +" ", 1, 0 )
+				Help( ,, "Help",, "No modo de integraï¿½ï¿½o fiscal pelo Recebimento, o valor do documento: "+ cValToChar(GW3->GW3_VLDF) +" deve ser igual ao total dos rateios contï¿½beis: "+ cValToChar(nVlMov) +" ", 1, 0 )
 				Return .F.
 			EndIf
 		EndIf
@@ -2815,7 +2815,7 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 			EndIf
 
 			If dData <= dDtUlFe .AND.  !lAutom
-				Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacï¿½ï¿½o deve ser posterior a data do ultimo fechamento: ", "Data de transacao deve ser posterior a data do ultimo fechamento: " ) + DTOC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+				Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacção deve ser posterior a data do último fechamento: ", "Data de transação deve ser posterior a data do último fechamento: " ) + DTOC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 				Return .F.
 			EndIf
 		EndIf
@@ -2828,18 +2828,18 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 			dbSetOrder(1)
 			If dbSeek(xFilial("GW6") + GW3->GW3_EMIFAT + GW3->GW3_SERFAT + GW3->GW3_NRFAT + DToS(GW3->GW3_DTEMFA))
 				If GW6->GW6_SITFIN <> "4"
-					Help( ,, "Help",, "A Fatura de Frete nao foi atualizada no financeiro.", 1, 0 )
+					Help( ,, "Help",, "A Fatura de Frete nï¿½o foi atualizada no financeiro.", 1, 0 )
 					Return .F.
 				EndIf
 
 				If GW6->GW6_DTFIN <= dDtUlFe .AND.  !lAutom
-					Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de envio da Factura de Frete deve ser posterior a data do ultimo fechamento: ", "Data de envio da Fatura de Frete deve ser posterior a data do ultimo fechamento: " ) + DTOC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+					Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de envio da Factura de Frete deve ser posterior a data do último fechamento: ", "Data de envio da Fatura de Frete deve ser posterior a data do último fechamento: " ) + DTOC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 					Return .F.
 				EndIf
 			Else
 
 				If GW3->GW3_TPDF <> "3"
-					Help( ,, "Help",, "Integracao com o fiscal nao executada, pois nao hï¿½ Fatura de Frete relacionado a este Documento de Frete para definir a data de transacao. Verificar o parametro 'Data de Transaï¿½ï¿½o do Documento Fiscal' na aba 'Integraï¿½ï¿½es Datasul'.", 1, 0 )
+					Help( ,, "Help",, "Integraï¿½ï¿½o com o fiscal nï¿½o executada, pois nï¿½o hï¿½ Fatura de Frete relacionado a este Documento de Frete para definir a data de transaï¿½ï¿½o. Verificar o parï¿½metro 'Data de Transaï¿½ï¿½o do Documento Fiscal' na aba 'Integraï¿½ï¿½es Datasul'.", 1, 0 )
 					Return .F.
 				EndIf
 			EndIf
@@ -2860,12 +2860,12 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 
 		If cDTInt == "1"
 			If Empty(GW3->GW3_DTENT)
-				Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "A Factura de Frete nao foi enviada", "A Fatura de Frete nao foi enviada" ), 1, 0 )
+				Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "A Factura de Frete não foi enviada", "A Fatura de Frete não foi enviada" ), 1, 0 )
 				Return .F.
 			EndIf
 
 			If GW3->GW3_DTENT <= dDtUlFe .AND.  !lAutom
-				Help( ,, "Help",, "Data de envio do Documento de Frete deve ser posterior a data do ultimo fechamento: " + DTOC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+				Help( ,, "Help",, "Data de envio do Documento de Frete deve ser posterior a data do ï¿½ltimo fechamento: " + DTOC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 				Return .F.
 			EndIf
 			dData := GW3->GW3_DTENT
@@ -2889,7 +2889,7 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 			If cSiGFE == "1" .And.  nOpc == "1"
 				lRet := u_GFE65IPR( .T. , "", nOpc )
 				If !lRet
-					Iif(FindFunction("APMsgAlert"), APMsgAlert("Operacao Cancelada pelo Usuario - Produto nao informado",), MsgAlert("Operacao Cancelada pelo Usuario - Produto nao informado",))
+					Iif(FindFunction("APMsgAlert"), APMsgAlert("Operaï¿½ï¿½o Cancelada pelo Usuï¿½rio - Produto nï¿½o informado",), MsgAlert("Operaï¿½ï¿½o Cancelada pelo Usuï¿½rio - Produto nï¿½o informado",))
 					Return .F.
 				EndIf
 			EndIf
@@ -2906,9 +2906,9 @@ Static Function xGFE65XF(lAutom, nOpc, lExec)
 	If !(lIntGFE == .T.  .And.  cIntGFE2 $ "1S")
 		If !lAutom
 			If aRet[1]
-				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete enviado para atualizacao no Fiscal.",), MsgInfo("Documento de Frete enviado para atualizacao no Fiscal.",))
+				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete enviado para atualizaï¿½ï¿½o no Fiscal.",), MsgInfo("Documento de Frete enviado para atualizaï¿½ï¿½o no Fiscal.",))
 			Else
-				Alert("Documento de Frete nao foi enviada para atualizacao no Fiscal por causa do seguinte erro: " + aRet[1][6])
+				Alert("Documento de Frete nï¿½o foi enviada para atualizaï¿½ï¿½o no Fiscal por causa do seguinte erro: " + aRet[1][6])
 			EndIf
 		EndIf
 	EndIf
@@ -2988,7 +2988,7 @@ Static Function GFEA065In(lAutom, nOpc, lExec,cFunc)
 	If Alltrim(cFunc) == "GFE65XD"
 		SetFunName("GFEA065")
 		lRet	:= .T.
-		xGFE65XD() //xGFE65XD(lAutom, nOpc, lExec) // THIAGO QUEIROZ - 20191004 - REMOVIDO PARAMETROS DA FUNCAO, NAO CONDIZEM COM A FUNCAO REAL
+		xGFE65XD() //xGFE65XD(lAutom, nOpc, lExec) // THIAGO QUEIROZ - 20191004 - REMOVIDO PARAMETROS DA FUNÇÃO, NÃO CONDIZEM COM A FUNÇÃO REAL
 	EndIf
 
 return lRet
@@ -3027,7 +3027,7 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 
 	If dDataint <= dDtUlFe .and.  cERPGFE == "2"
 		If !lAutom
-			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacï¿½ï¿½o deve ser posterior a data do ultimo fechamento: ", "Data de transacao deve ser posterior a data do ultimo fechamento: " ) + DToC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacção deve ser posterior a data do último fechamento: ", "Data de transação deve ser posterior a data do último fechamento: " ) + DToC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 		EndIf
 		Return .F.
 	EndIf
@@ -3035,7 +3035,7 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 
 	If GW3->GW3_SITREC <> "1" .AND. GW3->GW3_SITREC <> "3"
 		If !lAutom
-			Help( ,, "Help",, "Somente Documentos de Frete Nao-Enviado ou Rejeitado podem ser integrados", 1, 0 )
+			Help( ,, "Help",, "Somente Documentos de Frete Não-Enviado ou Rejeitado podem ser integrados", 1, 0 )
 		EndIf
 		Return .F.
 	EndIf
@@ -3067,11 +3067,11 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 				cSitFinFat := GW6->GW6_SITFIN
 				dData := GW6->GW6_DTFIN
 				If cSitFinFat <> "4"
-					Help( ,, "Help",, "A Fatura de Frete nao foi atualizada no financeiro.", 1, 0 )
+					Help( ,, "Help",, "A Fatura de Frete nï¿½o foi atualizada no financeiro.", 1, 0 )
 					Return .F.
 				EndIf
 			else
-				Help( ,, "Help",, "O parametro Data Integracao Recebimento esta configurado para assumir a data do Financeiro, porem nao existe Fatura de Frete atualizada com o Financeiro para este Documento de Frete.", 1, 0 )
+				Help( ,, "Help",, "O parï¿½metro Data Integraï¿½ï¿½o Recebimento esta configurado para assumir a data do Financeiro, porï¿½m nï¿½o existe Fatura de Frete atualizada com o Financeiro para este Documento de Frete.", 1, 0 )
 			EndIf
 		EndIf
 
@@ -3080,7 +3080,7 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 		EndIf
 
 		If dData <= dDtUlFe
-			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacï¿½ï¿½o deve ser posterior a data do ultimo fechamento: ", "Data de transacao deve ser posterior a data do ultimo fechamento: " ) + DTOC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+			Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacção deve ser posterior a data do último fechamento: ", "Data de transação deve ser posterior a data do último fechamento: " ) + DTOC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 			Return .F.
 		EndIf
 	EndIf
@@ -3092,7 +3092,7 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 			If cSiGFE == "1"
 				lRet := u_GFE65IPR( .T. , "", nOpc )
 				If !lRet
-					Iif(FindFunction("APMsgAlert"), APMsgAlert("Operacao Cancelada pelo Usuario - Produto nao informado",), MsgAlert("Operacao Cancelada pelo Usuario - Produto nao informado",))
+					Iif(FindFunction("APMsgAlert"), APMsgAlert("Operaï¿½ï¿½o Cancelada pelo Usuï¿½rio - Produto nï¿½o informado",), MsgAlert("Operaï¿½ï¿½o Cancelada pelo Usuï¿½rio - Produto nï¿½o informado",))
 					Return .F.
 				EndIf
 			EndIf
@@ -3107,9 +3107,9 @@ Static Function xGFE65XC(lAutom, nOpc, lExec)
 		If !lAutom
 			If aRet[1]
 				lRet := .T.
-				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete enviado para atualizacao no Recebimento.",), MsgInfo("Documento de Frete enviado para atualizacao no Recebimento.",))
+				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete enviado para atualizaï¿½ï¿½o no Recebimento.",), MsgInfo("Documento de Frete enviado para atualizaï¿½ï¿½o no Recebimento.",))
 			Else
-				Alert("Documento de Frete nao foi enviado para atualizacao no Recebimento. Motivo: " + aRet[1][6])
+				Alert("Documento de Frete nï¿½o foi enviado para atualizaï¿½ï¿½o no Recebimento. Motivo: " + aRet[1][6])
 			EndIf
 		EndIf
 	EndIf
@@ -3140,7 +3140,7 @@ Static Function xGFE65XD(cOp)
 	EndIf
 
 	If !Empty(GW3->GW3_DTFIS) .And.  GW3->GW3_DTFIS <= dDtUlFe
-		Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacï¿½ï¿½o deve ser posterior a data do ultimo fechamento: ", "Data de transacao deve ser posterior a data do ultimo fechamento: " ) + DToC(dDtUlFe) + " (Parametro MV_DTULFE)", 1, 0 )
+		Help( ,, "Help",, If( cPaisLoc $ "ANG|PTG", "Data de transacção deve ser posterior a data do último fechamento: ", "Data de transação deve ser posterior a data do último fechamento: " ) + DToC(dDtUlFe) + " (Parâmetro MV_DTULFE)", 1, 0 )
 		Return
 	EndIf
 
@@ -3160,7 +3160,7 @@ Static Function xGFE65XD(cOp)
 		If aRet[1]
 			Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete enviado para desatualizaï¿½ï¿½o no "+IIf(cOp=="1","Fiscal","Recebimento"),), MsgInfo("Documento de Frete enviado para desatualizaï¿½ï¿½o no "+IIf(cOp=="1","Fiscal","Recebimento"),))
 		Else
-			Alert("Documento de Frete nao foi enviada para desatualizaï¿½ï¿½o no " + IIf(cOp == "1", "Fiscal", "Recebimento") + " por causa do seguinte erro: " + aRet[2][6])
+			Alert("Documento de Frete nï¿½o foi enviada para desatualizaï¿½ï¿½o no " + IIf(cOp == "1", "Fiscal", "Recebimento") + " por causa do seguinte erro: " + aRet[2][6])
 		EndIf
 	EndIf
 
@@ -3398,7 +3398,7 @@ User Function UGFEADT()
 	Local dData := Date()
 	Local lOk := .F.
 
-	oDlg = TDialog():New( 180, 180, 350, 460, "Seleciona a data de transacao no fiscal",,,.F.,,,,,,.T.,,,,, )
+	oDlg = TDialog():New( 180, 180, 350, 460, "Seleciona a data de transaï¿½ï¿½o no fiscal",,,.F.,,,,,,.T.,,,,, )
 
 	oMsCalend := MsCalend():New(01,01,oDlg, .F. )
 
@@ -3489,7 +3489,7 @@ Static Function UGFEA065ADD(oPanel,oView)
 
 	TButton():New( 10, 10, "Doc.Relac.", oPanel,{||  GFEADOCRE(FwFldGet("GW4_TPDC"),FwFldGet("GW4_EMISDC"),FwFldGet("GW4_SERDC"),FwFldGet("GW4_NRDC"))}, 36, 13,,,.F.,.T.,.F., "Documentos Relacionados",.F.,,,.F. )
 	If GFXXB12117("GWJPRE")
-		TButton():New( 30, 10, "Doc.Pre-Fat", oPanel,{||  GFEADOCPF()}, 36, 13,,,.F.,.T.,.F., "Documentos Relacionados",.F.,,,.F. )
+		TButton():New( 30, 10, "Doc.Prï¿½-Fat", oPanel,{||  GFEADOCPF()}, 36, 13,,,.F.,.T.,.F., "Documentos Relacionados",.F.,,,.F. )
 	EndIf
 
 Return .T.
@@ -3525,7 +3525,7 @@ Static Function GFEADOCRE(cTpDc, cEmisDc, cSerDc, cNrDc)
 	EndIf
 
 	If oModelGW4:IsDeleted()
-		Help(,,"HELP",, "O registro selecionado esta deletado.", 1, 0)
+		Help(,,"HELP",, "O registro selecionado estï¿½ deletado.", 1, 0)
 		Return .F.
 	EndIf
 
@@ -3621,9 +3621,9 @@ Static Function GFEADOCRE(cTpDc, cEmisDc, cSerDc, cNrDc)
 	oView:Refresh()
 
 	If nCalc == 0
-		Help(,,"HELP",, "Nao foram encontrados Cï¿½lculos do tipo " + GFEFldInfo("GW3_TPDF", FwFldGet("GW3_TPDF"), 2) + " para o Documento de Carga.", 1, 0)
+		Help(,,"HELP",, "Nï¿½o foram encontrados Cï¿½lculos do tipo " + GFEFldInfo("GW3_TPDF", FwFldGet("GW3_TPDF"), 2) + " para o Documento de Carga.", 1, 0)
 	ElseIf nDC == 0
-		Help(,,"HELP",, "Nao foram encontrados outros Documentos de Carga para vincular ao Documento de Frete.", 1, 0)
+		Help(,,"HELP",, "Nï¿½o foram encontrados outros Documentos de Carga para vincular ao Documento de Frete.", 1, 0)
 	ElseIf nDC == nChange
 		Help(,,"HELP",, "Todos os Documentos de Carga relacionados a este jï¿½ foram vinculados.", 1, 0)
 	EndIf
@@ -3910,7 +3910,7 @@ User Function GFEA65CP()
 
 	lCopy := .T.
 
-	FWExecView("Copia","UGFEA065",3,,{|| .T. })
+	FWExecView("Cópia","UGFEA065",3,,{|| .T. })
 
 Return Nil
 
@@ -3989,7 +3989,7 @@ User Function GFE5GFAT(lInterface)
 	Local cCalVenFat := "1"
 
 	If lInterface .And.  !(GW3->GW3_SIT $ "3;4")
-		Help( ,, "Help",, "O Documento de Frete deve estar aprovado para a geracao da Fatura.", 1, 0 )
+		Help( ,, "Help",, "O Documento de Frete deve estar aprovado para a geraï¿½ï¿½o da Fatura.", 1, 0 )
 		Return
 	EndIf
 
@@ -4001,7 +4001,7 @@ User Function GFE5GFAT(lInterface)
 		dbSelectArea("GW6")
 		GW6->( dbSetOrder(1) )
 		If dbSeek(xFilial("GW6") + GW3->GW3_EMISDF + GW3->GW3_SERDF + GW3->GW3_NRDF )
-			Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete devera ser vinculado a uma fatura manualmente.", 1, 0 )
+			Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete deverï¿½ ser vinculado a uma fatura manualmente.", 1, 0 )
 			Return
 		EndIf
 	elseIf IsInCallStack("GFEA066OK")
@@ -4009,7 +4009,7 @@ User Function GFE5GFAT(lInterface)
 		GW6->( dbSetOrder(1) )
 		If dbSeek(xFilial("GW6") + GW3->GW3_EMISDF + GW3->GW3_SERDF + GW3->GW3_NRDF )
 			If (GW6->GW6_SITFIN == "1")
-				Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete devera ser vinculado a uma fatura manualmente.", 1, 0 )
+				Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete deverï¿½ ser vinculado a uma fatura manualmente.", 1, 0 )
 				Return
 			EndIf
 		EndIf
@@ -4018,7 +4018,7 @@ User Function GFE5GFAT(lInterface)
 		GW6->( dbSetOrder(1) )
 		If dbSeek(xFilial("GW6") + GW3->GW3_EMISDF + GW3->GW3_SERDF + GW3->GW3_NRDF )
 			If (GW6->GW6_SITFIN == "1")
-				Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete devera ser vinculado a uma fatura manualmente.", 1, 0 )
+				Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete deverï¿½ ser vinculado a uma fatura manualmente.", 1, 0 )
 				Return
 			EndIf
 		EndIf
@@ -4026,7 +4026,7 @@ User Function GFE5GFAT(lInterface)
 		dbSelectArea("GW6")
 		GW6->( dbSetOrder(1) )
 		If dbSeek(xFilial("GW6") + FwFldGet("GW3_EMISDF") + FwFldGet("GW3_SERDF") + (FwFldGet("GW3_NRDF") ))
-			Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete devera ser vinculado a uma fatura manualmente.", 1, 0 )
+			Help( ,, "Help",, "Fatura jï¿½ cadastrada no sistema. A fatura jï¿½ existe no sistema portanto este documento de frete deverï¿½ ser vinculado a uma fatura manualmente.", 1, 0 )
 			Return
 		EndIf
 	ElseIF IsInCallStack("U_GFE65XF")
@@ -4041,7 +4041,7 @@ User Function GFE5GFAT(lInterface)
 	If !Empty(GW3->GW3_FILFAT + GW3->GW3_EMIFAT + GW3->GW3_SERFAT + GW3->GW3_NRFAT + DToS(GW3->GW3_DTEMFA))
 
 		If lInterface
-			Help( ,, "Help",, "O Documento de Frete jï¿½ esta vinculado a uma Fatura.", 1, 0 )
+			Help( ,, "Help",, "O Documento de Frete jï¿½ estï¿½ vinculado a uma Fatura.", 1, 0 )
 		EndIf
 
 		Return
@@ -4049,7 +4049,7 @@ User Function GFE5GFAT(lInterface)
 
 	If GW3->GW3_TPDF == "3" .And.  GW3->GW3_VLDF == 0
 		If lInterface
-			Help( ,, "HELP",, "Nao ï¿½ permitido gerar uma fatura para o documento de frete deste tipo com valor zerado.", 1, 0)
+			Help( ,, "HELP",, "Nï¿½o ï¿½ permitido gerar uma fatura para o documento de frete deste tipo com valor zerado.", 1, 0)
 		EndIf
 
 		Return
@@ -4349,7 +4349,7 @@ User Function GFE065VCTE(cChvCte,cEmissor,cSerie,cNumero,dDataEmis)
 		EndIf
 		If GVT->GVT_TPIMP == "1"
 			If Len(cChvCte) <> 44
-				aRet[2] := "Numero de caracteres informado no campo Chave Ct-e invï¿½lido."
+				aRet[2] := "Nï¿½mero de caracteres informado no campo Chave Ct-e invï¿½lido."
 				Return (aRet)
 			EndIf
 
@@ -4385,22 +4385,22 @@ User Function GFE065VCTE(cChvCte,cEmissor,cSerie,cNumero,dDataEmis)
 
 
 			If (Empty(cSerie) .And.  cSerieChave <> "000") .Or.  ( !Empty(cSerie) .And.  PADL(AllTrim(cSerie), 3, "0") <> cSerieChave)
-				aRet[2] := "Serie da chave difere do documento de frete."
+				aRet[2] := "Sï¿½rie da chave difere do documento de frete."
 				Return (aRet)
 			EndIf
 
 
 
 			If Val(cNct) <> Val(cNumero)
-				aRet[2] := "Numero do conhecimento da chave difere do documento de frete."
+				aRet[2] := "Nï¿½mero do conhecimento da chave difere do documento de frete."
 				Return (aRet)
 			EndIf
 
 
 			If !cTpEmis $ "1;4;5;7;8"
-				cTpEmisStr := "Codigo invï¿½lido."
+				cTpEmisStr := "Cï¿½digo invï¿½lido."
 
-				aRet[2] := "Tipo emissao invï¿½lida. [" + cTpEmis + "] " + cTpEmisStr
+				aRet[2] := "Tipo emissï¿½o invï¿½lida. [" + cTpEmis + "] " + cTpEmisStr
 
 				Return (aRet)
 			EndIf
@@ -4617,7 +4617,7 @@ User Function GFE065PCTE()
 		If GU3->(DbSeek(xFilial("GU3")+cEmissor))
 			If (GU3->GU3_CTE == "1") .And.  !(u_IsNumeric(cSerie)) .And.  (GVT->GVT_TPIMP <> "2")
 				If !lCmpCte .Or.  (lCmpCte .And.  GVT->GVT_CHVCTE <> "3")
-					Iif(FindFunction("APMsgInfo"), APMsgInfo("Transportador cadastrado para gerar chave ct-e, serie do documento tem que ser nï¿½merica.",), MsgInfo("Transportador cadastrado para gerar chave ct-e, serie do documento tem que ser nï¿½merica.",))
+					Iif(FindFunction("APMsgInfo"), APMsgInfo("Transportador cadastrado para gerar chave ct-e, sï¿½rie do documento tem que ser nï¿½merica.",), MsgInfo("Transportador cadastrado para gerar chave ct-e, sï¿½rie do documento tem que ser nï¿½merica.",))
 					Return .F.
 				EndIf
 			EndIf
@@ -4756,7 +4756,7 @@ Static Function AtuDocFret(nInt, oModel, cMsg, nOpc)
 
 
 	If Empty(aForLoj[1])
-		cMsg := "Fornecedor nao cadastrado no Protheus."
+		cMsg := "Fornecedor nï¿½o cadastrado no Protheus."
 		lErro := .T.
 	EndIf
 
@@ -4803,7 +4803,7 @@ Static Function AtuDocFret(nInt, oModel, cMsg, nOpc)
 				EndIf
 			Else
 				lErro := .T.
-				cMsg := "Notas Fiscais nao selecionadas."
+				cMsg := "Notas Fiscais nï¿½o selecionadas."
 			EndIf
 		Else
 
@@ -4915,7 +4915,7 @@ Static Function AtuDocFret(nInt, oModel, cMsg, nOpc)
 
 	If IsInCallStack("U_UGFEA065")
 		If lErro
-			Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete nao enviada para atualizacao. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",), MsgInfo("Documento de Frete nao enviada para atualizacao. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",))
+			Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete nï¿½o enviada para atualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",), MsgInfo("Documento de Frete nï¿½o enviada para atualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",))
 		Else
 			Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete atualizado no "+cTipInt+".",), MsgInfo("Documento de Frete atualizado no "+cTipInt+".",))
 		EndIf
@@ -4962,7 +4962,7 @@ Static Function DesAtuDocFret(nInt, oModel, cMsg)
 	Private ctpNfMat	   := ""
 
 	If Empty(aForLoj[1])
-		cMsg := "Fornecedor nao cadastrado no Protheus."
+		cMsg := "Fornecedor nï¿½o cadastrado no Protheus."
 		lErro := .T.
 	EndIf
 
@@ -4989,7 +4989,7 @@ Static Function DesAtuDocFret(nInt, oModel, cMsg)
 
 			lErro 		:= .T.
 			lErroDc 	:= .T.
-			cMsg 		:= "O documento de Frete nao foi localizado no ERP para desatualizaï¿½ï¿½o."
+			cMsg 		:= "O documento de Frete nï¿½o foi localizado no ERP para desatualizaï¿½ï¿½o."
 		EndIf
 		RestArea(aAreaSF1)
 		aSize(aAreaSF1,0)
@@ -5023,7 +5023,7 @@ Static Function DesAtuDocFret(nInt, oModel, cMsg)
 				EndIf
 			Else
 				lErro := .T.
-				cMsg := "Notas Fiscais nao selecionadas."
+				cMsg := "Notas Fiscais nï¿½o selecionadas."
 			EndIf
 		Else
 
@@ -5100,7 +5100,7 @@ Static Function DesAtuDocFret(nInt, oModel, cMsg)
 			If lErroDc
 				Iif(FindFunction("APMsgInfo"), APMsgInfo(cMsg,), MsgInfo(cMsg,))
 			Else
-				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete nao enviado para desatualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",), MsgInfo("Documento de Frete nao enviado para desatualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",))
+				Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete nï¿½o enviado para desatualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",), MsgInfo("Documento de Frete nï¿½o enviado para desatualizaï¿½ï¿½o. Verificar motivo no campo 'Mot Rej "+SubStr(cTipInt,1,3)+"'.",))
 			EndIf
 		Else
 			Iif(FindFunction("APMsgInfo"), APMsgInfo("Documento de Frete desatualizado no "+cTipInt+".",), MsgInfo("Documento de Frete desatualizado no "+cTipInt+".",))
@@ -5300,7 +5300,7 @@ User Function GetNotasFis(aNotasFis,oModel,aForLoj,cF1_DOC)
 
 				ctpNfMat := SF1->F1_TIPO
 
-				Aadd(aNotasFis,{ {"PRIMARYKEY",SF1->F1_DOC+SF1->F1_SERIE+SF1->F1_FORNECE+SF1->F1_LOJA,Nil} })
+				Aadd(aNotasFis,{ {"PRIMARYKEY",SF1->F1_DOC+SF1->F1_SERIE+SF1->F1_FORNECE+SF1->F1_LOJA+ctpNfMat,Nil} })
 			EndIf
 		Else
 
@@ -5325,7 +5325,7 @@ User Function GetNotasFis(aNotasFis,oModel,aForLoj,cF1_DOC)
 
 					ctpNfMat := SF1->F1_TIPO
 
-					Aadd(aNotasFis,{ {"PRIMARYKEY",cNrDc+cSerDc+aEmis[nX][1]+aEmis[nX][2],Nil} })
+					Aadd(aNotasFis,{ {"PRIMARYKEY",cNrDc+cSerDc+aEmis[nX][1]+aEmis[nX][2]+ctpNfMat,Nil} })
 					Return
 
 				EndIf
@@ -5605,17 +5605,17 @@ User Function UGFEPROC(cChvCte)
 	If u_GA065TC20()
 
 		If ((!FindFunction("FWLSEnable") .Or.  !FWLSEnable(3100)) .and.  !FwEmpTeste())
-			aRet[2] := "Ambiente nao licenciado para o modelo TOTVS Colaboraï¿½ï¿½o 2.0."
+			aRet[2] := "Ambiente nï¿½o licenciado para o modelo TOTVS Colaboraï¿½ï¿½o 2.0."
 			Return aRet
 		EndIf
 
 		If nTimeOut = 0
-			aRet[2] := "Parametro Tempo de espera para processar retorno da consulta via TOTVS Colaboraï¿½ï¿½o 2.0 nao informado (aba Integraï¿½ï¿½es ERP)."
+			aRet[2] := "Parï¿½metro Tempo de espera para processar retorno da consulta via TOTVS Colaboraï¿½ï¿½o 2.0 nï¿½o informado (aba Integraï¿½ï¿½es ERP)."
 			Return aRet
 		EndIf
 
 		If Empty(cVerCte) .Or.  cVerCte = " "
-			aRet[2] := "Parametro Versao do CTe para TOTVS Colaboraï¿½ï¿½o 2.0 nao informado (aba Integraï¿½ï¿½es ERP)."
+			aRet[2] := "Parï¿½metro Versï¿½o do CTe para TOTVS Colaboraï¿½ï¿½o 2.0 nï¿½o informado (aba Integraï¿½ï¿½es ERP)."
 			Return aRet
 		EndIf
 
@@ -5650,14 +5650,14 @@ User Function UGFEPROC(cChvCte)
 		If !File(cNmArqOut)
 			nHandle := FCreate(cNmArqOut,0)
 			If nHandle <= 0
-				aRet[2] :=  "Nao foi possivel gerar o arquivo de consulta " + cNmArqOut + "."
+				aRet[2] :=  "Nï¿½o foi possï¿½vel gerar o arquivo de consulta " + cNmArqOut + "."
 				Return aRet
 			EndIf
 			FSeek(nHandle, 0)
 		Else
 			nHandle := FOpen(cNmArqOut,2)
 			If nHandle = 0
-				aRet[2] := "Nao foi possivel gerar o arquivo de consulta " + cNmArqOut + "."
+				aRet[2] := "Nï¿½o foi possï¿½vel gerar o arquivo de consulta " + cNmArqOut + "."
 				Return aRet
 			EndIf
 			FSeek(nHandle, 0, 2)
@@ -5698,7 +5698,7 @@ User Function UGFEPROC(cChvCte)
 						If File(cNmArqIn)
 							nHandle := FOpen(cNmArqIn,0+64)
 							If nHandle < 0
-								aRet[2] := "Nao foi possivel efetuar leitura do arquivo de retorno de consulta via Neogrid " + cNmArqIn + "."
+								aRet[2] := "Nï¿½o foi possï¿½vel efetuar leitura do arquivo de retorno de consulta via Neogrid " + cNmArqIn + "."
 								Return aRet
 							EndIf
 
@@ -5722,12 +5722,12 @@ User Function UGFEPROC(cChvCte)
 								cRetMensRet := oXML:_RETCONSSITCTE:_XMOTIVO:TEXT
 
 								If Empty (cRetProt)
-									aRet[2] := "A chave digitada nao foi encontrada na SEFAZ."
+									aRet[2] := "A chave digitada nï¿½o foi encontrada na SEFAZ."
 								ElseIf AllTrim(cRetCodRet) <> "100"
 
 
 
-									aRet[2] := "Uso do CT-e nao autorizado." + Chr(13)+Chr(10) + cCodRet+cRetCodRet+"."+Chr(13)+Chr(10)+ cMensRet+cRetMensRet+"."+Chr(13)+Chr(10)+ cProt+cRetProt+"."
+									aRet[2] := "Uso do CT-e nï¿½o autorizado." + Chr(13)+Chr(10) + cCodRet+cRetCodRet+"."+Chr(13)+Chr(10)+ cMensRet+cRetMensRet+"."+Chr(13)+Chr(10)+ cProt+cRetProt+"."
 								Else
 									aRet[1] := .T.
 								EndIf
@@ -5749,13 +5749,13 @@ User Function UGFEPROC(cChvCte)
 
 			If !lEncerraConsulta
 				If !lTela
-					aRet[2] := "A consulta da chave de acesso nao retornou nenhum resultado."
+					aRet[2] := "A consulta da chave de acesso nï¿½o retornou nenhum resultado."
 					lEncerraConsulta := .T.
 				Else
-					If Iif(FindFunction("APMsgYesNo"), APMsgYesNo("A consulta da chave de acesso nao retornou nenhum resultado. Repetir a busca?",), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("A consulta da chave de acesso nao retornou nenhum resultado. Repetir a busca?",)))
+					If Iif(FindFunction("APMsgYesNo"), APMsgYesNo("A consulta da chave de acesso nï¿½o retornou nenhum resultado. Repetir a busca?",), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("A consulta da chave de acesso nï¿½o retornou nenhum resultado. Repetir a busca?",)))
 						nTentativa += 1
 					Else
-						aRet[2] := "A chave digitada nao foi validada na SEFAZ."
+						aRet[2] := "A chave digitada nï¿½o foi validada na SEFAZ."
 						lEncerraConsulta := .T.
 					EndIf
 				EndIf
@@ -5772,8 +5772,8 @@ User Function UGFEPROC(cChvCte)
 		If TMSIsReady(,, .F. )
 
 			If lTela
-				oProcess:incRegua1("Obtendo identidade de conexao...")
-				oProcess:incRegua2("Obtendo identidade de conexao...")
+				oProcess:incRegua1("Obtendo identidade de conexï¿½o...")
+				oProcess:incRegua2("Obtendo identidade de conexï¿½o...")
 			EndIf
 			oWS := WsSPEDAdm():New()
 			oWS:cUSERTOKEN := "TOTVS"
@@ -5809,7 +5809,7 @@ User Function UGFEPROC(cChvCte)
 			If oWs:ADMEMPRESAS()
 				cIdEnt  := oWs:cADMEMPRESASRESULT
 			Else
-				aRet[2] := "Nao foi possivel obter o Codigo da identidade. Motivo:" + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
+				aRet[2] := "Nï¿½o foi possï¿½vel obter o cï¿½digo da identidade. Motivo:" + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
 				Return aRet
 			EndIf
 
@@ -5826,23 +5826,23 @@ User Function UGFEPROC(cChvCte)
 
 			If oWs:ConsultaChaveNFE()
 				If Type ("oWs:oWSCONSULTACHAVENFERESULT:cPROTOCOLO") == "U" .OR.  Empty (oWs:oWSCONSULTACHAVENFERESULT:cPROTOCOLO)
-					aRet[2] := "A chave digitada nao foi encontrada na SEFAZ."
+					aRet[2] := "A chave digitada nï¿½o foi encontrada na SEFAZ."
 				ElseIf AllTrim(oWs:oWSCONSULTACHAVENFERESULT:cCODRETNFE) <> "100"
 
 
 
-					aRet[2] := "Uso do CT-e nao autorizado. " + Chr(13)+Chr(10) + cCodRet+oWs:oWSCONSULTACHAVENFERESULT:cCODRETNFE+"."+Chr(13)+Chr(10)+ cMensRet+oWs:oWSCONSULTACHAVENFERESULT:cMSGRETNFE+"."+Chr(13)+Chr(10)+ cProt+oWs:oWSCONSULTACHAVENFERESULT:cPROTOCOLO+"."
+					aRet[2] := "Uso do CT-e nï¿½o autorizado. " + Chr(13)+Chr(10) + cCodRet+oWs:oWSCONSULTACHAVENFERESULT:cCODRETNFE+"."+Chr(13)+Chr(10)+ cMensRet+oWs:oWSCONSULTACHAVENFERESULT:cMSGRETNFE+"."+Chr(13)+Chr(10)+ cProt+oWs:oWSCONSULTACHAVENFERESULT:cPROTOCOLO+"."
 				Else
 					aRet[1] := .T.
 				EndIf
 			Else
-				aRet[2] := "Nao foi possivel consultar a Chave CT-e no SEFAZ. Motivo:" + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
+				aRet[2] := "Nï¿½o foi possï¿½vel consultar a Chave CT-e no SEFAZ. Motivo:" + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
 			EndIf
 		Else
 			If Empty(IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3)))
-				aRet[2] := "Nao foi possivel conectar ao TSS. Verifique as configuraï¿½ï¿½es de conexao. "
+				aRet[2] := "Nï¿½o foi possï¿½vel conectar ao TSS. Verifique as configuraï¿½ï¿½es de conexï¿½o. "
 			Else
-				aRet[2] := "Nao foi possivel conectar ao TSS. Motivo: " + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
+				aRet[2] := "Nï¿½o foi possï¿½vel conectar ao TSS. Motivo: " + Chr(13)+Chr(10) + IIf(Empty(GetWscError(3)),GetWscError(1),GetWscError(3))
 			EndIf
 		EndIf
 	EndIf
@@ -5855,11 +5855,11 @@ Static Function GA065DPar(cParam)
 
 	aRet[1] := AllTrim(SuperGetMv(cParam, .F. , ""))
 	If Empty(aRet[1])
-		aRet[2] := "Nao foi especificado um diretorio para comunicaï¿½ï¿½o com Neogrid no parametro " + cParam + "."
+		aRet[2] := "Nï¿½o foi especificado um diretï¿½rio para comunicaï¿½ï¿½o com Neogrid no parï¿½metro " + cParam + "."
 	Else
 		If !ExistDir(aRet[1])
 			If MakeDir(aRet[1]) <> 0
-				aRet[2] := "Nao foi possivel criar pasta " + cValToChar(FError())
+				aRet[2] := "Nï¿½o foi possï¿½vel criar pasta " + cValToChar(FError())
 			EndIf
 		EndIf
 
@@ -6045,7 +6045,7 @@ User Function UGFE5PRE()
 				EndIf
 
 				If !lVldCalc .And.  lVerificado
-					Help( ,, "HELP",, "ï¿½ necessario que haja um Calculo de Frete dos Documentos de Carga que possua o mesmo Tipo do Documento de Frete, e Transportador do Calculo igual ao Emissor do Documento de Frete.", 1, 0)
+					Help( ,, "HELP",, "ï¿½ necessï¿½rio que haja um Cï¿½lculo de Frete dos Documentos de Carga que possua o mesmo Tipo do Documento de Frete, e Transportador do Cï¿½lculo igual ao Emissor do Documento de Frete.", 1, 0)
 					Return .F.
 				EndIf
 
@@ -6088,18 +6088,18 @@ User Function GFE65IPR(lInt,cOp,nOpc)
 	cOp := If( cOp == nil, "0", cOp )
 	nOpc := If( nOpc == nil, "", nOpc )
 
-	Private cCadastro := "Integracao Protheus"
+	Private cCadastro := "Integraï¿½ï¿½o Protheus"
 
 
 	If (GW3->GW3_SITFIS == "4") .OR.  (GW3->GW3_SITREC == "4")
 		If cOp == "1"
-			Iif(FindFunction("APMsgAlert"), APMsgAlert("Documento esta com a situacao de Integrado. Dados nao podem ser alterados",), MsgAlert("Documento esta com a situacao de Integrado. Dados nao podem ser alterados",))
+			Iif(FindFunction("APMsgAlert"), APMsgAlert("Documento estï¿½ com a situaï¿½ï¿½o de Integrado. Dados nï¿½o podem ser alterados",), MsgAlert("Documento estï¿½ com a situaï¿½ï¿½o de Integrado. Dados nï¿½o podem ser alterados",))
 			Return .T.
 		EndIf
 	EndIf
 
 	If !lCpoTES
-		Iif(FindFunction("APMsgAlert"), APMsgAlert("Os campos de Integracao Protheus nao encontrados na tabela",), MsgAlert("Os campos de Integracao Protheus nao encontrados na tabela",))
+		Iif(FindFunction("APMsgAlert"), APMsgAlert("Os campos de integraï¿½ï¿½o Protheus nï¿½o encontrados na tabela",), MsgAlert("Os campos de integraï¿½ï¿½o Protheus nï¿½o encontrados na tabela",))
 		Return .T.
 	EndIf
 
@@ -6259,7 +6259,7 @@ Static Function GFE065VCPO(nOpc, lGrava, aVlrs, lPerg)
 	
 
 	If lPerg .And.  (SuperGetMV("MV_TESGFE", .F. , "1") == "2")
-		bBlock := {|| Iif(FindFunction("APMsgYesNo"), APMsgYesNo("Deseja utilizar os dados do produto informados no parametro do GFE?", "confirmacao Dados do Produto"), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("Deseja utilizar os dados do produto informados no parametro do GFE?", "confirmacao Dados do Produto")))}
+		bBlock := {|| Iif(FindFunction("APMsgYesNo"), APMsgYesNo("Deseja utilizar os dados do produto informados no parï¿½metro do GFE?", "Confirmaï¿½ï¿½o Dados do Produto"), (cMsgYesNo:="MsgYesNo", &cMsgYesNo.("Deseja utilizar os dados do produto informados no parï¿½metro do GFE?", "Confirmaï¿½ï¿½o Dados do Produto")))}
 	EndIf
 
 	If ( lIntProt == "2" ) .And.  ( (nOpc == "1") .Or.  (nOpc == "2") )
@@ -6416,7 +6416,7 @@ User Function UGFVFIX()
 	GW0->( dbSetOrder(1) )
 	If !GW0->(dbSeek(cFilGW0+cTabela+cFun))
 		If s_DPSERV == "1"
-			GFEConout("INFO","Necessario Execucao de acerto de base u_GFEUPDCalc() ")
+			GFEConout("INFO","Necessï¿½rio Execuï¿½ï¿½o de acerto de base u_GFEUPDCalc() ")
 		EndIf
 
 	EndIf
@@ -6482,7 +6482,7 @@ User Function UGFE65DM()
 	Local nRecnoGW3 := GW3->(Recno())
 
 	If !(GW3->GW3_SITMLA $ "3|4|7")
-		Help(,,"HELP",,"Documento de Frete ainda nao foi integrado ao MLA.",1,0)
+		Help(,,"HELP",,"Documento de Frete ainda nï¿½o foi integrado ao MLA.",1,0)
 		lRet := .F.
 	EndIf
 
@@ -6725,13 +6725,13 @@ Static Function GFEADOCPF()
 	oDlg = MsDialog():New( 4, 0, 100, 250, "Pesquisar Documentos de carga",,,.F.,,,,, oMainWnd,.T.,, ,.F. )
 
 	TSay():New( 4, 020,{||  "Filial:"},oDlg,,,.F.,.F.,.F.,.T.,,, 70, 7,.F.,.F.,.F.,.F.,.F.,.F. )
-	TSay():New( 19, 005,{||  "Nr. Pre-Fatura:"},oDlg,,,.F.,.F.,.F.,.T.,,, 70, 7,.F.,.F.,.F.,.F.,.F.,.F. )
+	TSay():New( 19, 005,{||  "Nr. Prï¿½-Fatura:"},oDlg,,,.F.,.F.,.F.,.T.,,, 70, 7,.F.,.F.,.F.,.F.,.F.,.F. )
 
 	TGet():New( 3, 040, { | u | If( PCount() == 0, cFil, cFil := u ) },oDlg, 45, 7,,,,,,.F.,,.T.,,.F.,{||  .T. },.F.,.F.,,.F.,.F. ,"SM0","cFil",,,,.T. )
 	TGet():New( 18, 040, { | u | If( PCount() == 0, nPreFat, nPreFat := u ) },oDlg, 45, 7,,,,,,.F.,,.T.,,.F.,{||  .T. },.F.,.F.,,.F.,.F. ,"GWJPRE","nPreFat",,,,.T. )
 
 
-	oButtonOK   := tButton():New(35,002,"OK",oDlg,{||IIf (!Empty(cFil) .And.  !Empty(nPreFat), (UGFEA065PF(cFil,nPreFat),	oDlg:End()), Help(,,"HELP",, "Favor preencher os campos de Filial e Pre-Fatura.", 1, 0))  },25,10,,,, .T. )
+	oButtonOK   := tButton():New(35,002,"OK",oDlg,{||IIf (!Empty(cFil) .And.  !Empty(nPreFat), (UGFEA065PF(cFil,nPreFat),	oDlg:End()), Help(,,"HELP",, "Favor preencher os campos de Filial e Prï¿½-Fatura.", 1, 0))  },25,10,,,, .T. )
 	oButtonCanc := tButton():New(35,030,"Cancelar",oDlg,{||lRet:={},oDlg:End()},25,10,,,, .T. )
 
 	oDlg:Activate( oDlg:bLClicked, oDlg:bMoved, oDlg:bPainted,,,,, oDlg:bRClicked, )
@@ -6781,7 +6781,7 @@ Static Function UGFEA065PF(cFilp, cNrpf)
 	dbSelectArea("GWJ")
 	dbSetOrder(1)
 	If !dbSeek(cFilp+cNrpf)
-		Help(,,"HELP",, "Nao foi encontrada pre-fatura com o numero informado.", 1, 0)
+		Help(,,"HELP",, "Nï¿½o foi encontrada prï¿½-fatura com o nï¿½mero informado.", 1, 0)
 		RestArea(aArea)
 		Return .F.
 	EndIf
@@ -6849,9 +6849,9 @@ Static Function UGFEA065PF(cFilp, cNrpf)
 	oView:Refresh()
 
 	If nCalc == 0
-		Help(,,"HELP",, "Nao foram encontrados Cï¿½lculos do tipo " + GFEFldInfo("GW3_TPDF", FwFldGet("GW3_TPDF"), 2) + " para o emissor do conhecimento relacionados ï¿½ pre-fatura.", 1, 0)
+		Help(,,"HELP",, "Nï¿½o foram encontrados Cï¿½lculos do tipo " + GFEFldInfo("GW3_TPDF", FwFldGet("GW3_TPDF"), 2) + " para o emissor do conhecimento relacionados ï¿½ prï¿½-fatura.", 1, 0)
 	ElseIf nDC == 0
-		Help(,,"HELP",, "Nao foram encontrados outros Documentos de Carga para vincular ao Documento de Frete.", 1, 0)
+		Help(,,"HELP",, "Nï¿½o foram encontrados outros Documentos de Carga para vincular ao Documento de Frete.", 1, 0)
 	EndIf
 
 Return
@@ -6869,7 +6869,7 @@ Static Function LEGVALID()
 	Local cTitulo  := ""
 
 	cTitulo  := "Status do registro"
-	Aadd(aLegenda,{"BR_VERMELHO", "Invalido"})
+	Aadd(aLegenda,{"BR_VERMELHO", "Invï¿½lido"})
 	Aadd(aLegenda,{"BR_VERDE" , "Vï¿½lido"})
 	BrwLegenda(cTitulo, "Legenda", aLegenda)
 Return .T.
@@ -6936,11 +6936,11 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 	lExibeMsg := If( lExibeMsg == nil, .F. , lExibeMsg )
 
 	If !SuperGetMv("MV_INTTMS", .F. , .F. )
-		aRet[2] := "Integracao de valores de custo de transporte disponivel apenas para ambientes com SIGATMS implantado."
+		aRet[2] := "Integraï¿½ï¿½o de valores de custo de transporte disponï¿½vel apenas para ambientes com SIGATMS implantado."
 	ElseIf SuperGetMV("MV_GFEI21", .F. , "3") == "3"
-		aRet[2] := "Parametro Custos de Transporte configurado para nao integrar custo de transporte com SIGATMS."
+		aRet[2] := "Parï¿½metro Custos de Transporte configurado para nï¿½o integrar custo de transporte com SIGATMS."
 	ElseIf !(GW3->GW3_SIT $ "34") .And.  !(SubStr(cAcao,1,1) $ "P;E")
-		aRet[2] := "Para Integracao de valores de custo de transporte com SIGATMS o documento de frete deve estar aprovado."
+		aRet[2] := "Para integraï¿½ï¿½o de valores de custo de transporte com SIGATMS o documento de frete deve estar aprovado."
 	Else
 		Do Case
 			Case Substr(cAcao,1,1) == "E"
@@ -6977,22 +6977,22 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 
 				lMsgAviso := .T.
 				If lExec
-					aRet[2] := "Exclusao dos valores de custo de transporte com SIGATMS efetuada com sucesso."
+					aRet[2] := "Exclusï¿½o dos valores de custo de transporte com SIGATMS efetuada com sucesso."
 				Else
-					aRet[2] := "Nao foram encontrados valores de custo de transporte com SIGATMS para exclusao."
+					aRet[2] := "Nï¿½o foram encontrados valores de custo de transporte com SIGATMS para exclusï¿½o."
 				EndIf
 			EndIF
 			Case cAcao == "P"
 			lMsgAviso := .T.
 			aRet[1] := .T.
-			aRet[2] := "Situacao de Integracao de valores de custo de frete com SIGATMS alterado para Pendente Atualizacao."
+			aRet[2] := "Situaï¿½ï¿½o de integraï¿½ï¿½o de valores de custo de frete com SIGATMS alterado para Pendente Atualizaï¿½ï¿½o."
 			aRet[3] := "4"
 			Case Substr(cAcao,1,1) == "I"
 
 			lAtualiza := .F.
 
 			If GW3->GW3_SITCUS == "2"
-				aRet[2] := "Integracao de valores de custo de transporte com SIGATMS jï¿½ efetuada para este documento de frete."
+				aRet[2] := "Integraï¿½ï¿½o de valores de custo de transporte com SIGATMS jï¿½ efetuada para este documento de frete."
 			Else
 				Do Case
 					Case cAcao == "ID"
@@ -7003,7 +7003,7 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 					If SuperGetMv("MV_GFEI21", .F. , "3") == "2"
 						lAtualiza := .T.
 					Else
-						aRet[2] := "Custo de transporte do documento de frete nao pendente para Integracao automatica com SIGATMS."
+						aRet[2] := "Custo de transporte do documento de frete nï¿½o pendente para integraï¿½ï¿½o automï¿½tica com SIGATMS."
 					EndIf
 					Case cAcao = "IL"
 					lAtualiza := .T.
@@ -7013,7 +7013,7 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 			If lAtualiza
 				If AllTrim(GW3->GW3_DESCUS) == ""
 					aRet[1] := .T.
-					aRet[2] := "Codigo da Despesa de Frete nao informado no documento de frete."
+					aRet[2] := "Cï¿½digo da Despesa de Frete nï¿½o informado no documento de frete."
 					aRet[3] := "3"
 				Else
 					cQuery := "SELECT SUM(GWM." + aCmpVal[nCriRat][1] + ") VLFRET, SUM(GWM." + aCmpVal[nCriRat][2] + ") VLICMS, "
@@ -7042,7 +7042,7 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 
 					If (cAliasQry)->(EoF())
 						aRet[1] := .T.
-						aRet[2] := "Nao foram encontrados rateio contabil do documento de frete ou documentos de frete do TMS vinculados aos documentos de carga."
+						aRet[2] := "Nï¿½o foram encontrados rateio contï¿½bil do documento de frete ou documentos de frete do TMS vinculados aos documentos de carga."
 						aRet[3] := "3"
 					Else
 						nItem := 0
@@ -7088,7 +7088,7 @@ User Function UGFEA065CTP(cAcao,lExibeMsg)
 
 								lMsgAviso := .T.
 								aRet[1] := .T.
-								aRet[2] := "Integracao dos valores de custo de transporte com SIGATMS efetuada com sucesso."
+								aRet[2] := "Integraï¿½ï¿½o dos valores de custo de transporte com SIGATMS efetuada com sucesso."
 								aRet[3] := "2"
 								aRet[4] := dDatabase
 								aRet[5] := cUserName

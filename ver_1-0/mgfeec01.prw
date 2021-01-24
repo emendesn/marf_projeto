@@ -13,14 +13,14 @@ Data.....:              Out/2016
 Descricao / Objetivo:   MarkBrowse com os Documentos para serem incluidos ao clientes  
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Ja filtra os documentos relacionados no cliente 
-						Leo - Alteracao para gravar os campos corretamente.
+						Leo - Alteração para gravar os campos corretamente.
 ==========================================================================================
 */
 
-//=============================== Relacao das Functions =================================
-// 01 - Funcao Principal - MGFEEC01()
+//=============================== Relação das Functions =================================
+// 01 - Função Principal - MGFEEC01()
 // 02 - Grava os documentos marcados na tabela de Docs X Cliente - MBrowEEC() 
 //=======================================================================================
 
@@ -39,14 +39,14 @@ aRotina := {}
 cAlias   := 'SZZ'
 cCampo   := 'ZZ_MARK'
    
-aCampos  :={{'ZZ_MARK'   ,,'Marcado'},; // Configuraï¿½ï¿½o do campo C,2 para qualquer mark campo .
+aCampos  :={{'ZZ_MARK'   ,,'Marcado'},; // Configuração do campo C,2 para qualquer mark campo .
             {'ZZ_CODDOC' ,,'Documento'},;
-            {'ZZ_DESCR'  ,,'Descricao'},;
+            {'ZZ_DESCR'  ,,'Descrição'},;
             {'ZZ_TIPO'   ,,'Tipo'},;
             {'ZZ_DATA'   ,,'Data'},;
             {'ZZ_DIAS'   ,,'Dias'}}                           
    
-cCadastro := 'Doc/Ativ Exportacao'
+cCadastro := 'Doc/Ativ Exportação'
 
 aAdd( aRotina, {"Confirmar" ,'ExecBlock("MBrowEEC",.F.,.F.,4), CloseBrowse()' , 0 , 4 } )
 
@@ -68,11 +68,11 @@ cInd := LEFT(cTabAux, 7) + "1"
 If(Select('TRB') > 0, TRB->(DbCloseArea()),)
 DbUseArea(.T., , cTabAux, 'TRB', .F., .F.)
 	
-IndRegua('TRB', cInd, "ZZ_CODDOC")    //Indice de organizaï¿½ï¿½o do relatorio
+IndRegua('TRB', cInd, "ZZ_CODDOC")    //Indice de organização do relatório
 TRB->(DbClearIndex())
 DbSetIndex(cInd + OrdBagExt())
 
-//Leo - Alteracao na query para trazer todos os documentos que nao existe no cadastro do cliente.
+//Leo - Alteração na query para trazer todos os documentos que não existe no cadastro do cliente.
                                                                    
 cQuery := " SELECT "+ENTER
 cQuery += "  ' ' ZZ_MARK, "+ENTER
@@ -153,6 +153,6 @@ For nA := 1 To Len(aLista)
 			MsUnlock()
 Next
 
-MSGINFO("Inclusao Efetuada Com Sucesso !!","Marfrig")
+MSGINFO("Inclusão Efetuada Com Sucesso !!","Marfrig")
 
 Return 

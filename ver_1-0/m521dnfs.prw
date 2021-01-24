@@ -8,7 +8,7 @@ Data................: 18/11/2016
 Descricao / Objetivo: Ponto de entrada apos a exclusao do documento de saida
 Doc. Origem.........: Protheus-Taura Saida
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

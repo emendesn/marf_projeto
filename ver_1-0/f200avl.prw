@@ -5,22 +5,22 @@
 /*
 ============================================================================================
 Programa.:              F200AVL
-Autor....:              Flavio Dentello        
+Autor....:              Flávio Dentello        
 Data.....:              14/11/2016 
 Descricao / Objetivo:   FIN_BX_CNAB
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =============================================================================================
 */
 
 /*
 Estrutura do Array:
-[01] - Numero do Titulo // IDCNAB
+[01] - Número do Título // IDCNAB
 [02] - Data da Baixa
-[03] - Tipo do Titulo
-[04] - Nosso Numero
+[03] - Tipo do Título
+[04] - Nosso Número
 [05] - Valor da Despesa
 [06] - Valor do Desconto
 [07] - Valor do Abatimento
@@ -28,9 +28,9 @@ Estrutura do Array:
 [09] - Juros
 [10] - Multa
 [11] - Outras Despesas
-[12] - Valor do Credito
-[13] - Data Credito
-[14] - Ocorrencia
+[12] - Valor do Crédito
+[13] - Data Crédito
+[14] - Ocorrência
 [15] - Motivo da Baixa
 [16] - Linha Inteira
 [17] - Data de Vencto

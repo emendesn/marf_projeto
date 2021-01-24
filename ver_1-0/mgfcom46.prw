@@ -5,11 +5,11 @@
 Programa.:              MGFCOM46
 Autor....:              TOTVS
 Data.....:              19/10/2017
-Descricao / Objetivo:   Tratamento para o nao envio da solicitacao para grade na 
-alteracao dos campos Observacao, comprador e Cod Cl Val
+Descricao / Objetivo:   Tratamento para o não envio da solicitação para grade na 
+alteração dos campos Observação, comprador e Cod Cl Val
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

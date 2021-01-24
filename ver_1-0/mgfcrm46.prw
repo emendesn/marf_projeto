@@ -7,10 +7,10 @@
 Programa............: MGFCRM49
 Autor...............: Flavio Dentello
 Data................: 08/03/2017 
-Descricao / Objetivo: Ponto de entrada Valida a inclusao de linhas no pedido de vendas Refaturamento que utiliza RAMI 
+Descricao / Objetivo: Ponto de entrada Valida a inclusão de linhas no pedido de vendas Refaturamento que utiliza RAMI 
 Doc. Origem.........: CRM- RAMI
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -41,14 +41,17 @@ user function MGFCRM46()
 	local lEstrangei := isForeign( M->C5_CLIENTE, M->C5_LOJACLI )
 
 	If M->C5_TIPO == 'N' .AND. !lEstrangei .and. !isInCallStack("U_runFATA5") // Cliente Estrangeiro nao valida itens duplicados
-		for nI := 1 to len(aCols)
-			if aCols[nI, nPosItem] <> aCols[n, nPosItem]
-				if aCols[nI, nPosProdut] == aCols[n, nPosProdut]
-					msgAlert("Nao  permitido incluir Produtos iguais em Itens diferentes!")
-					return .F.
+		
+		If Alltrim(M->C5_ZTPOPER) <> GetNewPar('MGF_CRM46A','T10') .Or. !(Alltrim(cFIlAnt) $ GetNewPar('MGF_CRM46B','010042/') )  // Qdo filial habilitada, e tipo contiver no parametro MGF_CRM46A, pula validação.
+			for nI := 1 to len(aCols)
+				if aCols[nI, nPosItem] <> aCols[n, nPosItem]
+					if aCols[nI, nPosProdut] == aCols[n, nPosProdut]
+						msgAlert("Não permitido incluir Produtos iguais em Itens diferentes!")
+						return .F.
+					endif
 				endif
-			endif
-		next
+			next
+		EndIf
 	
 		cRAMI := M->C5_ZRAMI1 + ;	
 		M->C5_ZRAMI2 + ;
@@ -88,7 +91,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -124,7 +127,7 @@ user function MGFCRM46()
 						DbSelectArea('ZAV')
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -159,7 +162,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -194,7 +197,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -232,7 +235,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -267,7 +270,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -302,7 +305,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -338,7 +341,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -373,7 +376,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -408,7 +411,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -444,7 +447,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -480,7 +483,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -516,7 +519,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -553,7 +556,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -590,7 +593,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -627,7 +630,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -662,7 +665,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -697,7 +700,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -732,7 +735,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -767,7 +770,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -802,7 +805,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -837,7 +840,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -872,7 +875,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -907,7 +910,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -942,7 +945,7 @@ user function MGFCRM46()
 						DbSetOrder(1)//ZAV_FILIAL+ZAV_CODIGO                                                                                                                                                                                                                                                                         
 						If ZAV->(MsSeek(xFilial('ZAV')+ alltrim(cRAMI) ))
 	
-							////QUANTIDADE Jï¿½ UTILIZADA
+							////QUANTIDADE JÁ UTILIZADA
 							nSaldo := QTDITEMRAMI()		
 	
 							////QUANTIDADE TOTAL
@@ -981,13 +984,13 @@ user function MGFCRM46()
 					if nSaldoCt >= ACOLS[N][5]  
 						lAchou := .T.
 					else
-						MsgAlert('Nao  foi encontrada nenhuma RAMI para esse produto ou Nao  hï¿½ saldo!!')
+						MsgAlert('Não foi encontrada nenhuma RAMI para esse produto ou Não há saldo!!')
 						lAchou := .F.
 					endif	
 				EndIf
 			Else
 	
-				MsgAlert('Para o tipo de pedido Revenda ï¿½ obrigatï¿½rio informar o numero da RAMI na aba RAMI!')
+				MsgAlert('Para o tipo de pedido Revenda é obrigatório informar o número da RAMI na aba RAMI!')
 				lRet := .F.
 	
 			EndIF	
@@ -1008,7 +1011,7 @@ return lAchou
 
 
 
-/////Funcao que traz o saldo da RAMI
+/////Função que traz o saldo da RAMI
 
 USER FUNCTION QTDITEMRAMIT()
 
@@ -1042,7 +1045,7 @@ USER FUNCTION QTDITEMRAMIT()
 Return nQTDT
 
 
-//Funcao que traz o saldo da RAMI Resoluï¿½ï¿½o
+//Função que traz o saldo da RAMI Resolução
 
 
 STATIC FUNCTION QTDITEMRAMI()

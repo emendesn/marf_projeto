@@ -9,8 +9,8 @@ Data.....:              10/11/2016
 Descricao / Objetivo:   Ajuste Fiscal
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao dos Livros Fiscais - NF Entrada
+Uso......:              Marfrig
+Obs......:              Manutenção dos Livros Fiscais - NF Entrada
 =====================================================================================
 */
 User Function MGFFIS11()
@@ -24,9 +24,9 @@ User Function MGFFIS11()
 
 	if SF3->( DBSeek( xFilial("SF3") + SF1->(F1_FORNECE + F1_LOJA + F1_DOC + F1_SERIE ) ) )
 		//UPDATE/ exclusao precisa estar possicionado
-		fwExecView("Alteracao", "MGFFIS08", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"Alteracao"
+		fwExecView("Alteração", "MGFFIS08", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"AlteraÃ§Ã£o"
 	else
-		msgAlert("Livro Fiscal nao encontrado!")
+		msgAlert("Livro Fiscal não encontrado!")
 	endif
 
 	SF3->(DBCloseArea())

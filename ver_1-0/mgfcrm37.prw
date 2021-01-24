@@ -11,10 +11,10 @@
 Programa.:              MGFCRM37
 Autor....:              Gustavo Ananias Afonso - TOTVS Campinas
 Data.....:              19/04/2017
-Descricao / Objetivo:   Cadastro de Usuarios RAMI
+Descricao / Objetivo:   Cadastro de Usuários RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -26,7 +26,7 @@ user function MGFCRM37()
 	//Define um alias para o Browse
 	oBrowse:SetAlias('ZBK')
 	//Adiciona uma descriÃ§Ã£o para o Browse
-	oBrowse:SetDescription('Cadastro de Usuarios RAMI')      
+	oBrowse:SetDescription('Cadastro de Usuários RAMI')      
 	//Ativa o Browse
 	oBrowse:Activate()
 
@@ -57,10 +57,10 @@ Static Function ModelDef()
 	oModel:AddFields( 'ZBKMASTER', /*cOwner*/, oStruZBK, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Cadastro de Usuarios RAMI' )
+	oModel:SetDescription( 'Cadastro de Usuários RAMI' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'ZBKMASTER' ):SetDescription( 'Dados de Usuarios RAMI' )
+	oModel:GetModel( 'ZBKMASTER' ):SetDescription( 'Dados de Usuários RAMI' )
 
 	oModel:SetPrimaryKey({})
 
@@ -111,7 +111,7 @@ static function CRM37POS( oModel )
 		TcQuery cQryZBK New Alias "QRYZBK"
 
 		if !QRYZBK->(EOF())
-			Help( ,, 'Usuario jï¿½ cadastrado',, 'Este Usuario jï¿½ esta cadastrado.', 1, 0 )
+			Help( ,, 'Usuário já cadastrado',, 'Este Usuário já está cadastrado.', 1, 0 )
 			lRet := .F.
 		endif
 

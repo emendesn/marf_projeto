@@ -7,10 +7,10 @@
 Programa............: MGFEST56
 Autor...............: Tarcisio Galeano
 Data................: 12/2018
-Descricao / Objetivo: Bloqueio solicitante gravado x solicitante atual
+Descrição / Objetivo: Bloqueio solicitante gravado x solicitante atual
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -46,7 +46,7 @@ user function MGFEST56()
 		EndDo
 	
 	IF cCodusr <> cSolicitG
-		msgalert("Nao ï¿½ permitido alteracao/exclusao de S.C. de outros solicitantes. ")
+		msgalert("Não é permitido alteração/exclusão de S.C. de outros solicitantes. ")
     	lRet := .F.
 	endif
     

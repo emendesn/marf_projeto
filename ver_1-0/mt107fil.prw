@@ -21,8 +21,8 @@
 User Function MT107FIL()
 Local cFiltro := ''
 If cFilAnt $GetMv("MGF_EPIFIL")
-	cFiltro := " CP_ZMATFUN=' ' .AND. CP_STATSA = 'B' .And. !SCR->(dbSeek(xFilial('SCR')+'SA'+PadR(SCP->CP_NUM,Len(SCR->CR_NUM))))"
+	cFiltro := " CP_ZMATFUN == ' ' .AND. CP_STATSA = 'B' " //.And. !SCR->(dbSeek(xFilial('SCR')+'SA'+PadR(SCP->CP_NUM,Len(SCR->CR_NUM))))"
 else
-	cFiltro := " CP_STATSA == 'B' .And. !SCR->(dbSeek(xFilial('SCR')+'SA'+PadR(SCP->CP_NUM,Len(SCR->CR_NUM))))"
+	cFiltro := " CP_STATSA == 'B' .AND. !CP_ZSTATUS $'07|09' "//.And. !SCR->(dbSeek(xFilial('SCR')+'SA'+PadR(SCP->CP_NUM,Len(SCR->CR_NUM))))"
 endif
 Return (cFiltro)

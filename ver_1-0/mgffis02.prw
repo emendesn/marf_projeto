@@ -9,7 +9,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Chamada da rotina principal
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -42,7 +42,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Execucao das rotinas que geram os respectivos arquivos texto.
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -56,7 +56,7 @@ Static Function fProcAgreg(oBarra)
 
 	If (Empty(MV_PAR06))
 
-		MsgAlert('O diretorio de destino esta vazio. Reinicie o processamento. ')
+		MsgAlert('O diretorio de destino está vazio. Reinicie o processamento. ')
 
 	Else
 
@@ -65,7 +65,7 @@ Static Function fProcAgreg(oBarra)
 		AADD( aProcessos ,	"fArqFrig(oBarra , MV_PAR06)" 	)///verificar
 		AADD( aProcessos ,	"fNotaSent(oBarra , MV_PAR06)"	)//Verificar
 		AADD( aProcessos ,	"fNotaSen1(oBarra , MV_PAR06)"	)//
-		AADD( aProcessos ,	"fCondenas(oBarra , MV_PAR06)"	) // codigo de condenas
+		AADD( aProcessos ,	"fCondenas(oBarra , MV_PAR06)"	) // código de condenas
 		AADD( aProcessos ,	"fArqGTA(oBarra , MV_PAR06)"	)//
 		AADD( aProcessos ,	"fNotaSAI(oBarra , MV_PAR06)"	)//gerou
 		AADD( aProcessos ,	"fNotaSA1(oBarra , MV_PAR06)"	)//gerou
@@ -98,7 +98,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'Empresas.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO DE EMPRESAS
 =====================================================================================
 */
@@ -232,7 +232,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'Folha.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -245,7 +245,7 @@ Static Function fArqFolha(oBarra , MV_PAR06)
 	Local aDados	:= {}
 	Local nHandle	:= 0
 	Local cLinha	:= ""   
-	Local nTotReg   := 0// Flavio
+	Local nTotReg   := 0// Flávio
 
 	AADD(aLayOut , {(005 - 001) + 1 , "C" , 0}) //PERIODO DA FOLHA DE PAGAMENTO (MM/AA)
 	AADD(aLayOut , {(010 - 006) + 1 , "N" , 0}) // NUMERO DE FUNCIONARIOS NO PERIODO
@@ -421,7 +421,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'NotaSent.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO MESTRE DE NOTAS DE PRODUTOR. Serao selecionadas as notas de entrada associadas as notas de abate no periodo.
 As notas de abate (tabela) serao determinadas na integracao com o Taura.
 =====================================================================================
@@ -518,7 +518,7 @@ Static Function fNotaSent(oBarra , MV_PAR06)
 
 	cQuery		:= " SELECT DISTINCT ZZM_PEDIDO PEDIDO, " + CRLF
 
-	// 30/08/2018 - Atilio	- Alteracao de conteudo de VIVOREND: 'A' ==>> 'R'
+	// 30/08/2018 - Atilio	- Alteração de conteúdo de VIVOREND: 'A' ==>> 'R'
 	//						- VALORNF: '100' ==>> F1_VALMERC
 	//cQuery		+= " ( CASE WHEN ZZN_QTPE = '0'  THEN 'N' ELSE 'S' END) CONDENAS, ZZM_DOC NOTAFISCAL , F1_EMISSAO EMISSAO, A2_CGC DOCUMENTO, 'A' VIVOREND, '100' VALORNF, ZZQ_GTA GTA ,"
 	cQuery		+= "  CASE WHEN (Select SUM(ZZN_QTPE)"
@@ -659,7 +659,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'NotaSen1.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO DETALHE DE NOTAS DE PRODUTOR
 =====================================================================================
 */
@@ -797,7 +797,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'Condenas.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -823,7 +823,7 @@ Static Function fCondenas(oBarra , MV_PAR06)
 
 	cArqSaida	:= MV_PAR06 + 'Condenas.txt'
 	
-	// 31/08/2018 - Atilio - Gerar arquivo vazio, nao ï¿½ necessario gerar informacao. 
+	// 31/08/2018 - Atilio - Gerar arquivo vazio, não é necessário gerar informação. 
 	nHandle	:= fCreate(cArqSaida)
 	
 	fClose(nHandle)
@@ -919,7 +919,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'GTA.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO DE INFORMACOES SOBRE A IDADE DOS ANIMAIS
 =====================================================================================
 */
@@ -1058,29 +1058,29 @@ Static Function fArqGTA(oBarra , MV_PAR06)
 			fGeraQry(cQuery , @cAliasTMP1)
 
 
-			//M04 Animal macho ate 4 meses
+			//M04 Animal macho até 4 meses
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'M04',(cAliasTMP1)->QTD,0))
 
 
-			//F04 Animal femea ate 4 meses	
+			//F04 Animal femea até 4 meses	
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'F04',(cAliasTMP1)->QTD,0))
 
-			//M12 Animal macho ate 12 meses				
+			//M12 Animal macho até 12 meses				
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'M12',(cAliasTMP1)->QTD,0))
 
-			//F12 Animal femea ate 12 meses				
+			//F12 Animal femea até 12 meses				
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'F12',(cAliasTMP1)->QTD,0))
 
-			//M24 Animal macho ate 24 meses				
+			//M24 Animal macho até 24 meses				
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'M24',(cAliasTMP1)->QTD,0))
 
-			//F24 Animal femea ate 24 meses	
+			//F24 Animal femea até 24 meses	
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'F24',(cAliasTMP1)->QTD,0))
 
-			//M36 Animal macho ate 36 meses	
+			//M36 Animal macho até 36 meses	
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'M36',(cAliasTMP1)->QTD,0))
 
-			//F36 Animal femea ate 36 meses	
+			//F36 Animal femea até 36 meses	
 			AADD(aDados,IIF((cAliasTMP)->AGREGA = 'F36',(cAliasTMP1)->QTD,0))	
 
 			//MXX Animal macho acima de 36 meses	
@@ -1119,7 +1119,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'NotasSai.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO MESTRE DE NOTAS DE ENTRADA OU SAIDA (CABECALHO)
 =====================================================================================
 */
@@ -1267,7 +1267,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Gera o arquivo 'NotasSA1.txt'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				ARQUIVO DETALHE DE NOTAS DE ENTRADA OU SAIDA (ITENS)
 =====================================================================================
 */
@@ -1449,7 +1449,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Monta a linha para ser gravada no arquivo saida.
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1514,10 +1514,10 @@ Return cLinha
 Programa.:              fEscreve
 Autor....:              Luis Artuso
 Data.....:              14/10/16
-Descricao / Objetivo:   Grava os dados no arquivo saida
+Descricao / Objetivo:   Grava os dados no arquivo saída
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1543,7 +1543,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Exibe interface para escolha de data, periodo de folha e mes de processamento
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1614,9 +1614,9 @@ Static Function fExibeTela()
 
 	DEFINE FONT oFont01 NAME "ARIAL" SIZE 1,nTamFonte BOLD
 
-	DEFINE MSDIALOG oDlg TITLE "Geracao do arquivo 'FOLHA.TXT' " FROM 000 , 000  TO nDialogX , nDialogY COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg TITLE "Geração do arquivo 'FOLHA.TXT' " FROM 000 , 000  TO nDialogX , nDialogY COLORS 0, 16777215 PIXEL
 
-	@ 004 , 003 TO nLabelIni , nLabelFim LABEL "Informe os dados para geracao do arquivo" PIXEL OF oDlg
+	@ 004 , 003 TO nLabelIni , nLabelFim LABEL "Informe os dados para geração do arquivo" PIXEL OF oDlg
 
 	nLin01	:= 16
 
@@ -1628,7 +1628,7 @@ Static Function fExibeTela()
 
 	cGet01	:= Space(05)
 
-	@ nLin01 , nCol01 SAY oSay1 PROMPT " Informe o perï¿½odo da folha de pagamento (Formato MM/AA) :" SIZE nSize01 , 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
+	@ nLin01 , nCol01 SAY oSay1 PROMPT " Informe o período da folha de pagamento (Formato MM/AA) :" SIZE nSize01 , 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
 
 	@ nLin01 , nCol01 + nSize01 MSGET oGet01 VAR cGet01 SIZE nSize02 , 010 OF oDlg COLORS 0, 16777215 PIXEL
 
@@ -1642,7 +1642,7 @@ Static Function fExibeTela()
 
 	cGet02	:= Space(05)
 
-	@ nLin02, nCol02 SAY oSay1 PROMPT " Informe o numero de funcionarios :" SIZE nSize03 , 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
+	@ nLin02, nCol02 SAY oSay1 PROMPT " Informe o número de funcionários :" SIZE nSize03 , 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
 
 	@ nLin02 , nCol02 + nSize03 MSGET oGet02 VAR cGet02 SIZE nSize04 , 010 OF oDlg COLORS 0, 16777215 PIXEL
 
@@ -1682,7 +1682,7 @@ Data.....:              14/10/16
 Descricao / Objetivo:   Exibe pergunte
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1704,7 +1704,7 @@ Data.....:              17/10/16
 Descricao / Objetivo:   Executa a query e gera o arquivo temporario
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1741,7 +1741,7 @@ Data.....:              17/10/16
 Descricao / Objetivo:   Valida se a variavel 'MV_PAR06' possui '\'
 Doc. Origem:            Contrato - GAP FIS46
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1761,7 +1761,7 @@ Return
 /*
 =====================================================================================
 {Protheus.doc} AtuSX1
-Atualizaï¿½ï¿½o do SX1 - Perguntas
+Atualização do SX1 - Perguntas
 
 @author TOTVS Protheus
 @since  12/04/2017
@@ -1798,7 +1798,7 @@ Static Function AtuSX1()
 
 
 	//
-	// Atualizando dicionï¿½rio
+	// Atualizando dicionário
 	//
 	dbSelectArea( "SX1" )
 	SX1->( dbSetOrder( 1 ) )

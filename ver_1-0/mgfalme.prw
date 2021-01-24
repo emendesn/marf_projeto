@@ -7,11 +7,11 @@
 Programa.:              MGFALME
 Autor....:              Anderson Reis   
 Data.....:              21/10/2019 
-Descricao / Objetivo:   Integracao PROTHEUS - MERCADO ELETRï¿½NICO
+Descricao / Objetivo:   Integração PROTHEUS - MERCADO ELETRÔNICO
 Doc. Origem:            Contrato Compras
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de Entrada MT120ALT para nao permitir alterar pedido do ME
+Uso......:              Marfrig
+Obs......:              Ponto de Entrada MT120ALT para não permitir alterar pedido do ME
                         !Empty(SC7->C7_ZPEDME)
 ============================================================================================
 */
@@ -29,7 +29,7 @@ If FunName() == 'MATA121' .And. (Paramixb[1] == 4 .OR. Paramixb[1] == 5 .OR. Par
 			
 			return .t.
 		Else
-			MsgAlert(FunName() +'Este Pedido foi integrado via Mercado Eletronico (ME), nao ï¿½ possivel Alterar/Excluir/Copiar')
+			MsgAlert(FunName() +'Este Pedido foi integrado via Mercado Eletronico (ME), não é possivel Alterar/Excluir/Copiar')
 			lExecuta := .F.
 		endif
 	EndIf

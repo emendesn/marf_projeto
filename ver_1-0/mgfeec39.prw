@@ -8,10 +8,10 @@
 Programa............: MGFEEC39
 Autor...............: Joni Lima
 Data................: 20/11/2017
-Descricao / Objetivo: Cadastro Courier
+Descrição / Objetivo: Cadastro Courier
 Doc. Origem.........: Contrato - GAP COMEX 035
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro Courier
 =====================================================================================
 */
@@ -32,11 +32,11 @@ return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 20/11/2017
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP COMEX 035
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -56,11 +56,11 @@ return (aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 20/11/2017
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP COMEX 035
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro Courier
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro Courier
 =====================================================================================
 */
 Static Function ModelDef()
@@ -91,11 +91,11 @@ Return oModel
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP COMEX 035
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizacao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()
@@ -127,7 +127,7 @@ Return oView
 Programa............: xMGF39Men
 Autor...............: Joni Lima
 Data................: 21/11/2017
-Descricao / Objetivo: Botï¿½o para inclisï¿½o de Courier
+Descrição / Objetivo: Botão para inclisão de Courier
 Doc. Origem.........: Contrato - GAP COMEX 035
 =====================================================================================
 */
@@ -144,7 +144,7 @@ Return
 Programa............: xMGF39EVW
 Autor...............: Joni Lima
 Data................: 21/11/2017
-Descricao / Objetivo: Execucao de View
+Descrição / Objetivo: Execução de View
 Doc. Origem.........: Contrato - GAP COMEX 035
 =====================================================================================
 */
@@ -177,11 +177,11 @@ User Function xMGF39I(cTipo)
 
 			WORKIP->(RestArea(aAreaWI))
 
-			If Type("aObjs[2]:oBrowse") = "O" // testa, pois quando ï¿½ dado o end da dialog, o oBrowse nao existe mais.
+			If Type("aObjs[2]:oBrowse") = "O" // testa, pois quando é dado o end da dialog, o oBrowse não existe mais.
 				aObjs[2]:oBrowse:Refresh() //Atualiza os dados do browse da GetDados
 			EndIf
 
-			If Type("aObjs[3]:oBrowse") = "O" // testa, pois quando ï¿½ dado o end da dialog, o oBrowse nao existe mais.
+			If Type("aObjs[3]:oBrowse") = "O" // testa, pois quando é dado o end da dialog, o oBrowse não existe mais.
 				aObjs[3]:oBrowse:Refresh() //Atualiza os dados do browse da GetDados
 			EndIf
 		EndIf
@@ -190,7 +190,7 @@ User Function xMGF39I(cTipo)
 Return
 
 /*/{Protheus.doc} xMGF39t
-//TODO Atualiza valores para Total Reimportaï¿½ï¿½o
+//TODO Atualiza valores para Total Reimportação
 @author leonardo.kume
 @since 21/12/2017
 @version 6
@@ -222,11 +222,11 @@ User Function xMGF39t(cTipo)
 			
 			WORKOPOS->(RestArea(aAreaWI))
 			
-			If Type("aObjs[2]:oBrowse") = "O" // testa, pois quando ï¿½ dado o end da dialog, o oBrowse nao existe mais.
+			If Type("aObjs[2]:oBrowse") = "O" // testa, pois quando é dado o end da dialog, o oBrowse não existe mais.
 				aObjs[2]:oBrowse:Refresh() //Atualiza os dados do browse da GetDados
 			EndIf
 	
-			If Type("aObjs[3]:oBrowse") = "O" // testa, pois quando ï¿½ dado o end da dialog, o oBrowse nao existe mais.
+			If Type("aObjs[3]:oBrowse") = "O" // testa, pois quando é dado o end da dialog, o oBrowse não existe mais.
 				aObjs[3]:oBrowse:Refresh() //Atualiza os dados do browse da GetDados
 			EndIf
 		EndIf
@@ -274,7 +274,7 @@ User Function xMGF39v(cParam)
 		DbSetOrder(1)
 		If DbSeek(xFilial("EEC","900001")+cEmbarque)
 			If cOffCanc == "1"
-					MsgInfo("ï¿½ necessario cancelar o embarque na empresa Offshore.","Atencao")
+					MsgInfo("É necessário cancelar o embarque na empresa Offshore.","Atenção")
 			EndIf
 			RecLock("EEC",.F.)
 				EEC->EEC_ZCONDP := aDados[1]

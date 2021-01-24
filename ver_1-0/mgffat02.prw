@@ -8,7 +8,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro departamentos utilizada na tabela de preco
 =====================================================================================
 */
@@ -48,7 +48,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de Tipos de pedido
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao de tipo de pedido
 =====================================================================================
 */
@@ -57,7 +57,7 @@ User Function T02Del()
 DbSelectArea("SZF")
 DbSetOrder(2)
 If DbSeek(xFilial("SZF")+SZD->ZD_COD)
-	MsgInfo("Nao ï¿½ possivel excluir este departamento porque possui relacionamento com tabela de preco!","Atencao")
+	MsgInfo("Não é possivel excluir este departamento porque possui relacionamento com tabela de preço!","Atenção")
 Else
 	DbSelectArea("SZE")
 	DbSetOrder(1)
@@ -88,8 +88,8 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos X Usuarios
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela para Amarracao entre o Departamento x Usuarios
+Uso.................: Marfrig
+Obs.................: Tela para Amarração entre o Departamento x Usuarios
 =====================================================================================
 */       
 
@@ -130,7 +130,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina de inclusao de favorecidos
 =====================================================================================
 */
@@ -153,7 +153,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFAT02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina de Exclusao da amarracao Fornecedor x Usuario
 =====================================================================================
 */
@@ -182,7 +182,7 @@ Local lRet	:= .T.
 DbSelectArea("SZE")
 DbSetOrder(1)
 If DbSeek(xFilial("SZE")+M->ZE_CODDEP+M->ZE_USER)
-	MsgInfo("Funcionario jï¿½ cadastrado para este departamento!")
+	MsgInfo("Funcionario já cadastrado para este departamento!")
 	lRet:=.F.
 Endif
 

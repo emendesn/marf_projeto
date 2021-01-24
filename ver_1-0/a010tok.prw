@@ -10,10 +10,10 @@
 Programa............: A010TOK
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integra��o 
 Doc. Origem.........: Contrato GAPS - MIT044- Cadastro de Fornecedores
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada no final do cadastro de Fornecedores
 =====================================================================================
 */
@@ -44,7 +44,7 @@ If lRet
 	EndIF         
 Endif	
 
-// Marca para Integracao com Eletronico 
+// Marca para integra��o com Eletr�nico 
 // 26/02/2020
 
 If lRet

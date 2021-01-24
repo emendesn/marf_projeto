@@ -468,10 +468,16 @@ static function WSC26PRO(_ctabela)
 	cQryDA0 += " 		DA1.DA1_CODPRO	=	SB1.B1_COD"							+ CRLF
 	cQryDA0 += " 	AND	SB1.B1_FILIAL	=	'" + xFilial("SB1") + "'"			+ CRLF
 	cQryDA0 += " 	AND	SB1.D_E_L_E_T_	<>	'*'"								+ CRLF
+	cQryDA0 += " 	LEFT JOIN ZA4010 ZA4"										+ CRLF
+ 	cQryDA0 += " 	ON"															+ CRLF
+ 	cQryDA0 += " 		ZA4.ZA4_CODIGO	=	SB1.B1_ZCCATEG"						+ CRLF
+ 	cQryDA0 += " 	AND	ZA4.ZA4_FILIAL	=	'      '"							+ CRLF
+ 	cQryDA0 += " 	AND	ZA4.D_E_L_E_T_	<>	'*'"								+ CRLF
 
 	cQryDA0 += " WHERE"															+ CRLF
 	cQryDA0 += " 		DA0.DA0_XENVEC	=	'1'"								+ CRLF // Envia E-Commerce		-> 0=Nao;1=Sim
 	cQryDA0 += "    AND SB1.B1_ZSTATEC = '1' "									+ CRLF //Só manda produtos já cadastrados no commerce
+	cQryDA0 += "    AND ZA4.ZA4_CODIGO	>	' '"								+ CRLF                               
 	cQryDA0 += "    AND SB1.B1_ZLINHA > ' ' "									+ CRLF
 	cQryDA0 += " 	AND	DA1.DA1_XENEEC	<>	'1' "								+ CRLF
 	cQryDA0 += " 	AND	DA0.DA0_FILIAL	=	'" + xFilial("DA0") + "'"			+ CRLF

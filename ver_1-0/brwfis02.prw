@@ -12,7 +12,7 @@ Data.....:              19/01/2017
 Descricao / Objetivo:   Browse Log Recebimento XML
 Doc. Origem:            FIS02
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Programa para recebimento do xml do fornecedor
 =====================================================================================
 */
@@ -49,10 +49,10 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('XBRWFIS02',/**/ , , , /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'SZ8MASTER', /*cOwner*/, oStruSZ8, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"Z8_FILIAL","Z8_DOC","Z8_SERIE","Z8_FORNECE"})
 
 	// Adiciona a descricao do Modelo de Dados
@@ -72,13 +72,13 @@ Static Function ViewDef()
 	Local oModel   := FWLoadModel( 'BRWFIS02' )
 	Local oView
 
-	// Remove o campo Codigo Regiao do detalhe
+	// Remove o campo Codigo Região do detalhe
 	oStruSZ8:RemoveField( "Z8_STATUS" )
 
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -147,7 +147,7 @@ Static Function xPcArqXml()
 			cDirPro := SuperGetMv("MGF_XMLEXC",,"\EXECUTADOS"		)
 			cDirRej := SuperGetMv("MGF_XMLREJ",,"\REJEITADOS"		)
 
-			//Cria diretorios automaticamente, caso nao exista, conforme parametros acima
+			//Cria diretórios automaticamente, caso não exista, conforme parametros acima
 			MakeDir(cDirXml)
 			MakeDir(cDirXml+cDirArq)
 			MakeDir(cDirXml+cDirPro)

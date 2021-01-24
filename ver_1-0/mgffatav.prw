@@ -11,7 +11,7 @@ Data.....:              27/03/2019
 Descricao / Objetivo:   Integracao PROTHEUS x Multiembarcador - XML NF - Retorno
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              WS Server para Integracao PROTHEUS x Multiembarcador - xml NF - RETORNO
 Componentes da integracao:
 Integracao PROTHEUS x Multiembarcador - XML NF - Retorno
@@ -39,7 +39,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFFATAV DESCRIPTION "Integracao Protheus x Multiembarcador - XML NF - RETORNO" NameSpace "http://totvs.com.br/MGFFATAV.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos par�metros de entrada
 	WSDATA MGFFATAVReqXML AS MGFFATAVRequisXML
 	// Retorno (array)
 	WSDATA MGFFATAVRetXML AS MGFFATAVRetornoXML
@@ -61,7 +61,7 @@ WSMETHOD RetornoXML WSRECEIVE	MGFFATAVReqXML WSSEND MGFFATAVRetXML WSSERVICE MGF
 	::MGFFATAVReqXML:OrdemEmbarque,;
 	::MGFFATAVReqXML:PV			,;
 	::MGFFATAVReqXML:MSGRetorno		,;
-	::MGFFATAVReqXML:Token			})	// Passagem de parametros para rotina
+	::MGFFATAVReqXML:Token			})	// Passagem de par�metros para rotina
 
 
 

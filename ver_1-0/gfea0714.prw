@@ -3,13 +3,13 @@
 /*
 =========================================================================================================
 Programa.................: GFEA0714
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Cadastro de alcada de Aprovacao
+Descrição / Objetivo.....: Cadastro de alçada de aprovação
 Doc. Origem..............: GAP - GFE02
 Solicitante..............: Cliente
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de Faturas de Frete conforme tabela de aprovadores
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de Faturas de Frete conforme tabela de aprovadores
 =========================================================================================================
 */              
 

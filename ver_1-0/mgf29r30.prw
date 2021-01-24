@@ -1,15 +1,15 @@
 #include "totvs.ch"  
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF29R30	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½  25/05/18  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAï¿½ï¿½O - Aprovacao por orï¿½amento		       ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com elesï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																											   ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF29R30	ºAutor  ³ Geronimo Benedito Alves																	ºData ³  25/05/18  º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAÇÃO - Aprovação por orçamento		       º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com elesº±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																											   º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF29R30()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -17,46 +17,46 @@ User Function MGF29R30()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "EXPORTAï¿½ï¿½O - Aprovacao por orï¿½amento"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Aprovacao por orï¿½amento"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Aprovacao por orï¿½amento"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Aprovacao por orï¿½amento"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "EXPORTAÇÃO - Aprovação por orçamento"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Aprovação por orçamento"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Aprovação por orçamento"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Aprovação por orçamento"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 35											//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02									 03					 04	 05		 06	 07		 08		 09	
-	Aadd(_aCampoQry, {"ZZC_ORCAME"	,"NUM_ORCAMENTO		as NUMORCAMEN"	,"Nï¿½ Orcamento"		,"C",006	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZC_ZANOOR"	,"ANO_ORCAMENTO		as ANOORCAMEN"	,"Ano Orcamento"	,"C",002	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZC_ORCAME"	,"NUM_ORCAMENTO		as NUMORCAMEN"	,"Nº Orçamento"		,"C",006	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZC_ZANOOR"	,"ANO_ORCAMENTO		as ANOORCAMEN"	,"Ano Orçamento"	,"C",002	,0	,""		,""		,""	})
 	Aadd(_aCampoQry, {"ZZC_DTPROC"	,"DATA_PROCESSO		as DATAPROCES"	,"Data do Processo"	,"D",008	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_IMPORTADOR	as CODIMPORTA"	,"Codigo Importador","C",006	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_IMPORTADOR	as CODIMPORTA"	,"Código Importador","C",006	,0	,""		,""		,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_IMPORTADOR	as NOMEIMPORT"	,"Nome Iportador"	,"C",040	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZC_FILIAL"	,"COD_FILIAL"						,"Cï¿½d. Filial"		,"C",006	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZC_FILIAL"	,"COD_FILIAL"						,"Cód. Filial"		,"C",006	,0	,""		,""		,""	})
 	Aadd(_aCampoQry, {"M0_NOME"		,"NOME_FILIAL		as NOM_FILIAL"	,"Nome da Filial"	,"C",040	,0	,""		,""		,""	})
 	Aadd(_aCampoQry, {"ZZC_ZOBSWE"	,"NOTAS_WEEK"						,"Notas Week"		,"C",090	,0	,""		,""		,""	})
 	Aadd(_aCampoQry, {"YR_CID_DES"	,"PORTO_DESTINO		as PORTODESTI"	,"Porto Destino"	,"C",020	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"XXZZGSTAT1"	,"NIVEL1"							,"Nï¿½vel 1"			,"C",025	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL1		as DATANIVEL1"	,"Data Nï¿½vel 1"		,"D",008	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"XXZZGSTAT2"	,"NIVEL2"							,"Nï¿½vel 2"			,"C",025	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL2		as DATANIVEL2"	,"Data Nï¿½vel 2"		,"D",008	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"XXZZGSTAT3"	,"NIVEL3"							,"Nï¿½vel 3"			,"C",025	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL3		as DATANIVEL3"	,"Data Nï¿½vel 3"		,"D",008	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"XXZZGSTAT4"	,"NIVEL4"							,"Nï¿½vel 4"			,"C",025	,0	,""		,""		,""	})
-	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL4		as DATANIVEL4"	,"Data Nï¿½vel 4"		,"D",008	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"XXZZGSTAT1"	,"NIVEL1"							,"Nível 1"			,"C",025	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL1		as DATANIVEL1"	,"Data Nível 1"		,"D",008	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"XXZZGSTAT2"	,"NIVEL2"							,"Nível 2"			,"C",025	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL2		as DATANIVEL2"	,"Data Nível 2"		,"D",008	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"XXZZGSTAT3"	,"NIVEL3"							,"Nível 3"			,"C",025	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL3		as DATANIVEL3"	,"Data Nível 3"		,"D",008	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"XXZZGSTAT4"	,"NIVEL4"							,"Nível 4"			,"C",025	,0	,""		,""		,""	})
+	Aadd(_aCampoQry, {"ZZG_DTAPRO"	,"DATA_NIVEL4		as DATANIVEL4"	,"Data Nível 4"		,"D",008	,0	,""		,""		,""	})
 
 	aAdd(_aParambox,{1,"Data do Processo Inicial"	,Ctod("")	,""		,"" 													,""		,"",050,.T.})
 	aAdd(_aParambox,{1,"Data do Processo Final  "	,Ctod("")	,""		,"U_VLFIMMAI(MV_PAR01, MV_PAR02, 'Data do Processo')"	,""		,"",050,.T.})
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
 	_cQuery += "  FROM " + U_IF_BIMFR( "IF_BIMFR", "V_EX_APROVACAOORCAMENTO" ) + " A " +CRLF
-	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " DATA_PROCESSO_FILTRO   BETWEEN '" + _aRet[1] + "' AND '" + _aRet[2] + "' " ) // OBRIGATORIO, SEM VALIDAï¿½ï¿½O DE INTERVALO DE DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " DATA_PROCESSO_FILTRO   BETWEEN '" + _aRet[1] + "' AND '" + _aRet[2] + "' " ) // OBRIGATORIO, SEM VALIDAÇÃO DE INTERVALO DE DIAS
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MsgRun("Aguarde!!! Montando\Desconectando Tela"	,,{ ||U_TGridRel()})
 RETURN

@@ -7,10 +7,10 @@
 Programa............: M290QSD2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Ponto de entrada consumo medio para atender Sr. Amauri
+Descrição / Objetivo: Ponto de entrada consumo médio para atender Sr. Amauri
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */

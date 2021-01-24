@@ -10,8 +10,8 @@ Data.....:              19/10/2016
 Descricao / Objetivo:   Fonte chamado do Ponto de Entrada para filtrar o despachante logado
 Doc. Origem:            Easy Import Control - GAP EIC07
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de entrada padrao MVC EICDI500                   
+Uso......:              Marfrig
+Obs......:              Ponto de entrada padrão MVC EICDI500                   
 =====================================================================================
 */
 

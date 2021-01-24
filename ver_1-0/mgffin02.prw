@@ -22,7 +22,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro de fornecedor x favorecido
 =====================================================================================
 */
@@ -62,7 +62,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina de inclusao de favorecidos
 =====================================================================================
 */
@@ -88,8 +88,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Rotina para retorno da descricao de campos no inicializador mbrowse
+Uso.................: Marfrig
+Obs.................: Rotina para retorno da descrição de campos no inicializador mbrowse
 ==========================================================================================
 */
 User Function F02RetNom (cCampo) 
@@ -129,7 +129,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona opcao no menu de fornecedores
 =====================================================================================
 */
@@ -164,7 +164,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gatilho para retorno das informacoes do fornecedor
 =====================================================================================
 */
@@ -209,7 +209,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina validacao da digitacao do favorecido
 =====================================================================================
 */
@@ -255,7 +255,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina que valida o preenchimento do fornecedor antes do favorecido
 =========================================================================================
 */
@@ -272,7 +272,7 @@ DEFAULT xLojFav	:= ""
 
 If !IsInCallStack('U_MGFCOM15')
 	If Empty(xcod) .OR. Empty(xLoja) 
-		Alert("Para preencher o campo ï¿½ necessario informar primeiro o Codigo/Loja do fornecedor!")
+		Alert("Para preencher o campo é necessário informar primeiro o Código/Loja do fornecedor!")
 		M->E2_ZCODFAV 	:= space(6)
 		M->E2_ZLOJFAV	:= space(2)
 		M->E2_ZNOMFAV	:= space(60)
@@ -294,8 +294,8 @@ If !IsInCallStack('U_MGFCOM15')
 		M->E2_ZCGCFAV	:= Space(Len("E2_ZCGCFAV"))
 	Else
 		
-	//	cChave := xCod+ xLoja+ xCodFav+xLojFav  - Rafael Garcia - alteracao para desconsiderar a loja do fornecedor conforme  
-	//solicitacao do usuario Mauricio e validado pelo analista Eric da Totvs 
+	//	cChave := xCod+ xLoja+ xCodFav+xLojFav  - Rafael Garcia - alteração para desconsiderar a loja do fornecedor conforme  
+	//solicitação do usuário Mauricio e validado pelo analista Eric da Totvs 
 		cQuery := " SELECT SZA.ZA_MSBLQL "
 		cQuery += " FROM "+RetSQLName("SZA") + "  SZA  "
 		cQuery += " WHERE SZA.ZA_FILIAL = '" + xFilial("SZA") + "' AND SZA.ZA_CODFORN = '" + xCod + "'"  
@@ -310,7 +310,7 @@ If !IsInCallStack('U_MGFCOM15')
 		If (cAlias2)->(Eof())
 
 			lRet := .F.
-	  		Alert("Favorecido nao cadastrado para este fornecedor!")  
+	  		Alert("Favorecido não cadastrado para este fornecedor!")  
 		Else
 			If (cAlias2)->ZA_MSBLQL == "1" .or. Posicione("SA2",1,xFilial("SA2")+M->E2_ZCODFAV+M->E2_ZLOJFAV,"A2_MSBLQL") == "1"
 				lRet := .F.
@@ -344,7 +344,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Favorecidos por Fornecedor
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta especifica para chamada da rotina no F3 do campo
 =====================================================================================
 */
@@ -387,7 +387,7 @@ Endif
 
 //Query de marca x produto x referencia
 
-//Rafael Garcia - alteracao na query para desconsiderar a loja do fornecedor conforme solicitacao do usuario Mauricio e 
+//Rafael Garcia - alteração na query para desconsiderar a loja do fornecedor conforme solicitação do usuário Mauricio e 
 //validado pelo analista Eric da Totvs 
 cQuery := " SELECT ZA_CODFAV, ZA_LOJFAV, A2_BANCO, A2_AGENCIA, A2_NUMCON, A2_NOME "
 cQuery += " FROM "+RetSQLName("SZA") + "  SZA  "
@@ -402,7 +402,7 @@ DbUseArea(.T.,"TOPCONN", TCGENQRY(,,cQuery),cAlias1, .F., .T.)
  
 (cAlias1)->(DbGoTop())
 If (cAlias1)->(Eof())
-	Aviso( "Cadastro de Favorecido", "Nao existe dados a consultar", {"Ok"} )
+	Aviso( "Cadastro de Favorecido", "Não existe dados a consultar", {"Ok"} )
 	Return .F.
 Endif
  
@@ -449,7 +449,7 @@ cCodigo := aDadosSZA[_nPos,1]
  
 //aCols[n,nPosMarca] := cCodigo
  
-cCodFav := aDadosSZA[_nPos,1]    //Nao esquecer de alimentar essa variavel quando for f3 pois ela e o retorno e se estiver com valor diferente complica.
+cCodFav := aDadosSZA[_nPos,1]    //Não esquecer de alimentar essa variável quando for f3 pois ela e o retorno e se estiver com valor diferente complica.
 cLojFav	:= Alltrim(aDadosSZA[_nPos,2])  
 cNomFav	:= Alltrim(aDadosSZA[_nPos,3])  
 
@@ -499,7 +499,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Validar a exclusao do favorecido
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -528,7 +528,7 @@ cQuery := ChangeQuery(cQuery)
 dbUseArea(.T., 'TOPCONN', TcGenQry(,,cQuery), _cAliasSL1)
  
 If !(_cAliasSL1)->( Eof() )
-	Aviso( "Cadastro de Favorecido", "Existe titulos a pagar em nome deste favorecido. Registro nao pode ser excluido!", {"Ok"} )
+	Aviso( "Cadastro de Favorecido", "Existe títulos a pagar em nome deste favorecido. Registro não pode ser excluido!", {"Ok"} )
 	lRet := .F.
 Endif
 
@@ -547,7 +547,7 @@ Data................: 20/04/2018
 Descricao / Objetivo: Validar conta de pecuarista
 Doc. Origem.........: Contrato - GAP MGFFIN02
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta especifica para chamada da rotina no F3 do campo
 =====================================================================================
 */
@@ -591,7 +591,7 @@ If Empty(cCodigo+cLojaFor)
 	Return
 Endif
 
-//Barbieri - criacao de query para buscar o pecuarista pelo A2_TIPO = 'F' E A2_GRPTRIB IN ('FPF','FRR') 
+//Barbieri - criação de query para buscar o pecuarista pelo A2_TIPO = 'F' E A2_GRPTRIB IN ('FPF','FRR') 
 //validado pelo analista Eric da Totvs 
 cQuery := " SELECT DISTINCT FIL_FORNEC, FIL_LOJA, FIL_BANCO, FIL_AGENCI, FIL_CONTA, A2_NOME, FIL_TIPO, FIL_TIPCTA  "
 cQuery += " FROM "+RetSQLName("SA2") + "  SA2,  " + RetSQLName("FIL") + " FIL "
@@ -610,7 +610,7 @@ DbUseArea(.T.,"TOPCONN", TCGENQRY(,,cQuery),cAlias1, .F., .T.)
  
 (cAlias1)->(DbGoTop())
 If (cAlias1)->(Eof())
-	Aviso( "Pecuaristas", "Nao existem contas bancï¿½rias cadastradas para o pecuarista.", {"Ok"} )
+	Aviso( "Pecuaristas", "Não existem contas bancárias cadastradas para o pecuarista.", {"Ok"} )
 	Return .F.
 Endif
  
@@ -657,7 +657,7 @@ cCodigo := aDadosPEC[_nPos,1]
  
 //aCols[n,nPosMarca] := cCodigo
  
-cCodPec     := aDadosPEC[_nPos,1]    //Nao esquecer de alimentar essa variavel quando for f3 pois ela e o retorno e se estiver com valor diferente complica.
+cCodPec     := aDadosPEC[_nPos,1]    //Não esquecer de alimentar essa variável quando for f3 pois ela e o retorno e se estiver com valor diferente complica.
 cLojPec	    := Alltrim(aDadosPEC[_nPos,2])  
 cNomPec	    := Alltrim(aDadosPEC[_nPos,3])  
 cBcoPec	    := Alltrim(aDadosPEC[_nPos,4])

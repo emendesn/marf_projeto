@@ -3,10 +3,10 @@
 Programa.:              MA415MNU 
 Autor....:              Marcelo Carneiro
 Data.....:              Jun/2018
-Descricao / Objetivo:   P.E. em Orcamento para inclusao de rotinas do Pre Pedido
+Descricao / Objetivo:   P.E. em Orçamento para inclusão de rotinas do Pré Pedido
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

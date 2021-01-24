@@ -9,7 +9,7 @@ Data.....:              11/2018
 Descricao / Objetivo:   Tratamento solicit. armazem                        
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================================
 */
 User Function MGFEST50()

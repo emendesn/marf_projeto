@@ -8,7 +8,7 @@ Data.....:              Fev/2017
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada MTA094RO
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -38,20 +38,20 @@ Local cGrupo := ""
 Local lGrupo := .F.
 
 If SCR->CR_STATUS $ "02,06"
-	Help(" ",1,"A097NOESTOR")  //Nao e possivel estornar o documento selecionado.
+	Help(" ",1,"A097NOESTOR")  //Não é possivel estornar o documento selecionado.
 	lRet := .F.
 ElseIf SCR->CR_STATUS $ "04"
-	Help(" ",1,"A097BLQ") // Esta operacao nao podera ser realizada pois este registro se encontra bloqueado pelo sistema
+	Help(" ",1,"A097BLQ") // Esta operação não poderá ser realizada pois este registro se encontra bloqueado pelo sistema
 	lRet := .F.
 ElseIf SCR->CR_TIPO == "MD"
 	CND->(dbSetOrder(4))
 	CND->(MsSeek(xFilial("CND")+Substr(SCR->CR_NUM,1,Len(CND->CND_NUMMED))))
 	If !Empty(CND->CND_PEDIDO) .Or. !Empty(CND->CND_NUMTIT)
-		Help(" ",1,"A097MDEST")  //Este documento possui mediï¿½ï¿½es encerradas e nao sera possivel realizar o seu estorno //Para realizar o seu estorno devera ser feito o estorno da medicao.
+		Help(" ",1,"A097MDEST")  //Este documento possui medições encerradas e não será possivel realizar o seu estorno //Para realizar o seu estorno deverá ser feito o estorno da medição.
 		lRet := .F.
 	EndIf
 ElseIf SCR->CR_TIPO == "RV"
-	Help(" ",1,"NAODISPONIVEL") //Opcao acionada nao esta disponivel para o tipo de documento selecionado. 
+	Help(" ",1,"NAODISPONIVEL") //Opção acionada não está disponivel para o tipo de documento selecionado. 
 	lRet := .F.
 Else
 	
@@ -61,7 +61,7 @@ Else
 		SF1->(dbSetOrder(1))
 		cChave := Substr(SCR->CR_NUM,1,Len(SF1->F1_DOC+SF1->F1_SERIE+SF1->F1_FORNECE+SF1->F1_LOJA))
 		If SF1->(MsSeek(xFilial("SF1")+cChave))
-			// caso status da nf esteja com A/B, ï¿½ necessario limpar o status, senao rotina padrao A097Estorna nao eh executada 
+			// caso status da nf esteja com A/B, é necessario limpar o status, senao rotina padrao A097Estorna nao eh executada 
 			//If SF1->F1_STATUS $ "AB"
 			If SF1->F1_STATUS $ "B"			
 				SF1->(RecLock("SF1",.F.))

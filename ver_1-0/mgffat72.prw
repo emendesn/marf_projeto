@@ -3,10 +3,10 @@
 Programa.:              MGFFAT72
 Autor....:              Atilio Amarilla
 Data.....:              11/04/2018
-Descricao / Objetivo:   Verifica C6_PRCVEN na montagem do aCols na Devolucao de Compras.
+Descricao / Objetivo:   Verifica C6_PRCVEN na montagem do aCols na Devolução de Compras.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado por PE M410PCDV, rotina MATA410. A410Devol.
 =====================================================================================
 */
@@ -16,9 +16,9 @@ Local nPPrcVen	:= aScan(aHeader,{|x| AllTrim(x[2])=="C6_PRCVEN"})
 Local nPQtdVen	:= aScan(aHeader,{|x| AllTrim(x[2])=="C6_QTDVEN"})
 Local nPValVen	:= aScan(aHeader,{|x| AllTrim(x[2])=="C6_VALOR"})
 Local nPPosLin	:= Len( aCols )
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Verificacao de C6_PRCVEN na montagem do aCols			   ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Verificação de C6_PRCVEN na montagem do aCols			   ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If IsInCallStack("A410Devol")
 	If aCols[nPPosLin][nPQtdVen] > 0 .and. a410Arred(aCols[nPPosLin][nPPrcVen] * aCols[nPPosLin][nPQtdVen],"C6_VALOR") <>  aCols[nPPosLin][nPValVen]
 		If aCols[nPPosLin][nPPrcVen] <> a410Arred(aCols[nPPosLin][nPValVen]/aCols[nPPosLin][nPQtdVen],"C6_PRCVEN")

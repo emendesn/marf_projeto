@@ -9,7 +9,7 @@ Data.....:              Set/2017
 Descricao / Objetivo:   Rotina de exportacao em arquivo .CSV para integracao com o sistema Hyperion
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -169,7 +169,7 @@ Elseif mv_par04 == 1 .and. mv_par07 == 1 .and. mv_par10 == 2 .and. mv_par13 == 1
 	//lImp3Ent := .T.
 	lComp := .T.
 	cTipo := "12"
-	ApMsgStop("Parametros para considerar Entidades Contï¿½beis ('Sim'/'Nao'), incorretos para execucao desta rotina.")
+	ApMsgStop("Parâmetros para considerar Entidades Contábeis ('Sim'/'Nao'), incorretos para execução desta rotina.")
 	Return()
 	cTipo := "12"
 // conta x item x classe
@@ -180,7 +180,7 @@ Elseif mv_par04 == 1 .and. mv_par07 == 2 .and. mv_par10 == 1 .and. mv_par13 == 1
 	//lImp3Ent := .T.
 	lComp := .T.
 	cTipo := "13"
-	ApMsgStop("Parametros para considerar Entidades Contï¿½beis ('Sim'/'Nao'), incorretos para execucao desta rotina.")
+	ApMsgStop("Parâmetros para considerar Entidades Contábeis ('Sim'/'Nao'), incorretos para execução desta rotina.")
 	Return()
 	cTipo := "13"
 // custo x item x classe
@@ -190,11 +190,11 @@ Elseif mv_par04 == 2 .and. mv_par07 == 1 .and. mv_par10 == 1 .and. mv_par13 == 1
 	//cHeader := "CTT"
 	lComp := .T.
 	cTipo := "14"
-	ApMsgStop("Parametros para considerar Entidades Contï¿½beis ('Sim'/'Nao'), incorretos para execucao desta rotina.")
+	ApMsgStop("Parâmetros para considerar Entidades Contábeis ('Sim'/'Nao'), incorretos para execução desta rotina.")
 	Return()
 	cTipo := "14"
-	//APMsgStop("Conta Contï¿½bil nao considerada."+CRLF+;
-	//"Considere sempre a Conta Contï¿½bil nesta rotina.")
+	//APMsgStop("Conta Contábil não considerada."+CRLF+;
+	//"Considere sempre a Conta Contábil nesta rotina.")
 	//Return()
 // conta x custo x item x classe
 Elseif mv_par04 == 1 .and. mv_par07 == 1 .and. mv_par10 == 1 .and. mv_par13 == 1
@@ -204,11 +204,11 @@ Elseif mv_par04 == 1 .and. mv_par07 == 1 .and. mv_par10 == 1 .and. mv_par13 == 1
 	//lImp4Ent := .T.
 	lComp := .T.
 	cTipo := "15"
-	ApMsgStop("Parametros para considerar Entidades Contï¿½beis ('Sim'/'Nao'), incorretos para execucao desta rotina.")
+	ApMsgStop("Parâmetros para considerar Entidades Contábeis ('Sim'/'Nao'), incorretos para execução desta rotina.")
 	Return()
 	cTipo := "15"
 Else
-	ApMsgStop("Parametros para considerar Entidades Contï¿½beis ('Sim'/'Nao'), incorretos para execucao desta rotina.")
+	ApMsgStop("Parâmetros para considerar Entidades Contábeis ('Sim'/'Nao'), incorretos para execução desta rotina.")
 	Return()
 Endif
 
@@ -249,14 +249,14 @@ If XX8->(dbSeek(Padr(FWGrpCompany(),12)+Padr(mv_par03,12)))
 Endif		
 
 If Empty(aSelFil)
-	APMsgStop("Nao  foi possivel encontrar nenhuma Filial valida para esta Empresa.")
+	APMsgStop("Não foi possível encontrar nenhuma Filial válida para esta Empresa.")
 	Return()
 Endif	
 
 If File(cArqTxt)
 	If fErase(cArqTxt) <> 0
-		APMsgStop("Nao  foi possivel apagar o arquivo gerado anteriormente pela rotina: "+cArqTxt+CRLF+;
-		"Verifique se o mesmo esta aberto por outro aplicativo e feche o arquivo.")
+		APMsgStop("Não foi possível apagar o arquivo gerado anteriormente pela rotina: "+cArqTxt+CRLF+;
+		"Verifique se o mesmo está aberto por outro aplicativo e feche o arquivo.")
 		Return()
 	Endif
 End   
@@ -333,7 +333,7 @@ CloseTemp(cArqTmp,nArq)
 If lGravou
 	APMsgInfo("Arquivo: '"+cArqTxt+"' gerado com sucesso.")
 Else
-	APMsgStop("Nao  foram encontrados saldos para esta Empresa.") 	
+	APMsgStop("Não foram encontrados saldos para esta Empresa.") 	
 Endif
 
 cFilAnt := cFilAntSav
@@ -523,16 +523,16 @@ Local oLbx                  //Objeto List box
 Local cTitulo   := "Empresas"	//"Empresas"
 Local aRet		:= {}
 	    
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Procurar campo no SX3ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Procurar campo no SX3³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 DbSelectArea("XX8")
 XX8->(dbSetOrder(1))
 XX8->(dbGoTop())
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Carrega o vetor com os campos da tabela selecionadaï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Carrega o vetor com os campos da tabela selecionada³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 While !XX8->(Eof())
    
@@ -550,7 +550,7 @@ If Len( aCpos ) > 0
 
 	DEFINE MSDIALOG oDlgf3 TITLE cTitulo FROM 0,0 TO 240,500 PIXEL
 	
-	   @ 10,10 LISTBOX oLbx FIELDS HEADER "Empresas", "Descricao" SIZE 230,95 OF oDlgf3 PIXEL	//"Empresas"###"Descricao" 
+	   @ 10,10 LISTBOX oLbx FIELDS HEADER "Empresas", "Descrição" SIZE 230,95 OF oDlgf3 PIXEL	//"Empresas"###"Descrição" 
 	
 	   oLbx:SetArray( aCpos )
 	   oLbx:bLine     := {|| {aCpos[oLbx:nAt,1], aCpos[oLbx:nAt,2]}}
@@ -579,7 +579,7 @@ Local lRet := .T.
 
 If cMv == "mv_par04" .and. mv_par04 != 1
 	lRet := .F.
-	MsgStop("Informe 'Sim' para Considerar a Conta Contï¿½bil.")
+	MsgStop("Informe 'Sim' para Considerar a Conta Contábil.")
 Endif
 
 Return(lRet)	
@@ -603,7 +603,7 @@ While XX8->(!Eof())
 Enddo
 
 If !lRet
-	APMsgStop("Empresa informada no parametro nao encontrada no Cadastro de Empresas.")
+	APMsgStop("Empresa informada no parâmetro não encontrada no Cadastro de Empresas.")
 Endif	
 
 aEval(aArea,{|x| RestArea(x)})

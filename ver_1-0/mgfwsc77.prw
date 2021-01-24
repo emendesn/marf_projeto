@@ -158,7 +158,7 @@ static function runInteg77()
 		oJson["descricao"]				:= iif( !empty( QRYDA0->DA0_DESCRI	)	, allTrim( QRYDA0->DA0_DESCRI	)	, nil )
 		oJson["dataValidadeInicial"]	:= iif( !empty( QRYDA0->DA0_DATDE	)	, left( fwTimeStamp( 3 , sToD( QRYDA0->DA0_DATDE	) ) , 10 )	, nil )
 		oJson["dataValidadeFinal"]		:= iif( !empty( QRYDA0->DA0_DATATE	)	, left( fwTimeStamp( 3 , sToD( QRYDA0->DA0_DATATE	) ) , 10 )	, nil )
-		oJson["usarEmAplicativo"]		:= ( QRYDA0->DA0_XENVSF	== "S" )
+		oJson["comercial"]				:= chkType( QRYDA0->DA0_CODTAB )
 		oJson["ativo"]					:= ( QRYDA0->DA0_ATIVO	== "1" )  //1=Sim;2=Nao
 		//oJson["ativo"]	:= iif( !empty( QRYDA0->DA0_ATIVO	)	, allTrim( QRYDA0->DA0_ATIVO	)	, nil )
 
@@ -308,12 +308,13 @@ static function runInteg77()
 		oJson["tiposPedido"] 				:= {}
 
 		while !QRYSZK->( EOF() )
-			oJsonTipos 				:= nil
-			oJsonTipos 				:= jsonObject():new()
-			oJsonTipos["id"]		:= iif( !empty( QRYSZK->ZK_CODTPED	)	, allTrim( QRYSZK->ZK_CODTPED	)	, nil )
-			oJsonTipos["diasMin"]   := QRYSZK->ZJ_MINIMO
-			oJsonTipos["diasMax"]   := QRYSZK->ZJ_MAXIMO
-			oJsonTipos["descricao"]	:= QRYSZK->ZJ_NOME
+			oJsonTipos						:= nil
+			oJsonTipos						:= jsonObject():new()
+			oJsonTipos["id"]				:= iif( !empty( QRYSZK->ZK_CODTPED	)	, allTrim( QRYSZK->ZK_CODTPED	)	, nil )
+			oJsonTipos["diasMin"]			:= QRYSZK->ZJ_MINIMO
+			oJsonTipos["diasMax"]			:= QRYSZK->ZJ_MAXIMO
+			oJsonTipos["descricao"]			:= allTrim( QRYSZK->ZJ_NOME )
+			oJsonTipos["usarEmAplicativo"]	:= ( QRYSZK->ZJ_APLICAT == "S" )
 
 			aadd( oJson["tiposPedido"] , oJsonTipos )
 
@@ -417,7 +418,7 @@ return
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 static function getDA0()
-	local cQryDA0 := ""
+	local cQryDA0		:= ""
 
 	cQryDA0 += " SELECT DA0_CODTAB , DA0_DESCRI , DA0_DATDE , DA0_DATATE , DA0_ATIVO , D_E_L_E_T_ DA0DELETE , "	+ CRLF
 	cQryDA0 += " DA0.R_E_C_N_O_ DA0RECNO , DA0_ZSTASF , DA0_XENVSF"												+ CRLF
@@ -526,6 +527,16 @@ static function getSZG()
 		cQrySZG += " 		SZG.ZG_CODTAB	=	DA0.DA0_CODTAB"								+ CRLF
 		cQrySZG += " 	AND	SZG.ZG_FILIAL	=	'" + xFilial( "SZG") + "'"					+ CRLF
 		cQrySZG += " 	AND SZG.D_E_L_E_T_	=	' '"										+ CRLF
+
+		cQrySZG += " INNER JOIN "	+ retSQLName( "SA1" ) + " SA1"							+ CRLF
+		cQrySZG += " ON"																	+ CRLF
+		cQrySZG += " 		SA1.A1_LOJA		=	SZG.ZG_LOJCLI"								+ CRLF
+		cQrySZG += " 	AND SA1.A1_COD		=	SZG.ZG_CODCLI"								+ CRLF
+		cQrySZG += " 	AND	SA1.A1_EST		<>	'EX' "										+ CRLF
+		cQrySZG += " 	AND	SA1.A1_XIDSFOR	<>	' ' "										+ CRLF
+		cQrySZG += " 	AND SA1.A1_FILIAL	=	'" + xFilial( "SA1") + "'"					+ CRLF
+		cQrySZG += " 	AND SA1.D_E_L_E_T_	<>	'*'"										+ CRLF
+
 		cQrySZG += " WHERE"																	+ CRLF
 		cQrySZG += " 		DA0.DA0_XINTSF	=	'P'"										+ CRLF
 		cQrySZG += " 	AND	DA0.DA0_CODTAB	=	'" + QRYDA0->DA0_CODTAB + "'"				+ CRLF
@@ -545,6 +556,16 @@ static function getSZG()
 		cQrySZG += " 		SZG.ZG_CODTAB	=	DA0.DA0_CODTAB"								+ CRLF
 		cQrySZG += " 	AND	SZG.ZG_FILIAL	=	'" + xFilial( "SZG") + "'"					+ CRLF
 		cQrySZG += " 	AND SZG.D_E_L_E_T_	=	' '"										+ CRLF
+
+		cQrySZG += " INNER JOIN "	+ retSQLName( "SA1" ) + " SA1"							+ CRLF
+		cQrySZG += " ON"																	+ CRLF
+		cQrySZG += " 		SA1.A1_LOJA		=	SZG.ZG_LOJCLI"								+ CRLF
+		cQrySZG += " 	AND SA1.A1_COD		=	SZG.ZG_CODCLI"								+ CRLF
+		cQrySZG += " 	AND	SA1.A1_EST		<>	'EX' "										+ CRLF
+		cQrySZG += " 	AND	SA1.A1_XIDSFOR	<>	' ' "										+ CRLF
+		cQrySZG += " 	AND SA1.A1_FILIAL	=	'" + xFilial( "SA1") + "'"					+ CRLF
+		cQrySZG += " 	AND SA1.D_E_L_E_T_	<>	'*'"										+ CRLF
+
 		cQrySZG += " WHERE"																	+ CRLF
 		cQrySZG += " 		DA0.DA0_XINTSF	=	'P'"										+ CRLF
 		cQrySZG += " 	AND	DA0.DA0_CODTAB	=	'" + QRYDA0->DA0_CODTAB + "'"				+ CRLF
@@ -577,6 +598,16 @@ static function getSZG()
 			cQrySZG += " 		SZC.ZC_CODVEND	=	ZBJ.ZBJ_REPRES"								+ CRLF
 			cQrySZG += " 	AND	ZBJ.ZBJ_FILIAL	=	'" + xFilial( "ZBJ") + "'"					+ CRLF
 			cQrySZG += " 	AND ZBJ.D_E_L_E_T_	=	' '"										+ CRLF
+
+			cQrySZG += " INNER JOIN "	+ retSQLName( "SA1" ) + " SA1"							+ CRLF
+			cQrySZG += " ON"																	+ CRLF
+			cQrySZG += " 		SA1.A1_LOJA		=	ZBJ.ZBJ_LOJA"								+ CRLF
+			cQrySZG += " 	AND SA1.A1_COD		=	ZBJ.ZBJ_CLIENT"								+ CRLF
+			cQrySZG += " 	AND	SA1.A1_EST		<>	'EX' "										+ CRLF
+			cQrySZG += " 	AND	SA1.A1_XIDSFOR	<>	' ' "										+ CRLF
+			cQrySZG += " 	AND SA1.A1_FILIAL	=	'" + xFilial( "SA1") + "'"					+ CRLF
+			cQrySZG += " 	AND SA1.D_E_L_E_T_	<>	'*'"										+ CRLF
+
 			cQrySZG += " WHERE"																	+ CRLF
 			cQrySZG += " 		DA0.DA0_XINTSF	=	'P'"										+ CRLF
 			cQrySZG += " 	AND	DA0.DA0_CODTAB	=	'" + QRYDA0->DA0_CODTAB + "'"				+ CRLF
@@ -714,9 +745,8 @@ return
 //---------------------------------------------------------------------------------------------
 static function getSZK()
 	local cQrySZK		:= ""
-	local lZJCOMFT14	:= superGetMv( "MGFWSC77C", , .T. ) // Integra apenas os Tipo de Pedido que nao sao validados pelo FAT14
 
-	cQrySZK += " SELECT ZK_CODTPED, SZK.D_E_L_E_T_ SZKDELETE, ZJ_MINIMO, ZJ_MAXIMO, ZJ_COMFT14, ZJ_NOME"	+ CRLF // ZJ_COMFT14 - 1=Sim;2=Nao
+	cQrySZK += " SELECT ZK_CODTPED, SZK.D_E_L_E_T_ SZKDELETE, ZJ_MINIMO, ZJ_MAXIMO, ZJ_COMFT14, ZJ_NOME, ZJ_VENDA , ZJ_APLICAT"	+ CRLF // ZJ_COMFT14 - 1=Sim;2=Nao
 	cQrySZK += " FROM		" + retSQLName( "DA0" ) + " DA0"								    + CRLF
 	cQrySZK += " INNER JOIN	" + retSQLName( "SZK" ) + " SZK"									+ CRLF
 	cQrySZK += " ON"																			+ CRLF
@@ -732,10 +762,6 @@ static function getSZK()
 	cQrySZK += " 	AND	SZJ.ZJ_FILIAL	=	'" + xFilial( "SZJ") + "'"							+ CRLF
 	cQrySZK += " 	AND SZJ.D_E_L_E_T_	=	' '"												+ CRLF
 
-	if lZJCOMFT14
-		cQrySZK += " 	AND SZJ.ZJ_COMFT14	=	'2'"												+ CRLF  // ZJ_COMFT14 - 1=Sim;2=Nao - Integrar apenas os que nao validam regra do FAT14
-	endif
-
 	cQrySZK += " WHERE"																			+ CRLF
 	cQrySZK += " 		DA0.DA0_XINTSF	=	'P'"												+ CRLF
 	//cQrySZK += " 	AND	DA0.DA0_XENVSF	=	'S'"												+ CRLF
@@ -747,3 +773,43 @@ static function getSZK()
 
 	tcQuery cQrySZK New Alias "QRYSZK"
 return
+
+//---------------------------------------------------------------------------------------------
+// Verifica se o Tipo de Pedido é de Venda
+//---------------------------------------------------------------------------------------------
+static function chkType( cDA0CODTAB )
+	local lTipoVenda	:= .F.
+	local cQryCHK		:= ""
+
+	cQryCHK += " SELECT DISTINCT ZK_CODTPED, DA0_CODTAB , DA0_DESCRI , DA0_DATDE , DA0_DATATE , DA0_ATIVO , DA0.D_E_L_E_T_ DA0DELETE , "	+ CRLF
+	cQryCHK += " DA0.R_E_C_N_O_ DA0RECNO , DA0_ZSTASF , DA0_XENVSF"												+ CRLF
+	cQryCHK += " FROM			" + retSQLName( "DA0" ) + " DA0"												+ CRLF
+
+	cQryCHK += " INNER JOIN	" + retSQLName( "SZK" ) + " SZK"													+ CRLF
+	cQryCHK += " ON"																							+ CRLF
+	cQryCHK += " 		SZK.ZK_CODTAB	=	DA0.DA0_CODTAB"														+ CRLF
+	cQryCHK += " AND	SZK.ZK_FILIAL	=	'" + xFilial( "SZK") + "'"											+ CRLF
+	cQryCHK += " AND 	SZK.D_E_L_E_T_	=	' '"																+ CRLF
+
+	cQryCHK += " INNER JOIN	" + retSQLName( "SZJ" ) + " SZJ"													+ CRLF
+	cQryCHK += " ON"																							+ CRLF
+	cQryCHK += " 		SZJ.ZJ_VENDA	=	'S'"																+ CRLF
+	cQryCHK += " 	AND	SZK.ZK_CODTPED	=	SZJ.ZJ_COD"															+ CRLF
+	cQryCHK += " 	AND	SZJ.ZJ_FILIAL	=	'" + xFilial( "SZJ") + "'"											+ CRLF
+	cQryCHK += " 	AND SZJ.D_E_L_E_T_	=	' '"																+ CRLF
+
+	cQryCHK += " WHERE"																							+ CRLF
+	cQryCHK += " 		DA0.DA0_CODTAB	=	'" + cDA0CODTAB + "'"												+ CRLF
+	cQryCHK += " 	AND	DA0.DA0_FILIAL	=	'" + xFilial( "DA0") + "'"											+ CRLF
+	cQryCHK += " 	AND DA0.D_E_L_E_T_	=	' '"																+ CRLF
+
+	conout("[MGFFATBO] [SALESFORCE] [chkType] " + cQryCHK)
+
+	tcQuery cQryCHK new alias "QRYCHK"
+
+	if !QRYCHK->( EOF() )
+		lTipoVenda := .T.
+	endif
+
+	QRYCHK->( DBCloseArea() )
+return lTipoVenda

@@ -3,10 +3,10 @@
 Programa............: MGFFIN60
 Autor...............: Atilio Amarilla
 Data................: 26/09/2017
-Descricao / Objetivo: Estornar baixa para ocorrencia H4 Retorno de Credito nao pago
+Descricao / Objetivo: Estornar baixa para ocorrência H4 Retorno de Crédito não pago
 Doc. Origem.........: Contrato - GAP CNAB
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Chamado por PE FA430OCO
 =====================================================================================
 */
@@ -29,7 +29,7 @@ User Function MGFFIN60()
 	local nI
 	local nOpBaixa	:= 0
 
-	// Variï¿½veia necessï¿½rias para Sel080Baixa()
+	// Variáveia necessárias para Sel080Baixa()
 	local nTotAdto		:= 0
 	local lBaixaAbat	:= .F.
 	local lBxCEC		:= .F.  //Verificador de existencia de baixa por compensacao entre carteiras
@@ -60,9 +60,9 @@ User Function MGFFIN60()
 			SE2->E2_NUM+SE2->E2_PARCELA+;
 			SE2->E2_TIPO+SE2->E2_FORNECE+SE2->E2_LOJA)
 		if ( SEA->(Found()) .And. SE2->E2_SALDO == 0 ) .or. ( SEA->(Found()) .And. SE2->E2_SALDO > 0 .AND. SE2->E2_TIPO='PA')
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-			//ï¿½ Cancelamento da Baixa										  ï¿½
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+			//³ Cancelamento da Baixa										  ³
+			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			aAdd( aTitBxEst , { "E2_PREFIXO"	, SE2->E2_PREFIXO	, NIL	} )
 			aAdd( aTitBxEst , { "E2_NUM"		, SE2->E2_NUM		, NIL	} )
 			aAdd( aTitBxEst , { "E2_PARCELA"	, SE2->E2_PARCELA	, NIL	} )
@@ -70,9 +70,9 @@ User Function MGFFIN60()
 			aAdd( aTitBxEst , { "E2_FORNECE"	, SE2->E2_FORNECE	, NIL	} )
 			aAdd( aTitBxEst , { "E2_LOJA"		, SE2->E2_LOJA		, NIL	} )
 
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-			//ï¿½Procura pelas baixas deste titulo                                     ï¿½
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+			//³Procura pelas baixas deste titulo                                     ³
+			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			// GDN 05/09/2018 - Correcao para Tratar caso o TIPODOC for PA.
 
 			aBaixa := Sel080Baixa("VL /BA /CP /PA ",SE2->E2_PREFIXO,SE2->E2_NUM,SE2->E2_PARCELA,SE2->E2_TIPO,@nTotAdto,;
@@ -96,13 +96,13 @@ User Function MGFFIN60()
 
 			if nOpBaixa	> 0
 
-				// GAP - Retirar Bordero, Cancelar Baixa e limpar IDCNAB para Titulos PA
+				// GAP - Retirar Bordero, Cancelar Baixa e limpar IDCNAB para Títulos PA
 				// GDN 05/09/2018
 				// Com (erick): Se for tipo PA e motivo de baixa diferente de NOR
 				// and o LA tem que estar em branco, buscar no FK5 e no SE5 e
 				// deletar estes registros.
 				if ALLTRIM(SE2->E2_TIPO) = 'PA'
-					// Posicionar no SE5 deste Titulo
+					// Posicionar no SE5 deste Título
 					SE5->(dbSetOrder(7))
 					SE5->(dbSeek(xFilial("SE5")+SE2->E2_PREFIXO+SE2->E2_NUM+;
 						SE2->E2_PARCELA+SE2->E2_TIPO+SE2->E2_FORNECE+SE2->E2_LOJA+'  '))
@@ -111,19 +111,19 @@ User Function MGFFIN60()
 						FK5->(dbSetOrder(1))
 						FK5->(dbSeek(xFilial("FK5")+SE5->E5_IDORIG))
 						if FK5->(Found())
-							// Apagar o Lanï¿½amento do FK5
+							// Apagar o Lançamento do FK5
 							if FK5->(RecLock("FK5",.F.))
 								FK5->(dbDelete())
 								FK5->(MsUnLock())
 							endif
 						endif
-						// Apagar o Lanï¿½amento do SE5
+						// Apagar o Lançamento do SE5
 						if SE5->(RecLock("SE5",.F.))
 							SE5->(dbDelete())
 							SE5->(MsUnLock())
 						endif
 
-						// Chamada Funcao FA590Canc para que o Titulo seja retirado corretamente do bordero Imp.
+						// Chamada Função FA590Canc para que o Título seja retirado corretamente do borderô Imp.
 						FA590Canc()
 
 						// GDN 12/09/2018 - Limpar o IDCNAB
@@ -133,7 +133,7 @@ User Function MGFFIN60()
 							SE2->(MsUnlock())
 						endif
 					else
-						MsgInfo(" Titulo: "+SE2->E2_PREFIXO+"/"+SE2->E2_NUM+"/"+SE2->E2_PARCELA+" nao tem SE5/FK5 !","Atencao")
+						MsgInfo(" Título: "+SE2->E2_PREFIXO+"/"+SE2->E2_NUM+"/"+SE2->E2_PARCELA+" não tem SE5/FK5 !","Atenção")
 					endif
 				endif
 
@@ -144,7 +144,7 @@ User Function MGFFIN60()
 				if !lMsErroAuto .And. SE2->E2_SALDO > 0
 					_dCancBx	:=	cTod(SUBS(ABAIXA[1], 41, 10))
 					
-					// Chamada Funcao FA590Canc para que o Titulo seja retirado corretamente do bordero Imp.
+					// Chamada Função FA590Canc para que o Título seja retirado corretamente do borderô Imp.
 					FA590Canc()
 
 					//Rafael Garcia 11/04 - limmpa ID_CNAB para novo processamento

@@ -8,11 +8,11 @@
 Programa.:              FC010HEAD - PE
 Autor....:              Antonio Carlos        
 Data.....:              11/10/2016
-Descricao / Objetivo:   incluir campos Cliente e Nome no Browse de Titulos Abertos 
+Descricao / Objetivo:   incluir campos Cliente e Nome no Browse de Títulos Abertos 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              incluir campos Cliente e Nome no Browse de Titulos Abertos 
+Uso......:              Marfrig
+Obs......:              incluir campos Cliente e Nome no Browse de Títulos Abertos 
 =====================================================================================
 */
 User Function FC010HEAD() 

@@ -51,15 +51,11 @@ User Function MGFGFE61()
 
 		U_MFCONOUT('Inicio do processamento verificação de status dos xmls de ctes...'		)
 
-		RpcSetType(3)
-		RpcSetEnv(_aMatriz[1],_aMatriz[2])    
-
 		cJob := "MGFGFE61"
 		oLocker := LJCGlobalLocker():New()
 
 		If !oLocker:GetLock( cJob )
 			U_MFCONOUT("JOB já em Execução: MGFGFE61 " + DTOC(dDataBase) + " - " + TIME() )
-			RpcClearEnv()
 			Return
 		EndIf       
 
@@ -77,7 +73,6 @@ User Function MGFGFE61()
 		U_MFCONOUT("Completou o processamento verificação de status dos xmls de ctes."	  		)
 
 		oLocker:ReleaseLock( cJob )
-		RpcClearEnv()
 
 	EndIF
 Return()
@@ -222,7 +217,7 @@ Static Function GFE61A()
 	Paulo da Mata - PRB0040795 - 07/04/2020 - Antes de Processar os XML atuais, 
 	                                          exclui os XML espirados com mais de 30 dias
 	*/
-	_aXmlExc := Directory(_cPathexp+"*.XML")
+	_aXmlExc := Directory(_cPathexp+"35200917216489000136573000000016941000169493.XML")
 	_nCount  := Len(_aXmlExc)
 
 	For _nY1 := 1 to _nCount
@@ -351,10 +346,11 @@ Static Function GFE61A()
 						
 						_cOrdEmb	:= ALLTRIM(DAI->DAI_COD)
 
-						//-----| Fazendo a comunicação com o Barramento |-----\\
+						//-----| Fazendo a comunicação com o Barramento para validar cargas canceladas e expiradas|-----\\
 						oObjRet 	:= nil
 						oCarga 		:= nil
 						oWSGFE61 	:= nil
+						_cURLPost := GetMV('MGF_GFE61C',.F.,"http://spdwvapl203:1337/multiembarcador/api/v1/verificaStatusCarga")
 
 						ocarga := GFE61CARGA():new()
 						ocarga:setDados()
@@ -367,24 +363,16 @@ Static Function GFE61A()
 						__cInternet	:= "AUTOMATICO"
 						oWSGFE61:SendByHttpPost()
 						__cInternet := _cSavcInt
+						_lvalido := .T.
 
 						
 						If oWSGFE61:lOk
 							If fwJsonDeserialize(oWSGFE61:cPostRet , @oObjRet)	//Deserealiza gerando um objeto
+								//Valida se carga está cancelada
 								If "SituacaoCarga" $ oWSGFE61:cPostRet .AND.  VALTYPE(oObjRet:SituacaoCarga) == "C"	
 								    //Verifica se retorno é válido.
 									_cSitCarg := oObjRet:SituacaoCarga	//Guardo o retorno em variavel.
-									If _cSitCarg $ ALLTRIM(SuperGetMV("MGF_GFE61D",.F.,"EmTransporte|Encerrada"))
-										//-----| Dados da Carga |-----\\
-										_cStatus := "- Em transito, chave:"+ALLTRIM(_cChvNfe)
-										U_MFCONOUT(_cStatus)
-										If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
-											_cMemLog += _cStatus+Chr(10)+Chr(13)
-											oMemLog:Refresh() 
-										EndIf
-										//-----| Array para guardar Status e dados de cada NF |-----\\
-										aAdd(_aCarga, {1,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal, _cStatus})
-									Elseif _cSitCarg $ ALLTRIM(SuperGetMV("MGF_GFE6F",.F.,"Cancelada"))
+									If _cSitCarg $ ALLTRIM(SuperGetMV("MGF_GFE6F",.F.,"Cancelada"))
 										
 										_cStatus := "- Carga cancelada, chave:"+ALLTRIM(_cChvNfe)
 										U_MFCONOUT(_cStatus)
@@ -394,6 +382,7 @@ Static Function GFE61A()
 										EndIf	
 
 										aAdd(_aCarga, {2,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
+										_lvalido := .F.
 
 									Elseif _demissao < date()- SuperGetMV("MGF_GFE61G",.F.,10)
 										
@@ -404,30 +393,61 @@ Static Function GFE61A()
 											oMemLog:Refresh() 
 										EndIf	
 
-										aAdd(_aCarga, {2,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
+										aAdd(_aCarga, {3,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
+										_lvalido := .F.
 
-									Else
-										_cStatus := "- FALHA NA SITUACAO DA CARGA - " + alltrim(_cSitCarg) +" - ARQUIVO: "+ALLTRIM(_aFiles[I])+" NAO SERA MOVIDO."
-										U_MFCONOUT(_cStatus)
-										If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
-											_cMemLog += _cStatus+Chr(10)+Chr(13)
-											oMemLog:Refresh() 
-										EndIf	
-
-										aAdd(_aCarga, {0,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
 									EndIf
-								Else
-									_cStatus := "- FALHA NO FORMATO DA SITUACAO DA CARGA. ARQUIVO: "+ALLTRIM(_aFiles[I])+" NAO SERA MOVIDO."
-									U_MFCONOUT(_cStatus)
-									If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
-										_cMemLog += _cStatus+Chr(10)+Chr(13)
-										oMemLog:Refresh() 
-									EndIf
-
-									aAdd(_aCarga, {0,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
 								EndIf
-							Else
-								_cStatus := "- FALHA NO FORMATO DA SITUACAO DA CARGA. ARQUIVO: "+ALLTRIM(_aFiles[I])+" NAO SERA MOVIDO."
+							EndIf
+						Endif
+
+						//Fazendo nova comunicação com barramento para validar data de inicio de viagem
+						If _lvalido
+
+							_cURLPost := GetMV('MGF_GFE61H',.F.,"http://spdwvapl203:1672/multiembarcador/api/v1/verificainicioviagem")
+							oObjRet 	:= nil
+							oCarga 		:= nil
+							oWSGFE61 	:= nil
+
+							ocarga := GFE61CARGA():new()
+							ocarga:setDados()
+
+							oWSGFE61 := MGFINT23():new(_cURLPost, ocarga,0, "", "", "", "","","", .T. )
+							oWSGFE61:lLogInCons := .T.
+
+							_cSavcInt	:= Nil
+							_cSavcInt	:= __cInternet    
+							__cInternet	:= "AUTOMATICO"
+							oWSGFE61:SendByHttpPost()
+							__cInternet := _cSavcInt
+							_lvalido := .F.
+
+							If oWSGFE61:lOk
+								If fwJsonDeserialize(oWSGFE61:cPostRet , @oObjRet)	//Deserealiza gerando um objeto
+									If "Inicioviagem" $ oWSGFE61:cPostRet .AND.  VALTYPE(oObjRet:Inicioviagem) == "C"	
+									    //Verifica se retorno é válido.
+										_cInicio := oObjRet:Inicioviagem	//Guardo o retorno em variavel.
+										_DINICIO := CTOD(SUBSTR(_CINICIO,1,10)) //Data de inicio de viagem
+										_chorai := substr(_cinicio,12,8) //Hora de inicio de viagem
+										If _dinicio > (date() - 90 ) .and. _dinicio <= date() .and. _chorai >= '00:00:00';
+														 .and. (_chorai <= time() .or. _dinicio < date())
+											//-----| Dados da Carga |-----\\
+											_cStatus := "- Com inicio de viagem valido, chave:"+ALLTRIM(_cChvNfe) + " - " + _cInicio
+											U_MFCONOUT(_cStatus)
+											If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
+												_cMemLog += _cStatus+Chr(10)+Chr(13)
+												oMemLog:Refresh() 
+											EndIf
+											//-----| Array para guardar Status e dados de cada NF |-----\\
+											aAdd(_aCarga, {1,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal, _cStatus})
+											_lvalido := .T.
+										Endif
+									Endif
+								Endif
+							Endif
+
+							If !_lvalido
+								_cStatus := "- FALHA NO FORMATO DO INICIO DE VIAGEM. ARQUIVO: "+ALLTRIM(_aFiles[I])+" NAO SERA MOVIDO."
 								U_MFCONOUT(_cStatus)
 								If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
 									_cMemLog += _cStatus+Chr(10)+Chr(13)
@@ -435,16 +455,8 @@ Static Function GFE61A()
 								EndIf
 
 								aAdd(_aCarga, {0,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
-							EndIf
-						Else
-							_cStatus := "- FALHA NA CONSULTA DA SITUACAO DA CARGA. ARQUIVO: "+ALLTRIM(_aFiles[I])+" NAO SERA MOVIDO."
-							U_MFCONOUT(_cStatus)
-							If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
-								_cMemLog += _cStatus+Chr(10)+Chr(13)
-								oMemLog:Refresh() 
-							EndIf
+							Endif
 
-							aAdd(_aCarga, {0,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})	
 						Endif
 
 					Else
@@ -457,19 +469,7 @@ Static Function GFE61A()
 						_lOk := .F.
 						aAdd(_aCarga, {0,"","","",_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
 					EndIf
-				ElseIf  stod((_cAliasSF2)->EMISSAO) < date()- SuperGetMV("MGF_GFE61G",.F.,10)
-	
-					   _cStatus := "- Carga expirada, chave:"+ALLTRIM(_cChvNfe)
-							   
-					   U_MFCONOUT(_cStatus)
-							   
-					   If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
-						  _cMemLog += _cStatus+Chr(10)+Chr(13)
-						  oMemLog:Refresh() 
-					   EndIf	
-
-					   aAdd(_aCarga, {2,_cFilial,_cProtoco,_cOrdEmb,_cCliente,_cLoja,_cSerie,_cNFiscal,_cStatus})
-
+				
 				Else
 					_cStatus := "- ERRO... NAO ENCONTRADA CHAVE DA NFe: "+_cChvNfe+"- XML: "+ALLTRIM(_aFiles[I])
 					U_MFCONOUT(_cStatus)
@@ -485,6 +485,7 @@ Static Function GFE61A()
 
 			_lCopia := .T. 	//Se pode copiar
 			_lerro := .T. //Se copia para cancelado 
+			_lexpirada := .F.
 			For Y:=1 To LEN(_aCarga)
 				If _aCarga[Y,1] != 1	//Se alguma nota não está ok no multiembarcador.
 					_lCopia := .F.
@@ -492,19 +493,24 @@ Static Function GFE61A()
 				If _aCarga[Y,1] != 2	//Se alguma nota não está expirada ou com carga cancelada
 					_lerro := .F.
 				EndIf
+				If _aCarga[Y,1] == 3	//Se carga está expirada
+					_lexpirada := .T.
+				EndIf
 			Next Y
+
+			_cPathTrs	:= ALLTRIM(SuperGetMV("MGF_GFE61B",.F.,"\INVENTTI\EMTRANSITO\"))
 
 			If _lCopia
 				_cPathTrs := _cPathTrs
 			Endif
 
-			If _lerro 
+			If _lerro .or. _lexpirada
 				_cPathTrs := _cPathexp
 			Endif
 
 			
 
-			If _lCopia .or. _lerro
+			If _lCopia .or. _lerro .or. _lexpirada
 				_lOk := .F.
 				If __CopyFile(ALLTRIM(_cPath+_aFiles[I]) , ALLTRIM(_cPathTrs+_aFiles[I]))
 					_cStatus := "- Arquivo: "+ALLTRIM(_cPath+_aFiles[I])+" copiado com sucesso para "+ALLTRIM(_cPathTrs+_aFiles[I])
@@ -544,7 +550,7 @@ Static Function GFE61A()
 					EndIf
 				EndIf
 				If _lOk
-					_cStatus := "- OK... CTe.: "+ALLTRIM(_aFiles[I])+" EM TRANSITO E LIBERADO."
+					_cStatus := "- OK... CTe.: "+ALLTRIM(_aFiles[I])+" COM INICIO DE VIAGEM E LIBERADO."
 					U_MFCONOUT(_cStatus)
 					If FunName() = "JOBGFE61" .OR. FunName() = "CTBA080"
 						_cMemLog += _cStatus+Chr(10)+Chr(13)
@@ -633,11 +639,15 @@ Static Function GFE61A()
 				ZFV->ZFV_SERIE  := _aCarga[Z,7]
 				ZFV->ZFV_NFISCA := _aCarga[Z,8]
 				ZFV->ZFV_ARQXML := _aFiles[I] 
-				If _lOk
-					ZFV->ZFV_STATUS := _aCarga[Z,9]
+				
+				If !(_cTpCte = "0" .and. !_lerroEst)
+					ZFV->ZFV_STATUS :=  _cStatus
+				Elseif _lCopia .or. _lerro .or. _lexpirada
+					ZFV->ZFV_STATUS := _aCarga[Z,9] + _cStatus
 				Else
-					ZFV->ZFV_STATUS := _cStatus
-				EndIf
+					ZFV->ZFV_STATUS := _aCarga[Z,9]
+				Endif
+
 				ZFV->ZFV_DATA   := DATE()
 				ZFV->ZFV_HORA   := TIME()
 			ZFV->(MsUnLock())
@@ -682,8 +692,6 @@ Contrutor de Classe.
 Method new() Class GFE61CARGA
 	self:applicationArea := ApplicationArea():new()
 return
-
-
 
 /*/
 {Protheus.doc} GFE61CARGA->setDados

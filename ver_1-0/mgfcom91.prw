@@ -8,7 +8,7 @@ Data.....:              Julho/2018
 Descricao / Objetivo:   Rotina chamada pelo ponto de entrada A100DEL
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Monta tela com os documento de entrada relacionados ao item do pedido de compra 
 ===========================================================================================
 */
@@ -18,7 +18,7 @@ Local aArea := {GetArea()}
 Local oListBox1
 Local cListBox1
 Local nOpc := 0
-Local aTitulo := { "Pedido/Aut.Ent","Produto","Documento","Cod. Forn.","Loja Forn.","Nome Forn.","Data Digitacao","Qtd. Documento"}
+Local aTitulo := { "Pedido/Aut.Ent","Produto","Documento","Cod. Forn.","Loja Forn.","Nome Forn.","Data Digitação","Qtd. Documento"}
 Local cTitulo := "Consulta Especifica de documentos de entrada relacionados ao PC/AE"
 Local aList1 := {}
 Local lContinua := .F.
@@ -49,9 +49,9 @@ MsAguarde({|| MontaPro(@aList1,@oListBox1,@lContinua,@nQtd,@nSaldo)},"Processand
 	
 If !lContinua
 	If SC7->C7_RESIDUO == "S"
-		APMsgAlert("Item do Pedido/Aut.Ent. nao tem notas relacionadas e esta eliminada por residuo.")	
+		APMsgAlert("Item do Pedido/Aut.Ent. não tem notas relacionadas e está eliminada por residuo.")	
 	Else	
-		APMsgAlert("Nao  foram encontrados dados para a consulta solicitada.")	
+		APMsgAlert("Não foram encontrados dados para a consulta solicitada.")	
 	Endif	
 Endif	
 	

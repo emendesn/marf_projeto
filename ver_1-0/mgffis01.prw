@@ -9,7 +9,7 @@ Data.....:              07/10/16
 Descricao / Objetivo:   Chamada da rotina principal
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -25,7 +25,7 @@ User Function MGFFIS01
 	Local cDirIni	:= ""
 	Local cManadRHE	:= "" //Este parametro indica o diretorio padrao para localizacao do arquivo manad gerado pelo RH Evollution
 	Local cManadPro	:= "" //Este parametro indica o diretorio padrao para localizacao do arquivo manad gerado pelo Protheus
-	Local cDirDest	:= "" //Diretorio sugerido para gravacao do arquivo apos 'merge'.
+	Local cDirDest	:= "" //Diretorio sugerido para gravacao do arquivo após 'merge'.
 	Local cExtensao	:= "" //Extensao para geracao
 	Local lKeepCase	:= .T.
 	Local lArvore	:= .T.
@@ -79,15 +79,15 @@ User Function MGFFIS01
 	nLabelIni	:= 212
 	nLabelFim	:= nDialogY / 2
 
-	DEFINE MSDIALOG oDlg TITLE "Geracao Customizada do arquivo - MANAD" FROM 000 , 000  TO nDialogX , nDialogY COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg TITLE "Geração Customizada do arquivo - MANAD" FROM 000 , 000  TO nDialogX , nDialogY COLORS 0, 16777215 PIXEL
 
-		@ 004 , 003 TO nLabelIni , nLabelFim LABEL "Geracao customizada do arquivo MANAD" PIXEL OF oDlg
+		@ 004 , 003 TO nLabelIni , nLabelFim LABEL "Geração customizada do arquivo MANAD" PIXEL OF oDlg
 
 //------- Botao 01
 
 		nLin01		:= 18
 
-		cTitulo01	:= OemToAnsi("Indique a localizacao do arquivo MANAD (PROTHEUS) : ")
+		cTitulo01	:= OemToAnsi("Indique a localização do arquivo MANAD (PROTHEUS) : ")
 
 		@ nLin01 , 008 SAY oSay01 PROMPT " Informe o arquivo MANAD (PROTHEUS) " SIZE 150, 070 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
 
@@ -108,7 +108,7 @@ User Function MGFFIS01
 
 		nLin02		:= 43
 
-		cTitulo02	:= OemToAnsi("Indique a localizacao do arquivo MANAD (RHEVOLUTION): ")
+		cTitulo02	:= OemToAnsi("Indique a localização do arquivo MANAD (RHEVOLUTION): ")
 
 		@ nLin02 , 008 SAY oSay03 PROMPT " Informe o arquivo MANAD (RHEVOLUTION) " SIZE 150, 070 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
 
@@ -125,9 +125,9 @@ User Function MGFFIS01
 
 		lSalvar		:= .F.
 
-		cTitulo03	:= "Selecione o arquivo de saida"
+		cTitulo03	:= "Selecione o arquivo de saída"
 
-		@ nLin03 , 008 SAY oSay05 PROMPT " Informe o arquivo de Saida : " SIZE 150, 070 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
+		@ nLin03 , 008 SAY oSay05 PROMPT " Informe o arquivo de Saída : " SIZE 150, 070 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont01
 
 		@ nLin03 , 160 BUTTON oButton03 PROMPT "Pesquisar" SIZE 037, 015 OF oDlg PIXEL ACTION ;
 			cArq03	:= fManagFile(cType , @cArquivo , cTitulo03 , nMascPad , cDirDest , lKeepCase , lArvore , lSalvar)
@@ -146,7 +146,7 @@ User Function MGFFIS01
 
 		nSizeY01	:= 20
 
-		@ nLin04 , nPosFim02 BUTTON oButton04 PROMPT "&Cancela Selecao" SIZE nSizeX01 , nSizeY01 OF oDlg PIXEL ACTION fLimpaSel(@cArq01 , @cArq02 , @cArq03)
+		@ nLin04 , nPosFim02 BUTTON oButton04 PROMPT "&Cancela Seleção" SIZE nSizeX01 , nSizeY01 OF oDlg PIXEL ACTION fLimpaSel(@cArq01 , @cArq02 , @cArq03)
 
 //----------- Botao 05
 
@@ -173,10 +173,10 @@ Return
 Programa.:              fManagFile
 Autor....:              Luis Artuso
 Data.....:              06/10/16
-Descricao / Objetivo:   Rotina para gerenciamento de arquivos. Permite selecionar/salvar os arquivos conforme parametros enviados.
+Descricao / Objetivo:   Rotina para gerenciamento de arquivos. Permite selecionar/salvar os arquivos conforme parâmetros enviados.
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -185,9 +185,9 @@ Static Function fManagFile(	cType ,;		// Indica os arquivos que podem ser filtra
 							cTitulo ,;		// Titulo da janela
 							nMascPad ,;		// Mascara Padrao
 							cDirIni ,;		// Diretorio inicial
-							lKeepCase ,;	// Indica se, verdadeiro (.T.), mantem o case original; caso contrario, falso (.F.).
-							lArvore ,;		// Indica se, verdadeiro (.T.), apresenta o arvore do servidor; caso contrario, falso (.F.).
-							lSalvar;		// Informa para a rotina se permite apenas a selecao ou salva em um determinado local. '.T.' -> Abre , '.F.' -> Salva
+							lKeepCase ,;	// Indica se, verdadeiro (.T.), mantém o case original; caso contrário, falso (.F.).
+							lArvore ,;		// Indica se, verdadeiro (.T.), apresenta o árvore do servidor; caso contrário, falso (.F.).
+							lSalvar;		// Informa para a rotina se permite apenas a seleção ou salva em um determinado local. '.T.' -> Abre , '.F.' -> Salva
 						)
 
 	cArquivo	:= cGetFile(cType,;
@@ -212,7 +212,7 @@ Data.....:              10/10/16
 Descricao / Objetivo:   Elimina o conteudo das variaveis que armazenam os arquivos de origem/destino do MANAD
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -236,7 +236,7 @@ Data.....:              10/10/16
 Descricao / Objetivo:   Agrupa os arquivos informados e gera o arquivo destino
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -252,7 +252,7 @@ Static Function fGeraManad(cArq01 , cArq02 , cArq03)
 
 		lProcessa	:= .F.
 
-		MsgAlert('O arquivo MANAD origem referente ao RHEvolution nao foi selecionado.')
+		MsgAlert('O arquivo MANAD origem referente ao RHEvolution não foi selecionado.')
 
 	EndIf
 
@@ -260,7 +260,7 @@ Static Function fGeraManad(cArq01 , cArq02 , cArq03)
 
 		lProcessa	:= .F.
 
-		MsgAlert('O arquivo MANAD origem referente ao Protheus nao foi selecionado.')
+		MsgAlert('O arquivo MANAD origem referente ao Protheus não foi selecionado.')
 
 	EndIf
 
@@ -269,7 +269,7 @@ Static Function fGeraManad(cArq01 , cArq02 , cArq03)
 
 		lProcessa	:= .F.
 
-		MsgAlert('O arquivo destino nao foi informado.')
+		MsgAlert('O arquivo destino não foi informado.')
 
 	EndIf
 
@@ -299,10 +299,10 @@ Return
 Programa.:              fCriaTmp
 Autor....:              Luis Artuso
 Data.....:              11/10/16
-Descricao / Objetivo:   Cria os arquivos temporarios para append
+Descricao / Objetivo:   Cria os arquivos temporários para append
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -347,7 +347,7 @@ Data.....:              11/10/16
 Descricao / Objetivo:   Preenche as tabelas temporarias com os conforme arquivos informados no Getfile
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -372,7 +372,7 @@ Data.....:              11/10/16
 Descricao / Objetivo:   Agrupa os arquivos (manad rh evolution / Protheus e gera o arquivo manad 'total')
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -400,10 +400,10 @@ Static Function fMerge(	cTmp01 ,; // 1 alias temporario
 		* o arquivo 'cTmp01' refere-se ao arquivo Manad gerado atraves do Protheus;
 		* o arquivo 'cTmp02' refere-se ao arquivo Manad gerado pelo RhEvolution;
 
-		Para juntar os arquivos, o loop ira' percorrer os dois arquivos, considerando as seguintes situacoes:
+		Para juntar os arquivos, o loop ira' percorrer os dois arquivos, considerando as seguintes situações:
 			* Do arquivo cTmp01, serao retirados TODOS os registros cujo inicio NAO seja 'K'
 			* Do arquivo cTmp02, serao retirados TODOS os registros cujo inicio seja 'K'
-			* Para gravar os totais, sera utilizado como referencia o registro '9900'. Com isto, e possivel fazer com que a rotina
+			* Para gravar os totais, sera utilizado como referência o registro '9900'. Com isto, e possivel fazer com que a rotina
 			tenha comportamento similar 'a extracao dos registros do bloco 'K' entre os arquivos. Previne tambem que os totais sejam gravados incorretamente.
 	*/
 
@@ -425,7 +425,7 @@ Static Function fMerge(	cTmp01 ,; // 1 alias temporario
 
 	ProcRegua(nTotReg)
 
-	//-Extrai itens do arquivo RHEVOLUTION, ate o item 'L'
+	//-Extrai itens do arquivo RHEVOLUTION, até o item 'L'
 	Do While ((cTmp01)->(!EOF())) .AND. (!ASC(Left(AllTrim((cTmp01)->(CAMPO01)) , 1)) == nAsc9 )
 
 		cLinha	:= ""
@@ -543,7 +543,7 @@ Data.....:              11/10/16
 Descricao / Objetivo:   Cria o arquivo manad de saida
 Doc. Origem:            Contrato - GAP FIS33
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

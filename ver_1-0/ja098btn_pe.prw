@@ -6,11 +6,11 @@
 Programa.:              JA098BTN_PE
 Autor....:              Marcelo Carneiro
 Data.....:              27/03/2019
-Descricao / Objetivo:   Integracao Grade de Aprovacao SigaJuri
+Descricao / Objetivo:   Integração Grade de Aprovação SigaJuri
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
-Obs......:              PE para criar os botoes em garantia  - Garantia
+Uso......:              Marfrig
+Obs......:              PE para criar os botões em garantia  - Garantia
 =====================================================================================
 */
 User Function JA098BTN()

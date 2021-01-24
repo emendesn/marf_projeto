@@ -8,11 +8,11 @@
 Programa.:              MGFCOM44 
 Autor....:              Antonio Carlos        
 Data.....:              16/10/2017                                                                                                            
-Descricao / Objetivo:   Implementaï¿½ï¿½o que srï¿½ utilizado para verificar se o pedido possui item incluido por Solicitacao de Compras
-                        nao permite incluir novo produto nem linha                       
+Descricao / Objetivo:   Implementação que srá utilizado para verificar se o pedido possui item incluído por Solicitação de Compras
+                        não permite incluir novo produto nem linha                       
 Doc. Origem:            Compras - GAP ID080
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 ================================================================================================================================================
 */ 
@@ -44,7 +44,7 @@ User Function MGFCOM44()
        End
        IF _cNumSC <> Space(06)
           _lAltera	:= .F.        
-          Aviso( "Pedido de Compras","Pedido com Solicitacao de Compras nao pode sofrer alteracao de codigo.", {" Ok "})   
+          Aviso( "Pedido de Compras","Pedido com Solicitação de Compras não pode sofrer alteração de código.", {" Ok "})   
        ENDIF
     ENDIF
 

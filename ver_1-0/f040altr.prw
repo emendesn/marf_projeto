@@ -8,10 +8,10 @@
 Programa.:              F040ALTR
 Autor....:              Gustavo Ananias Afonso
 Data.....:              24/10/2016
-Descricao / Objetivo:   PE na alteracao do Contas a Pagar
+Descricao / Objetivo:   PE na alteração do Contas a Pagar
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

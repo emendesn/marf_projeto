@@ -7,10 +7,10 @@ Programa............: MGFFIS36
 Autor...............: Natanael Filho
 Data................: 15/JUNHO/2018 
 Descricao / Objetivo: Fiscal
-Doc. Origem.........: 
+Doc. Origem.........: Marfrig
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: GAP 358 / Devolucao de Venda com ICMS-ST UF: RS
+Uso.................: Marfrig
+Obs.................: GAP 358 / Devolução de Venda com ICMS-ST UF: RS
 =====================================================================================
 */
 User Function MGFFIS36(nOpc)
@@ -30,20 +30,20 @@ If Inclui .and. !IsInCallStack('U_A100DEL')
 		cCFAtu := Alltrim(aCols[n,nCFAtu])
 	EndIf
 	cTpDOC := C103TP
-ElseIf nOpc = 3 //O Documento esta sendo excluido.
+ElseIf nOpc = 3 //O Documento está sendo excluído.
 	cTpDOC := SF1->F1_TIPO
 	lExcl := .T.
 EndIf
 
-//GAP apenas para o Rio Grande do Sul, Notas de complemento de ICMS (I) e CFOPs especï¿½ficos
+//GAP apenas para o Rio Grande do Sul, Notas de complemento de ICMS (I) e CFOPs específicos
 If cUFFil == 'RS';
  .AND. cTpDOC == 'I' ;
- .AND. (IIF(Empty(cCFAtu),.F.,cCFAtu $ cCFDev) .OR. lExcl) //Se for exclusao nao precisa validar o CFOP.
+ .AND. (IIF(Empty(cCFAtu),.F.,cCFAtu $ cCFDev) .OR. lExcl) //Se for exclusão não precisa validar o CFOP.
 
 	//nOpc
 	//1 - Verificar se existe um cliente (SA1) cadastrado com o mesmo CNPJ do fornecedor informado no Documento de Entrada;
 	//2 - Gera a NCC para o cliente no valor do Documento de Entrada. 
-	//3 - Valida na exclusao se o NCC jï¿½ sofreu baixa.
+	//3 - Valida na exclusão se o NCC já sofreu baixa.
 	If nOpc = 1
 		lRet := FIS36VCli()
 	ElseIf nOpc = 2
@@ -72,8 +72,8 @@ SA1->(DBSETORDER(3)) //A1_FILIAL+A1_CGC
 If SA1->(DBSEEK(xFilial('SA2') + SA2->A2_CGC))
 	lRet := .T.
 Else
-	Help( ,, 'MGFFIS36.FIS36VCli - GAP358',, 'Nao foi encontrado o cliente com o CNPJ ' + ;
-		Transform(Alltrim(SA2->A2_CGC),"@R 99.999.999/9999-99") + ' para inclusao da NCC.', 1, 0)
+	Help( ,, 'MGFFIS36.FIS36VCli - GAP358',, 'Não foi encontrado o cliente com o CNPJ ' + ;
+		Transform(Alltrim(SA2->A2_CGC),"@R 99.999.999/9999-99") + ' para inclusão da NCC.', 1, 0)
 EndIf
 
 Return lRet
@@ -111,10 +111,10 @@ If SA1->(DBSEEK(xFilial('SA2') + SA2->A2_CGC))
 		{ "E1_VALOR"    , SF1->F1_VALBRUT	, NIL }}
 		
 		lMsErroAuto := .F.
-		MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 3)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao
+		MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 3)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão
 		If lMsErroAuto // SE ENCONTROU ALGUM ERRO
-			msgAlert('MGFFIS36.FIS36NCC - GAP358','Erro na geracao do titulo (NCC).')
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			msgAlert('MGFFIS36.FIS36NCC - GAP358','Erro na geração do titulo (NCC).')
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 		         MostraErro()
 		    Else // EM ESTADO DE JOB
 		        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -139,7 +139,7 @@ Return Nil
 //Programa............: FIS36Exc
 //Autor...............: Natanael Filho
 //Data................: 15/JUNHO/2018 
-//Desc:...............: Valida na exclusao se o NCC jï¿½ sofreu baixa.
+//Desc:...............: Valida na exclusão se o NCC já sofreu baixa.
 //===========================================================
 Static Function FIS36Exc()
 Local lRet := .F.
@@ -159,10 +159,10 @@ If SA1->(DBSeek(xFilial('SA2') + SA2->A2_CGC))
 				{ "E1_LOJA"     , SA1->A1_LOJA   , NIL }}
 			
 			lMsErroAuto := .F.
-			MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 5)  // 3 - Inclusao, 4 - Alteracao, 5 - Exclusao
+			MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 5)  // 3 - Inclusao, 4 - Alteração, 5 - Exclusão
 			If lMsErroAuto // SE ENCONTROU ALGUM ERRO
-				msgAlert("Nao foi possivel excluir a NCC")
-				If (!IsBlind()) // COM INTERFACE GRAFICA
+				msgAlert("Não foi possível excluir a NCC")
+				If (!IsBlind()) // COM INTERFACE GRÁFICA
 			         MostraErro()
 			    Else // EM ESTADO DE JOB
 			        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -173,7 +173,7 @@ If SA1->(DBSeek(xFilial('SA2') + SA2->A2_CGC))
 				DisarmTransaction()
 				Break
 			Else
-				MsgInfo('MGFFIS36.FIS36NCC - GAP358','NCC excluida com sucesso.')
+				MsgInfo('MGFFIS36.FIS36NCC - GAP358','NCC excluída com sucesso.')
 				lRet := .T.
 			EndIf
 		

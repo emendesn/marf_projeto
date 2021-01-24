@@ -3,10 +3,10 @@
 Programa.:              MA415COR 
 Autor....:              Marcelo Carneiro
 Data.....:              Jun/2018
-Descricao / Objetivo:   P.E. em Orcamento para alteracao das legendas Pre Pedido
+Descricao / Objetivo:   P.E. em Orçamento para alteração das legendas Pré Pedido
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

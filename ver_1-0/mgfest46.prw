@@ -9,10 +9,10 @@
 Programa............: MGFCOMA2
 Autor...............: Tarcisio Galeano
 Data................: 11/2018
-Descricao / Objetivo: Nao permitir solicitar ao armazem durante o inventario
+Descrição / Objetivo: Não permitir solicitar ao armazem durante o inventario
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -26,7 +26,7 @@ user function MGFEST46()
  dInv		:= GetAdvFVal("SB2","B2_DTINV",xFilial("SB2")+nProd,1,"")
 
  if !empty(dInv)
- 	msgalert("O PRODUTO ESTï¿½ EM INVENTï¿½RIO, AGUARDAR O DESBLOQUEIO !!!! ")
+ 	msgalert("O PRODUTO ESTÁ EM INVENTÁRIO, AGUARDAR O DESBLOQUEIO !!!! ")
 	lRet := " "
  endif
  

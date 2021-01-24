@@ -11,7 +11,7 @@ Data.....:              27/09/2016
 Descricao / Objetivo:   Execucao do Ponto de Entrada CNTA300
 Doc. Origem:            Contrato - GAP MGFGCT03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -48,7 +48,7 @@ IF INCLUI
 	 oMdlCN9		:= oModel:GetModel("CN9MASTER")
 
          IF PARAMIXB[3] == "CN9MASTER"
-        	// Sï¿½ GRAVA NA FILIAL MATRIZ
+        	// SÓ GRAVA NA FILIAL MATRIZ
        			CFILANT := SUBSTR(CFIL,1,2)+"0001"
 
         	CNUM := CN300NUM()             

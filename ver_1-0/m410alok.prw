@@ -8,7 +8,7 @@ Data................: 25/10/2016
 Descricao / Objetivo: Ponto de entrada para permitir a alteracao/exclusao do PV
 Doc. Origem.........: Protheus-Taura Saida
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

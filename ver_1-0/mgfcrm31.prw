@@ -13,7 +13,7 @@ Data.....:              12/04/2017
 Descricao / Objetivo:   Estrutura de Venda - Lista todas
 Doc. Origem:            GAP CRM20
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -27,20 +27,20 @@ user function MGFCRM31(aDest)
 	private aStructs	:= {}
 
 	//Pesquisa que sera exibido
-	aadd(aSeek,{"Cï¿½d. Nï¿½vel 1"	, { {"","C",6	,0,"Cï¿½d. Nï¿½vel 1"	,,} }})
-	aadd(aSeek,{"Nï¿½vel 1"		, { {"","C",100	,0,"Nï¿½vel 1"		,,} }})
+	aadd(aSeek,{"Cód. Nível 1"	, { {"","C",6	,0,"Cód. Nível 1"	,,} }})
+	aadd(aSeek,{"Nível 1"		, { {"","C",100	,0,"Nível 1"		,,} }})
 
-	aadd(aSeek,{"Cï¿½d. Nï¿½vel 2"	, { {"","C",6	,0,"Cï¿½d. Nï¿½vel 2"	,,} }})
-	aadd(aSeek,{"Nï¿½vel 2"		, { {"","C",100	,0,"Nï¿½vel 2"		,,} }})
+	aadd(aSeek,{"Cód. Nível 2"	, { {"","C",6	,0,"Cód. Nível 2"	,,} }})
+	aadd(aSeek,{"Nível 2"		, { {"","C",100	,0,"Nível 2"		,,} }})
 
-	aadd(aSeek,{"Cï¿½d. Nï¿½vel 3"	, { {"","C",6	,0,"Cï¿½d. Nï¿½vel 3"	,,} }})
-	aadd(aSeek,{"Nï¿½vel 3"		, { {"","C",100	,0,"Nï¿½vel 3"		,,} }})
+	aadd(aSeek,{"Cód. Nível 3"	, { {"","C",6	,0,"Cód. Nível 3"	,,} }})
+	aadd(aSeek,{"Nível 3"		, { {"","C",100	,0,"Nível 3"		,,} }})
 
-	aadd(aSeek,{"Cï¿½d. Nï¿½vel 4"	, { {"","C",6	,0,"Cï¿½d. Nï¿½vel 4"	,,} }})
-	aadd(aSeek,{"Nï¿½vel 4"		, { {"","C",100	,0,"Nï¿½vel 4"		,,} }})
+	aadd(aSeek,{"Cód. Nível 4"	, { {"","C",6	,0,"Cód. Nível 4"	,,} }})
+	aadd(aSeek,{"Nível 4"		, { {"","C",100	,0,"Nível 4"		,,} }})
 
-	aadd(aSeek,{"Cï¿½d. Nï¿½vel 5"	, { {"","C",6	,0,"Cï¿½d. Nï¿½vel 5"	,,} }})
-	aadd(aSeek,{"Nï¿½vel 5"		, { {"","C",100	,0,"Nï¿½vel 5"		,,} }})
+	aadd(aSeek,{"Cód. Nível 5"	, { {"","C",6	,0,"Cód. Nível 5"	,,} }})
+	aadd(aSeek,{"Nível 5"		, { {"","C",100	,0,"Nível 5"		,,} }})
 
 	getStructs()
 
@@ -68,47 +68,47 @@ user function MGFCRM31(aDest)
 		oSxbStr:setSeek(, aSeek)
 /*
 		SetSeek
-		Habilita a utilizaï¿½ï¿½o da pesquisa de registros no Browse
+		Habilita a utilização da pesquisa de registros no Browse
 		
-		@param   bAction Code-Block executado para a pesquisa de registros, caso nao seja informado sera utilizado o padrao
+		@param   bAction Code-Block executado para a pesquisa de registros, caso não seja informado será utilizado o padrão
 		@param   aOrder  Estrutura do array
-						[n,1] Titulo da pesquisa
+						[n,1] Título da pesquisa
 						[n,2,n,1] LookUp
 						[n,2,n,2] Tipo de dados
 						[n,2,n,3] Tamanho
 						[n,2,n,4] Decimal
-						[n,2,n,5] Titulo do campo
-						[n,2,n,6] Mascara
-						[n,2,n,7] Nome Fisico do campo - Opcional - ï¿½ ajustado no programa
+						[n,2,n,5] Título do campo
+						[n,2,n,6] Máscara
+						[n,2,n,7] Nome Fisico do campo - Opcional - é ajustado no programa
 						[n,3] Ordem da pesquisa
 						[n,4] Exibe na pesquisa 
 */
 
 
 		
-		oSxbStr:addColumn({"Cï¿½d. Nï¿½vel 1"			, {||aStructs[oSxbStr:nAt,1]}	, "C", , 1, 10	})
-		oSxbStr:addColumn({"Nï¿½vel 1"				, {||aStructs[oSxbStr:nAt,2]}	, "C", , 1, 25	})
-		oSxbStr:addColumn({"Cï¿½d. Representante"		, {||aStructs[oSxbStr:nAt,3]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Cód. Nível 1"			, {||aStructs[oSxbStr:nAt,1]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Nível 1"				, {||aStructs[oSxbStr:nAt,2]}	, "C", , 1, 25	})
+		oSxbStr:addColumn({"Cód. Representante"		, {||aStructs[oSxbStr:nAt,3]}	, "C", , 1, 10	})
 		oSxbStr:addColumn({"Representante"			, {||aStructs[oSxbStr:nAt,4]}	, "C", , 1, 25	})
 
-		oSxbStr:addColumn({"Cï¿½d. Nï¿½vel 2"			, {||aStructs[oSxbStr:nAt,5]}	, "C", , 1, 10	})
-		oSxbStr:addColumn({"Nï¿½vel 2"				, {||aStructs[oSxbStr:nAt,6]}	, "C", , 1, 25	})
-		oSxbStr:addColumn({"Cï¿½d. Representante"		, {||aStructs[oSxbStr:nAt,7]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Cód. Nível 2"			, {||aStructs[oSxbStr:nAt,5]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Nível 2"				, {||aStructs[oSxbStr:nAt,6]}	, "C", , 1, 25	})
+		oSxbStr:addColumn({"Cód. Representante"		, {||aStructs[oSxbStr:nAt,7]}	, "C", , 1, 10	})
 		oSxbStr:addColumn({"Representante"			, {||aStructs[oSxbStr:nAt,8]}	, "C", , 1, 25	})
 
-		oSxbStr:addColumn({"Cï¿½d. Nï¿½vel 3"			, {||aStructs[oSxbStr:nAt,9]}	, "C", , 1, 10	})
-		oSxbStr:addColumn({"Nï¿½vel 4"				, {||aStructs[oSxbStr:nAt,10]}	, "C", , 1, 25	})
-		oSxbStr:addColumn({"Cï¿½d. Representante"		, {||aStructs[oSxbStr:nAt,11]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Cód. Nível 3"			, {||aStructs[oSxbStr:nAt,9]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Nível 4"				, {||aStructs[oSxbStr:nAt,10]}	, "C", , 1, 25	})
+		oSxbStr:addColumn({"Cód. Representante"		, {||aStructs[oSxbStr:nAt,11]}	, "C", , 1, 10	})
 		oSxbStr:addColumn({"Representante"			, {||aStructs[oSxbStr:nAt,12]}	, "C", , 1, 25	})
 
-		oSxbStr:addColumn({"Cï¿½d. Nï¿½vel 4"			, {||aStructs[oSxbStr:nAt,13]}	, "C", , 1, 10	})
-		oSxbStr:addColumn({"Nï¿½vel 4"				, {||aStructs[oSxbStr:nAt,14]}	, "C", , 1, 25	})
-		oSxbStr:addColumn({"Cï¿½d. Representante"		, {||aStructs[oSxbStr:nAt,15]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Cód. Nível 4"			, {||aStructs[oSxbStr:nAt,13]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Nível 4"				, {||aStructs[oSxbStr:nAt,14]}	, "C", , 1, 25	})
+		oSxbStr:addColumn({"Cód. Representante"		, {||aStructs[oSxbStr:nAt,15]}	, "C", , 1, 10	})
 		oSxbStr:addColumn({"Representante"			, {||aStructs[oSxbStr:nAt,16]}	, "C", , 1, 25	})
 		
-		oSxbStr:addColumn({"Cï¿½d. Nï¿½vel 5"			, {||aStructs[oSxbStr:nAt,17]}	, "C", , 1, 10	})
-		oSxbStr:addColumn({"Nï¿½vel 5"				, {||aStructs[oSxbStr:nAt,18]}	, "C", , 1, 25	})
-		oSxbStr:addColumn({"Cï¿½d. Representante"		, {||aStructs[oSxbStr:nAt,19]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Cód. Nível 5"			, {||aStructs[oSxbStr:nAt,17]}	, "C", , 1, 10	})
+		oSxbStr:addColumn({"Nível 5"				, {||aStructs[oSxbStr:nAt,18]}	, "C", , 1, 25	})
+		oSxbStr:addColumn({"Cód. Representante"		, {||aStructs[oSxbStr:nAt,19]}	, "C", , 1, 10	})
 		oSxbStr:addColumn({"Representante"			, {||aStructs[oSxbStr:nAt,20]}	, "C", , 1, 25	})
 
 		oSxbStr:setDoubleClick( { || setVars(@aDest), oDlg:end() } )

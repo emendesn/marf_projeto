@@ -15,10 +15,10 @@
 Programa............: MGFCOM93
 Autor...............: Tarcisio Galeano
 Data................: 07/2018
-Descricao / Objetivo: Workflow automatico pedido de compras
+Descrição / Objetivo: Workflow automatico pedido de compras
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -85,7 +85,7 @@ Static Function AN_REL1PC()
 	//Else
 
 //SELECT DAS SCS
-//aqui pega todos os pedidos que nao foram enviados.
+//aqui pega todos os pedidos que não foram enviados.
 
 //cAlias4	:= GetNextAlias()
 
@@ -146,7 +146,7 @@ While TEMP1->(!Eof())
 
 			cStart2Path 	:= GetPvProfString(GetEnvServer(),"RootPath","ERROR", cIniFile )+'\WORKFLOW\HTML\xxx'
 			cHtmlTemplate  	:= "\WORKFLOW\HTML\xxxMARFRIG_HTM.HTM"
-			cBody 			:= "Segue em anexo confirmaï¿½ï¿½o do pedido de compra "+cNum+" conforme negociaï¿½ï¿½o prï¿½via."
+			cBody 			:= "Segue em anexo confirmação do pedido de compra "+cNum+" conforme negociação prévia."
 
 
 			cHtmlFirt := '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'
@@ -253,17 +253,17 @@ Static Function EnviaPC(aAnexos)
 
 
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Inicio objeto de impressao                                       ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Inicio objeto de impressao                                       ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 
 	oBrush := TBrush():New(,(0,0,0))
 
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Inicio da Impressao                                              ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Inicio da Impressao                                              ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 
 	If oPrinter == Nil
@@ -319,15 +319,15 @@ Static Function EnviaPC(aAnexos)
 		oSetup:SetPropert(PD_DESTINATION, AMB_SERVER/*AMB_CLIENT*/ ) 
 		oSetup:SetPropert(PD_PRINTTYPE, IMP_PDF ) // 1=Spool / 6=PDF
 	
-		oPrinter:cPathPDF  := cDiretorio // Caso seja utilizada impressao em IMP_PDF
-		oPrinter:cPathPrint:= cDiretorio // Caso seja utilizada impressao em IMP_PDF
+		oPrinter:cPathPDF  := cDiretorio // Caso seja utilizada impressão em IMP_PDF
+		oPrinter:cPathPrint:= cDiretorio // Caso seja utilizada impressão em IMP_PDF
 	    oPrinter:SetViewPDF(.F.)
 
 		//oPrinter:lServer := oSetup:GetProperty(PD_DESTINATION)==AMB_SERVER
 		oPrinter:lServer := .T.
 
 // ----------------------------------------------
-// Define saida de impressao
+// Define saida de impressão
 // ----------------------------------------------
 	oPrinter:nDevice := IMP_PDF
 	// ----------------------------------------------
@@ -348,9 +348,9 @@ Static Function EnviaPC(aAnexos)
 
 	EndIF
 
-	//inicio impressao cabecalho
+	//inicio impressão cabeçalho
 	Impcabec(oPrinter)
-	//fim cabecalho
+	//fim cabeçalho
 
 	//-- itens
 	SC7->(dbSetOrder(1))
@@ -381,10 +381,10 @@ Static Function EnviaPC(aAnexos)
 		oPrinter:Say(nLin-10 , nC_0 	, "|"	 				, oFont11)
 		oPrinter:Say(nLin-10 , nC_1 	, "Item" 				, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_2 	, "Produto" 			, oFont11B 	,, CLR_BLUE)
-		oPrinter:Say(nLin-10 , nC_3 	, "Descricao" 			, oFont11B 	,, CLR_BLUE)
+		oPrinter:Say(nLin-10 , nC_3 	, "Descrição" 			, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_4 	, "UM" 					, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_5 	, "Quantidade" 			, oFont11B	,, CLR_BLUE)
-		oPrinter:Say(nLin-10 , nC_6 	, "Vr. Unitï¿½rio" 		, oFont11B	,, CLR_BLUE)
+		oPrinter:Say(nLin-10 , nC_6 	, "Vr. Unitário" 		, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_7 	, "Vr.Total" 			, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_8 	, "Dt.Entrega" 			, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_9 	, "Moeda" 				, oFont11B	,, CLR_BLUE)
@@ -559,7 +559,7 @@ Static Function EnviaPC(aAnexos)
 	//ASIGNA CONDICION PAGO
 	cCondPag		:= SE4->E4_CODIGO + " - " + RTRIM(SE4->E4_DESCRI)
 
-	oPrinter:Say(nLin,0100,"Condicao de Pagamento: ",oFont10B)
+	oPrinter:Say(nLin,0100,"Condição de Pagamento: ",oFont10B)
 	oPrinter:Say(nLin,0550,cCondPag,oFont10)
 
 	nLin += nEsp
@@ -568,11 +568,11 @@ Static Function EnviaPC(aAnexos)
 
 	nLin += nEsp
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Posiciona o Arquivo de Empresa SM0.                          ï¿½
-	//ï¿½ Imprime endereco de entrega do SM0 somente se o MV_PAR13 =" "ï¿½
-	//ï¿½ e o Local de Cobranca :                                      ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Posiciona o Arquivo de Empresa SM0.                          ³
+	//³ Imprime endereco de entrega do SM0 somente se o MV_PAR13 =" "³
+	//³ e o Local de Cobranca :                                      ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 	//nLin += nEsp
 
@@ -606,7 +606,7 @@ Static Function EnviaPC(aAnexos)
 	nLin += nEsp
 	oPrinter:Say(nLin,	nC_1	    ,'Solicitante           : ' +getSOLIC()   ,oFont11)
 	nLin += nEsp
-	oPrinter:Say(nLin,	nC_1	    ,'Comprador Responsavel : ' +getcomprad()   ,oFont11)
+	oPrinter:Say(nLin,	nC_1	    ,'Comprador Responsável : ' +getcomprad()   ,oFont11)
 
 	//transportadora
 	frx := ""
@@ -621,7 +621,7 @@ Static Function EnviaPC(aAnexos)
 	oPrinter:FillRect({nLin ,0050,nLin+(nBor-5),nColFim } , oBrush) //Linha
 	nLin += nEsp
 
-//INTERAï¿½ï¿½O PARA IMPORTAï¿½ï¿½O 26/09/18 - RAFA E ALEX
+//INTERAÇÃO PARA IMPORTAÇÃO 26/09/18 - RAFA E ALEX
 IF  SA2->A2_TIPO = "X"
 	//oPrinter:Say(nLin,	nC_1	    ,'IPI......: ' + Transform(xMoeda(nTotIPI ,SC7->C7_MOEDA,1,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotIpi ,14,MsDecimais(1))),oFont11)
 	//oPrinter:Say(nLin,	nC_3+200	,'ICM......: ' + Transform(xMoeda(nTotIcms,SC7->C7_MOEDA,1,SC7->C7_DATPRF,MsDecimais(SC7->C7_MOEDA),nTxMoeda) , tm(nTotIcms,14,MsDecimais(1))),oFont11)
@@ -667,7 +667,7 @@ ENDIF
 	oPrinter:FillRect({nLin ,0050,nLin+(nBor-5),nColFim } , oBrush) //Linha
 	nLin += nEsp
 
-	oPrinter:Say(nLin,	nC_1		,  'OBSERVAï¿½ï¿½O'  ,oFont11)
+	oPrinter:Say(nLin,	nC_1		,  'OBSERVAÇÃO'  ,oFont11)
 
 	if len(cObs_x) <170
 		nLin += nEsp
@@ -696,24 +696,24 @@ ENDIF
 
 //	oPrinter:Say(nLin,	nC_1		, 'NOTA: So aceitaremos a mercadoria se na sua Nota Fiscal constar o numero do nosso Pedido de Compras.',oFont11B)
 
-			oPrinter:Say(nLin,	nC_1		, "O B S E R V A C O E S",oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "O B S E R V A Ç Õ E S",oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "1. Encaminhar a nota fiscal eletronica para o endereco de e-mail: recebe_nfe@marfrig.com.br. Essa conta de e-mail nao ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "1. Encaminhar a nota fiscal eletrônica para o endereço de e-mail: recebe_nfe@marfrig.com.br. Essa conta de e-mail não ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   recebera XML, PDF ou boleto das NFs de servico;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   receberá XML, PDF ou boleto das NFs de serviço;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "2. Comunicamos a todos os fornecedores  que  em  atendimento  ao  ajuste SINIEF 11/2008 que estabelece a obrigacao de ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "2. Comunicamos a todos os fornecedores  que  em  atendimento  ao  ajuste SINIEF 11/2008 que estabelece a obrigação de ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   disponibilizacao do arquivo XML referente emissao de nota fiscal eletronica a partir de 01/10/2013 as empresas  do ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   disponibilização do arquivo XML referente emissão de nota fiscal eletrônica a partir de 01/10/2013 as empresas  do ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   Grupo Marfrig sï¿½ recebera mercadorias cujo o arquivo XML tenha previamente sido enviado para o  e-mail  a  seguir: ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   Grupo Marfrig só receberá mercadorias cujo o arquivo XML tenha previamente sido enviado para o  e-mail  a  seguir: ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   recebe_nfe@marfrig.com.br, DANFE, cujo XML nao tenha sido  previamente  enviado  sera  recusado  juntamente com  a ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   recebe_nfe@marfrig.com.br, DANFE, cujo XML não tenha sido  previamente  enviado  será  recusado  juntamente com  a ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   mercadoria  no momento  do  recebimento.  NF  de servicos devem ser enviadas para e-mails dos Estados no qual sera ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   mercadoria  no momento  do  recebimento.  NF  de serviços devem ser enviadas para e-mails dos Estados no qual será ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   efetuada a prestacao de servico, conforme abaixo:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   efetuada a prestação de serviço, conforme abaixo:", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
             IF SM0->M0_ESTENT="RS"
@@ -753,7 +753,7 @@ ENDIF
 			nLin += nEsp
             ENDIF
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "Empresas que nao se enquadram nesta obrigacao favor desconsiderar esta mensagem.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Empresas que não se enquadram nesta obrigação favor desconsiderar esta mensagem.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
 
@@ -765,86 +765,86 @@ ENDIF
 		//endif
 
 
-			oPrinter:Say(nLin,	nC_1		, "3. O arquivo XML devera conter obrigatoriamente as informacoes abaixo:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "3. O arquivo XML deverá conter obrigatoriamente as informações abaixo:", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   Numero do Pedido de Compra", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   Número do Pedido de Compra", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "   Codigo do Item - Marfrig", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   Código do Item - Marfrig", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "4. A data de vencimento para pagamento, assim como todas as retencoes de impostos devem estar destacados no corpo da NF;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "4. A data de vencimento para pagamento, assim como todas as retenções de impostos devem estar destacados no corpo da NF;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "5. Os pagamentos serao efetuados somente para contas bancarias cadastradas no mesmo CNPJ contida na NF;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "5. Os pagamentos serão efetuados somente para contas bancárias cadastradas no mesmo CNPJ contida na NF;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "6. Para que nao haja divergencia entre NF e Pedido, observe todos os itens do pedido de compras e em caso de  duvidas ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "6. Para que não haja divergência entre NF e Pedido, observe todos os itens do pedido de compras e em caso de  dúvidas ", oFont11 )
 			nLin += nEsp
 		    oPrinter:Say(nLin,	nC_1		, "	  entre em contato com o comprador;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "7. ï¿½ obrigatorio o uso da transportadora indicada no pedido de compra com o Frete FOB. Caso  nao ocorra, o  valor  do ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "7. É obrigatório o uso da transportadora indicada no pedido de compra com o Frete FOB. Caso  não ocorra, o  valor  do ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "	  frete sera revertido para o fornecedor;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "8. O nao cumprimento destas regras acarretarï¿½ em bloqueio do pagamento da nota fiscal. Duvidas  entrar em contato com ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "8. O não cumprimento destas regras acarretará em bloqueio do pagamento da nota fiscal. Dúvidas  entrar em contato com ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "	  o comprador;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "9. Para agendamento de entregas no CD Itupeva, entrar em contato atraves do telefone (11) 4591-6005  ou  por  e-mail: ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "9. Para agendamento de entregas no CD Itupeva, entrar em contato através do telefone (11) 4591-6005  ou  por  e-mail: ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "   agendamento.almoxarifado@marfrig.com.br;", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "10. Horario de Recebimento: das 08:00 as 15:00 horas.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "10. Horário de Recebimento: das 08:00 as 15:00 horas.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "Regras especificas para contratacao de servicos externos abaixo de 20 mil reais:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Regras especificas para contratação de serviços externos abaixo de 20 mil reais:", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A subcontratacao do servico ora contratado ï¿½ vedada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A subcontratação do serviço ora contratado é vedada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "Caso a contratada nao entregue os servicos no prazo sob as  condicoes  estipuladas  incidira multa  diaria  de 1%  do ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Caso a contratada não entregue os serviços no prazo sob as  condições  estipuladas  incidirá multa  diária  de 1%  do ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "valor contratado, por dia de atraso, limitada a 10%.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "Caso nao haja disposicao expressa da contatada que indique prazo maior  de  garantia  contratual,  prevalecerï¿½  prazo ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Caso não haja disposição expressa da contatada que indique prazo maior  de  garantia  contratual,  prevalecerá  prazo ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "manimo de garantia contratual de 90 dias.", oFont11 )
-			nLin += nEsp
-			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A cessï¿½o do presente termo ï¿½ vedada a contratada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "mínimo de garantia contratual de 90 dias.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A contratada se compromete a manter sigilo sobre todas as informacoes tecnicas, industriais  e comerciais a  que teve ", oFont11 )
-			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "acesso, pelo periodo de 5 anos.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A cessão do presente termo é vedada a contratada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "Qualquer hipotese de desconto  ou  recebimento  antecipado  dos valores advindos da presente  relacao ï¿½ vedada, sendo ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A contratada se compromete a manter sigilo sobre todas as informações técnicas, industriais  e comerciais a  que teve ", oFont11 )
+			nLin += nEsp
+			oPrinter:Say(nLin,	nC_1		, "acesso, pelo período de 5 anos.", oFont11 )
+			nLin += nEsp
+			nLin += nEsp
+			oPrinter:Say(nLin,	nC_1		, "Qualquer hipótese de desconto  ou  recebimento  antecipado  dos valores advindos da presente  relação é vedada, sendo ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "permitida apenas se autorizada pela contratante.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A contratada compromete-se a nao incorrer em qualquer das condutas do artigo 5 da lei anticorrupcao, e que ressarcirï¿½ ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A contratada compromete-se a não incorrer em qualquer das condutas do artigo 5 da lei anticorrupção, e que ressarcirá ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "a contratante de quaisquer prejuizos a que der causa.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "a contratante de quaisquer prejuízos a que der causa.", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A contratada  declara  se  ciente do  codigo  de  conduta  e  etica da  Marfrig  e  de  sua  politica  anticorrupcao, ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A contratada  declara  se  ciente do  código  de  conduta  e  ética da  Marfrig  e  de  sua  politica  anticorrupção, ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "disponibilizados no site: http://compliance.marfrig.com.br", oFont11 )
 			nLin += nEsp
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "A partir de 01/11/2018 as emissoes de NOTA FISCAL DE SERVICO contra a Marfrig deverao ocorrer entre os  dias  01 e 23 ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A partir de 01/11/2018 as emissões de NOTA FISCAL DE SERVIÇO contra a Marfrig deverão ocorrer entre os  dias  01 e 23 ", oFont11 )
 			nLin += nEsp
-			oPrinter:Say(nLin,	nC_1		, "de cada mï¿½s. Documentos emitidos fora  dos  prazos  solicitados e que  nao  forem  entregues  para  registros,  serao ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "de cada mês. Documentos emitidos fora  dos  prazos  solicitados e que  não  forem  entregues  para  registros,  serão ", oFont11 )
 			nLin += nEsp
 			oPrinter:Say(nLin,	nC_1		, "devolvidos aos fornecedores para sejam cancelados ou refeitos. ", oFont11 )
 			nLin += nEsp
@@ -867,7 +867,7 @@ ENDIF
 	//oPrinter:Say(nLin,0500-200,"Telefone: "+Alltrim(SM0->M0_TEL)+" - EnviarMail: " + UsrRetMail(RetCodUsr()) + " - Home Page: www.americanet.com.br",oFont11B)
 	oPrinter:Say(nLin,0500,"Telefone: "+Alltrim(SM0->M0_TEL)+" - EnviarMail: " + UsrRetMail(RetCodUsr()) ,oFont11B)
 	nLin += nEsp-nCNeg
-	oPrinter:Say(nLin,0790,"CNPJ: "+Transform(Alltrim(SM0->M0_CGC),PesqPict("SA2","A2_CGC"))+" - Inscriï¿½ï¿½o Estadual: "+Alltrim(SM0->M0_INSC),oFont11B)
+	oPrinter:Say(nLin,0790,"CNPJ: "+Transform(Alltrim(SM0->M0_CGC),PesqPict("SA2","A2_CGC"))+" - Inscrição Estadual: "+Alltrim(SM0->M0_INSC),oFont11B)
 	oPrinter:EndPage()
 
 	//Atualizo o campo do SD2
@@ -945,18 +945,18 @@ Return ( lErrEml )
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½ EnvMail  ï¿½Autor  ï¿½Ernani Forastieri   ï¿½ Data ï¿½             ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½ Rotina Generica de Envio de E-mail                         ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ Generico                                                   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³ EnvMail  ºAutor  ³Ernani Forastieri   º Data ³             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³ Rotina Generica de Envio de E-mail                         º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ Generico                                                   º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function EnvMailxx( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,cSenEml, cCCO )
 
@@ -1017,7 +1017,7 @@ Static Function EnvMailxx( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,c
 
 	If Empty( cServer ) .AND. Empty( cEmail ) .AND. Empty( cPass )
 		lRet := .F.
-		cMsg := 'Nao  foram definidos um ou mais parametros de configuraï¿½ï¿½o para envio de e-mail pelo Protheus.'
+		cMsg := 'Não foram definidos um ou mais parâmetros de configuração para envio de e-mail pelo Protheus.'
 
 		ConOut( cMsg )
 
@@ -1041,7 +1041,7 @@ Static Function EnvMailxx( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,c
 	If lAuth
 		If Empty( cContAuth ) .OR. Empty( cPswAuth )
 			lRet := .F.
-			cMsg := 'Nao  foram definidos conta ou senha de autenticaï¿½ï¿½o para envio de e-mail pelo Protheus.'
+			cMsg := 'Não foram definidos conta ou senha de autenticação para envio de e-mail pelo Protheus.'
 
 			ConOut( cMsg )
 
@@ -1060,7 +1060,7 @@ Static Function EnvMailxx( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,c
 		lRet := .F.
 
 		GET MAIL ERROR cError
-		cMsg := 'Falha na conexao para envio de e-mail ( ' + cError + ' ) '
+		cMsg := 'Falha na conexão para envio de e-mail ( ' + cError + ' ) '
 		ConOut( cMsg )
 
 		If !IsBlind()
@@ -1085,7 +1085,7 @@ Static Function EnvMailxx( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,c
 
 				If !( lRet  := MailAuth( cContAuth, cPswAuth ) )
 					lRet := .F.
-					cMsg := 'Nao  conseguiu autenticar conta de e-mail ( ' + cContAuth + ' ) '
+					cMsg := 'Não conseguiu autenticar conta de e-mail ( ' + cContAuth + ' ) '
 
 					ConOut( cMsg )
 
@@ -1142,22 +1142,22 @@ Return lRet
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
-ï¿½ï¿½ï¿½Funcao    ï¿½R110FIniPCï¿½ Autor ï¿½ Edson Maricate        ï¿½ Data ï¿½20/05/2000ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Inicializa as funcoes Fiscais com o Pedido de Compras      ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½Sintaxe   ï¿½ R110FIniPC(ExpC1,ExpC2)                                    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½Parametrosï¿½ ExpC1 := Numero do Pedido                                  ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½ ExpC2 := Item do Pedido                                    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½ Uso      ï¿½ MATR110,MATR120,Fluxo de Caixa                             ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Funcao    ³R110FIniPC³ Autor ³ Edson Maricate        ³ Data ³20/05/2000³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Descricao ³ Inicializa as funcoes Fiscais com o Pedido de Compras      ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Sintaxe   ³ R110FIniPC(ExpC1,ExpC2)                                    ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Parametros³ ExpC1 := Numero do Pedido                                  ³±±
+±±³          ³ ExpC2 := Item do Pedido                                    ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³ Uso      ³ MATR110,MATR120,Fluxo de Caixa                             ³±±
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function R110FIniPC(cPedido,cItem,cSequen,cFiltro)
 
@@ -1216,52 +1216,52 @@ Static Function R110FIniPC(cPedido,cItem,cSequen,cFiltro)
 Return .T.
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
-ï¿½ï¿½ï¿½Funcao    ï¿½R110Logo  ï¿½ Autor ï¿½ Materiais             ï¿½ Data ï¿½07/01/2015ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Retorna string com o nome do arquivo bitmap de logotipo    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-ï¿½ï¿½ï¿½ Uso      ï¿½ MATR110                                                    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄ¿±±
+±±³Funcao    ³R110Logo  ³ Autor ³ Materiais             ³ Data ³07/01/2015³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄ´±±
+±±³Descricao ³ Retorna string com o nome do arquivo bitmap de logotipo    ³±±
+±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+±±³ Uso      ³ MATR110                                                    ³±±
+±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 Static Function R110Logo()
 
 Local cBitmap := "LGRL"+SM0->M0_CODIGO+SM0->M0_CODFIL+".BMP" // Empresa+Filial
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Se nao encontrar o arquivo com o codigo do grupo de empresas ï¿½
-//ï¿½ completo, retira os espacos em branco do codigo da empresa   ï¿½
-//ï¿½ para nova tentativa.                                         ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Se nao encontrar o arquivo com o codigo do grupo de empresas ³
+//³ completo, retira os espacos em branco do codigo da empresa   ³
+//³ para nova tentativa.                                         ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If !File( cBitmap )
 	cBitmap := "LGRL" + AllTrim(SM0->M0_CODIGO) + SM0->M0_CODFIL+".BMP" // Empresa+Filial
 EndIf
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Se nao encontrar o arquivo com o codigo da filial completo,  ï¿½
-//ï¿½ retira os espacos em branco do codigo da filial para nova    ï¿½
-//ï¿½ tentativa.                                                   ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Se nao encontrar o arquivo com o codigo da filial completo,  ³
+//³ retira os espacos em branco do codigo da filial para nova    ³
+//³ tentativa.                                                   ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If !File( cBitmap )
 	cBitmap := "LGRL"+SM0->M0_CODIGO + AllTrim(SM0->M0_CODFIL)+".BMP" // Empresa+Filial
 EndIf
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Se ainda nao encontrar, retira os espacos em branco do codigoï¿½
-//ï¿½ da empresa e da filial simultaneamente para nova tentativa.  ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Se ainda nao encontrar, retira os espacos em branco do codigo³
+//³ da empresa e da filial simultaneamente para nova tentativa.  ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If !File( cBitmap )
 	cBitmap := "LGRL" + AllTrim(SM0->M0_CODIGO) + AllTrim(SM0->M0_CODFIL)+".BMP" // Empresa+Filial
 EndIf
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Se nao encontrar o arquivo por filial, usa o logo padrao     ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Se nao encontrar o arquivo por filial, usa o logo padrao     ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 If !File( cBitmap )
 	cBitmap := "LGRL"+SM0->M0_CODIGO+".BMP" // Empresa
 EndIf
@@ -1276,24 +1276,24 @@ static function impcabec(oprinter)
 	oPrinter:SayBitmap(nLin+120,0100,cBitMap,230+150,60+100) //[4]-> largura [5]-> altura
 	nLin += (nEsp*4)
 	//oPrinter:Say(nLin+40,0100,Alltrim(SM0->M0_CODFIL) + '-' + Alltrim(SM0->M0_NOMECOM),oFont14B)
-	//oPrinter:Say(nLin+40,0100,Alltrim(SM0->M0_NOMECOM)+"                        PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+	//oPrinter:Say(nLin+40,0100,Alltrim(SM0->M0_NOMECOM)+"                        PEDIDO DE COMPRA N.º "+cCdPedido,oFont17B,,CLR_HRED)
 
     IF SUBST(SC7->C7_OBS,1,2) = "SC"
-		oPrinter:Say(nLin+40,0100,"                                      AUTORIZACï¿½O DE ENTREGA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+		oPrinter:Say(nLin+40,0100,"                                      AUTORIZACÃO DE ENTREGA N.º "+cCdPedido,oFont17B,,CLR_HRED)
 	else
-		oPrinter:Say(nLin+40,0100,"                                            PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+		oPrinter:Say(nLin+40,0100,"                                            PEDIDO DE COMPRA N.º "+cCdPedido,oFont17B,,CLR_HRED)
     endif
-	//oPrinter:Say(nLin+100,0850,"PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+	//oPrinter:Say(nLin+100,0850,"PEDIDO DE COMPRA N.º "+cCdPedido,oFont17B,,CLR_HRED)
 
 	nLin += nEsp
 	oPrinter:FillRect({nLin,0050,nLin+nBor,nColFim } , oBrush) //Linha
 
 	//nLin += nEsp
-	//oPrinter:Say(nLin+20,0850,"PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+	//oPrinter:Say(nLin+20,0850,"PEDIDO DE COMPRA N.º "+cCdPedido,oFont17B,,CLR_HRED)
 
 	//nLin += (nEsp*2)-30
 
-	//oPrinter:Say(nLin,0100,"Data Emissao:",oFont10B)
+	//oPrinter:Say(nLin,0100,"Data Emissão:",oFont10B)
 	//oPrinter:Say(nLin,0350,DTOC(SC7->C7_EMISSAO),oFont10)
 
 	//SM0->(dbSetOrder(1))
@@ -1315,7 +1315,7 @@ static function impcabec(oprinter)
 	//oPrinter:Say(nLin+40,0050,"|" + SPACE(072)+" | "+SPACE(063)+"|",oFont10B)
 	//nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)
-	oPrinter:Say(nLin+40,0100,"EMPRESA  :" + SUBSTR(SM0->M0_NOMECOM,1,60)+" | Razao Social : "+SUBSTR(SA2->A2_NOME,1,60),oFont10B)
+	oPrinter:Say(nLin+40,0100,"EMPRESA  :" + SUBSTR(SM0->M0_NOMECOM,1,60)+" | Razão Social : "+SUBSTR(SA2->A2_NOME,1,60),oFont10B)
 	oPrinter:Say(nLin+40,0050,+space(140)+"|" ,oFont10B)
 	nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)
@@ -1323,7 +1323,7 @@ static function impcabec(oprinter)
 	oPrinter:Say(nLin+40,0050,+space(140)+"|" ,oFont10B)
 	nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)
-	oPrinter:Say(nLin+40,0100,"Endereco :" + SUBSTR(SM0->M0_ENDENT,1,60)+" | Endereco     : "+SUBSTR(Alltrim(SA2->A2_END),1,60),oFont10B)
+	oPrinter:Say(nLin+40,0100,"Endereço :" + SUBSTR(SM0->M0_ENDENT,1,60)+" | Endereço     : "+SUBSTR(Alltrim(SA2->A2_END),1,60),oFont10B)
 	oPrinter:Say(nLin+40,0050,+space(140)+"|" ,oFont10B)
 	nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)
@@ -1633,7 +1633,7 @@ Static Function EnvEmail(cDe, cPara, cCc, cAssunto, aAnexos, cMsg , cCCO, cBody)
 	xRet := oMessage:AttachFile( cArquivo  )
 	//if xRet < 0                                                                    
 	
-	//	cMsg := "O arquivo " + cArquivo + " nao foi anexado!"
+	//	cMsg := "O arquivo " + cArquivo + " não foi anexado!"
 	//	alert( cMsg )
 	//	return
 	//endif

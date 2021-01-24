@@ -6,7 +6,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada para inclusao de botoes na tela de documento de entrada
 =====================================================================================
 */
@@ -19,7 +19,7 @@ If FindFunction("U_MGFCOM64")
 	aBotao := U_MGFCOM64()
 Endif
 
-//GAP133 - Inclusao manual da data de entrada da Nota Fiscal eletronica para operacoes de Busca de Gado
+//GAP133 - Inclusão manual da data de entrada da Nota Fiscal eletrônica para operações de Busca de Gado
 If (IIf(Type("l103Class")!="U",l103Class,.T.);
 	 .OR. IIf(Type("l103Visual")!="U",l103Visual,.T.));
 	 .AND. lMGFFIS35

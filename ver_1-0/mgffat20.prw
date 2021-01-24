@@ -8,10 +8,10 @@
 Programa.:              MGFFAT20
 Autor....:              Gustavo Ananias Afonso
 Data.....:              24/10/2016
-Descricao / Objetivo:   Apos a alteracao do produto atualiza status de instegracao para SFA se for elegivel
+Descricao / Objetivo:   Apos a alteração do produto atualiza status de instegração para SFA se for elegivel
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

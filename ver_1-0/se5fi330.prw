@@ -4,11 +4,11 @@
 =====================================================================================
 Programa............: SE5FI330()
 Autor...............: Totvs
-Data................: Marco/2018 
-Descricao / Objetivo: Ponto de entrada no final da compensacao do titulo a receber
+Data................: Março/2018 
+Descricao / Objetivo: Ponto de entrada no final da compensação do título a receber
 Doc. Origem.........: Financeiro
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

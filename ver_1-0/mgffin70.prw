@@ -4,10 +4,10 @@
 Programa.:              MGFFIN70
 Autor....:              Atilio Amarilla
 Data.....:              22/12/2017
-Descricao / Objetivo:   Titulo FIDC - Bloquear transferencia ou exclusao de bordero
+Descricao / Objetivo:   Título FIDC - Bloquear transferência ou exclusão de borderô
 Doc. Origem:            Contrato - GAP CRE019/20/21
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              TransaÃ§Ãµes referentes a Banco/Carteira FIDC
 =====================================================================================
 */
@@ -63,7 +63,7 @@ User Function MGFFIN70()
 		If (cAliasTrb)->(Eof())
 			lRet := .F.
 
-			MsgStop("Este titulo se encontra na carteira FIDC."+CRLF+"Realize o processo de recompra antes de fazer esta operacao.")
+			MsgStop("Este título se encontra na carteira FIDC."+CRLF+"Realize o processo de recompra antes de fazer esta operação.")
 		Endif	
              
 		(cAliasTrb)->(dbCloseArea())

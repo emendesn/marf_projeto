@@ -2,7 +2,7 @@
 #INCLUDE "TOPCONN.CH"
 #INCLUDE 'RWMAKE.CH'
 
-# DEFINE CAMPOEXCL	'E1_OK|STATUS|RECNOSE1|EMAILCOB|A1ZREDE|CODGERENC|E1_VEND1'
+#DEFINE CAMPOEXCL	'E1_OK|STATUS|RECNOSE1|EMAILCOB|A1ZREDE|CODGERENC|E1_VEND1|NOMEVEND'
 
 /*/
 ==============================================================================================================================================================================
@@ -34,6 +34,8 @@ Financeiro - Atualizações-Especificos MARFRIG
 /*/   
 
 User Function MGFFINBP()
+	Local 	_cErroPerg	:=	""
+
     Private cEmailDE   :=  ALLTRIM(UsrRetMail(RetCodUsr()))
     Private cPerg		:=  "MGFFINBP"
 
@@ -41,9 +43,20 @@ User Function MGFFINBP()
         Alert("Usuário não possui e-mail no Cadastro de Usuários do Protheus. Por favor, procure a TI para atualização deste cadastro.")
     Else
         ValidPerg()
-	    If Pergunte(cPerg,.T.)
-		    MGFFINBP2(     MGFFINBP1() /* Monta a Tabela Temporária */    ) //Monta o Mark Browser
-		Endif
+		While .T.
+		    If Pergunte(cPerg,.T.)
+				_cErroPerg	:=	""
+				If ! VldDtX1(@_cErroPerg)
+					Help( ,, 'Inconsistência de Datas',, _cErroPerg , 1, 0 )
+					Loop 
+				Else
+			    	MGFFINBP2(     MGFFINBP1() /* Monta a Tabela Temporária */    ) //Monta o Mark Browser
+					Exit
+				Endif
+			Else
+				Exit
+			Endif
+		Enddo
     Endif
 Return Nil
 
@@ -78,11 +91,12 @@ static function MGFFINBP1()
 	next _ni
 
 	aadd(_aStrut, {'E1_OK'		,'C',02 ,0})
-	aadd(_aStrut, {'STATUS'		,'C',60 ,0})
 	aadd(_aStrut, {'RECNOSE1'	,'N',12 ,0})
 	aadd(_aStrut, {'EMAILCOB'	,'C',80 ,0})
 	aadd(_aStrut, {'CODGERENC'	,'C',06 ,0})
 	aadd(_aStrut, {'A1ZREDE'	,'C',03 ,0})
+	aadd(_aStrut, {'NOMEVEND'	,'C',40 ,0})
+	aadd(_aStrut, {'STATUS'		,'C',60 ,0})
 
 Return _aStrut
 
@@ -129,6 +143,7 @@ static function MGFFINBP2(strTab)
 	_cInsert += "E1_FILIAL, E1_PREFIXO, E1_NUM, E1_PARCELA, E1_TIPO, E1_NATUREZ, E1_CLIENTE, E1_LOJA, "
     _cInsert += "E1_NOMCLI, E1_EMISSAO, E1_VENCREA, E1_VALOR, E1_SALDO, E1_VEND1, "
     _cInsert += "STATUS, RECNOSE1, EMAILCOB, A1ZREDE, CODGERENC "
+    _cInsert += ",NOMEVEND "
 	_cInsert += ") " + _cFim
 
 	_cInsert += "SELECT " + _cFim
@@ -141,6 +156,7 @@ static function MGFFINBP2(strTab)
     _cInsert += "SE1.R_E_C_N_O_ RECNOSE1, " + _cFim
     _cInsert += "A1_XMAILCO EMAILCOB, A1_ZREDE A1ZREDE, " + _cFim
     _cInsert += "CASE WHEN ZGD_CODIGO IS NULL THEN ' ' ELSE ZGD_CODIGO END AS CODGERENC " + _cFim
+    _cInsert += ",A3_NOME AS NOMEVEND "
 
     _cInsert += "FROM "+ RetSQLName("SE1") +" SE1 " + _cFim
 
@@ -148,6 +164,10 @@ static function MGFFINBP2(strTab)
     _cInsert += "ON SA1.D_E_L_E_T_ = ' ' AND A1_FILIAL = '"+XFILIAL("SA1")+"' "
 	_cInsert += "AND A1_COD||A1_LOJA = E1_CLIENTE||E1_LOJA AND A1_EST <> 'EX' " + _cFim
     _cInsert += "AND A1_ZREDE BETWEEN '" + MV_PAR05 + "' AND '" + MV_PAR06 + "' " + _cFim
+
+    _cInsert += "JOIN "+ RetSQLName("SA3") +" SA3 " + _cFim
+    _cInsert += "ON A3_FILIAL = '"+XFILIAL("SA3")+"' "
+    _cInsert += "AND A3_COD = E1_VEND1 AND SA3.D_E_L_E_T_ = ' ' "
 
     _cInsert += "LEFT JOIN "+ RetSQLName("ZGE") +" ZGE ON ZGE.D_E_L_E_T_ = ' ' AND ZGE_CODVEN = E1_VEND1 "
     _cInsert += "LEFT JOIN "+ RetSQLName("ZGD") +" ZGD ON ZGD.D_E_L_E_T_ = ' ' AND ZGD_CODIGO = ZGE_CODIGO AND ZGD_ATIVO = 'S' "
@@ -163,14 +183,14 @@ static function MGFFINBP2(strTab)
 
     _cInsert += "ORDER BY E1_CLIENTE,E1_VENCREA "
 
-
 	//Executo o comando para alimentar a tabela temporária
-	//memowrite("c:\totvs\RVBJ_MGFFINBP2.TXT", _cInsert  )// remover
+	memowrite("c:\totvs\RVBJ_MGFFINBP.TXT", _cInsert  )// remover
 	_cInsert := strTran(_cInsert, _cFim, '')
 
 	Processa({|| TcSQLExec(_cInsert)})
 
 	For _nx := 1 To Len(_aStruLib)
+/*/
 		if !(_aStruLib[_nx][1] $ CAMPOEXCL)
 			aadd(_aColumns,FWBrwColumn():New())
 			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
@@ -184,6 +204,44 @@ static function MGFFINBP2(strTab)
 			aadd(_aColumns,FWBrwColumn():New())
 			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
 			_aColumns[Len(_aColumns)]:SetTitle("Status")
+			_aColumns[Len(_aColumns)]:SetPicture("@!")
+			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
+			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
+		ElseIf	_aStruLib[_nx][1]	== "EMAILCOB"
+			aadd(_aColumns,FWBrwColumn():New())
+			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
+			_aColumns[Len(_aColumns)]:SetTitle("E-mail Cobrança")
+			_aColumns[Len(_aColumns)]:SetPicture("@!")
+			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
+			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
+		endif
+/*/
+		If !(_aStruLib[_nx][1] $ CAMPOEXCL)
+			aadd(_aColumns,FWBrwColumn():New())
+			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
+			_aColumns[Len(_aColumns)]:SetTitle(RetTitle(_aStruLib[_nx][1]))
+			_aColumns[Len(_aColumns)]:SetPicture(PesqPict("SE1",_aStruLib[_nx][1]))
+			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
+			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
+		EndIf
+		If	_aStruLib[_nx][1]	== "STATUS"
+			aadd(_aColumns,FWBrwColumn():New())
+			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
+			_aColumns[Len(_aColumns)]:SetTitle("Status")
+			_aColumns[Len(_aColumns)]:SetPicture("@!")
+			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
+			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
+		ElseIf	_aStruLib[_nx][1]	== "EMAILCOB"
+			aadd(_aColumns,FWBrwColumn():New())
+			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
+			_aColumns[Len(_aColumns)]:SetTitle("E-mail Cobrança")
+			_aColumns[Len(_aColumns)]:SetPicture("@!")
+			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
+			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
+		ElseIf	_aStruLib[_nx][1]	== "NOMEVEND"
+			aadd(_aColumns,FWBrwColumn():New())
+			_aColumns[Len(_aColumns)]:SetData( &("{||"+_aStruLib[_nx][1]+"}") )
+			_aColumns[Len(_aColumns)]:SetTitle("Nome Vendedor")
 			_aColumns[Len(_aColumns)]:SetPicture("@!")
 			_aColumns[Len(_aColumns)]:SetSize(_aStruLib[_nx][3])
 			_aColumns[Len(_aColumns)]:SetDecimal(_aStruLib[_nx][4])
@@ -236,26 +294,28 @@ Grava erros no campo STATUS
 static function MGFFINBP3(cNomTipo)
 	local cAlias	:= oBrowse:Alias()
 	local aRest		:= GetArea()
-	local _aheader	:=	_acols	:=	{}
+	Local _aheader	:=	_acols	:=	{}
+	Local _aheader	:=	{}
 	Local cEmailCC	:= 	""
 	Local cSTATUS	:=	cKeyLoop :=	cRetEnvio := cDtHora :=	""
 	Local cCorpo	:=	""
 	Local nHtmVlr	:=	nHtmSld	:=	0
 	Local nB		:=	0
 
+	Private aPosica	:=	{}
+	
 	If (cAlias)->(Eof())
 		MSGALERT("SEM DADOS A ENVIAR !")
 		Return
 	Endif
 
-	GetEmailCC(@cEmailCC)	// E-mail CC
-
-	//If	cNomTipo	==	"Comercial"
 	If ! ExisteSx6("MGF_FINBPA")
 		CriarSX6("MGF_FINBPA", "Cc", "E-mail Gerencia Contas a Receber?"			, 'silvia.costa@marfrig.com.br ' )	
 	EndIf
+
+	GetEmailCC(@cEmailCC)	// E-mail CC
 	cEmailCC += ChkExisCarat(";", cEmailCC)+SUPERGETMV("MGF_FINBPA",.F., 'silvia.costa@marfrig.com.br ' )
-	//Endif
+	cEmailCC += ChkExisCarat(";", cEmailCC) + cEmailDE // Copia o usuario9a) que enviou e-mail
 
 	// Colunas do Log
 	_aheader := {"Filial","Prefixo","No. Título","Parcela","Tipo","Natureza","Cod Cliente", ;
@@ -285,7 +345,7 @@ static function MGFFINBP3(cNomTipo)
 	EndDo
 	//
 	RestArea(aRest)
-	_acols := aSort(_acols,,, { |x,y| x[14] < y[14] })
+	_acols := aSort(_acols,,, { |a,b| a[14]+DTOS(a[10]) < b[14]+DTOS(b[10])   })
 	nA	:=	1
 	WHILE nA <= Len(_acols)
 		aPosica	:=	{}
@@ -296,36 +356,30 @@ static function MGFFINBP3(cNomTipo)
 			Aadd(aPosica, nA  )
 
 			cCorpo	+=	" <tr style='mso-yfti-irow:1'>"
-//			cCorpo	+=	" <td style='padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
 
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+_acols[nA][01]+"<o:p></o:p></span></p>"
-			cCorpo	+=	" </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: left;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+_acols[nA][01]+" - "+FWFilialName(cEmpAnt,_acols[nA][01])+"<o:p></o:p></span></p>  </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: left;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
 			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+POSICIONE("SA1",1,XFILIAL("SA1")+_acols[nA][07]+_acols[nA][08],"A1_NOME")+"<o:p></o:p></span></p>  </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: left;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
 			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+POSICIONE("SA3",1,XFILIAL("SA3")+_acols[nA][19],"A3_NOME")+"<o:p></o:p></span></p> </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+_acols[nA][17]+"<o:p></o:p></span></p> </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: left;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+POSICIONE("SZQ",1,XFILIAL("SZQ")+_acols[nA][17],"ZQ_DESCR")+"<o:p></o:p></span></p> </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+DTOC(_acols[nA][10])+"<o:p></o:p></span></p>"
-			cCorpo	+=	" </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+DTOC(_acols[nA][10])+"<o:p></o:p></span></p> </td>"
 
-			cCorpo	+=	"   <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+_acols[nA][03]+"<o:p></o:p></span></p>"
-			cCorpo	+=	" </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>"+_acols[nA][03]+"<o:p></o:p></span></p> </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>R$ "+TRANSFORM(_acols[nA][18],"@e 9,999,999.99")+"<o:p></o:p></span></p>"
-			cCorpo	+=	" </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: right;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'> "+TRANSFORM(_acols[nA][18],"@e 9,999,999.99")+"<o:p></o:p></span></p> </td>"
 
-			cCorpo	+=	" <td style='text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'>R$ "+TRANSFORM(_acols[nA][12],"@e 9,999,999.99")+"<o:p></o:p></span></p>"
-			cCorpo	+=	" </td>"
+			cCorpo	+=	" <td style='font-size:12px; text-align: right;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+			cCorpo	+=	" <p class=MsoNormal><span style='mso-fareast-language:EN-US'> "+TRANSFORM(_acols[nA][12],"@e 9,999,999.99")+"<o:p></o:p></span></p> </td>"
 
 			cCorpo	+=	" </tr>"
 
@@ -335,40 +389,50 @@ static function MGFFINBP3(cNomTipo)
 			++nA
 		ENDDO
 
+		cCorpo  +=  "<p> <br /> </p>"
+
 		cCorpo	+=	" <tr style='mso-yfti-irow:2;mso-yfti-lastrow:yes'>"
 		cCorpo	+=	" <td colspan=5 style='padding:.75pt .75pt .75pt .75pt'></td>"
-		cCorpo	+=	" <td style='background:#5B9BD5;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+		cCorpo	+=	" <td style='background:#5B9BD5;text-align: center;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
 
 		cCorpo	+=	" <p class=MsoNormal><strong><span style='font-family:"
 		cCorpo	+=	' "Calibri",sans-serif;'
 
-		cCorpo	+=	" color:white;mso-fareast-language:EN-US'>Totais</span></strong><span"
+		cCorpo	+=	" color:white;mso-fareast-language:EN-US'>TOTAIS</span></strong><span"
 		cCorpo	+=	" style='color:white;mso-fareast-language:EN-US'><o:p></o:p></span></p>"
 		cCorpo	+=	" </td>"
-		cCorpo	+=	" <td style='background:#5B9BD5;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
-		cCorpo	+=	" <p class=MsoNormal><strong><span style='font-family:"
-		cCorpo	+=	' "Calibri",sans-serif;'
 
-		cCorpo	+=	" color:white;mso-fareast-language:EN-US'>R$ "+TRANSFORM(nHtmVlr,"@e 99,999,999.99")+"</span></strong><span"
-		cCorpo	+=	" style='color:white;mso-fareast-language:EN-US'><o:p></o:p></span></p>"
-		cCorpo	+=	" </td>"
-		cCorpo	+=	" <td style='background:#5B9BD5;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+		cCorpo	+=	" <td style='background:#5B9BD5;font-size:13px; text-align: right;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
 		cCorpo	+=	" <p class=MsoNormal><strong><span style='font-family:"
 		cCorpo	+=	' "Calibri",sans-serif;'
-		cCorpo	+=	" color:white;mso-fareast-language:EN-US'>R$ "+TRANSFORM(nHtmSld,"@e 99,999,999.99")+"</span></strong><span"
+		cCorpo	+=	" color:white;mso-fareast-language:EN-US'> "+TRANSFORM(nHtmVlr,"@e 99,999,999.99")+"</span></strong><span"
 		cCorpo	+=	" style='color:white;mso-fareast-language:EN-US'><o:p></o:p></span></p>"
 		cCorpo	+=	" </td>"
+
+		cCorpo	+=	" <td style='background:#5B9BD5;font-size:13px; text-align: right;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
+		cCorpo	+=	" <p class=MsoNormal><strong><span style='font-family:"
+		cCorpo	+=	' "Calibri",sans-serif;'
+		cCorpo	+=	" color:white;mso-fareast-language:EN-US'> "+TRANSFORM(nHtmSld,"@e 99,999,999.99")+"</span></strong><span"
+		cCorpo	+=	" style='color:white;mso-fareast-language:EN-US'><o:p></o:p></span></p>"
+		cCorpo	+=	" </td>"
+
+// TESTE
+		cCorpo	+=	' <td style="background: rgb(255, 255, 255); font-size: 13px; text-align: right; padding: 3.75pt;">'
+//		cCorpo	+=	' <span style="color:#ffffff;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></td>'
+		cCorpo	+=	' <span style="color:#ffffff;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></td>'
+
 		cCorpo	+=	" </tr>"
 
-		// Busca e-mail(s) da gerencia
-		If	cNomTipo	==	"Comercial"
+		If	cNomTipo	==	"Comercial"		// Busca e-mail(s) da gerencia
 			cKeyLoop	:=	RetMails(cKeyLoop)
 		Endif
 	
 		If Empty(cKeyLoop)
 			cRetEnvio	:=	"E-mail nao enviado"
 		Else
-			cEmailCC += ChkExisCarat(";", cEmailCC) + cEmailDE 
+			// ATENÇÃO, REMOVER ESTE COMENTARIO AO TESTAR, EVITANDO ENVIO INDEVIDO DE E-MAILS AO CLIENTE. ISSO JA ACONTECEU !
+			//cKeyLoop	:=	"renato.junior@marfrig.com.br"
+			//cEmailCC	:=	"eder.dias@marfrig.com.br"
 			//      E-MAIL DE / E-MAIL PARA / E-MAIL CC
 			If ( EnvMail({cEmailDE,cKeyLoop,cEmailCC}, cCorpo, cNomTipo) )
 				cRetEnvio	:=	"Enviado com sucesso"
@@ -376,7 +440,6 @@ static function MGFFINBP3(cNomTipo)
 				cRetEnvio	:=	"Erro no envio do E-mail"
 			Endif
 		Endif
-
 		// ATUALIZA SE1 E _acols
 		For nB := 1 to Len(aPosica)
 			SE1->(DBGOTO(_acols[aPosica[nB]][13]))
@@ -385,16 +448,9 @@ static function MGFFINBP3(cNomTipo)
 				SE1->(RecLock("SE1",.F.))
 				SE1->E1_ZECDTHR		:=	cDtHora
 				SE1->E1_ZECUSUA		:=	UsrFullName(RetCodUsr())
-				SE1->E1_ZECEMAI		:=	cKeyLoop	//cEmailDE
+				SE1->E1_ZECEMAI		:=	cKeyLoop
 				SE1->(MsUnLock())
 			Endif
-			/*/
-			_acols[ aPosica[nB]][13]	:=	cDtHora
-			_acols[ aPosica[nB]][14]	:=	cNmUsua
-			If cNomTipo == "Cliente"
-				_acols[ aPosica[nB]][15]	:=	cKeyLoop
-			Endif
-			/*/
 			_acols[ aPosica[nB]][13]	:=	SE1->E1_ZECDTHR
 			_acols[ aPosica[nB]][14]	:=	SE1->E1_ZECUSUA
 			_acols[ aPosica[nB]][15]	:=	SE1->E1_ZECEMAI
@@ -534,13 +590,18 @@ Return()
 //----------------------------------------------------------------------------
 // Verifica se a Data Final é anterior ao dia anterior (vencido = ddatabase-1)
 //----------------------------------------------------------------------------
-User Function VldDtX1(dMVPAR)
-If dMVPAR <= dDataBase-1
-    Return .T.
-Else
-    Return .F.
-Endif
-Return Nil
+Static Function VldDtX1(XcErroPerg)
+
+	If ! (MV_PAR08 <= dDataBase-1)
+		XcErroPerg	+=	"Data Final tem que ser inferior a Data Base, "
+	Endif	
+	If ! (MV_PAR07 <= MV_PAR08)
+		XcErroPerg	+=	"Data Inicial tem que ser inferior a Data Final"
+	Endif
+	If Empty(XcErroPerg)
+		Return( .T.)
+	Endif
+Return( .F.)
 
 
 //----------------------------------------------------------------------------
@@ -557,7 +618,8 @@ Define MSDialog oDlg Title "E-mail adicional" From 0, 0 To 130, 420 Of oMainWnd 
 @ 016,004 To 166,270 Label Pixel Of oDlg
 
 @ 036,075 Say cMsg Size 136,200 Pixel Of oDlg
-@ 050,072 MsGet cCod  Size 133,000 Valid (NaoVazio(cCod)) Pixel Of oDlg
+//@ 050,072 MsGet cCod  Size 133,000 Valid (NaoVazio(cCod)) Pixel Of oDlg
+@ 050,072 MsGet cCod  Size 133,000 Pixel Of oDlg
 
 ACTIVATE MSDIALOG oDlg CENTERED ON INIT EnchoiceBar(ODlg,{||lRet := .T. , cCodVolta := ALLTRIM(cCod),  ODlg:End()},{||lRet := .F.  ,ODlg:End(),},,)
 
@@ -681,6 +743,7 @@ static function bodyMail(cCorpo, cCliOuCom)
  	cHtml += "font-family: arial, sans-serif; "
  	cHtml += "border-collapse: collapse; "
  	cHtml += "width: 100%; "
+// 	cHtml += "width: 60%; "
  	cHtml += "} "
 
  	cHtml += "td, th { "
@@ -707,11 +770,16 @@ static function bodyMail(cCorpo, cCliOuCom)
  	cHtml += "</style> "
 
 If cCliOuCom	==	"Comercial"
-	cHtml += "<p><span style='color:red'>Título(s) Vencido(s) entre: "+LEFT(DTOC(MV_PAR07),5)+" até "+LEFT(DTOC(MV_PAR08),5)+"<o:p></o:p></span></p>"
+//	cHtml += "<p><span style='color:red'>Título(s) Vencido(s) entre: "+LEFT(DTOC(MV_PAR07),5)+" até "+LEFT(DTOC(MV_PAR08),5)+"<o:p></o:p></span></p>"
+	cHtml += "<p><span style='color:red'>Título(s) Vencido(s) entre: "+DTOC(MV_PAR07)+" até "+DTOC(MV_PAR08)+"<o:p></o:p></span></p>"
 Else
+	cHtml += "<p><span style='color:black'>Prezado cliente,<o:p></o:p></span></p>"
+	cHtml += "<p></p>"
+
 	cHtml += "<p><span style='color:black'>Não acusamos o pagamento do(s) titulo(s) abaixo.<o:p></o:p></span></p>"
 	cHtml += "<p><span style='color:black'>Solicitamos previsão de pagamento, ou comprovante de pagamento caso o mesmo já tenha sido liquidado.<o:p></o:p></span></p>"
-	cHtml += "<p><span style='color:black'>O envio ao cartório é automático, após o 7º dia corrido da data de vencimento.<o:p></o:p></span></p>"
+	cHtml += "<br>"
+	cHtml += "<p><span style='color:black'>Lembramos que o envio ao cartório é automático, após o 7º dia corrido da data de vencimento.<o:p></o:p></span></p>"
 Endif
 
  	cHtml += "</head> "
@@ -720,12 +788,13 @@ Endif
 	cHtml += "<div class=WordSection1> "
 
 // dados da Tabela
-	cHtml += "<table class=MsoNormalTable border=0 align=center cellpadding=0 style='mso-cellspacing:1.5pt;"
+//	cHtml += "<table class=MsoNormalTable border=0 align=center cellpadding=0 style='mso-cellspacing:1.5pt;"
+	cHtml += "<table class=MsoNormalTable border=0 align=left cellpadding=0 style='mso-cellspacing:1.5pt;"
  	cHtml += "mso-yfti-tbllook:1184;mso-padding-alt:0cm 5.4pt 0cm 5.4pt'>"
  	cHtml += "<thead>"
   	cHtml += "<tr style='mso-yfti-irow:0;mso-yfti-firstrow:yes'>"
 
-	_aItCab	:=	{"Cod","Cliente","Vendedor","Rede","Vcto","Nº Título","Valor","Saldo Pendente"}
+	_aItCab	:=	{"Filial","Cliente","Vendedor","Rede","Vencimento","Nº Título","Valor","Saldo Pendente"}
 For nI :=	1	to Len (_aItCab)
 
    	cHtml += "<td style='background:#5B9BD5;padding:3.75pt 3.75pt 3.75pt 3.75pt'>"
@@ -742,18 +811,141 @@ Next
 
 	cHtml += "</table> "
 
-	cHtml += "<p class=MsoNormal><o:p>&nbsp;</o:p></p> "
-	cHtml += "<p class=MsoNormal><o:p>&nbsp;</o:p></p> "
-	cHtml += "</div> "
+//	cHtml += "<p class=MsoNormal><o:p>&nbsp;</o:p></p> "
+//	cHtml += "<p class=MsoNormal><o:p>&nbsp;</o:p></p> "
+
+//	cHtml += "</div> "
+
 	cHtml += "</body> "
 
 If cCliOuCom	==	"Cliente"
-	cHtml += "<p><span style='color:red'>“Nossos boletos são anexados às NFs e o nosso e-mail possui a extensão @marfrig.com.br. Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extensão, NÃO DEVE <o:p></o:p></span></p> "
-	cHtml += "<p><span style='color:red'>SER CONSIDERADO. A Marfrig não envia boleto por e-mail sem solicitação prévia. Caso recebe ligação ou e-mail solicitando substituição de boleto, favor entrar em contato com a cobrança da Marfrig”<o:p></o:p></span></p> "
+//	cHtml += "<p><span style='color:red'>“Nossos boletos são anexados às NFs e o nosso e-mail possui a extensão @marfrig.com.br. Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extensão, NÃO DEVE <o:p></o:p></span></p> "
+//	cHtml += "<p><span style='color:red'>SER CONSIDERADO. A Marfrig não envia boleto por e-mail sem solicitação prévia. Caso recebe ligação ou e-mail solicitando substituição de boleto, favor entrar em contato com a cobrança da Marfrig”<o:p></o:p></span></p> "
+
+/*/
+	cHtml += "<p><b><u><span style='color:black'>ATENÇÃO:<o:p></o:p></span></b></u></p> "
+	cHtml += "<p></p> "
+	cHtml += "<p><b><span style='color:black'>Nossos boletos são anexados às NFs e o nosso e-mail possui a extensão @marfrig.com.br.<o:p></o:p></span></b></p> "
+	cHtml += "<p><b><span style='color:black'>Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extensão, NÃO DEVE SER CONSIDERADO PARA PAGAMENTO<o:p></o:p></span></b></p> "
+	cHtml += "<p><b><span style='color:black'>A Marfrig não envia boleto por e-mail sem solicitação prévia.<o:p></o:p></span></b></p> "
+	cHtml += "<p><b><span style='color:black'>Caso receba ligação ou e-mail solicitando substituição de boleto, favor entrar em contato com a cobrança da Marfrig<o:p></o:p></span></b></p> "
+/*/
+
+cHtml += "</div> "
+
+	//For nI :=	1	to Len(aPosica)+3
+	//   	cHtml += "<br >"
+	//Next
+
+/*/
+	cHtml += "<p>"
+	cHtml += "	&nbsp;</p>"
+	cHtml += '<div style="page-break-after: always;">'
+	cHtml += '<span style="display: none;">&nbsp;</span></div>'
+
+	cHtml += "<p>"
+	cHtml += '	<b><u><span style="color:black">ATEN&Ccedil;&Atilde;O:<o:p></o:p></span></u></b></p>'
+	cHtml += "<p>"
+		cHtml += '<b><span style="color:black">Nossos boletos s&atilde;o anexados &agrave;s NFs e o nosso e-mail possui a extens&atilde;o @marfrig.com.br.<o:p></o:p></span></b><br />'
+		cHtml += '<b><span style="color:black">Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extens&atilde;o, N&Atilde;O DEVE SER CONSIDERADO PARA PAGAMENTO<o:p></o:p></span></b><br />'
+		cHtml += '<b><span style="color:black">A Marfrig n&atilde;o envia boleto por e-mail sem solicita&ccedil;&atilde;o pr&eacute;via.<o:p></o:p></span></b> <b><span style="color:black">Caso receba liga&ccedil;&atilde;o ou e-mail solicitando substitui&ccedil;&atilde;o de boleto, favor entrar em contato com a cobran&ccedil;a da Marfrig<o:p></o:p></span></b></p>'
+	cHtml += "<p>"
+	cHtml += "	&nbsp;</p>"
+/*/
+
+
+/*/
+<p>
+	<b><u>ATEN&Ccedil;&Atilde;O:<o:p></o:p></u></b></p>
+<p>
+	<b>Nossos boletos s&atilde;o anexados &agrave;s NFs e o nosso e-mail possui a extens&atilde;o @marfrig.com.br.<o:p></o:p></b><br />
+	<b>Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extens&atilde;o, N&Atilde;O DEVE SER CONSIDERADO PARA PAGAMENTO<o:p></o:p></b><br />
+	<b>A Marfrig n&atilde;o envia boleto por e-mail sem solicita&ccedil;&atilde;o pr&eacute;via.<o:p></o:p></b>&nbsp;<b>Caso receba liga&ccedil;&atilde;o ou e-mail solicitando substitui&ccedil;&atilde;o de boleto, favor entrar em contato com a cobran&ccedil;a da Marfrig<o:p></o:p></b></p>
+<p>
+	&nbsp;</p>
+
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+	cHtml += "<p> 	&nbsp;</p>"
+/*/
+
+/*/
+	cHtml += '<table border="1" cellpadding="1" cellspacing="1" style="width: 500px">'
+	cHtml += "	<tbody>"
+	cHtml += "<tr>"
+	cHtml += "			<td>"
+	cHtml += "				&nbsp;</td>"
+	cHtml += "		</tr>"
+	cHtml += "	</tbody>"
+	cHtml += "</table>"
+/*/
+//	cHtml += "<p> 	&nbsp;</p>"
+//	cHtml += "<p> 	&nbsp;</p>"
+//	cHtml += "<p> 	&nbsp;</p>"
+//	cHtml += "<p> 	&nbsp;</p>"
+//	cHtml += "<p> 	&nbsp;</p>"
+
+//	cHtml += "<p> 	<b><u>ATEN&Ccedil;&Atilde;O:<o:p></o:p></u></b></p>"
+	cHtml += '<table border="1" cellpadding="1" cellspacing="1" style="width: 1200px" summary="">'
+	cHtml += "<caption>"
+	cHtml += "		&nbsp;</caption>"
+	cHtml += "	<tbody>"
+	cHtml += "		<tr>"
+	cHtml += "			<td>"
+	cHtml += "				<p>"
+
+/*/
+	cHtml += "					<b><u>ATEN&Ccedil;&Atilde;O:<o:p></o:p></u></b></p>"
+	cHtml += "				<p>"
+	cHtml += "					<b>Nossos boletos s&atilde;o anexados &agrave;s NFs e o nosso e-mail possui a extens&atilde;o @marfrig.com.br.<o:p></o:p></b><br />"
+	cHtml += "					<b>Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extens&atilde;o, N&Atilde;O DEVE SER CONSIDERADO PARA PAGAMENTO<o:p></o:p></b><br />"
+	cHtml += "					<b>A Marfrig n&atilde;o envia boleto por e-mail sem solicita&ccedil;&atilde;o pr&eacute;via.<o:p></o:p></b>&nbsp;<b>Caso receba liga&ccedil;&atilde;o ou e-mail solicitando substitui&ccedil;&atilde;o de boleto, favor entrar em contato com a cobran&ccedil;a da Marfrig<o:p></o:p></b></p>"
+	cHtml += "				<p>"
+	cHtml += "					&nbsp;</p>"
+/*/
+	cHtml += '	<span style="font-family:calibri,geneva,sans-serif;"><span style="font-size:13px;"><b><u>ATEN&Ccedil;&Atilde;O:</u></b></span></span><b><u><o:p></o:p></u></b></p>'
+	cHtml += "			<p>
+	cHtml += '			<span style="font-family:calibri,geneva,sans-serif;"><span style="font-size:13px;"><b>Nossos boletos s&atilde;o anexados &agrave;s NFs e o nosso e-mail possui a extens&atilde;o @marfrig.com.br.</b></span></span><b><o:p></o:p></b><br />'
+	cHtml += '			<span style="font-family:calibri,geneva,sans-serif;"><span style="font-size:13px;"><b>Desta forma, eventual e-mail enviado em nosso nome, contendo qualquer outra extens&atilde;o, N&Atilde;O DEVE SER CONSIDERADO PARA PAGAMENTO</b></span></span><b><o:p></o:p></b><br />'
+	cHtml += '			<span style="font-family:calibri,geneva,sans-serif;"><span style="font-size:13px;"><b>A Marfrig n&atilde;o envia boleto por e-mail sem solicita&ccedil;&atilde;o pr&eacute;via.</b></span></span><b><o:p></o:p></b><span style="font-family:calibri,geneva,sans-serif;"><span style="font-size:13px;">&nbsp;<b>Caso receba liga&ccedil;&atilde;o ou e-mail solicitando substitui&ccedil;&atilde;o de boleto, favor entrar em contato com a cobran&ccedil;a da Marfrig</b></span></span><b><o:p></o:p></b></p>'
+	cHtml += "			<p>"
+	cHtml += "	&nbsp;</p>"
+
+	cHtml += "			</td>"
+	cHtml += "		</tr>"
+	cHtml += "	</tbody>"
+
+	cHtml += "</table>"
+	cHtml += "<p>"
+	cHtml += "	&nbsp;</p>"
+
 Endif
 
-	cHtml += " </html> "
-	
-	//memowrite("c:\totvs\RVBJ_MGFFINBP3.HTML", cHtml  )	// remover
+	cHtml += "	<img src='data:image/png;base64,"
+
+//	FT_FUSE("C:\TOTVS\LOGOCOBRANCA.HTML")
+	FT_FUSE("\SYSTEM\LOGOCOBRANCA.HTML")
+	FT_FGOTOP()
+	While !FT_FEOF()
+		cHtml += FT_FREADLN()
+		FT_FSKIP()
+	EndDo
+	FT_FUSE()
+
+	cHtml += "'></a> "
+
+	cHtml += '<p>	<a href="http://www.marfrig.com.br" target="_blank">www.marfrig.com.br</a> </td></tr> </p> '
+//Endif
+
+//	cHtml += " </html> "
+	// REMOVER
+	memowrite("c:\totvs\RVBJ_MGFFINBP.HTML", cHtml  )	// remover
 
 Return cHtml

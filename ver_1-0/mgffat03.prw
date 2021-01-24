@@ -15,7 +15,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de Tipos de pedido
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro tipos de pedido utilizada na tabela de preco
 =====================================================================================
 */
@@ -55,7 +55,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de Tipos de pedido
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao de tipo de pedido
 =====================================================================================
 */
@@ -68,7 +68,7 @@ Local lRet 		:= .T.
 DbSelectArea("SZK")
 DbSetOrder(2)
 If DbSeek(xFilial("SZK")+SZJ->ZJ_COD)
-	Msginfo("Nao ï¿½ possivel excluir este tipo de pedido porque possui relacionamento com tabela de preco!","Atencao")
+	Msginfo("Não é possivel excluir este tipo de pedido porque possui relacionamento com tabela de preço!","Atenção")
 	lRet := .F.
 Else                                                       
 	//-----------------------------------------------------------
@@ -84,7 +84,7 @@ Else
 	dbUseArea(.T., 'TOPCONN', TcGenQry(,,cQuery), _cAlias)
 	 
 	If !(_cAlias)->( Eof() )
-		Aviso( "Atencao", "Existe pedido de venda amarrado a este codigo. Registro nao pode ser excluido!", {"Ok"} )
+		Aviso( "Atenção", "Existe pedido de venda amarrado a este código. Registro não pode ser excluido!", {"Ok"} )
 		lRet := .F.
 	Endif
 Endif
@@ -107,11 +107,11 @@ Return
 Programa.:              FAT01ImpTab
 Autor....:              Tiago Barbieri
 Data.....:              05/09/2016
-Descricao / Objetivo:   Importacao de cadastros
+Descricao / Objetivo:   Importação de cadastros
 Doc. Origem:            Contrato - GAP MGFIMP01
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Tela de Importacao de cadastros
+Uso......:              Marfrig
+Obs......:              Tela de Importação de cadastros
 =====================================================================================
 */
 
@@ -168,12 +168,12 @@ Private lAutoErrNoFile := .T.
 Private aTabExclui     := {	{'DA0',{"DA0"} },;
 							{'DA1',{"DA1"} } }
 
-//Arquivo Cabeaalho
-MsgAlert("Essa opcao precisa de 2 arquivos, o primeiro ï¿½ o arquivo de CABEï¿½ALHO!","ATENCAO")
-cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+//Arquivo Cabeçalho
+MsgAlert("Essa opção precisa de 2 arquivos, o primeiro é o arquivo de CABEÇALHO!","ATENÇÃO")
+cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 
 If !File(cArq)
-	MsgStop("O arquivo " +cArq + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArq + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return
 EndIf
 	
@@ -184,7 +184,7 @@ aTipoImp  := Separa(cLinha,";",.T.)
 cTipo     := SUBSTR(aTipoImp[1],1,3)
 
 IF !(cTIPO $('DA0'))
-	MsgAlert('Nao ï¿½ possivel importar a tabela: '+cTipo+ '  !!')
+	MsgAlert('Não é possivel importar a tabela: '+cTipo+ '  !!')
 	Return
 ENDIF
 
@@ -196,7 +196,7 @@ For nI := 1 To Len(aTipoImp)
 		Return
 	ENDIF
 	IF !SX3->(dbSeek(Alltrim(aTipoImp[nI])))
-		MsgAlert('Campo nao encontrado na tabela :'+aTipoImp[nI]+' !!')
+		MsgAlert('Campo não encontrado na tabela :'+aTipoImp[nI]+' !!')
 		Return
 	ELSEIF (SX3->X3_VISUAL $ ('V') ) .OR. (SX3->X3_CONTEXT == "V"  )
 		MsgAlert('Campo marcado na tabela como visual :'+aTipoImp[nI]+' !!')
@@ -220,11 +220,11 @@ While !FT_FEOF()
 EndDo
 	
 //Arquivo Itens
-//MsgAlert("Agora ï¿½ o arquivo de ITENS!","ATENCAO")
-cArqd := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+//MsgAlert("Agora é o arquivo de ITENS!","ATENÇÃO")
+cArqd := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 	
 If !File(cArqd)
-	MsgStop("O arquivo " +cArqd + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArqd + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return
 EndIf
 	
@@ -235,7 +235,7 @@ aTipoImpd  := Separa(cLinhad,";",.T.)
 cTipod     := SUBSTR(aTipoImpd[1],1,3)
 
 IF !(cTIPOd $('DA1'))
-	MsgAlert('Nao ï¿½ possivel importar a tabela: '+cTipod+ '  !!')
+	MsgAlert('Não é possivel importar a tabela: '+cTipod+ '  !!')
 	Return
 ENDIF
 
@@ -247,7 +247,7 @@ For nI := 1 To Len(aTipoImpd)
 		Return
 	ENDIF
 	IF !SX3->(dbSeek(Alltrim(aTipoImpd[nI])))
-			MsgAlert('Campo nao encontrado na tabela :'+aTipoImpd[nId]+' !!')
+			MsgAlert('Campo não encontrado na tabela :'+aTipoImpd[nId]+' !!')
 		Return
 	ELSEIF (SX3->X3_CONTEXT == "V"  )
 		MsgAlert('Campo marcado na tabela como visual :'+aTipoImpd[nId]+' !!')
@@ -273,7 +273,7 @@ cTabD0    := ""
 cTabD1    := ""
 //cTabItens := ""
 
-//Monta array do cabecalho
+//Monta array do cabeçalho
 ProcRegua(Len(aDados))
 For nI:=1 to  Len(aDados)
 	IncProc("Importando arquivos...")
@@ -333,7 +333,7 @@ For nI:=1 to  Len(aDados)
 	lMsErroAuto := .F.
 	Begin Transaction
 		
-		Omsa010( aExecAuto, aExecAutod, 3 ) // SD0/SD1 Tabela de preco
+		Omsa010( aExecAuto, aExecAutod, 3 ) // SD0/SD1 Tabela de preço
 	
 		//Caso ocorra erro, verifica se ocorreu antes ou depois dos primeiros 100 registros do arquivo
 		If lMsErroAuto
@@ -362,7 +362,7 @@ Next nI
 //Grava arquivo de LOG caso o erro ocorra depois do 100o registro
 If !Empty(cLogWrite)
 	cTime     := Time()
-	cLogDir   := cGetFile("Arquivo |*.log", OemToAnsi("Informe o diretorio para gravar o LOG."), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY+GETF_LOCALHARD+GETF_NETWORKDRIVE+GETF_RETDIRECTORY ,.F.)
+	cLogDir   := cGetFile("Arquivo |*.log", OemToAnsi("Informe o diretório para gravar o LOG."), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY+GETF_LOCALHARD+GETF_NETWORKDRIVE+GETF_RETDIRECTORY ,.F.)
 	cLogFile  := cLogDir+"IMP_"+substr(cTime,1,2)+substr(cTime,4,2)+substr(cTime,7,2)+".LOG"
 	nHandle   := MSFCreate(cLogFile,0)
 	FWrite(nHandle,cLogWrite)
@@ -382,11 +382,11 @@ Return
 Programa.:              T03GrvAux
 Autor....:              Marcos Andrade
 Data.....:              26/09/2016
-Descricao / Objetivo:   Importacao de cadastros
+Descricao / Objetivo:   Importação de cadastros
 Doc. Origem:            Contrato - GAP MGFIMP01
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Tela de Importacao de cadastros
+Uso......:              Marfrig
+Obs......:              Tela de Importação de cadastros
 =====================================================================================
 */
 
@@ -469,12 +469,12 @@ Private lAutoErrNoFile := .T.
 Private aTabExclui     := {	{'DA0',{"DA0"} },;
 							{'DA1',{"DA1"} } }
 /*
-//Arquivo Cabeaalho
-MsgAlert("Essa opcao precisa de 2 arquivos, o primeiro ï¿½ o arquivo de CABEï¿½ALHO!","ATENCAO")
-cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+//Arquivo Cabeçalho
+MsgAlert("Essa opção precisa de 2 arquivos, o primeiro é o arquivo de CABEÇALHO!","ATENÇÃO")
+cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 
 If !File(cArq)
-	MsgStop("O arquivo " +cArq + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArq + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return
 EndIf
 	
@@ -485,7 +485,7 @@ aTipoImp  := Separa(cLinha,";",.T.)
 cTipo     := SUBSTR(aTipoImp[1],1,3)
 
 IF !(cTIPO $('DA0'))
-	MsgAlert('Nao ï¿½ possivel importar a tabela: '+cTipo+ '  !!')
+	MsgAlert('Não é possivel importar a tabela: '+cTipo+ '  !!')
 	Return
 ENDIF
 
@@ -497,7 +497,7 @@ For nI := 1 To Len(aTipoImp)
 		Return
 	ENDIF
 	IF !SX3->(dbSeek(Alltrim(aTipoImp[nI])))
-		MsgAlert('Campo nao encontrado na tabela :'+aTipoImp[nI]+' !!')
+		MsgAlert('Campo não encontrado na tabela :'+aTipoImp[nI]+' !!')
 		Return
 	ELSEIF (SX3->X3_VISUAL $ ('V') ) .OR. (SX3->X3_CONTEXT == "V"  )
 		MsgAlert('Campo marcado na tabela como visual :'+aTipoImp[nI]+' !!')
@@ -522,18 +522,18 @@ EndDo
 */	
 If nOperation == 4
 	If !Empty(oModelDA1:GetValue("DA1_CODPRO",oModelDA1:nLine))
-		MsgAlert("Posicione no ï¿½ltimo item da tabela e insira um novo item em branco, para importar a Tabela de Preco.")
+		MsgAlert("Posicione no último item da tabela e insira um novo item em branco, para importar a Tabela de Preço.")
 		Return()
 	Endif
 Endif		
 
 //Arquivo Itens
-//MsgAlert("Agora ï¿½ o arquivo de ITENS!","ATENCAO")
-//MsgAlert("Arquivo de ITENS!","ATENCAO")
-cArqd := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+//MsgAlert("Agora é o arquivo de ITENS!","ATENÇÃO")
+//MsgAlert("Arquivo de ITENS!","ATENÇÃO")
+cArqd := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 	
 If !File(cArqd)
-	MsgStop("O arquivo " +cArqd + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArqd + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return
 EndIf
 	
@@ -544,7 +544,7 @@ aTipoImpd  := Separa(cLinhad,";",.T.)
 cTipod     := SUBSTR(aTipoImpd[1],1,3)
 
 IF !(cTIPOd $('DA1'))
-	MsgAlert('Nao ï¿½ possivel importar a tabela: '+cTipod+ '  !!')
+	MsgAlert('Não é possivel importar a tabela: '+cTipod+ '  !!')
 	Return
 ENDIF
 
@@ -556,7 +556,7 @@ For nI := 1 To Len(aTipoImpd)
 		Return
 	ENDIF
 	IF !SX3->(dbSeek(Alltrim(aTipoImpd[nI])))
-			MsgAlert('Campo nao encontrado na tabela :'+aTipoImpd[nId]+' !!')
+			MsgAlert('Campo não encontrado na tabela :'+aTipoImpd[nId]+' !!')
 		Return
 	ELSEIF (SX3->X3_CONTEXT == "V"  )
 		MsgAlert('Campo marcado na tabela como visual :'+aTipoImpd[nId]+' !!')
@@ -585,8 +585,8 @@ cTabD1    := ""
 MakeDir(cDir)
 If File(cArqTxt)
 	If fErase(cArqTxt) <> 0
-		APMsgStop("Nao foi possivel apagar o arquivo de log gerado anteriormente pela rotina: "+cArqTxt+CRLF+;
-		"Verifique se o mesmo esta aberto por outro aplicativo e feche o arquivo.")
+		APMsgStop("Não foi possível apagar o arquivo de log gerado anteriormente pela rotina: "+cArqTxt+CRLF+;
+		"Verifique se o mesmo está aberto por outro aplicativo e feche o arquivo.")
 		Return()
 	Endif
 End   
@@ -594,7 +594,7 @@ End
 nArq := fCreate(cArqTxt,0)
 
 /*
-//Monta array do cabecalho
+//Monta array do cabeçalho
 ProcRegua(Len(aDados))
 For nI:=1 to  Len(aDados)
 	IncProc("Importando arquivos...")
@@ -628,7 +628,7 @@ For nI:=1 to  Len(aDados)
 		//IncProc("Importando arquivos...")
 
 		//If !Empty(cTabD1) .and. cTabD1 != aDadosd[nId][1]
-		//	APMsgAlert("Foi identificado que existem itens de tabelas de preco diferentes neste arquivo, somente serao considerados os itens da primeira tabela cadastrada.")
+		//	APMsgAlert("Foi identificado que existem itens de tabelas de preço diferentes neste arquivo, somente serão considerados os itens da primeira tabela cadastrada.")
 		//	Exit
 		//Endif	
 
@@ -678,7 +678,7 @@ aDadosd[nId,nCamposd]
 		If nOperation == 3
 			If nCnt == 1
 				If oModelDA1:Length() > 1
-					APMsgStop("Para executar a importacao da tabela de preco, nao deve existir nenhum item jï¿½ cadastrado.")
+					APMsgStop("Para executar a importação da tabela de preço, não deve existir nenhum item já cadastrado.")
 					lContinua := .F.
 					Exit
 				Endif
@@ -705,7 +705,7 @@ aDadosd[nId,nCamposd]
 						Else
 							//lContinua := .F.
 							cConteudo := aExecAutod[nCnt][nPosPrc][2]
-							cItem := oObj:GetErrorMessage()[6]+" - Conteï¿½do do campo: "+cConteudo+chr(13)+chr(10)
+							cItem := oObj:GetErrorMessage()[6]+" - Conteúdo do campo: "+cConteudo+chr(13)+chr(10)
 							If !GravItem(@nDet,@cItem,@lGravou,nArq,@lErro)
 								CloseTemp(nArq)
 								Return()
@@ -714,7 +714,7 @@ aDadosd[nId,nCamposd]
 					Else
 						//lContinua := .F.	
 						cConteudo := aExecAutod[nCnt][nPosCod][2]
-						cItem := oObj:GetErrorMessage()[6]+" - Conteï¿½do do campo: "+cConteudo+chr(13)+chr(10)
+						cItem := oObj:GetErrorMessage()[6]+" - Conteúdo do campo: "+cConteudo+chr(13)+chr(10)
 						If !GravItem(@nDet,@cItem,@lGravou,nArq,@lErro)
 							CloseTemp(nArq)
 							Return()
@@ -723,7 +723,7 @@ aDadosd[nId,nCamposd]
 				Else
 					//lContinua := .F.	
 					cConteudo := StrZero(nCnt,TamSX3("DA1_ITEM")[1])
-					cItem := oObj:GetErrorMessage()[6]+" - Conteï¿½do do campo: "+cConteudo+chr(13)+chr(10)
+					cItem := oObj:GetErrorMessage()[6]+" - Conteúdo do campo: "+cConteudo+chr(13)+chr(10)
 					If !GravItem(@nDet,@cItem,@lGravou,nArq,@lErro)
 						CloseTemp(nArq)
 						Return()
@@ -731,11 +731,11 @@ aDadosd[nId,nCamposd]
 				Endif	
 			//Next			
 			//If !lContinua
-			//	Help( ,, 'Help',, oObj:GetErrorMessage()[6]+" - Conteï¿½do do campo: "+cConteudo, 1, 0 )
+			//	Help( ,, 'Help',, oObj:GetErrorMessage()[6]+" - Conteúdo do campo: "+cConteudo, 1, 0 )
 			//	Exit
 			//Endif	
 		Else
-				Help( ,, 'Help',, "Problemas na localizacao ou inclusao de novas linhas na Tabela de Preï¿½os", 1, 0 )
+				Help( ,, 'Help',, "Problemas na localização ou inclusão de novas linhas na Tabela de Preços", 1, 0 )
 				Exit
 		Endif
 	Next	
@@ -745,7 +745,7 @@ aDadosd[nId,nCamposd]
 	lMsErroAuto := .F.
 	//Begin Transaction
 		
-		Omsa010( aExecAuto, aExecAutod, 3 ) // SD0/SD1 Tabela de preco
+		Omsa010( aExecAuto, aExecAutod, 3 ) // SD0/SD1 Tabela de preço
 	
 		//Caso ocorra erro, verifica se ocorreu antes ou depois dos primeiros 100 registros do arquivo
 		If lMsErroAuto
@@ -777,7 +777,7 @@ CloseTemp(nArq)
 //Grava arquivo de LOG caso o erro ocorra depois do 100o registro
 If !Empty(cLogWrite)
 	cTime     := Time()
-	cLogDir   := cGetFile("Arquivo |*.log", OemToAnsi("Informe o diretorio para gravar o LOG."), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY+GETF_LOCALHARD+GETF_NETWORKDRIVE+GETF_RETDIRECTORY ,.F.)
+	cLogDir   := cGetFile("Arquivo |*.log", OemToAnsi("Informe o diretório para gravar o LOG."), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY+GETF_LOCALHARD+GETF_NETWORKDRIVE+GETF_RETDIRECTORY ,.F.)
 	cLogFile  := cLogDir+"IMP_"+substr(cTime,1,2)+substr(cTime,4,2)+substr(cTime,7,2)+".LOG"
 	nHandle   := MSFCreate(cLogFile,0)
 	FWrite(nHandle,cLogWrite)
@@ -786,7 +786,7 @@ If !Empty(cLogWrite)
 Else
 	If lContinua
 		If lErro
-			APMsgAlert("Foram encontradas inconsistï¿½ncias durante a importacao do arquivo .CSV."+CRLF+;
+			APMsgAlert("Foram encontradas inconsistências durante a importação do arquivo .CSV."+CRLF+;
 			"Consulte o arquivo de LOG: "+CRLF+;
 			cArqTxt+CRLF+;
 			CRLF+;
@@ -795,7 +795,7 @@ Else
 			MsgInfo("Arquivo importado com sucesso.")
 		Endif	
 	Else
-		ApMsgStop("Problemas na atualizacao da Tabela de Preï¿½os. Saia da rotina sem Gravar as informacoes e verifique o arquivo usado na importacao!")
+		ApMsgStop("Problemas na atualização da Tabela de Preços. Saia da rotina sem Gravar as informações e verifique o arquivo usado na importação!")
 	Endif	
 Endif
 FT_FUSE()
@@ -852,7 +852,7 @@ Endif
 Return()
 
 //----------------------------------------------------------
-// Verifica se Produto existe e nao esta bloqueado
+// Verifica se Produto existe e não está bloqueado
 //----------------------------------------------------------
 static function chkSB1( cB1Prod )
 	local lRetSB1	:= .F.
@@ -907,11 +907,11 @@ If .not. Empty( cTpOper )
    ZBL->( DbSetOrder ( 1 ) ) // ZBL_FILIAL + ZBL_TPOPER
    If ZBL->( DbSeek( xFilial( "ZBL" ) + cTpOper ) )
       If ZBL->ZBL_TIPOPV <> M->C5_TIPO
-         MsgAlert( OEMToANSI( "O Tipo de Operacao selecionado alimenta estoque em terceiro. Favor alterar o Tipo Pedido para: B ï¿½ Utiliza Fornecedor." ) )
+         MsgAlert( OEMToANSI( "O Tipo de Operação selecionado alimenta estoque em terceiro. Favor alterar o Tipo Pedido para: B – Utiliza Fornecedor." ) )
          lRet := .F.         
       EndIf
    Else
-      MsgAlert( OEMToANSI( "Tipo de Operacao nao encontrado. Favor verificar." ) )
+      MsgAlert( OEMToANSI( "Tipo de Operação não encontrado. Favor verificar." ) )
       lRet := .F.
    EndIf
 EndIf
@@ -926,7 +926,7 @@ Return( lRet )
 |  Descricao / Objetivo:   "Append" da tabela DJ para a ZBL.                         | 
 |  Doc. Origem.........:                                                             |
 |  Solicitante.........:                                                             |
-|  Uso.................:                                                      |
+|  Uso.................:   Marfrig                                                   |
 |  Obs.................:                                                             |
 +===================================================================================*/
 Static Function Apd_ZBL()

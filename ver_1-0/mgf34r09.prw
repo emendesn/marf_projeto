@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF34R09	ï¿½Autor  ï¿½Geronimo Benedito Alves																	ï¿½Data ï¿½29/12/17	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: Contab. Gerencial - Mï¿½dia de Vendas por Item (Modulo 34-CTB)						ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF34R09	ºAutor  ³Geronimo Benedito Alves																	ºData ³29/12/17	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: Contab. Gerencial - Média de Vendas por Item (Módulo 34-CTB)						º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF34R09()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -18,12 +18,12 @@ User Function MGF34R09()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Contab. Gerencial - Mï¿½dia de Vendas por Item"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Mï¿½dia de Vendas por Item"						)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Mï¿½dia de Vendas por Item"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Mï¿½dia de Vendas por Item"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}												)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }									)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Contab. Gerencial - Média de Vendas por Item"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Média de Vendas por Item"						)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Média de Vendas por Item"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Média de Vendas por Item"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}												)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }									)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 180													//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
@@ -44,29 +44,29 @@ User Function MGF34R09()
 	nPrecoMedi += "	    END                                AS PRECO_MEDIO "  		+CRLF		//-->NUMERIC(14,2)
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02			 03						 04	  05	 06	07					 	 	08	09		
-	Aadd(_aCampoQry, {"B1_COD"		,cCodItem	,"Codigo Item"			,"C",015	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"B1_DESC"		,cDescItem	,"Descricao do Item"	,"C",076	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"B1_FAMILIA"	,cFamilia	,"Familia"				,"C",040	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"B1_COD"		,cCodItem	,"Código Item"			,"C",015	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"B1_DESC"		,cDescItem	,"Descrição do Item"	,"C",076	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"B1_FAMILIA"	,cFamilia	,"Família"				,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"D2_QUANT"	,nQtdVenda	,"Quantidade Venda"		,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
 	Aadd(_aCampoQry, {"D2_TOTAL"	,nValorVend	,"Valor Venda"			,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
-	Aadd(_aCampoQry, {"D1_QUANT"	,nQtdDevolu	,"Quantidade Devolucao"	,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
-	Aadd(_aCampoQry, {"D1_TOTAL"	,nValorDevo	,"Valor Devolucao"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"D1_QUANT"	,nQtdDevolu	,"Quantidade Devolução"	,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
+	Aadd(_aCampoQry, {"D1_TOTAL"	,nValorDevo	,"Valor Devolução"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"D2_TOTAL"	,nValorLiqu	,"Valor Liquido"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
-	Aadd(_aCampoQry, {"D2_TOTAL"	,nPrecoMedi	,"Preco Mï¿½dio"			,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"D2_TOTAL"	,nPrecoMedi	,"Preço Médio"			,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 
-	aAdd(_aParambox,{1,"Data Emissao Inicial"	,Ctod("")	,""		,"" 												,""		,"",050,.T.})
-	aAdd(_aParambox,{1,"Data Emissao Final"		,Ctod("")	,""		,"U_VLDTINIF(MV_PAR01, MV_PAR02, _nInterval)"		,""		,"",050,.T.})
-	aAdd(_aParambox,{1,"Codigo Item Inicial"	,Space(15)	,""		,""													,"SB1"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Codigo Item Final"		,Space(15)	,""		,"U_VLFIMMAI(MV_PAR03,MV_PAR04,'Codigo de Item')"	,"SB1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Emissão Inicial"	,Ctod("")	,""		,"" 												,""		,"",050,.T.})
+	aAdd(_aParambox,{1,"Data Emissão Final"		,Ctod("")	,""		,"U_VLDTINIF(MV_PAR01, MV_PAR02, _nInterval)"		,""		,"",050,.T.})
+	aAdd(_aParambox,{1,"Código Item Inicial"	,Space(15)	,""		,""													,"SB1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Código Item Final"		,Space(15)	,""		,"U_VLFIMMAI(MV_PAR03,MV_PAR04,'Código de Item')"	,"SB1"	,"",050,.F.})
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
@@ -127,9 +127,9 @@ User Function MGF34R09()
 	_cQuery += U_WhereAnd(.T. ,                " LF.F3_DTCANC = '		' "                                         ) 
 	_cQuery += U_WhereAnd(.T. ,                " NF.D_E_L_E_T_  <> '*' "                                             ) 
 	_cQuery += U_WhereAnd(.T. ,                " PEDI.C6_TES IN ('504','506','526','528','532','884','640','880','508','936','526','528','531','937','504','846','527','965','509','516','641','508','523','548','857','846','859','868') "   ) 
-	_cQuery += U_WhereAnd(!empty(_aRet[2] ),   " NF.F2_EMISSAO BETWEEN '" + _aRet[1]   + "' AND '" + _aRet[2] + "' " ) //OBRIGATORIO, VALIDAï¿½ï¿½O DOS 35 DIAS
-	_cQuery += U_WhereAnd(!empty(_cCODFILIA ), " NF.F2_FILIAL  IN "       + _cCODFILIA							    ) //OBRIGATORIO, SELEï¿½ï¿½O POR COMBO
-	_cQuery += U_WhereAnd(!empty(_aRet[4] ),   " PROD.B1_COD BETWEEN '"   + _aRet[3]   + "' AND '" + _aRet[4] + "'  ") //NAO OBRIGATORIO, SELEï¿½ï¿½O DOS COD PRODUTO POR RANGE DE/ATE
+	_cQuery += U_WhereAnd(!empty(_aRet[2] ),   " NF.F2_EMISSAO BETWEEN '" + _aRet[1]   + "' AND '" + _aRet[2] + "' " ) //OBRIGATORIO, VALIDAÇÃO DOS 35 DIAS
+	_cQuery += U_WhereAnd(!empty(_cCODFILIA ), " NF.F2_FILIAL  IN "       + _cCODFILIA							    ) //OBRIGATORIO, SELEÇÃO POR COMBO
+	_cQuery += U_WhereAnd(!empty(_aRet[4] ),   " PROD.B1_COD BETWEEN '"   + _aRet[3]   + "' AND '" + _aRet[4] + "'  ") //NÃO OBRIGATORIO, SELEÇÃO DOS COD PRODUTO POR RANGE DE/ATE
 	_cQuery += "	GROUP BY PROD.B1_COD "														+CRLF					
 	_cQuery += "			, PROD.B1_DESC  "													+CRLF
 

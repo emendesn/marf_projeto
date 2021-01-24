@@ -5,10 +5,10 @@
 Programa............: MA650ENOT
 Autor...............: Gresele
 Data................: Nov/2017
-Descricao / Objetivo: Ponto de entrada apos exclusao da OP, fora da transacao
+Descrição / Objetivo: Ponto de entrada apos exclusao da OP, fora da transacao
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

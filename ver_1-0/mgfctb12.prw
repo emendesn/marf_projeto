@@ -6,11 +6,11 @@
 Programa............: MGFCTB12
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Funcao para carregar Rateio para Contratos
+Descrição / Objetivo: Função para carregar Rateio para Contratos
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Carrega os rateios na Mediï¿½ï¿½o
+Uso.................: Marfrig
+Obs.................: Carrega os rateios na Medição
 =====================================================================================
 */
 user function MGFCTB12()
@@ -87,10 +87,10 @@ user function MGFCTB12()
 				EndIf
 			EndIf
 		Else
-			MsgInfo('Sï¿½ ï¿½ possivel incluir rateio em medicao que estao com status de aberto')
+			MsgInfo('Só é possivel incluir rateio em medição que estão com status de aberto')
 		EndIf
 	Else
-		MsgInfo('Sï¿½ ï¿½ possivel incluir rateio em mediï¿½ï¿½es de Compras')
+		MsgInfo('Só é possivel incluir rateio em medições de Compras')
 	EndIf
 return
 
@@ -99,7 +99,7 @@ return
 Programa............: xGerPerc
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Adiciona o Percentual no Array das Linhas
+Descrição / Objetivo: Adiciona o Percentual no Array das Linhas
 =====================================================================================
 */
 Static Function xGerPerc(aLinhas)
@@ -111,7 +111,7 @@ Static Function xGerPerc(aLinhas)
 	local nTotPerc := 0
 	Local nDif100  := 0
 
-	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabecalho o Campo Percentual
+	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabeçalho o Campo Percentual
 	nPosPerc := aScan(aLinhas[1] , "PERCENTUAL" )
 
 	For ni:=2 to Len(aLinhas)
@@ -146,7 +146,7 @@ return
 Programa............: xVldVal
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Realiza validacao dos valores
+Descrição / Objetivo: Realiza validação dos valores
 =====================================================================================
 */
 Static Function xVldVal(aLinhas,aItens,cEsc)
@@ -184,7 +184,7 @@ Static Function xVldVal(aLinhas,aItens,cEsc)
 		EndDo
 		If nTotPed <> nTotLin
 			lRet := .F.
-			MsgInfo('A Soma dos valores nao esta dando o mesmo valor dos Itens Selecionados')
+			MsgInfo('A Soma dos valores não esta dando o mesmo valor dos Itens Selecionados')
 		EndIf
 	EndIf
 
@@ -199,7 +199,7 @@ Return lRet
 Programa............: xEncCPO
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xEncCPO(cEnc)
@@ -219,7 +219,7 @@ return cRet
 Programa............: xTransVal
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xTransVal(cField,cValue)
@@ -254,7 +254,7 @@ Return xRet
 Programa............: xMGFCPlan
 Autor...............: Joni Lima
 Data................: 26/10/2017
-Descricao / Objetivo: Consulta das planilhas
+Descrição / Objetivo: Consulta das planilhas
 =====================================================================================
 */
 Static function xMGFCPlan(cMedic,cContra,cRevis,cPlan)
@@ -263,7 +263,7 @@ Static function xMGFCPlan(cMedic,cContra,cRevis,cPlan)
 
 	local aLstVias	:= {}
 	local cOpcoes	:= ""
-	local cTitulo	:= "Selecao dos itens para o Rateio"
+	local cTitulo	:= "Seleção dos itens para o Rateio"
 	local MvPar		:= ""//&(Alltrim(ReadVar()))		// Carrega Nome da Variavel do Get em Questao
 	//local mvRet		:= "MV_PAR01"		// Iguala Nome da Variavel ao Nome variavel de Retorno
 
@@ -328,7 +328,7 @@ Return mvpar
 Programa............: xValRat
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da existencia de Rateio e elimina caso necessario.
+Descrição / Objetivo: Realiza a Validação da existencia de Rateio e elimina caso necessario.
 =====================================================================================
 */
 Static Function xValRat()
@@ -393,7 +393,7 @@ Return lRet
 Programa............: xExiRat
 Autor...............: Joni Lima
 Data................: 31/10/2017
-Descricao / Objetivo: Existe Rateio
+Descrição / Objetivo: Existe Rateio
 =====================================================================================
 */
 Static Function xExiRat(cContra,cRevisa,NumMed,cCodPla)
@@ -441,7 +441,7 @@ return lRet
 Programa............: xValFiOr
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da filial de origem com a filial de Destino
+Descrição / Objetivo: Realiza a Validação da filial de origem com a filial de Destino
 =====================================================================================
 */
 Static Function xValFiOr(aLinhas)

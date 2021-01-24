@@ -10,29 +10,52 @@
 @return ${return}, ${return_description}
 
 @type function
+@history
+	16/10/2020
+	Edson Bella Gonçalves
+	-RTASK0011741 / RITM0051981 - Títulos lançados com a natureza 20424 devem subir liberados
+	-Elimina a chamada do JOB e daptado para o novo modelo que será chamado direto o MGFCOM23
+	-Identificado lentidão durante a execução. Ajustado o programa para filtrar pela data de emissão.
+	-Criado conout para acompanhar a execução.
 /*/
+
+/* Eliminada a chamada do JOB
 User Function MGFC23SH()
 
 	RpcSetType( 3 )
 	If (.F. );CallProc( "RpcSetEnv", "01", "010001",,,,, { "SCR","SC1","DBM","SAL","DBL","SAK","SCX","SC7","SE2" } ); Else; RpcSetEnv( "01", "010001",,,,, { "SCR","SC1","DBM","SAL","DBL","SAK","SCX","SC7","SE2" } ); endif
+
 	U_MGFCOM23()
+
 	If (.F. );CallProc( "RpcClearEnv" ); Else; RpcClearEnv( ); endif
 
 Return
-
-
+*/
 User Function MGFCOM23()
 
 	Local aArea	   	 := GetArea()
 	Local aAreaSE2	 := SE2->(GetArea())
-	Local cxAlias	 := xVerDados()
-	Local cxExcAlias := xExcDados()
+	Local cxAlias
+	Local cxExcAlias
 	Local cCC		 := ""
-	Local cNatur 	:= Alltrim(GetMv("MV_ZMF15AD",,"22704|22706|22707|22708|30110|30111|30112|30113"))
+	Local cNatur 	 := Alltrim(GetMv("MV_ZMF15AD",,"22704|22706|22707|22708|30110|30111|30112|30113"))
+	Local cNaturGrid := ""
+
+	Private lblqdtEmis	:= SuperGetMV("MGF_COM23A",.T.,.F.) //Desconsidera títulos pela data de emissão menor que a data de fechamento
+	Private cDataFim	:= "19990101" //Data usada no filtro de emissão. Não processa títulos menor que essa data. Trabalha em conjunto com a variável lblqdtEmis
+
+	cxAlias	 := xVerDados()
+	cxExcAlias := xExcDados()
+
+	If !ExisteSx6("MV_MCOM23A")
+		CriarSX6("MV_MCOM23A", "C", "Natureza que não deve gerar grade de aprovação nos títulos a pagar e subirem como liberados.", "20424|")
+	EndIf
+
+	U_MFCONOUT( "[MGFCOM23] ajusta SCR " + dToC( dDataBase ) + " - " + time() )
+	cNaturGrid	:=GetMv("MV_MCOM23A")
 
 	dbSelectArea("SE2")
 	SE2->(dbSetOrder(1))
-
 
 	dbSelectArea("SCR")
 	SCR->(dbSetOrder(1))
@@ -51,21 +74,16 @@ User Function MGFCOM23()
 		(cxExcAlias)->(dbSkip())
 	EndDo
 
+	U_MFCONOUT( "[MGFCOM23] Ajusta SE2 " + dToC( dDataBase ) + " - " + time() )
+
 	While (cxAlias)->(!EOF())
 		If SE2->(dbSeek((cxAlias)->(E2_FILIAL + E2_PREFIXO + E2_NUM + E2_PARCELA + E2_TIPO + E2_FORNECE + E2_LOJA)))
 
-
-
 			IF (Alltrim(SE2->E2_TIPO) == "PR" .OR.  Alltrim(SE2->E2_TIPO) == "PRE") .and.  !(Alltrim(SE2->E2_NATUREZ) $ cNatur 	)
-				RecLock("SE2", .F. )
-				SE2->E2_ZCODGRD := "ZZZZZZZZZZ"
-				SE2->E2_ZBLQFLG := "S"
-				SE2->E2_DATALIB := dDataBase
-				SE2->E2_ZIDINTE := "ZZZZZZZZZ"
-				SE2->E2_ZIDGRD  := "ZZZZZZZZZ"
-				SE2->E2_ZNEXGRD := ""
-				SE2->(MsUnlock())
-
+				_liberGrid()
+			
+			ElseIf Alltrim(SE2->E2_NATUREZ) $ cNaturGrid
+				_liberGrid()
 			Else
 
 				If SE2->E2_CCUSTO == Space(Len(SE2->E2_CCUSTO))
@@ -75,7 +93,6 @@ User Function MGFCOM23()
 					SE2->E2_CCUSTO := cCC
 					SE2->(MsUnlock())
 				EndIf
-
 
 				xGravSCR()
 			EndIF
@@ -91,7 +108,6 @@ User Function MGFCOM23()
 
 Return
 
-
 Static Function xVerDados()
 
 	Local aArea 	:= GetArea()
@@ -100,43 +116,31 @@ Static Function xVerDados()
 	Local cCod		:= AllTrim(GetMv("MGF_IDGRD"))
 	Local aQuery
 
+
+	U_MFCONOUT( "[MGFCOM23] xVerdados " + dToC( dDataBase ) + " - " + time() )
 	PUTMV("MGF_IDGRD", Soma1(cCod))
+	If lblqdtEmis
+		cDataFim	:=dtos(GetMv("MV_DATAFIN"))
+	EndIf
+	cComplUp	:=" AND SE2.E2_EMISSAO>'"+cDataFim + "'"+ Chr(13)+Chr(10)
 
 	cUpd := "UPDATE " + RetSQLName("SE2")  + " SE2 " + Chr(13)+Chr(10)
 	cUpd += " SET E2_ZIDGRD = '" + cCod + "' " + Chr(13)+Chr(10)
 	cUpd += " WHERE " + Chr(13)+Chr(10)
-
 	cUpd += " SE2.D_E_L_E_T_ <> '*' AND SE2.E2_ZCODGRD = '      ' " + Chr(13)+Chr(10)
-
-
+	cUpd += cComplUp+ Chr(13)+Chr(10)
 
 	TcSQLExec(cUpd)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	__execSql(cNextAlias," SELECT SE2.E2_FILIAL, SE2.E2_PREFIXO, SE2.E2_NUM, SE2.E2_PARCELA, SE2.E2_TIPO, SE2.E2_FORNECE, SE2.E2_LOJA FROM  "+RetSqlName('SE2')+" SE2 WHERE SE2.E2_ZIDGRD =  "+___SQLGetValue(CCOD),{},.F.)
+	__execSql(cNextAlias," SELECT SE2.E2_FILIAL, SE2.E2_PREFIXO, SE2.E2_NUM, SE2.E2_PARCELA, SE2.E2_TIPO, SE2.E2_FORNECE, SE2.E2_LOJA FROM  "+RetSqlName('SE2')+" SE2 WHERE SE2.E2_ZIDGRD =  "+___SQLGetValue(CCOD)+cComplUp,{},.F.)
 
 	aQuery := GetLastQuery()
 	
-	
-
 	(cNextAlias)->(DbGoTop())
 
 	RestArea(aArea)
 
 Return (cNextAlias)
-
 
 Static Function xExcDados()
 
@@ -147,15 +151,20 @@ Static Function xExcDados()
 	Local cCod		:= AllTrim(GetMv("MGF_IDGRD"))
 	Local aQuery
 
+	U_MFCONOUT( "[MGFCOM23] xExcdados " + dToC( dDataBase ) + " - " + time() )
 	PUTMV("MGF_IDGRD", Soma1(cCod))
+	If lblqdtEmis
+		cDataFim	:=dtos(GetMv("MV_DATAFIN"))
+	EndIf
+	cComplUp	:=" AND SE2.E2_EMISSAO>'"+cDataFim + "'"+ Chr(13)+Chr(10)
+
+//Ajustado o programa para filtrar pela data de emissão. Edson Bella
 
 	cUpd := "UPDATE " + RetSQLName("SE2")  + " SE2 " + Chr(13)+Chr(10)
 	cUpd += " SET E2_ZIDGRD = '" + cCod + "' " + Chr(13)+Chr(10)
 	cUpd += " WHERE " + Chr(13)+Chr(10)
-
 	cUpd += " SE2.D_E_L_E_T_ = '*' AND SE2.E2_ZCODGRD <> '      ' " + Chr(13)+Chr(10)
-
-
+	cUpd += cComplUp
 
 	TcSQLExec(cUpd)
 
@@ -168,37 +177,20 @@ Static Function xExcDados()
 	cUpd += "                 WHERE SCR.D_E_L_E_T_ = ' ' and SCR.CR_TIPO = 'ZC' AND " + Chr(13)+Chr(10)
 	cUpd += "                 RTRIM(CR_NUM) NOT IN ( " + Chr(13)+Chr(10)
 	cUpd += "										SELECT RTRIM(E2_PREFIXO || E2_NUM || E2_PARCELA || E2_TIPO|| E2_FORNECE || E2_LOJA) " + Chr(13)+Chr(10)
-	cUpd += "          								FROM " + RetSQLName("SE2") + " SE2 WHERE SE2.D_E_L_E_T_ = ' ' )) "
-
-
+	cUpd += "          								FROM " + RetSQLName("SE2") + " SE2 WHERE SE2.D_E_L_E_T_ = ' ' "+ cComplUp+") ) "
+	cUpd += " AND SE21.E2_EMISSAO>'"+cDataFim + "'"
 
 	TcSQLExec(cUpd)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	__execSql(cNextAlias," SELECT SE2.E2_FILIAL, SE2.E2_PREFIXO, SE2.E2_NUM, SE2.E2_PARCELA, SE2.E2_TIPO, SE2.E2_FORNECE, SE2.E2_LOJA FROM  "+RetSqlName('SE2')+" SE2 WHERE SE2.E2_ZIDGRD =  "+___SQLGetValue(CCOD),{},.F.)
+	__execSql(cNextAlias," SELECT SE2.E2_FILIAL, SE2.E2_PREFIXO, SE2.E2_NUM, SE2.E2_PARCELA, SE2.E2_TIPO, SE2.E2_FORNECE, SE2.E2_LOJA FROM  "+RetSqlName('SE2')+" SE2 WHERE SE2.E2_ZIDGRD =  "+___SQLGetValue(CCOD)+ cComplUp,{},.F.)
 
 	aQuery := GetLastQuery()
-
-
 
 	cLPUpd := "UPDATE " + RetSQLName("SE2")  + " SE2 " + Chr(13)+Chr(10)
 	cLPUpd += " SET E2_ZCODGRD = ' ' " + Chr(13)+Chr(10)
 	cLPUpd += " WHERE " + Chr(13)+Chr(10)
 	cLPUpd += " SE2.D_E_L_E_T_ = '*' AND SE2.E2_ZIDGRD = '" + cCod + "' " + Chr(13)+Chr(10)
-
-
+	cLPUpd += cComplUp
 
 	TcSQLExec(cLPUpd)
 
@@ -208,7 +200,7 @@ Static Function xExcDados()
 
 Return (cNextAlias)
 
-
+//
 static function retCC()
 	local cRet		:= ""
 	local cQrySED	:= ""
@@ -219,8 +211,6 @@ static function retCC()
 	cQrySED += "	AND SED.ED_CODIGO	=	'" + SE2->E2_NATUREZ	+ "' " + Chr(13)+Chr(10)
 	cQrySED += "	AND SED.ED_FILIAL	=	'" + xFilial("SED")		+ "' " + Chr(13)+Chr(10)
 
-
-
 	dbUseArea(.T., "TOPCONN", TCGENQRY(,,cQrySED), "QRYSED" , .F. , .T. )
 
 	if !QRYSED->(EOF())
@@ -230,8 +220,6 @@ static function retCC()
 	QRYSED->(DBCloseArea())
 return cRet
 
-
-
 Static Function xGravSCR()
 
 	Local aArea	 := GetArea()
@@ -239,10 +227,8 @@ Static Function xGravSCR()
 	Local aGrade := {}
 	Local cTit	 := ""
 
-
 	aGrade 	:= xMC22Grd(SE2->E2_CCUSTO,SE2->E2_NATUREZ,SE2->E2_PREFIXO,SE2->E2_ORIGEM)
 	cTit	:= SE2->(E2_PREFIXO + E2_NUM + E2_PARCELA + E2_TIPO + E2_FORNECE + E2_LOJA)
-
 
 	If !Empty(aGrade)
 
@@ -283,39 +269,10 @@ Static Function xMC22Grd(cCC,cNaturez,cSE2Pref,cOriegem)
 	Endif
 
 	If Alltrim(UPPER(cOriegem)) = "FINA050" .and.  Alltrim(cSE2Pref) $ cPref
-
-
-
-
-
-
-
-
-
-
-
-
-
 		__execSql(cNextAlias," SELECT ZAB.ZAB_CODIGO, ZAB.ZAB_VERSAO, ZAE.ZAE_NATURE FROM  "+RetSqlName('ZAB')+" ZAB INNER JOIN  "+RetSqlName('ZAE')+" ZAE ON ZAE.D_E_L_E_T_= ' ' AND ZAE.ZAE_FILIAL = ZAB.ZAB_FILIAL AND ZAE.ZAE_CODIGO = ZAB.ZAB_CODIGO AND ZAE.ZAE_VERSAO = ZAB.ZAB_VERSAO AND ZAE.ZAE_NATURE =  "+___SQLGetValue(CNATUREZ)+" WHERE ZAB.D_E_L_E_T_= ' ' AND ZAB.ZAB_FILIAL =  "+___SQLGetValue(CXFILZAB)+" AND ZAB.ZAB_TIPO = 'C' AND ZAB.ZAB_CODIGO =  "+___SQLGetValue(CGRDMAN)+" AND ZAB.ZAB_HOMOLO = 'S'",{},.F.)
 	Else
-
-
-
-
-
-
-
-
-
-
-
-
-
 		__execSql(cNextAlias," SELECT ZAB.ZAB_CODIGO, ZAB.ZAB_VERSAO, ZAE.ZAE_NATURE FROM  "+RetSqlName('ZAB')+" ZAB INNER JOIN  "+RetSqlName('ZAE')+" ZAE ON ZAE.D_E_L_E_T_= ' ' AND ZAE.ZAE_FILIAL = ZAB.ZAB_FILIAL AND ZAE.ZAE_CODIGO = ZAB.ZAB_CODIGO AND ZAE.ZAE_VERSAO = ZAB.ZAB_VERSAO AND ZAE.ZAE_NATURE =  "+___SQLGetValue(CNATUREZ)+" WHERE ZAB.D_E_L_E_T_= ' ' AND ZAB.ZAB_FILIAL =  "+___SQLGetValue(CXFILZAB)+" AND ZAB.ZAB_TIPO = 'C' AND ZAB.ZAB_CC =  "+___SQLGetValue(CCC)+" AND ZAB.ZAB_HOMOLO = 'S'",{},.F.)
 	EndIf
-
-
-
 
 	(cNextAlias)->(DbGoTop())
 
@@ -362,34 +319,9 @@ Static Function xMC22GSCR(cChav,aGrade)
 		EndDo
 	EndIf
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	__execSql(cNextAlias," SELECT ZAD_SEQ, ZAD_NIVEL, ZA2_CODUSU, ZAD_VALINI, ZAD_VALFIM FROM  "+RetSqlName('ZAD')+" ZAD INNER JOIN  "+RetSqlName('ZA2')+" ZA2 ON ZA2.D_E_L_E_T_= ' ' AND ZA2_NIVEL = ZAD_NIVEL AND ZA2_EMPFIL =  "+___SQLGetValue(SE2->E2_FILIAL)+" WHERE ZAD.D_E_L_E_T_= ' ' AND ZA2.D_E_L_E_T_= ' ' AND ZA2.ZA2_LOGIN <> ' ' AND ZA2_FILIAL = ZAD_FILIAL AND ZAD_CODIGO =  "+___SQLGetValue(AGRADE[1])+" AND ZAD_VERSAO =  "+___SQLGetValue(AGRADE[2])+" AND ZAD_NATURE =  "+___SQLGetValue(AGRADE[3])+" ORDER BY ZAD_SEQ",{},.F.)
 
 	aQuery := GetLastQuery()
-
-
-
-
-
-
-
-
 
 	dbSelectArea(cNextAlias)
 	dbGoTop()
@@ -443,15 +375,6 @@ Static Function xMC22GSCR(cChav,aGrade)
 
 Return
 
-
-
-
-
-
-
-
-
-
 User Function xOrNFF1(cxFil,cDoc,cSerie,cFornec,cLoja)
 
 	Local aArea 	:= GetArea()
@@ -471,3 +394,15 @@ User Function xOrNFF1(cxFil,cDoc,cSerie,cFornec,cLoja)
 	RestArea(aArea)
 
 Return cRet
+
+Static Function _liberGrid()
+	RecLock("SE2", .F. )
+	SE2->E2_ZCODGRD := "ZZZZZZZZZZ"
+	SE2->E2_ZBLQFLG := "S"
+	SE2->E2_DATALIB := dDataBase
+	SE2->E2_ZIDINTE := "ZZZZZZZZZ"
+	SE2->E2_ZIDGRD  := "ZZZZZZZZZ"
+	SE2->E2_ZNEXGRD := ""
+	SE2->(MsUnlock())
+	U_MFCONOUT( "[MGFCOM23] liberado o título " +SE2->(E2_PREFIXO + E2_NUM + E2_PARCELA + E2_TIPO + E2_FORNECE + E2_LOJA) + " " + dToC( dDataBase ) + " - " + time() )
+Return

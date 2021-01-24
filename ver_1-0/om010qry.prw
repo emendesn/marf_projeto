@@ -6,7 +6,7 @@ Data................: Out/2017
 Descricao / Objetivo: Ponto de entrada para alterar a query de filtro da tabela de preco
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

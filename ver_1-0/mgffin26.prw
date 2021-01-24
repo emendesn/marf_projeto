@@ -8,11 +8,11 @@
 Programa.:              MGFFIN26 - PE
 Autor....:              Antonio Carlos        
 Data.....:              11/10/2016
-Descricao / Objetivo:   incluir campos Cliente e Nome no Browse de Titulos Abertos 
+Descricao / Objetivo:   incluir campos Cliente e Nome no Browse de Títulos Abertos 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              incluir campos Cliente e Nome no Br''owse de Titulos Abertos 
+Uso......:              Marfrig
+Obs......:              incluir campos Cliente e Nome no Br''owse de Títulos Abertos 
 =====================================================================================
 */
 User Function MGFFIN26(aHeader) 

@@ -3,10 +3,10 @@
 Programa.:              SF1100I
 Autor....:              Rafael Garcia
 Data.....:              14/10/2016
-Descricao / Objetivo:   PE chamado ao final da geracao de documento de entrada
+Descricao / Objetivo:   PE chamado ao final da geração de documento de entrada
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

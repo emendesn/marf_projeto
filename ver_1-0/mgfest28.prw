@@ -6,7 +6,7 @@ Data.....:              Maio/2017
 Descricao / Objetivo:   Rotina complementar ao GAP da baixa da solicitacao ao armazem
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

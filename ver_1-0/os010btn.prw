@@ -3,12 +3,12 @@
 /*
 ================================================================================================
 Programa............: OS010BTN
-Autor...............: Flavio Dentello        
+Autor...............: Flávio Dentello        
 Data................: 21/02/2016 
-Descricao / Objetivo: Ponto de entrada para incluir rotina no acoes relacionadas na inclusao e alteracao da Tabela de Preco
+Descricao / Objetivo: Ponto de entrada para incluir rotina no acoes relacionadas na inclusão e alteração da Tabela de Preço
 Doc. Origem.........: FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =================================================================================================
 */

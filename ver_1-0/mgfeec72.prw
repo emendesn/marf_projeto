@@ -13,7 +13,7 @@ Cadastro de Inland
 Cadastro de Inland
 Manutencao no Cadastro
 
-@autor Claudio Alves
+@autor Cl�udio Alves
 @since 21/10/2019
 @type function 
 @table

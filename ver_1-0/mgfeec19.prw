@@ -8,30 +8,31 @@
 Programa.:              MGFEEC19
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de Orcamento e aprovacao
+Descricao / Objetivo:   Fonte MVC para exibição de Orçamento e aprovação
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 ===========================================================================================
 */
 User Function MGFEEC19()
 	Private oBrowse
 	Private aRotina := {}
-
 	oBrowse := FWMBrowse():New()
 	oBrowse:SetAlias('ZZC')
-	oBrowse:SetDescription('Orcamento Exportacao Marfrig')
-	oBrowse:AddLegend("ZZC_APROVA == '2' .AND. ZZC_ZDISTR <> '1'","WHITE" ,'Pendente')
-	oBrowse:AddLegend("ZZC_APROVA == '1' ","GREEN" ,'Aprovado')
-	oBrowse:AddLegend("ZZC_APROVA == '3' ","RED" ,'Reprovado')
+	oBrowse:SetDescription('Orçamento Exportação Marfrig')
+	//RTASK0011709
+	//oBrowse:AddLegend("ZZC_APROVA == '2' .AND. ZZC_ZDISTR <> '1'","WHITE" ,'Pendente')
+	oBrowse:AddLegend("ZZC_APROVA == '1' ","GREEN" ,'Aprovado') 
+	//RTASK0011709
+	//oBrowse:AddLegend("ZZC_APROVA == '3' ","RED" ,'Reprovado')
 	oBrowse:AddLegend("ZZC_APROVA == '4' ","BLUE" ,'EXP Gerada')
-	oBrowse:AddLegend("ZZC_APROVA == '6' ","YELLOW" ,'Aguardando Aprovacao')
-	oBrowse:AddLegend("ZZC_APROVA == '7' ","BLACK" ,'Distribuido')
-	oBrowse:AddLegend("ZZC_APROVA == '2' .AND. ZZC_ZDISTR == '1'","ORANGE" ,'Aguardando Distribuicao')
+	//RTASK0011709
+	//oBrowse:AddLegend("ZZC_APROVA == '6' ","YELLOW" ,'Aguardando Aprovação')
+	//oBrowse:AddLegend("ZZC_APROVA == '7' ","BLACK" ,'Distribuído')
+	//oBrowse:AddLegend("ZZC_APROVA == '2' .AND. ZZC_ZDISTR == '1'","ORANGE" ,'Aguardando Distribuição')
 	oBrowse:AddLegend("ZZC_APROVA == '8' ","PINK" ,'Cancelado')
 	oBrowse:Activate()
-
 Return NIL
 
 /*/{Protheus.doc} EEC19M
@@ -83,7 +84,7 @@ User Function EEC19M()
 
 			If oModel:GetModel("EEC19MASTER"):GetValue("ZZC_APROVA") == "3"
 				lOk := .F.
-				cMsg += "Orcamento foi reprovado. "
+				cMsg += "Orçamento foi reprovado. "
 			EndIf
 
 			lOk := lOk .And. Len( oModel:GetModel("EEC19DETAIL"):GETLINESCHANGED() )  = 0
@@ -100,23 +101,21 @@ User Function EEC19M()
 					cMotivo := MV_PAR01
 				EndDo
 				cMsg += cMotivo
-
 				MGF19Alt(cMsg)
 			EndIf
-	
 			RecLock("ZZC",.F.)
 			If !lOk
-				ZZC->ZZC_APROVA := iif(lDistr,"7","2")
+				//ZZC->ZZC_APROVA := iif(lDistr,"7","2") //RTASK0011709
+				ZZC->ZZC_APROVA := "1"
 			EndIf
-	
-			ZZC->ZZC_ZREVIS := dDataBase
+	    	ZZC->ZZC_ZREVIS := dDataBase
 			ZZC->(MsUnlock())
 		EndIF
 		If Select(cAliasZC2) > 0
 			(cAliasZC2)->(DbCloseArea())
 		EndIf
 	EndIf
-
+	
 	restArea(aAreaZZD)
 	restArea(aAreaZZC)
 	restArea(aArea)
@@ -127,19 +126,21 @@ Static Function MenuDef()
 	If Type("aRotina")=="U"
 		Private aRotina := {}
 	EndIf
-
+	
 	ADD OPTION aRotina TITLE 'Visualizar' 		ACTION 'VIEWDEF.MGFEEC19' 	OPERATION 2 ACCESS 0
 	ADD OPTION aRotina TITLE 'Incluir'    		ACTION 'VIEWDEF.MGFEEC19' 	OPERATION 3 ACCESS 0
 	ADD OPTION aRotina TITLE 'Alterar'    		ACTION 'VIEWDEF.MGFEEC19' 	OPERATION 4 ACCESS 0
 	ADD OPTION aRotina TITLE 'Copiar'			ACTION 'VIEWDEF.MGFEEC19'	OPERATION 9 ACCESS 0
-	ADD OPTION aRotina TITLE 'Envia Aprovacao' 	ACTION 'U_GeraAprov(.F.)' 	OPERATION 13 ACCESS 0
-	ADD OPTION aRotina TITLE 'Aprova'     		ACTION 'U_EEC19APR(.T.)' 	OPERATION 6 ACCESS 0
-	ADD OPTION aRotina TITLE 'Reprova'    		ACTION 'U_EEC19APR(.F.)' 	OPERATION 7 ACCESS 0
+	//RTASK0011709
+	//ADD OPTION aRotina TITLE 'Envia Aprovacao' 	ACTION 'U_GeraAprov(.F.)' 	OPERATION 13 ACCESS 0 
+	//ADD OPTION aRotina TITLE 'Aprova'     		ACTION 'U_EEC19APR(.T.)' 	OPERATION 6 ACCESS 0
+	//ADD OPTION aRotina TITLE 'Reprova'    		ACTION 'U_EEC19APR(.F.)' 	OPERATION 7 ACCESS 0
 	ADD OPTION aRotina TITLE 'Imprime'    		ACTION 'U_MGFEEC36' 		OPERATION 14 ACCESS 0
-	ADD OPTION aRotina TITLE 'Historico'		ACTION 'U_MGFEEC12' 		OPERATION 8 ACCESS 0
-	ADD OPTION aRotina TITLE 'Distribuicao'		ACTION 'U_MGF32CAL' 		OPERATION 10 ACCESS 0
+	//RTASK0011709
+	//ADD OPTION aRotina TITLE 'Historico'		ACTION 'U_MGFEEC12' 		OPERATION 8 ACCESS 0
+	//ADD OPTION aRotina TITLE 'Distribuição'		ACTION 'U_MGF32CAL' 		OPERATION 10 ACCESS 0
 	ADD OPTION aRotina TITLE 'Gera EXP'			ACTION 'U_xMG19GEXP' 		OPERATION 11 ACCESS 0
-	ADD OPTION aRotina TITLE 'Manutencao EXP'	ACTION 'U_MGFEEC24' 		OPERATION 12 ACCESS 0
+	ADD OPTION aRotina TITLE 'Manutenção EXP'	ACTION 'U_MGFEEC24' 		OPERATION 12 ACCESS 0
 	ADD OPTION aRotina TITLE 'Conhecimento'		ACTION 'U_ZZCRecno'			OPERATION 2 ACCESS 0
 	ADD OPTION aRotina TITLE 'Cancelar'			ACTION 'U_EEC19CAN'			OPERATION 15 ACCESS 0
 
@@ -175,8 +176,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	///01 ini
 	//**********************
@@ -193,8 +194,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 	aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZC_SEGPRE" ,;
 		"ZZC_SEGPRE" ,;
@@ -207,8 +208,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZC_ZQTDCO" ,;
 		"ZZC_ZQTDCO" ,;
@@ -221,8 +222,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	//**********************
 	// ZZC_IMPORT
@@ -238,8 +239,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	//**********************
 	// ZZC_IMLOJA
@@ -255,8 +256,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	//**********************
 	// ZZC_ZTPROD
@@ -272,8 +273,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 
 	aAux := FwStruTrigger("ZZD_COD_I" ,;
@@ -287,8 +288,8 @@ Static Function ModelDef()
 	oStruZZD:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZC_ZQTDCO" ,;
 		"ZZC_ZQTDCO" ,;
@@ -301,8 +302,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZC_VIA" ,;
 		"ZZC_VIA" ,;
@@ -315,8 +316,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZD_SLDINI" ,;
 		"ZZD_SLDINI" ,;
@@ -329,8 +330,8 @@ Static Function ModelDef()
 	oStruZZD:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZD_UNIDAD" ,;
 		"ZZD_UNIDAD" ,;
@@ -343,8 +344,8 @@ Static Function ModelDef()
 	oStruZZD:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZD_FPCOD" ,;
 		"ZZD_FPCOD" ,;
@@ -357,8 +358,8 @@ Static Function ModelDef()
 	oStruZZD:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	//*************************************************************************************
 	// FIM - GATILHO GENSET
@@ -375,8 +376,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	aAux := FwStruTrigger("ZZC_FOLOJA" ,;
 		"ZZC_FORN" ,;
@@ -388,8 +389,8 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 
 	//**********************
@@ -405,32 +406,34 @@ Static Function ModelDef()
 	oStruZZC:AddTrigger( ;
 		aAux[1] , ; // [01] identificador (ID) do campo de origem
 	aAux[2] , ; // [02] identificador (ID) do campo de destino
-	aAux[3] , ; // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] ) // [04] Bloco de codigo de execucao do gatilho
+	aAux[3] , ; // [03] Bloco de código de validação da execução do gatilho
+	aAux[4] ) // [04] Bloco de código de execução do gatilho
 
 	FWMemoVirtual( oStruZZC,{ { 'ZZC_CODMEM' , 'ZZC_OBS' }, {'ZZC_CODOBP','ZZC_OBSPED'} , {'ZZC_DSCGEN','ZZC_GENERI'} } )
 
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('EEC19M', /*bPreValidacao*/, {|oModel|xVldMdl(oModel)}/*bPosValidacao*/, /*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
-	oModel:AddFields( 'EEC19MASTER', /*cOwner*/, oStruZZC, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
+	
+	oModel:AddFields( 'EEC19MASTER', /*cOwner*/, oStruZZC, /*bPreValidacao*/,  /*bPosValidacao*/, /*bCarga*/ )
+
 	oModel:AddGrid( 'EEC19DETAIL', 'EEC19MASTER', oStruZZD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC19SOMA', 'EEC19MASTER', oStruUM, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddFields( 'EEC19TC', 'EEC19MASTER', oStruTC, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Orcamento Exportacao Marfrig' )
+	oModel:SetDescription( 'Orçamento Exportação Marfrig' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC19MASTER' ):SetDescription( 'Orcamento Exportacao Marfrig' )
+	oModel:GetModel( 'EEC19MASTER' ):SetDescription( 'Orçamento Exportação Marfrig' )
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "EEC19DETAIL", { { "ZZD_FILIAL", "XFILIAL('ZZD')" }, { "ZZD_ORCAME", "ZZC_ORCAME" } }, ZZD->( IndexKey( 1 ) ) )
 	oModel:SetRelation( "EEC19TC", { { "ZZC_FILIAL", "XFILIAL('ZZC')" }, { "ZZC_ORCAME", "ZZC_ORCAME" } }, ZZC->( IndexKey( 1 ) ) )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZZC_FILIAL","ZZC_ORCAME"})
 
 	oModel:AddCalc("EEC19CALC", "EEC19MASTER", "EEC19DETAIL", "ZZD_PRCINC", "ZZD__TOTSD", "COUNT", {||.T.}, ,"Total Itens")
@@ -440,7 +443,7 @@ Static Function ModelDef()
 	oModel:SetVldActivate({|oModel|xVldActive(oModel)})
 	oModel:SetActivate({|oModel|xActive(oModel)})
 
-	//Nao salvar dados da soma
+	//Não salvar dados da soma
 	oModel:GetModel( 'EEC19SOMA' ):SetOptional(.T.)
 	oModel:GetModel( 'EEC19SOMA' ):SetOnlyView(.T.)
 	oModel:GetModel( 'EEC19SOMA' ):SetOnlyQuery(.T.)
@@ -459,11 +462,11 @@ Tratamento da tela do MVC
 @author leonardo.kume
 @since 30/12/2016
 @version 1.0
-@Alteracoes
+@Alterações
 	************
 		2020/02/27
-		RTASK0010784-Temperatura-Orcamento-Exp: Claudio Alves
-		Foi alterada a tela para as seguintes proporï¿½ï¿½es: 45, 30, 25
+		RTASK0010784-Temperatura-Orcamento-Exp: Cláudio Alves
+		Foi alterada a tela para as seguintes proporções: 45, 30, 25
 	************
 	
 /*/
@@ -490,7 +493,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -501,12 +504,12 @@ Static Function ViewDef()
 	oView:AddField( 'VIEW_TC', oStruTC, 'EEC19TC' )
 
 	// Criar um "box" horizontal para receber algum elemento da view
-	oView:CreateHorizontalBox( 'SUPERIOR' , 45 )
-	oView:CreateHorizontalBox( 'INFERIOR' , 30 )
-	oView:CreateHorizontalBox( 'FIM' , 25 )
+	oView:CreateHorizontalBox( 'SUPERIOR' , 55 )
+	oView:CreateHorizontalBox( 'INFERIOR' , 25 )
+	oView:CreateHorizontalBox( 'FIM' , 20 )
 
 	oView:CreateFolder( 'Totais','FIM' )
-	oView:AddSheet( 'Totais', 'ABA01', 'Total Orcamento' )
+	oView:AddSheet( 'Totais', 'ABA01', 'Total Orçamento' )
 	oView:AddSheet( 'Totais', 'ABA02', 'Container' )
 	oView:AddSheet( 'Totais', 'ABA03', 'Qtde p/ UM' )
 
@@ -522,6 +525,7 @@ Static Function ViewDef()
 	oView:SetOwnerView( 'VIEW_SOMA', 'FIM03'     )
 	oView:AddIncrementField('DET_ZZD', 'ZZD_SEQUEN' )
 
+
 Return oView
 
 Static Function xVldActive(oModel)
@@ -531,9 +535,9 @@ Static Function xVldActive(oModel)
 		xRet := ZZC->ZZC_APROVA $ "1/2/3/6/7"
 		If !xRet
 			If ZZC->ZZC_APROVA == "8"
-				Help( ,, 'MGFEEC19-01',, 'Orcamento Cancelado', 1, 0 )
+				Help( ,, 'MGFEEC19-01',, 'Orçamento Cancelado', 1, 0 )
 			Else
-				Help( ,, 'MGFEEC19-03',, 'Orcamento jï¿½ tem EXP Gerada', 1, 0 )
+				Help( ,, 'MGFEEC19-03',, 'Orçamento já tem EXP Gerada', 1, 0 )
 			EndIf
 		EndIf
 	EndIf
@@ -546,7 +550,7 @@ User Function ZZCRecno()
 Return .T.
 
 /*/{Protheus.doc} GeraAprov
-Gera registros na ZZG para enviar aprovacao
+Gera registros na ZZG para enviar aprovação
 @author leonardo.kume
 @since 30/12/2016
 @version 1.0
@@ -567,15 +571,15 @@ User Function GeraAprov(lPergunta)
 	ZZG->(DbSetOrder(1))
 	DbSelectArea("ZZC")
 	_cFilial	:= ZZC->ZZC_FILIAL
-	_cNrOrca 	:= ZZC->ZZC_ORCAME // Numero do orï¿½amento
+	_cNrOrca 	:= ZZC->ZZC_ORCAME // Numero do orçamento
 	_cCliente 	:= ZZC->ZZC_IMPORT
 	_cloja    	:= ZZC->ZZC_IMLOJA
 
 	If lPergunta
-		lEnvia := MsgYesNo("Solicita aprovacao?","Aprovacao")
+		lEnvia := MsgYesNo("Solicita aprovação?","Aprovação")
 	EndIF
 	If lEnvia
-		// 1=Aprovado;2=Pendente;3=Reprovado;4=EXP Gerada;A=Aguardando PCP Central;B=Aguardando PCP Local;C=Aguardando Diretoria;6=Aguardando Aprovacao;7=Distribuido
+		// 1=Aprovado;2=Pendente;3=Reprovado;4=EXP Gerada;A=Aguardando PCP Central;B=Aguardando PCP Local;C=Aguardando Diretoria;6=Aguardando Aprovação;7=Distribuido
 		If ZZC->ZZC_APROVA == "7"
 			If Select(cAlias) > 0
 				(cAlias)->(DbClosearea())
@@ -656,18 +660,18 @@ User Function GeraAprov(lPergunta)
 				U_EEC19APR(.T.,lFirst)
 			EndIf
 		Else
-			Help( ,, 'MGFEEC19-02',, 'Status do Orcamento nao permite envio de aprovacao.', 1, 0 )
+			Help( ,, 'MGFEEC19-02',, 'Status do Orçamento não permite envio de aprovação.', 1, 0 )
 		EndIf
 	EndIf
 
 Return lRet
 
 /*/{Protheus.doc} MGF19Alt
-//TODO Alteracao do orï¿½amento
+//TODO Alteração do orçamento
 @author leonardo.kume
 @since 23/10/2017
 @version 6
-@param cMsg, characters, Motivo alteracao
+@param cMsg, characters, Motivo alteração
 @type function
 /*/
 Static Function MGF19Alt(cMsg)
@@ -724,11 +728,11 @@ Return
 @version 6
 @type function
 
-@Alteracoes
+@Alterações
 	************
 		2020/02/17
-		RTASK0010722-automatizar-campo-situacao-orcamento-exp: Claudio Alves
-		autamatizaï¿½ï¿½o do campo de motivo de situacao quando o orï¿½amento for cancelado.
+		RTASK0010722-automatizar-campo-situacao-orcamento-exp: Cláudio Alves
+		autamatização do campo de motivo de situação quando o orçamento for cancelado.
 	************
 
 /*/
@@ -738,7 +742,7 @@ User Function EEC19CAN()
 	local lRet		:= .T.
 
 	If ZZC->ZZC_APROVA $ "1/2/3/6/7"
-		If MsgYesNo("Deseja Realmente cancelar o orï¿½amento?"+CRLF+"Uma vez cancelado nao sera mais permitido retornar")
+		If MsgYesNo("Deseja Realmente cancelar o orçamento?"+CRLF+"Uma vez cancelado não será mais permitido retornar")
 			While Empty(Alltrim(cMotivo)) .AND. lRet
 				lRet := Pergunte(cPerg,.t.)
 				If lRet
@@ -755,18 +759,18 @@ User Function EEC19CAN()
 			EndIf
 		EndIf
 	Else
-		Help( ,, 'MGFEEC19-04',, 'Orcamento jï¿½ tem EXP gerada ou esta cancelado', 1, 0 )
+		Help( ,, 'MGFEEC19-04',, 'Orçamento já tem EXP gerada ou está cancelado', 1, 0 )
 	EndIf
 
 Return
 
 /*/{Protheus.doc} EEC19APR
-//TODO Rotina para aprovacao/Reprovaï¿½ï¿½o de Orï¿½amentos
+//TODO Rotina para aprovação/Reprovação de Orçamentos
 @author leonardo.kume
 @since 23/10/2017
 @version 6
 @param lAprov, logical, Se Aprova ou Reprova
-@param lFirst, logical, Se ï¿½ o primeiro envio de WF
+@param lFirst, logical, Se é o primeiro envio de WF
 @type function
 /*/
 User Function EEC19APR(lAprov,lFirst)
@@ -801,37 +805,37 @@ User Function EEC19APR(lAprov,lFirst)
 	cOrdem 	:= ""
 
 	If ZZC->ZZC_APROVA $ "2" .AND. ZZC->ZZC_ZDISTR == "1" .and. !lAprov// Pendente
-		cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+" esta em fase de distribuiï¿½ï¿½o e sera reprovado."+ CRLF
+		cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+" está em fase de distribuição e será reprovado."+ CRLF
 		While Empty(Alltrim(cMotivo)) .AND. lRet
 			lRet := Pergunte(cPerg,.t.)
 			If lRet
 				cMotivo := MV_PAR01
 			EndIf
 		EndDo
-		// Muda o status do orï¿½amento para Reprovado
+		// Muda o status do orçamento para Reprovado
 		If lRet
 			ZZC->(RecLock("ZZC",.F.))
 			ZZC->ZZC_APROVA := "3"
 			ZZC->ZZC_ZDISTR := "2"
 			ZZC->ZZC_END2BE	:= cMotivo
 			ZZC->(MsUnlock())
-			If GetMv("MGF_EEC19E",,.t.)//Habilita e-mail de reprovaï¿½ï¿½o Distribuicao
+			If GetMv("MGF_EEC19E",,.t.)//Habilita e-mail de reprovação Distribuição
 				EnvAprov(UsrRetName(RetCodUsr()),"",GetMV("MGF_EEC19P",,"maila.catanozi@marfig.com.br"),ZZC->ZZC_ORCAME,.f.,cMotivo)
 			EndiF
 		EndIf
 	ElseIf ZZC->ZZC_APROVA $ "2"
-		cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+" ainda nao gerou alcada."+ CRLF
+		cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+" ainda não gerou alçada."+ CRLF
 	ElseIf ZZC->ZZC_APROVA $ "1"// Aprovado
-		cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+" jï¿½ aprovado."+ CRLF
+		cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+" já aprovado."+ CRLF
 	ElseIf ZZC->ZZC_APROVA $ "3"// Reprovado
-		cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+" jï¿½ reprovado."+ CRLF
-	ElseIf ZZC->ZZC_APROVA $ "6" // Na alcada de aprovacao
-		If !lFirst //Primeiro envio de e-mail nao passa pela aprovacao
+		cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+" já reprovado."+ CRLF
+	ElseIf ZZC->ZZC_APROVA $ "6" // Na alçada de aprovação
+		If !lFirst //Primeiro envio de e-mail não passa pela aprovação
 			cAliasZZG := GetNextAlias()
 			If Select(cAliasZZG) > 0
 				(cAliasZZG)->(DbCloseArea())
 			EndIF
-			//Aprovacao/Reprovaï¿½ï¿½o do nï¿½vel
+			//Aprovação/Reprovação do nível
 			BeginSql Alias cAliasZZG
 				SELECT ZZG.R_E_C_N_O_ REC, ZZG.ZZG_FILIAL, ZC1.ZC1_ORDEM, ZZG.ZZG_APROVA, ZZG.ZZG_NIVEL
 				FROM %Table:ZZG% ZZG
@@ -857,9 +861,9 @@ User Function EEC19APR(lAprov,lFirst)
 				ORDER BY ZZG.ZZG_FILIAL, ZC1.ZC1_ORDEM
 			EndSql
 
-			If !(cAliasZZG)->(Eof())//Se encontrar alcada
+			If !(cAliasZZG)->(Eof())//Se encontrar alçada
 				Begin Transaction
-					//Aprovacao/Reprovaï¿½ï¿½o
+					//Aprovação/Reprovação
 					While !(cAliasZZG)->(Eof()) //.and. cOrdem == (cAliasZZG)->ZC1_ORDEM
 						cFilAtu	:= (cAliasZZG)->ZZG_FILIAL
 						cOrdem 	:= (cAliasZZG)->ZC1_ORDEM
@@ -881,13 +885,13 @@ User Function EEC19APR(lAprov,lFirst)
 								EndIf
 								ZZG->(MsUnlock())
 								If !lAprov
-									// Muda o status do orï¿½amento para Reprovado
+									// Muda o status do orçamento para Reprovado
 									ZZC->(RecLock("ZZC",.F.))
 									ZZC->ZZC_APROVA := "3"
 									ZZC->(MsUnlock())
 								EndIf
-								cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+iif(lAprov," aprovado"," reprovado")+" nï¿½vel "+cNivel+"."+ CRLF
-							Else //Outros registros do nï¿½vel devem alterar para N - Aprovado/reprovado pelo nï¿½vel
+								cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+iif(lAprov," aprovado"," reprovado")+" nível "+cNivel+"."+ CRLF
+							Else //Outros registros do nível devem alterar para N - Aprovado/reprovado pelo nível
 								ZZG->(DbGoTo((cAliasZZG)->REC))
 								ZZG->(RecLock("ZZG",.F.))
 								ZZG->ZZG_STATUS := "N"
@@ -898,7 +902,7 @@ User Function EEC19APR(lAprov,lFirst)
 					EndDo
 				End Transaction
 			Else
-				cMsg += "Orcamento "+alltrim(ZZC->ZZC_ORCAME)+" nao tem alcada para o nï¿½vel ou usuario nao tem acesso."+ CRLF
+				cMsg += "Orçamento "+alltrim(ZZC->ZZC_ORCAME)+" não tem alçada para o nível ou usuário não tem acesso."+ CRLF
 			EndIf
 		EndIf
 
@@ -906,7 +910,7 @@ User Function EEC19APR(lAprov,lFirst)
 			(cAliasZZG)->(DbCloseArea())
 		EndIF
 
-		//Envio de e-mail para nï¿½veis anteriores caso reprovado
+		//Envio de e-mail para níveis anteriores caso reprovado
 		cAliasZZG := GetNextAlias()
 		If Select(cAliasZZG) > 0
 			(cAliasZZG)->(DbCloseArea())
@@ -951,12 +955,12 @@ User Function EEC19APR(lAprov,lFirst)
 		EndIf
 	EndIf
 
-	If ZZC->ZZC_APROVA $ "6/7" .and. (lOk .or. lFirst)// Somente manda caso tenha tido aprovacao ou ï¿½ primeiro e-mail
+	If ZZC->ZZC_APROVA $ "6/7" .and. (lOk .or. lFirst)// Somente manda caso tenha tido aprovação ou é primeiro e-mail
 		If Select(cAliasZZG) > 0
 			(cAliasZZG)->(DbCloseArea())
 		EndIF
 
-		//Envio de e-mail para prï¿½ximos nï¿½veis
+		//Envio de e-mail para próximos níveis
 		cAliasZZG := GetNextAlias()
 		If Select(cAliasZZG) > 0
 			(cAliasZZG)->(DbCloseArea())
@@ -1043,7 +1047,7 @@ User Function EEC19APR(lAprov,lFirst)
 			ZZC->ZZC_APROVA := "1"
 			ZZC->(MsUnlock())
 
-			DBSELECTAREA("ZC2")//Alteracao Rafael 31/10/2018
+			DBSELECTAREA("ZC2")//Alteração Rafael 31/10/2018
 			DBSETORDER(1)
 			IF DBSEEK(XFILIAL("ZC2")+ZZC->ZZC_ORCAME)
 				WHILE ZC2->(!EOF()) .AND. ZC2->ZC2_ORCAME==ZZC->ZZC_ORCAME .AND. ZC2->ZC2_FILIAL==ZZC->ZZC_FILIAL
@@ -1065,9 +1069,9 @@ User Function EEC19APR(lAprov,lFirst)
 	EndIf
 
 	If !Empty(Alltrim(cMsg))
-		MsgInfo(cMsg,"*Aprovacao Orcamento*")
+		MsgInfo(cMsg,"*Aprovação Orçamento*")
 	Else
-		MsgInfo("Erro ao tentar efetuar a aprovacao/reprovaï¿½ï¿½o.","*Aprovacao Orcamento*")
+		MsgInfo("Erro ao tentar efetuar a aprovação/reprovação.","*Aprovação Orçamento*")
 	EndIf
 
 	If Select(cAliasZZG) > 0
@@ -1080,18 +1084,18 @@ Return(.T.)
 
 
 /*/{Protheus.doc} EnvAprov
-Monta e Envia e-mail de aprovacao
+Monta e Envia e-mail de aprovação
 @author leonardo.kume
 @since 30/12/2016
 @version 1.0
 @param _cAprova, char, Codigo Aprovador
 @param _cNome, char, Nome Aprovador
 @param _cEmail, char, Email Aprovador
-@param _cListOrc, char, Nï¿½meros dos orï¿½amentos para aprovar
-@param lAprov, boolean, Se ï¿½ aprovacao ou Reprovaï¿½ï¿½o
-@param cMotivo, char, motivo Reprovaï¿½ï¿½o/ Workflow / Alteracao
-@param lWF, boolean, Se ï¿½ somente envio de workflow
-@param lAlt, char, Se ï¿½ alteracao
+@param _cListOrc, char, Números dos orçamentos para aprovar
+@param lAprov, boolean, Se é aprovação ou Reprovação
+@param cMotivo, char, motivo Reprovação/ Workflow / Alteração
+@param lWF, boolean, Se é somente envio de workflow
+@param lAlt, char, Se é alteração
 /*/
 Static Function EnvAprov(_cAprova,_cNome,_cEmail,_cListOrc, lAprov,cMotivo,lWF,lAlt,nQuant,cFil)
 
@@ -1159,21 +1163,21 @@ Static Function EnvAprov(_cAprova,_cNome,_cEmail,_cListOrc, lAprov,cMotivo,lWF,l
 	oMessage:cFrom                  := cEmail
 	oMessage:cTo                    := alltrim(_cEmail)
 	oMessage:cCc                    := ""
-	oMessage:cSubject               := iif(lAlt,"Alteracao Orcamento",iif(lWF,"Workflow Orcamento",iif(lAprov,"Aprovacao de Orï¿½amentos","Reprovaï¿½ï¿½o de Orï¿½amentos")))
+	oMessage:cSubject               := iif(lAlt,"Alteração Orçamento",iif(lWF,"Workflow Orçamento",iif(lAprov,"Aprovação de Orçamentos","Reprovação de Orçamentos")))
 
 	If lAlt
-		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Orcamento "+alltrim(_cListOrc) +" "+cMotivo+"."
+		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Orçamento "+alltrim(_cListOrc) +" "+cMotivo+"."
 	ElseIf lWF
-		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Orcamento "+alltrim(_cListOrc) +" "+cMotivo+"."
+		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Orçamento "+alltrim(_cListOrc) +" "+cMotivo+"."
 	ElseIf lAprov
-		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Solicitamos aprovacao do(s) orï¿½amento(s) "+alltrim(_cListOrc)
+		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />Solicitamos aprovação do(s) orçamento(s) "+alltrim(_cListOrc)
 	Else
-		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />O Orcamento "+alltrim(_cListOrc) +" foi reprovado pelo "+alltrim(_cAprova)
+		oMessage:cBody := "<body><p />Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"<p />O Orçamento "+alltrim(_cListOrc) +" foi reprovado pelo "+alltrim(_cAprova)
 		oMessage:cBody += CRLF+"<p />Motivo: "+ Alltrim(cMotivo)
 	EndIF
 
 	If nQuant > 0
-		oMessage:cBody += CRLF + CRLF +"<ul><li>"+ Alltrim(Str(nQuant)) + " Distribuï¿½dos.</li><ul>"
+		oMessage:cBody += CRLF + CRLF +"<ul><li>"+ Alltrim(Str(nQuant)) + " Distribuídos.</li><ul>"
 	EndIf
 	oMessage:cBody += "</body>"
 
@@ -1197,7 +1201,7 @@ Return lRetMail
 
 User Function EEC100Inc()
 	Local aItens := {}
-	Local aDadosAuto := {} // Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica dos itens do ativo
+	Local aDadosAuto := {} // Array com os dados a serem enviados pela MsExecAuto() para gravação automática dos itens do ativo
 	Local aCab := { {'EE7_FILIAL' ,'01' ,NIL},;
 		{'EE7_PEDIDO' ,'100000000000005' ,NIL},; //
 	{'EE7_CALCEM' ,'1' ,NIL},; //
@@ -1229,9 +1233,9 @@ User Function EEC100Inc()
 	{'EE7_PERC' ,10 ,NIL},; //
 	{'EE7_TIPTRA' ,'1' ,NIL}}
 
-	// Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica da capa do bem
+	// Array com os dados a serem enviados pela MsExecAuto() para gravação automática da capa do bem
 	Private lMsHelpAuto := .f. // Determina se as mensagens de help devem ser direcionadas para o arq. de log
-	Private lMsErroAuto := .f. // Determina se houve alguma inconsistï¿½ncia na execucao da rotina
+	Private lMsErroAuto := .f. // Determina se houve alguma inconsistência na execução da rotina
 	aAdd(aItens,{{'EE8_COD_I' ,'000000' , NIL},;
 		{'EE8_SEQUEN' ,"000001" , NIL},;
 		{'EE8_FORN' ,'000002' , NIL},;
@@ -1290,7 +1294,7 @@ User Function EEC19A(cParam)
 			(cAliasEE8)->(DbSkip())
 		EndDo
 		If !lRet
-			lRet := MsgYesNo("Quantidade fora do range de tolerï¿½ncia!"+CRLF+"Deseja continuar?")
+			lRet := MsgYesNo("Quantidade fora do range de tolerância!"+CRLF+"Deseja continuar?")
 		EndIf
 	EndIf
 
@@ -1336,7 +1340,7 @@ User Function CONSZB7()
 	//VARIAVEIS LISTBOX
 	Local cVar     := Nil
 	Local oDlg     := Nil
-	Local cTitulo  := "Cadastro de Regra de Exportacao"
+	Local cTitulo  := "Cadastro de Regra de Exportação"
 	Local oOk      := LoadBitmap( GetResources(), "LBOK" )
 	Local oNo      := LoadBitmap( GetResources(), "LBNO" )
 	Local oChk     := Nil
@@ -1370,9 +1374,9 @@ User Function CONSZB7()
 	Private oGetDados1
 	// Variaveis deste Form
 	Private nX			:= 0
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Variaveis da MsNewGetDados()      ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Variaveis da MsNewGetDados()      ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 	// Vetor responsavel pela montagem da aHeader
 	Private aCpoGDa       	:= {""}
 
@@ -1437,7 +1441,7 @@ User Function CONSZB7()
 	dbGoTop()
 	DEFINE FONT oFont  	NAME "Arial" Size 9,12 BOLD //11,15 BOLD
 	DEFINE FONT oFont1	NAME "Arial" Size 9,12 ////11,15
-	DEFINE MSDIALOG _oDlg TITLE "Regras de Exportacao" FROM C(010),C(201) TO C(400),C(980) PIXEL
+	DEFINE MSDIALOG _oDlg TITLE "Regras de Exportação" FROM C(010),C(201) TO C(400),C(980) PIXEL
 	Do While TRBZB7->(!Eof())
 		aadd(aCol,{TRBZB7->CODIGO,TRBZB7->DESCRI,TRBZB7->GRUPO,TRBZB7->DESGRU,TRBZB7->UNIDAD,TRBZB7->DESCUN,.F.})
 		TRBZB7->(DbSkip())
@@ -1474,7 +1478,7 @@ Return
 Programa............: xMG19GEXP
 Autor...............: Joni Lima
 Data................: 18/04/2017
-Descricao / Objetivo: Geracao de EXP
+Descrição / Objetivo: Geração de EXP
 =====================================================================================
 */
 User function xMG19GEXP()
@@ -1485,14 +1489,14 @@ User function xMG19GEXP()
 	If ZZC->ZZC_APROVA == '1'
 		If xM19ExZB8()
 			If Pergunte(cPerg,.T.)
-				Processa({||xGerEXP()},"Aguarde a geracao da EXP")
+				Processa({||xGerEXP()},"Aguarde a geração da EXP")
 			EndIf
 		Else
-			Alert('Jï¿½ Existe EXP gerada para esse Orcamento')
+			Alert('Já Existe EXP gerada para esse Orçamento')
 		EndIf
 
 	Else
-		Alert('Para geracao de Exp ï¿½ necessario que o orï¿½amento esteja Aprovado')
+		Alert('Para geração de Exp é necessario que o orçamento esteja Aprovado')
 	EndIf
 
 	RestArea(aArea)
@@ -1504,7 +1508,7 @@ return
 Programa............: xM19ExZB8
 Autor...............: Joni Lima
 Data................: 18/04/2017
-Descricao / Objetivo: Verifica se Existe Exp Gerada para o Orcamento
+Descrição / Objetivo: Verifica se Existe Exp Gerada para o Orçamento
 =====================================================================================
 */
 Static function xM19ExZB8()
@@ -1531,7 +1535,7 @@ return lRet
 Programa............: xGerEXP
 Autor...............: Joni Lima
 Data................: 18/04/2017
-Descricao / Objetivo: Geracao de EXP
+Descrição / Objetivo: Geração de EXP
 =====================================================================================
 */
 Static function xGerEXP()
@@ -1561,10 +1565,10 @@ Static function xGerEXP()
 	ProcRegua(0)
 	IncProc()
 
-	aCPOZZC := xGerArX3('ZZC')//Cabecalho Orcamento
-	aCPOZZD := xGerArX3('ZZD')//Itens Orcamento
+	aCPOZZC := xGerArX3('ZZC')//Cabeçalho Orçamento
+	aCPOZZD := xGerArX3('ZZD')//Itens Orçamento
 
-	aDadZZC := {xPreenDad(aCPOZZC,'ZZC')} //Carrega Dados cabecalho Possicionado
+	aDadZZC := {xPreenDad(aCPOZZC,'ZZC')} //Carrega Dados cabeçalho Possicionado
 
 	dbSelectArea('ZZD')
 	ZZD->(dbSetOrder(1))//ZZD_FILIAL+ZZD_ORCAME+ZZD_SEQUEN
@@ -1587,7 +1591,7 @@ Static function xGerEXP()
 	cExps := ""
 
 	Begin Transaction
-		//Realiza Inclusao
+		//Realiza Inclusão
 		for ni:= 1 to nQuant
 
 			If lGeraSub
@@ -1608,7 +1612,8 @@ Static function xGerEXP()
 			//Cria documentos na ZZJ
 			U_InsZZJ15(cResp)
 
-			//Envia e-mail para a ï¿½rea de PCP Local
+			//Envia e-mail para a área de PCP Local
+
 
 
 		next ni
@@ -1651,7 +1656,7 @@ return
 Programa............: xGerArX3
 Autor...............: Joni Lima
 Data................: 18/04/2017
-Descricao / Objetivo: Carrega os campos da SX3
+Descrição / Objetivo: Carrega os campos da SX3
 =====================================================================================
 */
 Static function xGerArX3(cTab)
@@ -1682,7 +1687,7 @@ return aRet
 Programa............: xPreenDad
 Autor...............: Joni Lima
 Data................: 18/04/2017
-Descricao / Objetivo: Carrega dados de uma tabela em array na Ordem dos Campos
+Descrição / Objetivo: Carrega dados de uma tabela em array na Ordem dos Campos
 =====================================================================================
 */
 Static function xPreenDad(aCpos,cTab)
@@ -1704,25 +1709,25 @@ return aRet
 
 /*/
 	{Protheus.doc} xInc
-	Inclusao da EXP
+	Inclusão da EXP
 
 	@description
-	Realiza a Inclusao de um registro segundo os campos e o acols informado
+	Realiza a Inclusão de um registro segundo os campos e o acols informado
 
 	@autor Joni Lima
 	@since 18/04/2017
 	@type function
 	@table
-	ZZC - Orcamento de Exportacao
+	ZZC - Orçamento de Exportação
 	ZB8 - Exp
 
 	@menu
 
 	@Updates
-	2020-02-17 - Claudio Alves
+	2020-02-17 - Cláudio Alves
 	feature/RTASK0010722-automatizar-campo-situacao-orcamento-exp
-	Automatizaï¿½ï¿½o do preenchimento do campo ZB8->ZB8_INLAND a partir da regra
-	em que se a via de transporte for diferente de '01' entao o campo
+	Automatização do preenchimento do campo ZB8->ZB8_INLAND a partir da regra
+	em que se a via de transporte for diferente de '01' então o campo
 	ZB8->ZB8_INLAND deve ser preenchido com '01' e o campo fica travado.
 
 /*/
@@ -1744,7 +1749,7 @@ Static function xInc(aCpos,aDados,cTab,cCod,cSub)
 			EndIf
 		next ni
 
-		//Tratamento para Codigo
+		//Tratamento para Código
 		If cTab == 'ZB8'
 			ZB8->ZB8_EXP	:= cCod
 			ZB8->ZB8_ANOEXP := Right(Str(YEAR(dDataBase)),2)
@@ -1793,12 +1798,12 @@ user function MGEEC19(aRet)
 return aRet
 
 /*/{Protheus.doc} MGF19QTC
-//TODO Gatilho para atualizar a soma total do Orcamento
+//TODO Gatilho para atualizar a soma total do Orçamento
 @author leonardo.kume
 @since 02/05/2017
 @version 6
 @param oModel, object, Model ativo
-@param lAtual, logical, Atualiza itens e cabecalho?
+@param lAtual, logical, Atualiza itens e cabeçalho?
 @type function
 /*/
 User Function MGF19QTC(oModel,lAtual,nValor)
@@ -1827,12 +1832,12 @@ Return(nRet)
 
 
 /*/{Protheus.doc} MGF19TRG
-//TODO Gatilho para atualizar a soma total do Orcamento
+//TODO Gatilho para atualizar a soma total do Orçamento
 @author leonardo.kume
 @since 02/05/2017
 @version 6
 @param oModel, object, Model ativo
-@param lAtual, logical, Atualiza itens e cabecalho?
+@param lAtual, logical, Atualiza itens e cabeçalho?
 @type function
 /*/
 User Function MGF19TRG(oModel,lAtual,nValor)
@@ -1875,12 +1880,12 @@ User Function MGF19TRG(oModel,lAtual,nValor)
 Return(nRet)
 
 /*/{Protheus.doc} MGF19TPT
-//TODO Gatilho para atualizar a soma total do Orcamento
+//TODO Gatilho para atualizar a soma total do Orçamento
 @author leonardo.kume
 @since 02/05/2017
 @version 6
 @param oModel, object, Model ativo
-@param lAtual, logical, Atualiza itens e cabecalho?
+@param lAtual, logical, Atualiza itens e cabeçalho?
 @type function
 /*/
 User Function MGF19TPT(oModel,nValor)
@@ -1961,7 +1966,7 @@ Return nValor
 Programa............: xM19CUN
 Autor...............: Joni Lima
 Data................: 04/05/2017
-Descricao / Objetivo: Calculo Segunda unidade de Medida
+Descrição / Objetivo: Calculo Segunda unidade de Medida
 =====================================================================================
 */
 User function xM19CUN(cTp)
@@ -2031,7 +2036,7 @@ return nQtd
 Programa............: xActive
 Autor...............: Joni Lima
 Data................: 04/05/2017
-Descricao / Objetivo: Utilizado na ativaï¿½ï¿½o, quando inclusao/copia sera alterado o status para pendente
+Descrição / Objetivo: Utilizado na ativação, quando inclusão/copia sera alterado o status para pendente
 =====================================================================================
 */
 Static Function xActive(oModel)
@@ -2039,7 +2044,7 @@ Static Function xActive(oModel)
 	Local oMdlZAC	:= oModel:GetModel('EEC19MASTER')
 
 	If oModel:GetOperation() == MODEL_OPERATION_INSERT
-		oMdlZAC:LoadValue('ZZC_APROVA','2')
+		oMdlZAC:LoadValue('ZZC_APROVA','1') //ERA 2
 		oMdlZAC:LoadValue('ZZC_ZANOOR',SUBSTR(STR(YEAR(DDATABASE),4,0),3,2))
 		oMdlZAC:LoadValue('ZZC_DTPROC',ddatabase)
 		oMdlZAC:LoadValue('ZZC_ZREVIS',stod(""))
@@ -2050,9 +2055,10 @@ Static Function xActive(oModel)
 		ELSE
 			oMdlZAC:LoadValue('ZZC_CONDPA',"")
 			oMdlZAC:LoadValue('ZZC_COND2',"")
-		ENDIF
+		ENDIF	
 	ElseIf oModel:GetOperation() == MODEL_OPERATION_UPDATE
 		oMdlZAC:LoadValue('ZZC_ZREVIS',ddatabase)
+
 	EndIf
 
 	U_MGF19TPT(oModel)
@@ -2065,7 +2071,7 @@ return .T.
 Programa............: xM19V2U
 Autor...............: Joni Lima
 Data................: 04/05/2017
-Descricao / Objetivo: Valor Segunda Unidade de Medida
+Descrição / Objetivo: Valor Segunda Unidade de Medida
 =====================================================================================
 */
 User function xM19V2U()
@@ -2120,14 +2126,14 @@ Static Function MailPcpLoc()
 	While !ZZG->(Eof()) .and. xFilial("ZZG")+ZZC->ZZC_ORCAME == ZZG->(ZZG_FILIAL+ZZG_NUMERO)
 		If ZZG->ZZG_MSBLQL == "2" .AND. ZZG->ZZG_NIVEL $ "1/2"
 			cEmail := GetAdvFVal("ZZF","ZZF_EMAIL",xFilial("ZZF")+ZZG->ZZG_APROVA,1,"")
-			lOk := lOk .and. EnvMail(cEmail,"Orcamento Gerado","EXPs do Orcamento "+ZZC->ZZC_ORCAME+" foram geradas e estao aguardando a distribuiï¿½ï¿½o.") == ""
+			lOk := lOk .and. EnvMail(cEmail,"Orçamento Gerado","EXPs do Orçamento "+ZZC->ZZC_ORCAME+" foram geradas e estão aguardando a distribuição.") == ""
 		EndIf
 		ZZG->(dbSkip())
 	EndDo
 	If lOk
 		ApMsgAlert("E-mails enviados com sucesso.")
 	Else
-		ApMsgAlert("E-mails nao foram enviados")
+		ApMsgAlert("E-mails não foram enviados")
 	EndIf
 Return lOk
 
@@ -2214,7 +2220,7 @@ Static Function EnvMail(cTo,cSubject,cTexto)
 Return cRetMail
 
 /*/{Protheus.doc} ValidIdioma
-//TODO Validacao do campo Idioma
+//TODO Validação do campo Idioma
 @author leonardo.kume
 @since 02/06/2017
 @version 6
@@ -2234,7 +2240,7 @@ User Function ValidIdioma(cConteudo)
 Return lOk
 
 /*/{Protheus.doc} xM19GFam
-//TODO Preenchimento da familia Grupo e tipo de produto na linha do orï¿½amento
+//TODO Preenchimento da familia Grupo e tipo de produto na linha do orçamento
 @author leonardo.kume
 @since 25/08/2017
 @version 6
@@ -2322,13 +2328,13 @@ ZZC_DEST, ZZC_ZFAMIL, ZZC_IMPORT, ZZC_IMLOJA, ZZD_COD_I, ZZC_VIA, ZZD_FPCOD
 @version 6
 @type function
 
-@Alteracoes
+@Alterações
 	************
 		2020/02/27
-		RTASK0010784-Temperatura-Orcamento-Exp: Claudio Alves
-		Automatizaï¿½ï¿½o do preenchimento do campo de Temperatura de Conservaï¿½ï¿½o.
-		Nao permitir que itens com tipos de conservaï¿½ï¿½o sejam inseridos no mesmo orï¿½amento.
-		///01 -- CODIGO PARA ACHAR AS ALTERAï¿½ï¿½ES NO PROGRAMA
+		RTASK0010784-Temperatura-Orcamento-Exp: Cláudio Alves
+		Automatização do preenchimento do campo de Temperatura de Conservação.
+		Não permitir que itens com tipos de conservação sejam inseridos no mesmo orçamento.
+		///01 -- CODIGO PARA ACHAR AS ALTERAÇÕES NO PROGRAMA
 	************
 /*/
 
@@ -2339,21 +2345,21 @@ user function MGFGENSE(cFldAt, xValDef)
 	local cSY9Genset	:=	"" //Porto
 	local cSA1Genset	:=	"" //Cliente
 	local cSYCGenset	:=	"" //familia
-	local cSYCConser	:=	"" //Temperatura de Conservaï¿½ï¿½o
+	local cSYCConser	:=	"" //Temperatura de Conservação
 	local cSYCResfri	:=	"" //Temperatura Resfriado
-	local cSY9Conser	:=	"" //Temperatura de Conservaï¿½ï¿½o
+	local cSY9Conser	:=	"" //Temperatura de Conservação
 	local cSY9Resfri	:=	"" //Temperatura Resfriado
 	local cSYQGenset	:=	"" //Via
 	local cSB1Gense		:=	"" //Produto
-	local cSB1TpCons	:=	"" //Tipo de Conservaï¿½ï¿½o
+	local cSB1TpCons	:=	"" //Tipo de Conservação
 	local _cDestRes		:=	"" //Destino Resfriado
 	local _cDestCon		:=	"" //Destino Congelado
 	local _cDestDry		:=	"" //Destino Dry
 	local _cFamiRes		:=	"" //Familia Resfriado
 	local _cFamiCon		:=	"" //Familia Congelado
 	local _cFamiDry		:=	"" //Familia Dry
-	local _cTpConser	:=	"" //Tipo de Conservaï¿½ï¿½o
-	local _aTempPadr	:=	{} //Array oara temperaturas padrao
+	local _cTpConser	:=	"" //Tipo de Conservação
+	local _aTempPadr	:=	{} //Array oara temperaturas padrão
 	local cSYCGense2	:=	"" //Familia2
 	local cMotGenset	:=	""
 	local oView			:=	FwViewActive()
@@ -2375,13 +2381,13 @@ user function MGFGENSE(cFldAt, xValDef)
 
 	///01 ini
 	if !ExisteSx6("MGF_EEC19A")
-		CriarSX6("MGF_EEC19A", "C", "Temperatura padrao Resfriado",'-1.40' )
+		CriarSX6("MGF_EEC19A", "C", "Temperatura padrão Resfriado",'-1.40' )
 	endif
 	if !ExisteSx6("MGF_EEC19B")
-		CriarSX6("MGF_EEC19B", "CL", "Temperatura padrao Congelado",'-18.00' )
+		CriarSX6("MGF_EEC19B", "CL", "Temperatura padrão Congelado",'-18.00' )
 	endif
 	if !ExisteSx6("MGF_EEC19C")
-		CriarSX6("MGF_EEC19C", "C", "Temperatura padrao In Natura",'DRY' )
+		CriarSX6("MGF_EEC19C", "C", "Temperatura padrão In Natura",'DRY' )
 	endif
 
 	_aTempPadr	:=	{superGetMV("MGF_EEC19A", ,'-1.40'), superGetMV("MGF_EEC19B", ,'-18.00'), superGetMV("MGF_EEC19C", ,'DRY')}
@@ -2441,7 +2447,7 @@ user function MGFGENSE(cFldAt, xValDef)
 					oMdlZZC:setValue("ZZC_CONSER", cSB1TpCons)
 				endif
 				if _cTpConser != cSB1TpCons
-					alert("Nao ï¿½ permitido incluir este item, pois o tipo de conservaï¿½ï¿½o ï¿½ diferente do item anterior")
+					alert("Não é permitido incluir este item, pois o tipo de conservação é diferente do item anterior")
 					oMdlZZD:LoadValue('ZZD_COD_I', ' ')
 					oMdlZZD:LoadValue('ZZD_DESC', ' ')
 					return ""
@@ -2495,7 +2501,7 @@ user function MGFGENSE(cFldAt, xValDef)
 					endif
 				endcase
 			else
-				if MSGYESNO( 'A temperatura pode ser alterada, favor observar!!!' , 'ALTERACAO DE TEMPERATURA' )
+				if MSGYESNO( 'A temperatura pode ser alterada, favor observar!!!' , 'ALTERAÇÃO DE TEMPERATURA' )
 					do case
 					case _cTpConser == '1'
 						if empty(_cDestRes)
@@ -2552,7 +2558,7 @@ return xRetDef
 Programa............: xMGF19Mot
 Autor...............: Joni Lima
 Data................: 30/05/2017
-Descricao / Objetivo: Realiza a Validacao do Campo ZZC_MOTSIT
+Descrição / Objetivo: Realiza a Validação do Campo ZZC_MOTSIT
 =====================================================================================
 */
 User function xMGF19Mot()
@@ -2566,7 +2572,7 @@ return ExistCpo("EE4",FwFldGet("ZZC_MOTSIT") + '1-Descricao de Situacao  ' )
 Programa............: xVldMdl
 Autor...............: Leo Kume
 Data................: 27-09-2018
-Descricao / Objetivo: Valida o Model para nao salvar sem os campos
+Descrição / Objetivo: Valida o Model para não salvar sem os campos
 =====================================================================================
 */
 static function xVldMdl(oModel)
@@ -2579,8 +2585,8 @@ static function xVldMdl(oModel)
 	Local aAreaZZD 	:= ZZD->(GetArea())
 	Local lFrete	:= .F.
 	Local cRet		:= ""
-	Local lValInt	:= GetMv("MGF_24INT",,.T.) //Desliga validacoes do Offshore
-	Local lValFret	:= GetMv("MGF_24FRT",,.T.) //Desliga validacoes do frete e seguro
+	Local lValInt	:= GetMv("MGF_24INT",,.T.) //Desliga validações do Offshore
+	Local lValFret	:= GetMv("MGF_24FRT",,.T.) //Desliga validações do frete e seguro
 
 	//-- Inicio Valida Frete e Seguro
 	If lValFret .AND. lRet
@@ -2591,7 +2597,7 @@ static function xVldMdl(oModel)
 			IF lFrete
 				If oMdlZZC:GetValue("ZZC_ZFRTON") <= 0
 					cRet += iif(!Empty(Alltrim(cRet)),CRLF,"")
-					cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCOTE")+" digitado prevï¿½ lanï¿½amento de FRETE P/ Ton"
+					cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCOTE")+" digitado prevê lançamento de FRETE P/ Ton"
 					lRet := .F.
 				EndIf
 			EndIf
@@ -2602,38 +2608,41 @@ static function xVldMdl(oModel)
 				IF lFrete
 					If oMdlZZC:GetValue("ZZC_ZFRTON") <= 0
 						cRet += iif(!Empty(Alltrim(cRet)),CRLF,"")
-						cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCO2")+" na intermediaï¿½ï¿½o digitado prevï¿½ lanï¿½amento de FRETE P/ Ton"
+						cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCO2")+" na intermediação digitado prevê lançamento de FRETE P/ Ton"
 						lRet := .F.
 					EndIf
 				EndIf
 			EndIf
 		EndIf
 
-		//Valida se foi informado valor por tonelada quando nao hï¿½ necessidade devido ao Incoterm
+		//Valida se foi informado valor por tonelada quando não há necessidade devido ao Incoterm
 		If !lFrete .AND. lRet .AND. oMdlZZC:GetValue("ZZC_ZFRTON") > 0
 			lRet := .F.
 			cRet += iif(!Empty(Alltrim(cRet)),CRLF,"")
-			cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCOTE")+" digitado NAO prevï¿½ lanï¿½amento de FRETE P/ Ton"
+			cRet += "O Incoterm "+oMdlZZC:GetValue("ZZC_INCOTE")+" digitado NÃO prevê lançamento de FRETE P/ Ton"
 		EndIf
 
 	EndIf
 	//--- Fim valida Frete e seguro
 	If !lRet
-	    If !Empty(cRet) // Paulo da Mata - 29/05/2020 - Sï¿½ ativa o HELP quando a variavel cRet estiver preenchida.
+	    If !Empty(cRet) // Paulo da Mata - 29/05/2020 - Só ativa o HELP quando a variável cRet estiver preenchida.
 		   HELP(" ",1,"Frete",,Alltrim(cRet),2,1)
 		EndIf   
 	EndIf
 
-	if lRet // operacao offShore Rafael 24/10/2018
+	if lRet // operação offShore Rafael 24/10/2018
 		if oMdlZZC:GetValue("ZZC_INTERM") == "1" .AND. EMPTY(oMdlZZC:GetValue("ZZC_COND2"))
-			// Paulo da Mata - 27/05/2020 - Alterado o fluxo da condicao
-		   	HELP(" ",1,"Operacao OffShore",,"Obrigatorio o preenchimento da Cond. de Pagto na aba Intermediaï¿½ï¿½o",2,1)
+			// Paulo da Mata - 27/05/2020 - Alterado o fluxo da condição
+		   	HELP(" ",1,"Operação OffShore",,"Obrigatório o preenchimento da Cond. de Pagto na aba Intermediação",2,1)
    		   	lRet := .F.
 		ENDIF
 	ENDIF
 
 	ZZC->(RestArea(aAreaZZC))
 	ZZD->(RestArea(aAreaZZD))
+
+	//Envia E-Mail ao PCP (aprovadores nivel 001) informando da inclusao de um novo orcamento
+	EMAILPCP(oModel) //PRB0041101
 
 return lRet
 
@@ -2658,3 +2667,136 @@ Static Function QuantFil(cFil,cOrc)
 	EndIf
 
 return nQuant
+
+Static Function eMailPcp(oModel)
+	Local cEmail := ""
+	Local lOk := .T.
+	
+	If oModel:GetOperation() = 3 //.or. oModel:GetOperation() = 4
+		
+		If Select("QRYAPV") > 0		
+			QRYAPV->(DbCloseArea())
+		EndIf
+		
+		cQryApr := "SELECT ZBY_FILIAL,ZBY_NIVEL,ZBY_APROVA,USR_ID,USR_NOME,USR_EMAIL"	+CRLF
+		cQryApr += " FROM "+RETSQLNAME("ZBY")+" ZBY "									+CRLF
+		cQryApr += " INNER JOIN SYS_USR USR ON ZBY.ZBY_APROVA = USR.USR_ID" 			+CRLF
+		cQryApr += " WHERE "															+CRLF
+		cQryApr += " ZBY.ZBY_FILIAL='"+cFilant+"'"										+CRLF
+		cQryApr += " AND ZBY.D_E_L_E_T_ = ' '"											+CRLF
+		cQryApr += " AND USR.D_E_L_E_T_ = ' '"											+CRLF
+		cQryApr += " AND ZBY.ZBY_NIVEL='001'"											+CRLF
+		dbUseArea( .T., "TOPCONN", TCGENQRY(,,cQryApr),"QRYAPV", .F., .T.)
+		
+		DbSelectArea("QRYAPV")
+		QRYAPV->(DbGoTop())
+		_nCont1 := 0
+		While !QRYAPV->(Eof()) 		
+			_nCont1++
+			QRYAPV->(DbSkip())
+		EndDo
+		DbSelectArea("QRYAPV")
+		QRYAPV->(DbGoTop())
+		_nCont2 := 0
+		While !QRYAPV->(Eof()) 
+			_nCont2++
+			If _nCont2 < _nCont1
+				cEmail += ALLTRIM(QRYAPV->USR_EMAIL)+";"	
+			Else
+				cEmail += ALLTRIM(QRYAPV->USR_EMAIL)
+			EndIf
+			QRYAPV->(DbSkip())
+		EndDo
+
+		If Empty(cEmail)
+			u_mfconout("Nao foram selecionados e-mails para envio do aviso ref. a inclusao do orcamento "+cFilAnt+"-"+ZZC_ORCAME)		
+			lOk := .f.
+			Return lOk
+		ENDIF
+
+		lOk := lOk .And. fPCPMail(cEmail,"Novo Orcamento gerado no sistema","Informamos que o orcamento "+ZZC_ORCAME+" foi gerado na unidade "+cFilant+" - Sistema Protheus.") == ""
+		If lOk
+			u_mfconout("E-mails ref. Orcamento "+cFilAnt+"-"+ZZC_ORCAME+" enviados com sucesso.")
+		Else
+			u_mfconout("E-mails ref. Orcamento "+cFilAnt+"-"+ZZC_ORCAME+" nao foram enviados")
+		EndIf
+	EndIf
+Return lOk
+
+Static Function fPCPMail(cTo,cSubject,cTexto)
+	Local oMail, oMessage
+	Local nErro		:= 0
+	Local cRetMail 	:= ""
+	Local cSmtpSrv  := GETMV("MGF_SMTPSV")
+	Local cCtMail   := GETMV("MGF_CTMAIL")
+	Local cPwdMail  := GETMV("MGF_PWMAIL")
+	Local nMailPort := GETMV("MGF_PTMAIL")
+	Local nParSmtpP := GETMV("MGF_PTSMTP")
+	Local nSmtpPort
+	Local nTimeOut  := GETMV("MGF_TMOUT")
+	Local cEmail    := GETMV("MGF_EMAIL")
+	Local cErrMail
+
+	oMail := TMailManager():New()
+
+	if nParSmtpP == 25
+		oMail:SetUseSSL( .F. )
+		oMail:SetUseTLS( .F. )
+		oMail:Init("", cSmtpSrv, cCtMail, cPwdMail,, nParSmtpP)
+	elseif nParSmtpP == 465
+		nSmtpPort := nParSmtpP
+		oMail:SetUseSSL( .T. )
+		oMail:Init("", cSmtpSrv, cCtMail, cPwdMail,, nSmtpPort)
+	else
+		nParSmtpP == 587
+		nSmtpPort := nParSmtpP
+		oMail:SetUseTLS( .T. )
+		oMail:Init("", cSmtpSrv, cCtMail, cPwdMail,, nSmtpPort)
+	endif
+
+	oMail:SetSmtpTimeOut( nTimeOut )
+	nErro := oMail:SmtpConnect()
+
+	If nErro != 0
+		cErrMail :=("ERROR:" + oMail:GetErrorString(nErro))
+		conout(cErrMail)
+		Alert(cErrMail)
+		oMail:SMTPDisconnect()
+		cRetMail += "Erro "+ oMail:GetErrorString(nErro)
+		Return cRetMail
+	Endif
+
+	If 	nParSmtpP != 25
+		nErro := oMail:SmtpAuth(cCtMail, cPwdMail)
+		If nErro != 0
+			cErrMail :=("ERROR:" + oMail:GetErrorString(nErro))
+			conout(cErrMail)
+			oMail:SMTPDisconnect()
+			cRetMail += "Erro "+ oMail:GetErrorString(nErro)
+			Return cRetMail
+		Endif
+	Endif
+
+	oMessage := TMailMessage():New()
+	oMessage:Clear()
+	oMessage:cFrom                  := cEmail
+	oMessage:cTo                    := cTo
+	oMessage:cCc                    := "" 
+	oMessage:cSubject               := cSubject
+	oMessage:cBody := cTexto
+	nErro := oMessage:Send( oMail )
+
+	if nErro != 0
+		cErrMail :=("ERROR:" + oMail:GetErrorString(nErro))
+		conout(cErrMail)
+		Alert(cErrMail)
+		oMail:SMTPDisconnect()
+		cRetMail += "Erro "+ oMail:GetErrorString(nErro)
+		Return cRetMail
+	Else
+		cRetMail := ""
+	Endif
+
+	conout('Desconectando do SMTP')
+	oMail:SMTPDisconnect()
+Return cRetMail

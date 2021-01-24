@@ -5,10 +5,10 @@
 Programa............: MGFFAT98
 Autor...............: Totvs
 Data................: Agosto/2018
-Descricao / Objetivo: Rotina chamada pelo Ponto de Entrada M460FIL
+Descrição / Objetivo: Rotina chamada pelo Ponto de Entrada M460FIL
 Doc. Origem.........: Faturamento
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Nao mostrar pedidos que integram com o Taura, na rotina de preparacao de documento de saida por pedido
 =====================================================================================
 */

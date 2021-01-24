@@ -4,11 +4,11 @@
 ===========================================================================================
 Programa.:              MGFCOM80
 Autor....:              Totvs
-Data.....:              Marco/2018
+Data.....:              Março/2018
 Descricao / Objetivo:   Rotina chamada pelo ponto de entrada MT100TOK
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -23,8 +23,8 @@ Local cFunc := ParamIxb[4]
 If cAlias == "SF1" .and. Upper(cFunc) == Upper("A103NFISCAL") .and. FunName() == "MATA103" .and. nOpcao == 3
 	If !GetMv("MGF_NFEINC",,.T.)
 		lRet := .F.
-		ApMsgStop("Essa opcao nao deve ser executada pela Marfrig."+CRLF+;
-		"Inclua o documento pela rotina de Prï¿½-nota de entrada.")
+		ApMsgStop("Essa opção não deve ser executada pela Marfrig."+CRLF+;
+		"Inclua o documento pela rotina de Pré-nota de entrada.")
 	Endif	
 Endif	
 */
@@ -37,8 +37,8 @@ If !l103Auto
 			If cTipo == "N"
 				If cModulo != "GFE" .and. !isInCallStack("U_MGFEEC68")
 					lRet := .F.
-					ApMsgStop("Inclusao de Documento tipo 'Normal' nao permitida."+CRLF+;
-					"Inclua o documento pela rotina de Prï¿½-nota de entrada.")
+					ApMsgStop("Inclusão de Documento tipo 'Normal' não permitida."+CRLF+;
+					"Inclua o documento pela rotina de Pré-nota de entrada.")
 				Endif	
 			Endif
 //        Else
@@ -46,7 +46,7 @@ If !l103Auto
 //            | Validacao para que o usuario confirme todos os armazens/locais dos itens |
 //            | do Documento de Entrada ( johnny.osugi@totvspartners.com.br ).           |
 //            +-------------------------------------------------------------------------*/
-//            If .not. MsgYesNo( OEMToANSI( "Confirmar todos os armazï¿½ns dos itens?" ), OEMToANSI( 'Atencao aos Armazï¿½ns!' ) )
+//            If .not. MsgYesNo( OEMToANSI( "Confirmar todos os armazéns dos itens?" ), OEMToANSI( 'Atenção aos Armazéns!' ) )
 //               lRet := .F.
 //            EndIf
 

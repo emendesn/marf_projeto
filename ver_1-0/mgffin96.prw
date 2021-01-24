@@ -7,11 +7,11 @@
 Programa............: MGFFIN96
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Aprovacao da Unidade
+Descrição / Objetivo: Aprovação da Unidade
 Doc. Origem.........: Contrato - GAP Caixinha
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela para Aprovacao do Caixinha
+Uso.................: Marfrig
+Obs.................: Tela para Aprovação do Caixinha
 =====================================================================================
 */
 user function MGFFIN96()
@@ -30,7 +30,7 @@ user function MGFFIN96()
 
 		oBrowse:SetFilterDefault(cFiltro)
 
-		oBrowse:SetDescription('Aprovacao Unidade')
+		oBrowse:SetDescription('Aprovação Unidade')
 
 		oBrowse:Activate()
 	EndIf
@@ -41,7 +41,7 @@ return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Modelo de Dados
 =====================================================================================
 */
@@ -60,7 +60,7 @@ Static Function ModelDef()
 	oModel:AddFields("ZE1MASTER",/*cOwner*/,oStrZE1, /*bPreValid*/, /*bPosValid*/, /*bCarga*/ )
 	oModel:AddGrid("ZE0DETAIL","ZE1MASTER",oStrZE0, /*bLinePreValid*/, /*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/ )
 
-	oModel:GetModel("ZE0DETAIL"):SetDescription("Itens Para Aprovacao")
+	oModel:GetModel("ZE0DETAIL"):SetDescription("Itens Para Aprovação")
 
 	oModel:AddCalc("CALC", "ZE1MASTER", "ZE0DETAIL", "ZE0_VALOR", "ZE0__TOT", "SUM", {|oModel|xVldSum(oModel)}, ,"Total")
 
@@ -79,7 +79,7 @@ return oModel
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: View da Tela
 =====================================================================================
 */
@@ -120,7 +120,7 @@ return oView
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Menu da Tela do Caixinha
 =====================================================================================
 */
@@ -137,8 +137,8 @@ Return aRotina
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Preenchimento da Tela para Aprovacao
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Preenchimento da Tela para Aprovação
 =====================================================================================
 */
 Static Function xActivMdl(oModel)
@@ -171,10 +171,10 @@ Static Function xActivMdl(oModel)
 			EndIf
 
 			For nx := 1 to Len(oStrZE0:aFields)
-				If !oStrZE0:aFields[nx,14] //Verifica Se nao ï¿½ Virtual
+				If !oStrZE0:aFields[nx,14] //Verifica Se não é Virtual
 
 					cField  := oStrZE0:aFields[nx,3]//Pega o Id do Campo
-					cFldQry := "(cQry)->" + cField //Monta Expressï¿½o para macro execucao
+					cFldQry := "(cQry)->" + cField //Monta Expressão para macro execução
 					cConte  := &( cFldQry ) //Pega o Conteudo da Query
 
 					If !Empty(cConte) //.and. Alltrim(cField) <> "ZE0_MARKUN"//Verifica se o existe conteudo
@@ -205,7 +205,7 @@ return .t.
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Encontra os Titulos que precisam ser aprovados
 =====================================================================================
 */
@@ -235,8 +235,8 @@ return (cNextAlias)
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Validacao para soma do Total
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Validação para soma do Total
 =====================================================================================
 */
 Static Function xVldSum(oModel)
@@ -255,7 +255,7 @@ return lRet
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Commit do modelo de dados
 =====================================================================================
 */
@@ -289,9 +289,9 @@ Static Function xCommit(oModel)
 
 		_cCaixa:=oMdlZE0:GetValue("ZE0_CAIXA")
 		If !Empty(_cCaixa)
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-			//ï¿½Posiciona-se no caixinha                               ï¿½
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+			//³Posiciona-se no caixinha                               ³
+			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			dbSelectArea("SET")
 			dbSetOrder(1)
 			dbSeek( xFilial()+_cCaixa)
@@ -300,8 +300,8 @@ Static Function xCommit(oModel)
 				Help(" ",1,'ERRO',,'Valor Total das Despesas Aprovadas: R$ ' + Transform(_nSomZE0, "@E 999,999,999,999.99") + ' maior que do Saldo da Caixinha ',1,0,,,,,,{'Saldo de Caixinha de R$ ' + Transform(_nSalCxa, "@E 999,999,999,999.99") } ) 
 				lRet := .F.
 			Else
-				If _nSomZE0 == 0 // deriva de que a despesa esta incorreta em termos de valor ou nenhuma despesa foi marcada no Grid 
-					Help(" ",1,'ERRO',,'Valor Total das Despesas Aprovadas esta Zerada: R$ ' + Transform(_nSomZE0, "@E 999,999,999,999.99") ,1,0,,,,,,{'Verifique os Valores das Despesas ou se houve marcaï¿½ï¿½o no Grid' } ) 
+				If _nSomZE0 == 0 // deriva de que a despesa está incorreta em termos de valor ou nenhuma despesa foi marcada no Grid 
+					Help(" ",1,'ERRO',,'Valor Total das Despesas Aprovadas está Zerada: R$ ' + Transform(_nSomZE0, "@E 999,999,999,999.99") ,1,0,,,,,,{'Verifique os Valores das Despesas ou se houve marcação no Grid' } ) 
 					lRet := .F.
 				EndIf	
 			EndIf
@@ -339,7 +339,7 @@ return lRet
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Grava o Aprovador
 =====================================================================================
 */

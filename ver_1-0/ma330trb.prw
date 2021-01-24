@@ -13,7 +13,7 @@ Data.....:              07/07/2017
 Descricao / Objetivo:   Altera as movimentacoes na rotina do calculo do custo medio                         
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================================
 */
 User Function MA330TRB()

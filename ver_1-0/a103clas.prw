@@ -3,19 +3,19 @@
 Programa.:              A103CLAS
 Autor....:              Atilio Amarilla
 Data.....:              26/01/2017
-Descricao / Objetivo:   PE para manipulacao de aCols na classificacao da Pre-Nota
+Descricao / Objetivo:   PE para manipulaзгo de aCols na classificaзгo da Prй-Nota
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
 User Function A103CLAS()
 
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљƒњ
-//пњљGAP MGFPER03 - Automacao de Vendas e Transferencias                     пњљ
-//пњљ               Copia conteudo de D1_ZTES p/ D1_TES no aCols             пњљ
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљ
+//Џƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒњ
+//≥GAP MGFPER03 - Automaзгo de Vendas e Transferкncias                     ≥
+//≥               Copia conteъdo de D1_ZTES p/ D1_TES no aCols             ≥
+//јƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒў
 If ExistBlock("MGFEST25") //.And. FunName() == "MGFEST17"
 	U_MGFEST25()
 EndIf

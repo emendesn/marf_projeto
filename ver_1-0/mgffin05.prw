@@ -8,7 +8,7 @@ Data.....:              20/09/2016
 Descricao / Objetivo:   Execucao do P.E. F240FIL
 Doc. Origem:            Contrato - GAP MGFFIN05
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -177,18 +177,18 @@ User Function MGFFIN05()
 	ParSav08 := mv_par08
 	
 	AAdd(aParamBox, {1, "Fornecedor de"		, Space(tamSx3("A2_COD")[1]) 				, "@!"							, , "SA2" 	,	, 070	, .F.	})
-	AAdd(aParamBox, {1, "Fornecedor ate"	, Replicate("Z",tamSx3("A2_COD")[1])		, "@!"							, , "SA2" 	,	, 070	, .F.	})
+	AAdd(aParamBox, {1, "Fornecedor até"	, Replicate("Z",tamSx3("A2_COD")[1])		, "@!"							, , "SA2" 	,	, 070	, .F.	})
 	AAdd(aParamBox, {1, "Valor de"			, 0											, PesqPict("SE2","E2_VALOR")	, , ""	 	,	, 070	, .F.	})
-	AAdd(aParamBox, {1, "Valor ate"			, 9999999999999.99							, PesqPict("SE2","E2_VALOR")	, , "" 		,	, 070	, .F.	})
+	AAdd(aParamBox, {1, "Valor até"			, 9999999999999.99							, PesqPict("SE2","E2_VALOR")	, , "" 		,	, 070	, .F.	})
 	AAdd(aParamBox, {1, "Nome"				, Space(tamSx3("A2_NOME")[1])      			, "@!"							, , ""   	,	, 100	, .F.	})
 	AAdd(aParamBox, {1, "Natureza de"		, Space(tamSx3("E2_NATUREZ")[1]) 			, PesqPict("SE2","E2_NATUREZ")	, , "SED" 	,	, 070	, .F.	})
-	AAdd(aParamBox, {1, "Natureza ate"		, Replicate("Z",tamSx3("E2_NATUREZ")[1])	, PesqPict("SE2","E2_NATUREZ")	, , "SED" 	,	, 070	, .F.	})
+	AAdd(aParamBox, {1, "Natureza até"		, Replicate("Z",tamSx3("E2_NATUREZ")[1])	, PesqPict("SE2","E2_NATUREZ")	, , "SED" 	,	, 070	, .F.	})
 	
 	If IsInCallStack("Fin750241") .Or. FunName() == "FINA241"
 		
 		mv_par08	:= cNumBor	:= Space(Len(SE2->E2_ZBORD))
 
-		aAdd(aParamBox,{1,"Numero do Bordero",cNumBor,"","","","",50,.F.})
+		aAdd(aParamBox,{1,"Número do Borderô",cNumBor,"","","","",50,.F.})
 
 	EndIf
 	

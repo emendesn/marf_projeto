@@ -7,10 +7,10 @@ Programa............: MGFFAT89
 Autor...............: Natanael Filho
 Data................: 31/JULHO/2018 
 Descricao / Objetivo: Fiscal
-Doc. Origem.........: 
+Doc. Origem.........: Marfrig
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Restricao de copia de pedidos anteriores ï¿½ data de atualizacao da NF-e 4.0.
+Uso.................: Marfrig
+Obs.................: Restrição de cópia de pedidos anteriores à data de atualização da NF-e 4.0.
 =====================================================================================
 */
 User Function MGFFAT89()
@@ -21,7 +21,7 @@ Local dDtFim := SuperGetMV('MGF_FAT89D',.T.,StoD('20170101'))
 
 If SC5->C5_EMISSAO < dDtFim
 	lRet := .F.
-	MSGAlert("Nao ï¿½ permitido copiar Pedidos de Venda anteriores ï¿½ data " + DtoC(dDtFim) + ", conforme parametro MGF_FAT89D.","RESTRIï¿½ï¿½O DE Cï¿½PIA!")
+	MSGAlert("Não é permitido copiar Pedidos de Venda anteriores à data " + DtoC(dDtFim) + ", conforme parâmetro MGF_FAT89D.","RESTRIÇÃO DE CÓPIA!")
 EndIf
 
 Return lRet

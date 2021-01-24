@@ -6,11 +6,11 @@
 Programa............: MGFFAT26
 Autor...............: Joni Lima
 Data................: 26/10/2016
-Descricao / Objetivo: Cadastro de Classificacao de Perda
+Descrição / Objetivo: Cadastro de Classificação de Perda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela de Cadastro de Classificacao de Perda
+Uso.................: Marfrig
+Obs.................: Tela de Cadastro de Classificação de Perda
 =====================================================================================
 */
 User Function MGFFAT26()
@@ -22,7 +22,7 @@ User Function MGFFAT26()
 	
 	oMBrowse:= FWmBrowse():New()
 	oMBrowse:SetAlias("ZZ5")
-	oMBrowse:SetDescription('Cadastro Classificacao de Perda')
+	oMBrowse:SetDescription('Cadastro Classificação de Perda')
 	oMBrowse:Activate()
 
 Return
@@ -32,11 +32,11 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 26/10/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -56,11 +56,11 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 26/10/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro Classificacao de Perda
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro Classificação de Perda
 =====================================================================================
 */
 Static Function ModelDef()
@@ -71,7 +71,7 @@ Static Function ModelDef()
 	oModel := MPFormModel():New("XMGFFAT26", /*bPreValidacao*/,/*bPosValidacao*/,/*bCommit*/,/*bCancel*/ )
 	oModel:AddFields("ZZ5MASTER",/*cOwner*/,oStrZZ5, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	
-	oModel:SetDescription('Classificacao Perdas')
+	oModel:SetDescription('Classificação Perdas')
 	oModel:SetPrimaryKey({"ZZ5_FILIAL","ZZ5_CODIGO"})
 	
 Return(oModel)
@@ -81,11 +81,11 @@ Return(oModel)
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 26/10/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizacao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()

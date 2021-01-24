@@ -18,6 +18,9 @@ User Function GFEA0654()
 	Local aRet 		:= {}
 	Local cNatur 	:= GETMV("MV_NTFGFE")
 	Local cFilUt 	:= GETMV("MGF_FILTES")
+	Local nPosCond 	:= ascan(aDocFrete , { |x| x[1] == 'MV_PAR31' } )
+	Local nPosNatu	:= ascan(aDocFrete , { |x| x[1] == 'Natureza' } )  //21
+	Local nPosTes	:= ascan(aDocFrete , { |x| x[1] == 'MV_PAR27' } )  //15
 
 	U_MGFCTB232()
 
@@ -26,13 +29,15 @@ User Function GFEA0654()
 			If !Isincallstack("GFEA065XD")
 
 				If !Empty(GW3->GW3_ZCOND)
-					ADOCFRETE[18][2] := GW3->GW3_ZCOND
+					ADOCFRETE[nPosCond][2] := GW3->GW3_ZCOND
 				EndIf
 
 				If GW3->GW3_TES = GW3->GW3_ZTESOR
-					aDocFrete[21][2] := cNatur
+					
+					IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
+					
 					If !Empty(cNaturx)
-						aDocFrete[21][2] := cNaturx
+						 IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNaturx , cOperpe  := cNatur ) 
 					EndIf
 
 					If GW3->GW3_CDESP = "NFS"
@@ -43,7 +48,7 @@ User Function GFEA0654()
 					If GW3->GW3_TES = GW3->GW3_ZTESOR
 
 						If FindFunction("U_MGFGFE28")
-							aDocFrete[15][2] := U_MGFGFE28()
+							ADOCFRETE[nPosTes][2] := U_MGFGFE28()
 						EndIf
 
 						Aadd(aRet, {aDocFrete, aNotFis})
@@ -53,13 +58,13 @@ User Function GFEA0654()
 					EndIf
 
 				Else
-					aDocFrete[21][2] := cNatur
-					aDocFrete[15][2] := GW3->GW3_TES
+					IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
+					ADOCFRETE[nPosTes][2]	:= GW3->GW3_TES
 					Aadd(aRet, {aDocFrete, aNotFis})
 				EndIf
 			Else
-				aDocFrete[15][2] := GW3->GW3_TES
-				aDocFrete[21][2] := cNatur
+				ADOCFRETE[nPosTes][2] := GW3->GW3_TES
+				IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
 				Aadd(aRet, {aDocFrete, aNotFis})
 			EndIf
 
@@ -71,7 +76,7 @@ User Function GFEA0654()
 			If SFM->(DbSeek(xFilial("SFM") + "66"))
 				cTes := SFM->FM_TE
 
-				aDocFrete[15][2] := cTes
+				ADOCFRETE[nPosTes][2] := cTes
 
 			EndIf
 
@@ -82,13 +87,14 @@ User Function GFEA0654()
 		If !Isincallstack("GFEA065XD")
 
 			If !Empty(GW3->GW3_ZCOND)
-				ADOCFRETE[18][2] := GW3->GW3_ZCOND
+				ADOCFRETE[nPosCond][2] := GW3->GW3_ZCOND
 			EndIf
 
 			If GW3->GW3_TES = GW3->GW3_ZTESOR
-				aDocFrete[21][2] := cNatur
+				IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
+
 				If !Empty(cNaturx)
-					aDocFrete[21][2] := cNaturx
+					IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNaturx , cOperpe  := cNatur ) 
 				EndIf
 
 				If GW3->GW3_CDESP = "NFS"
@@ -99,7 +105,7 @@ User Function GFEA0654()
 				If GW3->GW3_TES = GW3->GW3_ZTESOR
 
 					If FindFunction("U_MGFGFE28")
-						aDocFrete[15][2] := U_MGFGFE28()
+						ADOCFRETE[nPosTes][2] := U_MGFGFE28()
 					EndIf
 
 					Aadd(aRet, {aDocFrete, aNotFis})
@@ -109,13 +115,13 @@ User Function GFEA0654()
 				EndIf
 
 			Else
-				aDocFrete[21][2] := cNatur
-				aDocFrete[15][2] := GW3->GW3_TES
+				IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
+				ADOCFRETE[nPosTes][2] := GW3->GW3_TES
 				Aadd(aRet, {aDocFrete, aNotFis})
 			EndIf
 		Else
-			aDocFrete[15][2] := GW3->GW3_TES
-			aDocFrete[21][2] := cNatur
+			ADOCFRETE[nPosTes][2] := GW3->GW3_TES
+			IIF( nPosNatu > 0 , ADOCFRETE[nPosNatu][2] := cNatur , cOperpe  := cNatur )
 			Aadd(aRet, {aDocFrete, aNotFis})
 		EndIf
 	Endif

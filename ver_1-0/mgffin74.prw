@@ -12,14 +12,14 @@ Data.....:              16/02/2018
 Descricao / Objetivo:   Relatorio de Adiantamento - Contas a Pagar
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 =====================================================================================
 */
 
 User Function MGFFIN74 
 Local aRet		  := {}
 Local aParambox	  := {}       
-Private aSimNao   := {'Sim','Nao','Todos'}
+Private aSimNao   := {'Sim','Não','Todos'}
 Private aTipos  := {"PA", "NDF",'Todos'}
           
 Private aRelImp := {}      
@@ -27,30 +27,30 @@ Private aSelFil := {}
 
 
 AAdd(aParamBox, {1, "Fornecedor de:"    ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Fornecedor Ate:"   ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Fornecedor Até:"   ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Loja de:"			,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 020	, .F.	})
-AAdd(aParamBox, {1, "Loja Ate:"      	,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 020	, .F.	})
-AAdd(aParamBox, {1, "Titulo Numero"    	,Space(tamSx3("E2_NUM")[1])           , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Loja Até:"      	,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 020	, .F.	})
+AAdd(aParamBox, {1, "Titulo Número"    	,Space(tamSx3("E2_NUM")[1])           , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Natureza de:"      ,Space(tamSx3("A2_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Natureza Ate:"     ,Space(tamSx3("A2_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Dt. Emissao de:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Dt. Emissao Ate:"  ,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Natureza Até:"     ,Space(tamSx3("A2_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Dt. Emissão de:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Dt. Emissão Até:"  ,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Venc. Real de:" 	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Venc. Real Ate:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Venc. Real Até:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {2, "PA/NDF com Saldo:"	,1                                   ,aSimNao                                    , 070	, , .F.	})
 AAdd(aParamBox, {1, "Pedido de:"       ,Space(tamSx3("FIE_PEDIDO")[1])       , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Pedido Ate:"      ,Space(tamSx3("FIE_PEDIDO")[1])       , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Pedido Até:"      ,Space(tamSx3("FIE_PEDIDO")[1])       , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Moeda:"           ,1                                    , "9",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Processo de:"    ,Space(tamSx3("E2_ZNUMPRO")[1])                             , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Processo Ate:"	  ,Space(tamSx3("E2_ZNUMPRO")[1])                             , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Processo Até:"	  ,Space(tamSx3("E2_ZNUMPRO")[1])                             , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Prefixo de:"       	,Space(tamSx3("E2_PREFIXO")[1])        , "@!",                           , ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Prefixo Ate:"      	,Space(tamSx3("E2_PREFIXO")[1])        , "@!",                           , ,, 070	, .F.	})
-AAdd(aParamBox, {2, "Selecao:"   	,1                                   ,aTipos                                    , 070	, , .F.	})
+AAdd(aParamBox, {1, "Prefixo Até:"      	,Space(tamSx3("E2_PREFIXO")[1])        , "@!",                           , ,, 070	, .F.	})
+AAdd(aParamBox, {2, "Seleção:"   	,1                                   ,aTipos                                    , 070	, , .F.	})
 
 IF ParamBox(aParambox, "Filtro para Selecionar os Adiantamentos"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 		aSelFil := AdmGetFil(.F.,.T.,"SE2")
 		If Len( aSelFil ) <= 0
-		    MsgAlert('Filiais nao selecionadas !!')
+		    MsgAlert('Filiais não selecionadas !!')
 		    Return  
 		Endif
 		Processa( {|| Carrega_Dados()  },'Aguarde...', 'Selecionando Registros',.F. )
@@ -130,7 +130,7 @@ cQuery += IIF( !Empty(MV_PAR11)," AND E2_VENCREA <= '"+DTOS(MV_PAR11)+"'","")
 IF VALTYPE(MV_PAR12) <> 'C'
     cQuery += IIF( MV_PAR12 == 1     ," AND E2_SALDO   > 0 ",IIF( MV_PAR12 == 2     ," AND E2_SALDO   = 0 ",""))
 Else
-    cQuery += IIF( MV_PAR12 == 'Sim'     ," AND E2_SALDO   > 0 ",IIF( MV_PAR12 == 'Nao'     ," AND E2_SALDO   = 0 ",""))
+    cQuery += IIF( MV_PAR12 == 'Sim'     ," AND E2_SALDO   > 0 ",IIF( MV_PAR12 == 'Não'     ," AND E2_SALDO   = 0 ",""))
 EndIF
 cQuery += IIF( MV_PAR15 > 0 ," AND E2_MOEDA = "+STR(MV_PAR15),"") 
 cQuery += IIF( !Empty(MV_PAR16)," AND E2_ZNUMPRO >= '"+MV_PAR16+"'","") 
@@ -205,7 +205,7 @@ While QRY_SE2->(!Eof())
 			SE5->(dbSkip())
 			Loop
 		EndIF
-		//Movimento de inclusao do PA
+		//Movimento de inclusão do PA
 		If Alltrim(SE5->E5_TIPODOC) == "PA"
 			IF Empty(aRelImp[nPos,13])  // Data Pagamento
 				aRelImp[nPos,13] := SE5->E5_DATA
@@ -277,7 +277,7 @@ Local oReport
 Local oImp
 Local oFinal
 
-oReport := TReport():New("SE2","Relatorio de Adiantamentos",,{|oReport| PrintReport(oReport)},"Relatorio de Adiantamentos")
+oReport := TReport():New("SE2","Relatório de Adiantamentos",,{|oReport| PrintReport(oReport)},"Relatório de Adiantamentos")
 oReport:SetLandscape()
 //oReport:SetPortrait()
 oIMP   := TRSection():New(oReport,"Adiantamentos","SE2")
@@ -293,7 +293,7 @@ TRCell():New(oIMP,"r006",,"RAZ.SOCIAL"   ,,TamSX3("A2_NOME")[1],.F.,)
 TRCell():New(oIMP,"r007",,"TITULO"       ,,TamSX3("E2_NUM")[1],.F.,)
 TRCell():New(oIMP,"r008",,"PARC"      ,,TamSX3("E2_PARCELA")[1],.F.,)
 TRCell():New(oIMP,"r009",,"NAT"          ,,TamSX3("E2_NATUREZ")[1],.F.,)
-TRCell():New(oIMP,"r010",,"EMISSï¿½O"      ,,TamSX3("E2_EMISSAO")[1]+3,.F.,)
+TRCell():New(oIMP,"r010",,"EMISSÃO"      ,,TamSX3("E2_EMISSAO")[1]+3,.F.,)
 TRCell():New(oIMP,"r011",,"VENC.REAL"    ,,TamSX3("E2_VENCREA")[1]+3,.F.,)
 TRCell():New(oIMP,"r012",,"DAT.MOV."    ,,TamSX3("E2_DTBORDE")[1]+3,.F.,)
 TRCell():New(oIMP,"r013",,"VLR TITULO" ,,TamSX3("E2_VALOR")[1],.F.,)

@@ -7,8 +7,8 @@ Autor....:              Totvs
 Data.....:              Out/2018
 Descricao / Objetivo:   Rotina chamada pelo ponto de entrada M410STTS
 Doc. Origem:            MIT044
-Solicitante:            
-Uso......:              
+Solicitante:            Cliente
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -45,10 +45,10 @@ If (cAliasTrb)->(Eof())
 			
 			SC6->(dbSkip())
 		Enddo	
-		APMsgStop("Nao foi localizado o cabecalho deste pedido."+CRLF+;
-		"Todos os itens do pedido serao excluidos."+CRLF+;
+		APMsgStop("Não foi localizado o cabeçalho deste pedido."+CRLF+;
+		"Todos os itens do pedido serão excluídos."+CRLF+;
 		"O Pedido deve ser redigitado."+CRLF+;
-		"Informe o TI da Marfrig desta ocorrencia.")
+		"Informe o TI da Marfrig desta ocorrência.")
 	Endif	
 Endif	
 

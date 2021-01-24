@@ -5,10 +5,10 @@
 Programa............: MGFFIN61
 Autor...............: Mauricio Gresele
 Data................: Setembro/2017
-Descricao / Objetivo: Rotina chamada pelo ponto de entrada FA60FIL
+Descrição / Objetivo: Rotina chamada pelo ponto de entrada FA60FIL
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     

@@ -5,11 +5,11 @@
 Programa............: M410STTS
 Autor...............: Joni Lima
 Data................: 01/03/2017
-Descricao / Objetivo: Ponto de Entrada para Copia de Pedido de Venda
+Descrição / Objetivo: Ponto de Entrada para Cópia de Pedido de Venda
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Ajusta Copia de Pedido de Venda
+Uso.................: Marfrig
+Obs.................: Ajusta Cópia de Pedido de Venda
 =====================================================================================
 */
 User Function M410STTS()
@@ -70,7 +70,7 @@ User Function M410STTS()
 		u_MGFEEC26()
 	EndIf
 
-	//Deleta registro no SZ5 na exclusao do pedido de venda (triangulacao faturamento)
+	//Deleta registro no SZ5 na exclusão do pedido de venda (triangulação faturamento)
 	If FindFunction("u_MGFFAT75")
 		u_MGFFAT75()
 	EndIf

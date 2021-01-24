@@ -5,12 +5,12 @@
 /*
 =====================================================================================
 Programa............: MGFCTB32
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 25/07/2017
-Descricao / Objetivo: Regras de integracao
+Descrição / Objetivo: Regras de integração
 Doc. Origem.........: MIT044 GAP CTB32
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de regras
 =====================================================================================
 */
@@ -22,7 +22,7 @@ User Function MGFCTB32()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZD2")
-	oMBrowse:SetDescription("Cadastro de Regras de Integracao")
+	oMBrowse:SetDescription("Cadastro de Regras de Integração")
 	
 	oMBrowse:Activate()
 	
@@ -62,12 +62,12 @@ oStruZD2:setProperty("ZD2_TPPED" ,MODEL_FIELD_VALID,{||U_TPPED()  })
 oStruZD2:setProperty("ZD2_GRPTRB",MODEL_FIELD_VALID,{||U_GRPTRB() })
 oStruZD2:setProperty("ZD2_TPOCO" ,MODEL_FIELD_VALID,{||U_MOTOCO() })
 
-oModel:SetDescription( 'Regras de Integracao' )
+oModel:SetDescription( 'Regras de Integração' )
 
 //oModel:SetPrimaryKey({"ZD2_FILIAL","ZD2_TPDOC","ZD2_CFOP", "ZD2_GRUPO", "ZD2_PRODUT","ZD2_TPDOCF","ZD2_TPCLI","ZD2_TPPED","ZD2_TPOP"})
 oModel:SetPrimaryKey({"ZD2_FILIAL","ZD2_TPDOC","ZD2_PRIORI"})
 
-oModel:GetModel( 'ZD2MASTER' ):SetDescription( 'Regras de Integracao' )
+oModel:GetModel( 'ZD2MASTER' ):SetDescription( 'Regras de Integração' )
 
 Return oModel
 
@@ -83,7 +83,7 @@ Local cCampos := {}
 
 
 	oStruZD2:AddGroup( 'GRP01', '                                      ', '', 1 )
-	oStruZD2:AddGroup( 'GRP02', 'Dados a serem utilizados na integracao', '', 2 )
+	oStruZD2:AddGroup( 'GRP02', 'Dados a serem utilizados na integração', '', 2 )
 
 	oStruZD2:SetProperty( 'ZD2_PRIORI', MVC_VIEW_GROUP_NUMBER, 'GRP01' )
 	oStruZD2:SetProperty( 'ZD2_DESCR' , MVC_VIEW_GROUP_NUMBER, 'GRP01' )
@@ -123,7 +123,7 @@ oView:SetOwnerView( 'VIEW_ZD2', 'TELA' )
 Return oView
 
 
-/// Retorna expressï¿½o do produto
+/// Retorna expressão do produto
 User Function GFEPROD()
 
 	Local oMdlZD2    := FWModelActive()
@@ -134,9 +134,10 @@ DbSelectArea('SB1')
 
 AADD (aProd, "B1_COD")
 	cExpres := BuildExpr('SB1',,,.T.,,,aProd) 
-
+	cExpres := Strtran(cExpres,' ','')
+	cExpres := If("''" $ cExpres,Strtran(cExpres,"''","' '"),cExpres)
 	If Len(cExpres) > TamSX3("ZD2_PRODUT")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_PRODUT")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_PRODUT")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -144,7 +145,7 @@ AADD (aProd, "B1_COD")
 	
 Return .T.
 
-/// Retorna expressï¿½o do tipo de documento de frete
+/// Retorna expressão do tipo de documento de frete
 User Function TPDOCF()
 
 Local oMdlZD2    := FWModelActive()
@@ -155,9 +156,10 @@ DbSelectArea('GVT')
 
 AADD (aDoc, "GVT_CDESP")
 	cExpres := BuildExpr('GVT',,,.T.,,,aDoc) 
-
+	cExpres := Strtran(cExpres,' ','')
+	cExpres := If("''" $ cExpres,Strtran(cExpres,"''","' '"),cExpres)
 	If Len(cExpres) > TamSX3("ZD2_TPDOCF")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_TPDOCF")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_TPDOCF")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -165,7 +167,7 @@ AADD (aDoc, "GVT_CDESP")
 	
 Return .T.
 
-/// Retorna expressï¿½o do Grupo de produto
+/// Retorna expressão do Grupo de produto
 User Function GRUPO()
 
 Local oMdlZD2   := FWModelActive()
@@ -176,9 +178,10 @@ DbSelectArea('SB1')
 	
 AADD (aGrup, "B1_GRUPO")
 	cExpres := BuildExpr('SB1',,,.T.,,,aGrup)  
-	
+	cExpres := Strtran(cExpres,' ','')
+	cExpres := If("''" $ cExpres,Strtran(cExpres,"''","' '"),cExpres)
 	If Len(cExpres) > TamSX3("ZD2_GRUPO")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRUPO")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRUPO")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -186,7 +189,7 @@ AADD (aGrup, "B1_GRUPO")
 	
 Return .T.
 
-//Funcao que retorna expressï¿½o para CFOP
+//Função que retorna expressão para CFOP
 User Function CFOP()
 
 Local oMdlZD2    := FWModelActive()
@@ -199,7 +202,7 @@ AADD (aCFOP, "X5_CHAVE")
 	cExpres := BuildExpr('SX5',,"X5_TABELA = '13'",.T.,,,aCFOP)  
 
 	If Len(cExpres) > TamSX3("ZD2_CFOP")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_CFOP")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_CFOP")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -208,7 +211,7 @@ AADD (aCFOP, "X5_CHAVE")
 Return .T.
 
 
-/// Retorna expressï¿½o do Tipo de pedido
+/// Retorna expressão do Tipo de pedido
 User Function TPPED()
 
 Local oMdlZD2   := FWModelActive()
@@ -219,9 +222,10 @@ DbSelectArea('SZJ')
 	
 AADD (aTpped, "ZJ_COD")
 	cExpres := BuildExpr('SZJ',,,.T.,,,aTpped)  
-	
+	cExpres := Strtran(cExpres,' ','')
+	cExpres := If("''" $ cExpres,Strtran(cExpres,"''","' '"),cExpres)
 	If Len(cExpres) > TamSX3("ZD2_TPPED")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRUPO")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRUPO")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -230,7 +234,7 @@ AADD (aTpped, "ZJ_COD")
 Return .T.
 
 
-/// Retorna expressï¿½o do Grupo Tributï¿½rio
+/// Retorna expressão do Grupo Tributário
 User Function GRPTRB()
 
 Local oMdlZD2   := FWModelActive()
@@ -241,9 +245,9 @@ DbSelectArea('SX5')
 	
 AADD (aGRPTRB, "X5_CHAVE")
 	cExpres := BuildExpr('SX5',,"X5_TABELA = '21'",.T.,,,aGRPTRB)   
-	
+
 	If Len(cExpres) > TamSX3("ZD2_GRPTRB")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRPTRB")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_GRPTRB")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			
@@ -252,7 +256,7 @@ AADD (aGRPTRB, "X5_CHAVE")
 Return .T.
 
 
-/// Retorna expressï¿½o do Motivo Ocorrencia
+/// Retorna expressão do Motivo Ocorrência
 User Function MOTOCO()
 
 Local oMdlZD2   := FWModelActive()
@@ -263,9 +267,10 @@ DbSelectArea('GWD')
 	
 AADD (aMOTOCO, "GU6_CDMOT")
 	cExpres := BuildExpr('GU6',,,.T.,,,aMOTOCO)   
-	
+	cExpres := Strtran(cExpres,' ','')
+	cExpres := If("''" $ cExpres,Strtran(cExpres,"''","' '"),cExpres)
 	If Len(cExpres) > TamSX3("ZD2_TPOCO")[1]
-		Help( ,, 'HELP',, "O tamanho da expressï¿½o (" + cValToChar(Len(cExpres)) + ") ï¿½ maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_TPOCO")[1]) + ")", 1, 0,)
+		Help( ,, 'HELP',, "O tamanho da expressão (" + cValToChar(Len(cExpres)) + ") é maior do que o sistema comporta (" + cValTochar(TamSX3("ZD2_TPOCO")[1]) + ")", 1, 0,)
 		Return cRet 
 	EndIf
 			

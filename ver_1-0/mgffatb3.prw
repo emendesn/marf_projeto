@@ -9,22 +9,27 @@ Data................: 17/05/2019
 Descrição / Objetivo: Alimentar o campo virtual no cadastro de clientes
 Doc. Origem.........: RITM0022075
 Solicitante.........: Joel Ribeiro
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Campo da SA1 para exibir o valor somado das compras dos ultimos 180 dias.
 ================================================================================================
 */
 
-User Function MGFFATB3(cCli,cLoja)
+User Function MGFFATB3(cCli,cLoja,lMgfFinBn)
 
 	Local nRet 		:= 0
-	Local cQuery 	:= ""
+	Local cQuery
 	Local dData		:= Date()
 
 	Local lLoja		:= SuperGetMV("MGF_FATB3A",.T.,.F.) //Considera a loja nos filtros?
 	Local cNatNCC	:= Alltrim(SuperGetMV("MGF_FATB3B",.T.,"10107")) //Natureza utilizada para filtro das NCCs. Deixar em branco para considerar todas.
 	Local ntPDesc	:= SuperGetMV("MGF_FATB3C",.T.,1) //Qual o tipo de desconto deve ser ralizado: 0-NENHUM;1-E1_VALOR;2-E1_SALDO
+	local bCond     := iif( IsBlind(), { || .not. Empty(cCli) }, { || .not. Empty(cCli) .and. ( .not. INCLUI .or. lMgfFinBn ) } )
 
-	If !Empty(cCli) .AND. !INCLUI
+
+	DEFAULT lMgfFinBn := .F.
+
+//	If !Empty(cCli) .AND. ( !INCLUI .OR. lMgfFinBn )
+	If eval( bCond )
 
 		cDataDe := DTOS(DaySub( dData , 180 )) //Subtrai dias em uma data e converte para string
 		cDataAt := DTOS(dData)

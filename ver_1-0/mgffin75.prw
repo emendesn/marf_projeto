@@ -10,7 +10,7 @@ User Function MGFFIN75()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZZ8")
-	oMBrowse:SetDescription("Amarracao de Usuario x Segmento")
+	oMBrowse:SetDescription("AmarraÁ„o de Usuario x Segmento")
 
 	oMBrowse:Activate()
 	
@@ -103,7 +103,7 @@ Data................: 22/01/2018
 Descri√ß√£o / Objetivo: Nao permitir regras iguais para atendententes distintos - segmento
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -168,7 +168,7 @@ Static Function xvldseg(oModel, nLin, cPonto, cCpo, e)
 						EndDo
                         
                         if !xRet 
-                           Help( ,, 'Atencao !!!!',, "JÔøΩ existe segmento x rede para outro atendente.", 1, 0 )
+                           Help( ,, 'AtenÁ„o !!!!',, "J· existe segmento x rede para outro atendente.", 1, 0 )
                         endif
 
 
@@ -188,7 +188,7 @@ Data................: 22/01/2018
 Descri√ß√£o / Objetivo: Nao permitir regras iguais para atendententes distintos - redes
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -251,7 +251,7 @@ Static Function xvldred(oModel, nLin, cPonto, cCpo, e)
 	                endif
 	                        
                         
-                 	//se for inclusao
+                 	//se for inclus„o
 	                if inclui
 	                   	_codred := ""
 	                  	_codred := e
@@ -293,7 +293,7 @@ Static Function xvldred(oModel, nLin, cPonto, cCpo, e)
 	
 
 	                 if !xRet 
-	                     Help( ,, 'Atencao !!!!',, "JÔøΩ existe segmento x rede para outro atendente.", 1, 0 )
+	                     Help( ,, 'AtenÁ„o !!!!',, "J· existe segmento x rede para outro atendente.", 1, 0 )
 	                 endif
 				 ENDIF
 	        endif
@@ -325,9 +325,9 @@ Static Function xCommits(oModel)
     _NUSR   :=UsrFullName(M->ZZ8_USUARI)
     _OldNUsr:=UsrFullName(ZZ8->ZZ8_USUARI)                                                                           
 	
-	//AQUI GRAVA INFORMACAO NOS TITULOS EM ABERTO   --msgalert("bbbbbb"+ZDM->ZDM_USUARI)
+	//AQUI GRAVA INFORMA«√O NOS TITULOS EM ABERTO   --msgalert("bbbbbb"+ZDM->ZDM_USUARI)
                                                
-	If nOperation == 4					// ALTERACAO DE CADASTRO
+	If nOperation == 4					// ALTERA«√O DE CADASTRO
 		If ZZ8->ZZ8_USUARI <> M->ZZ8_USUARI
 			BeginSql Alias cAliasSE1
 				SELECT SE1.R_E_C_N_O_ AS SE1RECNO
@@ -362,7 +362,7 @@ Static Function xCommits(oModel)
 		Endif 
 		For nI := 1 To oModelZDM:Length()
 			oModelZDM:GoLine(nI)
-			If oModelZDM:IsDeleted()						// trata linha excluida
+			If oModelZDM:IsDeleted()						// trata linha excluÌda
 				BeginSql Alias cAliasSE1
 					SELECT SE1.R_E_C_N_O_ AS SE1RECNO, AOV_DESSEG
 					  FROM %TABLE:SE1% SE1
@@ -408,7 +408,7 @@ Static Function xCommits(oModel)
 		Next
 		For nI := 1 To oModelZDN:Length()
 			oModelZDN:GoLine(nI)
-			If oModelZDN:IsDeleted()						// trata linha excluida
+			If oModelZDN:IsDeleted()						// trata linha excluÌda
 				BeginSql Alias cAliasSE1
 					SELECT SE1.R_E_C_N_O_ AS SE1RECNO, SZQ.ZQ_DESCR
 					  FROM %TABLE:SE1% SE1
@@ -502,7 +502,7 @@ Static Function xCommits(oModel)
 			Endif
 		Next
 
-		// seleciona titulos da rede inserida ou alterada
+		// seleciona tÌtulos da rede inserida ou alterada
 		For nI := 1 To oModelZDN:Length()
 			oModelZDn:GoLine(nI)
 			If !oModelZDn:IsDeleted()
@@ -551,7 +551,7 @@ Static Function xCommits(oModel)
 		Next
 	Endif	   
 	dbSelectArea("ZZ8")
-    // grava inclusao / alteracao.
+    // grava inclus„o / alteraÁ„o.
 	If oModel:VldData()
 		FwFormCommit(oModel)
 		oModel:DeActivate()
@@ -568,10 +568,10 @@ return lRet
 Programa............: MGQrySeg
 Autor...............: PAULO FERNANDES
 Data................: 17/05/2018
-Descri√ß√£o / Objetivo: Validar Usuario x Segmento
+Descri√ß√£o / Objetivo: Validar Usu·rio x Segmento
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -614,10 +614,10 @@ Return(aDadosSeg)
 Programa............: MGQryRed
 Autor...............: PAULO FERNANDES
 Data................: 17/05/2018
-Descri√ß√£o / Objetivo: Validar Usuario x Rede
+Descri√ß√£o / Objetivo: Validar Usu·rio x Rede
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -662,10 +662,10 @@ Return(aDadosRed)
 Programa............: xVldSegm
 Autor...............: TARCISIO GALEANO
 Data................: 22/01/2018
-Descri√ß√£o / Objetivo: Validar Usuario x Segmento x Rede
+Descri√ß√£o / Objetivo: Validar Usu·rio x Segmento x Rede
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -696,7 +696,7 @@ If nOperation <> 5
 		EndSql
 		(cAliasZDx)->(dbGoTop())
 		While (cAliasZDx)->(!EOF())
-			cMsgAviso += IIF(Empty(cMsgAviso),"Encontrado duplicidade no(s) segmento(s) abaixo :" + CRLF + "Segmento                    Usuario","") + CRLF
+			cMsgAviso += IIF(Empty(cMsgAviso),"Encontrado duplicidade no(s) segmento(s) abaixo :" + CRLF + "Segmento                    Usu·rio","") + CRLF
 			cMsgAviso += (cAliasZDx)->ZDM_CODSEG + "-" + AllTrim((cAliasZDx)->ZDM_DESCSE) + Space(10) + UsrFullName((cAliasZDx)->ZDM_USUARI) + CRLF
 	
 			(cAliasZDx)->(dbSkip())
@@ -720,10 +720,10 @@ Return(lRet)
 Programa............: xVldRede
 Autor...............: TARCISIO GALEANO
 Data................: 22/01/2018
-Descri√ß√£o / Objetivo: Validar Usuario x Segmento x Rede
+Descri√ß√£o / Objetivo: Validar Usu·rio x Segmento x Rede
 Doc. Origem.........: GAP FIN_CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -754,7 +754,7 @@ If nOperation <> 5
 		EndSql
 		(cAliasZDx)->(dbGoTop())
 		While (cAliasZDx)->(!EOF())
-			cMsgAviso += IIF(Empty(cMsgAviso),"Encontrado duplicidade na(s) rede(s) abaixo :" + CRLF + "Rede                    Usuario","") + CRLF
+			cMsgAviso += IIF(Empty(cMsgAviso),"Encontrado duplicidade na(s) rede(s) abaixo :" + CRLF + "Rede                    Usu·rio","") + CRLF
 			cMsgAviso += (cAliasZDx)->ZDN_CODRED + "-" + AllTrim((cAliasZDx)->ZDN_DESRED) + Space(10) + UsrFullName((cAliasZDx)->ZDN_USUARI) + CRLF
 				
 			(cAliasZDx)->(dbSkip())

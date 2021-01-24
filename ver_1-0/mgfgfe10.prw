@@ -3,21 +3,21 @@
 /*
 =========================================================================================================
 Programa.................: GFE1001
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 28/03/2017
-Descricao / Objetivo.....: Cadastro de excessoes RCTRC
+Descrição / Objetivo.....: Cadastro de excessões RCTRC
 Doc. Origem..............: GAP - GFE10
-Solicitante..............:
-Uso......................: 
+Solicitante..............: Cliente
+Uso......................: Marfrig
 Obs......................: Criado para regra de descontos de RCTRC
 =========================================================================================================
-10/07/2020 - Paulo da Mata - RTASK0010971 - Recriacao para PRD em 13/07/2020
+10/07/2020 - Paulo da Mata - RTASK0010971 - Recriação para PRD em 13/07/2020
 */
 User Function GFE1001()
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Declaracao de Variaveis                                             ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Declaracao de Variaveis                                             ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 	Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
 	Local cVldExc := ".T." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
@@ -27,7 +27,7 @@ User Function GFE1001()
 	dbSelectArea("ZBC")
 	dbSetOrder(1)
 
-	AxCadastro(cString,"Excecoes RCTRC",cVldExc,cVldAlt)
+	AxCadastro(cString,"Exceções RCTRC",cVldExc,cVldAlt)
 
 Return
 
@@ -35,21 +35,21 @@ Return
 /*
 =========================================================================================================
 Programa.................: GFE1002
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 28/03/2017
-Descricao / Objetivo.....: Cadastro de descontos RCTRC
+Descrição / Objetivo.....: Cadastro de descontos RCTRC
 Doc. Origem..............: GAP - GFE10
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: Criado para regra de descontos de RCTRC
 =========================================================================================================
 */
 
 User Function GFE1002()
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Declaracao de Variaveis                                             ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Declaracao de Variaveis                                             ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 	Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
 	Local cVldExc := ".T." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
@@ -64,15 +64,15 @@ User Function GFE1002()
 Return
 
 
-////aplicaï¿½ï¿½o do desconto no titulo//////
+////aplicação do desconto no título//////
 
 
 User Function MGFRCTRC()
-//>>> criacao do paramtro MGF_RCTRCA para determinar qual o tipo a ser usado no desconto de conveniencia
+//>>> criação do paramtro MGF_RCTRCA para determinar qual o tipo a ser usado no desconto de conveniencia
 
 
-	Local nOpcao    := PARAMIXB[1]   // Opcao Escolhida pelo usuario no aRotina
-	Local nConfirma := PARAMIXB[2]   // Se o usuario confirmou a operacao de gravacao da NFECODIGO DE APLICAï¿½ï¿½O DO USUARIO.....
+	Local nOpcao    := PARAMIXB[1]   // Opção Escolhida pelo usuario no aRotina
+	Local nConfirma := PARAMIXB[2]   // Se o usuario confirmou a operação de gravação da NFECODIGO DE APLICAÇÃO DO USUARIO.....
 	Local lRet      := .T.
 	Local cQuery	:= ""
 	Local cAlias1	:= ""
@@ -87,10 +87,10 @@ User Function MGFRCTRC()
 //	Local _cDRCTRC  := " "
 	Local _lDConv   :=  .F.
 	Local _cHist    := " "
-	Local _nVlDesc  := 0		//valor do desconto por conveniencia
+	Local _nVlDesc  := 0		//valor do desconto por conveniência
 	Local _aParcel	:=	{}
 	Local _nN		:= 0
-	Local _lRctrc   := .T. // flag determina se deve ou nao executar o desconto RCTRC - caiu num excecao
+	Local _lRctrc   := .T. // flag determina se deve ou não executar o desconto RCTRC - caiu num exceção
 	Local Lentra	:=	.F.
 	Local _lOK		:= .T.
 	Local _cKeySE2	:=	""
@@ -104,8 +104,8 @@ User Function MGFRCTRC()
 	If !ExisteSx6("MGF_RCTRCA")
 		CriarSX6("MGF_RCTRCA", "C", "Determina tipo de Desconto conveniencia seguro", "660" )
 	EndIf
-	cTpDCon   := SuperGetMv('MGF_RCTRCA' , NIL, '')		// Tipo de desconto conveniencia
-//fim da inclusao
+	cTpDCon   := SuperGetMv('MGF_RCTRCA' , NIL, '')		// Tipo de desconto conveniência
+//fim da inclusão
 	aArea 	:= GetArea()
 	aAreaGW3	:= GW3->(GetArea())	//DOCUMENTOS DE FRETE
 	aAreaGWN	:= GWN->(GetArea())	//ROMANEIOS DE CARGA
@@ -113,7 +113,7 @@ User Function MGFRCTRC()
 	aAreaGW4	:= GW4->(GetArea())	//DOCTOS CARGA DOS DOCTOS FRETE
 	aAreaGW1	:= GW1->(GetArea())	//DOCUMENTOS DE CARGA
 	aAreaSF2	:= SF2->(GetArea())
-	aAreaZBC	:= ZBC->(GetArea())  //CADASTRO DE EXCECAO RCTRC
+	aAreaZBC	:= ZBC->(GetArea())  //CADASTRO DE EXCEÇÃO RCTRC
 	aAreaSA1	:= SA1->(GetArea())
 	aAreaSD2	:= SD2->(GetArea())
 	aAreaSC5	:= SC5->(GetArea())
@@ -130,8 +130,8 @@ User Function MGFRCTRC()
 
 		If PARAMIXB[1] == 5
 			If SE2->E2_DECRESC <> 0
-				if empty(SE2->E2_BAIXA)		//>>> SE HOUVER BAIXA NAO ATUALIZA TABELAS
-					if VldCTB(SE2->E2_EMISSAO)	//>>> Valida se esta dentro de um periodo contabil valido
+				if empty(SE2->E2_BAIXA)		//>>> SE HOUVER BAIXA NÃO ATUALIZA TABELAS
+					if VldCTB(SE2->E2_EMISSAO)	//>>> Valida se esta dentro de um periodo contábil valido
 						if SE2->E2_EMISSAO > SuperGetMv('MV_ULMES' , NIL, '')	//verifica se esta posterior ao ultimo fechamento do estoque
 							DBSELECTAREA("GW4")
 							DBSETORDER(1)
@@ -144,13 +144,13 @@ User Function MGFRCTRC()
 									if DBSEEK(XFILIAL("GWN")+GW1->GW1_NRROM)
 
 										RecLock("GWN",.F.)
-										GWN->GWN_ZRCTRC := "1"  //1=Nao
+										GWN->GWN_ZRCTRC := "1"  //1=Não
 										MsUnLock()
 									endif
 								endif
 							endif
 
-							//Deleta o registro da tabela especï¿½fica Tipo de Valor por Titulos
+							//Deleta o registro da tabela específica Tipo de Valor por Títulos
 				DbSelectArea('ZDS')
 				ZDS->(DbSetOrder(1))//ZDS_FILIAL+ZDS_PREFIX+ZDS_NUM+ZDS_PARCEL+ZDS_TIPO+ZDS_FORNEC+ZDS_LOJA
 				if ZDS->(MsSeek(xFilial('ZDS') +  SE2->E2_PREFIXO + SE2->E2_NUM + SE2->E2_PARCELA + SE2->E2_TIPO + SE2->E2_FORNECE + SE2->E2_LOJA))
@@ -223,7 +223,7 @@ User Function MGFRCTRC()
 			EndIf
 		EndIf
 		If lentra
-			/////// Verifica se documento de carga ï¿½ de saida.
+			/////// Verifica se documento de carga é de saída.
 			dBselectArea("GW4")  //Doctos de carga dos doctos de frete
 			GW4->(dbSetOrder(1))//GW4_FILIAL+GW4_EMISDF+GW4_CDESP+GW4_SERDF+GW4_NRDF+DTOS(GW4_DTEMIS)+GW4_EMISDC+GW4_SERDC+GW4_NRDC+GW4_TPDC
 			If GW4->(dbSeek(xFilial("GW4")+GW3->GW3_EMISDF+GW3->GW3_CDESP+GW3->GW3_SERDF+GW3->GW3_NRDF))
@@ -233,7 +233,7 @@ User Function MGFRCTRC()
 					_lRctrc	:=	.F.
 				EndIf
 
-				/// Verifica se o tipo de frete ï¿½ CIF frete e o seguro pagos pelo fornecedor
+				/// Verifica se o tipo de frete é CIF frete e o seguro pagos pelo fornecedor
 				dBselectArea("GW1")
 				GW1->(dbSetOrder(1))//GW1_FILIAL+GW1_CDTPDC+GW1_EMISDC+GW1_SERDC+GW1_NRDC
 				If GW1->(dbSeek(xFilial("GW1")+GW4->GW4_TPDC+GW4->GW4_EMISDC+GW4->GW4_SERDC+GW4->GW4_NRDC))
@@ -243,23 +243,23 @@ User Function MGFRCTRC()
 						_lRctrc	:=	.F.
 					EndIf
 
-					/***************verifica cadastro de execoes
-					Excessï¿½o por Remetente*/
+					/***************verifica cadastro de exeções
+					Excessão por Remetente*/
 					dBselectArea("SF2")
 					SF2->(dbSetOrder(1))//F2_FILIAL+F2_DOC+F2_SERIE+F2_CLIENTE+F2_LOJA+F2_FORMUL+F2_TIPO
 					If SF2->(dbSeek(xFilial("SF2") + ALLTRIM(GW1->GW1_NRDC) + ALLTRIM(GW1->GW1_SERDC)))
 
-						dBselectArea("ZBC")  //Cadastro de Excecao RCTRC
+						dBselectArea("ZBC")  //Cadastro de Exceção RCTRC
 						ZBC->(dbSetOrder(1))//ZBC_FILIAL+ZBC_CLIENT+ZBC_LJCLI
 						If ZBC->(dbSeek(xFilial("ZBC")+SF2->F2_CLIENTE+SF2->F2_LOJA))
-							lRet := .F.  //Cliente esta na Excecao RCTRC
+							lRet := .F.  //Cliente está na Exceção RCTRC
 							_lRctrc	:=	.F.
 						EndIf
 
 					EndIf
 
-					/***************verifica cadastro de execoes
-					Excessï¿½o por Destinatï¿½rio*/
+					/***************verifica cadastro de exeções
+					Excessão por Destinatário*/
 					dBselectArea("SA1")
 					SA1->(dbSetOrder(3))//A1_FILIAL+A1_CGC
 					If SA1->(dbSeek(xFilial("SA1")+GW3->GW3_CDDEST))
@@ -273,8 +273,8 @@ User Function MGFRCTRC()
 
 					EndIf
 
-					/***************verifica cadastro de execoes
-					Excessï¿½o pelo CNPJ da Transportadora*/
+					/***************verifica cadastro de exeções
+					Excessão pelo CNPJ da Transportadora*/
 
 					dBselectArea("ZBC")
 					ZBC->(dbSetOrder(3))//ZBC_FILIAL+ZBC_CLIENT+ZBC_LJCLI
@@ -283,17 +283,16 @@ User Function MGFRCTRC()
 						_lRctrc	:=	.F.
 					EndIf
 
-					/***************verifica cadastro de execoes
-					Excessï¿½o pela Placa do veï¿½culo*/
+					/***************verifica cadastro de exeções
+					Excessão pela Placa do veículo*/
 
 					dBselectArea("GWN") //Romaneio de Carga
 					GWN->(dbSetOrder(1))//GWN_FILIAL+GWN_NRROM
 					If GWN->(dbSeek(xFilial("GWN")+GW1->GW1_NRROM))
-						///verifica se jï¿½ foi aplicado o desconto para algum CT-e desse romaneio
+						///verifica se já foi aplicado o desconto para algum CT-e desse romaneio
 						If GWN->GWN_ZRCTRC == '2'
 							lRet := .F.
 							_lRctrc	:=	.F.
-							_lOK	:= 	.F. // validacao conveniencia
 						EndIf
 
 						dBselectArea("ZBC")
@@ -310,7 +309,7 @@ User Function MGFRCTRC()
 
 					EndIF
 
-					///VERIFICA SE O TIPO DE PEDIDO ï¿½ REFATURAMENTO
+					///VERIFICA SE O TIPO DE PEDIDO É REFATURAMENTO
 					dBselectArea("SD2")
 					SD2->(dbSetOrder(3))//D2_FILIAL+D2_DOC+D2_SERIE+D2_CLIENTE+D2_LOJA+D2_COD+D2_ITEM
 					If SD2->(dbSeek(xFilial("SD2")+ALLTRIM(GW1->GW1_NRDC)+GW1->GW1_SERDC))
@@ -333,10 +332,10 @@ User Function MGFRCTRC()
 						EndIf
 
 
-						///// VERIFICA OS PRODUTOS, Hï¿½ PRODUTOS QUE ESTAO FORA DOS GRUPOS DE PRODUTOS DA EXCESSAO,
-						///// SE EXISTIR A ROTINA PROSSEGUIRA.
-						///// TAMBEM SERA VERIFICADO SE Hï¿½ PRODUTOS QUE TENHAM VINCULOS DE GRUPOS DE PRODUTOS QUE
-						///// NAO ESTEJAM NO PARAMENTRO DE GRUPOS DE PRODUTOS QUE NAO SERAO UTILIZADOS
+						///// VERIFICA OS PRODUTOS, HÁ PRODUTOS QUE ESTÃO FORA DOS GRUPOS DE PRODUTOS DA EXCESSÃO,
+						///// SE EXISTIR A ROTINA PROSSEGUIRÁ.
+						///// TAMBÉM SERÁ VERIFICADO SE HÁ PRODUTOS QUE TENHAM VINCULOS DE GRUPOS DE PRODUTOS QUE
+						///// NÃO ESTEJAM NO PARAMENTRO DE GRUPOS DE PRODUTOS QUE NÃO SERÃO UTILIZADOS
 
 						lRet := .F.
 						While SD2->(!EOF()) .AND. SD2->(xfilial("SD2")+ALLTRIM(D2_DOC)+ALLTRIM(D2_SERIE)) == GW1->(xFilial("GW1")+ALLTRIM(GW1_NRDC)+GW1_SERDC)
@@ -367,9 +366,9 @@ User Function MGFRCTRC()
 						If !lRet
 							_lRctrc	:=	.F.
 						EndIf
-						// FIM DO PROCESSO DE VERIFICAï¿½ï¿½O SE PROCEDE O DESCONTO
+						// FIM DO PROCESSO DE VERIFICAÇÃO SE PROCEDE O DESCONTO
 						// A PARTIR DAQUI ATUALIZA AS TABELAS COM OS DESCONTOS
-						///Verificar se o existe regra de desconto/excecao conveniencia
+						///Verificar se o existe regra de desconto/exceção conveniencia
 						_cHist   := " "
 						_nVlDesc := 0
 						_nVlDesc	:=	TEMCONV("2"/*SAIDA*/,SA2->A2_CGC,GWN->GWN_CDTPVC,GWN->GWN_CDTPOP,SC5->C5_ZTIPPED,GWN->GWN_PLACAD,GW3->GW3_DTEMIS)
@@ -378,16 +377,16 @@ User Function MGFRCTRC()
 							_cHist   := "Desc. Conveniencia"
 						ENDIF
 
-						///////GRAVAR O DESCONTO NO Tï¿½TULO A PAGAR
+						///////GRAVAR O DESCONTO NO TÍTULO A PAGAR
 						dBselectArea("ZBB")  //Tipo Veiculo
 						ZBB->(dbSetOrder(1)) //D2_FILIAL+D2_DOC+D2_SERIE+D2_CLIENTE+D2_LOJA+D2_COD+D2_ITEM
 						If ZBB->(dbSeek(GWN->GWN_CDTPVC))
-							//// Verifica se o valor do documento ï¿½ maior ou igual ao valor do desconto.
+							//// Verifica se o valor do documento é maior ou igual ao valor do desconto.
 							If GW3->GW3_VLDF >= ZBB->ZBB_VALDES .and. GW3->GW3_VLDF >=  _nVlDesc//GW3 Documentos de frete
 								DBSELECTAREA("SA2") //ALTERADO RAFAEL 29/11/2018
 								DBSETORDER(3)
 								IF DBSEEK(XFILIAL("SA2")+GW3->GW3_EMISDF)
-									// FUNï¿½ï¿½O PARA CHECAR AS PARCELAS E FAZER A DIVISï¿½O
+									// FUNÇÃO PARA CHECAR AS PARCELAS E FAZER A DIVISÃO
 									if 	_lRctrc
 										_aParcel1 := CHKPARC1(XFILIAL("SE2"),SA2->A2_COD,SA2->A2_LOJA,Left(GW3->GW3_SERDF,TamSX3("E2_PREFIXO")[1]),Left(GW3->GW3_NRDF,TamSX3("E2_NUM")[1]),ZBB->ZBB_VALDES)
 										nParcel1  := If(Empty(_aParcel1[1]),0,_aParcel1[1])
@@ -411,7 +410,7 @@ User Function MGFRCTRC()
 									//	WHILE SE2->(!EOF()) .AND. SE2->E2_FORNECE==SA2->A2_COD .AND. SE2->E2_LOJA==SA2->A2_LOJA .AND.;
 									//			SE2->E2_PREFIXO==Left(GW3->GW3_SERDF,TamSX3("E2_PREFIXO")[1]) .AND. SE2->E2_NUM==Left(GW3->GW3_NRDF,TamSX3("E2_NUM")[1])
 									
-											/// GRAVA DESCONTO E HISTï¿½RICO NO Tï¿½TULO
+											/// GRAVA DESCONTO E HISTÓRICO NO TÍTULO
 											_nN++
 											
 											RecLock("SE2",.F.)
@@ -432,11 +431,12 @@ User Function MGFRCTRC()
 										EndDo
 									EndIf
 								EndIf
-								/// GRAVA INFORMACAO NO ROMANEIO
+								/// GRAVA INFORMAÇÃO NO ROMANEIO
 								If 	_lRctrc .or. _lDConv
 									RecLock("GWN",.F.)
 									GWN->GWN_ZRCTRC := "2"
 									If _lDConv
+									    GWN->GWN_ZDCONV := "2"  
 										GWN->GWN_ZVLDES := iif(_lRctrc,nParcel1,0)+iif(_lDConv,nParcel2,0)
 										GWN->GWN_ZDOCFR := GW3->GW3_NRDF
 									EndIf
@@ -463,7 +463,7 @@ User Function MGFRCTRC()
 										SE2->E2_PREFIXO==Left(GW3->GW3_SERDF,TamSX3("E2_PREFIXO")[1]) .AND. SE2->E2_NUM==Left(GW3->GW3_NRDF,TamSX3("E2_NUM")[1])
 										
 										_nN++
-										RecLock("SE2",.F.)	// Grava o desconto e o historico no titulo
+										RecLock("SE2",.F.)	// Grava o desconto e o histórico no titulo
 											SE2->E2_DECRESC += _aParcel2[_nN]
 											SE2->E2_SDDECRE += _aParcel2[_nN]
 											SE2->E2_HIST    := _cHist
@@ -486,6 +486,7 @@ User Function MGFRCTRC()
 									Enddo
 								EndIf
 								RecLock("GWN",.F.)
+									GWN->GWN_ZDCONV := "2"  
 									GWN->GWN_ZVLDES := _aParcel2[_nN]
 									GWN->GWN_ZDOCFR := GW3->GW3_NRDF
 								MsUnLock()
@@ -519,7 +520,7 @@ static function RESTAURA()
 	RestArea(aArea)
 Return
 
-////Grava informacoes RCTRC na tabela ZBS
+////Grava informações RCTRC na tabela ZBS
 Static Function MGFGRAVAZBS()
 
 	Local cQuery 	 := ""
@@ -581,7 +582,7 @@ Static Function MGFGRAVAZBS()
 
 		If (cAliasGW1)->(!eof())
 
-			///Cria array que sera utilizado na gravacao da tabela ZBS
+			///Cria array que será utilizado na gravação da tabela ZBS
 			While  (cAliasGW1)->(!eof())
 
 				AADD(aNotas,{(cAliasGW1)->GW1_FILIAL, (cAliasGW1)->GW1_NRDC, (cAliasGW1)->GW1_SERDC, (cAliasGW1)->GW1_DANFE, STR((cAliasGW1)->GW8_PESOR), (cAliasGW1)->GW1_NRROM, (cAliasGW1)->GWN_CDTPVC  } )
@@ -625,7 +626,7 @@ Static Function MGFGRAVAZBS()
 
 	EndIf
 RETURN
-//// Grava informacoes dos titulo provisï¿½rios de frete do GFE
+//// Grava informações dos título provisórios de frete do GFE
 
 User Function MGFPROV()
 
@@ -683,11 +684,11 @@ Return cGrpProd
 /*/
 	>>>=============================================================================
 	{Protheus.doc} CHKPARC1
-	Funcao para verificar a quantidade de parcelas de um titulo e ratear o valor de desconto
+	Função para verificar a quantidade de parcelas de um titulo e ratear o valor de desconto
 
 	@description
 	Checa no SE2 a quantidade de parcelas de um titulo e divide o valor de desconto nas parcelas fazendo o rateio entre as parcelas
-dos descontos de RCTRC e Conveniencia
+dos descontos de RCTRC e Conveniência
 
 @retorn
 Retorna um array com o valor de cada parcela
@@ -766,11 +767,11 @@ RETURN (_aParcel)
 /*/
 	>>>=============================================================================
 	{Protheus.doc} CHKPARC2
-	Funcao para verificar a quantidade de parcelas de um titulo e ratear o valor de desconto de conveniencia
+	Função para verificar a quantidade de parcelas de um titulo e ratear o valor de desconto de conveniência
 
 	@description
 	Checa no SE2 a quantidade de parcelas de um titulo e divide o valor de desconto nas parcelas fazendo o rateio entre as parcelas
-dos descontos de RCTRC e Conveniencia
+dos descontos de RCTRC e Conveniência
 
 @retorn
 Retorna um array com o valor de cada parcela
@@ -839,13 +840,13 @@ RETURN _aParcel
 /*/
 	>>>=============================================================================
 	{Protheus.doc} VLDCTB
-	Funcao para verificar se a data de emissao da NF esta dentro do periodo contabil permitindo alteracao
+	Função para verificar se a data de emissão da NF está dentro do periodo contabil permitindo alteração
 
 	@description
-	Checa no CTG - calendï¿½rio contabil esta aberto para manutencoes
+	Checa no CTG - calendário contábil está aberto para manutenções
 
 	@retorn
-	Logico: .T. se permite alteracoes ou .F.
+	Logico: .T. se permite alterações ou .F.
 	Campo CTG_STATUS//1-Aberto, 2-Fechado, 3-Transportado, 4-Bloqueado
 	@author @heraldo.conrado.hebling
 	@since 11/12/2019
@@ -854,7 +855,7 @@ RETURN _aParcel
 */
 STATIC FUNCTION VLDCTB(zData)
 	Local _lRet :=	.F.
-	Local aAreaCTG	:= CTG->(GetArea())	//Calendï¿½rio contabil
+	Local aAreaCTG	:= CTG->(GetArea())	//Calendário contabil
 
 	DbSelectArea("CTG")
 	DBSETORDER( 4 )		//CTG_FILIAL+CTG_EXERC+CTG_PERIOD
@@ -869,11 +870,11 @@ return _lRet
 /*/
 	=====================================================================================
 	{Protheus.doc} MGFGFE53
-	Validador se titulo possui desconto ou cai na excecao do desconto por conveniencia
+	Validador se titulo possui desconto ou cai na exceção do desconto por conveniência
 
 	@description
-	Faz a validacao se o titulo esta na excecao do desconto de conveniencia
-	ou se tem desconto de conveniencia
+	Faz a validação se o titulo está na exceção do desconto de conveniência
+	ou se tem desconto de conveniência
 
 
 	@autor heraldo.conrado.hebling
@@ -881,7 +882,7 @@ return _lRet
 	@type function
 	@table
 	ZF3 - Regra Desc Conv
-	ZF4 - Excecao de desconto
+	ZF4 - Exceção de desconto
 
 	@menu
 	=====================================================================================
@@ -903,7 +904,7 @@ ZF4_DTINC
 ZF3_FILIAL+ZF3_TIPOM+ZF3_CNPJFO
 ZF4_FILIAL+ZF4_TPPED+ZF4_DTINC
 */
-	dBselectArea("ZF4")  //excecao de regra de descontos
+	dBselectArea("ZF4")  //exceção de regra de descontos
 	ZF4->(dbSetOrder(1)) //ZF4_FILIAL+ZF4_TPPED+ZF4_DTINC
 	IF DBSEEK(XFILIAL("ZF4")+_cTipPed,.F.)
 		while !ZF4->(eof()) .and. (xFilial("ZF4")+_cTipPed) ==(ZF4->ZF4_FILIAL+ZF4->ZF4_TPPED)
@@ -924,7 +925,7 @@ ZF4_FILIAL+ZF4_TPPED+ZF4_DTINC
 			ZF4->(DbSkip())
 		END
 	ENDIF
-	dBselectArea("ZF3")  //Regra de desconto de conveniencia
+	dBselectArea("ZF3")  //Regra de desconto de conveniência
 	ZF3->(dbSetOrder(1)) //ZF3_FILIAL+ZF3_TIPOM+ZF3_CNPJFO+ZF3_TIPOV
 	IF DBSEEK(XFILIAL("ZF3")+_cTpMov,.F.)
 		while !ZF3->(eof()) .and. XFILIAL("ZF3")+_cTpMov == ZF3->ZF3_FILIAL+ZF3->ZF3_TIPOM
@@ -947,7 +948,7 @@ return _nVlDesc
 /*/
 	=====================================================================================
 	@description
-	Faz a gravacao da ZDS de acordo com informacoes enviadas
+	Faz a gravação da ZDS de acordo com informacoes enviadas
 
 	@autor Renato Junior
 	@since 13/05/2020

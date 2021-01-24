@@ -11,7 +11,7 @@ Descricao / Objetivo:   O ponto de entrada F430VAR tem como finalidade tratar os
 						excecao ou necessidade seja tratada no ponto de entrada em PARAMIXB.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 	http://tdn.totvs.com/display/public/mp/F430VAR+-+Baixa+de+CNAB+--+11797
 	
@@ -26,7 +26,7 @@ USER FUNCTION F430VAR()
 		U_MGFFIN90()
 	EndIf
 	
-	//Natanael Filho/Marcos Vieira - 15/07/2019: RITM0017555 - Modificacao no CNPJ no retorno DDA.
+	//Natanael Filho/Marcos Vieira - 15/07/2019: RITM0017555 - Modificação no CNPJ no retorno DDA.
 	If ExistBlock("MGFFIN99")
 		cCGC := U_MGFFIN99(cCGC)
 	EndIf

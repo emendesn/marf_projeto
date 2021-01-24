@@ -3,13 +3,13 @@
 /*
 =====================================================================================
 Programa.:              MGFFINCRE29
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              07/11/2016
-Descricao / Objetivo:   AO REALIZAR A BAIXAR DO Tï¿½TULO, GRAVAR NO CAMPO E5_HISTOR O;
+Descricao / Objetivo:   AO REALIZAR A BAIXAR DO TÌTULO, GRAVAR NO CAMPO E5_HISTOR O;
 						NOME DO BANCO SELECIONADO 
 Doc. Origem:            GAP FIN_CRE003_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

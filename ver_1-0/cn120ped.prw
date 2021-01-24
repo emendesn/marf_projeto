@@ -6,10 +6,10 @@
 Programa.:              CN120PED
 Autor....:              Tarcisio Galeano
 Data.....:              Dez/2018
-Descricao / Objetivo:   P.E. medicao gerando pedido de compras - salvar obs
+Descricao / Objetivo:   P.E. medição gerando pedido de compras - salvar obs
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

@@ -7,16 +7,16 @@
 Programa.:              MGFFIN53
 Autor....:              Leonardo Kume        
 Data.....:              14/03/2017
-Descricao / Objetivo:   Chamada da posicao do cliente 
+Descricao / Objetivo:   Chamada da posição do cliente 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
 User Function MGFFI53A()
 
-	aAdd(aRotina,{"Posicao Cliente","u_MGFFIN53", 0 , 2 , 0 , NIL})
+	aAdd(aRotina,{"Posição Cliente","u_MGFFIN53", 0 , 2 , 0 , NIL})
 
 Return
 

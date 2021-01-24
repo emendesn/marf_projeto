@@ -10,7 +10,7 @@
 Programa............: MGFTAE16
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao TAURA - ENTRADAS
+Descricao / Objetivo: Integra��o TAURA - ENTRADAS
 Doc. Origem.........: Contrato GAPS - MIT044- TAURA PROCESSO DE ENTRADA
 Solicitante.........: Cliente
 Uso.................: Marfrig
@@ -44,19 +44,8 @@ Private cCodMarfrig := ''
 Private nVUNIT      := 0 
 Private cUM         := ''
 
-//IF lIsBlind
-	RpcSetType(3)
-	RpcSetEnv(aMatriz[1],aMatriz[2])
-  //	If !LockByName("MGFTAE16")
-  //		Conout("JOB j� em Execucao : MGFTAE16 " + DTOC(dDATABASE) + " - " + TIME() )
- //		RpcClearEnv()
-  //		Return
- //	EndIf   //"PDWVTDS001/wsIntegracaoTaura/api/v0/AvisoChegada/AvisoChegada"
-//EndIF
-
 cURLPost := GetMV('MGF_TAE09',.F.,"http://spdwvtds002/wsintegracaoshape/api/v0/AvisoChegada/AvisoChegada")
 
-//AAdd(aHeadOut,'Content-Type: application/Json')
 dbSelectArea('SD2')
 SD2->(dbSetOrder(3))
 dbSelectArea('SC5')
@@ -83,7 +72,6 @@ cQuery += "         ZZH_AR ZZH_DOC,                                             
 cQuery += "         '001'ZZH_SERIE,                                                                                          " + CRLF
 cQuery += "         ZZH_OBS,                                                                                                 " + CRLF
 cQuery += "         ZZH_CNF,                                                                                                 " + CRLF
-//cQuery += "         ZZH_DEVCOD," //Adicionado o ao motivo ao item RITM0012774-MOT_DEV
 cQuery += "         ZZH_FORNEC,                                                                                              " + CRLF
 cQuery += "         ZZH_LOJA,                                                                                                " + CRLF
 cQuery += "         'N' F1_TIPO,                                                                                             " + CRLF
@@ -104,9 +92,6 @@ cQuery += "    AND b.D_E_L_E_T_ = ' '                                           
 cQuery += "    AND SUBSTR(ZZH_AR,1,1) = 'S'                                                                                  " + CRLF
 cQuery += "    AND ZZH_FILIAL = DAK_FILIAL                                                                                   " + CRLF
 cQuery += "    AND ZZH_DOCMOV = DAK_COD                                                                                      " + CRLF
-
-//ConOut("MGFTAE16 - cQuery ZZH: " + CRLF +cQuery)
-//conOut("********************************************************************************************************************"+ CRLF)
 
 If Select("QRY_AR") > 0
 	QRY_AR->(dbCloseArea())
@@ -195,8 +180,6 @@ While !QRY_AR->(EOF())
 	EndIf
 	cQuery  := ChangeQuery(cQuery)
 
-//	ConOut("MGFTAE16 - cQuery ZZI: " + CRLF + cQuery)
-//	conOut("********************************************************************************************************************"+ CRLF)
 	
 	dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),"QRY_ARITEM",.T.,.F.)
 	dbSelectArea("QRY_ARITEM")
@@ -217,9 +200,8 @@ While !QRY_AR->(EOF())
 	Enddo          
 	                                
 	oWSAR := MGFINT53():new(cURLPost, oAR ,0, "", "", AllTrim(GetMv("MGF_MONI01"))/*cCodint*/,AllTrim(GetMv("MGF_MONT07")),QRY_AR->ZZH_AR,.F.,.F.,.T. )
-   	//MemoWrite("c:\temp\"+FunName()+"_Result_"+StrTran(Time(),":","")+".txt",oWSAR:CDETAILINT)
-	//MemoWrite("c:\temp\"+FunName()+"_json_"+StrTran(Time(),":","")+".txt",oWSAR:CJSON)
-	StaticCall(MGFTAC01,ForcaIsBlind,oWSAR)
+ 
+ 	StaticCall(MGFTAC01,ForcaIsBlind,oWSAR)
 	If oWSAR:lOk .And. oWSAR:nStatus == 1
 		cQuery := "UPDATE "
 		cQuery += RetSqlName("ZZH")+" "
@@ -368,25 +350,4 @@ EndIF
 Return()
 ***************************************************
 
-		/*cJson := fwJsonSerialize(oAR,.F.,.T.)
-		MemoWrite("MGFTAE16"+StrTran(Time(),":","")+".txt",cJson)
-		//MemoWrite("C:\TEMP\MGFTAE16"+StrTran(Time(),":","")+".txt",cJson)
-		alert(cjson)
-		cPostRet := httpPost(cURLPost,,cJson,nTimeOut,aHeadOut,@cHeadRet)
-		alert(cpostret)
-		alert(cheadret)
-		MemoWrite("c:\temp\MGFTAE16"+StrTran(Time(),":","")+".txt",oAR:cJson)
-		IF !Empty(cPostRet)
-			// sucesso
-			fwJsonDeserialize(cPostRet,@oObjRet)
-			If .T. //oObjRet???
-				// sucesso
-				lRet := .T.
-			Else
-				// erro
-			Endif
-		Else
-			// erro
-		Endif
-		  */
 

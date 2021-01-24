@@ -126,189 +126,233 @@ EndIF
 Return
 ******************************************************************************************************************************************************888
 Static Function Confirma_AR
-Local aCab      := {}
-Local aItem	    := {}
-Local nOpcAuto  := 3 
-Local bContinua := .T. 
-Local nI        := 0                 
-Local cDoc      := ''
-Local cAR       := ''
-Local cProdutos := "('x'"
-Local aProd     := {}
-Local nPos      := 0 
+	Local aCab      := {}
+	Local aItem	    := {}
+	Local nOpcAuto  := 3 
+	Local bContinua := .T. 
+	Local nI        := 0                 
+	Local cDoc      := ''
+	Local cAR       := ''
+	Local cProdutos := "('x'"
+	Local aProd     := {}
+	Local nPos      := 0 
 
-Private lMsHelpAuto     := .T.
-Private lMsErroAuto     := .F.
-Private lAutoErrNoFile  := .T.      
+	Local _lVldGerAR 	:= .F.
+	Local _lGeraAR		:= .T.
+	Local _cMensAR		:= ""
+	Local _cMenRevAR	:= ""
+	Local _aErro		:= {}
+	Local _cErro		:= ""
 
-CHKFILE('ZZH')
-CHKFILE('ZZ1')
-DbSelectArea("SB1")
-SB1->(DbSetOrder(1))
+	Private lMsHelpAuto     := .T.
+	Private lMsErroAuto     := .F.
+	Private lAutoErrNoFile  := .T.      
 
-BEGIN TRANSACTION
+	//--------------| Verifica existência de parâmetros e caso não exista cria. |-------------------------\\
+	If !ExisteSx6("MGF_TAE06A")
+		CriarSX6("MGF_TAE06A", "L", "Valida revenda para geração do AR(.T./.F.)?" , '.T.' )	
+	EndIf
 
-// Cria AR
-cAR   := PegaAR()
-cDoc  := U_TAE_DOC_D3()
-Reclock("ZZH",.T.)
-ZZH->ZZH_FILIAL := xFilial('ZZH')
-ZZH->ZZH_AR 	:= cAR
-ZZH->ZZH_FORNEC := SF1->F1_FORNECE
-ZZH->ZZH_LOJA 	:= SF1->F1_LOJA
-ZZH->ZZH_DOC 	:= SF1->F1_DOC 
-IF SF1->F1_TIPO=='D'
-    ZZH->ZZH_NOME 	:= GetAdvFVal( "SA1", "A1_NREDUZ", xFilial('SA1')+ALLTRIM(SF1->F1_FORNECE)+SF1->F1_LOJA, 1, "" )     
-Else
-    ZZH->ZZH_NOME 	:= GetAdvFVal( "SA2", "A2_NREDUZ", xFilial('SA2')+ALLTRIM(SF1->F1_FORNECE)+SF1->F1_LOJA, 1, "" )     
-EndIF
-ZZH->ZZH_SERIE 	:= SF1->F1_SERIE
-ZZH->ZZH_OBS 	:= cObs
-ZZH->ZZH_STATUS := '0'
-ZZH->ZZH_CNF 	:= cCNF
-ZZH->ZZH_DOCMOV := cDoc
-//ZZH->ZZH_DEVCOD := cMotDev //Campo transferido para o item RITM0012774
-ZZH->(MsUnlock())
+	_lVldGerAR := SuperGetMV("MGF_TAE06A",.F., '.F.' )	//Se valida a revenda para geração de AR
 
-dbSelectArea('SB2')
-SB2->(dbsetOrder(1))
-// transferencia para o Local 
-aCab := {}
-AAdd(aCab,{cDoc,dDataBase})  
-	
-QRY_SD1->(dbGoTop())
-While !QRY_SD1->(EOF())
-	aItem	    := {}
-	QRY_SD1->D1_COD
-	SB1->(dbSeek(xFilial("SB1")+QRY_SD1->D1_COD))
-	nPos := AScan(aCab,{|x|  Alltrim(x[1]) == Alltrim(QRY_SD1->D1_COD) })
-	IF nPos <> 0                  
-		aCab[nPos,16] +=  QRY_SD1->D1_QUANT
-	Else
-		Aadd(aItem,QRY_SD1->D1_COD)     //D3_COD
-		AAdd(aItem,SB1->B1_DESC)     	//D3_DESCRI
-		AAdd(aItem,QRY_SD1->D1_UM)      //D3_UM
-		AAdd(aItem,QRY_SD1->D1_LOCAL)   //D3_LOCAL
-		AAdd(aItem,"")					//D3_LOCALIZ
-		AAdd(aItem,QRY_SD1->D1_COD)  	//D3_COD
-		AAdd(aItem,SB1->B1_DESC)     	//D3_DESCRI
-		AAdd(aItem,QRY_SD1->D1_UM)  	//D3_UM
-		AAdd(aItem,cLocalInd)      		//D3_LOCAL
-		AAdd(aItem,"")					//D3_LOCALIZ
-		AAdd(aItem,"")          		//D3_NUMSERI
-		If !Empty(QRY_SD1->D1_LOTECTL) .And. SB1->B1_RASTRO $ "LS"
-			AAdd(aItem,QRY_SD1->D1_LOTECTL)	//D3_LOTECTL
-			AAdd(aItem,"")         			//D3_NUMLOTE
-			AAdd(aItem,STOD(QRY_SD1->D1_DTVALID))	//D3_DTVALID
+	CHKFILE('ZZH')
+	CHKFILE('ZZ1')
+
+	BEGIN TRANSACTION
+
+		//-----| Criar AR |------\\
+		cAR   := PegaAR()
+		cDoc  := U_TAE_DOC_D3()
+
+		Reclock("ZZH",.T.)
+			ZZH->ZZH_FILIAL := xFilial('ZZH')
+			ZZH->ZZH_AR 	:= cAR
+			ZZH->ZZH_FORNEC := SF1->F1_FORNECE
+			ZZH->ZZH_LOJA 	:= SF1->F1_LOJA
+			ZZH->ZZH_DOC 	:= SF1->F1_DOC 
+			IF SF1->F1_TIPO=='D'
+				ZZH->ZZH_NOME 	:= GetAdvFVal( "SA1", "A1_NREDUZ", xFilial('SA1')+ALLTRIM(SF1->F1_FORNECE)+SF1->F1_LOJA, 1, "" )     
+			Else
+				ZZH->ZZH_NOME 	:= GetAdvFVal( "SA2", "A2_NREDUZ", xFilial('SA2')+ALLTRIM(SF1->F1_FORNECE)+SF1->F1_LOJA, 1, "" )     
+			EndIF
+			ZZH->ZZH_SERIE 	:= SF1->F1_SERIE
+			ZZH->ZZH_OBS 	:= cObs
+			ZZH->ZZH_STATUS := '0'
+			ZZH->ZZH_CNF 	:= cCNF
+			ZZH->ZZH_DOCMOV := cDoc
+		ZZH->(MsUnlock())
+
+		//-----| transferencia para o Local |-----\\
+		dbSelectArea("SB2")
+		SB2->( dbsetOrder(1) )
+		
+		aCab := {}
+		AAdd(aCab,{cDoc,dDataBase})  
+			
+		QRY_SD1->(dbGoTop())
+		While !QRY_SD1->( EOF() )
+			_lGeraAR := .T.
+
+			If _lVldGerAR	//Se valida a revenda para geração de AR.
+				ZAV->( dbsetOrder(1) )
+				If ZAV->( dbSeek(xFilial("ZAV")+QRY_SD1->D1_ZRAMI) )
+					If ZAV->ZAV_REVEND = "S"	//Verifica na RAMI se é revenda, se for, não gera AR.
+						_lGeraAR := .F.
+					EndIF
+				EndIf
+			EndIf
+
+			SB1->( DbSetOrder(1) )
+			SB1->(dbSeek(xFilial("SB1")+QRY_SD1->D1_COD))
+
+			If _lGeraAR
+				aItem 	:= {}
+				nPos	:= AScan(aCab,{|x|  Alltrim(x[1]) == Alltrim(QRY_SD1->D1_COD) })
+				IF nPos <> 0                  
+					aCab[nPos,16] +=  QRY_SD1->D1_QUANT
+				Else
+					Aadd(aItem,QRY_SD1->D1_COD)     //D3_COD
+					AAdd(aItem,SB1->B1_DESC)     	//D3_DESCRI
+					AAdd(aItem,QRY_SD1->D1_UM)      //D3_UM
+					AAdd(aItem,QRY_SD1->D1_LOCAL)   //D3_LOCAL
+					AAdd(aItem,"")					//D3_LOCALIZ
+					AAdd(aItem,QRY_SD1->D1_COD)  	//D3_COD
+					AAdd(aItem,SB1->B1_DESC)     	//D3_DESCRI
+					AAdd(aItem,QRY_SD1->D1_UM)  	//D3_UM
+					AAdd(aItem,cLocalInd)      		//D3_LOCAL
+					AAdd(aItem,"")					//D3_LOCALIZ
+					AAdd(aItem,"")          		//D3_NUMSERI
+					If !Empty(QRY_SD1->D1_LOTECTL) .And. SB1->B1_RASTRO $ "LS"
+						AAdd(aItem,QRY_SD1->D1_LOTECTL)			//D3_LOTECTL
+						AAdd(aItem,"")         					//D3_NUMLOTE
+						AAdd(aItem,STOD(QRY_SD1->D1_DTVALID))	//D3_DTVALID
+					Else
+						AAdd(aItem,CriaVar("D3_LOTECTL",.F.))   	//D3_LOTECTL
+						AAdd(aItem,"      ")         				//D3_NUMLOTE
+						AAdd(aItem,CriaVar("D1_DTVALID",.F.))   	//D3_DTVALID
+					EndIF
+					
+					AAdd(aItem,0)					//D3_POTENCI
+					AAdd(aItem,QRY_SD1->D1_QUANT) 	//D3_QUANT
+					AAdd(aItem,0)					//D3_QTSEGUM
+					AAdd(aItem,"")   				//D3_ESTORNO
+					AAdd(aItem,"")         			//D3_NUMSEQ
+					
+					If !Empty(QRY_SD1->D1_LOTECTL) .And. SB1->B1_RASTRO $ "LS"
+						AAdd(aItem,QRY_SD1->D1_LOTECTL)				//D3_LOTECTL
+						AAdd(aItem,STOD(QRY_SD1->D1_DTVALID))		//D3_DTVALID
+					Else
+						AAdd(aItem,CriaVar("D3_LOTECTL",.F.))   	//D3_LOTECTL
+						AAdd(aItem,CriaVar("D1_DTVALID",.F.))   	//D3_DTVALID
+					EndIF
+					
+					AAdd(aItem,"")					//D3_ITEMGRD
+					AAdd(aItem,"")   				//CAT 83 Cod. Lanc
+					AAdd(aItem,"")         			//CAT 83 Cod. Lanc
+					AAdd(aItem,"")         			//D3_OBSERVAC
+					AAdd(aCab,aItem)
+					cProdutos += ",'"+QRY_SD1->D1_COD+"'"
+					
+					IF SB2->(!dbSeek(xFilial('SB2')+QRY_SD1->D1_COD+Alltrim(cLocalInd)))
+						CriaSB2(QRY_SD1->D1_COD,Alltrim(cLocalInd),xFilial('SB2'))
+					EndIF
+				EndIF
+				nPos := AScan(aProd,{|x|  Alltrim(x[1]) == Alltrim(QRY_SD1->D1_COD) })
+				IF nPos == 0                  
+					Reclock("ZZI",.T.)
+						ZZI->ZZI_FILIAL := xFilial('ZZI')
+						ZZI->ZZI_AR     := cAR
+						ZZI->ZZI_ITEM   := QRY_SD1->D1_ITEM
+						ZZI->ZZI_DESC   := GetAdvFVal( "SB1", "B1_DESC", xFilial('SB1')+QRY_SD1->D1_COD, 1, "" )     
+						ZZI->ZZI_PRODUT := QRY_SD1->D1_COD
+						ZZI->ZZI_QNF    := QRY_SD1->D1_QUANT
+						ZZI->ZZI_QCONT  := 0 
+						ZZI->ZZI_QDEV   := 0
+						ZZI->ZZI_QCOMPL := 0
+						ZZI->ZZI_AJUSTE := 0 
+						ZZI->ZZI_LOCAL  := QRY_SD1->D1_LOCAL
+						ZZI->ZZI_CODMOT	:= QRY_SD1->D1_ZCODMOT
+						ZZI->ZZI_CODJUS	:= QRY_SD1->D1_ZCODJUS
+					ZZI->(MsUnlock())  
+
+					AAdd(aProd,{QRY_SD1->D1_COD,ZZI->(Recno())})
+
+					If Empty(_cMensAR)
+						_cMensAR := "AR GERADO PARA OS ITENS ABAIXO:"+CRLF
+					EndIF
+					_cMensAR += "| "+Alltrim(QRY_SD1->D1_COD)+" - "+AllTrim(SB1->B1_DESC)+"| "+QRY_SD1->D1_SERIE+"-"+QRY_SD1->D1_DOC+"|"+CRLF
+				Else
+					ZZI->(dbGoto(aProd[nPos,02]))
+					Reclock("ZZI",.F.)
+					ZZI->ZZI_QNF    := ZZI->ZZI_QNF +QRY_SD1->D1_QUANT
+					ZZI->(MsUnlock())  
+				EndIF
+			Else
+				If Empty(_cMenRevAR)
+					_cMenRevAR := "AR NÃO GERADO PARA RAMI DE REVENDA, ITENS ABAIXO:"+CRLF
+				EndIF
+				_cMenRevAR += "| "+Alltrim(QRY_SD1->D1_COD)+" - "+AllTrim(SB1->B1_DESC)+"| "+QRY_SD1->D1_SERIE+"-"+QRY_SD1->D1_DOC+"|"+CRLF
+			EndIf
+			
+			QRY_SD1->(dbSkip())
+		EndDo
+			
+		If Len(aProd) > 0	//Se populou array aprod, houve geração de itens de AR.
+			IF nViaCad == 1 .OR. !Empty(SF1->F1_STATUS)
+				cProdutos += ")"
+				
+				MSExecAuto({|x,y| mata261(x,y)},aCab,nOpcAuto)
+				IF lMsErroAuto
+					DISARMTRANSACTION()
+					_aErro := GetAutoGRLog()
+					_cErro := ""
+					For nI := 1 to Len(_aErro)
+						_cErro += _aErro[nI] + CRLF
+					Next nI
+					fShowLog(_cErro,"NÃO HÁ SALDO EM ESTOQUE PARA A GERAÇÃO DO AR")
+					
+					bContinua   := .F.
+					_cMensAR	:= ""
+					_cMenRevAR	:= ""
+				Endif
+				
+				IF bContinua	//Bloqueia as Duplicatas...
+					cQuery := " UPDATE "+RetSqlName("SE2")
+					cQuery += " SET E2_MSBLQL    = '1'"
+					cQuery += " WHERE E2_FILIAL  = '"+xFilial('SE2')+"'"
+					cQuery += "   AND E2_PREFIXO = '"+SF1->F1_PREFIXO+"'"
+					cQuery += "   AND E2_NUM     = '"+SF1->F1_DOC+"'"
+					cQuery += "   AND E2_TIPO    = 'NF'"
+					cQuery += "   AND E2_FORNECE = '"+SF1->F1_FORNECE+"'"
+					cQuery += "   AND E2_LOJA    = '"+SF1->F1_LOJA+"'"
+					IF (TcSQLExec(cQuery) < 0)
+						bContinua   := .F.
+						MsgStop(TcSQLError())
+					EndIF
+				EndIF
+			EndIF
 		Else
-			AAdd(aItem,CriaVar("D3_LOTECTL",.F.))   	//D3_LOTECTL
-			AAdd(aItem,"      ")         	//D3_NUMLOTE
-			AAdd(aItem,CriaVar("D1_DTVALID",.F.))   	//D3_DTVALID
-		EndIF
-		
-		AAdd(aItem,0)					//D3_POTENCI
-		AAdd(aItem,QRY_SD1->D1_QUANT) 	//D3_QUANT
-		AAdd(aItem,0)					//D3_QTSEGUM
-		AAdd(aItem,"")   				//D3_ESTORNO
-		AAdd(aItem,"")         			//D3_NUMSEQ
-		
-		If !Empty(QRY_SD1->D1_LOTECTL) .And. SB1->B1_RASTRO $ "LS"
-			AAdd(aItem,QRY_SD1->D1_LOTECTL)	//D3_LOTECTL
-			AAdd(aItem,STOD(QRY_SD1->D1_DTVALID))	//D3_DTVALID
-		Else
-			AAdd(aItem,CriaVar("D3_LOTECTL",.F.))   	//D3_LOTECTL
-			AAdd(aItem,CriaVar("D1_DTVALID",.F.))   	//D3_DTVALID
-		EndIF
-		
-		AAdd(aItem,"")					//D3_ITEMGRD
-		AAdd(aItem,"")   				// CAT 83 Cod. Lanc
-		AAdd(aItem,"")         			//CAT 83 Cod. Lanc
-//		AAdd(aItem,"")         			//D3_IDDCF
-		AAdd(aItem,"")         			//D3_OBSERVAC
-		AAdd(aCab,aItem)
-		cProdutos += ",'"+QRY_SD1->D1_COD+"'"
-		
-		IF SB2->(!dbSeek(xFilial('SB2')+QRY_SD1->D1_COD+Alltrim(cLocalInd)))
-			CriaSB2(QRY_SD1->D1_COD,Alltrim(cLocalInd),xFilial('SB2'))
-		EndIF
-	EndIF
-	nPos := AScan(aProd,{|x|  Alltrim(x[1]) == Alltrim(QRY_SD1->D1_COD) })
-	IF nPos == 0                  
-		Reclock("ZZI",.T.)
-		ZZI->ZZI_FILIAL := xFilial('ZZI')
-		ZZI->ZZI_AR     := cAR
-		ZZI->ZZI_ITEM   := QRY_SD1->D1_ITEM
-		ZZI->ZZI_DESC   := GetAdvFVal( "SB1", "B1_DESC", xFilial('SB1')+QRY_SD1->D1_COD, 1, "" )     
-		ZZI->ZZI_PRODUT := QRY_SD1->D1_COD
-		ZZI->ZZI_QNF    := QRY_SD1->D1_QUANT
-		ZZI->ZZI_QCONT  := 0 
-		ZZI->ZZI_QDEV   := 0
-		ZZI->ZZI_QCOMPL := 0
-		ZZI->ZZI_AJUSTE := 0 
-		ZZI->ZZI_LOCAL  := QRY_SD1->D1_LOCAL
-		ZZI->ZZI_CODMOT	:= QRY_SD1->D1_ZCODMOT
-		ZZI->ZZI_CODJUS	:= QRY_SD1->D1_ZCODJUS
-		ZZI->(MsUnlock())  
-		AAdd(aProd,{QRY_SD1->D1_COD,ZZI->(Recno())})
-	Else
-	    ZZI->(dbGoto(aProd[nPos,02]))
-	    Reclock("ZZI",.F.)
-		ZZI->ZZI_QNF    := ZZI->ZZI_QNF +QRY_SD1->D1_QUANT
-		ZZI->(MsUnlock())  
-	EndIF
-	
-	QRY_SD1->(dbSkip())
-EndDo
-    
-IF nViaCad == 1 .OR. !Empty(SF1->F1_STATUS)
-	cProdutos += ")"
-	// Muda Estado dos Produtos
-	//U_TAE06_BLQ(SF1->F1_FILIAL,cProdutos,' ')
-	
-	MSExecAuto({|x,y| mata261(x,y)},aCab,nOpcAuto)
-	IF lMsErroAuto
-		DISARMTRANSACTION()
-		aErro := GetAutoGRLog()
-		cErro := ""
-		For nI := 1 to Len(aErro)
-			cErro += aErro[nI] + CRLF
-		Next nI
-		msgAlert(cErro)
-		bContinua   := .F.
-	Endif
-	//Bloqueia as Duplicatas...
-	IF bContinua
-		cQuery := " Update "+RetSqlName("SE2")
-		cQuery += " Set E2_MSBLQL    = '1'"
-		cQuery += " Where E2_FILIAL  = '"+xFilial('SE2')+"'"
-		cQuery += "   AND E2_PREFIXO = '"+SF1->F1_PREFIXO+"'"
-		cQuery += "   AND E2_NUM     = '"+SF1->F1_DOC+"'"
-		cQuery += "   AND E2_TIPO    = 'NF'"
-		cQuery += "   AND E2_FORNECE = '"+SF1->F1_FORNECE+"'"
-		cQuery += "   AND E2_LOJA    = '"+SF1->F1_LOJA+"'"
-		IF (TcSQLExec(cQuery) < 0)
-			bContinua   := .F.
-			MsgStop(TcSQLError())
-		EndIF
-		IF bContinua
-			// Executa metodo para gerar AR no Taura.
-			MsgAlert('AR criado :'+cAR)
-		EndIF
-	EndIF
-Else
-	IF bContinua
-		// Executa metodo para gerar AR no Taura.
-		MsgAlert('AR criado :'+cAR)
-	EndIF
-EndIF
+			DISARMTRANSACTION()	//Se não populou o array aprod, não gerou nenhum item, portanto, temos que desarmar a transação para não gerar o cabeçalho do AR.
+		EndIf
 
-END TRANSACTION
+	END TRANSACTION
 
-IF nViaCad == 1
-    //U_TAE06_BLQ(SF1->F1_FILIAL,cProdutos,'2')
-    oDlg:End()            
-EndIF	
+	IF nViaCad == 1
+		oDlg:End()            
+	EndIF	
+
+	If !Empty(_cMensAR) .AND. !Empty(_cMenRevAR)
+		fShowLog(_cMensAR+CRLF+CRLF+CRLF+_cMenRevAR,"GERAÇÃO DE AR")
+	ElseIf !Empty(_cMensAR) 
+		fShowLog(_cMensAR,"GERAÇÃO DE AR")
+	ElseIf !Empty(_cMenRevAR) 	
+		fShowLog(_cMenRevAR,"GERAÇÃO DE AR")
+	EndIf
+
 Return
+
+
+
 **********************************************************************************************************************************
 User Function TAE06_BLQ(cFILBLQ, cProdutos,cSituacao)
 Local cQuery := ''
@@ -359,36 +403,7 @@ RestArea(aArea)
 
 Return cAR
 
-/*
-IF !Empty(SF1->F1_STATUS)
-    cAR := '0000001'
-Else
-    cAR := 'D000001'
-EndIF
 
-cQuery  := " SELECT Max(ZZH_AR) As MAXAR "
-cQuery  += " FROM "+RetSqlName("ZZH")
-cQuery  += " WHERE D_E_L_E_T_  = ' ' "
-cQuery  += "  AND ZZH_FILIAL  = '"+xFilial('ZZH')+"'"         
-cQuery  += "  AND ZZH_AR not Like 'S%' "         
-IF !Empty(SF1->F1_STATUS)
-    cQuery  += "  AND ZZH_AR not Like 'D%' "         
-Else
-    cQuery  += "  AND ZZH_AR Like 'D%' "         
-EndIF
-
-
-If Select("QRY_AR") > 0
-	QRY_AR->(dbCloseArea())
-EndIf
-cQuery  := ChangeQuery(cQuery)
-dbUseArea(.T.,"TOPCONN",TcGenQry(,,cQuery),"QRY_AR",.T.,.F.)
-dbSelectArea("QRY_AR")
-QRY_AR->(dbGoTop())
-IF !QRY_AR->(EOF()) .And. !Empty(QRY_AR->MAXAR)
-    cAR    := SOMA1(QRY_AR->MAXAR)
-EndIF
-*/
 
 **********************************************************************************************************************************
 User Function TAE_DOC_D3()
@@ -489,3 +504,67 @@ IF ZZH->(dbSeek(SF1->F1_FILIAL+PADR(ALLTRIM(SF1->F1_FORNECE),TamSX3("ZZH_FORNEC"
 EndIF
 ZZH->(dbSetOrder(1))		         
 Return bRet		
+
+
+
+/*/
+{Protheus.doc} fShowLog()
+	Função para Mostrar tela com Error Log
+
+@author Marcos Cesar Donizeti Vieira
+@since 28/12/2020
+@type Function
+
+@param
+	
+@return
+
+/*/
+Static Function fShowLog( xMsg, cTitulo, cLabel, aButtons, bValid, lQuebraLinha )
+
+	local oDlg
+	local oMemo
+	local oFont				:= TFont():New("Courier New",09,15)
+	local bOk				:= { || oDlg:end() }
+	local bCancel			:= { || oDlg:end() }
+	local cMsg				:= ""
+	local nQuebra			:= 68
+	local i                 := 0
+	local j                 := 0
+
+	default xMsg			:= ""
+	default cTitulo			:= ""
+	default cLabel			:= ""
+	default aButtons		:= {}
+	default bValid			:= {|| .T. }
+	default lQuebraLinha	:= .F.
+
+   If ValType(xMsg) = "C"
+      cMsg := xMsg
+   ElseIf ValType(xMsg) = "A"
+      For i := 1 To Len(xMsg)
+         If xMsg[i][2] 	// Posição que define se fará quebra de linha
+            For j := 1 To MLCount(xMsg[i][1],nQuebra)
+               cMsg += MemoLine(xMsg[i][1], nQuebra, j) + CRLF
+            Next
+         Else
+            cMsg += xMsg[i][1]
+         EndIf
+      Next I
+   EndIf
+
+   Define MsDialog oDlg Title cTitulo From 9,0 To 39,85 of oDlg
+
+      oPanel:= TPanel():New(0, 0, "", oDlg,, .F., .F.,,, 90, 165)
+      oPanel:Align:= CONTROL_ALIGN_ALLCLIENT
+
+      @ 05,05 To 190,330 Label cLabel Pixel Of oPanel
+      @ 10,10 Get oMemo Var cMsg MEMO HSCROLL FONT oFont Size 315,175 READONLY Of oPanel  Pixel
+
+      oMemo:lWordWrap := lQuebraLinha
+      oMemo:EnableVScroll(.t.)
+      oMemo:EnableHScroll(.t.)
+
+   Activate MsDialog oDlg On Init Enchoicebar(oDlg,bOk,bCancel,,,,,,aButtons,) Centered
+
+Return

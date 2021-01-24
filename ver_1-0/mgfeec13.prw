@@ -7,10 +7,10 @@
 Programa.:              MGFEEC13
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de Orcamento e aprovacao
+Descricao / Objetivo:   Fonte MVC para exibição de Orçamento e aprovação
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -20,8 +20,8 @@ User Function MGFEEC13()
 
 	oBrowse3 := FWMBrowse():New()
 	oBrowse3:SetAlias('ZZC')
-	oBrowse3:SetDescription('Distribuicao Exportacao Marfrig')
-	oBrowse3:AddLegend("ZZC_APROVA = '2' ","YELLOW" ,'Pendente Aprovacao')
+	oBrowse3:SetDescription('Distribuição Exportação Marfrig')
+	oBrowse3:AddLegend("ZZC_APROVA = '2' ","YELLOW" ,'Pendente Aprovação')
 	oBrowse3:AddLegend("ZZC_APROVA = '1' ","GREEN" ,'Aprovado')
 	oBrowse3:AddLegend("ZZC_APROVA = '3' ","RED" ,'Reprovado')
 	oBrowse3:AddLegend("ZZC_APROVA = '4' ","BLUE" ,'Pedido Gerado')
@@ -71,7 +71,7 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('EEC13M',/**/ , /*{|oModel| ValidQuant(oModel)}*/, {|oModel| Gera(oModel)}, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'EEC13MASTER', /*cOwner*/, oStruZZC, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC13DETAIL', 'EEC13MASTER', oStruZZD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC13DISTR', 'EEC13DETAIL', oStruDis, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
@@ -102,20 +102,20 @@ Static Function ModelDef()
 
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Distribuicao Exportacao Marfrig' )
+	oModel:SetDescription( 'Distribuição Exportação Marfrig' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC13MASTER' ):SetDescription( 'Orcamento Exportacao' )
+	oModel:GetModel( 'EEC13MASTER' ):SetDescription( 'Orçamento Exportação' )
 	oModel:GetModel( 'EEC13DETAIL' ):SetDescription( 'Itens' )
-	oModel:GetModel( 'EEC13DISTR' ):SetDescription( 'Distribuicao' )
-	oModel:GetModel( 'EEC13PED' ):SetDescription( 'Pedido de Exportacao' )
+	oModel:GetModel( 'EEC13DISTR' ):SetDescription( 'Distribuição' )
+	oModel:GetModel( 'EEC13PED' ):SetDescription( 'Pedido de Exportação' )
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "EEC13DETAIL", { { "ZZD_FILIAL", "XFILIAL('ZZD')" }, { "ZZD_ORCAME", "ZZC_ORCAME" } }, ZZD->( IndexKey( 1 ) ) )
 	oModel:SetRelation( "EEC13DISTR", { { "ZAN_FILIAL", "XFILIAL('ZZD')" }, { "ZAN_ORCAME", "ZZD_ORCAME" }, { "ZAN_SEQUEN", "ZZD_SEQUEN" } }, ZAN->( IndexKey( 1 ) ) )
 	oModel:SetRelation( "EEC13PED", { { "ZAY_FILIAL", "XFILIAL('ZZD')" }, { "ZAY_ORCAME", "ZZD_ORCAME" }, { "ZAY_SEQUEN", "ZZD_SEQUEN" } }, ZAY->( IndexKey( 1 ) ) )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZZC_FILIAL","ZZC_ORCAME"})
 
 	//oModel:GetModel("EEC13MASTER"):SetOnlyView(.T.)
@@ -172,7 +172,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -226,7 +226,7 @@ Static Function ValidQuant(oModel)
 	oModel:GetModel( 'EEC13DETAIL' ):GoLine(nLinAtu)
 
 	if !lRet
-		Help( ,, 'MGFEEC13-03',, "Soma do itens distribuidos maior que o total do orï¿½amento"+CRLF+cErro, 1, 0 )
+		Help( ,, 'MGFEEC13-03',, "Soma do itens distribuidos maior que o total do orçamento"+CRLF+cErro, 1, 0 )
 	EndIf
 
 Return lRet
@@ -241,7 +241,7 @@ Static Function Gera(oModel)
 	Local nLineDetail := oModel:GetModel('EEC13DETAIL'):nLine 
 
 	If oModel:GetModel( 'EEC13MASTER' ):GetValue("ZZC_APROVA") == "5" 
-		If	MsgYesNo("Deseja Gerar o Pedido de Exportacao?")
+		If	MsgYesNo("Deseja Gerar o Pedido de Exportação?")
 			For nI := 1 to oModel:GetModel( 'EEC13PED' ):Length()
 				If !oModel:GetModel('EEC13PED'):IsDeleted(nI)
 					lRet := lRet .and. !Empty(oModel:GetModel( 'EEC13PED' ):GetValue("ZAY_COD_I",nI))
@@ -259,7 +259,7 @@ Static Function Gera(oModel)
 				EndIf
 			Next nI
 			If lRet	
-				//Nao permitir que nao tenha todos os itens no Pedido
+				//Não permitir que não tenha todos os itens no Pedido
 				For nI := 1 to oModel:GetModel( 'EEC13DETAIL' ):Length()
 					oModel:GetModel( 'EEC13DETAIL' ):GoLine(nI)
 					lRet := .F.
@@ -275,7 +275,7 @@ Static Function Gera(oModel)
 				Next nI
 			EndIF
 			If lRet
-				processa ({|| GeraPed(oModel,@lRet)},"Gerando Pedidos de Exportacao")
+				processa ({|| GeraPed(oModel,@lRet)},"Gerando Pedidos de Exportação")
 //				lRet := GeraPed(oModel)
 				If lRet
 					oModel:GetModel( 'EEC13MASTER' ):SetValue("ZZC_APROVA","4")
@@ -285,7 +285,7 @@ Static Function Gera(oModel)
 				EndIf
 			Else 
 //				Alert("Favor preencher os campos na parte de pedidos")
-				Help( ,, 'MGFEEC13-02',, "Necessario todos os itens no pedido."+cRetorno, 1, 0 )
+				Help( ,, 'MGFEEC13-02',, "Necessário todos os itens no pedido."+cRetorno, 1, 0 )
 			EndIf
 		EndIf
 		If lRet 
@@ -326,9 +326,9 @@ Static Function GeraPed(oModel)
 	Local aFiliais := {}
 	Local cFil	:= cFilAnt
 
-	// Array com os dados a serem enviados pela MsExecAuto() para gravacao automatica da capa do bem 
+	// Array com os dados a serem enviados pela MsExecAuto() para gravação automática da capa do bem 
 	Private lMsHelpAuto := .f. // Determina se as mensagens de help devem ser direcionadas para o arq. de log
-	Private lMsErroAuto := .f. // Determina se houve alguma inconsistï¿½ncia na execucao da rotina 
+	Private lMsErroAuto := .f. // Determina se houve alguma inconsistência na execução da rotina 
 
 	DbSelectArea("EE7")
 	DbSelectArea("EE8")
@@ -350,7 +350,7 @@ Static Function GeraPed(oModel)
 				aAdd(aCabec,{alltrim(cAux),oModel:GetModel("EEC13MASTER"):GetValue("ZZC_ORCAME"),Nil})
 			EndIf
 		EndIf
-		IncProc("Criando Cabecalho dos Pedidos")
+		IncProc("Criando Cabeçalho dos Pedidos")
 		SX3->(DbSkip())
 	EndDo
 	
@@ -472,7 +472,7 @@ Static Function IncluirPed(aCabec,aItens)
 	Local nPosPed := 0
 	//Local aIt := {}
 	Private lMsHelpAuto := .f. // Determina se as mensagens de help devem ser direcionadas para o arq. de log
-	Private lMsErroAuto := .f. // Determina se houve alguma inconsistï¿½ncia na execucao da rotina 
+	Private lMsErroAuto := .f. // Determina se houve alguma inconsistência na execução da rotina 
 
 	If cFilA <> cFilB
 		If nI <> 1
@@ -531,7 +531,7 @@ Static Function IncluirPed(aCabec,aItens)
 
 		If lMsErroAuto 
 			lRet := .F. 
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 			MostraErro()
 		    Else // EM ESTADO DE JOB
 		        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -580,7 +580,7 @@ Static Function prevld(oModel,n,cPonto,cCpo,e)
 //		oModel   :=  ParamIxb[1] 
 		If !Empty(Alltrim(oModel:GetValue("ZAY_PEDVEN")))
 			xRet := .F.
-			Help( ,, 'MGFEEC13-04',, "Nao ï¿½ possivel excluir linhas com Pedido gerado", 1, 0 )
+			Help( ,, 'MGFEEC13-04',, "Não é possível excluir linhas com Pedido gerado", 1, 0 )
 		Endif
 	EndIf
 Return xRet

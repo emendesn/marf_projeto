@@ -288,8 +288,8 @@ STATIC FUNCTION AtualSA2()
 
 		TcQuery changeQuery(cQ) New Alias "QRYSA2"
 
-		IF !QRYSA2->(EOF())
-			Reclock("DAK",.F.)
+		IF ! QRYSA2->(EOF())
+			RecLock("DAK",.F.)
 			DAK->DAK_XCODR	:= QRYSA2->A2_COD
 			DAK->DAK_XLOJR	:= QRYSA2->A2_LOJA
 			DAK->DAK_XCNPJR := QRYSA2->A2_CGC
@@ -298,6 +298,12 @@ STATIC FUNCTION AtualSA2()
 			DAK->DAK_XDCIDR := QRYSA2->A2_MUN
 			DAK->DAK_XUFR   := QRYSA2->A2_EST
 			DAK->(MsUnlock())
+
+			lGfe46x := GETMV("MGF_GFE46X")
+			IF lGfe46x
+				fGravaGWU()  //wvn
+			Endif
+
 		else
 			Reclock("DAK",.F.)
 			DAK->DAK_XCODR	:= ""
@@ -452,4 +458,99 @@ Static Function AtualZEK(cFilZek, cNumZek, cSeqNum, dDatSze,dHrSZE , Coleta, lCo
 	ZEK_NOMEUS		:= cNameSZE
 	ZEK->(MsUnlock())
 
+Return
+
+STATIC FUNCTION fGravaGWU()
+	
+	Local _cVia   := ' '
+	Local _cNota  := ' '
+	Local _cSerie := ' '
+	
+	cQryCarga := " "
+	cQryCarga := " SELECT DAI_COD, DAI_PEDIDO, C5_NUM, C5_PEDEXP, C5_NOTA, C5_SERIE, C6_NOTA, C6_SERIE, DAI_NFISCA, DAI_SERIE " + CRLF
+	cQryCarga += "  FROM "+RetSqlName("DAI")+ " TDAI " + CRLF
+	cQryCarga += "  INNER JOIN "+RetSqlName("SC5") + " TSC5 ON TSC5.C5_NUM=TDAI.DAI_PEDIDO AND TSC5.C5_FILIAL=TDAI.DAI_FILIAL"+ CRLF
+	cQryCarga += "  INNER JOIN "+RetSqlName("SC6") + " TSC6 ON TSC6.C6_NUM=TSC5.C5_NUM AND TSC6.C6_FILIAL=TSC5.C5_FILIAL"+ CRLF
+	cQryCarga += "  WHERE " + CRLF
+	cQryCarga += "  TDAI.DAI_COD= '"+DAK->DAK_COD+ "' AND DAI_FILIAL='"+DAK->DAK_FILIAL+"' AND" + CRLF
+	cQryCarga += "  TDAI.D_E_L_E_T_ = ' ' AND  TSC5.D_E_L_E_T_ = ' ' AND  TSC6.D_E_L_E_T_ = ' ' "+ CRLF
+	IF SELECT("QRYCAR") > 0
+		QRYCAR->( dbCloseArea() )
+	ENDIF
+	TcQuery changeQuery(cQryCarga) New Alias "QRYCAR"
+
+	IF ! EMPTY(QRYCAR->C5_PEDEXP)  // Se o campo numero do pedido EXP não estiver em branco
+		
+	// Pesquisa EXP na tabela ZB8
+		ZB8->(DbSetOrder(3))
+		If ZB8->(DbSeek(xFilial("ZB8")+QRYCAR->C5_PEDEXP))
+			_cVia := ZB8->ZB8_VIA
+		EndIf
+		IF _cVia $"01/02"  //01-Maritima ou 02-Aérea
+			
+			If Empty(QRYCAR->DAI_NFISCA) .And. Empty(QRYCAR->C6_NOTA) .And. Empty(QRYCAR->C5_NOTA)
+				MsgAlert("O campo cidade de divisa ( tabela GWU ) não será atualizado, pois o campo Nota Fiscal das tabelas Item da Carga (DAI), Pedido de Venda (SC5) e Item Pedido de Venda (SC6) estão em branco. ")
+				Return
+			EndIf
+			
+			If ! Empty(QRYCAR->DAI_NFISCA) 
+				_cNota  := QRYCAR->DAI_NFISCA
+				_cSerie := QRYCAR->DAI_SERIE
+			ElseIf ! Empty(QRYCAR->C6_NOTA) 
+				_cNota  := QRYCAR->C6_NOTA
+				_cSerie := QRYCAR->C6_SERIE
+			ElseIf ! Empty(QRYCAR->C5_NOTA)
+				_cNota  := QRYCAR->C5_NOTA
+				_cSerie := QRYCAR->C5_SERIE
+			Endif
+
+			// Pesquisa Nota no SF2
+			SF2->(DbSetOrder(1))
+			If SF2->(DbSeek(xFilial("SF2")+_cNota+_cSerie))
+				_cTipoNf := SF2->F2_TIPO
+			EndIf
+			If _cTipoNf $"NCPI" //Saída
+    			_cGWUCDTPD := SuperGetMV("MGF_FATBFB",.F.,'')//Tipos de documento de saida  - NFS
+			Else //Entrada
+    			_cGWUCDTPD := SuperGetMV("MGF_FATBFC",.F.,'')//Tipos de documento de entrada - NFE
+			EndIf 
+
+			// Pesquisa na GU7 o municipio completo
+			cQryGU7 := " "
+			cQryGU7 := " SELECT * " + CRLF
+			cQryGU7 += "  FROM "+RetSqlName("GU7") + CRLF
+			cQryGU7 += "  WHERE " + CRLF
+			cQryGU7 += "  SUBSTR(GU7_NRCID,3,5)='"+DAK->DAK_XCIDR+"' AND GU7_CDUF='"+DAK->DAK_XUFR+"' AND  D_E_L_E_T_ = ' ' "+ CRLF
+			IF SELECT("QRYGU7") > 0
+				QRYGU7->( dbCloseArea() )
+			ENDIF
+			TcQuery changeQuery(cQryGU7) New Alias "QRYGU7"
+			QRYGU7->(DBGoTop())
+			Count to nRegGu7
+			QRYGU7->(DBGoTop())
+			If nRegGu7 > 0
+				_cGU7MunD := QRYGU7->GU7_NRCID
+			Else
+				_cGU7MunD := ' '
+			Endif
+			EE7->(DBSETORDER( 1 )) //EE7_FILIAL+EE7_PEDIDO
+			If EE7->(DbSeek(xFilial("EE7")+QRYCAR->C5_PEDEXP))
+    			_cEE7Forn  := EE7->EE7_FORN
+    			_cEE7FoLoj := EE7->EE7_FOLOJA
+    			IF  _cGWUCDTPD == "NFS"
+        			_cSA2CNPJ  := ALLTRIM(SM0->M0_CGC) 
+    			ELSE
+        			_cSA2CNPJ  := Posicione("SA2",1,xFilial("SA2")+_cEE7Forn+_cEE7FoLoj,"A2_CGC")
+    			ENDIF
+    			//Posiciona Trechos do Itinerário para atualizar a cidade de divisa
+    			DbSelectArea("GWU")
+    			DbOrderNickName("PK")//[1]GWU_FILIAL+GWU_CDTPDC+GWU_EMISDC+GWU_SERDC+GWU_NRDC+GWU_SEQ | Tipo Docto + Emissor + Serie + Numero Docto + Sequencia
+    			If GWU->(DbSeek( xFilial("GWU")+_cGWUCDTPD+"  "+_cSA2CNPJ+SF2->F2_SERIE+SF2->F2_DOC))
+        			GWU->(RecLock("GWU",.F.))
+        			GWU->GWU_NRCIDD := _cGU7MunD
+        			GWU->(MsUnLock())					
+    			EndIf 
+			EndIf
+		EndIf
+	EndIf
 Return

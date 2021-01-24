@@ -88,7 +88,7 @@ User Function MGFFINX7(cProc)
                     cUpdSA1 += " WHERE"																	+ CRLF
                     cUpdSA1 += " 		A1_COD		=	'" + cCliente +"'"	                            + CRLF
                     cUpdSA1 += " 	AND	A1_LOJA		=	'" + cLoja +"'"	                                + CRLF
-                    cUpdSA1 += " 	AND	A1_EST	<>	'EX' "          	                                + CRLF        
+
                     if lFilPes
                         cUpdSA1 += "	AND	A1_PESSOA = 'J' "			        			            + CRLF
                     endif
@@ -135,10 +135,11 @@ User Function MGFFINX7(cProc)
                     cUpdA1R += " WHERE"																	+ CRLF
                     cUpdA1R += " 		A1_COD		=	'" + cClientR +"'"	                            + CRLF
                     cUpdA1R += " 	AND	A1_LOJA		=	'" + cLojaR +"'"	                            + CRLF
-                    cUpdA1R += " 	AND	A1_EST	<>	'EX' "          	                                + CRLF        
+
                     if lFilPes
                         cUpdA1R += "	AND	A1_PESSOA = 'J' "			        			            + CRLF
                     endif
+
                     cUpdA1R += " 	AND	A1_FILIAL	=	'" + xFilial("SA1") +"'"	                    + CRLF
                     cUpdA1R += " 	AND	D_E_L_E_T_	<>	'*'"											+ CRLF
 

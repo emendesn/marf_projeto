@@ -9,7 +9,7 @@ Data.....:              30/01/2017
 Descricao / Objetivo:   Browse FIDC (MVC)
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -20,8 +20,8 @@ User Function MGFFIN43()
 	Private cTipo	:= ""
 	Private aDados	:= {}
 	
-	// Verificar qual Banco sera UTILIZADO visando identificar os 
-	// parametros. 28/08/2018- GDN
+	// Verificar qual Banco serА UTILIZADO visando identificar os 
+	// parБmetros. 28/08/2018- GDN
 	Private nMgBco := U_MGFVldBco()
 	
 	If nMgBco==1
@@ -39,49 +39,49 @@ User Function MGFFIN43()
 	cSubFIDC	:= Stuff( Space( TamSX3("EE_SUBCTA")[1] ) , 1 , Len(AllTrim(aBcoFIDC[4])) , Alltrim(aBcoFIDC[4]) )
 	
 	If nMgBco==1
-		Private cArqCfg	:= GetMv("MGF_FIN43B",,"\EDI\ITAU\FIDC\CFG\FIDC.REM")	// Arquivo de ConfiguraО©╫О©╫o FIDC
-		Private cPatLoc	:= GetMv("MGF_FIN43D",,"C:\ITAU\FIDC\REM\")				// Path de gravacao de Arquivos
+		Private cArqCfg	:= GetMv("MGF_FIN43B",,"\EDI\ITAU\FIDC\CFG\FIDC.REM")	// Arquivo de ConfiguraГЦo FIDC
+		Private cPatLoc	:= GetMv("MGF_FIN43D",,"C:\ITAU\FIDC\REM\")				// Path de gravaГЦo de Arquivos
 	Else
-		Private cArqCfg	:= GetMv("MGF_FIN44B",,"\EDI\BRA\FIDC\CFG\FIDC.REM")	// Arquivo de ConfiguraО©╫О©╫o FIDC
-		Private cPatLoc	:= GetMv("MGF_FIN44D",,"C:\BRA\FIDC\REM\")				// Path de gravacao de Arquivos
+		Private cArqCfg	:= GetMv("MGF_FIN44B",,"\EDI\BRA\FIDC\CFG\FIDC.REM")	// Arquivo de ConfiguraГЦo FIDC
+		Private cPatLoc	:= GetMv("MGF_FIN44D",,"C:\BRA\FIDC\REM\")				// Path de gravaГЦo de Arquivos
 	Endif	
 	
-	Private cPatRem	:= GetMv("MGF_FIN43C",,"\EDI\ITAU\FIDC\REM\")			// Path de gravacao de Arquivos
+	Private cPatRem	:= GetMv("MGF_FIN43C",,"\EDI\ITAU\FIDC\REM\")			// Path de gravaГЦo de Arquivos
 
 	Private aPatLoc	:= StrToKArr(cPatLoc,"\")
 	Private cArqRem, cArqExc
 	
 	If nMgBco==1
-		Private cRecAut	:= GetMv("MGF_FIN43E",,"90")	// Tabela (SX5) com motivos da recompra automatica
-		Private cMotVal	:= GetMv("MGF_FIN43F",,"90")	// Codigo de recompra para alteracao de valor
-		Private cMotDat	:= GetMv("MGF_FIN43G",,"91")	// Codigo de recompra para alteracao de vencimento
-		Private cMotDev	:= GetMv("MGF_FIN43H",,"92")	// Codigo de recompra para alteracao por baixa (devolucao)
-		Private cMotBx	:= GetMv("MGF_FIN43J",,"93")	// Codigo de recompra para baixa em banco diferente de FIDC
+		Private cRecAut	:= GetMv("MGF_FIN43E",,"90")	// Tabela (SX5) com motivos da recompra automАtica
+		Private cMotVal	:= GetMv("MGF_FIN43F",,"90")	// CСdigo de recompra para alteraГЦo de valor
+		Private cMotDat	:= GetMv("MGF_FIN43G",,"91")	// CСdigo de recompra para alteraГЦo de vencimento
+		Private cMotDev	:= GetMv("MGF_FIN43H",,"92")	// CСdigo de recompra para alteraГЦo por baixa (devoluГЦo)
+		Private cMotBx	:= GetMv("MGF_FIN43J",,"93")	// CСdigo de recompra para baixa em banco diferente de FIDC
 		Private cRecMan	:= GetMv("MGF_FIN43I",,"91")	// Tabela (SX5) com motivos da recompra Manual
 	Else
-		Private cRecAut	:= GetMv("MGF_FIN44E",,"90")	// Tabela (SX5) com motivos da recompra automatica
-		Private cMotVal	:= GetMv("MGF_FIN44F",,"90")	// Codigo de recompra para alteracao de valor
-		Private cMotDat	:= GetMv("MGF_FIN44G",,"91")	// Codigo de recompra para alteracao de vencimento
-		Private cMotDev	:= GetMv("MGF_FIN44H",,"92")	// Codigo de recompra para alteracao por baixa (devolucao)
-		Private cMotBx	:= GetMv("MGF_FIN44J",,"93")	// Codigo de recompra para baixa em banco diferente de FIDC
+		Private cRecAut	:= GetMv("MGF_FIN44E",,"90")	// Tabela (SX5) com motivos da recompra automАtica
+		Private cMotVal	:= GetMv("MGF_FIN44F",,"90")	// CСdigo de recompra para alteraГЦo de valor
+		Private cMotDat	:= GetMv("MGF_FIN44G",,"91")	// CСdigo de recompra para alteraГЦo de vencimento
+		Private cMotDev	:= GetMv("MGF_FIN44H",,"92")	// CСdigo de recompra para alteraГЦo por baixa (devoluГЦo)
+		Private cMotBx	:= GetMv("MGF_FIN44J",,"93")	// CСdigo de recompra para baixa em banco diferente de FIDC
 		Private cRecMan	:= GetMv("MGF_FIN44I",,"91")	// Tabela (SX5) com motivos da recompra Manual	
 	Endif
 	
 	If nMgBco==1
-		Private cArqCfgRec	:= GetMv("MGF_FIN43K",,"\EDI\ITAU\FIDC\CFG\RECOMPRA.REM")	// Arquivo de ConfiguraО©╫О©╫o Recompra
-		Private nLinGrid	:= GetMv("MGF_FIN43L",,30000)	// Numero maximo de linhas no grid, padrao = 990
+		Private cArqCfgRec	:= GetMv("MGF_FIN43K",,"\EDI\ITAU\FIDC\CFG\RECOMPRA.REM")	// Arquivo de ConfiguraГЦo Recompra
+		Private nLinGrid	:= GetMv("MGF_FIN43L",,30000)	// NЗmero mАximo de linhas no grid, padrЦo = 990
 	Else
-		Private cArqCfgRec	:= GetMv("MGF_FIN44K",,"\EDI\BRA\FIDC\CFG\RECOMPRA.REM")	// Arquivo de ConfiguraО©╫О©╫o Recompra
-		Private nLinGrid	:= GetMv("MGF_FIN44L",,30000)	// Numero maximo de linhas no grid, padrao = 990
+		Private cArqCfgRec	:= GetMv("MGF_FIN44K",,"\EDI\BRA\FIDC\CFG\RECOMPRA.REM")	// Arquivo de ConfiguraГЦo Recompra
+		Private nLinGrid	:= GetMv("MGF_FIN44L",,30000)	// NЗmero mАximo de linhas no grid, padrЦo = 990
 	Endif
 
 	// Instanciamento da Classe de Browse
 	oBrowse := FWMBrowse():New()
 	
-	// Definicao da tabela do Browse
+	// DefiniГЦo da tabela do Browse
 	oBrowse:SetAlias('ZA7')
 	
-	// Definicao da legenda
+	// DefiniГЦo da legenda
 	oBrowse:AddLegend( "ZA7_TIPO=='1'.And.ZA7_STATUS=='1'"	, "YELLOW"	, "FIDC - Envio Pendente"	)
 	oBrowse:AddLegend( "ZA7_TIPO=='1'.And.ZA7_STATUS=='2'"	, "GREEN"	, "FIDC - Enviado"			)
 	oBrowse:AddLegend( "ZA7_TIPO=='2'.And.ZA7_STATUS=='1'"	, "ORANGE"	, "Recompra - Envio Pendente")
@@ -90,7 +90,7 @@ User Function MGFFIN43()
 	// Titulo da Browse
 	oBrowse:SetDescription('FIDC')
 	
-	// Ativacao da Classe
+	// AtivaГЦo da Classe
 	oBrowse:Activate()
 	
 Return NIL
@@ -116,7 +116,7 @@ Return aRotina
 
 //-------------------------------------------------------------------
 /*/{Protheus.doc} ModelDef
-Definicao do modelo de Dados
+DefiniГЦo do modelo de Dados
 
 @author atilio.duarte
 
@@ -146,18 +146,18 @@ Static Function ModelDef()
 	oModel:SetRelation('ZA8GRID', { { 'ZA8_FILIAL', 'xFilial("ZA8")' }, { 'ZA8_CODREM', 'ZA7_CODREM' } }, ZA8->(IndexKey(1)) )
 	
 	oModel:GetModel('ZA7MASTER'):SetDescription('FIDC')
-	oModel:GetModel('ZA8GRID'):SetDescription('FIDC - Titulos')
+	oModel:GetModel('ZA8GRID'):SetDescription('FIDC - TМtulos')
 
 	oModel:GetModel('ZA8GRID'):SETMAXLINE(nLinGrid)
 	
 	oModel:SetVldActivate( {|oModel| fValidTipo(oModel) } )
-	oModel:SetActivate( {|oModel| Processa({|| fInitForm(oModel) },"Aguarde - Selecao de Titulos") } )
+	oModel:SetActivate( {|oModel| Processa({|| fInitForm(oModel) },"Aguarde - SeleГЦo de TМtulos") } )
 	
 Return oModel
 
 //-------------------------------------------------------------------
 /*/{Protheus.doc} ViewDef
-Definicao do interface
+DefiniГЦo do interface
 
 @author atilio.duarte
 
@@ -191,10 +191,10 @@ Static Function ViewDef()
 	oView:SetOwnerView('ZA8GRID','BOXFORM2')
 	oView:SetOwnerView('ZA7MASTER','BOXFORM1')
 	
-	oView:AddUserButton(О©╫'Recompra Manual'О©╫О©╫,О©╫'CLIPS',О©╫{|oView|О©╫U_MGFFIN45()}О©╫)
-	oView:AddUserButton(О©╫'Busca de Titulo'О©╫О©╫,О©╫'CLIPS',О©╫{|oView|О©╫U_MGFFIN71()}О©╫)
-	oView:AddUserButton(О©╫'Baixa Manual FIDC',О©╫'CLIPS',О©╫{|oView|О©╫U_bxtitfid()}О©╫)
-	oView:AddUserButton(О©╫'Recompra Manual Planilha FIDC',О©╫'CLIPS',О©╫{|oView|О©╫U_MGFFINA3()}О©╫)
+	oView:AddUserButton(═'Recompra Manual'══,═'CLIPS',═{|oView|═U_MGFFIN45()}═)
+	oView:AddUserButton(═'Busca de TМtulo'══,═'CLIPS',═{|oView|═U_MGFFIN71()}═)
+	oView:AddUserButton(═'Baixa Manual FIDC',═'CLIPS',═{|oView|═U_bxtitfid()}═)
+	oView:AddUserButton(═'Recompra Manual Planilha FIDC',═'CLIPS',═{|oView|═U_MGFFINA3()}═)
 	
 Return oView
 
@@ -295,7 +295,7 @@ Static Function fValidTipo(oModel)
 	
 	If !Empty(ZA7->ZA7_DATA) .And. ( oModel:GetOperation() == MODEL_OPERATION_UPDATE .Or. oModel:GetOperation() == MODEL_OPERATION_DELETE )
 		lRet		:= .F.
-		Help( ,, 'ARQGERADO',, 'Arquivo remessa jО©╫ foi gerado.'+CRLF+'Nao О©╫ permitido '+IIF(oModel:GetOperation() == MODEL_OPERATION_UPDATE,"alterar","excluir")+".", 1, 0 )
+		Help( ,, 'ARQGERADO',, 'Arquivo remessa jА foi gerado.'+CRLF+'NЦo И permitido '+IIF(oModel:GetOperation() == MODEL_OPERATION_UPDATE,"alterar","excluir")+".", 1, 0 )
 	ElseIf oModel:GetOperation() == MODEL_OPERATION_INSERT
 		
 		If ZA7->( eof() ) .And. ZA7->( bof() )
@@ -303,12 +303,12 @@ Static Function fValidTipo(oModel)
 		Else
 			/*
 			2 - Combo
-			[2] : Descricao
-			[3] : Numerico contendo a opcao inicial do combo
-			[4] : Array contendo as opcoes do Combo
+			[2] : DescriГЦo
+			[3] : NumИrico contendo a opГЦo inicial do combo
+			[4] : Array contendo as opГУes do Combo
 			[5] : Tamanho do Combo
-			[6] : Validacao
-			[7] : Flag .T./.F. Parametro Obrigatorio ?
+			[6] : ValidaГЦo
+			[7] : Flag .T./.F. ParБmetro ObrigatСrio ?
 			*/
 
 			aAdd( aPergs ,{2,"Tipo de Envio",IIf( Len(aRet) > 0,aRet[],"FIDC"), {"FIDC", "Recompra","Baixa","Recompra Manual"}, 50,'Empty(fValTipo(aRet[1]))',.T.})
@@ -392,7 +392,7 @@ Static Function fSeleGridF(aDados)
 	Local aSM0      := {} // FWLoadSM0(.T.,,.T.) 
 	Local cOpcoes	:= ""
 	Local aOpcoes	:= {}
-	Local cTitulo	:= "Selecao das Filiais"
+	Local cTitulo	:= "SeleГЦo das Filiais"
 	Local MvPar		:= ""//&(Alltrim(ReadVar()))		// Carrega Nome da Variavel do Get em Questao
 	Local nTamFil	:= Len(xFilial("SE1"))
 	Local cAlias	:= GetNextAlias()
@@ -404,21 +404,21 @@ Static Function fSeleGridF(aDados)
 	If cTipo == "1"
 		/*
 		1 - MsGet
-		[2] : Descricao
+		[2] : DescriГЦo
 		[3] : String contendo o inicializador do campo
 		[4] : String contendo a Picture do campo
-		[5] : String contendo a validacao
+		[5] : String contendo a validaГЦo
 		[6] : Consulta F3
-		[7] : String contendo a validacao When
+		[7] : String contendo a validaГЦo When
 		[8] : Tamanho do MsGet
-		[9] : Flag .T./.F. Parametro Obrigatorio ?
+		[9] : Flag .T./.F. ParБmetro ObrigatСrio ?
 		*/
-		aAdd( aPergs ,{1,"Emissao De     : ",dEmiIni,"@!",'.T.'	,		,'.T.',50,.T.})
-		aAdd( aPergs ,{1,"Emissao Ate    : ",dEmiFim,"@!",'.T.'	,		,'.T.',50,.T.})
+		aAdd( aPergs ,{1,"EmissЦo De     : ",dEmiIni,"@!",'.T.'	,		,'.T.',50,.T.})
+		aAdd( aPergs ,{1,"EmissЦo AtИ    : ",dEmiFim,"@!",'.T.'	,		,'.T.',50,.T.})
 		aAdd( aPergs ,{1,"Vencimento De  : ",dVctIni,"@!",'.T.'	,		,'.T.',50,.T.})
-		aAdd( aPergs ,{1,"Vencimento Ate : ",dVctFim,"@!",'.T.'	,		,'.T.',50,.T.})
+		aAdd( aPergs ,{1,"Vencimento AtИ : ",dVctFim,"@!",'.T.'	,		,'.T.',50,.T.})
 		aAdd( aPergs ,{1,"Cliente De     : ",dCliIni,"@!",'.T.'	,"SA1"	,'.T.',40,.F.})
-		aAdd( aPergs ,{1,"Cliente Ate    : ",dCliFim,"@!",'.T.'	,"SA1"	,'.T.',40,.T.})
+		aAdd( aPergs ,{1,"Cliente AtИ    : ",dCliFim,"@!",'.T.'	,"SA1"	,'.T.',40,.T.})
 		
 		If !ParamBox(aPergs ,"Parametros FIDC - Remessa",aRet)
 			Aviso("FIDC - Remessa","Processamento Cancelado!",{'Ok'})
@@ -531,7 +531,7 @@ Static Function fSeleGridF(aDados)
 		dbCloseArea()
 		
 	Elseif cTipo == "2" // Recompra
-		// Busca Recompra Automaica
+		// Busca Recompra AutomАtica
 		
 		BeginSQL Alias cAlias
 			
@@ -603,7 +603,7 @@ Static Function fSeleGridF(aDados)
 		dbSelectArea(cAlias)
 		dbCloseArea()
 		
-		// Titulos Baixados em Banco diferente do FIDC
+		// TМtulos Baixados em Banco diferente do FIDC
 		
 		BeginSQL Alias cAlias
 			
@@ -682,7 +682,7 @@ Static Function fSeleGridF(aDados)
 		dbSelectArea(cAlias)
 		dbCloseArea()
 		
-		// Devolucoes
+		// DevoluГУes
 		
 		BeginSQL Alias cAlias
 			
@@ -831,7 +831,7 @@ Static Function fSeleGridF(aDados)
 		dbSelectArea(cAlias)
 		dbCloseArea()
 		
-		// Titulos Baixados em Banco diferente do FIDC
+		// TМtulos Baixados em Banco diferente do FIDC
 		
 		BeginSQL Alias cAlias
 			
@@ -908,7 +908,7 @@ Static Function fSeleGridF(aDados)
 		dbSelectArea(cAlias)
 		dbCloseArea()
 		
-		// Devolucoes
+		// DevoluГУes
 		
 		BeginSQL Alias cAlias
 			
@@ -986,11 +986,11 @@ Static Function fSeleGridF(aDados)
 	
 	If Empty(aDados)
 		If cTipo == "1"
-			Aviso("FIDC - Remessa","Nao existem registros para os parametros informados!",{'Ok'})
+			Aviso("FIDC - Remessa","NЦo existem registros para os parБmetros informados!",{'Ok'})
 		Elseif cTipo == "2"
-			Aviso("FIDC - Recompra","Nao existem registros para selecao automatica!",{'Ok'})
+			Aviso("FIDC - Recompra","NЦo existem registros para seleГЦo automАtica!",{'Ok'})
 		ElseIf cTipo == "3"
-			Aviso("FIDC - Baixas","Nao existem registros para selecao automatica!",{'Ok'})
+			Aviso("FIDC - Baixas","NЦo existem registros para seleГЦo automАtica!",{'Ok'})
 		EndIf
 	EndIf
 	
@@ -1017,22 +1017,22 @@ Static Function fInitGridF(oModel,aParam)
 	
 	/*
 	1 - MsGet
-	[2] : Descricao
+	[2] : DescriГЦo
 	[3] : String contendo o inicializador do campo
 	[4] : String contendo a Picture do campo
-	[5] : String contendo a validacao
+	[5] : String contendo a validaГЦo
 	[6] : Consulta F3
-	[7] : String contendo a validacao When
+	[7] : String contendo a validaГЦo When
 	[8] : Tamanho do MsGet
-	[9] : Flag .T./.F. Parametro Obrigatorio ?
+	[9] : Flag .T./.F. ParБmetro ObrigatСrio ?
 	*/
 
-	aAdd( aPergs ,{1,"Emissao De     : ",dEmiIni,"@!",'.T.'	,		,'.T.',50,.T.})
-	aAdd( aPergs ,{1,"Emissao Ate    : ",dEmiFim,"@!",'.T.'	,		,'.T.',50,.T.})
+	aAdd( aPergs ,{1,"EmissЦo De     : ",dEmiIni,"@!",'.T.'	,		,'.T.',50,.T.})
+	aAdd( aPergs ,{1,"EmissЦo AtИ    : ",dEmiFim,"@!",'.T.'	,		,'.T.',50,.T.})
 	aAdd( aPergs ,{1,"Vencimento De  : ",dVctIni,"@!",'.T.'	,		,'.T.',50,.T.})
-	aAdd( aPergs ,{1,"Vencimento Ate : ",dVctFim,"@!",'.T.'	,		,'.T.',50,.T.})
+	aAdd( aPergs ,{1,"Vencimento AtИ : ",dVctFim,"@!",'.T.'	,		,'.T.',50,.T.})
 	aAdd( aPergs ,{1,"Cliente De     : ",dCliIni,"@!",'.T.'	,"SA1"	,'.T.',40,.F.})
-	aAdd( aPergs ,{1,"Cliente Ate    : ",dCliFim,"@!",'.T.'	,"SA1"	,'.T.',40,.T.})
+	aAdd( aPergs ,{1,"Cliente AtИ    : ",dCliFim,"@!",'.T.'	,"SA1"	,'.T.',40,.T.})
 	
 	If !ParamBox(aPergs ,"Parametros FIDC - Remessa",aRet)
 		Aviso("FIDC - Remessa","Processamento Cancelado!",{'Ok'})
@@ -1126,7 +1126,7 @@ Static Function fbPreLineGrid(oModelGrid,nLinha,cAcao,cCampo,xValor)
 
 	If oModelGrid:GetOperation() == MODEL_OPERATION_UPDATE
 		If cAcao == "DELETE"
-			Help( ,,"Atencao", ,"Nao О©╫ permitido exclusao de linhas!",1,0)
+			Help( ,,"AtenГЦo", ,"NЦo И permitido exclusЦo de linhas!",1,0)
 			lRet := .F.
 		EndIf
 	EndIf
@@ -1186,23 +1186,23 @@ Default cAlias		:= ""
 
 /*
 Defines do SM0
-SM0_GRPEMP  // Codigo do grupo de empresas
-SM0_CODFIL  // Codigo da filial contendo todos os nО©╫veis (Emp/UN/Fil)
-SM0_EMPRESA // Codigo da empresa
-SM0_UNIDNEG // Codigo da unidade de negО©╫cio
-SM0_FILIAL  // Codigo da filial
+SM0_GRPEMP  // CСdigo do grupo de empresas
+SM0_CODFIL  // CСdigo da filial contendo todos os nМveis (Emp/UN/Fil)
+SM0_EMPRESA // CСdigo da empresa
+SM0_UNIDNEG // CСdigo da unidade de negСcio
+SM0_FILIAL  // CСdigo da filial
 SM0_NOME    // Nome da filial
 SM0_NOMRED  // Nome reduzido da filial
 SM0_SIZEFIL // Tamanho do campo filial
 SM0_LEIAUTE // Leiaute do grupo de empresas
 SM0_EMPOK   // Empresa autorizada
-SM0_GRPEMP  // Codigo do grupo de empresas 
-SM0_USEROK  // Usuario tem permissao para usar a empresa/filial
+SM0_GRPEMP  // CСdigo do grupo de empresas 
+SM0_USEROK  // UsuАrio tem permissЦo para usar a empresa/filial
 SM0_RECNO   // Recno da filial no SIGAMAT
 SM0_LEIAEMP // Leiaute da empresa (EE)
-SM0_LEIAUN  // Leiaute da unidade de negО©╫cio (UU)
+SM0_LEIAUN  // Leiaute da unidade de negСcio (UU)
 SM0_LEIAFIL // Leiaute da filial (FFFF)
-SM0_STATUS  // Status da filial (0=Liberada para manutencao,1=Bloqueada para manutencao)
+SM0_STATUS  // Status da filial (0=Liberada para manutenГЦo,1=Bloqueada para manutenГЦo)
 SM0_NOMECOM // Nome Comercial
 SM0_CGC     // CGC
 SM0_DESCEMP // Descricao da Empresa
@@ -1210,11 +1210,11 @@ SM0_DESCUN  // Descricao da Unidade
 SM0_DESCGRP // Descricao do Grupo
 */
 
-//Caso o Alias nao seja passado, traz as filiais que o usuario tem acesso (modo padrao)
+//Caso o Alias nЦo seja passado, traz as filiais que o usuario tem acesso (modo padrao)
 lSohFilEmp := IF(Empty(cAlias),.F.,lSohFilEmp)
 lSohFilUN  := IF(Empty(cAlias),.F.,lSohFilUn) .And. lSohFilEmp
 
-//Caso use gestО©╫o corporativa , busca o codigo da empresa dentro do M0_CODFIL
+//Caso use gestЦo corporativa , busca o codigo da empresa dentro do M0_CODFIL
 //Em caso contrario, , traz as filiais que o usuario tem acesso (modo padrao)
 cEmpFil := IIF(lGestao .and. lFwCompany, FWCompany(cAlias)," ")
 cUnFil  := IIF(lGestao .and. lFwCompany, FWUnitBusiness(cAlias)," ")
@@ -1236,10 +1236,10 @@ If lDefTop
 				cTitulo := cTxtAux + AllTrim( aFilAtu[6] )
 			EndIf
 
-			// Adiciona as filiais que o usuario tem permissao
+			// Adiciona as filiais que o usuario tem permissЦo
 			For nInc := 1 To Len( aSM0 )
 				//DEFINES da SMO encontra-se no arquivo FWCommand.CH
-				//Na funcao FWLoadSM0(), ela retorna na posicao [SM0_USEROK] se esta filial О©╫ valida para o user  
+				//Na funГЦo FWLoadSM0(), ela retorna na posicao [SM0_USEROK] se esta filial И vАlida para o user  
 				If (aSM0[nInc][SM0_GRPEMP] == cEmpAnt .And. ((ValType(aSM0[nInc][SM0_EMPOK]) == "L" .And. aSM0[nInc][SM0_EMPOK]) .Or. ValType(aSM0[nInc][SM0_EMPOK]) <> "L") .And. aSM0[nInc][SM0_USEROK] )
 					
 					//Verificacao se as filiais a serem apresentadas serao 
@@ -1284,7 +1284,7 @@ If lDefTop
 				
 			Next
 			If Len( aSit ) <= 0
-				// Se nao tem permissao ou ocorreu erro nos dados do usuario, pego a filial corrente.
+				// Se nЦo tem permissЦo ou ocorreu erro nos dados do usuario, pego a filial corrente.
 				Aadd(aSit, aFilAtu[2]+" - "+aFilAtu[7] )
 				MvParDef := aFilAtu[2]
 				nI++
@@ -1325,7 +1325,7 @@ If lDefTop
 	EndIf
 		
 Else
-	Help("  ",1,"ADMFILTOP",,"Funcao disponО©╫vel apenas para ambientes TopConnect",1,0)
+	Help("  ",1,"ADMFILTOP",,"FunГЦo disponМvel apenas para ambientes TopConnect",1,0)
 EndIf
 	
 RestArea(aArea)  
@@ -1415,7 +1415,7 @@ Local uRet				:= NIL
 Local uRetF3			:= NIL  
 
 DEFAULT uVarRet			:= &( ReadVar() )
-DEFAULT cTitulo			:= OemToAnsi( "Escolha PadrО©╫es" )
+DEFAULT cTitulo			:= OemToAnsi( "Escolha PadrУes" )
 DEFAULT aOpcoes			:= {}
 DEFAULT cOpcoes			:= ""
 DEFAULT l1Elem			:= .F.
@@ -1437,9 +1437,9 @@ Begin Sequence
 	nSize				:= If(lColunada,20,0)	
 		
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Coloca o Ponteiro do Cursor em Estado de Espera			   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Coloca o Ponteiro do Cursor em Estado de Espera			   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 
 	IF !( lComboBox )
@@ -1523,11 +1523,11 @@ Begin Sequence
 			Next nFor
 		Else
 			/*
-			О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-			О©╫ Restaura o Ponteiro do Cursor                  			   О©╫
-			О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+			здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+			Ё Restaura o Ponteiro do Cursor                  			   Ё
+			юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 			*/
-			MsgInfo( OemToAnsi( "Nao existem dados para consulta" ) , IF( Empty( cTitulo ) , OemToAnsi( "Escolha PadrО©╫es" ) , cTitulo ) )
+			MsgInfo( OemToAnsi( "NЦo existem dados para consulta" ) , IF( Empty( cTitulo ) , OemToAnsi( "Escolha PadrЖes" ) , cTitulo ) )
 			Break
 		EndIF	
 	Else
@@ -1545,41 +1545,41 @@ Begin Sequence
 			Next nFor
 		Else
 			/*
-			О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-			О©╫ Restaura o Ponteiro do Cursor                  			   О©╫
-			О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+			здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+			Ё Restaura o Ponteiro do Cursor                  			   Ё
+			юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 			*/
-			MsgInfo( OemToAnsi( "Nao existem dados para consulta" ) , IF( Empty( cTitulo ) , OemToAnsi( "Escolha PadrО©╫es" ) , cTitulo ) )
+			MsgInfo( OemToAnsi( "NЦo existem dados para consulta" ) , IF( Empty( cTitulo ) , OemToAnsi( "Escolha PadrЖes" ) , cTitulo ) )
 		EndIF
 	EndIF
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define o DEFAULT do Maximo de Elementos que Podem ser RetornaО©╫
-	О©╫ dos														   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define o DEFAULT do Maximo de Elementos que Podem ser RetornaЁ
+	Ё dos														   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	DEFAULT nElemRet := ( Len( &( ReadVar() ) ) / nTam )
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define os numeros de Elementos que serao Mostrados		   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define os numeros de Elementos que serao Mostrados		   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	nOpcoes		:= Len( aListbox )
 	nElemRet    := Min( nElemRet , nOpcoes )
 	nElemRet	:= IF( !( lMultSelect ) , 01 , nElemRet )
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Verifica os Elementos ja Selecionados          			   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Verifica os Elementos ja Selecionados          			   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	aEval( aListBox , { |x| IF( x[1] , ++nElemSel , NIL ) } )
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define Bloco e Botao para a Ordenacao das Opcoes       	   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define Bloco e Botao para a Ordenacao das Opcoes       	   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	IF !( lNotOrdena )
 		bOrdena := { || AdmOpcOrd(;
@@ -1594,15 +1594,15 @@ Begin Sequence
 									"SDUORDER"				,;
 		   							bOrdena 				,;
 		       	   					OemToAnsi( "Ordenar <F7>..." )	,;
-		       	   					OemtoAnsi( "OrdenaО©╫О©╫o" )	 ;
+		       	   					OemtoAnsi( "OrdenaГЦo" )	 ;
 		           				};
 		     )					 	
 	EndIF
 		
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define Bloco e  Botao para a Pesquisa                   	   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define Bloco e  Botao para a Pesquisa                   	   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	IF !( lNotPesq )
 		bPesquisa := { || AdmOpcPsq(;
@@ -1626,9 +1626,9 @@ Begin Sequence
 	EndIF	
 	
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define o Bloco para a CaPexTroca()						   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define o Bloco para a CaPexTroca()						   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	bCapTrc := { |cTipo,lMultSelect| ;
 										aListBox := AdmexTroca(;
@@ -1647,15 +1647,15 @@ Begin Sequence
 				}
 	
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Carrega as Dimensoes Disponiveis       					   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Carrega as Dimensoes Disponiveis       					   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	aAdvSize		:= MsAdvSize( .T. , .T. )
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Redimensiona                           					   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Redimensiona                           					   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	aAdvSize[3] *= ( 73 / 100 )
 	aAdvSize[5] *= ( 73 / 100 )
@@ -1663,9 +1663,9 @@ Begin Sequence
 	aAdvSize[7] += 05.5
 	
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Monta as Dimensoes dos Objetos         					   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Monta as Dimensoes dos Objetos         					   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды*/
 	aInfoAdvSize	:= { aAdvSize[1] , aAdvSize[2] , aAdvSize[3] , aAdvSize[4] , 0 , 0 }
 	aAdd( aObjCoords , { 070 , 070 , .T. , .T. } )
 	aAdd( aObjCoords , { 000 , 000 , .T. , .F. } )
@@ -1681,9 +1681,9 @@ Begin Sequence
 	aGrpCoords	:= { aBtnCoords[4] + 05 , aObjSize[2,2] + 2 , aObjSize[2,3]-2	, aObjSize[2,4] }
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Seta a consulta F3                						   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Seta a consulta F3                						   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	IF !Empty( cCampo )
 		IF !Empty( cF3 )
@@ -1694,13 +1694,13 @@ Begin Sequence
 	EndIF	
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Disponibiliza Dialog para Selecao 						   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Disponibiliza Dialog para Selecao 						   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	DEFINE FONT oFontNum NAME "Arial" SIZE 000,-014 BOLD
 	DEFINE FONT oFontTit NAME "Arial" SIZE 000,-011 BOLD
-	DEFINE MSDIALOG oDlg TITLE cTitulo FROM aAdvSize[7],0 TO aAdvSize[6]+50,aAdvSize[5]+nSize OF GetWndDefault() PIXEL //"Escolha PadrО©╫es"
+	DEFINE MSDIALOG oDlg TITLE cTitulo FROM aAdvSize[7],0 TO aAdvSize[6]+50,aAdvSize[5]+nSize OF GetWndDefault() PIXEL //"Escolha PadrУes"
 		
 	If lColunada		//Utilizada pela AdmGetFil com Gestao Corporativa
 		@ aLbxCoords[1],aLbxCoords[2]	LISTBOX oListBox VAR cVarQ FIELDS HEADER "" , "Filial", "Nome Filial", "CNPJ" SIZE aLbxCoords[3]+(nSize/2),aLbxCoords[4]+(nSize/2);
@@ -1716,53 +1716,53 @@ Begin Sequence
 
 	IF ( lMultSelect ) .AND. !lVisual
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Define Bloco e o Botao para Marcar Todos    				   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Define Bloco e o Botao para Marcar Todos    				   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		bSetF4		:= { || Eval( bCapTrc , "M" , lMultSelect ) , SetKey( VK_F4 , bSetF4 ) }
 		@ aBtnCoords[1],aBtnCoords[2] 			BUTTON oBtnMarcTod	PROMPT OemToAnsi( "Marca Todos - <F4>" )		SIZE 75,13.50 OF oDlg	PIXEL ACTION Eval( bSetF4 )
 	
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Define Bloco e o Botao para Desmarcar Todos    			   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Define Bloco e o Botao para Desmarcar Todos    			   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		bSetF5		:= { || Eval( bCapTrc , "D" , lMultSelect ) , SetKey( VK_F5 , bSetF5 ) }
 		@ aBtnCoords[1],aBtnCoords[2]+75+3		BUTTON oBtnDesmTod	PROMPT OemToAnsi( "Desmarca Todos - <F5>" )		SIZE 75,13.50 OF oDlg	PIXEL ACTION Eval( bSetF5 )
 	
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Define Bloco e o Botao para Inversao da Selecao			   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Define Bloco e o Botao para Inversao da Selecao			   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		bSetF6		:= { || Eval( bCapTrc , "I" , lMultSelect ) , SetKey( VK_F6 , bSetF6 ) }
-		@ aBtnCoords[1],aBtnCoords[2]+(75*2)+6	BUTTON oBtnInverte	PROMPT OemToAnsi( "Inverte Selecao - <F6>" ) 	SIZE 75,13.50 OF oDlg	PIXEL ACTION Eval( bSetF6 )
+		@ aBtnCoords[1],aBtnCoords[2]+(75*2)+6	BUTTON oBtnInverte	PROMPT OemToAnsi( "Inverte SeleГЦo - <F6>" ) 	SIZE 75,13.50 OF oDlg	PIXEL ACTION Eval( bSetF6 )
 	EndIF
 
 	If !lVisual
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Numero de Elementos para Selecao							   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Numero de Elementos para Selecao							   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		@ aGrpCoords[1]+10,aGrpCoords[2] 					GROUP oGrpOpc	TO aGrpCoords[3]+15+5,074.50	OF oDlg LABEL OemtoAnsi("Nro. Elementos")	PIXEL
 		oGrpOpc:oFont := oFontTit
 		@ aGrpCoords[1]+08+15,aGrpCoords[2]+18				SAY oOpcoes		VAR Transform( nOpcoes	, cPict )	OF oDlg		PIXEL	FONT oFontNum
 		
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Maximo de Elementos que poderm Ser Selecionados			   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Maximo de Elementos que poderm Ser Selecionados			   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
-		@ aGrpCoords[1]+10,(aGrpCoords[2]+75+4)			GROUP oGrpRet	TO aGrpCoords[3]+15+5,152.50	OF oDlg LABEL OemtoAnsi("MО©╫x. Elem. p/ Selecao")   PIXEL
+		@ aGrpCoords[1]+10,(aGrpCoords[2]+75+4)			GROUP oGrpRet	TO aGrpCoords[3]+15+5,152.50	OF oDlg LABEL OemtoAnsi("MАx. Elem. p/ SeleГЦo")   PIXEL
 		oGrpRet:oFont := oFontTit
 		@ aGrpCoords[1]+08+15,(aGrpCoords[2]+75+4)+18		SAY oElemRet	VAR Transform( nElemRet	, cPict )	OF oDlg		PIXEL	FONT oFontNum
 		
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Numero de Elementos Selecionados                		   	   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Numero de Elementos Selecionados                		   	   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		@ aGrpCoords[1]+10,(aGrpCoords[2]+(75*2)+7) GROUP oGrpSel	TO aGrpCoords[3]+15+5,230.00	OF oDlg LABEL OemtoAnsi("Elem. Selecionados")	PIXEL
 		oGrpSel:oFont := oFontTit
@@ -1770,23 +1770,23 @@ Begin Sequence
 	EndIf
 
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Define Bloco para a Tecla <CTRL-O>              		   	   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Define Bloco para a Tecla <CTRL-O>              		   	   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	bSet15 := { || nOpcA := 1 , GetKeys() , SetKey( VK_F3 , NIL ) , oDlg:End() }
 	
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Define Bloco para a Tecla <CTRL-X>              		   	   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Define Bloco para a Tecla <CTRL-X>              		   	   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		bSet24 := { || nOpcA := 0 , GetKeys() , SetKey( VK_F3 , NIL ) , oDlg:End() }
 	
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Define Bloco para o Init do Dialog              		   	   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Define Bloco para o Init do Dialog              		   	   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 		bDlgInit := { || EnchoiceBar( oDlg , bSet15 , bSet24 , NIL , aButtons ),;
 						 IF( lMultSelect ,;
@@ -1805,15 +1805,15 @@ Begin Sequence
 	ACTIVATE MSDIALOG oDlg CENTERED ON INIT Eval( bDlgInit )
 	
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Retorna as Opcoes Selecionadas                  		   	   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Retorna as Opcoes Selecionadas                  		   	   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	IF ( nOpcA == 1 )
 		/*
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-		О©╫ Coloca o Ponteiro do Cursor em Estado de Espera			   О©╫
-		О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+		здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+		Ё Coloca o Ponteiro do Cursor em Estado de Espera			   Ё
+		юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 		*/
 	    IF ( cTypeRet == "C" )
 		    uRet		:= ""
@@ -1837,18 +1837,18 @@ Begin Sequence
 	EndIF
 	
 	/*
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-	О©╫ Carrega Variavel com retorno por Referencia     		   	   О©╫
-	О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+	здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+	Ё Carrega Variavel com retorno por Referencia     		   	   Ё
+	юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 	*/
 	uVarRet := uRet
 
 End Sequence
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Restaura o Estado das Teclas de Atalho          		   	   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Restaura o Estado das Teclas de Atalho          		   	   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 RestKeys( aSvKeys , .T. )
 SetKey( VK_F3 , bSvF3 )
@@ -1856,19 +1856,19 @@ SetKey( VK_F3 , bSvF3 )
 Return( ( nOpca == 1 ) )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Funcao    О©╫CaPexTroca	    О©╫AutorО©╫Marinaldo de Jesus О©╫ Data О©╫11/09/2003О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Descricao О©╫Efetua a Troca da Selecao no ListBox da AdmOpcoes()   		О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Sintaxe   О©╫<Vide Parametros Formais>									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Uso       О©╫AdmOpcoes()                                                 О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫ Retorno  О©╫Array (Listbox) Com a(s) opcao(oes) Selecionadas			О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫ParametrosО©╫< Vide Parametros Formais 									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+зддддддддддбддддддддддддддддбдддддбдддддддддддддддддддбддддддбдддддддддд©
+ЁFunГЦo    ЁCaPexTroca	    ЁAutorЁMarinaldo de Jesus Ё Data Ё11/09/2003Ё
+цддддддддддеддддддддддддддддадддддадддддддддддддддддддаддддддадддддддддд╢
+ЁDescriГЦo ЁEfetua a Troca da Selecao no ListBox da AdmOpcoes()   		Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁSintaxe   Ё<Vide Parametros Formais>									Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁUso       ЁAdmOpcoes()                                                 Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+Ё Retorno  ЁArray (Listbox) Com a(s) opcao(oes) Selecionadas			Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁParametrosЁ< Vide Parametros Formais 									Ё
+юддддддддддадддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды*/
 Static Function AdmexTroca(	nAt			,;	//Indice do ListBox de AdmOpcoes()
 							aArray		,;	//Array do ListBox de AdmOpcoes()
 							l1Elem		,;	//Se Selecao apenas de 1 elemento
@@ -1891,9 +1891,9 @@ DEFAULT lMultSelect := .F.
 DEFAULT cTipo		:= "I"
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Coloca o Ponteiro do Cursor em Estado de Espera			   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Coloca o Ponteiro do Cursor em Estado de Espera			   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 CursorWait()
 	IF !Empty( aArray )
@@ -1929,9 +1929,9 @@ CursorWait()
 		EndIF
 	EndIF
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Restaura o Ponteiro do Cursor                  			   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Restaura o Ponteiro do Cursor                  			   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 CursorArrow()
 	
@@ -1939,8 +1939,8 @@ IF ( nElemSel > nElemRet )
 	aArray[nAt,1] := .F.
 	nElemSel := nElemRet
 	MsgInfo(;
-				OemToAnsi( "Excedeu o numero de elementos permitidos para selecao" ) ,;
-				OemToAnsi( "Atencao" )  ;
+				OemToAnsi( "Excedeu o nёmero de elementos permitidos para seleГЦo" ) ,;
+				OemToAnsi( "AtenГЦo" )  ;
 		    )
 ElseIF ( nElemSel < 0 )
 	nElemSel := 0
@@ -1949,19 +1949,19 @@ EndIF
 Return( aArray )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Funcao    О©╫fOpcPesqF3		О©╫AutorО©╫Marinaldo de Jesus О©╫ Data О©╫11/11/2004О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Descricao О©╫Efetua Pesquisa Via Tecla F3                         		О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Sintaxe   О©╫<Vide Parametros Formais>									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Uso       О©╫AdmOpcoes()                                                 О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Retorno   О©╫NIL															О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫ParametrosО©╫< Vide Parametros Formais 									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+зддддддддддбддддддддддддддддбдддддбдддддддддддддддддддбддддддбдддддддддд©
+ЁFunГЦo    ЁfOpcPesqF3		ЁAutorЁMarinaldo de Jesus Ё Data Ё11/11/2004Ё
+цддддддддддеддддддддддддддддадддддадддддддддддддддддддаддддддадддддддддд╢
+ЁDescriГЦo ЁEfetua Pesquisa Via Tecla F3                         		Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁSintaxe   Ё<Vide Parametros Formais>									Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁUso       ЁAdmOpcoes()                                                 Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁRetorno   ЁNIL															Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁParametrosЁ< Vide Parametros Formais 									Ё
+юддддддддддадддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды*/
 Static Function AdmPesqF3( cF3 , cCampo , oListBox )
 
 Local cAlias
@@ -1984,7 +1984,7 @@ IF FindFunction( "AliasCpo" )
 				oListBox:nAt := nAt
 				oListBox:Refresh()
 			Else
-				MsgInfo( OemToAnsi( "codigo nao encontrado" ) )
+				MsgInfo( OemToAnsi( "cСdigo nЦo encontrado" ) )
 			EndIF
 		EndIF
 	EndIF	
@@ -1993,19 +1993,19 @@ EndIF
 Return( NIL )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Funcao    О©╫AdmOpcOrd	    О©╫AutorО©╫Marinaldo de Jesus О©╫ Data О©╫11/09/2003О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Descricao О©╫Ordenar as Opcoes em AdmOpcoes                        		О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Sintaxe   О©╫<Vide Parametros Formais>									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Uso       О©╫AdmOpcoes()                                                 О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Retorno   О©╫NIL															О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫ParametrosО©╫< Vide Parametros Formais 									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+зддддддддддбддддддддддддддддбдддддбдддддддддддддддддддбддддддбдддддддддд©
+ЁFunГЦo    ЁAdmOpcOrd	    ЁAutorЁMarinaldo de Jesus Ё Data Ё11/09/2003Ё
+цддддддддддеддддддддддддддддадддддадддддддддддддддддддаддддддадддддддддд╢
+ЁDescriГЦo ЁOrdenar as Opcoes em AdmOpcoes                        		Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁSintaxe   Ё<Vide Parametros Formais>									Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁUso       ЁAdmOpcoes()                                                 Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁRetorno   ЁNIL															Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁParametrosЁ< Vide Parametros Formais 									Ё
+юддддддддддадддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды*/
 Static Function AdmOpcOrd( oListBox , cTitulo )
 
 Local aSvKeys		:= GetKeys()
@@ -2026,15 +2026,15 @@ Local oGroup		:= NIL
 Local oRadio		:= NIL	
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Monta as Dimensoes dos Objetos         					   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Monta as Dimensoes dos Objetos         					   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 aAdvSize		:= MsAdvSize( .T. , .T. )
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Redimensiona                           					   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Redimensiona                           					   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 aAdvSize[3] -= 25
 aAdvSize[4] -= 50
@@ -2046,10 +2046,10 @@ aAdd( aObjCoords , { 000 , 000 , .T. , .T. } )
 aObjSize		:= MsObjSize( aInfoAdvSize , aObjCoords )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Define o Bloco para a Teclas <CTRL-O>   ( Button OK da EnchoiО©╫
-О©╫ ceBar )													   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Define o Bloco para a Teclas <CTRL-O>   ( Button OK da EnchoiЁ
+Ё ceBar )													   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 bSet15 := { ||	(;
 					lbSet15 := .T. ,;
@@ -2059,31 +2059,31 @@ bSet15 := { ||	(;
 			}
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Define o  Bloco  para a Teclas <CTRL-X> ( Button Cancel da EnО©╫
-О©╫ choiceBar )												   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Define o  Bloco  para a Teclas <CTRL-X> ( Button Cancel da EnЁ
+Ё choiceBar )												   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 bSet24 := { || GetKeys() , oDlg:End() }
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Monta Dialogo para a selecao do Periodo 					  О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+ЁMonta Dialogo para a selecao do Periodo 					  Ё
+юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 DEFINE FONT oFont NAME "Arial" SIZE 0,-11 BOLD
 DEFINE MSDIALOG oDlg TITLE OemToAnsi(cTitulo) From aAdvSize[7],0 TO aAdvSize[6],aAdvSize[5] OF GetWndDefault() PIXEL			
 
-	@ aObjSize[1,1] , aObjSize[1,2] GROUP oGroup TO aObjSize[1,3],aObjSize[1,4] LABEL OemToAnsi("OrdenaО©╫О©╫o") OF oDlg PIXEL
+	@ aObjSize[1,1] , aObjSize[1,2] GROUP oGroup TO aObjSize[1,3],aObjSize[1,4] LABEL OemToAnsi("OrdenaГЦo") OF oDlg PIXEL
 	oGroup:oFont:= oFont
 
-	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+005 )	SAY OemToAnsi("Efetuar a OrdenaО©╫О©╫o por:")	SIZE 300,10 OF oDlg PIXEL FONT oFont
-	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+100 )	RADIO oRadio VAR nOpcRad	ITEMS 	OemToAnsi("codigo"),;
-																	 						OemToAnsi("descricao"),;
-																	 						OemToAnsi("О©╫tem selecionado e codigo"),;
-																	 						OemToAnsi("О©╫tem selecionado e descricao"),;
-																	 						OemToAnsi("О©╫tem nao selecionado e codigo"),;
-																	 						OemToAnsi("О©╫tem nao selecionado e descricao");
+	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+005 )	SAY OemToAnsi("Efetuar a OrdenaГЦo por:")	SIZE 300,10 OF oDlg PIXEL FONT oFont
+	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+100 )	RADIO oRadio VAR nOpcRad	ITEMS 	OemToAnsi("cСdigo"),;
+																	 						OemToAnsi("descriГЦo"),;
+																	 						OemToAnsi("Мtem selecionado e cСdigo"),;
+																	 						OemToAnsi("Мtem selecionado e descriГЦo"),;
+																	 						OemToAnsi("Мtem nЦo selecionado e cСdigo"),;
+																	 						OemToAnsi("Мtem nЦo selecionado e descriГЦo");
 																						SIZE 115,010 OF oDlg PIXEL
 	oRadio:oFont := oFont																						
 
@@ -2110,28 +2110,28 @@ IF ( lbSet15 )
 EndIF		
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Restaura as Teclas de Atalho                     	  		  О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Restaura as Teclas de Atalho                     	  		  Ё
+юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 RestKeys( aSvKeys , .T. )
 
 Return( NIL )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Funcao    О©╫AdmOpcPsq	    О©╫AutorО©╫Marinaldo de Jesus О©╫ Data О©╫11/09/2003О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Descricao О©╫Pesquisar as Opcoes em AdmOpcoes                      		О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Sintaxe   О©╫<Vide Parametros Formais>									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Uso       О©╫AdmOpcoes()                                                 О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫Retorno   О©╫NIL															О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д╢
-О©╫ParametrosО©╫< Vide Parametros Formais 									О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫*/
+зддддддддддбддддддддддддддддбдддддбдддддддддддддддддддбддддддбдддддддддд©
+ЁFunГЦo    ЁAdmOpcPsq	    ЁAutorЁMarinaldo de Jesus Ё Data Ё11/09/2003Ё
+цддддддддддеддддддддддддддддадддддадддддддддддддддддддаддддддадддддддддд╢
+ЁDescriГЦo ЁPesquisar as Opcoes em AdmOpcoes                      		Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁSintaxe   Ё<Vide Parametros Formais>									Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁUso       ЁAdmOpcoes()                                                 Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁRetorno   ЁNIL															Ё
+цддддддддддедддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд╢
+ЁParametrosЁ< Vide Parametros Formais 									Ё
+юддддддддддадддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды*/
 Static Function AdmOpcPsq( oListBox , cTitulo , lNotOrdena , cF3 , aX3Box )
 
 Local aSvKeys		:= GetKeys()
@@ -2161,15 +2161,15 @@ Local oRadio		:= NIL
 Local oCodigo		:= NIL
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Monta as Dimensoes dos Objetos         					   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Monta as Dimensoes dos Objetos         					   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 aAdvSize		:= MsAdvSize( .T. , .T. )
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Redimensiona                           					   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Redimensiona                           					   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 aAdvSize[3] -= 25
 aAdvSize[4] -= 50
@@ -2181,10 +2181,10 @@ aAdd( aObjCoords , { 000 , 000 , .T. , .T. } )
 aObjSize		:= MsObjSize( aInfoAdvSize , aObjCoords )
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Define o Bloco para a Teclas <CTRL-O>   ( Button OK da EnchoiО©╫
-О©╫ ceBar )													   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Define o Bloco para a Teclas <CTRL-O>   ( Button OK da EnchoiЁ
+Ё ceBar )													   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 bSet15 := { ||	(;
 					lbSet15 := .T. ,;
@@ -2194,17 +2194,17 @@ bSet15 := { ||	(;
 			}
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Define o  Bloco  para a Teclas <CTRL-X> ( Button Cancel da EnО©╫
-О©╫ choiceBar )												   О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Define o  Bloco  para a Teclas <CTRL-X> ( Button Cancel da EnЁ
+Ё choiceBar )												   Ё
+юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 bSet24 := { || GetKeys() , oDlg:End() }
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫Monta Dialogo para a selecao do Periodo 					  О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+ЁMonta Dialogo para a selecao do Periodo 					  Ё
+юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 DEFINE FONT oFont NAME "Arial" SIZE 0,-11 BOLD
 DEFINE MSDIALOG oDlg TITLE OemToAnsi(cTitulo) From aAdvSize[7],0 TO aAdvSize[6]+20,aAdvSize[5] OF GetWndDefault() PIXEL
@@ -2213,13 +2213,13 @@ DEFINE MSDIALOG oDlg TITLE OemToAnsi(cTitulo) From aAdvSize[7],0 TO aAdvSize[6]+
 	oGroup:oFont:= oFont
 
 	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+005 )	SAY OemToAnsi("Efetuar Pesquisa por:")	SIZE 300,10 OF oDlg PIXEL FONT oFont
-	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+100 )	RADIO oRadio VAR nOpcRad	ITEMS 	OemToAnsi("codigo"),;
-																	 						OemToAnsi("descricao") ;
+	@ ( aObjSize[1,1] + 010 ) , ( aObjSize[1,2]+100 )	RADIO oRadio VAR nOpcRad	ITEMS 	OemToAnsi("cСdigo"),;
+																	 						OemToAnsi("descriГЦo") ;
 																						SIZE 115,010 OF oDlg PIXEL
-	oRadio:cToolTip := OemToAnsi( "ApО©╫s selecionar pressione a tecla <TAB> para habilitar a digitacao" )
+	oRadio:cToolTip := OemToAnsi( "ApСs selecionar pressione a tecla <TAB> para habilitar a digitaГЦo" )
 	oRadio:oFont	:= oFont
 
-	@ ( aObjSize[1,1] + 050 ) , ( aObjSize[1,2]+005 )		SAY OemToAnsi("codigo"+":")					SIZE 100,10 OF oDlg PIXEL FONT oFont
+	@ ( aObjSize[1,1] + 050 ) , ( aObjSize[1,2]+005 )		SAY OemToAnsi("cСdigo"+":")					SIZE 100,10 OF oDlg PIXEL FONT oFont
 	IF Empty( aX3Box )
 		@ ( aObjSize[1,1] + 045 ) , ( aObjSize[1,2]+100 )	MSGET oCodigo VAR cCodigo					SIZE 100,10 OF oDlg PIXEL FONT oFont WHEN ( nOpcRad == 1 )	
 		IF !Empty( cF3 )
@@ -2229,7 +2229,7 @@ DEFINE MSDIALOG oDlg TITLE OemToAnsi(cTitulo) From aAdvSize[7],0 TO aAdvSize[6]+
 		@ ( aObjSize[1,1] + 045 ) , ( aObjSize[1,2]+100 )	COMBOBOX oCodigo VAR cCodigo ITEMS aX3Box	SIZE 100,10 OF oDlg PIXEL FONT oFont WHEN ( nOpcRad == 1 )	
 	EndIF
 
-	@ ( aObjSize[1,1] + 070 ) , ( aObjSize[1,2]+005 )	SAY OemToAnsi("descricao"+":")	SIZE 100,10 OF oDlg PIXEL FONT oFont
+	@ ( aObjSize[1,1] + 070 ) , ( aObjSize[1,2]+005 )	SAY OemToAnsi("descriГЦo"+":")	SIZE 100,10 OF oDlg PIXEL FONT oFont
 	@ ( aObjSize[1,1] + 065 ) , ( aObjSize[1,2]+100 )	MSGET oCodigo VAR cDescri	SIZE 190,10 OF oDlg PIXEL FONT oFont WHEN ( nOpcRad == 2 )	
 
 ACTIVATE MSDIALOG oDlg CENTERED ON INIT EnchoiceBar( oDlg , bSet15 , bSet24 )
@@ -2239,11 +2239,11 @@ IF ( lbSet15 )
 		Case ( nOpcRad == 1 )
 			bSort	:= { |x,y| x[2] < y[2] }
 			bAscan	:= { |x| x[2] $ cCodigo }
-			cMsg	:= "codigo nao encontrado"
+			cMsg	:= "cСdigo nЦo encontrado"
 		Case ( nOpcRad == 2 )
 			bSort 	:= { |x,y| x[3] < y[3] }
 			bAscan	:= { |x,y| Upper( AllTrim( cDescri ) ) $ SubStr( Upper( AllTrim( x[3] ) ) , 1 , Len( AllTrim( cDescri ) ) ) }
-			cMsg	:= "descricao nao encontrada"
+			cMsg	:= "descriГЦo nЦo encontrada"
 	End Case
 	aCloneArr := aClone( oListBox:aArray )
 	IF !( lNotOrdena )
@@ -2260,9 +2260,9 @@ IF ( lbSet15 )
 EndIF		
 
 /*
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-О©╫ Restaura as Teclas de Atalho                     	  		  О©╫
-О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+Ё Restaura as Teclas de Atalho                     	  		  Ё
+юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 */
 RestKeys( aSvKeys , .T. )
 SetKey( VK_F3 , bSvF3 )
@@ -2278,7 +2278,7 @@ Data.....:              08/02/2018
 Descricao / Objetivo:   Efetua a baixa do titulo FIDC
 Doc. Origem:            CRE19-20-21
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -2305,7 +2305,7 @@ User Function BxTitFid(_cChvBx)
 	DbSetOrder(1)
 	If  SE1->(DbSeek(_cChvBx))
 
-		// Retira o situlo da situacao cobranca
+		// Retira o situlo da situaГЦo cobranГa
 		SE1->(Reclock("SE1",.F.))
 		SE1->E1_SITUACA := '0'
 		SE1->(MsUnlock())
@@ -2330,8 +2330,8 @@ User Function BxTitFid(_cChvBx)
 		{"AUTVALREC"   ,SE1->E1_VALOR 	  	   ,Nil}}
 
 		if SE1->E1_SALDO = 0 .AND. ! Empty(SE1->E1_BAIXA)
-			ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+ " jО©╫ encontra-se baixado",""},3,;
-			{"Verificar situacao do titulo junto a О©╫rea Financeira",""},3)
+			ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+ " jА encontra-se baixado",""},3,;
+			{"Verificar situaГЦo do tМtulo junto a Аrea Financeira",""},3)
 			lRet := .F.
 		Else
 			lMsErroAuto := .F.
@@ -2350,14 +2350,14 @@ User Function BxTitFid(_cChvBx)
 			Endif
 		Endif
 	
-		// Volto o titulo da situacao cobranca
+		// Volto o titulo da situaГЦo cobranГa
 		SE1->(Reclock("SE1",.F.))
 		SE1->E1_SITUACA := '1' //_cSituaca
 		SE1->(MsUnlock())
 	
 	Else
 
-		ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+" nao localizado",""},3,;
+		ShowHelpDlg("NOTIT", {"Titulo "+SE1->E1_PREFIXO+"-"+SE1->E1_NUM+"-"+SE1->E1_PARCELA+" nЦo localizado",""},3,;
 		{"Verificar situacao do titulo junto a area financeira",""},3)
 		lRet := .F.
 
@@ -2370,21 +2370,21 @@ Return(.T.)
 Programa.:              MGVldBco
 Autor....:              Gilson Nascimento 
 Data.....:              28/08/2018
-Descricao / Objetivo:   Selecao de parametros (43A ou 44A) para FIDC
+Descricao / Objetivo:   SeleГЦo de parametros (43A ou 44A) para FIDC
 Doc. Origem:            Contrato - GAP CRE019/20/21
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Permitir o usr selecionar o BANCO para definiО©╫О©╫o de ParО©╫metros
+Uso......:              Marfrig
+Obs......:              Permitir o usr selecionar o BANCO para definiГЦo de ParБmetros
 ======================================================================================
 */
 User Function MGFVldBco()
 Local aPergs 	:= {}
 Local aRet 		:= {}
 Local nRetBco	:= 1
-Local cDesc1	:= GETMV("MGF_FIN43A")				// "341-ItaО©╫"
+Local cDesc1	:= GETMV("MGF_FIN43A")				// "341-ItaЗ"
 Local cDesc2	:= GETMV("MGF_FIN44A") 				// "237-Bradesco"
 
-aAdd( aPergs ,{3,"Defina o Parametro PadrО©╫o:",1, {Alltrim(cDesc1), Alltrim(cDesc2)}, 80,'.T.',.T.})   
+aAdd( aPergs ,{3,"Defina o ParБmetro PadrЦo:",1, {Alltrim(cDesc1), Alltrim(cDesc2)}, 80,'.T.',.T.})   
 
 If upper(GetMv("MGF_TLFIDC",,"S")) == "S"
 	If ParamBox(aPergs ,"FIDC-Banco",aRet) 

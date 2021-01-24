@@ -9,9 +9,9 @@ Data.....:              17/06/2020
 Descricao / Objetivo:   Fonte chamado de Pontos de Entrada para tratar o PC das despesas
 Doc. Origem:            RTASK0011180 / RITM0034502
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de entrada padrao MVC EICDI500 (INCLUSAO DO PC)                  
-                        Ponto de entrada padrao MVC MT120FIM (EXCLUSAO DO PC)                  
+Uso......:              Marfrig
+Obs......:              Ponto de entrada padrão MVC EICDI500 (INCLUSAO DO PC)                  
+                        Ponto de entrada padrão MVC MT120FIM (EXCLUSAO DO PC)                  
 =====================================================================================
 */
 User Function EIC09INC()
@@ -23,21 +23,21 @@ User Function EIC09INC()
 
 	If cParam == "ALTERA_DESP"//"DESP_ALTERA2"//"DESPESA_OK" .AND. nOpcao    == 3 //1 // Verifica campos obrigatorios para o PC
 	
-		If M->WD_BASEADI == '2'	.AND. M->WD_GERFIN = '2'	// Valida se ï¿½ financeiro = N e Adto = N
+		If M->WD_BASEADI == '2'	.AND. M->WD_GERFIN = '2'	// Valida se é financeiro = N e Adto = N
 			//MSGALERT(cParam)
 	        If Empty(M->WD_FORN)    .OR. Empty(M->WD_LOJA)
-		        MsgInfo("Campos obrigatorios : Fornecedor, Loja", "Aviso")
+		        MsgInfo("Campos obrigatórios : Fornecedor, Loja", "Aviso")
         	EndIf
 		Endif
     EndIF
 
 	If cParam == "INCLUI_DESP"	//"CONFIRMA_DESPESA".AND. nOpcao    == 2 //1
 		//MSGALERT(cParam)
-		If SWD->WD_BASEADI == '2'	.AND. SWD->WD_GERFIN = '2'	// Valida se ï¿½ financeiro = N e Adto = N
+		If SWD->WD_BASEADI == '2'	.AND. SWD->WD_GERFIN = '2'	// Valida se é financeiro = N e Adto = N
 	        If Empty(SWD->WD_FORN)    .OR. Empty(SWD->WD_LOJA)
-	        	MsgInfo("Pedido de Compra nao sera gerado", "Aviso")
+	        	MsgInfo("Pedido de Compra não será gerado", "Aviso")
 			ElseIf ! Empty(SWD->WD_ZNUMPC)
-		        MsgInfo("Campos obrigatorios : Fornecedor, Loja","PC nao sera gerado")
+		        MsgInfo("Campos obrigatórios : Fornecedor, Loja","PC não será gerado")
 			Else
     			aArea := GetArea()
 	    		aAreaSWD := SWD->(GetArea())

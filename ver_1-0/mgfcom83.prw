@@ -8,7 +8,7 @@ Data................: Abril/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada MT125GRV
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

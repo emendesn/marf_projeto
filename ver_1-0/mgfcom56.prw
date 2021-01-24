@@ -8,7 +8,7 @@ Data.....:              Nov/2017
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada MA125BUT
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -50,9 +50,9 @@ Local nPosProd := aScan(aHeader,{|x| Alltrim(x[2])=="C3_PRODUTO"})
 Local nPosItem := aScan(aHeader,{|x| Alltrim(x[2])=="C3_ITEM"})
 
 AAdd(aParamBox, {1, "Quantidade"		, 0																															, "@E 999,999,999.999"			,"Positivo()"							, 		,	, 070	, .F.	})
-AAdd(aParamBox, {1, "Data Inicio"		, CToD(Space(8))																											, 								, 										, 		,	, 070	, .F.	})
+AAdd(aParamBox, {1, "Data Início"		, CToD(Space(8))																											, 								, 										, 		,	, 070	, .F.	})
 AAdd(aParamBox, {1, "Data Fim"			, CToD(Space(8))																											, 								, 										, 		,	, 070	, .F.	})
-AAdd(aParamBox, {1, "Tipo de Operacao"	, Space(tamSx3("FM_TIPO")[1]) 																								, "@!"							,'Vazio() .or. ExistCpo("SX5","DJ"+mv_par04) .and. mv_par04 <= "99"'		, "DJ" 	,	, 070	, .F.	})
+AAdd(aParamBox, {1, "Tipo de Operação"	, Space(tamSx3("FM_TIPO")[1]) 																								, "@!"							,'Vazio() .or. ExistCpo("SX5","DJ"+mv_par04) .and. mv_par04 <= "99"'		, "DJ" 	,	, 070	, .F.	})
 
 If ParamBox(aParambox, "Atualiza Campos Contrato"	, @aRet, {|| VldData()} , , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
 	ProcRegua(Len(aCols))
@@ -79,8 +79,8 @@ If ParamBox(aParambox, "Atualiza Campos Contrato"	, @aRet, {|| VldData()} , , .T
 			aCols[nCnt][nPosOper] := mv_par04
 			aCols[nCnt][nPosTes] := MaTesInt(1,mv_par04,cA125Forn,cA125Loj,"F",aCols[nCnt][nPosProd])
 			If Empty(aCols[nCnt][nPosTes])
-				APMsgAlert("Nao  foi encontrado o 'TES' para o item: "+aCols[nCnt][nPosItem]+CRLF+;
-				"Verifique se existe regra de 'TES inteligente' cadastrada para este Tipo de Operacao.")
+				APMsgAlert("Não foi encontrado o 'TES' para o item: "+aCols[nCnt][nPosItem]+CRLF+;
+				"Verifique se existe regra de 'TES inteligente' cadastrada para este Tipo de Operação.")
 			Endif	
 		Endif	
 	Next
@@ -101,7 +101,7 @@ Local nPosDtFim := aScan(aHeader,{|x| Alltrim(x[2])=="C3_DATPRF"})
 Local nPosItem := aScan(aHeader,{|x| Alltrim(x[2])=="C3_ITEM"})
 
 If (Empty(mv_par02) .and. !Empty(mv_par03)) .or. (!Empty(mv_par02) .and. Empty(mv_par03)) 
-	If !APMsgYesNo("Foi informado apenas uma data para a atualizacao."+CRLF+;
+	If !APMsgYesNo("Foi informado apenas uma data para a atualização."+CRLF+;
 	"Deseja continuar ?")
 		lRet := .F.
 	Endif
@@ -119,13 +119,13 @@ Endif
 If lRet
 	If !Empty(mv_par02) .or. !Empty(mv_par03)
 		// verifica datas informadas nos parametros com relacao as datas dos itens
-		aEval(aCols,{|x,y| IIf((lRet .and. !Empty(mv_par03) .and. !aCols[y][Len(aCols[y])] .and. aCols[y][nPosDtIni]>mv_par03),(lRet:=.F.,APMsgStop("Data final do parametro menor que a Data inicial do item: "+aCols[y][nPosItem])),IIf((lRet .and. !Empty(mv_par02) .and. !aCols[y][Len(aCols[y])] .and. aCols[y][nPosDtFim]<mv_par02),(lRet:=.F.,APMsgStop("Data inicial do parametro maior que a Data final do item: "+aCols[y][nPosItem])),Nil)) })
+		aEval(aCols,{|x,y| IIf((lRet .and. !Empty(mv_par03) .and. !aCols[y][Len(aCols[y])] .and. aCols[y][nPosDtIni]>mv_par03),(lRet:=.F.,APMsgStop("Data final do parâmetro menor que a Data inicial do item: "+aCols[y][nPosItem])),IIf((lRet .and. !Empty(mv_par02) .and. !aCols[y][Len(aCols[y])] .and. aCols[y][nPosDtFim]<mv_par02),(lRet:=.F.,APMsgStop("Data inicial do parâmetro maior que a Data final do item: "+aCols[y][nPosItem])),Nil)) })
 	Endif
 Endif		
 
 If lRet		
 	If !Empty(mv_par01) .or. !Empty(mv_par02) .or. !Empty(mv_par03) .or. !Empty(mv_par04)
-		If !APMsgYesNo("Esta acao ira alterar todos os itens do Contrato."+CRLF+;
+		If !APMsgYesNo("Esta ação irá alterar todos os itens do Contrato."+CRLF+;
 		"Deseja continuar ?")
 			lRet := .F.
 		Endif

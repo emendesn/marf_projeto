@@ -13,7 +13,7 @@ Data.....:              03/04/2017
 Descricao / Objetivo:   Amarracao com o RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================*/
 User Function MGFCRM12(xRet)
@@ -24,7 +24,7 @@ User Function MGFCRM12(xRet)
     /*---------------------------------------------------------------+
     | Mensagem de aviso de descontinuidade do programa MGFCRM12.prw  |
     +---------------------------------------------------------------*/
-    MsgAlert( OEMToANSI( "A tecla [F4] - busca unitï¿½ria do RAMI - sera descontinuada em breve. Passe a usar a nova funcionalidade [F2]: selecao mï¿½ltipla de RAMI." ) )
+    MsgAlert( OEMToANSI( "A tecla [F4] - busca unitária do RAMI - será descontinuada em breve. Passe a usar a nova funcionalidade [F2]: seleção múltipla de RAMI." ) )
 
 
 	MV_PAR01			:= space(6)
@@ -45,7 +45,7 @@ User Function MGFCRM12(xRet)
 		empty(cEspecie) .or.;
 		empty(dDEmissao)
 
-			msgAlert("Para associar a RAMI ï¿½ necessario preencher o cabecalho.")
+			msgAlert("Para associar a RAMI é necessário preencher o cabeçalho.")
 			return
 		endif
 	elseif cFormul == "N"
@@ -57,7 +57,7 @@ User Function MGFCRM12(xRet)
 		empty(cNFiscal) .or.;
 		empty(cSerie)
 
-			msgAlert("Para associar a RAMI ï¿½ necessario preencher o cabecalho.")
+			msgAlert("Para associar a RAMI é necessário preencher o cabeçalho.")
 			return
 		endif
 	endif
@@ -68,7 +68,7 @@ User Function MGFCRM12(xRet)
 
 	aadd(aParamBox, {1, "Senha do RAMI"	, MV_PAR01	, , , "ZAV2" , , 070	, .F.	})
 
-	if paramBox(aParambox, "Relatorio de Anï¿½lise de Mercado Interno"	, @aRet, { || !empty(MV_PAR01) }, , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
+	if paramBox(aParambox, "Relatório de Análise de Mercado Interno"	, @aRet, { || !empty(MV_PAR01) }, , .T. /*lCentered*/, 0, 0, , , .F. /*lCanSave*/, .F. /*lUserSave*/)
 		if INCLUI
 			M->F1_ZSENHA := MV_PAR01
 			F1ZSENHA := M->F1_ZSENHA
@@ -183,9 +183,9 @@ static function loadItens(cCodRAMI)
 		SF4->(DBGoTop())
 		If SF4->(dbSeek(xFilial("SF4")+QRYZAW->D2_TES))
 			if empty(QRYZAW->F4_TESDV) .OR. Empty(QRYZAW->F4_ZTESDE1)
-				APMsgStop("Tes de Devolucao nao informado para o TES de saida: " + QRYZAW->D2_TES + "." + CRLF + ;
+				APMsgStop("Tes de Devolução não informado para o TES de saída: " + QRYZAW->D2_TES + "." + CRLF + ;
 				"Verifique o cadastro do TES (Campos F4_TESDV e F4_ZTESDE1)." + CRLF + ;
-				"Nao  sera possivel incluir a Nota de Devolucao.")
+				"Não será possível incluir a Nota de Devolução.")
 
 				lContinua := .F.
 				exit
@@ -369,7 +369,7 @@ static function loadItens(cCodRAMI)
 
 		if isInCallStack( "MATA103" )
 			If MaFisFound()
-				A103VldNFO(Len(aCols))//Verifica Notas de Complemento/Devolucao vinculadas a NFE
+				A103VldNFO(Len(aCols))//Verifica Notas de Complemento/Devolução vinculadas a NFE
 			Endif
 		endif
 
@@ -385,7 +385,7 @@ return
 //------------------------------------------------------
 //------------------------------------------------------
 user function ALTRAMI()
-	msgAlert("Nao e permitido alterar os itens do RAMI.")
+	msgAlert("Não é permitido alterar os itens do RAMI.")
 return .F.
 
 //------------------------------------------------------
@@ -506,10 +506,10 @@ return (cRetCF)
 Programa.:              MGFCR12A
 Autor....:              wanderley.silva@totvs.com.br
 Data.....:              26/12/2017
-Descricao / Objetivo:   Validaï¿½o para X3_WHEN dos campos
+Descricao / Objetivo:   Validaço para X3_WHEN dos campos
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================*/
 User Function MGFCR12A()
@@ -525,40 +525,40 @@ Return(l_Ret)
 Programa.:              MGFCR12B
 Autor....:              wanderley.silva@totvs.com.br
 Data.....:              26/12/2017
-Descricao / Objetivo:   Validaï¿½o para nao permitir alteraï¿½ao do codigo
+Descricao / Objetivo:   Validaço para nao permitir alteraçao do codigo
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================*/
 User Function MGFCR12B( n_Type )
 Local  l_Ret    :=  .T.
 Local  aArea    :=  GetArea()
-Local  c_Var    :=  ReadVar() // Obtï¿½m o nome da variavel
-Local  c_Cont   :=  &( ReadVar() ) // Obtï¿½m o conteudo da variavel
+Local  c_Var    :=  ReadVar() // Obtém o nome da variável
+Local  c_Cont   :=  &( ReadVar() ) // Obtém o conteúdo da variável
 Static c_Cod
 
 If AllTrim( M->cTipo ) == "D" .and. !IsInCallStack( "LOJA720" )
    If n_Type == 1
-      c_Cod := &( ReadVar() ) // Obtï¿½m o conteudo da variavel aCols[n, n_PosCod]
+      c_Cod := &( ReadVar() ) // Obtém o conteúdo da variável aCols[n, n_PosCod]
    ElseIf AllTrim( c_Var ) == "M->D1_COD"
           If &c_Var <> c_Cod //  >>>-----> Tentativa de trocar ou inserir codigo de produto no D1_COD.
              If .not. Empty( c_Cod )
                 DbSelectArea( "SB1" )
                 DbSetOrder( 1 ) // B1_FILIAL + B1_COD
                 If DbSeek( xFilial( "SB1" ) + c_Cod )
-                   MsgAlert( OEMToANSI( "Troca de produto nao permitido para Devolucao (com RAMI)." ) )
+                   MsgAlert( OEMToANSI( "Troca de produto não permitido para Devolução (com RAMI)." ) )
                 EndIf
                 &c_Var  :=  c_Cod
              Else
-                MsgAlert( OEMToANSI( "Inserï¿½ï¿½o novo produto nao permitido para Devolucao (com RAMI)." ) )
-                &c_Var  :=  c_Cod+CRLF  //  {>>>-----> usado a constante CRLF para forcar o carriage return no campo D1_COD.
+                MsgAlert( OEMToANSI( "Inserção novo produto não permitido para Devolução (com RAMI)." ) )
+                &c_Var  :=  c_Cod+CRLF  //  {>>>-----> usado a constante CRLF para forçar o carriage return no campo D1_COD.
              EndIf
              l_Ret   :=  .F.
           EndIf
    ElseIf AllTrim( c_Var ) == "M->D1_QUANT" .or. AllTrim( c_Var ) == "M->D1_VUNIT"
           If &c_Var > c_Cod //  >>>-----> Tentativa de inserir valor maior no campo D1_QUANT ou D1_VUNIT.
-             MsgAlert( OEMToANSI( "O Valor Unitï¿½rio e/ou Quantidade nao deve ser maior na Devolucao (com RAMI)." ) )
+             MsgAlert( OEMToANSI( "O Valor Unitário e/ou Quantidade não deve ser maior na Devolução (com RAMI)." ) )
              &c_Var  :=  c_Cod
              l_Ret   :=  .F.
           EndIf
@@ -569,7 +569,7 @@ RestArea( aArea )
 Return( l_Ret )
 
 //-----------------------------------------------------------------
-// Verifica se RAMI digitada jï¿½ foi utilizada anteriormente
+// Verifica se RAMI digitada já foi utilizada anteriormente
 //-----------------------------------------------------------------
 static function chkRami()
 	local lRet		:= .T.
@@ -585,7 +585,7 @@ static function chkRami()
 	TcQuery cQrySD1 New Alias "QRYSD1"
 
 	if !QRYSD1->(EOF())
-		msgAlert("RAMI " + allTrim(MV_PAR01) + " jï¿½ utilizada em outra devolucao.")
+		msgAlert("RAMI " + allTrim(MV_PAR01) + " já utilizada em outra devolução.")
 		lRet := .F.
 	endif
 

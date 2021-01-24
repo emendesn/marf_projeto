@@ -10,10 +10,10 @@
 Programa............: MA030TOK
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: Contrato GAPS - MIT044- Cadastro de Clientes
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada no final do cadastro de Cliente
 =====================================================================================
 */
@@ -32,8 +32,8 @@ IF findfunction("U_MGFINT38")
 	lRet := U_MGFINT38('SA1','A1')           
 EndIF                  
 
-// Executa funcao para definicao do Codigo/Loja
-//Esta funcao devera ser executada por ultimo
+// Executa função para definição do Codigo/Loja
+//Esta função deverá ser executada por ultimo
 If lRet .And. FindFunction("U_MGFINT46")
 	lRet := U_MGFINT46(1) // 1 valida e 2 altera o codigo
 Endif		

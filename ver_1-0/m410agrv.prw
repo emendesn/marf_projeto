@@ -8,7 +8,7 @@ Data................: 25/10/2016
 Descricao / Objetivo: Ponto de entrada antes de gravar as alteracoes no PV
 Doc. Origem.........: Protheus-Taura Saida
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

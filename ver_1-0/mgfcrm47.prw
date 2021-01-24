@@ -7,10 +7,10 @@
 Programa............: MGFCRM49
 Autor...............: Flavio Dentello
 Data................: 08/03/2017 
-Descricao / Objetivo: Ponto de entrada para criar resoluï¿½ï¿½o da RAMI
+Descricao / Objetivo: Ponto de entrada para criar resolução da RAMI
 Doc. Origem.........: CRM- RAMI
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

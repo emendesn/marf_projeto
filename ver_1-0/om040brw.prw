@@ -10,11 +10,11 @@
 Programa............: OM040BRW
 Autor...............: Marcelo Carneiro
 Data................: 10/10/2017
-Descricao / Objetivo: Inclusao da Base de Conhecimento no cadastro de Motorista 
-Doc. Origem.........: MIT044- Alteracao na Grade do CDM
+Descricao / Objetivo: Inclusão da Base de Conhecimento no cadastro de Motorista 
+Doc. Origem.........: MIT044- Alteração na Grade do CDM
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Inclui botao no browse principal.
+Uso.................: Marfrig
+Obs.................: Inclui botão no browse principal.
 =====================================================================================
 */
 

@@ -8,10 +8,10 @@
 Programa.:              MGFCOM59 
 Autor....:              Antonio Carlos        
 Data.....:              10/11/2017                                                                                                            
-Descricao / Objetivo:   Exclusao na tabela de amarracao Contrato de Parceria x Filial de Entrega
+Descricao / Objetivo:   Exclusão na tabela de amarração Contrato de Parceria x Filial de Entrega
 Doc. Origem:            Compras - GAP ID104
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Ponto de Entrada executado no progama MATA125 
 ============================================================================================================================
 */  

@@ -7,22 +7,22 @@ Programa............: MGFFIS37
 Autor...............: Natanael Filho
 Data................: 16/JULHO/2018 
 Descricao / Objetivo: Fiscal
-Doc. Origem.........: 
+Doc. Origem.........: Marfrig
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: GAP 370 / Bloquear acesso do usuario a serie de entrada em uma nota de saida e vice versa
+Uso.................: Marfrig
+Obs.................: GAP 370 / Bloquear acesso do usuário a série de entrada em uma nota de saída e vice versa
 =====================================================================================
 */
 User Function MGFFIS37()
 
-Local aRotEnt := Separa(Alltrim(SuperGetMV("MGF_FIS37A",.T.,"MATA103,MATA140")),",",.F.) //Rotinas de documentos de entrada (Separadas por virgula).
-Local aRotSai := Separa(Alltrim(SuperGetMV("MGF_FIS37B",.T.,"MATA460A,MATA460B,MATA410,MATA920")),",",.F.) //Rotinas de documentos de saida (Separadas por virgula).
-Local aRotExc := Separa(Alltrim(SuperGetMV("MGF_FIS37C",.T.," ")),",",.F.) //Rotinas que devem ficar de fora do filtro MGFFIS37 (Separadas por virgula).
-Local aSerEnt := Separa(Alltrim(SuperGetMV("MGF_FIS37D",.T.,"100,101")),",",.F.) //Series de Entrada (Separadas por virgula).
-Local aSerSai := Separa(Alltrim(SuperGetMV("MGF_FIS37E",.T.,"200")),",",.F.) //Series de Saida (Separadas por virgula).
+Local aRotEnt := Separa(Alltrim(SuperGetMV("MGF_FIS37A",.T.,"MATA103,MATA140")),",",.F.) //Rotinas de documentos de entrada (Separadas por vírgula).
+Local aRotSai := Separa(Alltrim(SuperGetMV("MGF_FIS37B",.T.,"MATA460A,MATA460B,MATA410,MATA920")),",",.F.) //Rotinas de documentos de saída (Separadas por vírgula).
+Local aRotExc := Separa(Alltrim(SuperGetMV("MGF_FIS37C",.T.," ")),",",.F.) //Rotinas que devem ficar de fora do filtro MGFFIS37 (Separadas por vírgula).
+Local aSerEnt := Separa(Alltrim(SuperGetMV("MGF_FIS37D",.T.,"100,101")),",",.F.) //Séries de Entrada (Separadas por vírgula).
+Local aSerSai := Separa(Alltrim(SuperGetMV("MGF_FIS37E",.T.,"200")),",",.F.) //Séries de Saída (Separadas por vírgula).
 
 
-//Verifica se a Rotina esta no parametro de exceï¿½ï¿½es e jï¿½ retorna TRUE
+//Verifica se a Rotina está no parâmetro de exceções e já retorna TRUE
 If Len(aRotExc) > 0
 	For nCnt := 1 To Len(aRotExc)
 		If IsInCallStack(Alltrim(aRotExc[nCnt]))
@@ -31,11 +31,11 @@ If Len(aRotExc) > 0
 	Next
 EndIf
 
-//Verifica se a Rotina ï¿½ de saida.
+//Verifica se a Rotina é de saída.
 If Len(aRotSai) > 0
 	For nCnt := 1 To Len(aRotSai)
 		If IsInCallStack(Alltrim(aRotSai[nCnt]))
-			//Verifica se a serie ï¿½ de saida.
+			//Verifica se a serie é de saída.
 			If Len(aSerSai) > 0
 				For nCnt2 := 1 to Len(aSerSai)
 					If Alltrim(aSerSai[nCnt2]) == Alltrim(SX5->X5_CHAVE)
@@ -50,11 +50,11 @@ If Len(aRotSai) > 0
 EndIf
 
 
-//Verifica se a Rotina ï¿½ de Entrada.
+//Verifica se a Rotina é de Entrada.
 If Len(aRotEnt) > 0
 	For nCnt := 1 To Len(aRotEnt)
 		If IsInCallStack(Alltrim(aRotEnt[nCnt]))
-			//Verifica se a serie ï¿½ de saida.
+			//Verifica se a serie é de saída.
 			If Len(aSerSai) > 0
 				For nCnt2 := 1 to Len(aSerEnt)
 					If Alltrim(aSerEnt[nCnt2]) == Alltrim(SX5->X5_CHAVE)

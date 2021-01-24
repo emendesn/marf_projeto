@@ -8,7 +8,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MT100TOK
 =====================================================================================
 */
@@ -20,20 +20,20 @@ Local lRet := .T.
 If l103Class
 	If Empty(SF1->F1_ZVLRTOT)
 		lRet := .F.
-		ApMsgAlert("Valor total Marfrig nao foi informado."+CRLF+;
-		"Acesse a opcao 'Valor Total Marfrig', no menu 'Outras Acoes' e informe o valor total da nota.")
+		ApMsgAlert("Valor total Marfrig não foi informado."+CRLF+;
+		"Acesse a opção 'Valor Total Marfrig', no menu 'Outras Ações' e informe o valor total da nota.")
 	Else
 		If Empty(SF1->F1_ZBLQVAL) .or. SF1->F1_ZBLQVAL == "S" // somente valida valores totais se bloqueio estiver em branco ou como sim
 			If !(MaFisFound() .and. MaFisRet(,"NF_TOTAL") == SF1->F1_ZVLRTOT) // se valores diferentes, bloqueia documento
 				If Abs(MaFisRet(,"NF_TOTAL") - SF1->F1_ZVLRTOT) > GetMv("MGF_TOLNFE",,0) 
 					lRet := .F.
-					APMsgAlert("Valor total digitado nao ï¿½ igual ao Valor total calculado pelo sistema ( aba Totais da nota )."+CRLF+;
-					"Nao  sera possivel confirmar a Classificacao do documento e o mesmo ficara bloqueado aguardando aprovacao."+CRLF+;
-					"Sera necessario sair da tela pelo botao 'Cancelar'.")
+					APMsgAlert("Valor total digitado não é igual ao Valor total calculado pelo sistema ( aba Totais da nota )."+CRLF+;
+					"Não será possível confirmar a Classificação do documento e o mesmo ficará bloqueado aguardando aprovação."+CRLF+;
+					"Será necessário sair da tela pelo botão 'Cancelar'.")
 					If Empty(SF1->F1_ZBLQVAL)
 						If APMsgYesNo("Confirma bloqueio do Documento ?"+CRLF+;
 						CRLF+;
-						"OBS: Apos esta operacao, nao sera mais possivel alterar o Valor Total Marfrig.")
+						"OBS: Após esta operação, não será mais possível alterar o Valor Total Marfrig.")
 							Com66Bloq()
 						Endif		
 					Endif	
@@ -57,18 +57,18 @@ If l103Class
 			Endif			
 				
 			If !lRet	
-				//APMsgAlert("Valor total calculado pelo sistema nesta classificacao nao ï¿½ igual ao Valor total calculado pelo sistema na classificacao que gerou o bloqueio do documento."+CRLF+;
-				//"Ou campo de Valor Total Marfrig foi alterado pelo usuario."+CRLF+;
-				//"Utilize a mesma TES da classificacao anterior no(s) iten(s) e nao altere nenhum campo que mude o valor do documento, para que o valor total nao seja diferente."+CRLF+;
-				//"Nao  sera possivel confirmar a Classificacao do documento e o mesmo ficara bloqueado aguardando aprovacao."+CRLF+;
-				//"Sera necessario sair da tela pelo botao 'Cancelar'.")
-				APMsgAlert("Valor total digitado nao ï¿½ igual ao Valor total calculado pelo sistema ( aba Totais da nota )."+CRLF+;
-				"Nao  sera possivel confirmar a Classificacao do documento e o mesmo ficara bloqueado aguardando aprovacao."+CRLF+;
-				"Sera necessario sair da tela pelo botao 'Cancelar'.")
+				//APMsgAlert("Valor total calculado pelo sistema nesta classificação não é igual ao Valor total calculado pelo sistema na classificação que gerou o bloqueio do documento."+CRLF+;
+				//"Ou campo de Valor Total Marfrig foi alterado pelo usuário."+CRLF+;
+				//"Utilize a mesma TES da classificação anterior no(s) iten(s) e não altere nenhum campo que mude o valor do documento, para que o valor total não seja diferente."+CRLF+;
+				//"Não será possível confirmar a Classificação do documento e o mesmo ficará bloqueado aguardando aprovação."+CRLF+;
+				//"Será necessário sair da tela pelo botão 'Cancelar'.")
+				APMsgAlert("Valor total digitado não é igual ao Valor total calculado pelo sistema ( aba Totais da nota )."+CRLF+;
+				"Não será possível confirmar a Classificação do documento e o mesmo ficará bloqueado aguardando aprovação."+CRLF+;
+				"Será necessário sair da tela pelo botão 'Cancelar'.")
 				
 				If APMsgYesNo("Confirma bloqueio do Documento ?"+CRLF+;
 				CRLF+;
-				"OBS: Apos esta operacao, nao sera mais possivel alterar o Valor Total Marfrig.")
+				"OBS: Após esta operação, não será mais possível alterar o Valor Total Marfrig.")
 					Com66Bloq()
 				Endif		
 			Endif	
@@ -98,9 +98,9 @@ cGrupo := GetMv("MGF_GRPNFE") //SuperGetMv("MV_NFAPROV")
 //	cGrupo := IIf((SY1->(Found()) .and. !Empty(SY1->Y1_GRAPROV)),SY1->Y1_GRAPROV,cGrupo)
 //EndIf
 					
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Ponto de entrada para alterar o Grupo de Aprovacao.          ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Ponto de entrada para alterar o Grupo de Aprovacao.          ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 //If ExistBlock("MT140APV")
 //	cGrupo := ExecBlock("MT140APV",.F.,.F.,{cGrupo})
 //EndIf
@@ -140,10 +140,10 @@ If !Empty(cGrupo) .And. SAL->(dbSeek(xFilial("SAL")+cGrupo))
 	APMsgInfo("Documento bloqueado com sucesso.")
 Else
 	If Empty(cGrupo)
-		ApMsgAlert("Grupo de aprovacao para divergencia de valor da NFE nao informado no parametro 'MGF_GRPNFE'.")
+		ApMsgAlert("Grupo de aprovação para divergência de valor da NFE não informado no parâmetro 'MGF_GRPNFE'.")
 	Else	
-		APMsgAlert("Nao  foi possivel encontrar o cadastro do Grupo de Aprovacao para este documento x aprovador. Grupo: "+cGrupo+"."+CRLF+;
-		"Verifique as regras de aprovacao.")
+		APMsgAlert("Não foi possível encontrar o cadastro do Grupo de Aprovação para este documento x aprovador. Grupo: "+cGrupo+"."+CRLF+;
+		"Verifique as regras de aprovação.")
 	Endif	
 Endif	
 

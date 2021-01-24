@@ -16,7 +16,7 @@ Solicitante.........: Cliente
 Uso.................: Marfrig
 Fontes do FAT14 são : MGFFAT10.prw e MGFFAT16.prw
 Tabelas de bloqueio : SZJ-CADASTRO DE TIPO DE PEDIDO  SZT-Bloqueios    e  SZV-Bloqueios por Pedidos
-=====================================================================================
+===========================MGF_==========================================================
 */            
 
 /*/{Protheus.doc} TMSJASEX
@@ -87,7 +87,7 @@ Endif
 //wvn
 If _cFilTmsMs $ GETMV("MGF_TMSEXP")
 	IF ALTERA = .T.   // EXECUTA POR ALTERAÇÃO
-		IF EMPTY(ZB8->ZB8_ZTMSID )
+		IF EMPTY(ZB8->ZB8_ZCODES) .OR. EMPTY(ZB8->ZB8_ZDTEST)
 			RETURN
 		ENDIF
 		_xZB8TMSACA := 'A'	

@@ -14,6 +14,9 @@ Exibe as Despesas de Pré Cálculo para a EXP corrente
 @author TOTVS
 @since JUNHO/2019
 @version P12
+
+PRB0040999 - Luiz Cesar (DMS) -Tratamento dos Parâmetros MGF_EEC67D e MGF_EE67E para inicializar Centro de Custo e Item Contabil 
+
 /*/
 user function MGFEEC67()
 	local	cDespFrete	:= allTrim( superGetMv( "MGF_EEC67A", , "416,419" ) )
@@ -23,6 +26,19 @@ user function MGFEEC67()
 	private aCamposObr	:= { "xEETDOCTO" , "xC7XSERIE" , "xC7XESPECI" , "xC7XOPER" , "xEETDESADI" , "xEETVALORR" , "xEETDTVENC" , "xEETNATURE" , "xEETZCCUST" , "xEETZITEMD" , "xEETZNFORN" , "xZEETIPODE" , "xY5COD" }
 	private lWeston		:= .F.
 	private lFobFob		:= .F.
+
+    private cDespCC     := ""
+	private cDespItem   := ""
+    
+	If !ExisteSx6("MGF_EEC67D")
+		CriarSX6("MGF_EEC67D", "C", "Centro de Custo para despesas de Pre-Calculo"	, '2403' )	
+	EndIf
+	cDespcc := alltrim(supergetmv("MGF_EEC67D",,"2403"))
+
+	If !ExisteSx6("MGF_EEC67E")
+		CriarSX6("MGF_EEC67E", "C", "Item Contabil para despesas de Pre-Calculo"	, '12' )	
+	EndIf
+	cDespitem := alltrim(supergetmv("MGF_EEC67E",,"12"))
 
 	fwMsgRun(, { || getExps() }		, "Verificando EXPs"					, "Aguarde. Selecionando EXPs..." )
 
@@ -94,8 +110,8 @@ user function MGFEEC67()
 							cToD("//")																													,; //[16] - "Vencimento"
 							getAdvFVal( "SYB" , "YB_NATURE" , xFilial("SYB") + QRYZED->ZEE_CODDES , 1 , "")												,; //[17] - "Natureza"
 							space( tamSx3("EET_PREFIX")[1] )																							,; //[18] - "Prefixo"
-							"2404"																														,; //[19] - "Centro Custo"
-							"12"																														,; //[20] - "Item Ctb.Deb"
+							cDespcc																														,; //[19] - "Centro Custo"
+							cDespitem																													,; //[20] - "Item Ctb.Deb"
 							space( tamSx3("EET_ZNFORN")[1] )																							,; //[21] - "NF FORNEC"
 							space( tamSx3("EET_ZOBS")[1] )																								,; //[22] - "Observação"
 							QRYZED->ZEE_TIPODE /*space( tamSx3("ZEE_TIPODE")[1] )*/																		,; //[23] - "Tipo Despesa"
@@ -639,8 +655,8 @@ static function posIncLine()
 	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETDTVENC"	):nOrder ] := cToD("//")
 	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETNATURE"	):nOrder ] := space( tamSx3( "YB_NATURE" )[1]		)
 	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETPREFIX"	):nOrder ] := space( tamSx3( "EET_PREFIX" )[1] 	)
-	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZCCUST"	):nOrder ] := "2404"
-	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZITEMD"	):nOrder ] := "12"
+	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZCCUST"	):nOrder ] := cDespcc
+	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZITEMD"	):nOrder ] := cDespitem
 	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZNFORN"	):nOrder ] := space( tamSx3( "EET_ZNFORN" )[1]		)
 	aDespes[ oDespesBrw:at() , oDespesBrw:GetColByID("xEETZOBS"		):nOrder ] := space( tamSx3("EET_ZOBS")[1] )
 

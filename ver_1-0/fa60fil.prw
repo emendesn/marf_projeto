@@ -6,7 +6,7 @@ Data................: Set/2017
 Descricao / Objetivo: Ponto de entrada para filtragem dos titulos no bordero de cobranca
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

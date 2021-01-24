@@ -1,16 +1,16 @@
 #include "totvs.ch" 
 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF34R11	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½ 04/01/18	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Lancamento Contï¿½bil x NF Entrada (Modulo 34-CTB)							ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atraves da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF34R11	ºAutor  ³ Geronimo Benedito Alves																	ºData ³ 04/01/18	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Lançamento Contábil x NF Entrada (Módulo 34-CTB)							º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela através da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF34R11()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -19,65 +19,65 @@ User Function MGF34R11()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Contab. Gerencial - Lancamento Contï¿½bil x NF Entrada" )	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Lancamento Contï¿½bil x NF Entrada")						//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Lancamento Contï¿½bil x NF Entrada"} )						//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Lancamento Contï¿½bil x NF Entrada"} )						//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}  )														//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} } )												//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Contab. Gerencial - Lançamento Contábil x NF Entrada" )	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Lançamento Contábil x NF Entrada")						//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Lançamento Contábil x NF Entrada"} )						//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Lançamento Contábil x NF Entrada"} )						//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}  )														//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} } )												//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02											 03								 04	 05	 06	 07	 08	 09			
-	Aadd(_aCampoQry, {"F1_FILIAL"	,"COD_EMPRESA				as COD_EMPRES"	,"Cï¿½d. Empresa"					,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"F1_DTLANC"	,"DATA_LANCAMENTO			as DT_LANCAME"	,"Data Lancamento"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"F1_EMISSAO"	,"DATA_EMISSAO				as DT_EMISSAO"	,"Data Emissao"					,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"F1_FILIAL"	,"COD_EMPRESA				as COD_EMPRES"	,"Cód. Empresa"					,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"F1_DTLANC"	,"DATA_LANCAMENTO			as DT_LANCAME"	,"Data Lançamento"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"F1_EMISSAO"	,"DATA_EMISSAO				as DT_EMISSAO"	,"Data Emissão"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_DOC"		,"NOTA_FISCAL				as NOT_FISCAL"	,"Nota Fiscal"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_SERIE"	,"SERIE"									,"Serie"						,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_CF"		,"COD_FISCAL"								,"Cï¿½d. Fiscal"					,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_CF"		,"COD_FISCAL"								,"Cód. Fiscal"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F4_CODIGO"	,"COD_TES"									,"TES"							,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"F4_TEXTO"	,"DESC_TES"									,"Descricao da TES"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"F4_TEXTO"	,"DESC_TES"									,"Descrição da TES"				,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F4_FINALID"	,"FINALIDADE_TES			as FINALIDTES"	,"Finalidade da TES"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"F1_FORNECE"	,"COD_FORNECEDOR			as COD_FORNEC"	,"Cï¿½d. Fornecedor"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"F1_FORNECE"	,"COD_FORNECEDOR			as COD_FORNEC"	,"Cód. Fornecedor"				,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_NOME"		,"NOME_FORNECEDOR			as NOMEFORNEC"	,"Nome Fornecedor"				,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_INSCR"	,"CLIENTE_INSC_ESTADUAL		as INSCESTATU"	,"Inscr. Estadual Cliente"		,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_CGC"		,"CNPJ"										,"Cnpj"							,""	,18	,""	,"@!"	,""	,"@!"	})
-	Aadd(_aCampoQry, {"A2_END"		,"ENDERECO"									,"Endereco"						,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"A2_END"		,"ENDERECO"									,"Endereço"						,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_BAIRRO"	,"BAIRRO"									,"Bairro"						,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_CEP"		,"CEP"										,"Cep"							,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_MUN"		,"CIDADE"									,"Cidade"						,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_EST"		,"UF"										,"UF"							,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"A2_ESTADO"	,"ESTADO"									,"ESTADO"						,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"YA_DESCR"	,"PAIS"										,"Paï¿½s"							,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_COD"		,"COD_ITEM"									,"Cï¿½d. Item"					,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"B1_DESC"		,"DESC_ITEM"								,"Descricao do Item"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"YA_DESCR"	,"PAIS"										,"País"							,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_COD"		,"COD_ITEM"									,"Cód. Item"					,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"B1_DESC"		,"DESC_ITEM"								,"Descrição do Item"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"B1_UM"		,"UNIDADE_MEDIDA			as UNIDADMEDI"	,"Unidade de Medida"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"BM_GRUPO"	,"COD_GRUPO_ITEM			as CODGRUPITE"	,"Codigo Grupo Item"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"BM_DESC"		,"DESC_GRUPO_ITEM			as DESGRUPITE"	,"Descricao Grupo Item"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"BM_GRUPO"	,"COD_GRUPO_ITEM			as CODGRUPITE"	,"Código Grupo Item"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"BM_DESC"		,"DESC_GRUPO_ITEM			as DESGRUPITE"	,"Descrição Grupo Item"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"B1_POSIPI"	,"NCM_PRODUTO				as NCMPRODUTO"	,"Nomenclatura Produto"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"ED_CODIGO"	,"COD_NATUREZA 				as CODNATUREZ"	,"Cï¿½d. Natureza"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"ED_DESCRIC"	,"DESC_NATUREZA				as DESNATUREZ"	,"Descricao Natureza"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"E4_CODIGO"	,"COD_CONDICAO_PAG			as CODI_PAGTO"	,"Cï¿½d. Cond. Pagto"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"ED_CODIGO"	,"COD_NATUREZA 				as CODNATUREZ"	,"Cód. Natureza"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"ED_DESCRIC"	,"DESC_NATUREZA				as DESNATUREZ"	,"Descrição Natureza"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"E4_CODIGO"	,"COD_CONDICAO_PAG			as CODI_PAGTO"	,"Cód. Cond. Pagto"				,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"E4_DESCRI"	,"DESC_CONDICAO_PAG			as DESC_PAGTO"	,"Descri. Cond. Pagto"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_OP"		,"OBJ_ENTRADA				as OBJ_ENTRAD"	,"Objt. Entrada"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_QUANT"	,"QTDE_CABECAS				as QTDE_CABEC"	,"Quantidade Cabeï¿½as"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_QUANT"	,"QTDE_CABECAS				as QTDE_CABEC"	,"Quantidade Cabeças"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"ZZN_QTKG"	,"QTDE_RECEBIDA				as QTDE_RECEB"	,"Quantidade Recebida"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_ZVOL"		,"VOLUME"									,"Volume"						,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_VUNIT"	,"PRECO_UNITARIO			as PRECO_UNIT"	,"Preco Unitï¿½rio"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_TOTAL"	,"VALOR_CONTABIL			as VLCONTABIL"	,"Valor Contï¿½bil"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"C7_CLVL"		,"CLASSE_VALOR_CONTABIL		as CL_VL_CONT"	,"Classe Vlr Contï¿½bil"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_VUNIT"	,"PRECO_UNITARIO			as PRECO_UNIT"	,"Preço Unitário"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_TOTAL"	,"VALOR_CONTABIL			as VLCONTABIL"	,"Valor Contábil"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"C7_CLVL"		,"CLASSE_VALOR_CONTABIL		as CL_VL_CONT"	,"Classe Vlr Contábil"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_BASEICM"	,"BASE_CALCULO				as BASE_CALC"	,"Base de Calculo"				,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F7_BASEICM"	,"PRC_REDUCAO_BASE_CALCULO 	as REDUBCALC" 	,"% Red. Base de Calculo"		,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_ICMS"		,"ICMS"										,"Icms"							,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_VALIPI"	,"IPI"										,"IPI"							,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_ICMSRET"	,"VALOR_ICMS_SOLIDARIO		as VL_ICMSSOL"	,"Valor ICMS Solidï¿½rio"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_II"		,"VALOR_IMPOSTO_IMPORTACAO	as VL_IMPIMPO"	,"Vlr Imp Importacao"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_ICMSRET"	,"VALOR_ICMS_SOLIDARIO		as VL_ICMSSOL"	,"Valor ICMS Solidário"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_II"		,"VALOR_IMPOSTO_IMPORTACAO	as VL_IMPIMPO"	,"Vlr Imp Importação"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_ICMSDIF"	,"VALOR_ICMS_ST 			as VL_ICMS_ST"	,"Vlr ICMS ST"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_VALINS"	,"VALOR_INSS"								,"Valor INSS"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_VALCMAJ"	,"VALOR_COFINS_MAJORADA		as VL_MAJORAD"	,"Valor Cofins Majorada"		,""	,""	,""	,""	,""	,""	})
@@ -94,51 +94,51 @@ User Function MGF34R11()
 	Aadd(_aCampoQry, {"B1_REFBAS"	,"BASE_CALC_ST 				as CALCULOST"	,"Base Calc ST"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"C7_ICMSRET"	,"VALOR_ICMS_RETIDO 		as VL_ICMSRET"	,"Valor Icms Retido"			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"B1_RETOPER"	,"PIS_COFINS"								,"Pis Cofins"					,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"A2_TIPO"		,"FISICA_JURIDICA			as FISICAJURI"	,"Fisica/Jurï¿½dica"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"CT1_CONTA"	,"COD_CONTA_CONTABIL		as CODCONTABI"	,"Cï¿½d. Conta Contï¿½bil"			,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"CT1_DESC01"	,"DESC_CONTA_CONTABIL		as DESCONTABI"	,"Descricao Conta Contï¿½bil"		,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"B1_CONTA"	,"COD_CONTA_CONTABIL_PROD	as CODCTBPROD"	,"Cï¿½d Cta Contï¿½b Produto"		,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"CT1_DESC01"	,"DESC_CONTA_CONTABIL_PROD	as DESCTBPROD"	,"Descricao Cta Contï¿½b Produto"	,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_PEDIDO"	,"NUM_PEDIDO"								,"Nï¿½ Pedido"					,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"A2_TIPO"		,"FISICA_JURIDICA			as FISICAJURI"	,"Fisica/Jurídica"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"CT1_CONTA"	,"COD_CONTA_CONTABIL		as CODCONTABI"	,"Cód. Conta Contábil"			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"CT1_DESC01"	,"DESC_CONTA_CONTABIL		as DESCONTABI"	,"Descrição Conta Contábil"		,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"B1_CONTA"	,"COD_CONTA_CONTABIL_PROD	as CODCTBPROD"	,"Cód Cta Contáb Produto"		,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"CT1_DESC01"	,"DESC_CONTA_CONTABIL_PROD	as DESCTBPROD"	,"Descrição Cta Contáb Produto"	,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_PEDIDO"	,"NUM_PEDIDO"								,"Nº Pedido"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_CHVNFE"	,"CHAVE_ACESSO				as CHV_ACESSO"	,"Chave de Acesso"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"W6_DI_NUM"	,"NUM_DI"									,"Nï¿½ Declar. Impost."			,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"W6_DI_NUM"	,"NUM_DI"									,"Nº Declar. Impost."			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"W6_DTREG_D"	,"DATA_NUM_DI				as DT_NUM_DI"	,"Data Declar. Impost."			,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"F1_ZPROTNF"	,"PROTOCOLO"								,"Protocolo"					,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"XXF1FORMUL"	,"FORMULARIO_PROPRIO		as FORPROPRIO"	,"Formulario Prï¿½prio"			,"C",03	,0	,"!",""	,"!"})
+	Aadd(_aCampoQry, {"XXF1FORMUL"	,"FORMULARIO_PROPRIO		as FORPROPRIO"	,"Formulário Próprio"			,"C",03	,0	,"!",""	,"!"})
 	Aadd(_aCampoQry, {"D1_NFORI"	,"NF_ORIGEM"								,"NF Origem"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_SERIORI"	,"SERIE_NF_ORIGEM			as SERIENFORI"	,"Serie Origem"					,""	,""	,""	,""	,""	,""	})
 	Aadd(_aCampoQry, {"D1_ITEMORI"	,"ITEM_NF_ORIGEM			as ITEMNFORIG"	,"Item NF Origem"				,""	,""	,""	,""	,""	,""	})
-	Aadd(_aCampoQry, {"D1_DTDIGIT"	,"DATA_DIGITACAO			as DATADIGITA"	,"Data Digitacao"				,""	,""	,""	,""	,""	,""	})
+	Aadd(_aCampoQry, {"D1_DTDIGIT"	,"DATA_DIGITACAO			as DATADIGITA"	,"Data Digitação"				,""	,""	,""	,""	,""	,""	})
 	
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Inicial"		,Space(tamSx3("CT1_CONTA")[1])	,""		,""													,"CT1"	,"",075,.F.})
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Final"		,Space(tamSx3("CT1_CONTA")[1])	,""		,"U_VLFIMMAI(MV_PAR01,MV_PAR02,'Codigo Contï¿½bil')"	,"CT1"	,"",075,.F.})
-	aAdd(_aParambox,{1,"Numero da Nota a listar"	,Space(tamSx3("F1_DOC")[1])		,""		,""													,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Lancamento Inicial"	,Ctod("")						,""		,"" 												,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Lancamento Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR04,MV_PAR05,'Data Lancamento')"	,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Emissao Inicial"		,Ctod("")						,""		,"" 												,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Emissao Final"			,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR06, MV_PAR07,'Data Emissao')"	,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Digitacao Inicial"		,Ctod("")						,""		,"" 												,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Data Digitacao Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR08, MV_PAR09,'Data Digitacao')"	,""		,"",050,.F.})
-	aAdd(_aParambox,{1,"Codigo Item Inicial"		,Space(tamSx3("D1_COD")[1])		,""		,""													,"SB1"	,"",075,.F.})
-	aAdd(_aParambox,{1,"Codigo Item Final"			,Space(tamSx3("D1_COD")[1])		,""		,"U_VLFIMMAI(MV_PAR10,MV_PAR11,'Codigo Item')"		,"SB1"	,"",075,.F.})
-	aAdd(_aParambox,{1,"Codigo Grupo Item Inicial"	,Space(tamSx3("BM_GRUPO")[1])	,""		,""													,"SBM"	,"",075,.F.})
-	aAdd(_aParambox,{1,"Codigo Grupo Item Final"	,Space(tamSx3("BM_GRUPO")[1])	,""		,"U_VLFIMMAI(MV_PAR12,MV_PAR13,'Codigo Grupo Item')","SBM"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Inicial"		,Space(tamSx3("CT1_CONTA")[1])	,""		,""													,"CT1"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Final"		,Space(tamSx3("CT1_CONTA")[1])	,""		,"U_VLFIMMAI(MV_PAR01,MV_PAR02,'Código Contábil')"	,"CT1"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Número da Nota a listar"	,Space(tamSx3("F1_DOC")[1])		,""		,""													,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Lançamento Inicial"	,Ctod("")						,""		,"" 												,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Lançamento Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR04,MV_PAR05,'Data Lançamento')"	,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Emissão Inicial"		,Ctod("")						,""		,"" 												,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Emissão Final"			,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR06, MV_PAR07,'Data Emissão')"	,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Digitação Inicial"		,Ctod("")						,""		,"" 												,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Data Digitação Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR08, MV_PAR09,'Data Digitação')"	,""		,"",050,.F.})
+	aAdd(_aParambox,{1,"Código Item Inicial"		,Space(tamSx3("D1_COD")[1])		,""		,""													,"SB1"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Código Item Final"			,Space(tamSx3("D1_COD")[1])		,""		,"U_VLFIMMAI(MV_PAR10,MV_PAR11,'Código Item')"		,"SB1"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Código Grupo Item Inicial"	,Space(tamSx3("BM_GRUPO")[1])	,""		,""													,"SBM"	,"",075,.F.})
+	aAdd(_aParambox,{1,"Código Grupo Item Final"	,Space(tamSx3("BM_GRUPO")[1])	,""		,"U_VLFIMMAI(MV_PAR12,MV_PAR13,'Código Grupo Item')","SBM"	,"",075,.F.})
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
 	_cQuery += "  FROM " + U_IF_BIMFR( "IF_BIMFR", "V_CONTAB_LANCCONTABNFENTRADA" )    + CRLF
-	_cQuery += U_WhereAnd( !empty(_cCODFILIA ),    " COD_EMPRESA IN " + _cCODFILIA                                               ) //OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " COD_CONTA_CONTABIL BETWEEN '"     + _aRet[1]  + "' AND '" + _aRet[2]  + "' " ) //NAO OBRIGATORIO, RANGE DE/ATE DO CODIGO CONTABIL
-	_cQuery += U_WhereAnd( !empty(_aRet[3] ),      " NOTA_FISCAL LIKE '%"              + _aRet[3]  + "%' "                        ) //NAO OBRIGATORIO, USUï¿½RIO DIGITA O NUMERO DA NOTA
-	_cQuery += U_WhereAnd( !empty(_aRet[5] ),      " DATA_LANCAMENTO_FILTRO BETWEEN '" + _aRet[4]  + "' AND '" + _aRet[5]  + "' " ) //OBRIGATORIO, COM A VALIDAï¿½ï¿½O DE 35 DIAS
-	_cQuery += U_WhereAnd( !empty(_aRet[7] ),      " DATA_EMISSAO_FILTRO BETWEEN '"    + _aRet[6]  + "' AND '" + _aRet[7]  + "' " ) //OBRIGATORIO, COM A VALIDAï¿½ï¿½O DE 35 DIAS
-	_cQuery += U_WhereAnd( !empty(_aRet[9] ),      " DATA_DIGITACAO_FILTRO BETWEEN '"  + _aRet[8]  + "' AND '" + _aRet[9]  + "' " ) //OBRIGATORIO, COM A VALIDAï¿½ï¿½O DE 35 DIAS
-	_cQuery += U_WhereAnd( !empty(_aRet[11] ),     " COD_ITEM BETWEEN '"               + _aRet[10] + "' AND '" + _aRet[11] + "' " ) //OBRIGATORIO, COM A VALIDAï¿½ï¿½O DE 35 DIAS
-	_cQuery += U_WhereAnd( !empty(_aRet[13] ),     " COD_GRUPO_ITEM BETWEEN '"         + _aRet[12] + "' AND '" + _aRet[13] + "' " ) //OBRIGATORIO, COM A VALIDAï¿½ï¿½O DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_cCODFILIA ),    " COD_EMPRESA IN " + _cCODFILIA                                               ) //OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
+	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " COD_CONTA_CONTABIL BETWEEN '"     + _aRet[1]  + "' AND '" + _aRet[2]  + "' " ) //NÃO OBRIGATORIO, RANGE DE/ATE DO CODIGO CONTABIL
+	_cQuery += U_WhereAnd( !empty(_aRet[3] ),      " NOTA_FISCAL LIKE '%"              + _aRet[3]  + "%' "                        ) //NÃO OBRIGATORIO, USUÁRIO DIGITA O NUMERO DA NOTA
+	_cQuery += U_WhereAnd( !empty(_aRet[5] ),      " DATA_LANCAMENTO_FILTRO BETWEEN '" + _aRet[4]  + "' AND '" + _aRet[5]  + "' " ) //OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[7] ),      " DATA_EMISSAO_FILTRO BETWEEN '"    + _aRet[6]  + "' AND '" + _aRet[7]  + "' " ) //OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[9] ),      " DATA_DIGITACAO_FILTRO BETWEEN '"  + _aRet[8]  + "' AND '" + _aRet[9]  + "' " ) //OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[11] ),     " COD_ITEM BETWEEN '"               + _aRet[10] + "' AND '" + _aRet[11] + "' " ) //OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[13] ),     " COD_GRUPO_ITEM BETWEEN '"         + _aRet[12] + "' AND '" + _aRet[13] + "' " ) //OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
 
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MsgRun("Aguarde!!! Montando\Desconectando Tela"	,,{ ||U_TGridRel()})

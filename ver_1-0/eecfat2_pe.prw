@@ -12,11 +12,11 @@
 Programa.:              EECFAT2
 Autor....:              Leonardo Kume
 Data.....:              Nov/2016
-Descricao / Objetivo:   Ponto de entrada geral para Pedido de Exportacao 
+Descricao / Objetivo:   Ponto de entrada geral para Pedido de Exportação 
 Pedido Exportacao
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 ==========================================================================================
 */
 
@@ -41,7 +41,7 @@ Local nPos := 0
 			Endif	
 		Endif	
 
-		// chamado RITM0014775 - incluir no Vendedor do Pedido de Venda o codigo do Trade da Exportacao
+		// chamado RITM0014775 - incluir no Vendedor do Pedido de Venda o codigo do Trade da Exportação
 		aAdd(aCab,{"C5_VEND1",M->EE7_ZTRADE,nil})
 
 	Endif	

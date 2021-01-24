@@ -14,7 +14,7 @@ Data.....:              11/04/2017
 Descricao / Objetivo:   Gera CSV
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -50,7 +50,7 @@ static function genArq( oSay )
 	local nLinAtu	:= 0
 
 	if !existDir(allTrim(MV_PAR01))
-		msgAlert("Diretï¿½rio invï¿½lido.")
+		msgAlert("Diretório inválido.")
 		return
 	endif
 
@@ -147,9 +147,9 @@ static function genArq( oSay )
 
 				QRYARQ->(DBSkip())
 			enddo
-			msgInfo("Exportacao gerada com sucesso.")
+			msgInfo("Exportação gerada com sucesso.")
 		else
-			msgAlert("Nao  foram encontradas informacoes a serem exportadas.")
+			msgAlert("Não foram encontradas informações a serem exportadas.")
 		endif
 		QRYARQ->(DBCloseArea())
 	endif

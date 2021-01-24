@@ -44,7 +44,6 @@ user function MGFFINBQ()
 	cUpdSA1 += " 	AND SA1.A1_COD		=	CNC.CNC_CLIENT"				+ CRLF
 	cUpdSA1 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"	+ CRLF
 	cUpdSA1 += " 	AND	SA1.D_E_L_E_T_	=	' '"						+ CRLF
-	cUpdSA1 += " 	AND	A1_EST	<>	'EX' "								+ CRLF
 
 	if lFilPes
 		cUpdSA1 += "	AND	A1_PESSOA = 'J'"							+ CRLF

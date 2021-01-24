@@ -6,7 +6,7 @@ Data.....:              09/10/2017
 Descricao / Objetivo:   SC e PV. Rateio por valor.
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:               - GAP COM055
+Uso......:              Marfrig - GAP COM055
 Obs......:              Chamado por gatilho, CX_PERC, CH_PERC, CX_ZVALRAT, CH_ZVALRAT
 =====================================================================================
 */

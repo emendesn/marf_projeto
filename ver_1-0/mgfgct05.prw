@@ -4,11 +4,11 @@
 Programa.:              MGFGCT05
 Autor....:              Roberto Sidney
 Data.....:              21/09/2016
-Descricao / Objetivo:   Funcao chamada atraves do pedido de venda para selecao do contrato para medicao
+Descricao / Objetivo:   Funcao chamada através do pedido de venda para seleção do contrato para medição
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Chamada efetuada atraves do ponto de entrada A410CONS()
+Uso......:              Marfrig
+Obs......:              Chamada efetuada através do ponto de entrada A410CONS()
 =====================================================================================
 */
 User Function MGFGCT05()
@@ -34,7 +34,7 @@ User Function MGFGCT05()
 	Private aOrgiAcols := Aclone(aCols)
 
 	if Empty(M->C5_CLIENT)
-		msgalert("Para selecao de contrato o cliente deve ser informado")
+		msgalert("Para seleção de contrato o cliente deve ser informado")
 		Return(.F.)
 	Endif
 
@@ -51,7 +51,7 @@ User Function MGFGCT05()
 
 	DEFINE MSDIALOG oDlg TITLE "Localizador de Contrato" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
 
-	@ 004 , 003 TO 212 , 622 LABEL "Selecao de Contratos" PIXEL OF oDlg
+	@ 004 , 003 TO 212 , 622 LABEL "Seleção de Contratos" PIXEL OF oDlg
 	@ 018, 008 SAY oSay1 PROMPT " Contrato:" SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 	@ 016, 080 MSGET oGet1 VAR cGet1 SIZE 160, 010 OF oDlg COLORS 0, 16777215 PIXEL
 	@ 015, 250 BUTTON oButton1 PROMPT "Pesquisar" SIZE 037, 015 OF oDlg PIXEL ACTION fGeraQry(cFields , @aDados , @cGet1, oDlg , oWBrowse1)
@@ -68,10 +68,10 @@ User Function MGFGCT05()
 	Programa.:              fGeraQry
 	Autor....:              Roberto Sidney
 	Data.....:              15/09/2016
-	Descricao / Objetivo:   Gera a Query para selecao dos contratos relacionados ao cliente
+	Descricao / Objetivo:   Gera a Query para seleção dos contratos relacionados ao cliente
 	Doc. Origem:            VEN03 - GAP MGFVEN03
 	Solicitante:            Cliente
-	Uso......:              
+	Uso......:              Marfrig
 	Obs......:
 	=====================================================================================
 	*/
@@ -108,7 +108,7 @@ User Function MGFGCT05()
 	cQuery += "AND CNA.CNA_CLIENT = '"+cCli+"' AND CNA.CNA_LOJACL = '"+cLoja+"' AND CNA.D_E_L_E_T_ = ' ' "
 	cQuery += "LEFT JOIN  "+RetSqlName("CNF")+ " CNF ON CNF.CNF_CONTRA = CN9.CN9_NUMERO AND CNF.CNF_REVISA = CN9.CN9_REVISA "
 	cQuery += "AND CNF.CNF_SALDO > 0 AND CNF.D_E_L_E_T_ = ' ' "
-	// Situaï¿½ï¿½o vigente
+	// Situação vigente
 	cQuery += "WHERE CN9.CN9_SITUAC = '05' "
 	if ! Empty(alltrim(cContrato))
 		cQuery += "AND CN9.CN9_NUMERO = '"+cContrato+"'"
@@ -132,7 +132,7 @@ User Function MGFGCT05()
 
 	Else
 
-		MsgAlert('Nao existem contratos para o cliente informado')
+		MsgAlert('Não existem contratos para o cliente informado')
 		aDados	:= Array(1,15)
 		cContrato	:= Space(15)
 		fWBrowse1(aHeader , aDados , oDlg , oWBrowse1 , .T.)
@@ -149,7 +149,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Atualiza o array 'aDados', que sera exibido na MarkBrowse
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -245,7 +245,7 @@ Static Function fWBrowse1(aHeader , aDados , oDlg, oWBrowse1 , lAtuDados)
 	Descricao / Objetivo:   Monta aHeader e aCols para serem exibidos na MarkBrowse
 	Doc. Origem:            VEN03 - GAP MGFVEN03
 	Solicitante:            Cliente
-	Uso......:              
+	Uso......:              Marfrig
 	Obs......:
 	=====================================================================================
 	*/
@@ -394,7 +394,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Reconstroi acols do pedido de venda de acordo com parcela do contrato selecionado
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -489,7 +489,7 @@ Static Function Confcn9(aDados)
 		_nNewQuant := (_nQuant * _nPercVal) / 100
 		aItemCNB[_nT,4] := _nNewQuant
 
-		// Apura novo valor unitï¿½rio
+		// Apura novo valor unitário
 		//_nNewVunit := (_nValUnit * _nPercVal) / 100
 		//aItemCNB[_nT,5] := _nNewVunit
 
@@ -528,7 +528,7 @@ Static Function Confcn9(aDados)
 		aCols := aClone(aNewAcols)
 
 	Else
-		// Caso nao tenha itens restaura Acols originial  
+		// Caso não tenha itens restaura Acols originial  
 		aCols :={}
 		aadd(aCols,aOrgiAcols[1])
 	Endif
@@ -551,7 +551,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Seleciona o item no mark broase
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

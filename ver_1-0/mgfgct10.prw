@@ -10,7 +10,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Chamada da rotina principal
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Gera NCC a partir de Desconto a Cliente
 =====================================================================================
 */
@@ -32,7 +32,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Execucao do mBrowse
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -58,7 +58,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -116,7 +116,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Execucao da MarkBrowse
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -158,7 +158,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Executa a query para verificar as notas fiscais para determinado cliente
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -243,7 +243,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Execucao da MarkBrowse
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -293,7 +293,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Efetua a liberacao das notas de credito
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -346,7 +346,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Grupo de perguntas para geracao da planilha
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -370,7 +370,7 @@ Data.....:              19/10/16
 Descricao / Objetivo:   Exibe browse com os contratos
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -388,7 +388,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Executa a query e cria o alias temporario
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -411,7 +411,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Gera o array 'aHeader' e atualiza as respectivas posicoes com os titulos, conforme dicionario
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -451,7 +451,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Gera o array 'aDados' com os dados gerados no alias temporario. Os Arrays 'aHeader' e 'aDados' serao utilizados na geracao da planilha.
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -578,7 +578,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Gera a planilha com os dados coletados atraves da query
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -600,7 +600,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Cria o filtro para exibicao da markbrowse
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -627,7 +627,7 @@ Data.....:              24/10/16
 Descricao / Objetivo:   Preenche os campos obrigatorios para execucao do execauto FINA040
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -652,7 +652,7 @@ Static Function fFillObrig(cNumTit)
 	Local MGF_NATPAR := SuperGetMv("MGF_NATPAR",,"S")
 	Local MGF_NATFIN := "01" //SuperGetMv("MGF_NATFIN",,"1000000000")
 	//- Campos Obrigatorios
-	// Criado parametro p/verificar se o conteudo da Natureza virï¿½ de MV ou Cad Cliente 
+	// Criado parâmetro p/verificar se o conteúdo da Natureza virá de MV ou Cad Cliente 
 
 	SA1->(dbSetOrder(1)) //A1_FILIAL+A1_COD+A1_LOJA
 	If SA1->(DbSeek(xFilial("SA1")+ZZ3->ZZ3_COD+ZZ3->ZZ3_LOJA))
@@ -714,7 +714,7 @@ Data.....:              24/10/16
 Descricao / Objetivo:   Preenche os campos obrigatorios para execucao do execauto FINA040
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -741,7 +741,7 @@ Static Function fRunRotAut( aItens , cRotAut)
 		If ( lMsErroAuto )
 
 			aLog := GetAutoGRLog()
-			If (!IsBlind()) // COM INTERFACE GRAFICA
+			If (!IsBlind()) // COM INTERFACE GRÁFICA
 			MostraErro()
 		    Else // EM ESTADO DE JOB
 		        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -770,7 +770,7 @@ Data.....:              24/10/16
 Descricao / Objetivo:   Marca o registro selecionado no browse, conforme filtro
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -806,7 +806,7 @@ Data.....:              24/10/16
 Descricao / Objetivo:   Seleciona(marca) todos os registros
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

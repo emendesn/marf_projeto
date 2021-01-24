@@ -7,7 +7,7 @@
 #Define STR_PULA		Chr(13)+Chr(10)
 
 /*/{Protheus.doc} xRelat
-//TODO Descricao auto-gerada.
+//TODO Descrição auto-gerada.
 @author eadonato
 @since 12/12/2018
 @version undefined
@@ -21,14 +21,14 @@ Data.....:              12/12/2018
 Descricao / Objetivo:   Relatorio de Saldo de Estoque para confronto com o Taura
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Relatorio de Analise
 =============================================================================================
-=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Historico de Alteracoes <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<|
+=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Histórico de Alterações <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<|
 =============================================================================================
-|   Data    |               Alteracao              				 |    Autor     |  Chamado  |
+|   Data    |               Alteração              				 |    Autor     |  Chamado  |
 =============================================================================================
-|12/12/2018 |Criacao do Relatorio de saldo de Estoque com OP     |Eduardo Donato|           |
+|12/12/2018 |Criação do Relatório de saldo de Estoque com OP     |Eduardo Donato|           |
 |  /  /     |                                                    |              |           | 
 =============================================================================================
 
@@ -41,7 +41,7 @@ User Function MGF04R05()
 	Local cPara   := ""
 	Private cPerg   := ""
 
-	//Definicoes da pergunta
+	//Definições da pergunta
 	cPerg := "MGF04R05  "
 
 	AjustSX1()
@@ -50,17 +50,17 @@ User Function MGF04R05()
 		return
 	endif
 
-	//Cria as definicoes do relatorio
+	//Cria as definições do relatório
 	oReport := fReportDef()
 
-	//Sera enviado por e-Mail?
+	//Será enviado por e-Mail?
 	If lEmail
 		oReport:nRemoteType := NO_REMOTE
 		oReport:cEmail := cPara
 		oReport:nDevice := 3 //1-Arquivo,2-Impressora,3-email,4-Planilha e 5-Html
 		oReport:SetPreview(.F.)
 		oReport:Print(.F., "", .T.)
-		//Senï¿½o, mostra a tela
+		//Senão, mostra a tela
 	Else
 		oReport:PrintDialog()
 	EndIf
@@ -70,7 +70,7 @@ Return
 
 /*-------------------------------------------------------------------------------*
 | Func:  fReportDef                                                             |
-| Desc:  Funcao que monta a definicao do relatorio                              |
+| Desc:  Função que monta a definição do relatório                              |
 *-------------------------------------------------------------------------------*/
 
 Static Function fReportDef()
@@ -79,24 +79,24 @@ Static Function fReportDef()
 	Local oBreak   := Nil
 	Local oFunTot1 := Nil
 
-	//Criacao do componente de impressao
-	oReport := TReport():New(	"MGF6999",;		//Nome do Relatorio
-	"Relatorio de Saldo Estoque",;		//Titulo
-	cPerg,;		//Pergunte ... Se eu defino a pergunta aqui, sera impresso uma pagina com os parametros, conforme privilï¿½gio 101
-	{|oReport| fRepPrint(oReport)},;		//Bloco de Codigo que sera executado na confirmacao da impressao
-	)		//Descricao
+	//Criação do componente de impressão
+	oReport := TReport():New(	"MGF6999",;		//Nome do Relatório
+	"Relatorio de Saldo Estoque",;		//Título
+	cPerg,;		//Pergunte ... Se eu defino a pergunta aqui, será impresso uma página com os parâmetros, conforme privilégio 101
+	{|oReport| fRepPrint(oReport)},;		//Bloco de código que será executado na confirmação da impressão
+	)		//Descrição
 	oReport:SetTotalInLine(.F.)
 	oReport:lParamPage := .F.
 	oReport:oPage:SetPaperSize(9) //Folha A4
 	oReport:SetLandscape()
 
-	//Criando a secao de dados
-	oSectDad := TRSection():New(	oReport,;		//Objeto TReport que a secao pertence
-	"Dados",;		//Descricao da secao
-	{"QRY_AUX"})	//Tabelas utilizadas, a primeira sera considerada como principal da secao
-	oSectDad:SetTotalInLine(.F.)  //Define se os totalizadores serao impressos em linha ou coluna. .F.=Coluna; .T.=Linha
+	//Criando a seção de dados
+	oSectDad := TRSection():New(	oReport,;		//Objeto TReport que a seção pertence
+	"Dados",;		//Descrição da seção
+	{"QRY_AUX"})	//Tabelas utilizadas, a primeira será considerada como principal da seção
+	oSectDad:SetTotalInLine(.F.)  //Define se os totalizadores serão impressos em linha ou coluna. .F.=Coluna; .T.=Linha
 
-	//Colunas do relatorio
+	//Colunas do relatório
 	TRCell():New(oSectDad, "B2_FILIAL"						, "QRY_AUX", "Filial", /*Picture*/, 6, /*lPixel*/,/*{|| code-block de impressao }*/,/*cAlign*/,/*lLineBreak*/,/*cHeaderAlign */,/*lCellBreak*/,/*nColSpace*/,/*lAutoSize*/,/*nClrBack*/,/*nClrFore*/,/*lBold*/)
 	TRCell():New(oSectDad, "B2_COD"							, "QRY_AUX", "Produto", /*Picture*/, 15, /*lPixel*/,/*{|| code-block de impressao }*/,/*cAlign*/,/*lLineBreak*/,/*cHeaderAlign */,/*lCellBreak*/,/*nColSpace*/,/*lAutoSize*/,/*nClrBack*/,/*nClrFore*/,/*lBold*/)
 	TRCell():New(oSectDad, "B1_DESC"						, "QRY_AUX", "Descricao", /*Picture*/, 76, /*lPixel*/,/*{|| code-block de impressao }*/,/*cAlign*/,/*lLineBreak*/,/*cHeaderAlign */,/*lCellBreak*/,/*nColSpace*/,/*lAutoSize*/,/*nClrBack*/,/*nClrFore*/,/*lBold*/)
@@ -116,7 +116,7 @@ Return oReport
 
 /*-------------------------------------------------------------------------------*
 | Func:  fRepPrint                                                              |
-| Desc:  Funcao que imprime o relatorio                                         |
+| Desc:  Função que imprime o relatório                                         |
 *-------------------------------------------------------------------------------*/
 
 Static Function fRepPrint(oReport)
@@ -126,7 +126,7 @@ Static Function fRepPrint(oReport)
 	Local nAtual   := 0
 	Local nTotal   := 0
 
-	//Pegando as secoes do relatorio
+	//Pegando as seções do relatório
 	oSectDad := oReport:Section(1)
 
 	//Montando consulta de dados
@@ -207,7 +207,7 @@ Static Function fRepPrint(oReport)
 	cQryAux += " ORDER BY B9_COD"		+ STR_PULA
 	//	cQryAux := ChangeQuery(cQryAux)
 	*/
-	//Executando consulta e setando o total da rï¿½gua
+	//Executando consulta e setando o total da régua
 	TCQuery cQryAux New Alias "QRY_AUX"
 	Count to nTotal
 	oReport:SetMeter(nTotal)
@@ -216,7 +216,7 @@ Static Function fRepPrint(oReport)
 	oSectDad:Init()
 	QRY_AUX->(DbGoTop())
 	While ! QRY_AUX->(Eof())
-		//Incrementando a rï¿½gua
+		//Incrementando a régua
 		nAtual++
 		oReport:SetMsgPrint("Imprimindo registro "+cValToChar(nAtual)+" de "+cValToChar(nTotal)+"...")
 		oReport:IncMeter()
@@ -233,18 +233,18 @@ Static Function fRepPrint(oReport)
 Return
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½ValidPerg ï¿½Autor  ï¿½Eduardo Donato     ï¿½                    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½Cria pergunta no e o help do SX1                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ AP                                                         ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³ValidPerg ºAutor  ³Eduardo Donato     º                    º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Cria pergunta no e o help do SX1                            º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ AP                                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 Static Function AjustSX1()
 
@@ -254,15 +254,15 @@ Static Function AjustSX1()
 
 	cPerg := PADR(cPerg,10)
 
-	AAdd(aRegs,{"01","Emissao de ?" 	,"mv_ch1","D",8,0,0,"G","MV_PAR01","" ,"", "" })
-	AAdd(aRegs,{"02","Emissao ate ?"	,"mv_ch2","D",8,0,0,"G","MV_PAR02","" ,"", "" })
+	AAdd(aRegs,{"01","Emissão de ?" 	,"mv_ch1","D",8,0,0,"G","MV_PAR01","" ,"", "" })
+	AAdd(aRegs,{"02","Emissão até ?"	,"mv_ch2","D",8,0,0,"G","MV_PAR02","" ,"", "" })
 	AAdd(aRegs,{"03","Armazem de ?"		,"mv_ch3","C",tamSX3("B2_LOCAL")[1],0,0,"G","MV_PAR03","" ,"", "" })
-	AAdd(aRegs,{"04","Armazem ate ?"	,"mv_ch4","C",tamSX3("B2_LOCAL")[1],0,0,"G","MV_PAR04","" ,"", "" })
+	AAdd(aRegs,{"04","Armazem até ?"	,"mv_ch4","C",tamSX3("B2_LOCAL")[1],0,0,"G","MV_PAR04","" ,"", "" })
 	AAdd(aRegs,{"05","Produto de ?"		,"mv_ch5","C",tamSX3("B1_COD")[1],0,0,"G","MV_PAR05","" ,"", "SB1" })
-	AAdd(aRegs,{"06","Produto ate ?"	,"mv_ch6","C",tamSX3("B1_COD")[1],0,0,"G","MV_PAR06","" ,"", "SB1" })
+	AAdd(aRegs,{"06","Produto até ?"	,"mv_ch6","C",tamSX3("B1_COD")[1],0,0,"G","MV_PAR06","" ,"", "SB1" })
 	AAdd(aRegs,{"07","Dt Inicial Saldo ?","mv_ch7","D",8,0,0,"G","MV_PAR07","" ,"", "" })
 	AAdd(aRegs,{"08","OP Taura de ?"	,"mv_ch8","C",tamSX3("C2_ZOPTAUR")[1],0,0,"G","MV_PAR08","" ,"", "SC2" })
-	AAdd(aRegs,{"09","OP Taura ate ?"	,"mv_ch9","C",tamSX3("C2_ZOPTAUR")[1],0,0,"G","MV_PAR09","" ,"", "SC2" })
+	AAdd(aRegs,{"09","OP Taura até ?"	,"mv_ch9","C",tamSX3("C2_ZOPTAUR")[1],0,0,"G","MV_PAR09","" ,"", "SC2" })
 
 
 	dbSelectArea("SX1")

@@ -5,10 +5,10 @@
 Programa............: DPCTB102GR
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: O ponto de entrada DPCTB102GR utilizado Apos a gravacao dos dados da tabela de lancamento.
+Descrição / Objetivo: O ponto de entrada DPCTB102GR utilizado Após a gravação dos dados da tabela de lançamento.
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=6068636
 =====================================================================================
 */
@@ -29,7 +29,7 @@ Endif
 =====================================================================================
 Autor....: Caroline Cazela 
 Data.....: 04/12/2018
-Descricao: Grava SCR da grade para Aprovacao no fonte MGFCOM14.
+Descrição: Grava SCR da grade para aprovação no fonte MGFCOM14.
 =====================================================================================
 */
 If FindFunction("U_MGFCTB25")

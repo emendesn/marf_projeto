@@ -5,20 +5,20 @@
 /*
 =====================================================================================
 Programa............: MGFCOM28()
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 04/04/20
 17
-Descricao / Objetivo: Criacao de autorizaï¿½ï¿½o de entrega
+Descricao / Objetivo: Criação de autorização de entrega
 Doc. Origem.........: Compras - COM03
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
 
 User function MGFCOM28()
 
-MsAguarde({|| MGFCOM28Proc()},"Verificando geracao de Autorizacao de Entrega, aguarde...")
+MsAguarde({|| MGFCOM28Proc()},"Verificando geração de Autorização de Entrega, aguarde...")
 
 Return()
 
@@ -222,7 +222,7 @@ ENDIF
                	ENDIF
             ENDIF 
 			
-			//Alterado se nao achar registro no ZD5 mas houver no SC3 vai rodar pelo contraro global. 
+			//Alterado se não achar registro no ZD5 mas houver no SC3 vai rodar pelo contraro global. 
    			//DbCloseArea("TEMP2")
 			
 			If (cAlias1)->(!EOF()) .AND. lConf 
@@ -264,7 +264,7 @@ ENDIF
 				aItem  := {}
 				ccont  :=0 
 				
-     			While (cAlias1)->(!EOF())  .AND. cChave == (cAlias1)->C3_FORNECE  //alteracao de MIT
+     			While (cAlias1)->(!EOF())  .AND. cChave == (cAlias1)->C3_FORNECE  //alteração de MIT
 				   //--------------------FILIAL ENTREGA-------------------------------------------------------
 					if empty((cAlias1)->ZD5_CONTRA)
 						_cContr := (cAlias1)->C3_NUM
@@ -500,7 +500,7 @@ ENDIF
 				EndDo
 			Else
 				If xRet <> .T.
-					MsgAlert("Nao  sera gerado a Autorizacao de entrega, pois nao hï¿½ contrato de parceria vigente para os Produtos da Solicitacao de compras! " )
+					MsgAlert("Não será gerado a Autorização de entrega, pois não há contrato de parceria vigente para os Produtos da Solicitação de compras! " )
 				EndIf
 				Return
 			EndIf
@@ -552,7 +552,7 @@ ENDIF
 	EndDo
 
 	If xRet <> .T.
-		MsgAlert("Nao  sera gerado a Autorizacao de entrega, pois nao hï¿½ contrato de parceria vigente para os Produtos da Solicitacao de compras! " )
+		MsgAlert("Não será gerado a Autorização de entrega, pois não há contrato de parceria vigente para os Produtos da Solicitação de compras! " )
 	EndIf
 	DbCloseArea(cAlias1)
              
@@ -608,8 +608,8 @@ ENDIF
 				EndDo
 
 
-	    	MsgAlert("Nao  gerou AE para o Produto: " + (cAlias2)->C1_PRODUTO +" "+_MSG+" ")
-            //Liberar o item como nao atendido na tabela SCR CR_STATUS=02
+	    	MsgAlert("Não gerou AE para o Produto: " + (cAlias2)->C1_PRODUTO +" "+_MSG+" ")
+            //Liberar o item como não atendido na tabela SCR CR_STATUS=02
 		    //_cQrySOL	:= "UPDATE " + RetSqlName("SCR") + " SET CR_STATUS='02' "
 		    //_cQrySOL	+= "WHERE CR_NUM = '"+cNumsol+"' "
 		    //TcSqlExec(_cQrySOL)
@@ -667,7 +667,7 @@ Static Function xIncPed(aCab,aItens,aRateio)
 	MsExecAuto({|v,x,y,z,w,a| Mata120(v,x,y,z,w,a)},2,aCab,aItens,3)
 	
 	If lMsErroAuto
-		If (!IsBlind()) // COM INTERFACE GRAFICA
+		If (!IsBlind()) // COM INTERFACE GRÁFICA
 		cRet := MostraErro()
 	    Else // EM ESTADO DE JOB
 	        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -752,7 +752,7 @@ Endif
 aadd(aPosGet[1],0)
 aadd(aPosGet[1],0)
 
-@ aPosGet[1,1]+42,aPosGet[1,3] SAY "Gera Autorizacao de Entrega" Of oNewDialog PIXEL
+@ aPosGet[1,1]+42,aPosGet[1,3] SAY "Gera Autorização de Entrega" Of oNewDialog PIXEL
 @ aPosGet[1,1]+42,aPosGet[1,4] COMBOBOX oContr VAR __cContr ITEMS aContr When (Altera .or. Inclui) SIZE 070,10 Of oNewDialog PIXEL
 
 //@ aPosGet[1,1]+42,aPosGet[1,5] SAY "Envio WF PC" Of oNewDialog PIXEL
@@ -923,7 +923,7 @@ Static Function xMntRat(cxFil,cSC,cItemSC,aRateio,cNumPC,cFornec,cLoja)
 		
 return 
 
-// liberar contratos para vï¿½rias filiais. 
+// liberar contratos para várias filiais. 
 user function MT094LBF()
  
 Local lFil  		:=.F.

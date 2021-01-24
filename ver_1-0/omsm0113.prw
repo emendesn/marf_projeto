@@ -1,13 +1,13 @@
 /*
 =========================================================================================================
 Programa.................: OMSM0113
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Integrar o peso dos itens das Notas fiscais para os documento de carga do GFE.
+Descrição / Objetivo.....: Integrar o peso dos itens das Notas fiscais para os documento de carga do GFE.
 Doc. Origem..............: GAP - GFE03
 Solicitante..............: Cliente
-Uso......................: 
-Obs......................: Ponto de entrada executado no momento da integracao com o SIGAGFE.
+Uso......................: Marfrig
+Obs......................: Ponto de entrada executado no momento da integração com o SIGAGFE.
 =========================================================================================================
 */
 
@@ -69,7 +69,7 @@ Local cPedido := SD2->D2_PEDIDO
 		nPesor := (cAlias2)->DAI_PESO / (cAlias1)->QTDE
 		oModelGW8:SetValue("GW8_PESOR", nPesor)
 
-	// Se nao houver peso na Carga sera considerado o peso bruto do pedido
+	// Se não houver peso na Carga será considerado o peso bruto do pedido
 	Else
 
 		DbSelectArea('SC5')

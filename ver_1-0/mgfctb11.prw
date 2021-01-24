@@ -6,10 +6,10 @@
 Programa............: MGFCTB11
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Funcao para carregar Rateio para Contratos
+Descrição / Objetivo: Função para carregar Rateio para Contratos
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Carrega os rateios para Contratos
 =====================================================================================
 */
@@ -95,10 +95,10 @@ User Function MGFCTB11()
 				EndIf	
 			EndIf
 		Else
-			MsgInfo('Sï¿½ ï¿½ possivel incluir rateio em contratos que estao com Status de elaboraï¿½ï¿½o')
+			MsgInfo('Só é possivel incluir rateio em contratos que estão com Status de elaboração')
 		EndIf
 	Else
-		MsgInfo('Sï¿½ ï¿½ possivel incluir rateio para contratos de Compras')
+		MsgInfo('Só é possivel incluir rateio para contratos de Compras')
 	EndIf
 Return
 
@@ -107,7 +107,7 @@ Return
 Programa............: xEncFor
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Encontra Fornecedor
+Descrição / Objetivo: Encontra Fornecedor
 =====================================================================================
 */
 Static Function xEncFor(cContra,cNumero,cRev)
@@ -153,7 +153,7 @@ return aRet
 Programa............: xMGFCPlan
 Autor...............: Joni Lima
 Data................: 26/10/2017
-Descricao / Objetivo: Consulta das planilhas
+Descrição / Objetivo: Consulta das planilhas
 =====================================================================================
 */
 Static function xMGFCPlan(cContra,cRevis)
@@ -162,7 +162,7 @@ Static function xMGFCPlan(cContra,cRevis)
 
 	local aLstVias	:= {}
 	local cOpcoes	:= ""
-	local cTitulo	:= "Selecao da Planilha onde sera escolhido os itens para o Rateio"
+	local cTitulo	:= "Seleção da Planilha onde sera escolhido os itens para o Rateio"
 	local MvPar		:= ""//&(Alltrim(ReadVar()))		// Carrega Nome da Variavel do Get em Questao
 	//local mvRet		:= "MV_PAR01"		// Iguala Nome da Variavel ao Nome variavel de Retorno
 
@@ -224,7 +224,7 @@ Return mvpar
 Programa............: xMGFCPlan
 Autor...............: Joni Lima
 Data................: 26/10/2017
-Descricao / Objetivo: Consulta das planilhas
+Descrição / Objetivo: Consulta das planilhas
 =====================================================================================
 */
 Static function xMGFIten(cContra,cRevis,cNumer)
@@ -233,7 +233,7 @@ Static function xMGFIten(cContra,cRevis,cNumer)
 
 	local aLstVias	:= {}
 	local cOpcoes	:= ""
-	local cTitulo	:= "Selecao da Planilha onde sera escolhido os itens para o Rateio"
+	local cTitulo	:= "Seleção da Planilha onde sera escolhido os itens para o Rateio"
 	local MvPar		:= ""//&(Alltrim(ReadVar()))		// Carrega Nome da Variavel do Get em Questao
 	//local mvRet		:= "MV_PAR01"		// Iguala Nome da Variavel ao Nome variavel de Retorno
 
@@ -295,7 +295,7 @@ Return mvpar
 Programa............: xGerPerc
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Adiciona o Percentual no Array das Linhas
+Descrição / Objetivo: Adiciona o Percentual no Array das Linhas
 =====================================================================================
 */
 Static Function xGerPerc(aLinhas)
@@ -307,7 +307,7 @@ Static Function xGerPerc(aLinhas)
 	local nTotPerc := 0
 	Local nDif100  := 0
 
-	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabecalho o Campo Percentual
+	AADD(aLinhas[1],"PERCENTUAL") //Adiciona no Cabeçalho o Campo Percentual
 	nPosPerc := aScan(aLinhas[1] , "PERCENTUAL" )
 
 	For ni:=2 to Len(aLinhas)
@@ -342,7 +342,7 @@ return
 Programa............: xVldVal
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Realiza validacao dos valores
+Descrição / Objetivo: Realiza validação dos valores
 =====================================================================================
 */
 Static Function xVldVal(aLinhas,aItens,cEsc)
@@ -380,7 +380,7 @@ Static Function xVldVal(aLinhas,aItens,cEsc)
 		EndDo
 		If nTotPed <> nTotLin
 			lRet := .F.
-			MsgInfo('A Soma dos valores nao esta dando o mesmo valor dos Itens Selecionados')
+			MsgInfo('A Soma dos valores não esta dando o mesmo valor dos Itens Selecionados')
 		EndIf
 	EndIf
 
@@ -395,7 +395,7 @@ Return lRet
 Programa............: xEncCPO
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xEncCPO(cEnc)
@@ -415,7 +415,7 @@ return cRet
 Programa............: xTransVal
 Autor...............: Joni Lima
 Data................: 20/10/2017
-Descricao / Objetivo: Transforma o Valor.
+Descrição / Objetivo: Transforma o Valor.
 =====================================================================================
 */
 Static Function xTransVal(cField,cValue)
@@ -450,7 +450,7 @@ Return xRet
 Programa............: xValRat
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da existencia de Rateio e elimina caso necessario.
+Descrição / Objetivo: Realiza a Validação da existencia de Rateio e elimina caso necessario.
 =====================================================================================
 */
 Static Function xValRat(cPlan)
@@ -517,7 +517,7 @@ Return lRet
 Programa............: xValFiOr
 Autor...............: Joni Lima
 Data................: 30/10/2017
-Descricao / Objetivo: Realiza a Validacao da filial de origem com a filial de Destino
+Descrição / Objetivo: Realiza a Validação da filial de origem com a filial de Destino
 =====================================================================================
 */
 Static Function xValFiOr(aLinhas)

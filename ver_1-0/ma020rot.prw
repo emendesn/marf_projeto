@@ -8,7 +8,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Ponto de entrada para incluir rotina no acoes relacionadas fornecedor
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

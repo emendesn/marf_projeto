@@ -11,7 +11,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo PE M410LIOK
 Doc. Origem.........: Faturamento
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Valida se o item do pedido estah com a sequencia em branco
 =====================================================================================
 */
@@ -28,14 +28,14 @@ If !gdDeleted(n)
 	If lRet
 		If Empty(gdFieldGet("C6_LOCAL"))
 			lRet := .F.
-			APMsgAlert("Armazï¿½m do pedido em branco.")
+			APMsgAlert("Armazém do pedido em branco.")
 		Endif
 	Endif	
 
 	if ALTERA
 		if !chkItem()
 			lRet := .F.
-			APMsgAlert("Produto nao podera ser alterado." + CRLF + "Delete a linha e inclua uma nova linha.")
+			APMsgAlert("Produto não poderá ser alterado." + CRLF + "Delete a linha e inclua uma nova linha.")
 		endif
 	endif
 

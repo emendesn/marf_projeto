@@ -39,6 +39,9 @@ User Function GFEA065()
 			if(omodel:getoperation()==5)
 				U_MGFGFE55()
 			endif
+			if(omodel:getoperation()==3) //Inclusão
+				U_MGFGFE67()
+			endif
 			U_MGFGFE28()
 		EndIf
 

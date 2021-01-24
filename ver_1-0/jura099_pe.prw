@@ -5,10 +5,10 @@
 Programa.:              JURA099_PE
 Autor....:              Marcelo Carneiro
 Data.....:              15/03/2019
-Descricao / Objetivo:   Integracao Grade de Aprovacao SigaJuri
+Descricao / Objetivo:   Integração Grade de Aprovação SigaJuri
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              PE MVC JURA099 - Despesas
 =====================================================================================
 */

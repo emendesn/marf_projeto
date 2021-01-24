@@ -5,10 +5,10 @@
 Programa............: MGFEST35
 Autor...............: Mauricio Gresele
 Data................: Set/2017
-Descricao / Objetivo: Rotina chamada pelo ponto de entrada MT100TOK e MT140TOK
+Descrição / Objetivo: Rotina chamada pelo ponto de entrada MT100TOK e MT140TOK
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     
@@ -24,8 +24,8 @@ If Alltrim(cEspecie) $ cEsp .and. cModulo != "GFE"
 	ZD8->(dbSetOrder(1))
 	If ZD8->(!dbSeek(xFilial("ZD8")+__cUserId))
 		lRet := .F.
-		ApMsgStop("Usuario nao habilitado para incluir Documentos de Transporte por este modulo."+CRLF+;
-		"Faca o cadastro deste usuario na tabela de 'Usuarios CTE modulos COM/EST' ( tabela ZD8 ), ou utilize o modulo 'GFE' para incluir este documento.")
+		ApMsgStop("Usuário não habilitado para incluir Documentos de Transporte por este módulo."+CRLF+;
+		"Faça o cadastro deste usuário na tabela de 'Usuários CTE módulos COM/EST' ( tabela ZD8 ), ou utilize o módulo 'GFE' para incluir este documento.")
 	Endif
 Endif		
 
@@ -44,6 +44,6 @@ Private cString := "ZD8"
 dbSelectArea(cString)
 dbSetOrder(1)
 
-AxCadastro(cString,"Cadastro de Usuarios para inclusao de CTE pelos modulos Compras/Estoque",cVldExc,cVldAlt)
+AxCadastro(cString,"Cadastro de Usuários para inclusão de CTE pelos módulos Compras/Estoque",cVldExc,cVldAlt)
 
 Return()

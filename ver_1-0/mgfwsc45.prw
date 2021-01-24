@@ -7,51 +7,32 @@
 #include "FWMVCDEF.CH"
 
 /*/{Protheus.doc} MGFWSC45	
-Integração Protheus-ME, para envio dos Produtos
+Integracao Protheus-ME, para envio dos Produtos
 @type function
 
 @author Anderson Reis
 @since 26/02/2020
 @version P12
-@history Alteracao 20/03 - Mudança da regra de Produtos 
-@history_1  Retirar caracteres de aspas dupla e tabalução no campo do complemento 
+@history Alteracao 20/03 - Mudanca da regra de Produtos 
+@history_1  Retirar caracteres de aspas dupla e tabulacaoo no campo do complemento 
 /*/
 
 User function MGFWSC45()
 
-	Private _aMatriz  	:= {"01","010001"}  
-	Private _lIsBlind   :=  IsBlind() .OR. Type("__LocalDriver") == "U"  
-	
-	IF _lIsBlind  
+SetFunName("MGFWSC45")
 
-	RPCSetType( 3 )
-	RpcSetEnv(_aMatriz[1],_aMatriz[2])
+U_MFCONOUT('Iniciando envio de produtos para Mercado Eletronico...') 
+MGFWSC45E() 
+U_MFCONOUT('Completou envio de produtos para Mercado Eletronico...') 	
 	
-	If !LockByName("u_MGFWSC45")
-			Conout("JOB já em Execução: MGFWSC45 " + DTOC(dDataBase) + " - " + TIME() )
-			RpcClearEnv()
-			Return
-	EndIf  
-	   
-		conOut("********************************************************************************************************************"+ CRLF	)       
-		conOut('------- Inicio do processamento - MGFWSC45 - Integração ME - Produto - ' + DTOC(dDataBase) + " - " + TIME()		)
-		conOut("********************************************************************************************************************"+ CRLF	)       
-	
-	RUNINTEG45()
-	
-	conOut("********************************************************************************************************************"+ CRLF	)       
-	conOut("------- Fim - MGFWSC45 - Integração ME - Produto - " + DTOC(dDataBase) + " - " + TIME()  				  		)
-	conOut("********************************************************************************************************************"+ CRLF	)       
-	
-	RpcClearEnv()
-	UnLockByName(ProcName())
-
-	Endif
-     
-    	RUNINTEG45()
 Return
 
-Static Function RUNINTEG45() 
+//-----------------------------------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFWSC45E - Envio de produtos para mercado eletronico
+@author  Anderson Reis
+@since 26/02/2020
+*/
+Static Function MGFWSC45E() 
 
 
 	Local cQ 		:= ""
@@ -74,51 +55,64 @@ Static Function RUNINTEG45()
 	    
 	cUrl := Alltrim(GetMv("MGF_WSC45")) 
 
-	// INCLUSAO
-	cQ := " SELECT B1_COD,B1_DESC,B1_MGFFAM,B1_UM,B1_POSIPI,B1_TIPO,B1_MSBLQL,B1_ZPEDME,B1_ORIGEM,"
-	CQ += " UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,200,1)) COD ,B1_FILIAL ,'INCLUSAO' as STATUS  "
+	// INCLUSAO, ALTERACAO E HASH - Se teve mudan�a em qualquer campo o hash muda 
+	cQ += " SELECT B1_COD,B1_DESC,B1_MGFFAM,B1_UM,B1_POSIPI,B1_TIPO,B1_MSBLQL,B1_ZPEDME,B1_ORIGEM,B1_ZBLQSC,"
+	CQ += " UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,2000,1)) COD ,B1_FILIAL ,'ALTERACAO' as STATUS, "
+	CQ += " ora_hash(B1_DESC||B1_MGFFAM||B1_UM||B1_POSIPI||B1_TIPO||B1_MSBLQL||B1_ORIGEM||B1_ZBLQSC "
+	CQ += " ||UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,2000,1))) HASH "
 	cQ += " FROM "+RetSqlName("SB1")+" A "
-	cQ += " WHERE  B1_ZPEDME = ' ' AND D_E_L_E_T_ = ' ' AND B1_MGFFAM <> ' '  AND B1_MSBLQL <> '1'"
-	cQ += " AND B1_COD >= '500000'   "
-	
-	
-	cQ += "  UNION ALL "
-
-	// ALTERACAO
-	cQ += " SELECT B1_COD,B1_DESC,B1_MGFFAM,B1_UM,B1_POSIPI,B1_TIPO,B1_MSBLQL,B1_ZPEDME,B1_ORIGEM,"
-	CQ += " UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,200,1)) COD ,B1_FILIAL ,'ALTERACAO' as STATUS "
-	cQ += " FROM "+RetSqlName("SB1")+" A "
-	CQ += " WHERE  B1_ZPEDME = 'A' AND D_E_L_E_T_ = ' ' AND B1_MGFFAM <> ' ' "
-	cQ += " AND B1_COD >= '500000' "
+	CQ += " WHERE  (B1_ZPEDME = 'A' OR B1_ZPEDME = ' ' OR rtrim(ltrim(B1_ZDCATEG)) <>  "
+	CQ += "        RTRIM(LTRIM(TO_CHAR(ora_hash(B1_DESC||B1_MGFFAM||B1_UM||B1_POSIPI||B1_TIPO||B1_MSBLQL||B1_ORIGEM||B1_ZBLQSC "                                            
+	CQ += " ||UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,2000,1)))))) ) "
+	CQ += " AND D_E_L_E_T_ = ' ' AND B1_MGFFAM <> ' ' "
+	cQ += " AND B1_COD >= '500000'  AND B1_COD <= '999999'"
 	
 	cQ += " UNION ALL "
 
 	// EXCLUSAO
-	cQ += " SELECT B1_COD,B1_DESC,B1_MGFFAM,B1_UM,B1_POSIPI,B1_TIPO,B1_MSBLQL,B1_ZPEDME,B1_ORIGEM,"
-	CQ += " UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,200,1)) COD ,B1_FILIAL,'EXCLUSAO' as STATUS  "
+	cQ += " SELECT B1_COD,B1_DESC,B1_MGFFAM,B1_UM,B1_POSIPI,B1_TIPO,B1_MSBLQL,B1_ZPEDME,B1_ORIGEM,B1_ZBLQSC,"
+	CQ += " UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,2000,1)) COD ,B1_FILIAL,'EXCLUSAO' as STATUS,  "
+	CQ += " ora_hash(B1_DESC||B1_MGFFAM||B1_UM||B1_POSIPI||B1_TIPO||B1_MSBLQL||B1_ORIGEM||B1_ZBLQSC "
+	CQ += " ||UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(B1_ZPRODES,2000,1))) HASH "
 	cQ += " FROM "+RetSqlName("SB1")+" A "
 	cQ += " WHERE  B1_ZPEDME = 'D' AND D_E_L_E_T_ = '*' AND B1_MGFFAM <> ' ' "
-	cQ += " AND B1_COD >= '500000' "  
+	cQ += " AND B1_COD >= '500000' AND B1_COD <= '999999' "  
 	
 	cQ := ChangeQuery(cQ)
     
+	U_MFCONOUT('Carregando produtos para envio...') 
 	dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
+
+	U_MFCONOUT('Contando produtos para envio...') 
+	//Conta envios a realizar
+	_ntot := 0
+	While (cAliasTrb)->(!Eof())
+		_ntot++
+		(cAliasTrb)->(Dbskip())
+	Enddo
+
+	(cAliasTrb)->(Dbgotop())
 		
 	aadd( aHeadOut, 'Content-Type: application/json' )
 	
-	conout(" [MGFWSC45] * * * * * Status da integracao PRODUTO * * * * *")
-	conout("   [PRODUTO] URL..........................: " + cUrl			)
-	conout("   [PRODUTO] Inicio.......................: " + cTimeIni + " - " + dToC( dDataBase ) )
-	conout("   [PRODUTO] Query........................: " + allTrim( cq ) 					)
+	_nni := 1
 
 	While (cAliasTrb)->(!Eof())
 
-		conout("   [PRODUTO] Produto * * "+alltrim((cAliasTrb)->B1_COD))
-
+		U_MFCONOUT('Enviando produto ' + alltrim((cAliasTrb)->B1_COD) + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6)+ "...") 
+	
 		cjson := " "
 		oJson						  := JsonObject():new()
 
-		// VERSAO CAMPOS DA PLANILHA
+    	cCodok := STRTRAN(alltrim((cAliasTrb)->COD), CHR(34) ,"'" )  // Retirar aspas duplas
+		cCodok := STRTRAN(alltrim(cCodok), CHR(59) ,"." )  // Retirar ponto e virgula
+		cCodok := STRTRAN(alltrim(cCodok), CHR(13) ," " )  // Retirar CTRL-CHAR, code 13
+		cCodok := alltrim(FwCutOff(cCodok,.F.)) // retirar quebra de linhas
+
+		cdesc := STRTRAN(ALLTRIM((cAliasTrb)->B1_DESC), CHR(34) ,"'" )  // Retirar aspas duplas
+		cdesc := STRTRAN(alltrim(cdesc), CHR(59) ,"." )  // Retirar ponto e virgula
+		cdesc := STRTRAN(alltrim(cdesc), CHR(13) ," " )  // Retirar CTRL-CHAR, code 13
+		cdesc := alltrim(FwCutOff(cdesc,.F.)) // retirar quebra de linhas
 
 		cjson +='   {                                                           													      '
 		cjson +='  	"MSGPRODUTO": {                                             													      '
@@ -126,40 +120,33 @@ Static Function RUNINTEG45()
 		cjson +='	"IDINTEGRACAO"           : "' + alltrim((cAliasTrb)->B1_COD) + '"     												 ,'
 		cjson +='	"CODIGO"                 : "' + alltrim((cAliasTrb)->B1_COD) + '"            										 ,'
 		cjson +='	"CODPRODUTO"               : "' + alltrim((cAliasTrb)->B1_COD) + '"            										 ,'
-		//history_1 : Tratamento do Aspas Duplas como erro na Integração
-			
-		cjson +='	"DESCRICAO"              : "' + STRTRAN(alltrim((cAliasTrb)->B1_DESC), CHR(34) ," ' " ) + '"     						 ,'
+	
+		cjson +='	"DESCRICAO"              : "' + cdesc + '"     						 ,'
 				
 		cjson +='	"CODIGO_GRUPO"           : "' + alltrim((cAliasTrb)->B1_MGFFAM) + '"    												 ,'
 		cjson +='	"DESCRICAO_GRUPO"        : "' + Alltrim(POSICIONE('ZFN',1, xFilial('ZFN') + alltrim((cAliasTrb)->B1_MGFFAM), 'ZFN_DESCRI')) + '" ,'
 		cjson +='	"GENERICO"               : "N"                                             											 ,' // Sempre N
 		cjson +='	"UNIDADE"                : "' + alltrim((cAliasTrb)->B1_UM) + '"          											 ,'
 		
-		// History_1 Tratamento de Aspas Duplas e tabulação
-	    cCodok := STRTRAN(alltrim((cAliasTrb)->COD), CHR(34) ," ' " ) 
-	   
-	    cCodok := SUBSTRING(alltrim((cAliasTrb)->COD),1,LEN(alltrim((cAliasTrb)->COD)) - 2)
-		
 		cjson +='	"COMPLEMENTO"            :"' + cCodok  + '"               				 ,' // B1_ZPRODES
 		cjson +='	"NBM"                    : "' + alltrim((cAliasTrb)->B1_POSIPI) + '"           										 ,'
 		cjson +='   "SERVICO"                : "' + If(alltrim((cAliasTrb)->B1_TIPO) = "N","S","N") + '"   								 ,'
 
-
-		If (cAliasTrb)->B1_MSBLQL <> '1' .AND. ((cAliasTrb)->B1_ZPEDME <> "A" )//Produto Novo
-
+		If (cAliasTrb)->B1_ZPEDME <> "A"
 			cjson +='	"TIPOALTERACAO"          : "N"    	,'
+		Else
+			cjson +='	"TIPOALTERACAO"          : "S"    	,'
+		Endif
+
+
+		If (cAliasTrb)->B1_MSBLQL <> '1' .AND. (cAliasTrb)->B1_ZBLQSC <> '1'  
+
 			cjson +='	"STATUS"                 : "N"      ,'
 
 
-		Elseif (cAliasTrb)->B1_MSBLQL = "1" .AND. (cAliasTrb)->B1_ZPEDME = "A"// Produto Bloqueado
+		Else
 
-			cjson +='	"TIPOALTERACAO"          : "S"      ,'
 			cjson +='	"STATUS"                 : "B"      ,'
-
-		Elseif (cAliasTrb)->B1_ZPEDME = "A" .AND.  (cAliasTrb)->B1_MSBLQL <> '1'
-
-			cjson +='	"TIPOALTERACAO"          : "S"      ,'
-			cjson +='	"STATUS"                 : "N"      ,'
 
 		Endif
 
@@ -175,6 +162,9 @@ Static Function RUNINTEG45()
          
 		cTimeIni := time()
 
+		//Ajusta escapes do json
+		cjson := strtran(cjson,'\','\\')
+
 		if !empty( cJson )
 			xPostRet := httpQuote( cUrl /*<cUrl>*/, "POST" /*<cMethod>*/, /*[cGETParms]*/, cJson/*[cPOSTParms]*/, nTimeOut /*[nTimeOut]*/, aHeadOut /*[aHeadStr]*/, @cHeadRet /*[@cHeaderRet]*/ )
 		endif
@@ -187,27 +177,34 @@ Static Function RUNINTEG45()
 		cTimeFin	:= time()
 		cTimeProc	:= elapTime( cTimeIni, cTimeFin )
 
-
-		cQ := "UPDATE "
-		cQ += RetSqlName("SB1")+" "
-		cQ += "SET "
 		if nStatuHttp >= 200 .and. nStatuHttp <= 299
 
-			cQ += "B1_ZPEDME = 'S' "
-			conout("     [PRODUTO] Atualizado Campo Personalizado (B1_ZPEDME) - Inclusao Produto.........: " + (cAliasTrb)->B1_COD 					)
+			cQ := "UPDATE "
+			cQ += RetSqlName("SB1")+" "
+			cQ += "SET "
+			cQ += "B1_ZPEDME = 'S', "
+			cQ += "B1_ZDCATEG = '" + alltrim(STR((cAliasTrb)->HASH)) + "'    "
+			cQ += "WHERE B1_COD = '" + alltrim((cAliasTrb)->B1_COD) + "'    "
 
-		endif
+			nRet := tcSqlExec(cQ)
 
-		cQ += "WHERE B1_COD = '" + alltrim((cAliasTrb)->B1_COD) + "'    "
+			If nRet != 0
 
-		nRet := tcSqlExec(cQ)
+				U_MFCONOUT("Problemas na gravacao dos campos do cadastro de produto, apos envio ao ME.")
+				xpostret := "Problemas na gravacao dos campos do cadastro de produto, apos envio ao ME. - " + xpostret
 
-		If nRet == 0
+			EndIf
 
 		Else
-			conout("Problemas na gravação dos campos do cadastro de produto, para envio ao ME.")
 
-		EndIf
+			If valType(xpostret) != "C"
+				xpostret := "Retorno nulo"
+			Endif
+
+			U_MFCONOUT("Erro no envio da integrao ao ME - " + xpostret)
+
+		Endif
+
 
 		Reclock("ZF1",.T.)
 
@@ -221,21 +218,22 @@ Static Function RUNINTEG45()
 		ZF1->ZF1_ERRO	:=	Alltrim(xPostRet)
 		ZF1->ZF1_JSON	:=	cJson
 		ZF1->ZF1_HORA	:=	time()
-		ZF1->ZF1_TOKEN	:=	" "
+		ZF1->ZF1_TOKEN	:=	alltrim(STR((cAliasTrb)->HASH))
 
 		Msunlock ()
 
 		freeObj( oJson )
 
-		conout("   [PRODUTO] Fim..........................: " + cTimeFin + " - " + dToC( dDataBase ) )
-		cTimeProc	:= elapTime( cTimeIni, cTimeFin )
-		conout("   [PRODUTO] Tempo de Processamento.......: " + cTimeProc 							)
-		conout("   [PRODUTO] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 		)
-		conout("   [PRODUTO] cJson........................: " + allTrim( cJson ) 					)
-		conout("   [PRODUTO] STATUS........................: " + (cAliasTrb)->STATUS)
-		conout("   [PRODUTO] * * * * * * * FIM - PRODUTO * * * * * * * * * * * * * "	    	)
+		U_MFCONOUT("URL..........................: " + cUrl			)
+		U_MFCONOUT("Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 		)
+		U_MFCONOUT("cJson........................: " + allTrim( cJson ) 					)
+		U_MFCONOUT("STATUS........................: " + (cAliasTrb)->STATUS)
 
+		U_MFCONOUT('Completou envio do  produto ' + alltrim((cAliasTrb)->B1_COD) + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6)+ "...") 
+		_nni++
+	
 		(cAliasTrb)->(dbSkip())
+
 	EndDo
 
 	(cAliasTrb)->(dbCloseArea())

@@ -3,10 +3,10 @@
 Programa............: SF1140I
 Autor...............: Barbieri
 Data................: 01/2018 
-Descricao / Objetivo: Ponto de entrada no final da gravacao da pre-nota de entrada
+Descricao / Objetivo: Ponto de entrada no final da gravacao da pré-nota de entrada
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

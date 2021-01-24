@@ -16,34 +16,26 @@ Local aMatriz := {"01","010001"}
 Local lIsBlind := IsBlind() .OR. Type("__LocalDriver") == "U"
 Local lSemaf := .T.
 
-if lIsBlind
-	RpcSetType(3)
-	RpcSetEnv(aMatriz[1],aMatriz[2])
 	
-	lSemaf := GetMv("MGF_GFE325",,.T.)
-	If lSemaf
-		If !LockByName(ProcName())
-			Conout("JOB já em Execução : "+ProcName()+" - "+DTOC(dDATABASE) + " - " + TIME() )
-			RpcClearEnv()
-			Return()
-		EndIf
-	Endif	
+lSemaf := GetMv("MGF_GFE325",,.T.)
+If lSemaf
+	If !LockByName(ProcName())
+		Conout("JOB já em Execução : "+ProcName()+" - "+DTOC(dDATABASE) + " - " + TIME() )
+		Return()
+	EndIf
+Endif	
 	
-	conOut("********************************************************************************************************************")
-	conOut('Inicio do processamento - MGFGFE32 - Gravação campos GFE - ' + DTOC(dDATABASE) + " - " + TIME()  )
-	conOut("********************************************************************************************************************"+ CRLF)
-	MGFGFE32Proc()
-	conOut("********************************************************************************************************************")
-	conOut('Final do processamento - MGFGFE32 - Gravação campos GFE - ' + DTOC(dDATABASE) + " - " + TIME()  )
-	conOut("********************************************************************************************************************"+ CRLF)
+conOut("********************************************************************************************************************")
+conOut('Inicio do processamento - MGFGFE32 - Gravação campos GFE - ' + DTOC(dDATABASE) + " - " + TIME()  )
+conOut("********************************************************************************************************************"+ CRLF)
+MGFGFE32Proc()
+conOut("********************************************************************************************************************")
+conOut('Final do processamento - MGFGFE32 - Gravação campos GFE - ' + DTOC(dDATABASE) + " - " + TIME()  )
+conOut("********************************************************************************************************************"+ CRLF)
 	
-	If lSemaf
-		UnLockByName(ProcName())
-	Endif	
-
-	RpcClearEnv()	
-
-EndIf
+If lSemaf
+	UnLockByName(ProcName())
+Endif	
 
 Return()
 

@@ -11,7 +11,7 @@ Data.....:              11/10/2016
 Descricao / Objetivo:   incluir campos Cliente e Nome no Browse de Pedidos 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              incluir campos Cliente e Nome no Browse de Pedidos
 =====================================================================================
 */

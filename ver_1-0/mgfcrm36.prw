@@ -14,7 +14,7 @@ Data.....:              19/04/2017
 Descricao / Objetivo:   Cadastro de Cliente - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -32,18 +32,18 @@ user function MGFCRM36(nOpcX, cCodPos, nRecno)
 			ZBJ->(dbGoto(nRecno))
 		endif
 
-		fwExecView("Inclusao", "MGFCRM35", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
+		fwExecView("Inclusão", "MGFCRM35", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
 	else
 		//if ZBJ->(DBSeek( xFilial("ZBJ") + cCodPos ))
 		ZBJ->(dbGoto(nRecno))
 		If ZBJ->(Recno()) == nRecno
 			if nOpcX == 4
-				fwExecView("Alteracao", "MGFCRM35", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
+				fwExecView("Alteração", "MGFCRM35", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
 			elseif nOpcX == 5
-				fwExecView("Alteracao", "MGFCRM35", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
+				fwExecView("Alteração", "MGFCRM35", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
 			endif
 		else
-			msgAlert("Registro nao encontrado.")
+			msgAlert("Registro não encontrado.")
 		endif
 	endif
 

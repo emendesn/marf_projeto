@@ -14,9 +14,8 @@
 /*/
 User Function FA060Qry()
 
-	Local cRet := ""
-	
+	Local cRet := ""	
 
-	cRet := " E1_NUMBCO <> ' ' AND ((SF2.F2_CHVNFE <> ' ' AND E1_ORIGEM = 'MATA460') OR (SF2.F2_CHVNFE = '' AND E1_ORIGEM = 'FINA040')) "
+	cRet := " E1_NUMBCO <> ' ' AND (NVL(SF2.F2_CHVNFE,' ') = ' ' AND E1_ORIGEM = 'FINA040') OR (SF2.F2_CHVNFE <> ' ' AND E1_ORIGEM = 'MATA460') OR ( NVL(SF2.F2_CHVNFE,' ') =  ' ' AND E1_ORIGEM = 'LOJA701') "
 
 Return cRet

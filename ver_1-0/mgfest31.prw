@@ -8,7 +8,7 @@ Data.....:              Junho/2017
 Descricao / Objetivo:   Rotina para alterar a data de digitacao da NFE na classificacao do documento.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -37,7 +37,7 @@ If l103Class // esta na classificacao da nfe
 			EndIf
 		Else
 			lContinua := .F.
-			APMsgStop("Problemas na gravacao da Data de Digitaï¿½ï¿½o no Documento.")
+			APMsgStop("Problemas na gravação da Data de Digitação no Documento.")
 		EndIf
 
 		If lContinua
@@ -58,7 +58,7 @@ If l103Class // esta na classificacao da nfe
 				EndIf
 			Else
 				lContinua := .F.
-				APMsgStop("Problemas na gravacao da Data de Digitaï¿½ï¿½o no Documento.")
+				APMsgStop("Problemas na gravação da Data de Digitação no Documento.")
 			EndIf
 		Endif
 	Endif

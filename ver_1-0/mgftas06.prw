@@ -188,6 +188,7 @@ IF bTaura .or. bKey
 		SC5->C5_ZTAUREE	:= 'N'
 		SC5->C5_ZTAUINT	:= 'S'
 		SC5->C5_ZLIBENV	:= 'N'
+		//SC5->C5_ZNUMEXP := Left(SC5->C5_PEDEXP,9) // PRB0041099 - 27/11/2020 - Paulo Mata 
 		SC5->(MsUnlock())
 
 		cUpdSC6 := ""
@@ -298,6 +299,11 @@ Class T06_GRAVARPV
 	Data Observacao				as String
 	Data CodigoBarras			as String
 	Data EnderecoEntrega		as String
+	Data DescricaoEnderecoEntrega		as String
+	Data CidadeEntrega			as String
+	Data EstadoEntrega			as String
+	Data LogradouroEntrega		as String
+	Data BairroEntrega			as String
 	Data PedidoCliente			as String
 	Data ApplicationArea		as ApplicationArea
 	Data Documento				as String
@@ -393,6 +399,50 @@ EndIf
 ::Observacao 	  := cObs  //Alltrim(&(cSC5+'->C5_ZOBS'))
 ::CodigoBarras 	  := Alltrim(&(cSC5+'->C5_ZCODBAR'))
 ::EnderecoEntrega := cCliente+IIf(Empty(&(cSC5+'->C5_ZIDEND')),"0",Alltrim(Str(Val(&(cSC5+'->C5_ZIDEND')))))  //Alltrim(IIf( Empty(&(cSC5+'->C5_ZIDEND')),"0",&(cSC5+'->C5_ZIDEND')))
+
+SZ9->(Dbsetorder(1)) //Z9_FILIAL+Z9_CLIENTE+Z9_ZIDEND
+
+If SZ9->(Dbseek(xfilial("SZ9")+&(cSC5+'->C5_CLIENTE')+&(cSC5+'->C5_LOJACLI')+&(cSC5+'->C5_ZIDEND')))
+
+		_cendereco := alltrim(SZ9->Z9_ZENDER)
+		_ccidade := alltrim(SZ9->Z9_ZMUNIC)
+		_cbairro := alltrim(SZ9->Z9_ZBAIRRO)
+		_cestado := alltrim(SZ9->Z9_ZEST)
+
+Else
+
+		If SC5->C5_TIPO $ ("D/B")
+			SA2->(dbSetOrder(1))
+			If SA2->(dbSeek(xFilial("SA2")+&(cSC5+'->C5_CLIENTE')+&(cSC5+'->C5_LOJACLI')))
+		
+				_cendereco := alltrim(SA2->A2_END)
+				_ccidade := alltrim(SA2->A2_MUN)
+				_cbairro := alltrim(SA2->A2_BAIRRO)
+				_cestado := alltrim(SA2->A2_EST)
+
+			Endif
+		Else
+			SA1->(dbSetOrder(1))
+			If SA1->(dbSeek(xFilial("SA1")+&(cSC5+'->C5_CLIENTE')+&(cSC5+'->C5_LOJACLI')))
+			
+				_cendereco := IIF(!EMPTY(SA1->A1_ENDENT),alltrim(SA1->A1_ENDENT),alltrim(SA1->A1_END))
+				_ccidade := alltrim(SA1->A1_MUN)
+				_cbairro := alltrim(SA1->A1_BAIRRO)
+				_cestado := alltrim(SA1->A1_EST)
+
+			Endif
+		Endif
+
+	
+Endif
+
+
+::DescricaoEnderecoEntrega := _cendereco
+::CidadeEntrega				:= _ccidade
+::EstadoEntrega 			:= _cestado
+::LogradouroEntrega 		:= _cendereco
+::BairroEntrega 			:= _cbairro
+
 ::PedidoCliente   := Alltrim(&(cSC5+'->C5_ZPEDCLI'))
 
 // tratamento para forcar reenvio ao keyconsult ( conteudo "S" ), pois se o pedido teve nota emitida em 72hs e ainda tem bloqueio de regra, o campo ::Consulta_Hab vai como "N", o key consult nao reavalia as regras e o bloqueio na SZV nao eh desfeito nunca
@@ -400,10 +450,10 @@ EndIf
 ::Taura			  := IIf(GetAdvFVal("SZJ","ZJ_TAURA",xFilial("SZJ")+&(cSC5+'->C5_ZTIPPED'),1,"")=="S","S","N")
 ::Produtor_Rural  := IIf(&(cSC5+'->C5_TIPOCLI')=="L","S","N")
 
-// Paulo da Mata - RTASK0011075 - 19/05/2020 - Verifica se o campo C5_ZTIPPED == "IT", Carrega o conteúdo do campo C5_ZNUMEXP
-// Paulo da Mata - RTASK0011075 - 19/05/2020 - Verifica se o campo C5_ZTIPPED == "TE", Carrega o conteúdo do campo C5_ZCLIET+C5_ZLJAET
-::NumeroExp		  := AllTrim(IIf(&(cSC5+'->C5_ZTIPPED')$"IT|TE",&(cSC5+'->C5_ZNUMEXP'),""))
-::ClienteEtiqueta := AllTrim(IIf(&(cSC5+'->C5_ZTIPPED')$"IT|TE",&(cSC5+'->C5_ZCLIET')+&(cSC5+'->C5_ZLJAET'),""))
+// Paulo da Mata - RTASK0011075 - 19/05/2020 - Verifica se o campo C5_ZTIPPED $ "IT|TE|EX", Carrega o conteúdo do campo C5_ZNUMEXP
+// Paulo da Mata - RTASK0011075 - 19/05/2020 - Verifica se o campo C5_ZTIPPED $ "IT|TE|EX", Carrega o conteúdo do campo C5_ZCLIET+C5_ZLJAET
+::NumeroExp	      := AllTrim(IIf(&(cSC5+'->C5_ZTIPPED')$"IT|TE|EX",IIf(Empty(&(cSC5+'->C5_ZNUMEXP')),Left(&(cSC5+'->C5_PEDEXP'),9),&(cSC5+'->C5_ZNUMEXP')),""))
+::ClienteEtiqueta := AllTrim(IIf(&(cSC5+'->C5_ZTIPPED')$"IT|TE|EX",&(cSC5+'->C5_ZCLIET')+&(cSC5+'->C5_ZLJAET'),""))
 
 ::Itens	:= {}
 

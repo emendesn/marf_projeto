@@ -9,7 +9,7 @@ Data.....:              Maio/2017
 Descricao / Objetivo:   Rotina de baixa da solicitacao ao armazem
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -34,7 +34,7 @@ Private cCCSav := cCC
 SD3->(MSUNLOCK()) //Rafael 09/04 - retira o lock do registro SD3 do primeiro Browse
 oBrowse := FWMarkBrowse():New()
 oBrowse:SetAlias('SCP')
-oBrowse:SetDescription('Solicitacoes ao Armazem')
+oBrowse:SetDescription('Solicitações ao Armazém')
 oBrowse:SetFilterDefault('CP_QUANT-CP_QUJE > 0 .AND. CP_STATSA == "L" .AND. CP_STATUS <> "E"') // com saldo, sem pre-requisicao, liberada e nao encerrada
 oBrowse:SetFieldMark(cFieldMark)
 oBrowse:SetAllMark( {|| Est26AllMark() } )
@@ -54,7 +54,7 @@ Static Function MenuDef()
 Local aRotina := {}
 
 ADD OPTION aRotina TITLE 'Visualizar' 	   		ACTION 'VIEWDEF.MGFEST26' 	OPERATION 2 ACCESS 0
-ADD OPTION aRotina TITLE 'Baixar Solicitaï¿½ï¿½o'	ACTION 'U_Est26BxSA()' 		OPERATION 4 ACCESS 0
+ADD OPTION aRotina TITLE 'Baixar Solicitação'	ACTION 'U_Est26BxSA()' 		OPERATION 4 ACCESS 0
 	
 Return aRotina
 
@@ -69,16 +69,16 @@ Local oModel
 //oModel :MPFormModel():New('EST26', /*bPreValidacao*/, /*bPosValidacao*/, /*bCommit*/, /*bCancel*/ )
 oModel := MPFormModel():New("EST26", /*bPreValidacao*/,/*bPosValidacao*/,/*bCommit*/,/*bCancel*/ )
 
-// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+// Adiciona ao modelo uma estrutura de formulário de edição por campo
 oModel:AddFields( 'EST26MASTER', /*cOwner*/, oStruSCP, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 // Adiciona a descricao do Modelo de Dados
-oModel:SetDescription( 'Baixar Solicitaï¿½ï¿½o ao Armazem' )
+oModel:SetDescription( 'Baixar Solicitação ao Armazém' )
 
 // Adiciona a descricao do Componente do Modelo de Dados
-//oModel:GetModel( 'EST26MASTER' ):SetDescription( 'Baixar Solicitaï¿½ï¿½o ao Armazem' )
+//oModel:GetModel( 'EST26MASTER' ):SetDescription( 'Baixar Solicitação ao Armazém' )
 	
-//Adiciona chave Primaria
+//Adiciona chave Primária
 //oModel:SetPrimaryKey({"CP_FILIAL","CP_NUM","CP_ITEM"})
 oModel:SetPrimaryKey({})
 
@@ -98,7 +98,7 @@ Local oView
 // Cria o objeto de View
 oView := FWFormView():New()
 
-// Define qual o Modelo de dados sera utilizado
+// Define qual o Modelo de dados será utilizado
 oView:SetModel( oModel )
 
 //Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -115,7 +115,7 @@ Return oView
 
 Static Function Est26AllMark()
                             
-Help( ,, 'Help',, 'Marcacao de todos os registros nao permitida'+CRLF+"Marque apenas os registros a serem processados.", 1, 0 )
+Help( ,, 'Help',, 'Marcação de todos os registros não permitida'+CRLF+"Marque apenas os registros a serem processados.", 1, 0 )
 
 Return(.T.)
 
@@ -131,7 +131,7 @@ Private aRotina	:=  {	{OemToAnsi("Pesquisar")			,"AxPesqui"  , 0 , 1,0,.F.},;		/
 						{OemToAnsi("Visualizar")		,"A241Visual", 0 , 2,0,nil},;		//"Visualizar"
 						{OemToAnsi("Incluir")			,"A241Inclui", 0 , 3,0,nil},;		//"Incluir"
 						{OemToAnsi("Estornar")			,"A241Estorn", 0 , 6,0,nil},;		//"Estornar"
-						{OemToAnsi("Tracker Contï¿½bil")	,"CTBC662"   , 0 , 7,0,Nil},;		//"Tracker Contï¿½bil"
+						{OemToAnsi("Tracker Contábil")	,"CTBC662"   , 0 , 7,0,Nil},;		//"Tracker Contábil"
 						{OemToAnsi("Legenda")			,"A240Legenda", 0 , 2,0,.F.} }		//"Legenda"
 
 // verifica se algum item foi marcado
@@ -147,7 +147,7 @@ If lContinua
 	oBrowse:Refresh(.F.)
 
 
-//IMPRESSï¿½O DA BAIXA  MIT 678 -- TARCISIO GALEANO 27/11/2018 
+//IMPRESSÃO DA BAIXA  MIT 678 -- TARCISIO GALEANO 27/11/2018 
 If SD3->D3_FILIAL = cfilant
 
 		If MsgYesNo("IMPRIME TERMO DE RETIRADA","RETIRADA")
@@ -158,7 +158,7 @@ Endif
 
 
 Else
-	APMsgStop("Nenhuma Solicitaï¿½ï¿½o ao Armazem foi marcada.")
+	APMsgStop("Nenhuma Solicitação ao Armazém foi marcada.")
 Endif	
 
 aRotina := aRotOld
@@ -204,7 +204,7 @@ validado para inclusao e exclusao
 */
 If nOpc == 3 .or. nOpc == 4
 	If aScan(aHeader,{|x| Alltrim(x[2])=="D3_FILIAL"}) > 0
-		APMsgAlert("Campo Filial nao deve aparecer na tela. Acesse a rotina pelo menu 'ESPECï¿½FICOS' ao invï¿½s do menu 'RECENTES'.")
+		APMsgAlert("Campo Filial não deve aparecer na tela. Acesse a rotina pelo menu 'ESPECÍFICOS' ao invés do menu 'RECENTES'.")
 
 		aEval(aArea,{|x| RestArea(x)})		
 	
@@ -281,7 +281,7 @@ For nCnt:=1 To Len(aMark)
 			If SB1->(dbSeek(xFilial("SB1")+(cAlias)->CP_PRODUTO))
 				// inserido em 28/06/18, pois alguns registros da sd3 estao ficando com o campo d3_filial em branco, inexplicavelmente
 				If Empty(cFilAnt)
-					APMsgStop("Filial em branco, registro nao sera considerado.")
+					APMsgStop("Filial em branco, registro não será considerado.")
 					Loop
 				Endif	
 				
@@ -297,10 +297,10 @@ For nCnt:=1 To Len(aMark)
 				
 				// validacao para evitar do usuario marcar registros de filiais diferentes
 				If (!Empty(cFilSA) .and. cFilSA != (cAlias)->CP_FILIAL) .or. cFil != (cAlias)->CP_FILIAL
-					APMsgStop("Registros marcados sao de filiais diferentes."+CRLF+;
+					APMsgStop("Registros marcados são de filiais diferentes."+CRLF+;
 					"Marque apenas registros da mesma filial e da filial logada no sistema."+CRLF+;
 					"Filial logada no sistema: "+cFil+"."+CRLF+;
-					"Nenhum produto sera considerado para baixa.")
+					"Nenhum produto será considerado para baixa.")
 					// zera acols
 					aCols := aClone(aColsRef)
 					
@@ -420,12 +420,12 @@ For nCnt:=1 To Len(aMark)
 							cCCSav := cCC // guarda para nao deixar o usuario trocar
 						Endif	
 						If cCC != (cAlias)->CP_CC
-							APMsgAlert("Centro de Custo diferente das demais SAï¿½s marcadas."+CRLF+;
-							"Produto / Armazem: "+(cAlias)->CP_PRODUTO+" / "+(cAlias)->CP_LOCAL+CRLF+;
-							"Solicitaï¿½ï¿½o ao Armazem / Item: "+(cAlias)->CP_NUM+" / "+(cAlias)->CP_ITEM+CRLF+;
+							APMsgAlert("Centro de Custo diferente das demais SA´s marcadas."+CRLF+;
+							"Produto / Armazém: "+(cAlias)->CP_PRODUTO+" / "+(cAlias)->CP_LOCAL+CRLF+;
+							"Solicitação ao Armazém / Item: "+(cAlias)->CP_NUM+" / "+(cAlias)->CP_ITEM+CRLF+;
 							"Centro de Custo a ser usado nesta baixa: "+cCC+CRLF+;
 							"Centro de Custo deste item da SA: "+(cAlias)->CP_CC+CRLF+;
-							"Este produto nao sera considerado para Baixa.")
+							"Este produto não será considerado para Baixa.")
 							Loop
 						Endif	
 						// preenche os itens do movimento interno
@@ -484,10 +484,10 @@ For nCnt:=1 To Len(aMark)
 					Next	
 
 				Else
-					APMsgAlert("Sem Saldo disponivel em estoque."+CRLF+;
-					"Produto / Armazem: "+(cAlias)->CP_PRODUTO+" / "+(cAlias)->CP_LOCAL+CRLF+;
-					"Solicitaï¿½ï¿½o ao Armazem / Item: "+(cAlias)->CP_NUM+" / "+(cAlias)->CP_ITEM+CRLF+;
-					"Este produto nao sera considerado para Baixa.")
+					APMsgAlert("Sem Saldo disponível em estoque."+CRLF+;
+					"Produto / Armazém: "+(cAlias)->CP_PRODUTO+" / "+(cAlias)->CP_LOCAL+CRLF+;
+					"Solicitação ao Armazém / Item: "+(cAlias)->CP_NUM+" / "+(cAlias)->CP_ITEM+CRLF+;
+					"Este produto não será considerado para Baixa.")
 				Endif
 			Endif
 		Endif			
@@ -507,7 +507,7 @@ Local cAlias := oBrowse:Alias()
 Local nPos := 0
 
 cFldMrk := cAlias+'->'+cField
-// Verifica se o item esta sendo marcado ou desmarcado
+// Verifica se o item está sendo marcado ou desmarcado
 If !oBrowse:IsMark()
 	(cAlias)->(RecLock(cAlias,.F.))
 	&cFldMrk := oBrowse:Mark()
@@ -535,7 +535,7 @@ User Function Est26Header(lEstorno)
 
 Local aArea := {SX3->(GetArea()),GetArea()}
 Local aCampos := {"D3_ZQTDSA","D3_ZSLDSA"}
-Local aCamposErro := {"D3_DTVALID","D3_LOTECTL"} // estes campos estao com problema no x3_usado, estao ficando gravados no formato dos SXï¿½s no system ao inves do formato dos SXï¿½s no banco. O padrao do mata241 estah gravando errado estes campos
+Local aCamposErro := {"D3_DTVALID","D3_LOTECTL"} // estes campos estao com problema no x3_usado, estao ficando gravados no formato dos SX´s no system ao inves do formato dos SX´s no banco. O padrao do mata241 estah gravando errado estes campos
 Local nCnt := 0
 
 If !lEstorno
@@ -577,8 +577,11 @@ Local nPos := 0
 
 // chamada pela rotina de baixa da SA especifica
 If IsInCallStack("U_MGFEST28")
-	aAdd(aRotina,{OemToAnsi("Baixar Solicitaï¿½ï¿½o ao Armazem"),"U_MGFEST26",0,4,0,Nil})
-	aAdd(aRotina,{OemToAnsi("Relatorio para Baixas da SA"),"U_Est26RelBx",0,2,0,Nil})	
+	aAdd(aRotina,{OemToAnsi("Baixar Solicitação ao Armazém"),"U_MGFEST26",0,4,0,Nil})
+	aAdd(aRotina,{OemToAnsi("Relatório para Baixas da SA"),"U_Est26RelBx",0,2,0,Nil})
+	
+	aRotina[3,2]:="U_Est26Brw(3)" //inclusão
+	aRotina[4,2]:="U_Est26Brw(6)" //estorno
 	/* obs: nao tirar nenhuma opcao do arotina, senao a funcao de estorno padrao do mata241 nao funciona
 	If (nPos:=aScan(aRotina,{|x| x[2]=="A241Inclui"})) > 0
 		aDel(aRotina,nPos)
@@ -586,7 +589,7 @@ If IsInCallStack("U_MGFEST28")
 	Endif	
 	*/
 	// muda o nome da rotina que eh apresentado em tela
-	cCadastro := "Baixa de Solicitaï¿½ï¿½o ao Armazem"
+	cCadastro := "Baixa de Solicitação ao Armazém"
 Endif	
 
 Return()
@@ -598,10 +601,15 @@ User Function Est26SAMenu()
 
 aAdd(aRotina,{OemToAnsi("Encerrar SA"),"U_Est26EncSA",0,5,0,Nil})
 
-aAdd(aRotina,{OemToAnsi("Log Envio SA para aprovacao do RH"),"U_MGFES74A",0,5,0,Nil})
+aAdd(aRotina,{OemToAnsi("Log Envio SA para aprovação do RH"),"U_MGFES74A",0,5,0,Nil})
 
-aAdd(aRotina,{OemToAnsi("Log Retorno da aprovacao SA pelo RH"),"U_MGFES74B",0,5,0,Nil})
+aAdd(aRotina,{OemToAnsi("Log Retorno da aprovação SA pelo RH"),"U_MGFES74B",0,5,0,Nil})
 
+aAdd(aRotina,{OemToAnsi("Log Retorno da aprovação SA pelo RH"),"U_MGFES74B",0,5,0,Nil})
+
+aAdd(aRotina,{OemToAnsi("Recuperar aprovação SA pelo RH"),"U_MGEST73C",0,5,0,Nil})
+
+aAdd(aRotina,{OemToAnsi("Reenviar SA para o RH"),"U_MGEST73D",0,5,0,Nil})
 Return()
 
 
@@ -624,7 +632,7 @@ Local lRet := .T.
 If IsInCallStack("U_MGFEST28") .and. Type("oBrowse") != "U"
 	If M->D3_QUANT > gdFieldGet("D3_ZSLDSA",n)
 		lRet := .F.
-		APMsgStop("Quantidade digitada maior que o saldo da Solicitaï¿½ï¿½o ao Armazem.")
+		APMsgStop("Quantidade digitada maior que o saldo da Solicitação ao Armazém.")
 	Endif
 Endif		
 
@@ -681,7 +689,7 @@ Local lRet := .T.
 If IsInCallStack("U_MGFEST28") .and. Type("cCCSav") != "U"
 	If cCCSav != cCC .or. Empty(cCC)
 		lRet := .F.
-		APMsgAlert("Centro de Custo do cabecalho nao pode ser diferente do cadastrado na SA e nao pode ser vazio."+CRLF+;
+		APMsgAlert("Centro de Custo do cabeçalho não pode ser diferente do cadastrado na SA e não pode ser vazio."+CRLF+;
 		"Centro de Custo da SA: "+cCCSav)
 	Endif	
 Endif	
@@ -691,7 +699,7 @@ If lRet
 	If IsInCallStack("U_MGFEST28")
 		If Empty(cFilAnt)
 			lRet := .F.
-			APMsgStop("Filial em branco, movimento nao sera confirmado.")
+			APMsgStop("Filial em branco, movimento não será confirmado.")
 		Endif
 	Endif
 Endif		
@@ -700,22 +708,26 @@ Return(lRet)
 
 
 // rotina chamada pelo ponto de entrada MBrwBtn
-// impede utilizacao da opcao de inclusao padrao do movimento interno mod II, na rotina de baixa da solicitacao ao armazem
-User Function Est26Brw()
+// impede utilizacao da opcao de inclusao padrão do movimento interno mod II, na rotina de baixa da solicitacao ao armazem
+User Function Est26Brw(nOpcao)
 
 Local lRet := .T.
+/*
 Local cAlias := ParamIxb[1]
 Local nRecno := ParamIxb[2]
 Local nOpcao := ParamIxb[3]
 Local cFunc := ParamIxb[4]
-
-If cAlias = "SD3" .and. Upper(cFunc) = "A241INCLUI" .and. FunName() = "MGFEST28" .and. nOpcao == 3
+*/
+//If cAlias = "SD3" .and. Upper(cFunc) = "A241INCLUI" .and. FunName() = "MGFEST28" .and. nOpcao == 3
+If FunName() = "MGFEST28" .and. nOpcao == 3
 	lRet := .F.
-	ApMsgStop("Essa opcao nao deve ser executada nesta rotina.")
+	ApMsgStop("Essa opção não deve ser executada nesta rotina.")
 Endif	
 
-If cAlias = "SD3" .and. Upper(cFunc) = "A241ESTORN" .and. FunName() = "MGFEST28" .and. nOpcao == 6
+//If cAlias = "SD3" .and. Upper(cFunc) = "A241ESTORN" .and. FunName() = "MGFEST28" .and. nOpcao == 6
+If FunName() = "MGFEST28" .and. nOpcao == 6
 	U_Est26Header(.T.)
+	a241Estorn("SD3",Recno(),4)
 Endif
 
 Return(lRet)
@@ -729,12 +741,12 @@ Local aArea := {SD3->(GetArea()),GetArea()}
 Local lRet := .T.
 Local nCnt := 0
 
-// na rotina especifica de baixa da sa, somente permite estornar movimentos que tenham sido gerados a partir de SAï¿½s
+// na rotina especifica de baixa da sa, somente permite estornar movimentos que tenham sido gerados a partir de SA´s
 If IsInCallStack("U_MGFEST28")
 	aEval(aCols,{|x,y| IIf((Empty(gdFieldGet("D3_NUMSA",y)) .or. Empty(gdFieldGet("D3_ITEMSA",y))),lRet:=.F.,Nil)})
 	If !lRet
-		APMsgStop("Somente movimentos gerados a partir de Solicitacoes ao Armazem podem ser estornados por esta rotina."+CRLF+;
-		"Utilize a rotina padrao de Movimentos Internos mod. II para realizar este estorno.")
+		APMsgStop("Somente movimentos gerados a partir de Solicitações ao Armazém podem ser estornados por esta rotina."+CRLF+;
+		"Utilize a rotina padrão de Movimentos Internos mod. II para realizar este estorno.")
 	Endif	
 Else
 	If SD3->D3_ZORIGEM != "MGFEST08" // movimentos gerados pela rotina especifica de baixa da SA via coletor
@@ -764,8 +776,8 @@ Else
 			Endif
 		Endif
 		If !lRet
-			APMsgStop("Movimentos gerados a partir de Solicitacoes ao Armazem nao podem ser estornados por esta rotina."+CRLF+;
-			"Utilize a rotina especï¿½fica de Baixa de Solicitaï¿½ï¿½o ao Armazem para realizar este estorno.")
+			APMsgStop("Movimentos gerados a partir de Solicitações ao Armazém não podem ser estornados por esta rotina."+CRLF+;
+			"Utilize a rotina específica de Baixa de Solicitação ao Armazém para realizar este estorno.")
 		Endif
 	Endif		
 Endif
@@ -836,11 +848,11 @@ User Function Est26LOk(nLinha)
 
 Local lRet := .T.
 
-// somente valida movimentos que tenham sido gerados a partir de SAï¿½s
+// somente valida movimentos que tenham sido gerados a partir de SA´s
 If IsInCallStack("U_MGFEST28")
 	If Empty(gdFieldGet("D3_NUMSA",nLinha)) .or. Empty(gdFieldGet("D3_ITEMSA",nLinha))
 		lRet := .F.
-		APMsgStop("Nao ï¿½ permitida a inclusao de linhas para movimentos de baixa de Solicitaï¿½ï¿½o ao Armazem.")
+		APMsgStop("Não é permitida a inclusão de linhas para movimentos de baixa de Solicitação ao Armazém.")
 	Endif
 	If lRet
 		// OBS: forca para a variavel do foco ser a de D3_QUANT, pois se for a D3_COD estah dando erro na funcao padrao A240Quant()
@@ -907,7 +919,7 @@ Static Function ReportDef()
 Local oReport,oCab1,oCab2,oItens
 Local aPergs := {}
 
-oReport := TReport():New("MGFEST26","Relatorio de Baixa da Solicitaï¿½ï¿½o ao Armazem","MGFEST26",{|oReport| ReportPrint(oReport,oCab1,oCab2,oItens)},"Este programa ira emitir o relatorio de baixa da Solicitaï¿½ï¿½o ao Armazem.")
+oReport := TReport():New("MGFEST26","Relatório de Baixa da Solicitação ao Armazém","MGFEST26",{|oReport| ReportPrint(oReport,oCab1,oCab2,oItens)},"Este programa irá emitir o relatório de baixa da Solicitação ao Armazém.")
 oReport:SetPortrait(.T.) 
 
 aadd(aPergs,{"Solicitacao ao Armazem de ?"	,"","","mv_ch1","C",06,0,0 ,"G","","mv_par01","","","","","","","","","","","","","","","","","","","","","","","","","SCP","","","","","","",""})
@@ -921,15 +933,15 @@ AjustaSx1("MGFEST26",aPergs)
 
 Pergunte(oReport:uParam,.F.)
 
-oCab1 := TRSection():New(oReport,"SA",{"SCP"},/*{Array com as ordens do relatorio}*/,/*Campos do SX3*/,/*Campos do SIX*/)
+oCab1 := TRSection():New(oReport,"SA",{"SCP"},/*{Array com as ordens do relatório}*/,/*Campos do SX3*/,/*Campos do SIX*/)
 TRCell():New(oCab1,"CP_NUM"		,"SCP",/*Titulo*/,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)	
 
-oCab2 := TRSection():New(oCab1,"Solicitante",{"SCP"},/*{Array com as ordens do relatorio}*/,/*Campos do SX3*/,/*Campos do SIX*/)
+oCab2 := TRSection():New(oCab1,"Solicitante",{"SCP"},/*{Array com as ordens do relatório}*/,/*Campos do SX3*/,/*Campos do SIX*/)
 TRCell():New(oCab2,"cName"		,/*Tabela*/,"Solicitante"/*Titulo*/,"@!"/*Picture*/,40/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/{|| cName			})	
 TRCell():New(oCab2,"CP_EMISSAO"	,"SCP",/*Titulo*/,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)	
 TRCell():New(oCab2,"dEntrega"	,/*Tabela*/,"Data Entrega"	,PesqPict("SCP","CP_EMISSAO")		,TamSX3("CP_EMISSAO"	)[1]	,/*lPixel*/,{|| 			},,,)
 
-oItens := TRSection():New(oCab1,"Itens",{"SCP"},/*{Array com as ordens do relatorio}*/,/*Campos do SX3*/,/*Campos do SIX*/)
+oItens := TRSection():New(oCab1,"Itens",{"SCP"},/*{Array com as ordens do relatório}*/,/*Campos do SX3*/,/*Campos do SIX*/)
 oItens:SetTotalInLine(.T.)
 TRCell():New(oItens,"CP_ITEM"		,"SCP",/*Titulo*/,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)	
 TRCell():New(oItens,"CP_PRODUTO"	,"SCP",/*Titulo*/,/*Picture*/,/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
@@ -940,7 +952,7 @@ TRCell():New(oItens,"nQtdAte" 		,/*Tabela*/,"Qtd. Atendida"		,PesqPict("SCP","CP
 TRCell():New(oItens,"nQtdSld" 		,/*Tabela*/,"Qtd. Saldo"		,PesqPict("SCP","CP_QUANT")		,TamSX3("CP_QUANT"	)[1]	,/*lPixel*/,{|| 	},,,"RIGHT")
 TRCell():New(oItens,"cLocal" 		,/*Tabela*/,"Armazem"			,PesqPict("SCP","CP_LOCAL")		,TamSX3("CP_LOCAL"	)[1]	,/*lPixel*/,{|| 	},,,)
 TRCell():New(oItens,"cLote" 		,/*Tabela*/,"Lote"				,PesqPict("SD3","D3_LOTECTL")	,TamSX3("D3_LOTECTL")[1]	,/*lPixel*/,{|| 	},,,)
-TRCell():New(oItens,"cEnd" 			,/*Tabela*/,"Endereco"			,PesqPict("SD3","D3_LOCALIZ")	,TamSX3("D3_LOCALIZ")[1]	,/*lPixel*/,{|| 	},,,)
+TRCell():New(oItens,"cEnd" 			,/*Tabela*/,"Endereço"			,PesqPict("SD3","D3_LOCALIZ")	,TamSX3("D3_LOCALIZ")[1]	,/*lPixel*/,{|| 	},,,)
 
 Return(oReport)
 

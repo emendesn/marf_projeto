@@ -930,8 +930,6 @@ Do while .not. _lsai
 		npos := ascan(_aorigens,norigem)
 		If npos > 0
 			SB1->B1_ZORIGEM := _acorigens[npos][1]
-		Else
-			SB1->B1_ZORIGEM := "   "
 		Endif
 
 		SB1->B1_ZEAN13  := val(ALLTRIM(_cEan13))

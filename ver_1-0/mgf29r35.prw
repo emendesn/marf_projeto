@@ -5,9 +5,9 @@
 Programa.:              MGF29R35
 Autor....:              Marcelo Carneiro
 Data.....:              08/10/2019
-Descricao / Objetivo:   Relatorio BI Orcamento Aprovado - Exportacao
+Descricao / Objetivo:   Relatorio BI Orçamento Aprovado - Exportação
 Doc. Origem:            RTASK0010177 Chamado RITM0029817
-Uso......:              
+Uso......:              Marfrig
 Obs......:              View : V_EX_ORCAMENTO
 =====================================================================================
 */
@@ -24,21 +24,21 @@ Private _aDefinePl := {}, _aCampoQry := {}, _cTmp01, _aCpoExce, _cQuery
 Private _aEmailQry , _cWhereAnd
 _aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-Aadd(_aDefinePl, "Orcamento Aprovado"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-Aadd(_aDefinePl, "Orcamento Aprovado"					)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-Aadd(_aDefinePl, {"Orcamento Aprovado"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-Aadd(_aDefinePl, {"Orcamento Aprovado"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+Aadd(_aDefinePl, "Orçamento Aprovado"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+Aadd(_aDefinePl, "Orçamento Aprovado"					)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+Aadd(_aDefinePl, {"Orçamento Aprovado"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+Aadd(_aDefinePl, {"Orçamento Aprovado"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 
 _aCpoExce	:= {}
 _cTmp01		:= ""
 
 //1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-//pela clausula "as" que sera transportado para o elemento 8.
-//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+//pela clausula "as" que será transportado para o elemento 8.
+//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 //					01			02					03					04		 05		 06	 07	08 09		
 Aadd(_aCampoQry, {"ZZC_ORCAME"        , "ZZC_ORCAME"		 ,"NUM_PV"		       ,"C"	,TamSx3("ZZC_ORCAME")[1]	 ,0	,""	,""	,""	})
 Aadd(_aCampoQry, {"NOME_TRADING"      , "NOME_TRADING" 	     ,"TRADING"	           ,"C"	,TamSx3("A1_NOME")[1]    ,0	,""	,""	,""	})
@@ -58,9 +58,9 @@ Aadd(_aCampoQry, {"TIPO_TRANSPORTE"	  , "TIPO_TRANSPORTE"  	 ,"MODAL"          	
 Aadd(_aCampoQry, {"FLG_HILTON"        , "FLG_HILTON"	     ,"HILTON_NAO_HILTON"  ,"C"	,03                      ,0	,""	,""	,""	})
 
 
-aAdd(_aParambox,{1,"Orcamento"		,Space(TamSx3("ZZC_ORCAME")[1])				,""		,,""		,"",050,.F.})
-aAdd(_aParambox,{1,"Data Emissao Inicial"   ,Ctod("")						,""		,""												,""		,"",050,.F.})
-aAdd(_aParambox,{1,"Data Emissao Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR02, MV_PAR03	,'Data')" 		,""		,"",050,.F.})
+aAdd(_aParambox,{1,"Orçamento"		,Space(TamSx3("ZZC_ORCAME")[1])				,""		,,""		,"",050,.F.})
+aAdd(_aParambox,{1,"Data Emissão Inicial"   ,Ctod("")						,""		,""												,""		,"",050,.F.})
+aAdd(_aParambox,{1,"Data Emissão Final"		,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR02, MV_PAR03	,'Data')" 		,""		,"",050,.F.})
 		
 If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
@@ -71,7 +71,7 @@ Else
     _cQuery += "  FROM V_EX_ORCAMENTO" + CRLF
 EndIF
 
-_cQuery += U_WhereAnd(!empty(_aRet[1]), " ZZC_ORCAME Like '%"+_aRet[1]+"%'") +CRLF //OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO FILIAL(06 posicoes)
+_cQuery += U_WhereAnd(!empty(_aRet[1]), " ZZC_ORCAME Like '%"+_aRet[1]+"%'") +CRLF //OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
 _cQuery += U_WhereAnd(!empty(_aRet[3] )," DATA_PV BETWEEN '" + _aRet[2] + "' AND '" + _aRet[3] + "' " 	 ) +CRLF //NAO OBRIGATORIO
 
 

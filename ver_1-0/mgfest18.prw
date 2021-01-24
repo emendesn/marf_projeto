@@ -5,12 +5,12 @@
 Programa.:              MGFEST18
 Autor....:              Atilio Amarilla
 Data.....:              09/09/2016
-Descricao / Objetivo:   Bloqueio automatico de itens sem movimentacao
+Descricao / Objetivo:   Bloqueio automático de itens sem movimentação
 Doc. Origem:            Contrato - GAP MGEST13
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Usa campos de bloqueio de inventario (B2_DTINV, B2_DINVFIM).
-Desbloqueio pela rotina padrao (MATA217)
+Uso......:              Marfrig
+Obs......:              Usa campos de bloqueio de inventário (B2_DTINV, B2_DINVFIM).
+Desbloqueio pela rotina padrão (MATA217)
 =====================================================================================
 */
 User Function CallES18()
@@ -37,8 +37,8 @@ EndIf
 
 //ConOut("#################### MGFEST18 Iniciado. "+DTOC(Date())+"-"+Time())
 
-dDatMov	:= dDataBase - GetNewPar("MGF_EST18A",90)  // Considera numero de dias sem movimentacao. Padrï¿½o 90
-dDatBlq	:= dDataBase + GetNewPar("MGF_EST18B",900) // Considera numero de dias de bloqueio. Padrï¿½o 900 (Limite 998)
+dDatMov	:= dDataBase - GetNewPar("MGF_EST18A",90)  // Considera número de dias sem movimentação. Padrão 90
+dDatBlq	:= dDataBase + GetNewPar("MGF_EST18B",900) // Considera número de dias de bloqueio. Padrão 900 (Limite 998)
 cAlias	:= GetNextAlias()
 aAreaSB2:= SB2->(GetArea())
 

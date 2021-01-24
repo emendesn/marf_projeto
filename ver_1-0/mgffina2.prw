@@ -7,16 +7,16 @@
 Programa.:              MGFFINA2
 Autor....:              Natanael Filho
 Data.....:               24/04/2018
-Descricao / Objetivo:    Gerar o desconto do NDF e do TX nos casos de devolucao de compra de gado (FUNRURAL).
-							O Desconto sera realizado atraves da rotina customizada de tipo de valor do Contas a Pagar
+Descricao / Objetivo:    Gerar o desconto do NDF e do TX nos casos de devolução de compra de gado (FUNRURAL).
+							O Desconto será realizado através da rotina customizada de tipo de valor do Contas a Pagar
 Doc. Origem:            
 Solicitante:            Alexandre Rocha
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =============================================================================================
 */
 User Function MGFFINA2(opc)
-// 1 - Inclusao; 2 - Exclusao
+// 1 - Inclusão; 2 - Exclusão
 If opc = 1
 	Return FINA2INC()
 ElseIf opc = 2
@@ -29,12 +29,12 @@ Return Nil
 
 //=======================================================
 // FINA2INC
-// Funcao para estornar os tipos de valores antes da exclusao do documento
+// Função para estornar os tipos de valores antes da exclusão do documento
 //=======================================================
 Static Function FINA2INC()
 Local aArea := GetArea()
-Local cTPValorTX := Alltrim(SuperGetMV("MGF_FINA2T",.T.,"")) //Codigo do Tipo de valor do desconto no TX (Imposto). Deixa vazio para nao gerar o T. de Valor.
-Local cTPValorCP := Alltrim(SuperGetMV("MGF_FINA2P",.T.,"")) //Codigo do Tipo de valor do desconto no Titulo a Pagar. Deixa vazio para nao gerar o T. de Valor.
+Local cTPValorTX := Alltrim(SuperGetMV("MGF_FINA2T",.T.,"")) //Código do Tipo de valor do desconto no TX (Imposto). Deixa vazio para não gerar o T. de Valor.
+Local cTPValorCP := Alltrim(SuperGetMV("MGF_FINA2P",.T.,"")) //Código do Tipo de valor do desconto no Título a Pagar. Deixa vazio para não gerar o T. de Valor.
 Local cFORINSS   := Alltrim(SuperGetMV("MV_FORINSS",.T.,"")) // Fornecedor padrao para titulos de INSS
 Local nF1funcp   := 0 //Valor Total RUNRUAL da NF de Origem
 Local nD2funcp   := 0  //Valor FUNRAL a creditar do titulo a pagar
@@ -57,7 +57,7 @@ If Dbseek(xFilial("SF2") + SF2->F2_DOC + SF2->F2_SERIE + SF2->F2_CLIENTE + SF2->
 			.AND. (nD2funtx > 0 .OR. nD2funcp > 0) ;
 			.AND. (xFilial("SD2") + SD2->D2_SERIORI + SD2->D2_NFORI) = SE2->E2_FILIAL + SE2->E2_PREFIXO + SE2->E2_NUM
 				
-				//Verifica qual o tipo do titulo e se nao o desconto nao ï¿½ maior que o saldo.
+				//Verifica qual o tipo do titulo e se não o desconto não é maior que o saldo.
 				If ALLTRIM(SE2->E2_TIPO)='TX';
 				.AND. !Empty(cTPValorTX) ;				
 				.AND. SE2->E2_SALDO >= nD2funtx ;
@@ -79,12 +79,12 @@ If Dbseek(xFilial("SF2") + SF2->F2_DOC + SF2->F2_SERIE + SF2->F2_CLIENTE + SF2->
 							ZDS->ZDS_VALOR  := nD2funtx
 							nD2funtx -= ZDS->ZDS_VALOR
 						ZDS->(MsUnlock())	
-						lRecalc := .T. //Houve atualizacao entao ï¿½ necessario realizar o recalculo.
+						lRecalc := .T. //Houve atualização então é necessário realizar o recalculo.
 					Else
-						Help( ,, 'MGFFINA2_4',, 'Nao foi possivel incluir o Tipo de valor do titulo ' + SE2->E2_NUM + ' ' + SE2->E2_TIPO + ' - Este jï¿½ sofreu baixa', 1, 0)
+						Help( ,, 'MGFFINA2_4',, 'Não foi possível incluir o Tipo de valor do título ' + SE2->E2_NUM + ' ' + SE2->E2_TIPO + ' - Este já sofreu baixa', 1, 0)
 					EndIf
 					
-				//Verifica qual o tipo do titulo e se nao o desconto nao ï¿½ maior que o saldo.
+				//Verifica qual o tipo do titulo e se não o desconto não é maior que o saldo.
 				ElseIf ALLTRIM(SE2->E2_TIPO)='NF' ;
 				.AND. !Empty(cTPValorCP) ;
 				.AND. SE2->E2_SALDO >= nD2funcp ;
@@ -105,13 +105,13 @@ If Dbseek(xFilial("SF2") + SF2->F2_DOC + SF2->F2_SERIE + SF2->F2_CLIENTE + SF2->
 							ZDS->ZDS_VALOR  := nD2funcp
 							nD2funcp -= ZDS->ZDS_VALOR
 						ZDS->(MsUnlock())	
-						lRecalc := .T. //Houve atualizacao entao ï¿½ necessario realizar o recalculo.
+						lRecalc := .T. //Houve atualização então é necessário realizar o recalculo.
 					Else
-						Help( ,, 'MGFFINA2_3',, 'Nao foi possivel incluir o Tipo de valor do titulo ' + SE2->E2_NUM + ' ' + SE2->E2_TIPO + ' - Este jï¿½ sofreu baixa', 1, 0)
+						Help( ,, 'MGFFINA2_3',, 'Não foi possível incluir o Tipo de valor do título ' + SE2->E2_NUM + ' ' + SE2->E2_TIPO + ' - Este já sofreu baixa', 1, 0)
 					EndIf
 				EndIf
 				
-				//Funcao para atualizacao dos titulos a partir dos tipos de valores.
+				//Função para atualização dos títulos a partir dos tipos de valores.
 				If FindFunction("U_MGFFIN87") .AND. lRecalc
 					U_MGFFIN87(1)
 					lRecalc := .F.
@@ -132,14 +132,14 @@ Return Nil
 
 //=======================================================
 // FINA2EXC
-// Funcao para estornar os tipos de valores antes da exclusao do documento
+// Função para estornar os tipos de valores antes da exclusão do documento
 //=======================================================
 Static Function FINA2EXC()
 Local aArea := GetArea()
 Local lRet := .T.
 Local lRecalc := .F.
 
-//Query para armazenar todos os itens da Nota Fiscal excluida. Varre todos os itens da NF, pois ï¿½ possivel devolver mais de uma Nota Fiscal no mesmo documento.
+//Query para armazenar todos os itens da Nota Fiscal excluída. Varre todos os itens da NF, pois é possivel devolver mais de uma Nota Fiscal no mesmo documento.
 BeginSQL Alias "SD2TMP"
 	SELECT
 		D2_FILIAL,
@@ -161,7 +161,7 @@ EndSQL
 
 SD2TMP->(DBGoTop())
 While SD2TMP->(!EOF())	
-	//Localiza os tipos de valores relacioados ao item da NF de devolucao.
+	//Localiza os tipos de valores relacioados ao item da NF de devolução.
 	DBSelectArea('ZDS')
 	ZDS->(DBSetOrder(3)) //ZDS_FILIAL + ZDS_DOCORI + ZDS_PREFIX + ZDS_NUM
 	If ZDS->(DBSeek(SD2TMP->D2_FILIAL + 'SD2' + SD2TMP->D2_DOC + SD2TMP->D2_SERIE + SD2TMP->D2_CLIENTE + SD2TMP->D2_LOJA + SD2TMP->D2_SERIORI + SD2TMP->D2_NFORI))
@@ -170,7 +170,7 @@ While SD2TMP->(!EOF())
 			= (SD2TMP->D2_FILIAL + 'SD2' + SD2TMP->D2_DOC + SD2TMP->D2_SERIE + SD2TMP->D2_CLIENTE + SD2TMP->D2_LOJA + SD2TMP->D2_SERIORI + SD2TMP->D2_NFORI)
 	
 			aAreaZDS := ZDS->( GetArea() )
-			//Localiza o titulo origem do tipo de valor para verifica se hï¿½ saldo disponï¿½vel para estorno do tipo de valor.
+			//Localiza o título origem do tipo de valor para verifica se há saldo disponível para estorno do tipo de valor.
 			DBSelectArea('SE2')
 			dbSetOrder(1) // E2_FILIAL + E2_PREFIXO + E2_NUM + E2_PARCELA + E2_TIPO + E2_FORNECE + E2_LOJA
 			SE2->(DBGoTop())
@@ -179,16 +179,16 @@ While SD2TMP->(!EOF())
 					Reclock("ZDS",.F.)
 						dbDelete()
 					ZDS->(MsUnlock())	
-					lRecalc := .T. //Houve atualizacao entao ï¿½ necessario realizar o recalculo.
+					lRecalc := .T. //Houve atualização então é necessário realizar o recalculo.
 					lRet := .T.
 				Else
-					Help( ,, 'MGFFINA2_2',, 'Nao foi possivel excluir o Documento: Saldo do titulo menor que o Tipo de Valor', 1, 0)
-					DisarmTransaction() //Aborta Todas as alteracoes
+					Help( ,, 'MGFFINA2_2',, 'Não foi possível excluir o Documento: Saldo do título menor que o Tipo de Valor', 1, 0)
+					DisarmTransaction() //Aborta Todas as alterações
 					Break
 				EndIf
 			EndIf
 			
-			//Recalcula os campos de acrescimos ou decrescimos do titulo
+			//Recalcula os campos de acrescimos ou decrescimos do título
 			If FindFunction("U_MGFFIN87") .AND. lRecalc
 				aZDSArea := ZDS->(GetArea())
 				U_MGFFIN87(1)

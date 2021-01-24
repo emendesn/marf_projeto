@@ -7,11 +7,11 @@
 Programa.:              Ma440VLD 
 Autor....:              Marcelo Carneiro         
 Data.....:              09/11/2016 
-Descricao / Objetivo:   Integracao TAURA - SAIDAS
+Descricao / Objetivo:   Integração TAURA - SAIDAS
 Doc. Origem:            TAURA
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de Entrada para Nao Liberar PV do Taura
+Uso......:              Marfrig
+Obs......:              Ponto de Entrada para Não Liberar PV do Taura
 =============================================================================================
 */
 User Function Ma440VLD 

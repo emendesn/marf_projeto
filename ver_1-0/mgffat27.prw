@@ -14,10 +14,10 @@ Static _aErr
 Programa.:              MGFFAT27
 Autor....:              Joni Lima do Carmo
 Data.....:              03/11/2016
-Descricao / Objetivo:   Verificacao de Regra Receita, Sintegra e Suframa
+Descricao / Objetivo:   Verificação de Regra Receita, Sintegra e Suframa
 Doc. Origem:            Contrato GAP - FAT14- Regras de Bloqueio
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Envio Pedido de Compra de Gado - Parte WS Server consumir o Metodo Gerar Pedido
 ==========================================================================================================
 */
@@ -62,7 +62,7 @@ WSMETHOD RetornoConsulta WSRECEIVE WSDADOS WSSEND WSRETORNO WSSERVICE MGFFAT27
 
 	If lConti .and. ( Empty(cxEmp) .or. Empty(cxFil) .or. Empty(cPedido))
 		lConti := .F.
-		aRetorno := {'E','Empresa e/ou Filial e/ou Pedido Nao Estï¿½o Preenchidos'}
+		aRetorno := {'E','Empresa e/ou Filial e/ou Pedido Não Estão Preenchidos'}
 	EndIf
 
 	If lConti .and. !(AllTrim(cStatREC) $ 'L|B|I')
@@ -146,7 +146,7 @@ Data.....:              03/11/2016
 Descricao / Objetivo:   Verifica qual o tipo de consulta e o status sera processado.
 Doc. Origem:            Contrato GAPS - MIT044- FAT14
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 ==========================================================================================================
 */
@@ -261,7 +261,7 @@ Static Function xMF27PcInf(cxFil,cPedido,cStatREC,cStatSIN,cStatSUF)
 					EndIf
 				EndIf
 
-				//Realiza a Liberacao do Pedido
+				//Realiza a Liberação do Pedido
 				If cStatREC == 'L' .or. cStatSIN == 'L' .or. cStatSUF == 'L'
 					If SC5->C5_ZCONRGA == 'S'
 						If !(U_xMF10ExiB(SC5->C5_FILIAL,SC5->C5_NUM))
@@ -293,7 +293,7 @@ Static Function xMF27PcInf(cxFil,cPedido,cStatREC,cStatSIN,cStatSUF)
 			EndIf
 		End Transaction
 	Else
-		aRet := {'E',' Pedido nao encontrado, verificar Filial e Pedido ' + cxFil + '/' + cPedido }
+		aRet := {'E',' Pedido não encontrado, verificar Filial e Pedido ' + cxFil + '/' + cPedido }
 	EndIf
 
 	RestArea(aAreaSC5)
@@ -306,10 +306,10 @@ Return aRet
 Programa.:              xMF27AtSZV
 Autor....:              Joni Lima
 Data.....:              03/11/2016
-Descricao / Objetivo:   Fazer Liberacao do Bloqueio de Consulta e se preciso cadastrar bloqueio/indisponibilidade
+Descricao / Objetivo:   Fazer Liberação do Bloqueio de Consulta e se preciso cadastrar bloqueio/indisponibilidade
 Doc. Origem:            Contrato GAPS - MIT044- FAT14
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 ==========================================================================================================
 */
@@ -360,7 +360,7 @@ Static Function xMF27AtSZV(cxFil,cPedido,cRgaCons,cRgaCad,aRetOld)
 
 	Else
 		lCont:= .F.
-		aRet := {'E', 'Nao Foi Encontrado Bloqueio (Filial + Pedido + ItemPed + Cod. Regra): ' + cxFil + '/' + cPedido + '/' + cItem + '/' + cRgaCons }
+		aRet := {'E', 'Não Foi Encontrado Bloqueio (Filial + Pedido + ItemPed + Cod. Regra): ' + cxFil + '/' + cPedido + '/' + cItem + '/' + cRgaCons }
 	EndIf
 
 	//Cria Regra de bloqueio ou indisponibilidade
@@ -368,7 +368,7 @@ Static Function xMF27AtSZV(cxFil,cPedido,cRgaCons,cRgaCad,aRetOld)
 
 		DbSelectArea('SZV')
 		SZV->(dbSetOrder(1))//ZV_FILIAL+ZV_PEDIDO+ZV_ITEMPED+ZV_CODRGA
-		If (!SZV->(DbSeek(cxFil + cPedido + cItem + cRgaCad)))//Nao encontrou Registro
+		If (!SZV->(DbSeek(cxFil + cPedido + cItem + cRgaCad)))//Não encontrou Registro
 
 			oModMF10:= FWLoadModel( 'MGFFAT10' )
 			oModMF10:SetOperation( MODEL_OPERATION_INSERT )
@@ -451,10 +451,10 @@ Return aRet
 Programa............: xMF27EMVC
 Autor...............: Joni Lima
 Data................: 21/10/2016
-Descricao / Objetivo: Monta string de erro
+Descrição / Objetivo: Monta string de erro
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Monta a String de erro
 =====================================================================================
 */

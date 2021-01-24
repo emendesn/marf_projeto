@@ -186,7 +186,6 @@ cLocBlq		:= Subs( cLocBlq , 1 , TamSX3("B1_LOCPAD")[1] )
 
 U_MFCONOUT('     Recebeu chamada com UUID ' + aMovTaura[19] +"...") 
 
-
 If Empty( aMovTaura[12] )
 	U_MFCONOUT('     Chamada com UUID ' + aMovTaura[19] +" com quantidade zerada...") 
 	aAdd( aRetorno , {"2","[ZZE] Quantidade 0 (Zero)"} )
@@ -238,6 +237,13 @@ Endif
 
 U_MFCONOUT('     Gravando Chamada com UUID ' + aMovTaura[19] +"...")
 
+//Verifica se há outra instância usando mesmo uuid
+If !(mayiusecode(alltrim(aMovTaura[19])))
+	U_MFCONOUT('     Chamada com UUID ' + aMovTaura[19] +" com já em processamento em outra instância...") 
+	aAdd( aRetorno , {"2","[ZZE] Chamada com UUID " + aMovTaura[19] +" com já em processamento em outra instância..."} )
+	Return( aRetorno )
+Endif
+
 If RecLock("ZZE",.T.)
 	ZZE->ZZE_FILIAL	:=	aMovTaura[02]
 	ZZE->ZZE_ID		:=	Subs(DtoS(Date()),3,6)+StrZero( Recno() , Len(ZZE->ZZE_ID)-6 )
@@ -279,5 +285,7 @@ Else
 	U_MFCONOUT('     Falhou gravação de Chamada com UUID ' + aMovTaura[19] +"...")
 
 EndIf
+
+Leave1Code(alltrim(aMovTaura[19]))
 
 Return( aRetorno )

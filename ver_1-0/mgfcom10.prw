@@ -9,11 +9,11 @@
 Programa............: xMC10GerSol
 Autor...............: Joni Lima
 Data................: 25/01/2016
-Descricao / Objetivo: Funcao para envio dos dados para o Fluig
+Descrição / Objetivo: Função para envio dos dados para o Fluig
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Recebe os dados e envia Cabecalho, itens e alcada de aprovacao para o FLuig
+Uso.................: Marfrig
+Obs.................: Recebe os dados e envia Cabeçalho, itens e alçada de aprovação para o FLuig
 =====================================================================================
 */
 User Function xMC10GerSol(aDados)
@@ -34,7 +34,7 @@ User Function xMC10GerSol(aDados)
 	oObj:ncompanyId		:= 1
 	oObj:cprocessId		:= "WfSolicitacaoCompras"
 	oObj:nchoosedState	:= 40
-	oObj:ccomments 		:= "Solicitacao incluida via Protheus"
+	oObj:ccomments 		:= "Solicitação incluida via Protheus"
 	oObj:lcompleteTask	:= .T.
 	oObj:lmanagerMode	:= .F.
 	
@@ -244,10 +244,10 @@ User Function xMC10GerSol(aDados)
 					Alert('integrado com Fluig')
 				EndIf
 			Else
-				Alert('Codigo Fluig Em Branco')
+				Alert('Código Fluig Em Branco')
 			EndIf
 		Else
-			Alert('Processo nao consegui sair do Protheus')
+			Alert('Processo não consegui sair do Protheus')
 		EndIf
 		
 	Else
@@ -264,11 +264,11 @@ Return
 Programa............: xMC10ExSol
 Autor...............: Joni Lima
 Data................: 25/01/2016
-Descricao / Objetivo: Funcao para exclusao de SC no Fluig chamado no PE MT110CON
+Descrição / Objetivo: Função para exclusão de SC no Fluig chamado no PE MT110CON
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Envia o codigo Fluig e realiza a Exclusao no Fluig
+Uso.................: Marfrig
+Obs.................: Envia o código Fluig e realiza a Exclusão no Fluig
 =====================================================================================
 */
 User Function xMC10ExSol(cSc)
@@ -611,10 +611,10 @@ User Function xM10PedGer(aDados)
 					Alert('integrado com Fluig')
 				EndIf
 			Else
-				Alert('Codigo Fluig Em Branco')
+				Alert('Código Fluig Em Branco')
 			EndIf
 		Else
-			Alert('Processo nao consegui sair do Protheus')
+			Alert('Processo não consegui sair do Protheus')
 		EndIf
 		
 	Else
@@ -989,13 +989,13 @@ User Function xjM10TitGer(aDados)
 						
 					Alert('integrado com Fluig')
 				Else
-					Alert('Nao  Incontrou a Chave: ' + xFilial('SE2') + aDados[XCABSOL][2] + aDados[XCABSOL][43] + aDados[XCABSOL][3] + aDados[XCABSOL][4] + aDados[XCABSOL][6] + aDados[XCABSOL][7])
+					Alert('Não Incontrou a Chave: ' + xFilial('SE2') + aDados[XCABSOL][2] + aDados[XCABSOL][43] + aDados[XCABSOL][3] + aDados[XCABSOL][4] + aDados[XCABSOL][6] + aDados[XCABSOL][7])
 				EndIf
 			Else
-				Alert('Codigo Fluig Em Branco')
+				Alert('Código Fluig Em Branco')
 			EndIf
 		Else
-			Alert('Processo nao consegui sair do Protheus')
+			Alert('Processo não consegui sair do Protheus')
 		EndIf
 		
 	Else

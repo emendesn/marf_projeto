@@ -15,11 +15,11 @@ Static _cLPCT2
 Programa............: MGFCTB03
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Pontos de Entradas para GAp CTB01
+Descrição / Objetivo: Pontos de Entradas para GAp CTB01
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Todos as Funcoes de PE estaram nesse fonte para o GAP CTB01
+Uso.................: Marfrig
+Obs.................: Todos as Funções de PE estaram nesse fonte para o GAP CTB01
 =====================================================================================
 */
 User Function MGFCTB03()
@@ -31,10 +31,10 @@ Return
 Programa............: xMF103RCC
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT103RCC
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT103RCC
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de entrada para Carregar o rateio do Pedido de compra para o rateio do documento de entrada.
 =====================================================================================
 */
@@ -126,10 +126,10 @@ Return aColsSDE
 Programa............: xMF103PRE
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT103PRE
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT103PRE
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de entrada para carregar Filial de Destino quando utilizar rateios pre configurados no documento de entrada
 =====================================================================================
 */
@@ -165,11 +165,11 @@ Return aColsSDE
 Programa............: xMF110BTR
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT110BTR
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT110BTR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Adiciona botao com funï¿½ï¿½oo para trazer os rateios confugurados marfrig
+Uso.................: Marfrig
+Obs.................: Adiciona botço com funçãoo para trazer os rateios confugurados marfrig
 =====================================================================================
 */
 User Function xMF110BTR(aBut)
@@ -187,11 +187,11 @@ Return aRet
 Programa............: xMF110Opc
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT110BTR
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT110BTR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Pega e preenche Rateios com as informaï¿½ï¿½oes, adicionando a Filial Destino
+Uso.................: Marfrig
+Obs.................: Pega e preenche Rateios com as informaçãoes, adicionando a Filial Destino
 =====================================================================================
 */
 User Function xMF110Opc(aCols, aHeader, cItem, lPrimeiro)
@@ -314,11 +314,11 @@ Return .T.
 Programa............: xMF110BTR
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT120BTR
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT120BTR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Adiciona botao com funï¿½ï¿½oo para trazer os rateios confugurados marfrig
+Uso.................: Marfrig
+Obs.................: Adiciona botço com funçãoo para trazer os rateios confugurados marfrig
 =====================================================================================
 */
 User Function xMF120BTR(aBut)
@@ -336,11 +336,11 @@ Return aRet
 Programa............: xMF120Opc
 Autor...............: Joni Lima
 Data................: 06/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT120BTR
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT120BTR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Pega e preenche Rateios com as informaï¿½ï¿½oes, adicionando a Filial Destino
+Uso.................: Marfrig
+Obs.................: Pega e preenche Rateios com as informaçãoes, adicionando a Filial Destino
 =====================================================================================
 */
 User Function xMF120Opc(aCols, aHeader, cItem, lPrimeiro)
@@ -467,10 +467,10 @@ Return .T.
 Programa............: xMF03VlLP
 Autor...............: Joni Lima
 Data................: 07/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada CTBA120, Localizado no Fonte MGFCTB04 (PE MVC)
+Descrição / Objetivo: Utilizado no Ponto de Entrada CTBA120, Localizado no Fonte MGFCTB04 (PE MVC)
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz o Pos valid da Linha, foi adicionado o filial destino
 =====================================================================================
 */
@@ -521,7 +521,7 @@ User Function xMF03VlLP()
 	EndIf
 
 	//--------------------------------------------------------------
-	// Nao  permite duplicar a chave da entidade a credito ou debito
+	// Nço permite duplicar a chave da entidade a credito ou debito
 	//--------------------------------------------------------------
 	For nLinha := 1 To oModel:Length()
 
@@ -578,10 +578,10 @@ Return lRet
 Programa............: xMF03TdOK
 Autor...............: Joni Lima
 Data................: 07/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada CTBA120, Localizado no Fonte MGFCTB04 (PE MVC)
+Descrição / Objetivo: Utilizado no Ponto de Entrada CTBA120, Localizado no Fonte MGFCTB04 (PE MVC)
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz o Tudo OK, antes do commit. verifica se caso utiliza filia destino, esta preenchida em todas as Linhas
 =====================================================================================
 */
@@ -621,11 +621,11 @@ Return lRet
 Programa............: xMF0102EXC
 Autor...............: Joni Lima
 Data................: 07/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada CTB102EXC Ou CTB102ESTL. validaï¿½ï¿½oo de Exclusao e Exclusao Por Lote
+Descrição / Objetivo: Utilizado no Ponto de Entrada CTB102EXC Ou CTB102ESTL. validaçãoo de Exclusço e Exclusço Por Lote
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a validaï¿½ï¿½oo do calendario para Exclusao do lanï¿½amento contabil.
+Uso.................: Marfrig
+Obs.................: Realiza a validaçãoo do calendario para Exclusço do lançamento contabil.
 =====================================================================================
 */
 User Function xMF0102EXC(nOpc)
@@ -643,7 +643,7 @@ User Function xMF0102EXC(nOpc)
 	Local cChvSDE	:= ''
 	Local cChvQuer	:= ''
 
-	If nOpc == 5 .and.  CT2->CT2_LP $ '650|651' .and. !(IsInCallStack('U_xM102EXCL'))//Exclusao e LPs 650 e 651
+	If nOpc == 5 .and.  CT2->CT2_LP $ '650|651' .and. !(IsInCallStack('U_xM102EXCL'))//Exclusço e LPs 650 e 651
 
 		//Pega os campos que compoe a Chave
 		dbSelectArea('CTL')
@@ -699,11 +699,11 @@ User Function xMF0102EXC(nOpc)
 							SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 
 							dDtHav := STOD((cNextAlias)->CT2_DATA) //Pega Data
-							lTempRet := VlDtCal(dDtHav,dDtHav) //Realiza Validaï¿½ï¿½oo do Periodo
+							lTempRet := VlDtCal(dDtHav,dDtHav) //Realiza Validaçãoo do Periodo
 
 							If !lTempRet
 								AADD(aERROS,'Filial: ' + (cNextAlias)->CT2_FILIAL + ', Data: ' + dToC(dDtHav))
-								If lRet //Sera alterado apenas uma vez essa variavel.
+								If lRet //Serç alterado apenas uma vez essa variavel.
 									lRet := .F.
 								EndIf
 							EndIf
@@ -716,7 +716,7 @@ User Function xMF0102EXC(nOpc)
 			EndIf
 		EndIf
 
-		//Verifica se Gerou erros e apresenta as filiais e datas que estao com datas em calendarios INDISPONIVEIS
+		//Verifica se Gerou erros e apresenta as filiais e datas que estço com datas em calendarios INDISPONIVEIS
 		If Len(aERROS) > 0
 			For ni := 1 to Len(aERROS)
 				cErros += aERROS[ni]
@@ -727,9 +727,9 @@ User Function xMF0102EXC(nOpc)
 		cFilAnt := cxFilAtu //Retorna Filial
 		SM0->(dbSetOrder(1))//M0_CODIGO + M0_CODFIL
 		SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
-	ElseIf nOpc == 5 .and.  CT2->CT2_LP $ '333|334' .and. !(IsInCallStack('U_xM102EXCL')) //Nao e possivel realizar a deleï¿½ï¿½oo
+	ElseIf nOpc == 5 .and.  CT2->CT2_LP $ '333|334' .and. !(IsInCallStack('U_xM102EXCL')) //Nço ç possivel realizar a deleçãoo
 		lRet := .F.
-		AVISO('Atenï¿½ï¿½oo!','Lancamento proveniente de rateio. Para excluir este lanï¿½amento sera necessario excluir o lanï¿½amento de origem ',{'OK'},3)
+		AVISO('Atençãoo!','Lançamento proveniente de rateio. Para excluir este lançamento serç necessçrio excluir o lançamento de origem ',{'OK'},3)
 	EndIf
 
 Return lRet
@@ -739,11 +739,11 @@ Return lRet
 Programa............: xMF0PEANCT
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
+Descrição / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Chama JOB para exclusao dos lanï¿½amentos 333 e 334
+Uso.................: Marfrig
+Obs.................: Chama JOB para exclusço dos lançamentos 333 e 334
 =====================================================================================
 */
 User Function xMF0PEANCT(nOpc)
@@ -764,10 +764,10 @@ Return
 Programa............: xMF02DEPGV
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada DPCTB102GR
+Descrição / Objetivo: Utilizado no Ponto de Entrada DPCTB102GR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Para limpar o Flag caso necessario da tabela SDE
 =====================================================================================
 */
@@ -828,10 +828,10 @@ Return
 Programa............: xM102EXCL
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
+Descrição / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Prepara ambiente para o JOB
 =====================================================================================
 */
@@ -854,7 +854,7 @@ User Function xM102EXCL(cEmp,cFil,cModulo,nOpc,cCT2Key,cCT2LP)
 		Conout('Terminou Processo: ' + DtoC(Date()) + ' Horas: ' + TIME())
 
 	RECOVER
-		Conout('Deu Problema na Execuï¿½ï¿½oo' + ' Horas: ' + TIME() )
+		Conout('Deu Problema na Execuçãoo' + ' Horas: ' + TIME() )
     END SEQUENCE
 
 	ErrorBlock( bError )
@@ -875,11 +875,11 @@ Return .T.
 Programa............: xMF0EX102
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
+Descrição / Objetivo: Utilizado no Ponto de Entrada ANCTB102GR
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a exclusao dos lanï¿½amentos 333 e 334 para os registro 650/651
+Uso.................: Marfrig
+Obs.................: Realiza a exclusço dos lançamentos 333 e 334 para os registro 650/651
 =====================================================================================
 */
 User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
@@ -907,7 +907,7 @@ User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
 	Private CTF_LOCK := 0
 	Private lSubLote := .T.
 
-	If nOpc == 5 .and.  cCT2LP $ '650|651' //Exclusao e LPs 650 e 651
+	If nOpc == 5 .and.  cCT2LP $ '650|651' //Exclusço e LPs 650 e 651
 
 		Begin Transaction
 
@@ -936,7 +936,7 @@ User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
 					While SDE->(!EOF()).and. cChvSDE == SDE->(DE_FILIAL + DE_DOC + DE_SERIE + DE_FORNECE + DE_LOJA + DE_ITEM)
 						If !Empty(SDE->DE_ZDTLANC)
 
-						//Posicionar no Lancamento e Chamar ExecAuto para Exclusao dos Lanï¿½amentos
+						//Posicionar no Lançamento e Chamar ExecAuto para Exclusço dos Lançamentos
 							aDadosCab  := {}
 							aDadosItem := {}
 
@@ -1000,10 +1000,10 @@ User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
 									AADD(aDadosItem,aLinhas)
 								Else
 
-									MSExecAuto({|x,y,z| CTBA102(x,y,z)},aDadosCab,aDadosItem,5)//Exclusao
+									MSExecAuto({|x,y,z| CTBA102(x,y,z)},aDadosCab,aDadosItem,5)//Exclusço
 
 									If lMsErroAuto
-										If (!IsBlind()) // COM INTERFACE GRAFICA
+										If (!IsBlind()) // COM INTERFACE GRÁFICA
 										MostraErro()
 									    Else // EM ESTADO DE JOB
 									        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -1013,7 +1013,7 @@ User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
 									    EndIf
 									EndIf
 
-									//Zera Cabecalho e item
+									//Zera Cabeçalho e item
 									aDadosCab  := {}
 									aDadosItem := {}
 
@@ -1057,11 +1057,11 @@ User Function xMF0EX102(nOpc,cCT2Key,cCT2LP)
 							EndDo
 
 							If Len(aDadosCab) > 0
-								//Executa a Exclusao do ultimo Registro
-								MSExecAuto({|x,y,z| CTBA102(x,y,z)},aDadosCab,aDadosItem,5)//Exclusao
+								//Executa a Exclusço do ultimo Registro
+								MSExecAuto({|x,y,z| CTBA102(x,y,z)},aDadosCab,aDadosItem,5)//Exclusço
 
 								If lMsErroAuto
-									If (!IsBlind()) // COM INTERFACE GRAFICA
+									If (!IsBlind()) // COM INTERFACE GRÁFICA
 									MostraErro()
 								    Else // EM ESTADO DE JOB
 								        cError := MostraErro("/dirdoc", "error.log") // ARMAZENA A MENSAGEM DE ERRO
@@ -1090,11 +1090,11 @@ Return lRet
 Programa............: xMF03FiL
 Autor...............: Joni Lima
 Data................: 21/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada FLTESTLT
+Descrição / Objetivo: Utilizado no Ponto de Entrada FLTESTLT
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz o Filtro dos itens para exibiï¿½ï¿½oo na marcaï¿½ï¿½oo do Lote
+Uso.................: Marfrig
+Obs.................: Faz o Filtro dos itens para exibiçãoo na marcaçãoo do Lote
 =====================================================================================
 */
 User Function xMF03FiL()
@@ -1115,11 +1115,11 @@ Return lRet
 Programa............: xMF03105CK
 Autor...............: Joni Lima
 Data................: 21/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada CT105CTK
+Descrição / Objetivo: Utilizado no Ponto de Entrada CT105CTK
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz a gravacao correta da Data do lanï¿½amento na CTK
+Uso.................: Marfrig
+Obs.................: Faz a gravação correta da Data do lançamento na CTK
 =====================================================================================
 */
 User Function xMF03105CK()
@@ -1151,11 +1151,11 @@ Return
 Programa............: xMF03103E
 Autor...............: Joni Lima
 Data................: 22/11/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT103EXC
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT103EXC
 Doc. Origem.........: Contrato - GAP CTB01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica se existe Contabilizacao para Doc de entrada.
+Uso.................: Marfrig
+Obs.................: Verifica se existe Contabilização para Doc de entrada.
 =====================================================================================
 */
 User Function xMF03103E()
@@ -1164,7 +1164,7 @@ User Function xMF03103E()
 
 	If !Empty(SF1->F1_DTLANC)
 		lRet := .F.
-		AVISO('Atenï¿½ï¿½oo!','o Documento de Entrada possui contabilizaï¿½ï¿½es, para processeguir favor excluir os lanï¿½amentos.',{'OK'},1)
+		AVISO('Atençãoo!','o Documento de Entrada possui contabilizações, para processeguir favor excluir os lançamentos.',{'OK'},1)
 	EndIf
 
 Return lRet

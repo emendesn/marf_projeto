@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF29R27	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½10/01/18	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAï¿½ï¿½O - Shippinh Schedule						ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF29R27	ºAutor  ³ Geronimo Benedito Alves																	ºData ³10/01/18	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAÇÃO - Shippinh Schedule						º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF29R27()
 	
@@ -21,21 +21,21 @@ User Function MGF29R27()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "EXPORTAï¿½ï¿½O - Shipping Schedule"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
+	Aadd(_aDefinePl, "EXPORTAÇÃO - Shipping Schedule"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	Aadd(_aDefinePl, "Shipping Schedule"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Shipping Schedule"}				)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Shipping Schedule"}				)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 35										//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao(Sum,Count,max,etc), a ele ï¿½ dado a ele um apelido, indicado    
-	//pela clausula "as" que sera transportado para o elemento 8. Se o apelido nao for criado, o programa cria-o automaticamente, em tempo de execucao
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função(Sum,Count,max,etc), a ele é dado a ele um apelido, indicado    
+	//pela clausula "as" que será transportado para o elemento 8. Se o apelido não for criado, o programa cria-o automaticamente, em tempo de execução
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02											 03							 04	 05		 06	 07							 08		 09	
 	Aadd(_aCampoQry, {"EEC_ZEXP"	,"NUM_EXP"									,"Exp Num."					,"C",013	,0	,""							,""		,""	 })
 	Aadd(_aCampoQry, {"EEC_ZANOEX"	,"ANO_EXP"									,"Year"						,"C",002	,0	,""							,""		,""	 })
@@ -92,7 +92,7 @@ User Function MGF29R27()
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_IMPORTADORNF			as NOM_IMP_NF"	,"Buyer NF"					,"C",040	,0	,""							,""		,""	 })
 	Aadd(_aCampoQry, {"EEC_ZDTRES"	,"DATA_RESERVA				as DATARESERV"	,"Data Reserva"				,"D",008	,0	,""							,""		,""	 })
 //	Aadd(_aCampoQry, {"EEC_DTEMBA"	,"DATA_BL_TRANSPORTE		as DTBLTRANSP"	,"Data BL Transporte"		,"D",008	,0	,""							,""		,""	 })
-	Aadd(_aCampoQry, {"XXPEDIEX01"	,"PEDIDO_EXPORTACAO			as PEDIEXPORT"	,"Pedido Exportacao"		,"C",020	,0	,""							,""		,""	 })
+	Aadd(_aCampoQry, {"XXPEDIEX01"	,"PEDIDO_EXPORTACAO			as PEDIEXPORT"	,"Pedido Exportação"		,"C",020	,0	,""							,""		,""	 })
 	Aadd(_aCampoQry, {"XXNUMDUE02"	,"NUM_DUE"									,"No. Due"					,"C",014	,0	,""							,""		,""	 })
 	Aadd(_aCampoQry, {"XXDATDUE03"	,"DATA_DUE"									,"Data Due"					,"D",008	,0	,""							,""		,""	 })
 	Aadd(_aCampoQry, {"XXFRETIN04"	,"FRETE_INTERM"								,"Frete Interm."			,"N",015	,2	,"@E 999,999,999,999.99"	,""		,""	 })
@@ -116,7 +116,7 @@ User Function MGF29R27()
 	aAdd(_aParambox,{1,"Despachante"					,Space(tamSx3("Y5_NOME")[1])	,"@!"	,""													,"Y5A"		,"",115,.F.})	//06											
 	aAdd(_aParambox,{1,"Nome Familia Produto"			,Space(tamSx3("EEH_NOME")[1])	,"@!"	,""													,"EEH90"	,"",115,.F.})	//07											
 	aAdd(_aParambox,{1,"Pais Destino  (em portugues)"	,Space(tamSx3("YA_DESCR")[1])	,"@!"	,""													,"SYAEXP"	,"",115,.F.})	//08											
-	aAdd(_aParambox,{1,"Negocio"						,Space(tamSx3("EEG_NOME")[1])	,"@!"	,""													,""			,"",115,.F.})	//09											
+	aAdd(_aParambox,{1,"Negócio"						,Space(tamSx3("EEG_NOME")[1])	,"@!"	,""													,""			,"",115,.F.})	//09											
 	aAdd(_aParambox,{1,"Porto Origem"					,Space(tamSx3("YR_CID_ORI")[1])	,"@!"	,""													,"SYRCID"	,"",075,.F.})	//10												
 	aAdd(_aParambox,{1,"Data Reserva Inicial"			,Ctod("")						,""		,""													,""			,"",050,.F.})	//11
 	//	RVBJ
@@ -124,7 +124,7 @@ User Function MGF29R27()
 	
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 	
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)	// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)	// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 	
@@ -135,16 +135,16 @@ User Function MGF29R27()
 		_cQuery += "  FROM V_EX_SHIPPPINGSCHEDULE"           + CRLF
 	EndIF
 
-		_cQuery += U_WhereAnd( !empty(_cCODFILIA ),    " FILIAL_FILTRO IN "                 + _cCODFILIA                               )//OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO EMPRESAS(02 posicoes)
-	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " NUM_EXP BETWEEN '"            		+ _aRet[1] + "' AND '" + _aRet[2] + "' "   ) //NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[3] ),      " ADMINISTRADOR LIKE '%"             + _aRet[3] + "%' "                         )//NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[4] ),      " NOME_BUYER LIKE '%"                + _aRet[4] + "%' "                         )//NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[5] ),      " NOME_TRADING LIKE '%"              + _aRet[5] + "%' "                         )//NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[6] ),      " DESPACHANTE LIKE '%"               + _aRet[6] + "%' "                         )//NAO ï¿½ OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[7] ),      " FAMILA_PRODUTO LIKE '%"            + _aRet[7] + "%' "                         )//NAO ï¿½ OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[8] ),      " PAIS_PORTO_DESTINO_FILTRO LIKE '%" + _aRet[8] + "%' "                         )//NAO ï¿½ OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[9] ),      " NEGOCIO LIKE '%"                   + _aRet[9] + "%' "                         )//NAO ï¿½ OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[10] ),     " PORTO_ORIGEM LIKE '%"              + _aRet[10] + "%' "                        )//NAO ï¿½ OBRIGATORIO
+		_cQuery += U_WhereAnd( !empty(_cCODFILIA ),    " FILIAL_FILTRO IN "                 + _cCODFILIA                               )//OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO EMPRESAS(02 posições)
+	_cQuery += U_WhereAnd( !empty(_aRet[2] ),      " NUM_EXP BETWEEN '"            		+ _aRet[1] + "' AND '" + _aRet[2] + "' "   ) //NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[3] ),      " ADMINISTRADOR LIKE '%"             + _aRet[3] + "%' "                         )//NÃO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[4] ),      " NOME_BUYER LIKE '%"                + _aRet[4] + "%' "                         )//NÃO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[5] ),      " NOME_TRADING LIKE '%"              + _aRet[5] + "%' "                         )//NÃO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[6] ),      " DESPACHANTE LIKE '%"               + _aRet[6] + "%' "                         )//NÃO É OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[7] ),      " FAMILA_PRODUTO LIKE '%"            + _aRet[7] + "%' "                         )//NÃO É OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[8] ),      " PAIS_PORTO_DESTINO_FILTRO LIKE '%" + _aRet[8] + "%' "                         )//NÃO É OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[9] ),      " NEGOCIO LIKE '%"                   + _aRet[9] + "%' "                         )//NÃO É OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[10] ),     " PORTO_ORIGEM LIKE '%"              + _aRet[10] + "%' "                        )//NÃO É OBRIGATORIO
 	_cQuery += U_WhereAnd( !empty(_aRet[12] ),     " DATA_RESERVA_FILTRO BETWEEN '"     + _aRet[11] + "' AND '" + _aRet[12] + "' " )// --SEM TRAVA DE DATA
 
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)

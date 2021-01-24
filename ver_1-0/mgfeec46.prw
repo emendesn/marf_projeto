@@ -6,10 +6,10 @@
 Programa.:              MGFEEC46
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de informacoes da Certificacao Sanitaria na EXP
-Doc. Origem:            Exportacao Indireta
+Descricao / Objetivo:   Fonte MVC para exibição de informações da Certificação Sanitária na EXP
+Doc. Origem:            Exportação Indireta
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -18,7 +18,7 @@ User Function MGFEEC46()
 
 	oBrowse := FWMBrowse():New()
 	oBrowse:SetAlias('ZDT')
-	oBrowse:SetDescription('Certificacao Sanitaria EXP')
+	oBrowse:SetDescription('Certificação Sanitária EXP')
 	oBrowse:Activate()
 
 Return NIL
@@ -43,7 +43,7 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('EEC46M', /*bPreValidacao*/, /*bPosValidacao*/, {|oModel|xCommit(oModel)}/*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'EEC46MASTER', /*cOwner*/, oStruZDTM, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 	oModel:AddGrid( 'EEC46DETAIL', 'EEC46MASTER', oStruZZRD, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
@@ -51,15 +51,15 @@ Static Function ModelDef()
 
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Certificacao Sanitaria' )
+	oModel:SetDescription( 'Certificação Sanitária' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC46MASTER' ):SetDescription( 'Certificacao Sanitaria' )
+	oModel:GetModel( 'EEC46MASTER' ):SetDescription( 'Certificação Sanitária' )
 
-	// Adiciona relacao entre cabecalho e item (relacionamento entre mesma tabela)
+	// Adiciona relação entre cabeçalho e item (relacionamento entre mesma tabela)
 	oModel:SetRelation( "EEC46DETAIL", { { "ZZR_FILIAL", "ZDT_FILIAL" }, { "ZZR_PEDIDO", "ZDT_PEDIDO" } }, ZZR->( IndexKey( 1 ) ) )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZZR_FILIAL","ZZR_PEDIDO"})
 
 //	oModel:SetActivate({|oModel|xActiv(oModel)})
@@ -116,7 +116,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -135,8 +135,8 @@ Static Function ViewDef()
 	//oView:SetOwnerView( 'VIEW_CALC', 'CALC' )
 
 
-	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Acao de Confirmar ' + o:ClassName(),1,0) } )
-	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Acao de Cancelar '  + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONOK'    , { |o| Help(,,'HELP',,'Ação de Confirmar ' + o:ClassName(),1,0) } )
+	//oView:SetViewAction( 'BUTTONCANCEL', { |o| Help(,,'HELP',,'Ação de Cancelar '  + o:ClassName(),1,0) } )
 Return oView
 
 
@@ -145,10 +145,10 @@ Return oView
 Programa.:              EEC46B
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Abre visualizacao da tabela de Certificacao Sanitaria
+Descricao / Objetivo:   Abre visualização da tabela de Certificação Sanitária
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -175,13 +175,13 @@ User Function EEC46B()
 			ZDT->ZDT_PEDIDO := ZB8->ZB8_PEDFAT
 			ZDT->(Msunlock())
 		EndIf
-		FWExecView("Certificacao Sanitaria", "MGFEEC46", MODEL_OPERATION_UPDATE ,, {|| .T. } )
+		FWExecView("Certificação Sanitária", "MGFEEC46", MODEL_OPERATION_UPDATE ,, {|| .T. } )
 	Else
 		cTipoPed := GetAdvFVal("SZJ","ZJ_TAURA",xFilial("SZJ")+SC5->C5_ZTIPPED,1,"")
 		If cTipoPed == "N"
 			U_EEC48B()
 		Else
-			Alert("Certificacao Sanitaria ainda nao importada do TAURA")
+			Alert("Certificação Sanitária ainda não importada do TAURA")
 		EndIf
 	EndIf
 
@@ -194,10 +194,10 @@ Return
 Programa.:              EEC46RET
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Retorna informacao do campo passado
+Descricao / Objetivo:   Retorna informação do campo passado
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -261,7 +261,7 @@ Data.....:              Dez/2016
 Descricao / Objetivo:   Posiciona no registro da tabela informada
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -309,10 +309,10 @@ Return lRet
 Programa.:              EEC46GRV
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Grava Informacao na tabela informacoes passadas pelo TAURA.
+Descricao / Objetivo:   Grava Informação na tabela informações passadas pelo TAURA.
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

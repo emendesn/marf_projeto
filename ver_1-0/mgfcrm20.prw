@@ -14,7 +14,7 @@ Data.....:              07/04/2017
 Descricao / Objetivo:   Cadastro de Nacional - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -28,22 +28,22 @@ user function MGFCRM20(nOpcX, cCodPos, nRecno)
 	//ZBE->(DBGoTop())
 
 	if nOpcX == 3
-		fwExecView("Inclusao", "MGFCRM19", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
+		fwExecView("Inclusão", "MGFCRM19", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
 	else
 		//if ZBE->(DBSeek( xFilial("ZBE") + cCodPos ))
 		ZBE->(dbGoto(nRecno))
 		If ZBE->(Recno()) == nRecno
 			if nOpcX == 4
-				fwExecView("Alteracao", "MGFCRM19", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
+				fwExecView("Alteração", "MGFCRM19", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
 			elseif nOpcX == 5
 				if chkRelat()
-					fwExecView("Alteracao", "MGFCRM19", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
+					fwExecView("Alteração", "MGFCRM19", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
 				else
-					msgAlert("Este registro nao podera ser excluido. O mesmo possui Tetica abaixo dele.")
+					msgAlert("Este registro não poderá ser excluído. O mesmo possui Tática abaixo dele.")
 				endif
 			endif
 		else
-			msgAlert("Registro nao encontrado.")
+			msgAlert("Registro não encontrado.")
 		endif
 	endif
 

@@ -4,13 +4,13 @@
 /*
 ===========================================================================================
 Programa.:              EAE100MNU
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              Nov/2016
 Descricao / Objetivo:   Ponto de entrada chamado na Manutencao de Embarques de processos de exportacao
- 						para inclusao de botoes nas acoes relacionadas
+ 						para inclusão de botões nas ações relacionadas
 Doc. Origem:            EEC07
 Solicitante:            Cliente
-Uso......:            
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

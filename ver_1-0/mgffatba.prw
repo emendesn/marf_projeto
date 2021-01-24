@@ -8,7 +8,7 @@
 user function MGFFATBA()
 	local cUpdSU5	:= ""
 
-	if PARAMIXB[ 2 ] == "MODELCOMMITNTTS" .and. SA1->A1_TIPO <> "X"
+	if PARAMIXB[ 2 ] == "MODELCOMMITNTTS"
 		// MODELCOMMITNTTS - Após a gravação total do modelo e fora da transação
 		// Parâmetros Recebidos:
 		// 1 O Objeto do formulário ou do modelo, conforme o caso.

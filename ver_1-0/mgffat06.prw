@@ -9,7 +9,7 @@ Data................: 04/10/2016
 Descricao / Objetivo: Aplicar desconconto progressivo no pedido de venda
 Doc. Origem.........: Contrato - GAP MGFFAT05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -23,7 +23,7 @@ User Function MGFFAT06(xProduto, xTab, xValor, xQtde)
 	Local nPosValDesc	:= AScan(aHeader, {|x| alltrim(x[2]) == "C6_VALDESC"	})      
 	Local nPosPrcList	:= AScan(aHeader, {|x| alltrim(x[2]) == "C6_PRUNIT"		})              
 	Local nTotItem		:= Len(aCols)
-    Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o pela regra
+    Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão pela regra
 	Local lEspecie		:= !(M->C5_ZTIPPED $ cEspeciePed) //.T.
 	Local nDescProg 	:= 0
 	Local nValProd		:= 0
@@ -59,7 +59,7 @@ User Function MGFFAT06(xProduto, xTab, xValor, xQtde)
 		lContinua := .F.
 	Endif	
 	
-	// inclusao de Carga Taura
+	// inclusão de Carga Taura
 	If IsInCallStack("GravarCarga") .or. IsInCallStack("U_TAS02EECPA100") .or. IsInCallStack("U_GravarCarga") .or. IsInCallStack("U_xGravarCarga") .or. IsInCallStack("U_xTAS02EECPA100") 
 		lContinua := .F.
 	Endif	
@@ -108,7 +108,7 @@ User Function MGFFAT06(xProduto, xTab, xValor, xQtde)
 
 			If nDescProg > 0 
 				
-				lRet := APMsgYesNo("Deseja Aplicar o Desconto Progressivo da Tabela de Preco neste pedido?")
+				lRet := APMsgYesNo("Deseja Aplicar o Desconto Progressivo da Tabela de Preço neste pedido?")
 				
 				lDesP := .T.
 
@@ -140,7 +140,7 @@ User Function MGFFAT06(xProduto, xTab, xValor, xQtde)
 
 						/*For nI := 1 TO len(acols)                
 						IF SC6->C6_PRCVEN = ACOLS[nI][5]					
-						lRet := APMsgYesNo("Deseja Aplicar o Desconto Progressivo da Tabela de Preco neste pedido?")            
+						lRet := APMsgYesNo("Deseja Aplicar o Desconto Progressivo da Tabela de Preço neste pedido?")            
 						Exit  	
 						EndIf
 						Next nI*/	 
@@ -156,7 +156,7 @@ User Function MGFFAT06(xProduto, xTab, xValor, xQtde)
                                 
 								RecLock("SC6",.F.)
 								//							SC6->C6_ZPREORI		:= SC6->C6_PRCVEN voltar
-								SC6->C6_PRCVEN		:= 	nValProd	 //Preco de Venda jï¿½ com o desconto progressivo
+								SC6->C6_PRCVEN		:= 	nValProd	 //Preco de Venda já com o desconto progressivo
 								SC6->C6_VALOR		:=	nValProd * SC6->C6_QTDVEN 	 //Valor Total do Pedido	
 								//SC6->C6_PRUNIT		:=	nValProd //Preco de Lista
 								SC6->(MsUnlock())
@@ -186,7 +186,7 @@ Data................: 04/10/2016
 Descricao / Objetivo: Aplicar desconconto progressivo no pedido de venda
 Doc. Origem.........: Contrato - GAP MGFFAT05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna a quantidade de SKU do Pedido para filtro do desconto 
 =====================================================================================
 */
@@ -227,7 +227,7 @@ Data................: 04/10/2016
 Descricao / Objetivo: Aplicar desconconto progressivo no pedido de venda
 Doc. Origem.........: Contrato - GAP MGFFAT05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna a quantidade de SKU do Pedido para filtro do desconto 
 =====================================================================================
 */
@@ -246,7 +246,7 @@ User Function T06DESC(xTab, nQdtSKU, nVolume)
 	cQuery += " ( "
 
 	//------------------------------------------------------
-	//Verifica qual ï¿½ o maior desconto por Volume
+	//Verifica qual é o maior desconto por Volume
 	//------------------------------------------------------
 	cQuery += " SELECT MAX(ZL_PERDESC) AS DESCONTO " 
 	cQuery += " FROM "  + RetSqlName("SZL") + " SZL "                  
@@ -261,7 +261,7 @@ User Function T06DESC(xTab, nQdtSKU, nVolume)
 	cQuery += " UNION ALL "
 
 	//------------------------------------------------------
-	//Verifica qual ï¿½ o maior desconto por Quantidade
+	//Verifica qual é o maior desconto por Quantidade
 	//------------------------------------------------------	
 	cQuery += " SELECT MAX(ZM_PERDESC)  AS DESCONTO " 
 	cQuery += " FROM "  + RetSqlName("SZM") + " SZM "
@@ -295,10 +295,10 @@ Return(nDescProg)
 Programa............: MGFFAT06
 Autor...............: Marcos Andrade         
 Data................: 04/10/2016 
-Descricao / Objetivo: Voltar o preco base dos produtos
+Descricao / Objetivo: Voltar o preço base dos produtos
 Doc. Origem.........: Contrato - GAP MGFFAT05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gravar o valor de tabela dos produtos na alteracao
 =====================================================================================
 */
@@ -317,7 +317,7 @@ User Function T06UPDC6(xOpc)
 	If xOpc == 4 .and. !IsInCallStack("EECFATCP") .AND. Empty(alltrim(SC5->C5_PEDEXP))	.AND. IsInCallStack("U_MGFEEC24")//Alteracao
 
 		//------------------------------------------------------
-		//Se tiver desconto manual nao atualiza o pedido
+		//Se tiver desconto manual não atualiza o pedido
 		//------------------------------------------------------	
 		cQuery := " SELECT SUM(C6_DESCONT) DESCONTO " 
 		cQuery += " FROM "  + RetSqlName("SC6") + " SC6 "
@@ -340,7 +340,7 @@ User Function T06UPDC6(xOpc)
 			nAcres	:= u_T05Preco(SC5->C5_TABELA)
 
 			//------------------------------------------------------
-			//Se tiver desconto manual nao atualiza o pedido
+			//Se tiver desconto manual não atualiza o pedido
 			//------------------------------------------------------	
 			cQuery := " SELECT C6_FILIAL, C6_NUM, C6_ITEM, C6_PRODUTO " 
 			cQuery += " FROM "  + RetSqlName("SC6") + " SC6 "
@@ -373,7 +373,7 @@ User Function T06UPDC6(xOpc)
 						nPreco 		:= DA1->DA1_PRCVEN / ((100-nAcres)/100)  			              	            		
 						RecLock("SC6",.F.)
 						SC6->C6_ZPREORI		:=  nPreco 
-						SC6->C6_PRCVEN		:= 	nPreco						//Preco de Venda jï¿½ com o desconto progressivo
+						SC6->C6_PRCVEN		:= 	nPreco						//Preco de Venda já com o desconto progressivo
 						SC6->C6_ZTABELA 	:= 	SC5->C5_TABELA
 						SC6->C6_VALOR		:=	nPreco * SC6->C6_QTDVEN		//Valor Total do Pedido	
 						SC6->C6_PRUNIT		:=	nPreco               		//Preco de Lista
@@ -403,7 +403,7 @@ Data................: 04/10/2016
 Descricao / Objetivo: 
 Doc. Origem.........: Contrato - GAP MGFFAT05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -418,7 +418,7 @@ User Function T06Altera()
 	Local nPosValDesc	:= AScan(aHeader, {|x| alltrim(x[2]) == "C6_VALDESC"	})      
 	Local nPosPrcList	:= AScan(aHeader, {|x| alltrim(x[2]) == "C6_PRUNIT"		})              
 	Local nTotItem		:= Len(aCols)
-    Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Codigos da especie de pedido que nao passarï¿½o pela regra
+    Local cEspeciePed  	:= SuperGetMV("MGF_FAT16F",.F.,'TP|EX|TI|DV|RB|MI|IM|TE')  //Códigos da especie de pedido que não passarão pela regra
 	Local lEspecie		:= !(M->C5_ZTIPPED $ cEspeciePed) //.T.
 	Local nDescProg 	:= 0
 	Local nValProd		:= 0
@@ -449,14 +449,14 @@ User Function T06Altera()
 				M->C5_TABELA			,;	//Tabela de Preco 
 				aCols[nCont,nPosPrcUnit],;	//Preco Unitario 
 				aCols[nCont,nPosQTDE]	,;	//Quantidade
-				.T.						,;	//Identifica que ï¿½ alteracao
+				.T.						,;	//Identifica que é alteração
 				nCont					)	//Numero da Linha			
 			EndIf
 		Endif
 	Next    
 
 	//-----------------------------------------------------------------------
-	//Atualiza o rodape do titulo
+	//Atualiza o rodapé do título
 	//-----------------------------------------------------------------------
 	n	:= nBack
 	Ma410Rodap()
@@ -471,7 +471,7 @@ Data................: 29/09/2016
 Descricao / Objetivo: Busca tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT06
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -490,7 +490,7 @@ User Function T06Valid(xTab, xProduto, lAteracao)
 			nPreco	:= 0
 			lRet	:= .F.		
 			If !Alteracao
-				APMsgInfo("Produto nao encontrado na tabela de preco informada!","Atencao")
+				APMsgInfo("Produto não encontrado na tabela de preço informada!","Atenção")
 			Endif
 		Endif
 	Endif

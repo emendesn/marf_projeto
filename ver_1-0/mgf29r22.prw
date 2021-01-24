@@ -1,15 +1,15 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF29R22	ï¿½Autor  ï¿½Geronimo Benedito Alves                                                                    ï¿½Data ï¿½  10/01/18  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAï¿½ï¿½O - Relatorio Estufagem                   ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com elesï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods                                                                                                             ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF29R22	ºAutor  ³Geronimo Benedito Alves                                                                    ºData ³  10/01/18  º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: EEC-Easy Export Control - 29 -EXPORTAÇÃO - Relatório Estufagem                   º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com elesº±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods                                                                                                             º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF29R22()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -18,34 +18,34 @@ User Function MGF29R22()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Exportacao - Relatorio Estufagem"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
-	Aadd(_aDefinePl, "Relatorio Estufagem"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Relatorio Estufagem"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Relatorio Estufagem"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Exportação - Relatório Estufagem"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Relatório Estufagem"				)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Relatório Estufagem"}			)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Relatório Estufagem"}			)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}									)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }						)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 35										//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02											 03						 04	 05	  	 06	 07					  	 08		 09	
-	Aadd(_aCampoQry, {"EEC_ZEXP"	,"NUM_EXP "									,"Numero Exportacao"	,"C",013	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"EEC_ZANOEX"	,"ANO_EXP"									,"Ano Exportacao"		,"C",002	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"EEC_ZSUBEX"	,"SUBEXP"									,"Sub Exportacao"		,"C",003	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"ZZR_PERDE"	,"DATA_PRODUCAO_DE			as DTPROD_DE", 	"Data Produï¿½ï¿½o De"		,"D",008	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"ZZR_PERATE"	,"DATA_PRODUCAO_ATE			as DTPROD_ATE"	,"Data Produï¿½ï¿½o Ate"	,"D",008	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"EEC_ZEXP"	,"NUM_EXP "									,"Número Exportação"	,"C",013	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"EEC_ZANOEX"	,"ANO_EXP"									,"Ano Exportação"		,"C",002	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"EEC_ZSUBEX"	,"SUBEXP"									,"Sub Exportação"		,"C",003	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"ZZR_PERDE"	,"DATA_PRODUCAO_DE			as DTPROD_DE", 	"Data Produção De"		,"D",008	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"ZZR_PERATE"	,"DATA_PRODUCAO_ATE			as DTPROD_ATE"	,"Data Produção Ate"	,"D",008	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"ZB8_ZDTEST"	,"DATA_ESTUFAGEM_PCP		as DTESTUFPCP"	,"Data Estufagem PCP"	,"D",008	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"ZB8_ZDTPES"	,"DATA_ESTUFAGEM_TRANSPORTE	as ESTUFTRANS"	,"Dt. Estufagem Transp.","D",008	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_BUYER				as COD_BUYER"	,"Cï¿½d. Buyer"			,"C",006	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_BUYER				as COD_BUYER"	,"Cód. Buyer"			,"C",006	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_BUYER"								,"Nome Buyer"			,"C",040	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_CONSIGNEE			as COD_CONSIG"	,"Cï¿½d. Consignee"		,"C",006	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_CONSIGNEE			as COD_CONSIG"	,"Cód. Consignee"		,"C",006	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_CONSIGNEE			as NOM_CONSIG"	,"Nome Consignee"		,"C",040	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_IMPORTADOR			as COD_IMPORT"	,"Cï¿½d. Importador NF"	,"C",006	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"A1_COD"		,"CODIGO_IMPORTADOR			as COD_IMPORT"	,"Cód. Importador NF"	,"C",006	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_IMPORTADOR			as NM_IMPORT" 	,"Nome Importador NF"	,"C",040	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"EEC_RESPON"	,"ADMINISTRADOR 			as ADMINISTRA"	,"Administrador"		,"C",020	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"YP_TEXTO"	,"TIPO_PAGAMENTO 			as TIPO_PGTO" 	,"Tipo de Pagamento"	,"C",080	,0	,""						,""		,""	})
@@ -58,29 +58,29 @@ User Function MGF29R22()
 	Aadd(_aCampoQry, {"EEC_ZETAOR"	,"ETA_ORIGEM"								,"E.T.A Origem"			,"D",008	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"YR_CID_ORI"	,"PORTO_ORIGEM 				as PORTA_ORIG"	,"Porto Origem"			,"C",020	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"Y5_NOME"		,"DESPACHANTE 				as DESPACHANT"	,"Despachante"			,"C",040	,0	,""						,""		,""	})
-	Aadd(_aCampoQry, {"YA_DESCR"	,"PAIS_DESTINO				as PAIS_DESTI"	,"Paï¿½s Destino"			,"C",025	,0	,""						,""		,""	})
+	Aadd(_aCampoQry, {"YA_DESCR"	,"PAIS_DESTINO				as PAIS_DESTI"	,"País Destino"			,"C",025	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"YR_CID_DES"	,"PORTO_DESTINO				as PORTO_DEST"	,"Porto de Destino"		,"C",020	,0	,""						,""		,""	})
 	Aadd(_aCampoQry, {"YC_NOME"		,"TIPO_PRODUTO				as TP_PRODUTO"	,"Tipo de Produto"		,"C",045	,0	,""						,""		,""	})
 	
-	aAdd(_aParambox,{1,"Numero de Exportacao"		,Space(tamSx3("EEC_ZEXP")[1])	,"@!"	,""														,"EECEXP"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Cï¿½d Importador Inicio"		,Space(tamSx3("A1_COD")[1])		,""		,""														,"CLI"		,"",050,.F.})
-	aAdd(_aParambox,{1,"Cï¿½d Importador Final "		,Space(tamSx3("A1_COD")[1])		,""		,"U_VLFIMMAI(MV_PAR02,MV_PAR03,'Cï¿½d. Importador')"		,"CLI"		,"",050,.F.})
+	aAdd(_aParambox,{1,"Número de Exportação"		,Space(tamSx3("EEC_ZEXP")[1])	,"@!"	,""														,"EECEXP"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Cód Importador Inicio"		,Space(tamSx3("A1_COD")[1])		,""		,""														,"CLI"		,"",050,.F.})
+	aAdd(_aParambox,{1,"Cód Importador Final "		,Space(tamSx3("A1_COD")[1])		,""		,"U_VLFIMMAI(MV_PAR02,MV_PAR03,'Cód. Importador')"		,"CLI"		,"",050,.F.})
 	aAdd(_aParambox,{1,"Administrador"				,Space(tamSx3("EEC_RESPON")[1])	,"@!"	,""														,""			,"",050,.F.})	// retirada a consulta SXB E33
 	aAdd(_aParambox,{1,"Data Estufagem PCP Inicial"	,Ctod("")						,""		,""														,""			,"",050,.F.})
 	aAdd(_aParambox,{1,"Data Estufagem PCP Final"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR05, MV_PAR06, 'Data Estufagem PCP')"	,""			,"",050,.F.})
 	
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	_aSelFil:= U_SeleEmp()					// Rotina para obter a selecï¿½o das EMPRESAS a processar.
+	_aSelFil:= U_SeleEmp()					// Rotina para obter a selecão das EMPRESAS a processar.
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODEMPRE  := U_Array_In(_aSelFil)
 
 	_cQuery += "  FROM " + U_IF_BIMFR( "IF_BIMFR", "V_EX_RELESTUFAGEMKARIN"  )  + CRLF
-	_cQuery += U_WhereAnd( !empty(_cCODEMPRE ),  " FILIAL_FILTRO IN "           + _cCODEMPRE                             ) //OBRIGATORIO (SELEï¿½ï¿½O DO COMBO)  CAMPO EMPRESAS(02 posicoes)
+	_cQuery += U_WhereAnd( !empty(_cCODEMPRE ),  " FILIAL_FILTRO IN "           + _cCODEMPRE                             ) //OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO EMPRESAS(02 posições)
 	_cQuery += U_WhereAnd( !empty(_aRet[1] ),    " NUM_EXP LIKE '%"             + _aRet[1] + "%' "                       ) 
-	_cQuery += U_WhereAnd( !empty(_aRet[3] ),    " CODIGO_IMPORTADOR BETWEEN '" + _aRet[2] + "' AND '" + _aRet[3] + "' " ) //NAO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE)
-	_cQuery += U_WhereAnd( !empty(_aRet[4] ),    " ADMINISTRADOR LIKE '%"       + _aRet[4] + "%' "                       ) //NAO OBRIGATORIO (USUARIO DIGITA )
-	_cQuery += U_WhereAnd( !empty(_aRet[6] ),    " ESTUFAGEM_PCP BETWEEN '"     + _aRet[5] + "' AND '" + _aRet[6] + "' " ) //NAO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[3] ),    " CODIGO_IMPORTADOR BETWEEN '" + _aRet[2] + "' AND '" + _aRet[3] + "' " ) //NÃO OBRIGATORIO, USUARIO COLOCA O CODIGO DE/ATE (RANGE)
+	_cQuery += U_WhereAnd( !empty(_aRet[4] ),    " ADMINISTRADOR LIKE '%"       + _aRet[4] + "%' "                       ) //NÃO OBRIGATORIO (USUARIO DIGITA )
+	_cQuery += U_WhereAnd( !empty(_aRet[6] ),    " ESTUFAGEM_PCP BETWEEN '"     + _aRet[5] + "' AND '" + _aRet[6] + "' " ) //NÃO OBRIGATORIO
 	
 	MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MsgRun("Aguarde!!! Montando\Desconectando Tela"	,,{ ||U_TGridRel()})

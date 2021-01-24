@@ -14,7 +14,7 @@ Data.....:              04/07/2017
 Descricao / Objetivo:   Cadastro de Categoria de Produtos (ZBP)
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -71,8 +71,8 @@ Static Function ModelDef()
 	oStruZBR:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                                       // [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                                       // [04] Bloco de codigo de execução do gatilho
 
 	// Adiciona ao modelo uma estrutura de formulÃ¡rio de ediÃ§Ã£o por campo
 	oModel:AddFields( 'ZBPMASTER', /*cOwner*/	, oStruZBP, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
@@ -124,7 +124,7 @@ Static Function ViewDef()
 	oView:SetOwnerView( 'VIEW_ZBP', 'CATEG' )
 	oView:SetOwnerView( 'VIEW_ZBR', 'PRODU' )
 
-    //Habilitando titulo
+    //Habilitando título
     oView:EnableTitleView( 'ZBPMASTER', 'Categoria' )
     oView:EnableTitleView( 'ZBRDETAIL', 'Produtos' )
 
@@ -145,7 +145,7 @@ Static Function prevldZBR(oModel, nLin, cPonto, cCpo, e)
 			for nI := 1 to oMdlZBR:length()
 				oMdlZBR:goLine(nI)
 				if M->ZBR_PRzODUT == oMdlZBR:getValue("ZBR_PRODUT") .and. nLin <> nI
-					Help( ,, 'Nao  permitido',, "Este produto jï¿½ foi cadastrado para este SKU.", 1, 0 )
+					Help( ,, 'Não permitido',, "Este produto já foi cadastrado para este SKU.", 1, 0 )
 					xRet := .F.
 					exit
 				endif
@@ -168,7 +168,7 @@ IF 	nOperation == 5
 	ZBQ->(DbSetorder(1))//ZBQ_FILIAL+ZBQ_CATEGO+ZBQ_VENDED                                                                                                                                
 	IF ZBQ->(DbSeek(xFilial("ZBQ")+ZBP->ZBP_CODIGO))
 		lRet := .F.
-			Help( ,, 'Help',, 'Nao e possivel fazer a exclusao desse regitro, pois o mesmo encontra-se vinculado ao cadastro de Metas!', 1, 0 )
+			Help( ,, 'Help',, 'Não é possível fazer a exclusão desse regitro, pois o mesmo encontra-se vinculado ao cadastro de Metas!', 1, 0 )
 	ENDIF
 ENDIF
 Return lRet

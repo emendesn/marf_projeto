@@ -15,9 +15,9 @@ Data.....:              27/03/2010
 Descricao / Objetivo:   Integracao PROTHEUS x Multiembarcador - Recebimento XML CTE
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              WS Server para Integracao PROTHEUS x Multiembarcador - - Recebimento XML CTE
-Componentes da integracao:
+Componentes da integraзгo:
 Integracao PROTHEUS x Multiembarcador - Recebimento XML CTE
 =====================================================================================
 */
@@ -29,7 +29,7 @@ WSSTRUCT MGFFATAYXMLcte
 
 ENDWSSTRUCT
 
-// Movimentos de Produпњљпњљo - Estrutura de dados.
+// Movimentos de Produзгo - Estrutura de dados.
 WSSTRUCT MGFFATAYRETXMLCTE
 	WSDATA STATUS	AS String
 	WSDATA MSG	AS String
@@ -41,7 +41,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFFATAY DESCRIPTION "Integracao Protheus x Multiembarcador - Recebimento XML CTE" NameSpace "http://totvs.com.br/MGFFATAY.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos parвmetros de entrada
 	WSDATA MGFFATAYRXMLcte AS MGFFATAYXMLcte
 	// Retorno (array)
 	WSDATA  MGFFATAYREXMLCTE AS MGFFATAYRETXMLCTE
@@ -62,7 +62,7 @@ WSMETHOD RetornoXMLCTE WSRECEIVE	MGFFATAYRXMLcte WSSEND MGFFATAYREXMLCTE WSSERVI
 
 	aRetFuncao	:= u_MGFFATAY(	{	::MGFFATAYRXMLcte:Filial	,;
 	::MGFFATAYRXMLcte:XMLCTE ,;
-	::MGFFATAYRXMLcte:NOMEXML })	// Passagem de parametros para rotina
+	::MGFFATAYRXMLcte:NOMEXML })	// Passagem de parвmetros para rotina
 
 
 
@@ -87,13 +87,13 @@ user Function MGFFATAY( aEmb )
 	local oXml	   
 	Local cNomArq := ""	
 	/*
-	пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљƒњ
-	пњљ Preparacao do Ambiente.                                                                                  |
-	пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљ
+	Џƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒњ
+	≥ Preparaзгo do Ambiente.                                                                                  |
+	јƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒў
 	*/
 	RpcSetEnv( "01" , aEmb[1] , Nil, Nil, "FAT", Nil )//, aTables )
 
-	//--------------| Verifica existencia de parametros e caso nao exista, cria. |-----
+	//--------------| Verifica existкncia de parвmetros e caso nгo exista, cria. |-----
     If !ExisteSx6("MGF_FATAY1")
         CriarSX6("MGF_FATAY1", "C", "Diretorio dos XMLs para importacao de CTe.","\\spdwfapl214\m$\Totvs\Microsiga\protheus_data\xmlCTe\" )
     EndIf
@@ -119,9 +119,9 @@ user Function MGFFATAY( aEmb )
 	aRetorno := {cErro,cMsg}
 
 	/*
-	пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљƒњ
-	пњљ Finalizacao do Ambiente.                                                                                 |
-	пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљ
+	Џƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒњ
+	≥ Finalizaзгo do Ambiente.                                                                                 |
+	јƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒў
 	*/
 
 

@@ -5,10 +5,10 @@
 Programa............: M460FIL
 Autor...............: Totvs
 Data................: Agosto/2018
-Descricao / Objetivo: Ponto de Entrada utilizado antes da execucao da Indregua na selecao da Markbrowse
+Descrição / Objetivo: Ponto de Entrada utilizado antes da execução da Indregua na seleção da Markbrowse
 Doc. Origem.........: Faturamento
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

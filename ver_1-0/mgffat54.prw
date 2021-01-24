@@ -367,7 +367,7 @@ static function getZC5( )
 	cQryZC5 += "     AND SZ9.D_E_L_E_T_  <>  '*'"																+ chr(13) + chr(10)
 
 	cQryZC5 += " WHERE"																							+ chr(13) + chr(10)
-	cQryZC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS <> '4'"										+ chr(13) + chr(10)
+	cQryZC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS <> '4' AND ZC5_ORIGEM = '004' "										+ chr(13) + chr(10)
 
 	cQryZC5 += " 	AND	SC5.C5_EMISSAO	>=	'" + dtos(date()-getmv("MGF_FAT541",,10))	+ "'"					+ chr(13) + chr(10)
 
@@ -412,7 +412,7 @@ static function getZC5( )
 	cQryZC5 += " 	AND	ZC6.D_E_L_E_T_	<>	'*'"									+ chr(13) + chr(10)
 
 	cQryZC5 += " WHERE"																							+ chr(13) + chr(10)
-	cQryZC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS = '4'"										+ chr(13) + chr(10)
+	cQryZC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS = '4' AND ZC5_ORIGEM = '004'"										+ chr(13) + chr(10)
 
 	cQryZC5 += "    AND SUBSTR(ZC5_IDSFA,1,8) >= '" + dtos(date()-getmv("MGF_FAT541",,10))	+ "'"			+ chr(13) + chr(10)
 

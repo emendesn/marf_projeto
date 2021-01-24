@@ -7,7 +7,7 @@ Data................: Out/2017
 Descricao / Objetivo: Ponto de entrada para validar a inclusao da nota de entrada pelo modulo Fiscal
 Doc. Origem.........: Fiscal
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

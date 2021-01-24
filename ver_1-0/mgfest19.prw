@@ -9,11 +9,11 @@
 Programa.:              MGFEST19
 Autor....:              Marcelo Carneiro         
 Data.....:              25/08/2016 
-Descricao / Objetivo:   Controle de endereco do armazem central
+Descricao / Objetivo:   Controle de endereço do armazem central
 Doc. Origem:            MGFPER01 - Contrato
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Relatorio de Enderecos
+Uso......:              Marfrig
+Obs......:              Relatorio de Endereços
 =====================================================================================
 */
 User Function MGFEST19 //U_MGFEST19()
@@ -54,7 +54,7 @@ While QRY_BE->(!Eof())
 	IF MV_PAR01 == 1 .OR. ( MV_PAR01 == 2 .And. QRY_BE->BESIM<>'SIM') .OR. ( MV_PAR01 == 3 .And. QRY_BE->BESIM=='SIM')
 		AADD(aReg,QRY_BE->BE_LOCALIZ)
 		AADD(aReg,QRY_BE->DESCRICAO)
-		AADD(aReg,IIF(QRY_BE->BESIM=='SIM','Ocupado','Disponï¿½vel'))
+		AADD(aReg,IIF(QRY_BE->BESIM=='SIM','Ocupado','Disponível'))
 		AADD(aRelImp,aReg)
 	EndIF
 	QRY_BE->(dbSKIP())
@@ -70,14 +70,14 @@ Static Function RelEST19
 Local oReport
 Local oImp
 
-oReport := TReport():New("EST19","Relatorio de disponibilidade de endereï¿½os do Armazem Central.",,{|oReport| PrintReport(oReport)},"Relatorio de Enderecos")
+oReport := TReport():New("EST19","Relatório de disponibilidade de endereços do Armazém Central.",,{|oReport| PrintReport(oReport)},"Relatorio de Endereços")
 //oReport:SetLandscape()
 oReport:SetPortrait()
-oImp := TRSection():New(oReport,"Disponibilidade dos Enderecos","EST19")
+oImp := TRSection():New(oReport,"Disponibilidade dos Endereços","EST19")
 
 TRCell():New(oIMP,"rINICIO"   ,,""      ,,40,.F.,) 
-TRCell():New(oIMP,"rEndereco"   ,,"Endereco"      ,,TamSX3("BE_LOCALIZ")[1],.F.,) 
-TRCell():New(oIMP,"rNome"       ,,"Descricao"    ,,TamSX3("BE_DESCRIC")[1],.F.,) 
+TRCell():New(oIMP,"rEndereco"   ,,"Endereço"      ,,TamSX3("BE_LOCALIZ")[1],.F.,) 
+TRCell():New(oIMP,"rNome"       ,,"Descrição"    ,,TamSX3("BE_DESCRIC")[1],.F.,) 
 TRCell():New(oImp,"rStatus"     ,,"Status"        ,,10,.F.,)
 
 Return oReport

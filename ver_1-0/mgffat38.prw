@@ -9,8 +9,8 @@ Autor....:              Marcelo Carneiro
 Data.....:              06/06/2017 
 Descricao / Objetivo:   ALTERACAO DE CAMPOS PEDIDO DE VENA
 Doc. Origem:            MIT044 - feito no Go
-Solicitante:            Jose W.
-Uso......:              
+Solicitante:            José W.
+Uso......:              Marfrig
 Obs......:              
 =============================================================================================
 */
@@ -41,7 +41,7 @@ bTaura      := .F.
 
 
 IF !Empty(SC5->C5_NOTA)
-    msgAlert('Nota fiscal jï¿½ emitida , nao ï¿½ possivel alterar !!')
+    msgAlert('Nota fiscal já emitida , não é possivel alterar !!')
     Return
 EndIF    
 
@@ -62,8 +62,8 @@ cVeicul     := SC5->C5_VEICULO
 //
 //------------------------------------------------------------
 nLinDlg := 10   //Primeira linha
-nLesp   := 16   //Espacamento
-	DEFINE DIALOG oDlg TITLE "Informacoes sobre o frete da carga" FROM 0,0 TO 450,600 PIXEL
+nLesp   := 16   //Espaçamento
+	DEFINE DIALOG oDlg TITLE "Informações sobre o frete da carga" FROM 0,0 TO 450,600 PIXEL
 	
 	@ nLinDlg,08 SAY "Mensagem Nota 1:" SIZE  50,10 OF oDlg PIXEL
 	@ nLinDlg,58 MSGET cMenNota1 SIZE 150/*TamSX3("C5_MENNOTA")[1]*/,10 OF oDlg PIXEL PICTURE '@!'
@@ -117,7 +117,7 @@ ACTIVATE DIALOG oDlg CENTERED
 
 return
 
-// Grava o formulario na Tabela
+// Grava o formulário na Tabela
 Static Function Gravar(_lret)
 
 lRet := U_MGFFATAL(cMenNota1,cMenNota2,cMenExp,41)

@@ -4,12 +4,12 @@
 ============================================================================================
 Programa.:              MGFEST37
 Autor....:              Tarcisio Galeano
-Data.....:              Marco/2018 
+Data.....:              Março/2018 
 Descricao / Objetivo:   
-Doc. Origem:            
+Doc. Origem:            Marfrig
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Gatilho para nao permitir movimentacao de estoque com datas futuras 
+Uso......:              Marfrig
+Obs......:              Gatilho para não permitir movimentação de estoque com datas futuras 
 =============================================================================================
 */
 User Function MGFEST37()

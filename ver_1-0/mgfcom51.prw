@@ -6,7 +6,7 @@ Data.....:              Nov/2017
 Descricao / Objetivo:   Funcao chamada pelo campo X3_INIBRW do campo customizado C7_ZNOMCOM
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

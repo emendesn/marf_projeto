@@ -5,10 +5,10 @@
 Programa.:              MGFFIN46
 Autor....:              Atilio Amarilla
 Data.....:              07/03/2017
-Descricao / Objetivo:   Impressao de Dados FIDC (Geracao de Planilhas)
+Descricao / Objetivo:   Impressão de Dados FIDC (Geração de Planilhas)
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado pelo browse MVC MGFFIN43
 =====================================================================================
 */
@@ -34,9 +34,9 @@ Static Function MGFFIN4601(cOpc)
 	If cOpc == "1"
 		
 		If ZA7->ZA7_TIPO == "1"
-			aCabRem	:= {"Status","Filial","Remessa","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Emissao","Vencimento","Valor","Motivo Rejeicao"}
+			aCabRem	:= {"Status","Filial","Remessa","Prefixo","Número","Parcela","Tipo","Cliente","Loja","Nome","Emissão","Vencimento","Valor","Motivo Rejeição"}
 		Else
-			aCabRem	:= {"Status","Filial","Remessa","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Emissao","Vencimento","Valor","Motivo Recompra","Motivo Rejeicao"}
+			aCabRem	:= {"Status","Filial","Remessa","Prefixo","Número","Parcela","Tipo","Cliente","Loja","Nome","Emissão","Vencimento","Valor","Motivo Recompra","Motivo Rejeição"}
 		EndIf
 
 
@@ -103,28 +103,28 @@ Static Function MGFFIN4601(cOpc)
 		
 	Else
 		
-		aCabRem	:= {"Tipo","Status","Remessa","Filial","Prefixo","Numero","Parcela","Tipo","Cliente","Loja","Nome","Emissao","Vencimento","Valor","Motivo Recommpra","Motivo Rejeicao","Data Rejeicao"}
+		aCabRem	:= {"Tipo","Status","Remessa","Filial","Prefixo","Número","Parcela","Tipo","Cliente","Loja","Nome","Emissão","Vencimento","Valor","Motivo Recommpra","Motivo Rejeição","Data Rejeição"}
 		
 		dRejIni	:= dRejFim	:= dDataBase
 		aRet	:= {}
 		aPergs	:= {}
 		
-		aAdd( aPergs ,{1,"Data Rejeicao De : ",dRejIni,"@!",'.T.'	,		,'.T.',50,.T.})
-		aAdd( aPergs ,{1,"Data Rejeicao Ate : ",dRejFim,"@!",'.T.'	,		,'.T.',50,.T.})
+		aAdd( aPergs ,{1,"Data Rejeição De : ",dRejIni,"@!",'.T.'	,		,'.T.',50,.T.})
+		aAdd( aPergs ,{1,"Data Rejeição Até : ",dRejFim,"@!",'.T.'	,		,'.T.',50,.T.})
 		
-		If !ParamBox(aPergs ,"Parametros FIDC - Titulos Rejeitados",aRet)
-			Aviso("FIDC - Impressao Rejeitados","Processamento Cancelado!",{'Ok'})
+		If !ParamBox(aPergs ,"Parametros FIDC - Títulos Rejeitados",aRet)
+			Aviso("FIDC - Impressão Rejeitados","Processamento Cancelado!",{'Ok'})
 		Else
 			
 			cArqExc := FunName()+Right( cEmpAnt+cFilAnt , 6 )+"REJEITADOS"+Subs(DTOS(Date()),3,6)+StrTran(Time(),":")
 			
-			cTitulo	:= "FIDC: - Titulos Rejeitados - Periodo: "+DTOC(aRet[1])+" a "+DTOC(aRet[2])
+			cTitulo	:= "FIDC: - Títulos Rejeitados - Período: "+DTOC(aRet[1])+" a "+DTOC(aRet[2])
 			
 			cAlias	:= GetNextAlias()
 			
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-			//ï¿½Verifica se ï¿½ltimo do titulo ativo                                      ï¿½
-			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+			//³Verifica se último do título ativo                                      ³
+			//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 			BeginSQL Alias cAlias
 			
 				SELECT *

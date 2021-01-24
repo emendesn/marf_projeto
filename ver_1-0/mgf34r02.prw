@@ -1,86 +1,86 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF34R02	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½01/12/17	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Razao Contabil  (Modulo 34-CTB)									ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravï¿½z da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																												ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF34R02	ºAutor  ³ Geronimo Benedito Alves																	ºData ³01/12/17	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: CONTABILIDADE - Razão Contabil  (Módulo 34-CTB)									º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																												º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF34R02()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
 	Private _aDefinePl := {}, _aCampoQry := {}, _cTmp01, _aCpoExce, _cQuery, _cCODFILIA
 	Private _nInterval, _aSelFil		:= {}
 	Private _aEmailQry , _cWhereAnd
-	_aEmailQry	:= {}  ; _cWhereAnd	:= " AND "	// Jï¿½ inicio com AND, pois o inicio do Where da query, jï¿½ vem escrita no programa fonte
+	_aEmailQry	:= {}  ; _cWhereAnd	:= " AND "	// Já inicio com AND, pois o inicio do Where da query, já vem escrita no programa fonte
 
-	Aadd(_aDefinePl, "Contabilidade Gerencial - Razao Contabil"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerï¿½ na regua de processamento.
+	Aadd(_aDefinePl, "Contabilidade Gerencial - Razão Contabil"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	Aadd(_aDefinePl, "Razao Contabil"							)	//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Razao Contabil"}							)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Razao Contabil"}							)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}											)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }								)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, {}											)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }								)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	
 	_nInterval	:= 366												//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""					
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01				 02											 03									 04		 05		 06	 07		 08	 09	
-	Aadd(_aCampoQry, {	"A1_FILIAL"		,"FILIAL"									,"Codigo Filial"					,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"A1_NOME"		,"DESC_FILIAL 				as NOMEFILIAL"	,"Descricï¿½o Filial"					,"C"	,040	,0	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"A1_FILIAL"		,"FILIAL"									,"Código Filial"					,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"A1_NOME"		,"DESC_FILIAL 				as NOMEFILIAL"	,"Descricão Filial"					,"C"	,040	,0	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_DATA"		,"DATA_LANCAMENTO			as DATA_LCTO"	,"Data Lcto"						,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_LOTE"		,"LOTE"										,"Lote"								,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_SBLOTE"	,"SUB_LOTE"									,"Sub Lote" 						,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_DOC"		,"DOCUMENTO"								,"Documento"						,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_DC"		,"TIPO"										,"Tipo"								,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_DEBITO"	,"CONTA_DEBITO 				as CTA_DEBITO"	,"Conta Contï¿½bil Debito"			,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT1_DESC01"	,"DESCRICAO_CTA_DEBITO 		as DESCCTADEB"	,"Descricao Conta Contï¿½bil Debito"	,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_CREDIT"	,"CONTA_CRETIDO 			as CTACREDITO"	,"Conta Contï¿½bil Credito"			,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT1_DESC01"	,"DESCRICAO_CTA_CRETIDO 	as DESCCTACRE"	,"Descricao Conta Contï¿½bil"			,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_DEBITO"	,"CONTA_DEBITO 				as CTA_DEBITO"	,"Conta Contábil Debito"			,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT1_DESC01"	,"DESCRICAO_CTA_DEBITO 		as DESCCTADEB"	,"Descrição Conta Contábil Debito"	,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_CREDIT"	,"CONTA_CRETIDO 			as CTACREDITO"	,"Conta Contábil Crédito"			,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT1_DESC01"	,"DESCRICAO_CTA_CRETIDO 	as DESCCTACRE"	,"Descrição Conta Contábil"			,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"A2_CGC"		,"CGC_DEBITO"								,"CGC Debito"						,""		,018	,0	,"@!"	,""	,"@!"})
 	Aadd(_aCampoQry, {	"A2_NOME"		,"FORNECEDEB"								,"Nome Fornecedor Debito"			,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"A2_CGC"		,"CGC_CREDIT"								,"CGC Credito"						,""		,018	,0	,"@!"	,""	,"@!"})
 	Aadd(_aCampoQry, {	"A2_NOME"		,"FORNECECRE"								,"Nome Fornecedor Credito"			,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_VALOR"		,"VALOR"									,"Valor"							,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_HP"		,"HISTORICO					as CODHISTORI"	,"Cï¿½d. Hist."						,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_HIST"		,"DESC_HISTORICO			as DESHISTORI"	,"Historico"						,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_CCD"		,"C_CUSTO_DEBITO			as CCUSTODEBI"	,"Centro Custo Debito"				,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CTT_DESC01"	,"DESCRICAO_C_CUSTO_DEBITO	as DCCUSTODEB"	,"Descricao Centro de Custo Debito"	,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_CCD"		,"C_CUSTO_CREDITO			as CCUSTOCRED"	,"Centro Custo Credito"				,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CTT_DESC01"	,"DESCRICAO_C_CUSTO_CREDITO	as DCCUSTOCRE"	,"Descricao Centro de Custo Credito",""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_ITEMD"		,"ITEM_CONTABIL_DEB			as ITEMCTBDEB"	,"Item Contï¿½bil Debito"				,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_ITEMC"		,"ITEM_CONTABIL_CRE			as ITEMCTBCRE"	,"Item Contï¿½bil Credito"			,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_CLVLDB"	,"CLASSE_VLR_DEB			as CLASVLRDEB"	,"Classe Valor Debito"				,""		,""		,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {	"CT2_CLVLCR"	,"CLASSE_VLR_CRE			as CLASVLRCRE"	,"Classe Valor Credito"				,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_HP"		,"HISTORICO					as CODHISTORI"	,"Cód. Hist."						,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_HIST"		,"DESC_HISTORICO			as DESHISTORI"	,"Histórico"						,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_CCD"		,"C_CUSTO_DEBITO			as CCUSTODEBI"	,"Centro Custo Débito"				,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CTT_DESC01"	,"DESCRICAO_C_CUSTO_DEBITO	as DCCUSTODEB"	,"Descrição Centro de Custo Débito"	,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_CCD"		,"C_CUSTO_CREDITO			as CCUSTOCRED"	,"Centro Custo Crédito"				,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CTT_DESC01"	,"DESCRICAO_C_CUSTO_CREDITO	as DCCUSTOCRE"	,"Descrição Centro de Custo Crédito",""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_ITEMD"		,"ITEM_CONTABIL_DEB			as ITEMCTBDEB"	,"Item Contábil Débito"				,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_ITEMC"		,"ITEM_CONTABIL_CRE			as ITEMCTBCRE"	,"Item Contábil Crédito"			,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_CLVLDB"	,"CLASSE_VLR_DEB			as CLASVLRDEB"	,"Classe Valor Débito"				,""		,""		,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {	"CT2_CLVLCR"	,"CLASSE_VLR_CRE			as CLASVLRCRE"	,"Classe Valor Crédito"				,""		,""		,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {	"CT2_DATA"		,"DATA_PROCESSAMENTO		as DTPROCESSA"	,"Data Process"						,""		,""		,""	,""		,""	,""	})
 
 	aAdd(_aParambox,{1,"Data Lancto Inicial"			,Ctod("")						,""	,""															,""		,"",050,.T.})
 	aAdd(_aParambox,{1,"Data Lancto Final"				,Ctod("")						,""	,"U_VLDTINIF(MV_PAR01, MV_PAR02, _nInterval)"				,""		,"",050,.T.})
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Debito Inicial"	,Space(tamSx3("CT1_CONTA")[1])	,""	,""															,"CT1"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Debito Final"	,Space(tamSx3("CT1_CONTA")[1])	,""	,"U_VLFIMMAI(MV_PAR03, MV_PAR04, 'Conta Contï¿½bil Debito')"	,"CT1"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Credito Inicial"	,Space(tamSx3("CT1_CONTA")[1])	,""	,""															,"CT1"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Conta Contï¿½bil Credito Final"	,Space(tamSx3("CT1_CONTA")[1])	,""	,"U_VLFIMMAI(MV_PAR05, MV_PAR06, 'Conta Contï¿½bil Credito')"	,"CT1"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Centro Custo Debito Inicial"	,Space(tamSx3("CTT_CUSTO")[1])	,""	,""															,"CTT"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Centro Custo Debito Final"		,Space(tamSx3("CTT_CUSTO")[1])	,""	,"U_VLFIMMAI(MV_PAR07, MV_PAR08, 'Centro de Custo Debito')"	,"CTT"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Centro Custo Credito Inicial"	,Space(tamSx3("CTT_CUSTO")[1])	,""	,""															,"CTT"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Centro Custo Credito Final"		,Space(tamSx3("CTT_CUSTO")[1])	,""	,"U_VLFIMMAI(MV_PAR09, MV_PAR10, 'Centro de Custo Credito')","CTT"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Classe Valor Debito Inicial"	,Space(tamSx3("CTH_CLVL")[1])	,""	,""															,"CTH"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Classe Valor Debito Final"		,Space(tamSx3("CTH_CLVL")[1])	,""	,"U_VLFIMMAI(MV_PAR11, MV_PAR12, 'Classe de Valor Debito')"	,"CTH"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Classe Valor Credito Inicial"	,Space(tamSx3("CTH_CLVL")[1])	,""	,""															,"CTH"	,"",050,.F.})
-	aAdd(_aParambox,{1,"Classe Valor Credito Final"		,Space(tamSx3("CTH_CLVL")[1])	,""	,"U_VLFIMMAI(MV_PAR13, MV_PAR14, 'Classe de Valor Credito')","CTH"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Débito Inicial"	,Space(tamSx3("CT1_CONTA")[1])	,""	,""															,"CT1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Débito Final"	,Space(tamSx3("CT1_CONTA")[1])	,""	,"U_VLFIMMAI(MV_PAR03, MV_PAR04, 'Conta Contábil Débito')"	,"CT1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Crédito Inicial"	,Space(tamSx3("CT1_CONTA")[1])	,""	,""															,"CT1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Conta Contábil Crédito Final"	,Space(tamSx3("CT1_CONTA")[1])	,""	,"U_VLFIMMAI(MV_PAR05, MV_PAR06, 'Conta Contábil Crédito')"	,"CT1"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Centro Custo Débito Inicial"	,Space(tamSx3("CTT_CUSTO")[1])	,""	,""															,"CTT"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Centro Custo Débito Final"		,Space(tamSx3("CTT_CUSTO")[1])	,""	,"U_VLFIMMAI(MV_PAR07, MV_PAR08, 'Centro de Custo Débito')"	,"CTT"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Centro Custo Crédito Inicial"	,Space(tamSx3("CTT_CUSTO")[1])	,""	,""															,"CTT"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Centro Custo Crédito Final"		,Space(tamSx3("CTT_CUSTO")[1])	,""	,"U_VLFIMMAI(MV_PAR09, MV_PAR10, 'Centro de Custo Crédito')","CTT"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Classe Valor Débito Inicial"	,Space(tamSx3("CTH_CLVL")[1])	,""	,""															,"CTH"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Classe Valor Débito Final"		,Space(tamSx3("CTH_CLVL")[1])	,""	,"U_VLFIMMAI(MV_PAR11, MV_PAR12, 'Classe de Valor Débito')"	,"CTH"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Classe Valor Crédito Inicial"	,Space(tamSx3("CTH_CLVL")[1])	,""	,""															,"CTH"	,"",050,.F.})
+	aAdd(_aParambox,{1,"Classe Valor Crédito Final"		,Space(tamSx3("CTH_CLVL")[1])	,""	,"U_VLFIMMAI(MV_PAR13, MV_PAR14, 'Classe de Valor Crédito')","CTH"	,"",050,.F.})
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecï¿½o das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
@@ -200,12 +200,12 @@ User Function MGF34R02()
 	_cQuery += " "															+CRLF
 	_cQuery += " 					 AND CT2.CT2_FILIAL IN " + _cCODFILIA	+CRLF									//	FILTRO DA FILIAL OBRIGATORIO 
 
-	_cQuery += U_WhereAnd( !empty(_aRet[4]),  " CT2.CT2_DEBITO BETWEEN '" + _aRet[3]  + "' AND '" + _aRet[4]  + "' " ) // '  ' AND '999999999' --NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[6]),  " CT2.CT2_CREDIT BETWEEN '" + _aRet[5]  + "' AND '" + _aRet[6]  + "' " ) // '  ' AND '999999999' --NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[8]),  " CT2.CT2_CCD    BETWEEN '" + _aRet[7]  + "' AND '" + _aRet[8]  + "' " ) // '  ' AND '9999'  --NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[10]), " CT2.CT2_CCC    BETWEEN '" + _aRet[9]  + "' AND '" + _aRet[10] + "' " ) // '  ' AND '9999'   --NAO OBRIGATORIO               
-	_cQuery += U_WhereAnd( !empty(_aRet[12]), " CT2.CT2_CLVLDB BETWEEN '" + _aRet[11] + "' AND '" + _aRet[12] + "' " ) // '  ' AND '999999999'  --NAO OBRIGATORIO
-	_cQuery += U_WhereAnd( !empty(_aRet[14]), " CT2.CT2_CLVLCR BETWEEN '" + _aRet[13] + "' AND '" + _aRet[14] + "' " ) // '  ' AND '999999999'  --NAO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[4]),  " CT2.CT2_DEBITO BETWEEN '" + _aRet[3]  + "' AND '" + _aRet[4]  + "' " ) // '  ' AND '999999999' --NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[6]),  " CT2.CT2_CREDIT BETWEEN '" + _aRet[5]  + "' AND '" + _aRet[6]  + "' " ) // '  ' AND '999999999' --NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[8]),  " CT2.CT2_CCD    BETWEEN '" + _aRet[7]  + "' AND '" + _aRet[8]  + "' " ) // '  ' AND '9999'  --NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[10]), " CT2.CT2_CCC    BETWEEN '" + _aRet[9]  + "' AND '" + _aRet[10] + "' " ) // '  ' AND '9999'   --NÃO OBRIGATORIO               
+	_cQuery += U_WhereAnd( !empty(_aRet[12]), " CT2.CT2_CLVLDB BETWEEN '" + _aRet[11] + "' AND '" + _aRet[12] + "' " ) // '  ' AND '999999999'  --NÃO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[14]), " CT2.CT2_CLVLCR BETWEEN '" + _aRet[13] + "' AND '" + _aRet[14] + "' " ) // '  ' AND '999999999'  --NÃO OBRIGATORIO
 		
 	_cQuery += " 	    ) T "												+CRLF 
 	_cQuery += "   LEFT JOIN  " +  U_IF_BIMFR( "PROTHEUS", RetSqlName("SA2")  ) + "    SAD ON T.COD_FORNE_DB    = SAD.A2_COD AND SAD.D_E_L_E_T_  = ' '  "		+CRLF 

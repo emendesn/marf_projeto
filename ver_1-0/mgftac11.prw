@@ -136,8 +136,7 @@ static function cliToSFA()
 
 	cQrySA1 += " FROM " + retSQLName("SA1") + " SA1"						+ chr(13) + chr(10)
 	cQrySA1 += " WHERE"														+ chr(13) + chr(10)
-	cQrySA1 += " 		SA1.A1_MSBLQL		<>	'1'"						+ chr(13) + chr(10)
-	cQrySA1 += " 	AND	SA1.A1_XINTEGR		=	'P'"						+ chr(13) + chr(10)
+	cQrySA1 += " 		SA1.A1_XINTEGR		=	'P'"						+ chr(13) + chr(10)
 	cQrySA1 += " 	AND	SA1.A1_FILIAL		=	'" + xFilial("SA1") + "'"	+ chr(13) + chr(10)
 	If SA1->(FieldPos("A1_ZTAUVEZ")) > 0
 		cQrySA1 += " 	AND	SA1.A1_ZTAUVEZ		<= "+Alltrim(Str(GetMv("MGF_TAUVEZ",,5)))+" "	+ chr(13) + chr(10)

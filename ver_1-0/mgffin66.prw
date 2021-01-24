@@ -12,19 +12,19 @@ Autor...............: Marcelo Carneiro
 Data................: 10/10/2017
 Descricao / Objetivo: Baixa por Lote - Contas a Receber
 Doc. Origem ........: MIT044 - GAP CRE38
-Solicitante.........: 
+Solicitante.........: Marfrig
 Uso.................: Financeiro
 ==================================================================================
 
-@alteracoes 09/12/2019 - Henrique Vidal
-	RTASK0010483 - Baixar de titulos em lote por importacao de arquivo.
-	Criado novo botao onde possibilita baixar titulos em lote a partir da importacao de um arquivo .csv
+@alterações 09/12/2019 - Henrique Vidal
+	RTASK0010483 - Baixar de titulos em lote por importação de arquivo.
+	Criado novo botão onde possibilita baixar títulos em lote a partir da importação de um arquivo .csv
 
-	- As funcoes antigas permaneceram inalteradas, somente consumindo a tela para gravacao de pedidos existentes, e 
-	  desenvolvendo as novas funcoes:
+	- As funções antigas permaneceram inalteradas, somente consumindo a tela para gravação de pedidos existentes, e 
+	  desenvolvendo as novas funções:
 	1 FIN66_CSV - Tela para impotar o .csv e prerar baixas
 	2 MGFIMPCSV - Trata as premissas e regras para validar as baixas
-	3 TrtBxRa   - Realiza baixa de tï¿½titulo e geracao do R.A (caso exista)
+	3 TrtBxRa   - Realiza baixa de t´titulo e geração do R.A (caso exista)
 */
 
 User Function MGFFIN66()
@@ -95,7 +95,7 @@ DEFINE MSDIALOG oDlgMain TITLE "Baixa por Lote" FROM 000, 000  TO 230, 500 COLOR
 	@ nUltLin-4,nCol+50 MSGET oDtBaixa VAR dBaixa SIZE 65, 08 OF oDlgMain PIXEL HASBUTTON When F070DtRe()
 							    
 	nUltLin += 12
-	@ nUltLin,nCol SAY "Data Credito" SIZE 32, 07 OF oDlgMain PIXEL 
+	@ nUltLin,nCol SAY "Data Crédito" SIZE 32, 07 OF oDlgMain PIXEL 
 	@ nUltLin-4,nCol+50 MSGET oDtCredito VAR dDtCredito SIZE 65, 08 OF oDlgMain PIXEL HASBUTTON ;
 						Valid (dDtCredito >= dBaixa  .and. Iif(SuperGetMv("MV_BXDTFIN",,"1") == "2", DtMovFin(dDtCredito,,"2"), .T.) ) .or. GetMv("MV_ANTCRED")
 	
@@ -179,7 +179,7 @@ DEFINE MSDIALOG oDlg FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Baixas
 	oBrowseDados:addColumn(TCColumn():new(aHeader[08,01],{||aBrowse[oBrowseDados:nAt][08]},"@!"             ,,,"LEFT"   ,aHeader[08,02],.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[09,01],{||aBrowse[oBrowseDados:nAt][09]},"@!"             ,,,"LEFT"   ,aHeader[09,02],.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[10,01],{||aBrowse[oBrowseDados:nAt][10]},"@!"             ,,,"LEFT"   ,aHeader[10,02]+30,.F.,.F.,,,,,))
-	oBrowseDados:addColumn(TCColumn():new('Emissao'     ,{||aBrowse[oBrowseDados:nAt][11]},"@!"             ,,,"LEFT"   ,aHeader[11,02]+18,.F.,.F.,,,,,))
+	oBrowseDados:addColumn(TCColumn():new('Emissão'     ,{||aBrowse[oBrowseDados:nAt][11]},"@!"             ,,,"LEFT"   ,aHeader[11,02]+18,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new('Venc.'       ,{||aBrowse[oBrowseDados:nAt][12]},"@!"             ,,,"LEFT"   ,aHeader[12,02]+18,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new('Venc.Real'   ,{||aBrowse[oBrowseDados:nAt][13]},"@!"             ,,,"LEFT"   ,aHeader[13,02]+18,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[14,01],{||aBrowse[oBrowseDados:nAt][14]},"@E 99,999,999.99",,,"RIGHT" ,40,.F.,.F.,,,,,))
@@ -206,7 +206,7 @@ DEFINE MSDIALOG oDlg FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Baixas
 	@ 035, 095 SAY "Ag./Conta :"         SIZE 040, 009 OF oDlg  PIXEL                                     
 	@ 031, 130 MSGET cDescAg             SIZE 050, 010 OF oDlg WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 	                                                      
-	@ 020, 185 SAY "Data Credito :"      SIZE 040, 009 OF oDlg  PIXEL                                     
+	@ 020, 185 SAY "Data Crédito :"      SIZE 040, 009 OF oDlg  PIXEL                                     
 	@ 016, 225 MSGET dDtCredito          SIZE 050, 010 OF oDlg WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 
 	@ 020, 280 SAY "Capa do Lote :"      		 SIZE 050, 007 OF oDlg COLORS 0, 16777215         PIXEL        
@@ -518,11 +518,11 @@ Return
 ***************************************************************************************************************
 Static Function AT_TOTAL
 
-// Verifica se o valor da Baixa ï¿½ maior que o valor do Saldo. Se ï¿½, vale o valor do saldo a pagar.
+// Verifica se o valor da Baixa é maior que o valor do Saldo. Se é, vale o valor do saldo a pagar.
 // Paulo Mata - Fev/2020
 
 If nVBaixa > nVSaldo
-   ApMsgAlert(OemToAnsi("Valor Recebido Maior que o Saldo a Receber"),OemToAnsi("ATENCAO"))
+   ApMsgAlert(OemToAnsi("Valor Recebido Maior que o Saldo a Receber"),OemToAnsi("ATENÇÂO"))
    nVBaixa := nVSaldo
 EndIf
 
@@ -616,12 +616,12 @@ If lOk
 		EndIF
 	Else
 		nDecrescimo := 0
-	    MsgAlert("Este tipo de desconto nao existe","Atencao Processo Cancelado")
+	    MsgAlert("Este tipo de desconto não existe","Atenção Processo Cancelado")
 	Endif
 Endif
 If !lOk
 	nDecrescimo := 0
-    MsgAlert("Campo Descrescimo zerado ","Atencao Processo Cancelado")	
+    MsgAlert("Campo Descrescimo zerado ","Atenção Processo Cancelado")	
 EndIf
 
 Return
@@ -636,7 +636,7 @@ Local nC          := 0
 Local nL          := 0 
 
 If !ApOleClient("MSExcel")
-	MsgAlert("Microsoft Excel nao instalado!")
+	MsgAlert("Microsoft Excel não instalado!")
 	Return
 EndIf
   
@@ -693,13 +693,13 @@ Default lbxparc	:= .F.
 
 IF MsgYESNO('Deseja efetuar a baixa dos Titulos marcados ?')
 	IF nTotal <> nCapa .and. !lbxparc
-		msgAlert('Valor selecionado ï¿½ diferente da Capa de Lote !!')
+		msgAlert('Valor selecionado é diferente da Capa de Lote !!')
 		Return .F.
 	EndIF
 	For nI := 1 To Len(aBrowse)
 		IF aBrowse[nI][01] ==  oOK
 			IF aBrowse[nI][21] <= 0
-				msgAlert('Existe titulo marcado com valor recebido igual a zero')
+				msgAlert('Existe título marcado com valor recebido igual a zero')
 				Return .F.
 			EndIF
 			AAdd(aRegOK,nI)
@@ -782,35 +782,35 @@ Local aParambox	  := {}
 Local bResult     := .F.
 
 AAdd(aParamBox, {1, "Filial de:"       	,Space(tamSx3("A1_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Filial Ate:"      	,Space(tamSx3("A1_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Filial Até:"      	,Space(tamSx3("A1_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "CNPJ de:"         	,Space(tamSx3("A1_CGC")[1])           , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "CNPJ Ate:"      	,Space(tamSx3("A1_CGC")[1])           , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "CNPJ Até:"      	,Space(tamSx3("A1_CGC")[1])           , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Cod. Cliente de:"  ,Space(tamSx3("A1_COD")[1])           , "@!",                           ,"SA1" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Cod. Cliente Ate:" ,Space(tamSx3("A1_COD")[1])           , "@!",                           ,"SA1" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Cod. Cliente Até:" ,Space(tamSx3("A1_COD")[1])           , "@!",                           ,"SA1" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Loja de:"			,Space(tamSx3("A1_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Loja Ate:"      	,Space(tamSx3("A1_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Loja Até:"      	,Space(tamSx3("A1_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Codigo Rede :"     ,Space(tamSx3("A1_ZREDE")[1])         , "@!",                           ,"SZQ" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Dt. Emissao de:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Dt. Emissao Ate:"  ,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Dt. Emissão de:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Dt. Emissão Até:"  ,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Vencimento de:" 	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Vencimento Ate:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Vencimento Até:"	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Natureza de:"      ,Space(tamSx3("A1_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Natureza Ate:"     ,Space(tamSx3("A1_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Natureza Até:"     ,Space(tamSx3("A1_NATUREZ")[1])       , "@!",                           ,"SED" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Banco de:"      	,Space(tamSx3("A6_COD")[1])           , "@!",                           ,"BC8" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Banco Ate:"     	,Space(tamSx3("A6_COD")[1])           , "@!",                           ,"BC8" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Agencia de:"    	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Agencia Ate:"   	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Banco Até:"     	,Space(tamSx3("A6_COD")[1])           , "@!",                           ,"BC8" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Agência de:"    	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Agência Até:"   	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Cta Corrente de:"  ,Space(tamSx3("A6_NUMCON")[1])        , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Cta Corrente Ate:"	,Space(tamSx3("A6_NUMCON")[1])        , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Cta Corrente Até:"	,Space(tamSx3("A6_NUMCON")[1])        , "@!",                           ,      ,, 070	, .F.	})
 IF ParamBox(aParambox, "Filtro para Selecionar os Titulos"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 	Processa( {|| Carrega_Dados(@bResult)  },'Aguarde...', 'Selecionando Registros',.F. )
 	IF !bResult
-		 msgAlert('A Quantidade maxima de registros sao 32700, favor refazer o Filtro !') 
+		 msgAlert('A Quantidade maxima de registros são 32700, favor refazer o Filtro !') 
 	Else	
 		IF Len(aBrowse) > 0 
 			Return .T.
 		Else
-			msgAlert('Nao foram encontrados titulos com o filtro selecionado !')
+			msgAlert('Não foram encontrados titulos com o filtro selecionado !')
 		EndIF
 	EndIF
 EndIF
@@ -879,7 +879,7 @@ DEFINE MSDIALOG oDlg FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Exclui
 	oBrowseDados:addColumn(TCColumn():new(aHeader[07,01],{||aBrowse[oBrowseDados:nAt][07]},"@!"             ,,,"LEFT"   ,aHeader[07,02],.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[08,01],{||aBrowse[oBrowseDados:nAt][08]},"@!"             ,,,"LEFT"   ,aHeader[08,02],.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[09,01],{||aBrowse[oBrowseDados:nAt][09]},"@!"             ,,,"LEFT"   ,aHeader[09,02],.F.,.F.,,,,,))
-	oBrowseDados:addColumn(TCColumn():new('Emissao'     ,{||aBrowse[oBrowseDados:nAt][10]},"@!"             ,,,"LEFT"   ,aHeader[10,02]+18,.F.,.F.,,,,,))
+	oBrowseDados:addColumn(TCColumn():new('Emissão'     ,{||aBrowse[oBrowseDados:nAt][10]},"@!"             ,,,"LEFT"   ,aHeader[10,02]+18,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[11,01],{||aBrowse[oBrowseDados:nAt][11]},"@E 99,999,999.99",,,"RIGHT" ,40,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[12,01],{||aBrowse[oBrowseDados:nAt][12]},"@!"             ,,,"LEFT"   ,aHeader[12,02],.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new(aHeader[13,01],{||aBrowse[oBrowseDados:nAt][13]},"@!"             ,,,"LEFT"   ,aHeader[13,02],.F.,.F.,,,,,))
@@ -899,14 +899,14 @@ DEFINE MSDIALOG oDlg FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Exclui
 	@ 035, 095 SAY "Ag./Conta :"         SIZE 040, 009 OF oDlg  PIXEL                                     
 	@ 031, 130 MSGET cDescAg             SIZE 050, 010 OF oDlg WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 	                                                      
-	@ 020, 185 SAY "Data Credito :"      SIZE 040, 009 OF oDlg  PIXEL                                     
+	@ 020, 185 SAY "Data Crédito :"      SIZE 040, 009 OF oDlg  PIXEL                                     
 	@ 016, 225 MSGET dEDtCredito         SIZE 050, 010 OF oDlg WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 
 	
 	@ 020, 400 SAY "Capa do Lote :"      		 SIZE 050, 007 OF oDlg COLORS 0, 16777215         PIXEL        
 	@ 016, 450 MSGET nCapaE                       SIZE 070, 010 OF oDlg WHEN .F. WHEN .F. PICTURE "@E 99,999,999.99"  COLORS CLR_BLUE PIXEL
 	    
-	oBtn := TButton():New( 004, 620 ,'Cancela Lote'     , oDlg,{|| Processa( {|| EX_BAIXA() },'Aguarde...', 'Efetivando a exclusao',.F. ),oDlg:End()  }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )   
+	oBtn := TButton():New( 004, 620 ,'Cancela Lote'     , oDlg,{|| Processa( {|| EX_BAIXA() },'Aguarde...', 'Efetivando a exclusão',.F. ),oDlg:End()  }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )   
 	oBtn := TButton():New( 019 ,620 ,'Sair'            , oDlg,{|| oDlg:End()       }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )
 	oBtn := TButton():New( aSizeAut[4]-15, 565 ,'Excel'     , oDlg,{|| GeraExcel(2)}     ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )        
 	oBtn := TButton():New( aSizeAut[4]-15, 620 ,'Visualizar', oDlg,{|| FIN66_VISUAL(2)       }  ,50, 011,,,.F.,.T.,.F.,,.F.,,,.F. )
@@ -926,7 +926,7 @@ IF ParamBox(aParambox, "Seleciona o Lote a Cancelar"	, @aRet, , , .T. /*lCentere
 	IF Len(aBrowse) > 0 
 		Return .T.
 	Else
-		msgAlert('Nao foram encontrados recebimentos com este Lote ou Lote jï¿½ cancelado !')
+		msgAlert('Não foram encontrados recebimentos com este Lote ou Lote já cancelado !')
 	EndIF
 EndIF
 Return .F.
@@ -1008,7 +1008,7 @@ Private lMsHelpAuto     := .T.
 Private lMsErroAuto     := .F.
 Private lAutoErrNoFile  := .T.
 
-IF MsgYESNO('Deseja efetuar a exclusao do Lote?')
+IF MsgYESNO('Deseja efetuar a exclusão do Lote?')
 	ProcRegua( Len(aBrowse) )
 	DbSelectArea("SE1")
 	DbSelectArea("SE5")
@@ -1112,7 +1112,7 @@ Static Function FIN66_CSV()
 		 Return
 	EndIF
 	
-	DEFINE MSDIALOG oDlcsv FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Baixa Titulos via Arquivo"  PIXEL
+	DEFINE MSDIALOG oDlcsv FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Baixa Títulos via Arquivo"  PIXEL
 			  
 		oBrowseDados := TWBrowse():New( 50,4,aPosObj[2,4]-aPosObj[2,2],aPosObj[2,3]+10,;
 								  ,,,oDlcsv, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
@@ -1133,7 +1133,7 @@ Static Function FIN66_CSV()
 		oBrowseDados:addColumn(TCColumn():new(aHeader[08,01],{||aBrowse[oBrowseDados:nAt][08]},"@!"             ,,,"LEFT"   ,aHeader[08,02],.F.,.F.,,,,,))
 		oBrowseDados:addColumn(TCColumn():new(aHeader[09,01],{||aBrowse[oBrowseDados:nAt][09]},"@!"             ,,,"LEFT"   ,aHeader[09,02],.F.,.F.,,,,,))
 		oBrowseDados:addColumn(TCColumn():new(aHeader[10,01],{||aBrowse[oBrowseDados:nAt][10]},"@!"             ,,,"LEFT"   ,aHeader[10,02]+30,.F.,.F.,,,,,))
-		oBrowseDados:addColumn(TCColumn():new('Emissao'     ,{||aBrowse[oBrowseDados:nAt][11]},"@!"             ,,,"LEFT"   ,aHeader[11,02]+18,.F.,.F.,,,,,))
+		oBrowseDados:addColumn(TCColumn():new('Emissão'     ,{||aBrowse[oBrowseDados:nAt][11]},"@!"             ,,,"LEFT"   ,aHeader[11,02]+18,.F.,.F.,,,,,))
 		oBrowseDados:addColumn(TCColumn():new('Venc.'       ,{||aBrowse[oBrowseDados:nAt][12]},"@!"             ,,,"LEFT"   ,aHeader[12,02]+18,.F.,.F.,,,,,))
 		oBrowseDados:addColumn(TCColumn():new('Venc.Real'   ,{||aBrowse[oBrowseDados:nAt][13]},"@!"             ,,,"LEFT"   ,aHeader[13,02]+18,.F.,.F.,,,,,))
 		oBrowseDados:addColumn(TCColumn():new(aHeader[14,01],{||aBrowse[oBrowseDados:nAt][14]},"@E 99,999,999.99",,,"RIGHT" ,40,.F.,.F.,,,,,))
@@ -1160,7 +1160,7 @@ Static Function FIN66_CSV()
 		@ 035, 095 SAY "Ag./Conta :"         SIZE 040, 009 OF oDlcsv  PIXEL                                     
 		@ 031, 130 MSGET cDescAg             SIZE 050, 010 OF oDlcsv WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 															  
-		@ 020, 185 SAY "Data Credito :"      SIZE 040, 009 OF oDlcsv  PIXEL                                     
+		@ 020, 185 SAY "Data Crédito :"      SIZE 040, 009 OF oDlcsv  PIXEL                                     
 		@ 016, 225 MSGET dDtCredito          SIZE 050, 010 OF oDlcsv WHEN .F.  WHEN .F. COLORS 0, 16777215 PIXEL
 	
 		@ 020, 280 SAY "Capa do Lote :"      		 SIZE 050, 007 OF oDlcsv COLORS 0, 16777215         PIXEL        
@@ -1179,7 +1179,7 @@ Return
 
 Static Function MGFIMPCSV()
 
-	Local cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+	Local cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 	Local lContinua	:= .T.
 	Local lFirst	:= .T.
 	Local nColunas	:= 9
@@ -1188,12 +1188,12 @@ Static Function MGFIMPCSV()
 	Local cLinha
 
 	If !File(cArq)
-		MsgStop("O arquivo " +cArq + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+		MsgStop("O arquivo " +cArq + " não foi selecionado. A importação será abortada!","ATENCAO")
 		Return
 	EndIf
 
 	If Empty(cBBanco) .or. Empty(cBAgencia) .or. Empty(cBConta) 
-		MsgAlert('Dados bancarios nao informado para baixa! Favor revisar.')
+		MsgAlert('Dados bancários não informado para baixa! Favor revisar.')
 		Return .F.
 	EndIf 
 
@@ -1221,8 +1221,8 @@ Static Function MGFIMPCSV()
 	FT_FUSE()
 	
 	If !lContinua
-		APMsgStop(	"Estrutura do arquivo .CSV invï¿½lido, cada linha deve ter 9 colunas, conforme abaixo:"+CRLF+CRLF+;
-					"Filial;Cliente;Loja;Nr Titulo;Prefixo;Parc;Juros;Descontos;Vr Pago " )
+		APMsgStop(	"Estrutura do arquivo .CSV inválido, cada linha deve ter 9 colunas, conforme abaixo:"+CRLF+CRLF+;
+					"Filial;Cliente;Loja;Nr Título;Prefixo;Parc;Juros;Descontos;Vr Pago " )
 		Return(lContinua)
 	Endif
 
@@ -1235,37 +1235,37 @@ Static Function MGFIMPCSV()
 
 		If Empty( aDados[_n][1] )   
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],; 
-							aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Filial nao informada para o Titulo."} )	
+							aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Filial não informada para o Título."} )	
 			lContinua	:= .F.
 		EndIf
 		
 		If Empty( aDados[_n][2] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Cliente nao informado para o Titulo."} )	
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Cliente não informado para o Título."} )	
 			lContinua	:= .F.
 		EndIf
 
 		If Empty( aDados[_n][3] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Loja nao informada para o Titulo."	} )	
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Loja não informada para o Título."	} )	
 			lContinua	:= .F.
 		EndIf
 
 		If Empty( aDados[_n][4] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Numero nao informado para o Titulo."} )		
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Número não informado para o Título."} )		
 			lContinua	:= .F.
 		EndIf
 
 		If Empty( aDados[_n][5] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Prefixo nao informado para o Titulo."} )		
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Prefixo não informado para o Título."} )		
 			lContinua	:= .F.
 		EndIf
 
 		If Empty( aDados[_n][6] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Parcela nao informada para o Titulo."} )		
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Parcela não informada para o Título."} )		
 			lContinua	:= .F.
 		EndIf
 
@@ -1273,7 +1273,7 @@ Static Function MGFIMPCSV()
 			aDados[_n][7] := 0
 		ElseIf 	aDados[_n][7] < 0
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Juros nao pode ser menor que zero."	} )	
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] , "Juros não pode ser menor que zero."	} )	
 			lContinua	:= .F.
 		EndIf
 
@@ -1281,23 +1281,23 @@ Static Function MGFIMPCSV()
 			aDados[_n][8] := 0
 		ElseIf 	aDados[_n][8] < 0
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Desconto nao pode ser menor que zero."	} )	
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Desconto não pode ser menor que zero."	} )	
 			lContinua	:= .F.
 		EndIf
 
 		If Empty( aDados[_n][9] )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor Pago nao informado para o Titulo."} )		
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor Pago não informado para o Título."} )		
 			lContinua	:= .F.
 		ElseIf 	aDados[_n][9] < 0
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor Pago nao pode ser menor ou igual a zero."} )		
+				 			aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor Pago não pode ser menor ou igual a zero."} )		
 			lContinua	:= .F.
 		EndIf
 
 		If !Empty(Substr(aDados[_n][1],1,2) ) .And. ( Substr(aDados[1][1],1,2)  <> Substr(aDados[_n][1],1,2) )
 			AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-							aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Titulo de empresa diferente da empresa do primeiro titulo informado."} )		
+							aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Título de empresa diferente da empresa do primeiro título informado."} )		
 			lContinua	:= .F.
 		EndIf
 
@@ -1308,17 +1308,17 @@ Static Function MGFIMPCSV()
 			dbSetOrder(2)
 			If dbSeek(cChave)
 				If E1_SALDO > 0
-					If (E1_VALOR + aDados[_n][7]) < aDados[_n][9]  // Valor recebeido deve ser igual ou menor que saldo principal do titulo + juros
+					If (E1_VALOR + aDados[_n][7]) < aDados[_n][9]  // Valor recebeido deve ser igual ou menor que saldo principal do título + juros
 						AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor principal do titulo insuficiente para realizar a baixa!"} )
+						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Valor principal do título insuficiente para realizar a baixa!"} )
 						lContinua	:= .F.	
 					ElseIf aDados[_n][7] > aDados[_n][9] // Juros tem que estar composto no valor recebido
 						AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Juros tem que estar composto no valor recebido! O valor recebido nao pode ser menor que o juros."} )
+						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Juros tem que estar composto no valor recebido! O valor recebido não pode ser menor que o juros."} )
 						lContinua	:= .F.	
 					ElseIf E1_SALDO < (aDados[_n][8] + aDados[_n][9] - aDados[_n][7] ) // Possui saldo para baixar (desconto + vlr recebido )
 						AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Saldo do titulo insuficiente para baixar desconto e valor recebido!"} )
+						aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Saldo do título insuficiente para baixar desconto e valor recebido!"} )
 						lContinua	:= .F.	
 					Else 
 						aadd(aBrowse,{oOK,E1_FILIAL,E1_PREFIXO,E1_NUM,E1_PARCELA,E1_TIPO,E1_NATUREZ,E1_CLIENTE,E1_LOJA,E1_NOMCLI,E1_EMISSAO,E1_VENCTO,E1_VENCREA,E1_VALOR,E1_SALDO,E1_DECRESC,E1_ACRESC,aDados[_n][8],E1_MULTA,aDados[_n][7],aDados[_n][9]  , Recno() })  
@@ -1328,12 +1328,12 @@ Static Function MGFIMPCSV()
 					EndIf
 				Else
 					AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-					aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Titulo sem saldo!"} ) 
+					aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Título sem saldo!"} ) 
 					lContinua	:= .F.	
 				EndIf
 			Else
 				AADD(aErros , { aDados[_n][1] , aDados[_n][2] , aDados[_n][3], aDados[_n][4] , aDados[_n][5] , aDados[_n][6],;
-				 				aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Titulo nao encontrado!"} )		
+				 				aDados[_n][7], aDados[_n][8], aDados[_n][9] ,  "Título não encontrado!"} )		
 				lContinua	:= .F.	
 			EndIf 
 		//EndIf
@@ -1432,16 +1432,16 @@ Local cFilBkp	:= cFilAnt
  
 Do Case
 Case nTotal > nCapa 
-	msgAlert('Valor selecionado dos titulos ï¿½ maior da Capa de Lote !!')
+	msgAlert('Valor selecionado dos títulos é maior da Capa de Lote !!')
 	Return .F.
 
 Case nTotal == nCapa 
 	FIN66_BAIXA(.F.)
 
 Case nTotal < nCapa 
-	IF MsgYESNO('Total pago dos titulos ï¿½ menor que o valor informado na capa do lote. Deseja gerar um RA com o saldo?')
+	IF MsgYESNO('Total pago dos títulos é menor que o valor informado na capa do lote. Deseja gerar um RA com o saldo?')
 
-		DEFINE MSDIALOG oDlgTrt TITLE "Parï¿½metros para gerar RA" FROM 000, 000  TO 230, 400 COLORS 0, 16777215 PIXEL Style DS_MODALFRAME
+		DEFINE MSDIALOG oDlgTrt TITLE "Parâmetros para gerar RA" FROM 000, 000  TO 230, 400 COLORS 0, 16777215 PIXEL Style DS_MODALFRAME
 
 			nUltLin    := 15
 			nCol       := 15
@@ -1472,7 +1472,7 @@ Case nTotal < nCapa
 		If lOk
 			lRet	:= FIN66_BAIXA(.T.)
 			IF lRet
-				IncProc('Gerando titulo Ra')
+				IncProc('Gerando título Ra')
 				cFilAnt := cFilRa
 				cNumRa	:= GETSXENUM("SE1","E1_NUM") 	
 				ConfirmSX8()  
@@ -1496,7 +1496,7 @@ Case nTotal < nCapa
 					lMsErroAuto := .F.
 					MsExecAuto( { |x,y| FINA040(x,y)} , aTitulo, 3)  
 					If lMsErroAuto
-						msgAlert('Erro na geracao do titulo (RA). As baixas dos titulos nao serao estornadas.','MGFFIN66')
+						msgAlert('Erro na geração do titulo (RA). As baixas dos títulos não serão estornadas.','MGFFIN66')
 						If (!IsBlind()) 
 							 MostraErro()
 						Else 
@@ -1512,7 +1512,7 @@ Case nTotal < nCapa
 				End Transaction
 				cFilAnt := cFilBkp
 			Else
-				Alert("Nao foi possivel gerar o RA devido a problema com a baixa dos titulos.")	
+				Alert("Não foi possível gerar o RA devido a problema com a baixa dos títulos.")	
 			EndIF
 		EndIf
 	EndIf 

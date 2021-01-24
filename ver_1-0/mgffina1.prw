@@ -11,8 +11,8 @@ Descricao / Objetivo:    Realizar o desconto do FUNDESA no tÃ­tulo do financeiro
 							Rotina acionada pelo ponto de entrada MT100GE2
 Doc. Origem:            
 Solicitante:            Carlos Amorim
-Uso......:              
-Obs......:               Rotina entrou em desuso no dia 02/05/2018, pois a Totvs lanï¿½ou a solucao padrao na mesma data. Ticket 2607738
+Uso......:              Marfrig
+Obs......:               Rotina entrou em desuso no dia 02/05/2018, pois a Totvs lançou a solução padrão na mesma data. Ticket 2607738
 =============================================================================================
 */
 

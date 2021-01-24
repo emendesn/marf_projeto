@@ -9,11 +9,11 @@
 Programa.:              MGFEST20
 Autor....:              Marcelo Carneiro         
 Data.....:              16/09/2016 
-Descricao / Objetivo:   Controle de endereco do armazem central
+Descricao / Objetivo:   Controle de endereço do armazem central
 Doc. Origem:            MGFPER01 - Contrato
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Relatorio de Saldos/Enderecos/Locais
+Uso......:              Marfrig
+Obs......:              Relatorio de Saldos/Endereços/Locais
 =====================================================================================
 */
 User Function MGFEST20 
@@ -87,18 +87,18 @@ Static Function RelEST20
 Local oReport
 Local oImp
 
-oReport := TReport():New("EST20","Relatorio de Saldos por Armazem Central",,{|oReport| PrintReport(oReport)},"Relatorio de Saldos")
+oReport := TReport():New("EST20","Relatório de Saldos por Armazém Central",,{|oReport| PrintReport(oReport)},"Relatorio de Saldos")
 //oReport:SetLandscape()
 oReport:SetPortrait()
 oCab := TRSection():New(oReport,"Locais","EST20")
 oImp := TRSection():New(oReport,"Detalhes","EST20")
 
 TRCell():New(oCab,"rLocal"       ,,"Local"           ,,20,.F.,) 
-TRCell():New(oCab,"rQuant"       ,,"Total Enderecos" ,,20,.F.,) 
+TRCell():New(oCab,"rQuant"       ,,"Total Endereços" ,,20,.F.,) 
 TRCell():New(oIMP,"rFilial"      ,,"Filial"      ,,TamSX3("BF_FILIAL")[1],.F.,) 
-TRCell():New(oIMP,"rCodigo"      ,,"Codigo"      ,,TamSX3("BF_PRODUTO")[1],.F.,) 
-TRCell():New(oImp,"rDescricao"   ,,"Descriï¿½ao"   ,,TamSX3("B1_DESC")[1],.F.,) 
-TRCell():New(oImp,"rEndereco"    ,,"Endereco"    ,,TamSX3("BF_LOCALIZ")[1],.F.,)
+TRCell():New(oIMP,"rCodigo"      ,,"Código"      ,,TamSX3("BF_PRODUTO")[1],.F.,) 
+TRCell():New(oImp,"rDescricao"   ,,"Descriçao"   ,,TamSX3("B1_DESC")[1],.F.,) 
+TRCell():New(oImp,"rEndereco"    ,,"Endereço"    ,,TamSX3("BF_LOCALIZ")[1],.F.,)
 TRCell():New(oImp,"rSaldo"       ,,"Saldo"       ,,TamSX3("BF_QUANT")[1],.F.,) 
 TRCell():New(oImp,"rEmpenho"     ,,"Empenho"     ,,TamSX3("BF_EMPENHO")[1],.F.,)
 

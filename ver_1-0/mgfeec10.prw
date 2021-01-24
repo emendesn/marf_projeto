@@ -9,7 +9,7 @@ Data.....:              01/11/16
 Descricao / Objetivo:   Execucao DO P.E. EECAE100
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:				Rotina chamadora: MGFEEC09.PRW
 =====================================================================================
 */
@@ -45,7 +45,7 @@ Data.....:              01/11/16
 Descricao / Objetivo:   Verifica e grava (caso haja alteracao nos campos conforme rotina) na tabela ZZ7
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -261,7 +261,7 @@ Data.....:              03/11/16
 Descricao / Objetivo:   Verifica se ha alteracoes anteriores na tabela ZZ7 para a embarcacao. Posiciona no ultimo registro e verifica os campos alterados.
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

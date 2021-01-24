@@ -13,13 +13,13 @@ Data.....:              Nov/2016
 Descricao / Objetivo:   MarkBrowse com os Documentos para serem incluidos ao pedido  
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Ja filtra os documentos relacionados ao pedido 
 ==========================================================================================
 */
 
-//=============================== Relacao das Functions =================================
-// 01 - Funcao Principal - MGFEEC01()
+//=============================== Relação das Functions =================================
+// 01 - Função Principal - MGFEEC01()
 // 02 - Grava os documentos marcados na tabela de Docs X Cliente - MBrowEEC() 
 //=======================================================================================
 
@@ -45,13 +45,13 @@ User Function MGFEEC16(cResp,cFilPar)
 	cAlias   := 'SZZ'
 	cCampo   := 'ZZ_MARK'
 
-	aCampos  :={{'ZZ_MARK'   ,,'Marcado'},; // Configuraï¿½ï¿½o do campo C,2 para qualquer mark campo .
+	aCampos  :={{'ZZ_MARK'   ,,'Marcado'},; // Configuração do campo C,2 para qualquer mark campo .
 	{'ZZ_CODDOC' ,,'Doc/Ativ'},;
-	{'ZZ_DESCR'  ,,'Descricao'},;
+	{'ZZ_DESCR'  ,,'Descrição'},;
 	{'ZZ_TIPO'   ,,'Tipo'},;
 	{'ZZ_DIAS'   ,,'Dias'}}                           
 
-	cCadastro := 'Doc/Ativ de Importacao'
+	cCadastro := 'Doc/Ativ de Importação'
 
 	aAdd( aRotina, {"Confirmar" ,'ExecBlock("MBREEC16",.F.,.F.,4), CloseBrowse()', 0 , 4 } )
 
@@ -75,7 +75,7 @@ User Function MGFEEC16(cResp,cFilPar)
 	If(Select('TRB') > 0, TRB->(DbCloseArea()),)
 	DbUseArea(.T., , cTabAux, 'TRB', .F., .F.)
 
-	IndRegua('TRB', cInd, "ZZ_CODDOC")    //Indice de organizaï¿½ï¿½o do relatorio
+	IndRegua('TRB', cInd, "ZZ_CODDOC")    //Indice de organização do relatório
 	TRB->(DbClearIndex())
 	DbSetIndex(cInd + OrdBagExt())
 
@@ -173,7 +173,7 @@ User Function MBREEC16()
 		MsUnlock()
 	Next
 
-	MSGINFO("Inclusao Efetuada Com Sucesso !!","Marfrig")
+	MSGINFO("Inclusão Efetuada Com Sucesso !!","Marfrig")
 
 Return 
 

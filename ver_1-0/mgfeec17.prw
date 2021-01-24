@@ -4,22 +4,22 @@
 Programa.:              MGFEEC17
 Autor....:              Leo Kume
 Data.....:              Nov/2016
-Descricao / Objetivo:   Relatorio de Follow Up para Documentos de Exportacao  
+Descricao / Objetivo:   Relatório de Follow Up para Documentos de Exportação  
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ==========================================================================================
 */
 User Function MGFEEC17()
 
-	//Funcao nova para novo layout do Follow UP.
+	//Função nova para novo layout do Follow UP.
 	u_MGFEEC40()
 	
 Return
 
 
-//Funcao antiga Relatorio Follow UP, alterado modelo.
+//Função antiga Relatorio Follow UP, alterado modelo.
 User Function OLDEEC17()
 Local oReport
 
@@ -35,20 +35,20 @@ Local oReport
 Local oSection
 //Local oBreak
 
-oReport := TReport():New("MGFEEC17",'Follow Up Documentos Exportacao',"MGFEEC17",{|oReport| PrintReport(oReport)},'Follow Up Documentos Exportacao')
+oReport := TReport():New("MGFEEC17",'Follow Up Documentos Exportação',"MGFEEC17",{|oReport| PrintReport(oReport)},'Follow Up Documentos Exportação')
 
 oSection := TRSection():New(oReport,"Pedidos",{"ZZ2","ZZJ","SZZ","USR"})
 TRCell():New(oSection,"PEDIDO"		,"ZZJ"	,"Pedido Export."		,,							,.F.,,,,,,,.F.)
 TRCell():New(oSection,"COD_DOC"		,"ZZJ"	,"Cod.Docmento"			,,							,.F.,,,,,,,.F.)
 TRCell():New(oSection,"DOCUMENTO"	,"ZZ2"	,"Documento"			,,							,.F.,,,,,,,.F.)
-TRCell():New(oSection,"RESPONSAVEL"	,"ZZJ"	,"Cod.Responsavel"		,,							,.F.,,,,,,,.F.)
-TRCell():New(oSection,"NOME_RESP"	,"USR"	,"Responsavel"			,,							,.F.,,,,,,,.F.)
+TRCell():New(oSection,"RESPONSAVEL"	,"ZZJ"	,"Cod.Responsável"		,,							,.F.,,,,,,,.F.)
+TRCell():New(oSection,"NOME_RESP"	,"USR"	,"Responsável"			,,							,.F.,,,,,,,.F.)
 TRCell():New(oSection,"FINALIZADO"	,"ZZJ"	,"Finalizado?"			,,							,.F.,,,,,,,.F.)
-TRCell():New(oSection,"NECESSARIO"	,"ZZJ"	,"Necessario?"			,,							,.F.,,,,,,,.F.)
+TRCell():New(oSection,"NECESSARIO"	,"ZZJ"	,"Necessário?"			,,							,.F.,,,,,,,.F.)
 TRCell():New(oSection,"QTD_DIAS"	,"ZZJ"	,"Dias a Contar"		,,							,.F.,,,,,,,.F.)
 TRCell():New(oSection,"DATA_BASE"	,"ZZJ"	,"Data Base"			,,							,.F.,,,,,,,.F.)
-TRCell():New(oSection,"DATA_PREV"	,"ZZJ"	,"Prev.Conclusao"		,,							,.F.,,,,,,,.F.)
-TRCell():New(oSection,"DATA_CONCLU"	,"ZZJ"	,"Data Conclusao"		,,							,.F.,,,,,,,.F.)
+TRCell():New(oSection,"DATA_PREV"	,"ZZJ"	,"Prev.Conclusão"		,,							,.F.,,,,,,,.F.)
+TRCell():New(oSection,"DATA_CONCLU"	,"ZZJ"	,"Data Conclusão"		,,							,.F.,,,,,,,.F.)
 
 //oBreak := TRBreak():New(oSection,oSection:Cell("PEDIDO"),"Sub Total ")
 //TRFunction():New(oSection:Cell("COD_DOC"),NIL,"COUNT",oBreak)
@@ -79,7 +79,7 @@ If !Empty(alltrim(MV_PAR04))
 	_cQuery += " 		ZZJ.ZZJ_RESPON = '"+MV_PAR04+"' AND "
 EndIf
 _cQuery += " 		ZZJ.ZZJ_FINALI IN ("+iif(MV_PAR03==2,"'N'","'S','N'")+") AND "
-//Se filtrar finalizados considerar todos os com data menor que "ate data", senï¿½o tambï¿½m considerar o parametro "de data"
+//Se filtrar finalizados considerar todos os com data menor que "até data", senão também considerar o parâmetro "de data"
 If MV_PAR03 == 1
 	_cQuery += " 		ZZJ.ZZJ_PRVCON >= '"+DTOS(MV_PAR01)+"' AND "
 EndIf

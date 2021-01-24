@@ -233,6 +233,7 @@ AADD( aEstru , { "TRBF_DESCE"   , 'C' , 30 , 0 } )
 AADD( aEstru , { "TRBF_STATU"   , 'C' , 21 , 0 } )  
 AADD( aEstru , { "TRBF_ZZEQT"   , 'C' , 10 , 0 } )  
 AADD( aEstru , { "TRBF_SD3QT"   , 'C' , 10 , 0 } )
+AADD( aEstru , { "TRBF_SD3LT"   , 'C' , 15 , 0 } )
 
 
 AADD( aCampos , { "TRBF_OK"		, "" , " "					, " "									} )
@@ -244,6 +245,7 @@ AADD( aCampos , { "TRBF_CODIG"	, "" , "Produto"	   		, PesqPict( "SA1" , "A1_NOM
 AADD( aCampos , { "TRBF_DESCE"	, "" , "Obs Integra"		, PesqPict( "SA1" , "A1_NOME" )			} )
 AADD( aCampos , { "TRBF_STATU"	, "" , "Status"	   			, PesqPict( "SA1" , "A1_NOME" )			} )
 AADD( aCampos , { "TRBF_ZZEQT"	, "" , "Qtde Integrada"		, PesqPict( "SA1" , "A1_NOME" )			} )
+AADD( aCampos , { "TRBF_SD3LT"	, "" , "Lote"				, PesqPict( "SD3" , "D3_ZPEDLOT" )			} )
 
 
 
@@ -277,17 +279,20 @@ EndIf
 //================================================================================
 // Query para selecao dos dados da OP
 //================================================================================
-_cquery := "SELECT zze_filial,zze_acao,zze_optaur,ZZE_TPMOV,zze_cod,zze_descer,zze_status,sum(zzequant) zzeqt ,sum(quant) sd3qt from( "
-_cquery += " SELECT zze_filial,zze_acao,zze_optaur,ZZE_TPMOV,zze_cod,zze_descer,sum(zze_quant) zzequant,zze_status, "
+_cquery := "SELECT zze_filial,zze_acao,zze_optaur,ZZE_TPMOV,zze_cod,zze_descer,zze_status,sum(zzequant) zzeqt ,sum(quant) sd3qt,zze_pedlot from( "
+_cquery += " SELECT zze_filial,zze_acao,zze_optaur,ZZE_TPMOV,zze_cod,zze_descer,sum(zze_quant) zzequant,zze_status,zze_pedlot, "
 _cquery += " (select sum(d3_quant) from sd3010 sd3 where sd3.d_e_l_e_t_ <> '*' and d3_filial = zze_filial "
 _cquery += "     and d3_zoptaur = zze_optaur and d3_zchaveu = zze_chavea  ) quant, zze_chavea "
 _cquery += " from zze010 zze where zze.d_e_l_e_t_ <> '*' "
 _cquery += " and zze_filial = '" + alltrim(MV_PAR01)  +  "' and zze_optaur = '" + alltrim(MV_PAR02) +  "'"
+If !empty(MV_PAR03)
+	_cquery += " and zze_pedlot = '" + alltrim(MV_PAR03)  +  "'"
+Endif
 _cquery += " and zze_tpmov <> '04' "
 _cquery += " and NOT (zze_descer like '%gnorado%') "
-_cquery += " group by zze_filial,zze_acao,ZZE_TPMOV,zze_optaur,zze_cod,zze_descer,zze_status,zze_chavea ) "
-_cquery += " group by zze_filial,zze_acao,ZZE_TPMOV,zze_optaur,zze_cod,zze_descer,zze_status "
-_cquery += " order by ZZE_COD,zze_acao "
+_cquery += " group by zze_filial,zze_acao,ZZE_TPMOV,zze_optaur,zze_cod,zze_descer,zze_status,zze_chavea,zze_pedlot ) "
+_cquery += " group by zze_filial,zze_acao,ZZE_TPMOV,zze_optaur,zze_cod,zze_descer,zze_status,zze_pedlot "
+_cquery += " order by ZZE_COD,zze_acao,zze_pedlot "
  
 
 oproc:cCaption := ("Carregando query de integrações...")
@@ -326,7 +331,7 @@ If QRYPED->(!EOF())
 
 	cMovPrd		:= GetMv("MGF_TAP02E",,"01/")	// Apontamento de Produção
 
-	If QRYPED->ZZE_TPMOV $ (cMovPrd + "XX")
+	If QRYPED->ZZE_TPMOV $ (cMovPrd)
 
 		_ctipo := "PRODUÇÃO"
 
@@ -355,6 +360,7 @@ If QRYPED->(!EOF())
 	TRBF->TRBF_STATU	:= ALLTRIM(QRYPED->ZZE_STATUS) + " - " + _cstatus
 	TRBF->TRBF_ZZEQT	:= padl(alltrim(transform(QRYPED->ZZEQT,"@E 999,999.999")),10)
 	TRBF->TRBF_SD3QT	:= _CTOTSD3
+	TRBF->TRBF_SD3LT    := alltrim(QRYPED->ZZE_PEDLOT)
 	
 
     QRYPED->( DBSkip() )
@@ -520,7 +526,7 @@ DO While QRYPED2->(!EOF())
 
 	cMovPrd		:= GetMv("MGF_TAP02E",,"01/")	// Apontamento de Produção
 
-	If QRYPED2->ZZE_TPMOV $ (cMovPrd + "XX")
+	If QRYPED2->ZZE_TPMOV $ (cMovPrd )
 
 		_ctipo := "PRODUÇÃO"
 
@@ -1241,7 +1247,7 @@ DO While QRYPED2->(!EOF())
 
 	cMovPrd		:= GetMv("MGF_TAP02E",,"01/")	// Apontamento de Produção
 
-	If QRYPED2->ZZE_TPMOV $ (cMovPrd + "XX")
+	If QRYPED2->ZZE_TPMOV $ (cMovPrd )
 
 		_ctipo := "PRODUÇÃO"
 
@@ -1300,9 +1306,11 @@ Static Function MGFTAP17RE()
 
 Local oGet1		:= Nil
 Local oGet2		:= Nil
+Local oGet3		:= Nil
 Local oDlg		:= Nil
 Local cGet1		:= Space(40)
 Local cGet2		:= Space(40)
+Local cGet3		:= Space(40)
 Local cComboBx1	:= ""
 Local aComboBx1	:= { "Produção" , "Consumo","Estorno Produção","Estorno Consumo"  }
 Local nOpca		:= 0
@@ -1311,9 +1319,13 @@ Local nI		:= 0
 Private _cprod := ""
 Private _nquant := 0
 
+If !empty(MV_PAR03)
+	CGET3 := alltrim(MV_PAR03)
+Endif
+
 Do while .T.
 
-DEFINE MSDIALOG oDlg TITLE "Gerar movimento manual" FROM 178,181 TO 320,747 PIXEL
+DEFINE MSDIALOG oDlg TITLE "Gerar movimento manual" FROM 178,181 TO 336,747 PIXEL
 
 	@004,003 Say "Tipo :"	Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
 	@004,050 ComboBox	cComboBx1	Items aComboBx1 Size 213,010 OF oDlg PIXEL
@@ -1321,9 +1333,11 @@ DEFINE MSDIALOG oDlg TITLE "Gerar movimento manual" FROM 178,181 TO 320,747 PIXE
 	@020,050 MsGet		oGet1		Var cGet1		Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
 	@036,003 Say "Quantidade :"		Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
 	@036,050 MsGet		oGet2		Var cGet2		Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
+	@052,003 Say "Lote :"		Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
+	@052,050 MsGet		oGet3		Var cGet3		Size 212,009 OF oDlg PIXEL COLOR CLR_BLACK Picture "@!"
 	
-	DEFINE SBUTTON FROM 055,200 TYPE 1 ENABLE ACTION ( nOpca := 1 , oDlg:End() ) OF oDlg
-	DEFINE SBUTTON FROM 055,230 TYPE 2 ENABLE ACTION ( nOpca := 0 , oDlg:End() ) OF oDlg
+	DEFINE SBUTTON FROM 068,200 TYPE 1 ENABLE ACTION ( nOpca := 1 , oDlg:End() ) OF oDlg
+	DEFINE SBUTTON FROM 068,230 TYPE 2 ENABLE ACTION ( nOpca := 0 , oDlg:End() ) OF oDlg
 
 ACTIVATE MSDIALOG oDlg CENTERED
 
@@ -1352,11 +1366,17 @@ If nOpca == 1
 	
 		If cComboBx1 == aComboBx1[nI]
 		
+			_clote := " "
+
+			If !empty(alltrim(cGet3))
+				_clote := " e lote " + alltrim(cget3) + " "
+			Endif
+
 			//integração manual de produção
 			If ni == 1
 
 				_lcontinua := u_MGFmsg("Deseja continuar integração manual de " + ALLTRIM(transform(_nquant,"@E 999,999.999 kg")) + " de produção do produto " + alltrim(cGet1) + ;
-					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + "?",;
+					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + _clote +  "?",;
 				"Atenção",,1,2,2)
 
 				If _lcontinua
@@ -1365,7 +1385,8 @@ If nOpca == 1
 																		 alltrim(TRBF->TRBF_OPTAU),;
 																		 _cprod,;
 																		 _nquant,;
-																		 Oproc)  }, "Aguarde!" , 'Processando integração manual...' )
+																		 Oproc,;
+																		 alltrim(cget3))  }, "Aguarde!" , 'Processando integração manual...' )
 					_lsai := .T.
 					fwmsgrun(,{ || MGTAP17AT() }, "Aguarde...","Carregando dados...")
 
@@ -1381,7 +1402,7 @@ If nOpca == 1
 			If ni == 2
 
 					_lcontinua := u_MGFmsg("Deseja continuar integração manual de " + ALLTRIM(transform(_nquant,"@E 999,999.999 kg")) + " de consumo do produto " + alltrim(cGet1) + ;
-					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + "?",;
+					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + _clote + "?",;
 				"Atenção",,1,2,2)
 
 				If _lcontinua
@@ -1390,7 +1411,8 @@ If nOpca == 1
 																		 alltrim(TRBF->TRBF_OPTAU),;
 																		 _cprod,;
 																		 _nquant,;
-																		 Oproc)  }, "Aguarde!" , 'Processando integração manual...' )
+																		 Oproc,;
+																		 alltrim(cget3))  }, "Aguarde!" , 'Processando integração manual...' )
 					_lsai := .T.
 					fwmsgrun(,{ || MGTAP17AT() }, "Aguarde...","Carregando dados...")
 
@@ -1408,7 +1430,7 @@ If nOpca == 1
 
 				_lcontinua := u_MGFmsg("Deseja continuar integração manual de " + ALLTRIM(transform(_nquant,"@E 999,999.999 kg"));
 						 + " de estorno de " + _ctipo + " do produto " + alltrim(cGet1) + ;
-					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + "?",;
+					" para OP Taura " + SUBSTR(alltrim(TRBF->TRBF_FILIA),1,6)  +  "/" + alltrim(TRBF->TRBF_OPTAU) + _clote + "?",;
 				"Atenção",,1,2,2)
 
 				If _lcontinua
@@ -1418,7 +1440,8 @@ If nOpca == 1
 																		 _cprod,;
 																		 _nquant,;
 																		 Oproc,;
-																		 iif(ni==3,1,2) ) }, "Aguarde!" , 'Processando estorno manual...' )
+																		 iif(ni==3,1,2),;
+																		 alltrim(cget3) ) }, "Aguarde!" , 'Processando estorno manual...' )
 					_lsai := .T.
 					fwmsgrun(,{ || MGTAP17AT() }, "Aguarde...","Carregando dados...")
 
@@ -1459,7 +1482,7 @@ Josué Danich
 @since
 10/03/2020
 /*/
-Static Function MGTAP17PRD(_cfilial,_cop,_cprod,_nquant,OPROC)
+Static Function MGTAP17PRD(_cfilial,_cop,_cprod,_nquant,OPROC,_clote)
 
 Local anumord := {}
 Private cTMPrd		:= GetMv("MGF_TAP02B",,"111")
@@ -1483,7 +1506,7 @@ ZZE->ZZE_COD	:=	_cprod
 ZZE->ZZE_QUANT	:=	_nquant
 ZZE->ZZE_QTDPCS	:=	0
 ZZE->ZZE_QTDCXS	:=	0
-ZZE->ZZE_PEDLOT	:=	" "
+ZZE->ZZE_PEDLOT	:=	alltrim(_clote)
 ZZE->ZZE_LOCAL	:=	'05'
 ZZE->ZZE_CHAVEU :=	FWUUIDV4()
 ZZE->ZZE_CHAVEA :=	ZZE->ZZE_CHAVEU
@@ -1495,40 +1518,71 @@ ZZE->( msUnlock() )
 
 _nrecno := ZZE->(Recno())
 
-//Cria OP se necessário
-oproc:ccaption := ('Abrindo OP ' + alltrim(ZZE->ZZE_OPTAUR) + "/" + alltrim(ZZE->ZZE_CODPA)  + "...")
-ProcessMessages()
-
 cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len(ZZE->ZZE_CODPA) , ZZE->ZZE_CODPA )
 cOPTaura := Stuff( Space(TamSX3("C2_ZOPTAUR")[1]) , 1 , Len(ZZE->ZZE_OPTAUR), ZZE->ZZE_OPTAUR )
 SC2->( dbOrderNickName("OPTAURA") )
 cChave	:= ZZE->ZZE_FILIAL+cOPTaura+cCodPA
 
-cNumOrd	:= MGFTP1701(@aNumOrd)
-aRotThread	:= {}	
-aRotAuto	:= {}
-	
-aAdd( aRotAuto , {'C2_FILIAL'	, ZZE->ZZE_FILIAL			,NIL} )
-aAdd( aRotAuto , {'C2_PRODUTO'	, ZZE->ZZE_CODPA			,NIL} )
-aAdd( aRotAuto , {'C2_ITEM'		, Subs(cNumOrd,7,2)					,NIL} )
-aAdd( aRotAuto , {'C2_SEQUEN'	, Subs(cNumOrd,9,3)					,NIL} )
-aAdd( aRotAuto , {'C2_NUM'		, Subs(cNumOrd,1,6) 				,NIL} )
-aAdd( aRotAuto , {'C2_QUANT'	, ZZE->ZZE_QUANT			,NIL} )
-aAdd( aRotAuto , {'C2_DATPRI'	, STOD(ZZE->ZZE_GERACA)-3	,NIL} )
-aAdd( aRotAuto , {'C2_DATPRF'	, STOD(ZZE->ZZE_GERACA)	,NIL} )
-aAdd( aRotAuto , {'C2_ZTIPO'	, Subs(cNumOrd,7,2)					,NIL} )
-aAdd( aRotAuto , {'C2_ZOPTAUR'	, alltrim(ZZE->ZZE_OPTAUR)			,NIL} )
-aAdd( aRotAuto , {'AUTEXPLODE'	, "N"								,NIL} )
-aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP			,NIL} )
-aAdd( aRotThread , aRotAuto )
-	
-	
-cFunTAP		:= "U_MGFTAP03"
-cOpc		:= "1"
-aParThread	:= { " " , " " , cIdProc , "" }
 
-IF Len(aRotThread) > 0 
-	_lretloc := U_MGFTAP03( {	cOpc ,;						//01
+If SC2->( !dbSeek( cChave ) )
+
+	//Cria OP se necessário
+	oproc:ccaption := ('Abrindo OP ' + alltrim(ZZE->ZZE_OPTAUR) + "/" + alltrim(ZZE->ZZE_CODPA)  + "...")
+	ProcessMessages()
+
+	aRotThread	:= {}	
+	aRotAuto	:= {}
+
+	//Define sequencia, se op tem mais de 6 caracteres coloca caracteres adicionais no c2_sequen
+	If len(alltrim(cOPTaura)) <= 6
+		_cc2seque := '001'
+	Else
+		_cc2seque := padl(substr(alltrim(cOPTaura),7,3),3,"0")
+	Endif
+
+	_citem := "01"
+
+	//Define item a ser usado
+	SC2->(Dbsetorder(1)) //C2_FILIAL+C2_NUM
+	If SC2->( dbSeek( _cfilial+ALLTRIM(cOPTaura) ) )
+
+		Do while SC2->C2_FILIAL + SC2->C2_NUM == _cfilial+alltrim(cOPTaura)
+
+			If SC2->C2_ITEM >= _citem
+				If SC2->C2_ITEM < '10'
+					_citem := strzero(val(SC2->C2_ITEM)+1,2)
+				Else
+					_citem := soma1(SC2->C2_ITEM)
+				Endif
+			Endif
+
+		SC2->(Dbskip())
+
+		Enddo
+
+	Endif
+	
+	aAdd( aRotAuto , {'C2_FILIAL'	, ZZE->ZZE_FILIAL			,NIL} )
+	aAdd( aRotAuto , {'C2_PRODUTO'	, ZZE->ZZE_CODPA			,NIL} )
+	aAdd( aRotAuto , {'C2_ITEM'		, _citem					,NIL} )
+	aAdd( aRotAuto , {'C2_SEQUEN'	, _cc2seque					,NIL} )
+	aAdd( aRotAuto , {'C2_NUM'		, alltrim(cOPTaura) 		,NIL} )
+	aAdd( aRotAuto , {'C2_QUANT'	, ZZE->ZZE_QUANT			,NIL} )
+	aAdd( aRotAuto , {'C2_DATPRI'	, STOD(ZZE->ZZE_GERACA)-3	,NIL} )
+	aAdd( aRotAuto , {'C2_DATPRF'	, STOD(ZZE->ZZE_GERACA)		,NIL} )
+	aAdd( aRotAuto , {'C2_ZTIPO'	, ZZE->ZZE_TPOP				,NIL} )
+	aAdd( aRotAuto , {'C2_ZOPTAUR'	, alltrim(ZZE->ZZE_OPTAUR)	,NIL} )
+	aAdd( aRotAuto , {'AUTEXPLODE'	, "N"						,NIL} )
+	aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP				,NIL} )
+	aAdd( aRotThread , aRotAuto )
+	
+	
+	cFunTAP		:= "U_MGFTAP03"
+	cOpc		:= "1"
+	aParThread	:= { " " , " " , cIdProc , "" }
+
+	IF Len(aRotThread) > 0 
+		_lretloc := U_MGFTAP03( {	cOpc ,;						//01
 							aRotThread ,; 				//02
 							aParThread[1] ,; 			//03
 							aParThread[2] ,; 			//04
@@ -1536,16 +1590,17 @@ IF Len(aRotThread) > 0
 							aParThread[4] ,;			//06
 							ZZE->ZZE_CHAVEU,;	//07
 							ZZE->(RECNO())  	} )	//08
-	If _lretloc
-		oproc:ccaption := ('Abriu OP ' + SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )  + "...")
-		ProcessMessages()
-	Else
-		U_MFCONOUT('Falha de integridade dos dados...')
-		Disarmtransaction()
-		u_MGFmsg("Falha na abertura da OP para o movimento manual, operação não realizada!","Atenção",,1)
-		Return
-	Endif
-EndIF
+		If _lretloc
+			oproc:ccaption := ('Abriu OP ' + SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )  + "...")
+			ProcessMessages()
+		Else
+			U_MFCONOUT('Falha de integridade dos dados...')
+			Disarmtransaction()
+			u_MGFmsg("Falha na abertura da OP para o movimento manual, operação não realizada!","Atenção",,1)
+			Return
+		Endif
+	EndIF
+Endif
 
 cNumOrd	:= SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )
 cNumDoc	:= MGFTP1702()
@@ -1567,6 +1622,7 @@ aAdd( aRotAuto ,	{"D3_EMISSAO"	, STOD(ZZE->ZZE_EMISSA) ,NIL} )
 aAdd( aRotAuto ,	{"D3_ZTIPO"		, ZZE->ZZE_TPOP		,NIL} )
 aAdd( aRotAuto ,	{"__UUID"		, ZZE->ZZE_CHAVEU		,NIL} )
 aAdd( aRotAuto , {"D3_ZOPTAUR"	, ZZE->ZZE_OPTAUR			,NIL} )
+aAdd( aRotAuto , {"D3_ZPEDLOT"	, ZZE->ZZE_PEDLOT			,NIL} )
 aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP			,NIL} )
 aAdd( aRotAuto , {'__ZTPMOV'	, ZZE->ZZE_TPMOV			,NIL} )
 aAdd( aRotAuto , {'__ZCODPA'	, ZZE->ZZE_CODPA			,NIL} )
@@ -1605,42 +1661,6 @@ END TRANSACTION
 
 Return
 
-//-----------------------------------------------------------------------------------
-/*/{Protheus.doc}MGFTP1701 - Retorna sequencia da OP
-@author  Atilio Amarilla
-@since 08/11/2016
-*/
-Static Function MGFTP1701(aNumOrd)
-
-Local cRet	:= cSeq	:= ""
-Local nPos
-Local cAliasTRB := GetNextAlias()
-Local cQuery
-
-cQuery := "SELECT MAX( C2_SEQUEN ) C2_SEQUEN " + CRLF
-cQuery += "FROM "+RetSqlName("SC2")+" SC2 "+CRLF
-cQuery += "WHERE SC2.D_E_L_E_T_ = ' ' "+CRLF
-cQuery += "	AND C2_FILIAL = '"+ ZZE->ZZE_FILIAL +"' "+CRLF
-cQuery += "	AND C2_NUM = '"+Subs(ZZE->ZZE_GERACA,3)+"' "+CRLF
-cQuery += "	AND C2_ITEM = '"+ZZE->ZZE_TPOP+"' "+CRLF
-
-DbUseArea( .T., "TOPCONN", TcGenQry(,,cQuery), cAliasTRB, .T., .F. )
-
-If !Empty( (cAliasTRB)->C2_SEQUEN )
-	cSeq	:= Soma1( (cAliasTRB)->C2_SEQUEN )
-	cRet	:= Subs(ZZE->ZZE_GERACA,3,6) + ZZE->ZZE_TPOP + cSeq
-Else
-	cSeq	:= "001"
-	cRet	:=  Subs(ZZE->ZZE_GERACA,3,6) + ZZE->ZZE_TPOP + cSeq
-EndIf
-
-aAdd( aNumOrd , { ZZE->ZZE_FILIAL , ZZE->ZZE_GERACA + ZZE->ZZE_TPOP , cSeq  } )
-
-dbSelectArea(cAliasTRB)
-dbCloseArea()
-
-Return( cRet )
-
 /*/
 =============================================================================
 {Protheus.doc} MGTAP17CON
@@ -1650,7 +1670,7 @@ Josué Danich
 @since
 10/03/2020
 /*/
-Static Function MGTAP17CON(_cfilial,_cop,_cprod,_nquant,OPROC)
+Static Function MGTAP17CON(_cfilial,_cop,_cprod,_nquant,OPROC,_clote)
 
 Local anumord := {}
 Private cTMPrd		:= GetMv("MGF_TAP02B",,"111")
@@ -1696,7 +1716,7 @@ ZZE->ZZE_COD	:=	_cprod
 ZZE->ZZE_QUANT	:=	_nquant
 ZZE->ZZE_QTDPCS	:=	0
 ZZE->ZZE_QTDCXS	:=	0
-ZZE->ZZE_PEDLOT	:=	" "
+ZZE->ZZE_PEDLOT	:=	ALLTRIM(_clote)
 ZZE->ZZE_LOCAL	:=	'05'
 ZZE->ZZE_CHAVEU :=	FWUUIDV4()
 ZZE->ZZE_CHAVEA :=	ZZE->ZZE_CHAVEU
@@ -1708,40 +1728,70 @@ ZZE->( msUnlock() )
 
 _nrecno := ZZE->(Recno())
 
-//Cria OP se necessário
-oproc:ccaption := ('Abrindo OP ' + alltrim(ZZE->ZZE_OPTAUR) + "/" + alltrim(ZZE->ZZE_CODPA)  + "...")
-ProcessMessages()
-
 cCodPA	 := Stuff( Space(TamSX3("B1_COD")[1])     , 1 , Len(ZZE->ZZE_CODPA) , ZZE->ZZE_CODPA )
 cOPTaura := Stuff( Space(TamSX3("C2_ZOPTAUR")[1]) , 1 , Len(ZZE->ZZE_OPTAUR), ZZE->ZZE_OPTAUR )
 SC2->( dbOrderNickName("OPTAURA") )
 cChave	:= ZZE->ZZE_FILIAL+cOPTaura+cCodPA
 
-cNumOrd	:= MGFTP1701(@aNumOrd)
-aRotThread	:= {}	
-aRotAuto	:= {}
-	
-aAdd( aRotAuto , {'C2_FILIAL'	, ZZE->ZZE_FILIAL			,NIL} )
-aAdd( aRotAuto , {'C2_PRODUTO'	, ZZE->ZZE_CODPA			,NIL} )
-aAdd( aRotAuto , {'C2_ITEM'		, Subs(cNumOrd,7,2)					,NIL} )
-aAdd( aRotAuto , {'C2_SEQUEN'	, Subs(cNumOrd,9,3)					,NIL} )
-aAdd( aRotAuto , {'C2_NUM'		, Subs(cNumOrd,1,6) 				,NIL} )
-aAdd( aRotAuto , {'C2_QUANT'	, ZZE->ZZE_QUANT			,NIL} )
-aAdd( aRotAuto , {'C2_DATPRI'	, STOD(ZZE->ZZE_GERACA)-3	,NIL} )
-aAdd( aRotAuto , {'C2_DATPRF'	, STOD(ZZE->ZZE_GERACA)	,NIL} )
-aAdd( aRotAuto , {'C2_ZTIPO'	, Subs(cNumOrd,7,2)					,NIL} )
-aAdd( aRotAuto , {'C2_ZOPTAUR'	, alltrim(ZZE->ZZE_OPTAUR)			,NIL} )
-aAdd( aRotAuto , {'AUTEXPLODE'	, "N"								,NIL} )
-aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP			,NIL} )
-aAdd( aRotThread , aRotAuto )
-	
-	
-cFunTAP		:= "U_MGFTAP03"
-cOpc		:= "1"
-aParThread	:= { " " , " " , cIdProc , "" }
 
-IF Len(aRotThread) > 0 
-	_lretloc := U_MGFTAP03( {	cOpc ,;						//01
+If SC2->( !dbSeek( cChave ) )
+
+	//Cria OP se necessário
+	oproc:ccaption := ('Abrindo OP ' + alltrim(ZZE->ZZE_OPTAUR) + "/" + alltrim(ZZE->ZZE_CODPA)  + "...")
+	ProcessMessages()
+
+	aRotThread	:= {}	
+	aRotAuto	:= {}
+
+	//Define sequencia, se op tem mais de 6 caracteres coloca caracteres adicionais no c2_sequen
+	If len(alltrim(cOPTaura)) <= 6
+		_cc2seque := '001'
+	Else
+		_cc2seque := padl(substr(alltrim(cOPTaura),7,3),3,"0")
+	Endif
+
+	_citem := "01"
+
+	//Define item a ser usado
+	If SC2->( dbSeek( _cfilial+cOPTaura ) )
+
+		Do while SC2->C2_FILIAL + SC2->C2_ZOPTAUR == _cfilial+cOPTaura
+
+			If SC2->C2_ITEM >= _citem
+				If SC2->C2_ITEM < '10'
+					_citem := strzero(val(SC2->C2_ITEM)+1,2)
+				Else
+					_citem := soma1(SC2->C2_ITEM)
+				Endif
+			Endif
+
+		SC2->(Dbskip())
+
+		Enddo
+
+	Endif
+	
+	aAdd( aRotAuto , {'C2_FILIAL'	, ZZE->ZZE_FILIAL			,NIL} )
+	aAdd( aRotAuto , {'C2_PRODUTO'	, ZZE->ZZE_CODPA			,NIL} )
+	aAdd( aRotAuto , {'C2_ITEM'		, _citem					,NIL} )
+	aAdd( aRotAuto , {'C2_SEQUEN'	, _cc2seque					,NIL} )
+	aAdd( aRotAuto , {'C2_NUM'		, alltrim(cOPTaura) 		,NIL} )
+	aAdd( aRotAuto , {'C2_QUANT'	, ZZE->ZZE_QUANT			,NIL} )
+	aAdd( aRotAuto , {'C2_DATPRI'	, STOD(ZZE->ZZE_GERACA)-3	,NIL} )
+	aAdd( aRotAuto , {'C2_DATPRF'	, STOD(ZZE->ZZE_GERACA)		,NIL} )
+	aAdd( aRotAuto , {'C2_ZTIPO'	, ZZE->ZZE_TPOP			,NIL} )
+	aAdd( aRotAuto , {'C2_ZOPTAUR'	, alltrim(ZZE->ZZE_OPTAUR)	,NIL} )
+	aAdd( aRotAuto , {'AUTEXPLODE'	, "N"						,NIL} )
+	aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP				,NIL} )
+	aAdd( aRotThread , aRotAuto )
+	
+	
+	cFunTAP		:= "U_MGFTAP03"
+	cOpc		:= "1"
+	aParThread	:= { " " , " " , cIdProc , "" }
+
+	IF Len(aRotThread) > 0 
+		_lretloc := U_MGFTAP03( {	cOpc ,;						//01
 							aRotThread ,; 				//02
 							aParThread[1] ,; 			//03
 							aParThread[2] ,; 			//04
@@ -1749,16 +1799,18 @@ IF Len(aRotThread) > 0
 							aParThread[4] ,;			//06
 							ZZE->ZZE_CHAVEU,;	//07
 							ZZE->(RECNO())  	} )	//08
-	If _lretloc
-		oproc:ccaption := ('Abriu OP ' + SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )  + "...")
-		ProcessMessages()
-	Else
-		U_MFCONOUT('Falha de integridade dos dados...')
-		Disarmtransaction()
-		u_MGFmsg("Falha na abertura da OP para o movimento manual, operação não realizada!","Atenção",,1)
-		Return
-	Endif
-EndIF
+		If _lretloc
+			oproc:ccaption := ('Abriu OP ' + SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )  + "...")
+			ProcessMessages()
+		Else
+			U_MFCONOUT('Falha de integridade dos dados...')
+			Disarmtransaction()
+			u_MGFmsg("Falha na abertura da OP para o movimento manual, operação não realizada!","Atenção",,1)
+			Return
+		Endif
+	EndIF
+
+Endif
 
 cNumOrd	:= SC2->( C2_NUM+C2_ITEM+C2_SEQUEN )
 cNumDoc	:= MGFTP1702()
@@ -1780,6 +1832,7 @@ aAdd( aRotAuto ,	{"D3_EMISSAO"	, STOD(ZZE->ZZE_EMISSA) ,NIL} )
 aAdd( aRotAuto ,	{"D3_ZTIPO"		, ZZE->ZZE_TPOP		,NIL} )
 aAdd( aRotAuto ,	{"__UUID"		, ZZE->ZZE_CHAVEU		,NIL} )
 aAdd( aRotAuto , {"D3_ZOPTAUR"	, ZZE->ZZE_OPTAUR			,NIL} )
+aAdd( aRotAuto , {"D3_ZPEDLOT"	, ZZE->ZZE_PEDLOT			,NIL} )
 aAdd( aRotAuto , {'__ZTPOP'		, ZZE->ZZE_TPOP			,NIL} )
 aAdd( aRotAuto , {'__ZTPMOV'	, ZZE->ZZE_TPMOV			,NIL} )
 aAdd( aRotAuto , {'__ZCODPA'	, ZZE->ZZE_CODPA			,NIL} )
@@ -1824,7 +1877,7 @@ Return
 @author  Josué Danich
 @since 15/07/2020
 */
-Static Function MGFTP17EST(_cfilial,_cop,_cprod,_nquant,OPROC,_ntipo)
+Static Function MGFTP17EST(_cfilial,_cop,_cprod,_nquant,OPROC,_ntipo,_clote)
 
 Local _lretloc := .T.
 
@@ -1847,7 +1900,7 @@ ZZE->ZZE_COD	:=	_cprod
 ZZE->ZZE_QUANT	:=	_nquant
 ZZE->ZZE_QTDPCS	:=	0
 ZZE->ZZE_QTDCXS	:=	0
-ZZE->ZZE_PEDLOT	:=	" "
+ZZE->ZZE_PEDLOT	:=	_clote
 ZZE->ZZE_LOCAL	:=	'05'
 ZZE->ZZE_CHAVEU :=	FWUUIDV4()
 ZZE->ZZE_CHAVEA :=	ZZE->ZZE_CHAVEU
@@ -1882,8 +1935,9 @@ aAdd( aRotThread , {	ZZE->ZZE_FILIAL,	;
 									cIdProc,					;
 									cIdSeq,						;
 									ZZE->ZZE_QTDPCS,	;
-									ZZE->ZZE_QTDCXS	;
-									}	)
+									ZZE->ZZE_QTDCXS,;
+									_clote									}	)
+
 
 
 If Len( aRotThread ) > 0 .and. _lretloc
@@ -1891,7 +1945,8 @@ If Len( aRotThread ) > 0 .and. _lretloc
 	cFunTAP		:= "U_MGFTAP19"
 	cOpc		:= "1"
 	aParThread	:= { " " , " " , cIdProc , "" }
-	_lretloc := U_MGFTAP19( {aRotThread , aParThread[3],ZZE->ZZE_CHAVEU,_nrecno} )
+	_cret := ""
+		_lretloc := U_MGFTAP19( {aRotThread , aParThread[3],ZZE->ZZE_CHAVEU,_nrecno}, @_cret )
 
 	ZZE->(Dbgoto(_nrecno))
 
@@ -1901,7 +1956,7 @@ If Len( aRotThread ) > 0 .and. _lretloc
 		ZZE->ZZE_STATUS := "M"
 		ZZE->(Msunlock())
 	Else
-		u_MGFmsg("Falha na gravação estorno manual, operação não realizada!","Atenção",,1)
+		u_MGFmsg("Falha na gravação estorno manual, operação não realizada!(" + _cret + ")","Atenção",,1)
 		Disarmtransaction()
 	Endif
 

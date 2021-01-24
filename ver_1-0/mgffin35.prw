@@ -8,7 +8,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro de Atendente
 =====================================================================================
 */
@@ -45,7 +45,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao de Atendente
 =====================================================================================
 */
@@ -55,7 +55,7 @@ Local aArea		:= GetArea()
 DbSelectArea("ZZB")
 DbSetOrder(2)
 If DbSeek(xFilial("ZZB")+ZZ8->ZZ8_USUARI)
-	MsgInfo("Nao ï¿½ possivel excluir este Atendente porque jï¿½ realizou atendimento a cliente!","Atencao")
+	MsgInfo("Não é possivel excluir este Atendente porque já realizou atendimento a cliente!","Atenção")
 Else
 	DbSelectArea("ZZ8")
 	RecLock("ZZ8")
@@ -77,7 +77,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro de Posicionamento do cliente
 =====================================================================================
 */
@@ -115,7 +115,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao de Posicao
 =====================================================================================
 */
@@ -125,7 +125,7 @@ Local aArea		:= GetArea()
 DbSelectArea("ZZB")
 DbSetOrder(3)
 If DbSeek(xFilial("ZZB")+ZZ9->ZZ9_CODPOS)
-	MsgInfo("Nao ï¿½ possivel excluir porque existe atendimento com este posicionamento de cliente!","Atencao")
+	MsgInfo("Não é possivel excluir porque existe atendimento com este posicionamento de cliente!","Atenção")
 Else
 	DbSelectArea("ZZ9")
 	RecLock("ZZ9")
@@ -147,7 +147,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Atendente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela para cadastro de Gerente
 =====================================================================================
 */
@@ -185,7 +185,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Cadastro de Gerente
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Exclusao de Gerente
 =====================================================================================
 */

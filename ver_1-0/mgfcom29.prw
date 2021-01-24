@@ -4,17 +4,17 @@
 /*
 =====================================================================================
 Programa............: MA110BAR
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 17/04/2017
-Descricao / Objetivo: GAP COM02
+Descrição / Objetivo: GAP COM02
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=51249528
 =====================================================================================
 */     
 
-/// Funcao que apresenta a descricao do produto na solicitacao de compras
+/// Função que apresenta a descrição do produto na solicitação de compras
 User Function MGFCOM29() 
 Local cDescr := ""                    
 Local oDlgLog
@@ -44,10 +44,10 @@ Local	Odlg
 Private lOk,lCancel
 
 	cDescri := cDescr 
-	DEFINE DIALOG oDlg TITLE "Descricao do Produto" FROM 180,180 TO 450,1000 PIXEL 
+	DEFINE DIALOG oDlg TITLE "Descrição do Produto" FROM 180,180 TO 450,1000 PIXEL 
 
 	@ 25,58 GET oDesc var cDescri memo SIZE 300,80 OF oDlg PIXEL
-	@ 26,08 SAY "Descricao:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
+	@ 26,08 SAY "Descrição:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
 	oTButton := TButton():New( 120, 270, "&OK",oDlg	,{|| lOk:= .T., oDlg:End() },40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
 	
 	ACTIVATE DIALOG oDlg CENTERED
@@ -55,7 +55,7 @@ Private lOk,lCancel
 Return                                                                   
 
 
-//// Funcao que apresenta a descricao do produto no pedido de compras
+//// Função que apresenta a descrição do produto no pedido de compras
 
 User Function MGFCOMP() 
 Local cDescr := ""                    
@@ -85,10 +85,10 @@ Local	Odlg
 Private lOk,lCancel
 
 	cDescri := cDescr 
-	DEFINE DIALOG oDlg TITLE "Descricao do Produto" FROM 180,180 TO 450,1000 PIXEL 
+	DEFINE DIALOG oDlg TITLE "Descrição do Produto" FROM 180,180 TO 450,1000 PIXEL 
 
 	@ 25,58 GET oDesc var cDescri memo SIZE 300,80 OF oDlg PIXEL
-	@ 26,08 SAY "Descricao:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
+	@ 26,08 SAY "Descrição:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
 	oTButton := TButton():New( 120, 270, "&OK",oDlg	,{|| lOk:= .T., oDlg:End() },40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
 	
 	ACTIVATE DIALOG oDlg CENTERED

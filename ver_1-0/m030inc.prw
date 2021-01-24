@@ -10,21 +10,21 @@ Data.....:              26/10/2016
 Descricao / Objetivo:
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              http://tdn.totvs.com/pages/releaseview.action?pageId=6784136
 =====================================================================================
 */
 user function M030INC()
 
 	IF PARAMIXB <> 3 //cancelou a operacao
-		// tem que deixar esta funcao  primeiro pois
+		// tem que deixar esta função  primeiro pois
 		// altera o codigo e loja
 		If FindFunction("U_MGFINT46")
 			U_MGFINT46(2) // 1 valida e 2 altera o codigo
 		Endif
 
-		//GAP387 - Criar inteligencia no campo Cnae do cliente x Grupo de Tributacao - 25/OUT/2018 - Natanael Filho
-		//Essa funcao deve ser chamada antes das funcoes de grade de aprovacao.
+		//GAP387 - Criar inteligencia no campo Cnae do cliente x Grupo de Tributação - 25/OUT/2018 - Natanael Filho
+		//Essa função deve ser chamada antes das funções de grade de aprovação.
 		If findFunction("U_MGFFIS40")
 				U_MGFFIS40(2) //1: Fornecedor / 2:Cliente
 		EndIf
@@ -50,6 +50,10 @@ user function M030INC()
 
 		if findFunction("U_MGFFATBE")
 			U_MGFFATBE()
+		endif
+
+		if findFunction("U_MGFWSC83")
+			U_MGFWSC83( SA1->A1_COD , SA1->A1_LOJA )
 		endif
 	endif
 return

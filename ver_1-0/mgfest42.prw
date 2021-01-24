@@ -8,7 +8,7 @@ Data................: Agosto/2018
 Descricao / Objetivo: Rotina chamada pelo PE MTA265I
 Doc. Origem.........: Estoque
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gravacao de campos complementares no enderecamento de produto
 =====================================================================================
 */

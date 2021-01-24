@@ -6,9 +6,9 @@
 Programa............: CTB500USU
 Autor...............: Joni Lima
 Data................: 30/01/2019
-Descricao / Objetivo: O ponto de entrada CTB500USU ï¿½ utilizado para validacao de usuario.
+Descrição / Objetivo: O ponto de entrada CTB500USU é utilizado para validação de usuario.
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=6068801
 =====================================================================================
 */

@@ -6,7 +6,7 @@ Data.....:              09/10/2017
 Descricao / Objetivo:   Mostrar Dados de Solicitante e Comprador na aprovação de compras
 Doc. Origem:
 Solicitante:            Cliente
-Uso......:               - GAP COM084
+Uso......:              Marfrig - GAP COM084
 Obs......:              
 =====================================================================================
 */

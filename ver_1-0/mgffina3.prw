@@ -2,14 +2,14 @@
 #INCLUDE "TOPCONN.CH"
 #INCLUDE "RWMAKE.CH"
 
-#DEFINE XLSFILIAL		1	// Codigo da Filial
-#DEFINE XLSMOTIVO		2	// Motivo da rejeicao
+#DEFINE XLSFILIAL		1	// Código da Filial
+#DEFINE XLSMOTIVO		2	// Motivo da rejeição
 #DEFINE XLSVENCTO		3	// Vencimento
-#DEFINE XLSVALOR		4	// Valor do titulo
-#DEFINE XLSTITULO		5	// Numero do titulo
+#DEFINE XLSVALOR		4	// Valor do título
+#DEFINE XLSTITULO		5	// Número do título
 #DEFINE XLSCARTEI		6	// Carteira
-#DEFINE XLSNUMBCO		7   // Nosso Numero
-#DEFINE XLSOBSERV		8 	// Observacao
+#DEFINE XLSNUMBCO		7   // Nosso Número
+#DEFINE XLSOBSERV		8 	// Observação
 #DEFINE XLSDDA			9	// DDA
 
 /*
@@ -20,16 +20,16 @@ Data.....:              11/06/2018
 Descricao / Objetivo:   Importa planilha excel FIDC para recompra manual 
 Doc. Origem:            Contrato - CRE09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
 User Function MGFFINA3()
 Private oLeTxt
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Montagem da tela de processamento.                                  ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Montagem da tela de processamento.                                  ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 @ 200,001 TO 380,380 DIALOG oLeTxt TITLE "Leitura de Planilha Recompra - FIDC"
 @ 002,010 TO 080,190
@@ -55,9 +55,9 @@ Executa a leitura do arquivo texto.
 //-------------------------------------------------------------------
 Static Function OkLeTxt()
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Abertura do arquivo texto                                           ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Abertura do arquivo texto                                           ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 Private cArqTxt := Upper(cGetFile("Arquivos CSV|*.CSV|Todos os arquivos|*.*","Selecione",0,,.T.,GETF_LOCALHARD+GETF_NETWORKDRIVE))
 Private cArq    := ""
@@ -66,9 +66,9 @@ If !File(cArqTxt)
 	Aviso("Atencao","Arquivo "+cArqTxt+" nao existe!",{"Ok"})
 	Return
 EndIf
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Inicializa a regua de processamento                                 ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Inicializa a regua de processamento                                 ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 Processa({|| RunCont() },"Processando...")
 Return
@@ -124,7 +124,7 @@ aAdd(aMotRecompra,{"ABATIMENTO"	,"72"})
 aAdd(aMotRecompra,{"DEVOLUCAO"	,"73"})
 aAdd(aMotRecompra,{"PRORROGAECO","72"})
 aAdd(aMotRecompra,{"PRORROGACAO","72"})
-aAdd(aMotRecompra,{"PRORROGACAO","72"})
+aAdd(aMotRecompra,{"PRORROGAÇÃO","72"})
 
 FT_FUse(cArqTxt)
 FT_FGotop()
@@ -162,7 +162,11 @@ While ( !FT_FEof() )
 		If (Len(aAux) == 0)	
 			Return
 		EndIf
-		cTitulo		:= "000"+SubStr(aAux[6],1,6)
+		If SubStr(aAux[6],9,2) == "41"		
+			cTitulo		:= "001"+SubStr(aAux[6],1,6)
+		Else
+			cTitulo		:= "000"+SubStr(aAux[6],1,6)
+		Endif
 		cParcela	:= SubStr(aAux[6],7,2)
 		cVencto		:= DTOS(CTOD(aAux[4]))
 		nVlrTit		:= Val(StrTran(StrTran(aAux[5],".",""),",","."))
@@ -175,10 +179,10 @@ While ( !FT_FEof() )
 		Endif
 		// Busca Recompra Manual
 		//=================================================================================================================//
-		// Alteracao realizada por Paulo Fernandes																		   //
-		// Em 23/04/2018 foi solicitado pelo Eder(Financeiro) e Claudio(TOTVS) que retirasse  							   //
-		// o a condicao de portador (AND E1_PORTADO = %Exp:cBcoFIDC% AND E1_AGEDEP || E1_CONTA = %Exp:cAgeFIDC+cCtaFIDC%   //
-		// da clausula WHERE para selecao de titulos em recompra manual													   //
+		// Alteração realizada por Paulo Fernandes																		   //
+		// Em 23/04/2018 foi solicitado pelo Eder(Financeiro) e Cláudio(TOTVS) que retirasse  							   //
+		// o a condição de portador (AND E1_PORTADO = %Exp:cBcoFIDC% AND E1_AGEDEP || E1_CONTA = %Exp:cAgeFIDC+cCtaFIDC%   //
+		// da cláusula WHERE para seleção de títulos em recompra manual													   //
 		//=================================================================================================================//
 			
 		BeginSQL Alias cAliasTit
@@ -277,9 +281,9 @@ FT_FUse()
 
 Close(oLeTxt)
 
-Aviso("Resumo","Titulos lidos.................. : " + StrZero(nLidos+nRejeita-1,5) + CHR(13)+CHR(10)  + ;
-	  		   "Titulos enviados para Recompra..: " + StrZero(nLidos,5) + CHR(13)+CHR(10)  + ;
-	  		   "Titulos nao encontrados.........: " + StrZero(nRejeita,5),{"Ok"})
+Aviso("Resumo","Títulos lidos.................. : " + StrZero(nLidos+nRejeita-1,5) + CHR(13)+CHR(10)  + ;
+	  		   "Títulos enviados para Recompra..: " + StrZero(nLidos,5) + CHR(13)+CHR(10)  + ;
+	  		   "Títulos não encontrados.........: " + StrZero(nRejeita,5),{"Ok"})
 
 If !Empty(nRejeita) .and. Len(aHeadPla) > 0				// gdn 10/9/2018 - Tratar o array
 	FA3EXCEL(aTitRej,aHeadPla)
@@ -299,7 +303,7 @@ eliminar caracteres invalidos na impressao
 //-------------------------------------------------------------------
 Static Function AjTexto(_cTexto)
 
-Local _cInvalido	:= "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½()ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½Ö¶"
+Local _cInvalido	:= "çÇáÁéÉíÍóÓúÚàÀèÈìÌòÒùÙãÃõÕäÄëËïÏöÖüÜâÂêÊîÎôÔûÛ()§¡ˆ‡Æµ£¢€Ö¶"
 Local _cValido		:= "cCaAeEiIoOuUaAeEiIoOuUaAoOaAeEiIoOuUaAeEiIoOuU    oiecaaeuocia"
 Local _cChar		:= ""
 Local _cResp		:= ""
@@ -334,7 +338,7 @@ Data................: 27/10/2016
 Descricao / Objetivo: Acompanhamento de cobranca
 Doc. Origem.........: Contrato - GAP CRE025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Gerar Excel
 =====================================================================================
 */
@@ -353,7 +357,7 @@ Local xFil			:=""
 local cArq			:= ""
 local oExcel		:= FwMSExcel():New()
 local aLinha		:= {}
-local cTable		:= "Recompra Manual - Titulos nao encontrados" // "Table"
+local cTable		:= "Recompra Manual - Títulos não encontrados" // "Table"
 local cTableSum		:= "Recompra Manual"
 local cLocArq		:= ""
 local oExcelApp		:= MsExcel():New()
@@ -370,12 +374,12 @@ Local nCount := 0
 Default aExcelTit	:= {}	
 Default aExcelHea	:= {}		
 
-// Sumï¿½rio
+// Sumário
 oExcel:AddworkSheet(cWorkSheet)			//Cria Planilha
 oExcel:AddTable(cWorkSheet, cTable) 	//Cria Tabela
 
 // adiciona colunas
-For nI:=1 To 8 //alterado Rodrigo len(aExcelHea) por 8 para limitar numero de colunes no relatorio
+For nI:=1 To 8 //alterado Rodrigo len(aExcelHea) por 8 para limitar numero de colunes no relatório
 	oExcel:AddColumn(cWorkSheet, cTable, aExcelHea[nI]			, 1, 1)
 Next
 
@@ -398,13 +402,13 @@ If lExcel
 	cArq := CriaTrab(NIL, .F.) + ".xml"
 	oExcel:GetXMLFile(cArq)
 		
-	cLocArq := cGetFile("Todos os Arquivos|*.*", OemToAnsi("Informe o diretorio para gravacao do arquivo Excel"), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY)
+	cLocArq := cGetFile("Todos os Arquivos|*.*", OemToAnsi("Informe o diretório para gravacao do arquivo Excel"), 0, "SERVIDOR\", .T., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY)
 	if __CopyFile(cArq, cLocArq + cArq)
-		MsgInfo("Relatorio gerado em: " + cLocArq + cArq)
+		MsgInfo("Relatório gerado em: " + cLocArq + cArq)
 		oExcelApp:WorkBooks:Open(cLocArq + cArq)
 		oExcelApp:SetVisible(.T.)
 	else
-		MsgInfo("Arquivo nao copiado para o Diretorio " + cLocArq + cArq)
+		MsgInfo("Arquivo não copiado para o Diretorio " + cLocArq + cArq)
 	endif
 Endif
 

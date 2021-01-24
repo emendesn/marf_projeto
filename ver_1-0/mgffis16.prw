@@ -12,7 +12,7 @@ Data.....:              06/02/2017
 Descricao / Objetivo:   Relatorio do Fundepec
 Doc. Origem:            Contrato de Gaps - GAP FIS20
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -24,8 +24,8 @@ Private aRet      := {}
 Private nTotal    := 0 
 
 
-AAdd(aParamBox, {1, "Emissao de"		, CToD(Space(8))																											, 							, , 		,	, 070	, .T.	})
-AAdd(aParamBox, {1, "Emissao ate"		, CToD(Space(8))																											, 							, , 		,	, 070	, .T.	})
+AAdd(aParamBox, {1, "Emissão de"		, CToD(Space(8))																											, 							, , 		,	, 070	, .T.	})
+AAdd(aParamBox, {1, "Emissão até"		, CToD(Space(8))																											, 							, , 		,	, 070	, .T.	})
 IF ParamBox(aParambox, "Relatorio Fundepec"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
     Processa( {|| U_FIS16() },'Aguarde...', 'Montando o Relatorio',.F. )
 EndIF	
@@ -85,20 +85,20 @@ Local oReport
 Local oImp
 Local oTot
 
-oReport := TReport():New("FIS20","Relatorio FUNDEPEC - GO",,{|oReport| PrintReport(oReport)},"Relatorio FUNDEPEC - GO")
+oReport := TReport():New("FIS20","Relatório FUNDEPEC - GO",,{|oReport| PrintReport(oReport)},"Relatorio FUNDEPEC - GO")
 oReport:SetLandscape()                        
 //oReport:SetPortrait()
 oImp := TRSection():New(oReport,"Detalhes","")
 oTot := TRSection():New(oReport,"Total","")
 TRCell():New(oIMP,"rFilial"      ,,"Filial"      ,,TamSX3("D1_FILIAL")[1],.F.,) 
-TRCell():New(oIMP,"rEmissao"     ,,"Emissao"     ,,TamSX3("D1_EMISSAO")[1],.F.,) 
+TRCell():New(oIMP,"rEmissao"     ,,"Emissão"     ,,TamSX3("D1_EMISSAO")[1],.F.,) 
 TRCell():New(oIMP,"rDoc"         ,,"NF"          ,,TamSX3("D1_DOC")[1],.F.,) 
-TRCell():New(oImp,"rSerie"       ,,"Serie"       ,,TamSX3("D1_SERIE")[1],.F.,) 
+TRCell():New(oImp,"rSerie"       ,,"Série"       ,,TamSX3("D1_SERIE")[1],.F.,) 
 TRCell():New(oImp,"rFornece"     ,,"Fornecedor"  ,,TamSX3("D1_FORNECE")[1],.F.,)
 TRCell():New(oImp,"rLoja"        ,,"Loja"        ,,TamSX3("D1_LOJA")[1],.F.,) 
 TRCell():New(oImp,"rNome"        ,,"Nome"        ,,TamSX3("A2_NOME")[1],.F.,)
-TRCell():New(oIMP,"rCod"         ,,"Codigo"      ,,TamSX3("D1_COD")[1],.F.,) 
-TRCell():New(oIMP,"rDesc"        ,,"Descricao"   ,,TamSX3("B1_DESC")[1],.F.,) 
+TRCell():New(oIMP,"rCod"         ,,"Código"      ,,TamSX3("D1_COD")[1],.F.,) 
+TRCell():New(oIMP,"rDesc"        ,,"Descrição"   ,,TamSX3("B1_DESC")[1],.F.,) 
 TRCell():New(oIMP,"rQuant"       ,,"Quant."      ,,TamSX3("D1_QUANT")[1],.F.,) 
 TRCell():New(oImp,"rVunit"       ,,"V. Unit"     ,,TamSX3("D1_VUNIT")[1],.F.,) 
 TRCell():New(oImp,"rBase"        ,,"Base"        ,,TamSX3("D1_BASIMPF")[1],.F.,)

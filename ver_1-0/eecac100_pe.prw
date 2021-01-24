@@ -2,24 +2,26 @@
 
 /*
 ==========================================================================================
-Programa.:              MA030BUT
+Programa.:              EECAC100
 Autor....:              Leonardo Kume
 Data.....:              Nov/2016
-Descricao / Objetivo:   Ponto de entrada para adicionar botao nas acoes relacionadas do 
-  						cadastro do cliente
+Descricao / Objetivo:   Ponto de entrada para adicionar botão nas ações relacionadas do 
+						cadastro do cliente
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso........:            Marfrig
+Historico..:            Em 06/07/20 RVBJ - Ajustei para padrao Marfrig
 ==========================================================================================
 */
-
-
 User Function EECAC100()
 
-Local aBotao := {} 
+If Findfunction("U_MGFEEC2A")
+	U_MGFEEC2A()
+Endif
 
-u_MGFEEC2A(@aBotao)
+If Findfunction("U_EEC83ADIAN")
+	U_EEC83ADIAN()                                                                  
+Endif
 
-
-Return aBotao
+Return
 

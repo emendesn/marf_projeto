@@ -13,7 +13,7 @@ Data................: 07/06/2017
 Descricao / Objetivo: PE para gravar dados bancarios do fornecedor na fatura gerada 
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

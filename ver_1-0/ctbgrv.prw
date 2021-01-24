@@ -5,10 +5,10 @@
 Programa............: CTBGRV
 Autor...............: Marcelo Carneiro
 Data................: 13/03/2018
-Descricao / Objetivo: O ponto de entrada CTBGRV Para alterar o campo CT2_DTCV3 para os lacamento de tipo de Valor
+Descrição / Objetivo: O ponto de entrada CTBGRV Para alterar o campo CT2_DTCV3 para os laçamento de tipo de Valor
 Doc. Origem.........: Tipo de Valor
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/display/public/mp/ANCTB102GR+-+Tratativa+do+temporario+--+10926
 =====================================================================================
 */

@@ -10,15 +10,15 @@ STATIC CVERSAO
 Programa............: MGFCOM06
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Cadastro de Grade de Aprovacao
+Descrição / Objetivo: Cadastro de Grade de Aprovação
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de Grade
 ==============================================================================================================  
-Data da alteracao............: 04/12/2018
+Data da alteração............: 04/12/2018
 Autor........................: Caroline Cazela (caroline.cazela@totvspartners.com.br)
-Descricao da alteracao.......: Inclusao de grade de lanï¿½amentos contï¿½beis. Utiliza as tabelas ZAB, ZAD e ZA0.
+Descrição da alteração.......: Inclusão de grade de lançamentos contábeis. Utiliza as tabelas ZAB, ZAD e ZA0.
 ==============================================================================================================
 */ 
 User Function MGFCOM06()
@@ -31,11 +31,11 @@ User Function MGFCOM06()
 	oMBrowse:= FWmBrowse():New()
 	
 	oMBrowse:AddLegend( "ZAB_HOMOLO == 'S'", "GREEN"  , "Grade Ativa" )
-	oMBrowse:AddLegend( "ZAB_HOMOLO == 'N' .and. Empty(ZAB_VERSAO) ", "YELLOW" , "Em Ediï¿½ï¿½o" )
-	oMBrowse:AddLegend( "ZAB_HOMOLO == 'N' .and. !Empty(ZAB_VERSAO) ", "RED"    , "Versï¿½o Anterior" )
+	oMBrowse:AddLegend( "ZAB_HOMOLO == 'N' .and. Empty(ZAB_VERSAO) ", "YELLOW" , "Em Edição" )
+	oMBrowse:AddLegend( "ZAB_HOMOLO == 'N' .and. !Empty(ZAB_VERSAO) ", "RED"    , "Versão Anterior" )
 	
 	oMBrowse:SetAlias("ZAB")
-	oMBrowse:SetDescription("Grade de Aprovacao")
+	oMBrowse:SetDescription("Grade de Aprovação")
 	
 	oMBrowse:SetMenuDef('MGFCOM06')
 	
@@ -48,11 +48,11 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -64,7 +64,7 @@ Static Function MenuDef()
 	ADD OPTION aRotina TITLE "Incluir"    			ACTION "U_xMGC6Incl"  OPERATION MODEL_OPERATION_INSERT ACCESS 0
 	ADD OPTION aRotina TITLE "Alterar"    			ACTION "U_xMGC6Alt"   OPERATION MODEL_OPERATION_UPDATE ACCESS 0
 	ADD OPTION aRotina TITLE "Excluir"    			ACTION "U_xMGC6Exc"   OPERATION MODEL_OPERATION_DELETE ACCESS 0
-	ADD OPTION aRotina TITLE "Gerar Nova Versï¿½o"    ACTION "U_xMGC6Cop"   OPERATION 9 					   ACCESS 0
+	ADD OPTION aRotina TITLE "Gerar Nova Versão"    ACTION "U_xMGC6Cop"   OPERATION 9 					   ACCESS 0
 	ADD OPTION aRotina TITLE "Copia para outro CC"  ACTION "U_xMGC6CC"	  OPERATION 9 					   ACCESS 0
 	ADD OPTION aRotina TITLE "Homologar"  			ACTION "U_xM06Homl"   OPERATION 7					   ACCESS 0
 	
@@ -75,11 +75,11 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro de Grade
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro de Grade
 =====================================================================================
 */
 Static Function ModelDef()
@@ -90,7 +90,7 @@ Static Function ModelDef()
 	Local oStrZAC 	:= FWFormStruct(1,"ZAC")
 	Local oStrZAD 	:= FWFormStruct(1,"ZAD")
 	Local oStrZAE 	:= FWFormStruct(1,"ZAE") 
-	Local oStrZA0 	:= FWFormStruct(1,"ZA0") // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	Local oStrZA0 	:= FWFormStruct(1,"ZA0") // Alteração Caroline Cazela 03/12/18 - Contabilidade
 	
 	If ValType(LCOPY) == 'U'
 		LCOPY := .F.
@@ -144,17 +144,17 @@ Static Function ModelDef()
 		oModel:GetModel( "ZAEDETAIL" ):SetUniqueLine({"ZAE_NATURE"})
 		oModel:GetModel( "ZADDETAIL" ):SetUniqueLine({"ZAD_NIVEL"})
 		
-	ElseIf MV_PAR01 == 4 //Solicitacao ao Armazem
+	ElseIf MV_PAR01 == 4 //Solicitação ao Armazém
 		
 		oModel:AddGrid("ZADDETAIL","ZABMASTER",oStrZAD, /*bLinePreValid*/, /*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/ )
 		oModel:SetRelation("ZADDETAIL",{{"ZAD_FILIAL","xFilial('ZAD')"},{"ZAD_CODIGO","ZAB_CODIGO"},{"ZAD_VERSAO","ZAB_VERSAO"}},ZAD->(IndexKey(2)))
 		
-		oModel:SetDescription("Grade Solicitacao ao Armazem")
+		oModel:SetDescription("Grade Solicitação ao Armazém")
 		oModel:SetPrimaryKey({"ZAB_FILIAL","ZAB_CODIGO","ZAB_VERSAO"})
 		
 		oModel:GetModel( "ZADDETAIL" ):SetUniqueLine({"ZAD_NIVEL"})
 	
-	ElseIf MV_PAR01 == 5 //Lancamento Contï¿½bil // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf MV_PAR01 == 5 //Lançamento Contábil // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		
 		oModel:AddGrid("ZA0DETAIL","ZABMASTER",oStrZA0, /*bLinePreValid*/, /*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/ )
 		oModel:AddGrid("ZADDETAIL","ZA0DETAIL",oStrZAD, /*bLinePreValid*/, /*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/ )
@@ -162,7 +162,7 @@ Static Function ModelDef()
 		oModel:SetRelation("ZA0DETAIL",{{"ZA0_FILIAL","xFilial('ZA0')"},{"ZA0_CODIGO","ZAB_CODIGO"},{"ZA0_VERSAO","ZAB_VERSAO"}},ZA0->(IndexKey(1)))
 		oModel:SetRelation("ZADDETAIL",{{"ZAD_FILIAL","xFilial('ZAD')"},{"ZAD_CODIGO","ZA0_CODIGO"},{"ZAD_VERSAO","ZA0_VERSAO"},{"ZAD_EMPFIL","ZA0_EMPFIL"},{"ZAD_CDUSER","ZA0_CDUSER"}},ZAD->(IndexKey(4)))
 		
-		oModel:SetDescription("Grade Contï¿½bil")
+		oModel:SetDescription("Grade Contábil")
 		oModel:SetPrimaryKey({"ZAB_FILIAL","ZAB_CODIGO","ZAB_VERSAO"})
 		
 		oModel:GetModel( "ZADDETAIL" ):SetUniqueLine({"ZAD_NIVEL"})	
@@ -177,11 +177,11 @@ Return oModel
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizasao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()
@@ -194,13 +194,13 @@ Static Function ViewDef()
 	Local cFldZAC	:= 'ZAC_CODIGO|ZAC_VERSAO|ZAC_CODGAP'
 	Local cFldZAD	:= 'ZAD_CODIGO|ZAD_VERSAO|ZAD_GRPPRD|ZAD_NATURE|ZAD_TPAPR|ZAD_EMPFIL|ZAD_CDUSER'
 	Local cFldZAE	:= 'ZAE_CODIGO|ZAE_VERSAO|ZAE_CODGAP'  
-	Local cFldZA0	:= 'ZA0_CODIGO|ZA0_VERSAO'  // Alteracao Joni 22/01/19 - Contabilidade
+	Local cFldZA0	:= 'ZA0_CODIGO|ZA0_VERSAO'  // Alteração Joni 22/01/19 - Contabilidade
 	
 	Local oStrZAB 	:= FWFormStruct( 2, "ZAB",{|cCampo|!(AllTrim(cCampo) $ cFldZAB)})
 	Local oStrZAC 	:= FWFormStruct( 2, "ZAC",{|cCampo|!(AllTrim(cCampo) $ cFldZAC)})
 	Local oStrZAD 	:= FWFormStruct( 2, "ZAD",{|cCampo|!(AllTrim(cCampo) $ cFldZAD)})
 	Local oStrZAE	:= FWFormStruct( 2, "ZAE",{|cCampo|!(AllTrim(cCampo) $ cFldZAE)})
-	Local oStrZA0	:= FWFormStruct( 2, "ZA0",{|cCampo|!(AllTrim(cCampo) $ cFldZA0)}) // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	Local oStrZA0	:= FWFormStruct( 2, "ZA0",{|cCampo|!(AllTrim(cCampo) $ cFldZA0)}) // Alteração Caroline Cazela 03/12/18 - Contabilidade
 	
 	oStrZAD:SetProperty( 'ZAD_SEQ' , MVC_VIEW_CANCHANGE,.F.)
 	
@@ -231,7 +231,7 @@ Static Function ViewDef()
 		oView:AddGrid( 'VIEW_ZAD' , oStrZAD, 'ZADDETAIL' )
 		
 		
-	ElseIf MV_PAR01 == 4 //.or. ZAB->ZAB_TIPO =='S'//Solicitacao ao Armazem
+	ElseIf MV_PAR01 == 4 //.or. ZAB->ZAB_TIPO =='S'//Solicitação ao Armazém
 		
 		oView:AddGrid( 'VIEW_ZAD' , oStrZAD, 'ZADDETAIL' )
 		
@@ -240,7 +240,7 @@ Static Function ViewDef()
 		
 		oView:SetOwnerView( 'VIEW_ZAB', 'SUPERIOR' )
 		oView:SetOwnerView( 'VIEW_ZAD', 'INFERIOR' )
-	ElseIf MV_PAR01 == 5 // Alteracao Caroline Cazela 03/12/18 - Contabilidade  
+	ElseIf MV_PAR01 == 5 // Alteração Caroline Cazela 03/12/18 - Contabilidade  
    		//oStrZAB:RemoveField('ZAB_CC')    
    		
 		oView:AddGrid( 'VIEW_ZAD' , oStrZAD, 'ZADDETAIL' )
@@ -275,11 +275,11 @@ Return oView
 Programa............: xMGC6Activ
 Autor...............: Joni Lima
 Data................: 29/12/2016
-Descricao / Objetivo: Utilizado na Ativacao do Modelo
+Descrição / Objetivo: Utilizado na Ativação do Modelo
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Foi feito tratamento para copia de Grade
+Uso.................: Marfrig
+Obs.................: Foi feito tratamento para cópia de Grade
 =====================================================================================
 */
 Static Function xMGC6Activ(oModel,lCont)
@@ -302,7 +302,7 @@ Static Function xMGC6Activ(oModel,lCont)
 	
 	If FUNNAME() =='MGFCOM06' .and. oModel:GetOperation() == MODEL_OPERATION_INSERT
 		
-		//Quando Cï¿½pia
+		//Quando Cópia
 		If LCOPY
 			
 			oMdlZAB := oModel:GetModel('ZABMASTER')
@@ -444,7 +444,7 @@ Static Function xMGC6Activ(oModel,lCont)
 					oMdlZAD:LoadValue('ZAD_CODIGO','')
 					oMdlZAD:LoadValue('ZAD_VERSAO','')
 				Next ni 
-			ElseIf MV_PAR01 == 5 // Alteracao Caroline Cazela 03/12/18 - Contabilidade	
+			ElseIf MV_PAR01 == 5 // Alteração Caroline Cazela 03/12/18 - Contabilidade	
 				oMdlZA0 := oModel:GetModel('ZA0DETAIL')
 				oMdlZAD := oModel:GetModel('ZADDETAIL')
 				
@@ -536,7 +536,7 @@ Static Function xMGC6Activ(oModel,lCont)
 			Next ni
 			
 			oMdlZAD:GoLine(1)
-        ElseIf MV_PAR01 == 5// Alteracao Caroline Cazela 03/12/18 - Contabilidade
+        ElseIf MV_PAR01 == 5// Alteração Caroline Cazela 03/12/18 - Contabilidade
         	oMdlZA0 := oModel:GetModel('ZA0DETAIL')
 			oMdlZAD := oModel:GetModel('ZADDETAIL')
 			
@@ -565,11 +565,11 @@ Return .T.
 Programa............: xMGF6Ver
 Autor...............: Joni Lima
 Data................: 29/12/2016
-Descricao / Objetivo: Verifica a ultima versï¿½o e traz a nova
+Descrição / Objetivo: Verifica a ultima versão e traz a nova
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Retorna a proxima Versï¿½o
+Uso.................: Marfrig
+Obs.................: Retorna a proxima Versão
 =====================================================================================
 */
 User Function xMGF6Ver(cCod)
@@ -609,11 +609,11 @@ Return cRet
 Programa............: xMGC06PRCOD
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realiza o Gatilho do Campo ZAB_CODIGO
+Descrição / Objetivo: Realiza o Gatilho do Campo ZAB_CODIGO
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Preenche o modelo filho do modelo ZABMASTER com o Codigo.
+Uso.................: Marfrig
+Obs.................: Preenche o modelo filho do modelo ZABMASTER com o Código.
 =====================================================================================
 */
 User Function xMGC06PRCOD(cCod)
@@ -677,7 +677,7 @@ User Function xMGC06PRCOD(cCod)
 		Next ni
 		
 		oMdlZAD:GoLine(1)
-	ElseIf MV_PAR01 == 5 // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf MV_PAR01 == 5 // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		
 		oMdlZA0 := oModel:GetModel('ZA0DETAIL')
 		
@@ -700,10 +700,10 @@ Return cCod
 Programa............: xMGC6NPCOD
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realiza o Gatilho do Campo ZAC_GRPPRD
+Descrição / Objetivo: Realiza o Gatilho do Campo ZAC_GRPPRD
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche o modelo Neto do modelo ZACDetail com o Grupo de Produto.
 =====================================================================================
 */
@@ -737,10 +737,10 @@ Return cCod
 Programa............: xMGC6NatN
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realiza o Gatilho do Campo ZAE_NATURE
+Descrição / Objetivo: Realiza o Gatilho do Campo ZAE_NATURE
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche o modelo Neto do modelo ZAEDetail com a Natureza.
 =====================================================================================
 */
@@ -774,10 +774,10 @@ Return cCod
 Programa............: xMGC6NPGP
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realiza o Gatilho do Campo ZAC_GRPPRD
+Descrição / Objetivo: Realiza o Gatilho do Campo ZAC_GRPPRD
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche o modelo Neto do modelo ZACDetail com a Grupo e Natureza.
 =====================================================================================
 */
@@ -811,10 +811,10 @@ Return cGrpProd
 Programa............: xMGC6EMPF
 Autor...............: Joni Lima
 Data................: 22/01/2019
-Descricao / Objetivo: Realiza o Gatilho do Campo ZA0_EMPFIL
+Descrição / Objetivo: Realiza o Gatilho do Campo ZA0_EMPFIL
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche o modelo Neto do modelo ZA0Detail com a Filial
 =====================================================================================
 */
@@ -848,10 +848,10 @@ Return cEmpFil
 Programa............: xMGC6CDUS
 Autor...............: Joni Lima
 Data................: 22/01/2019
-Descricao / Objetivo: Realiza o Gatilho do Campo ZA0_CDUSER
+Descrição / Objetivo: Realiza o Gatilho do Campo ZA0_CDUSER
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche o modelo Neto do modelo ZA0Detail com o Usuario.
 =====================================================================================
 */
@@ -886,10 +886,10 @@ Return cCdUser
 Programa............: xMGC6IniTP
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Inicializaï¿½ï¿½o Padrao do TIPO de Grade
+Descrição / Objetivo: Inicialização Padrão do TIPO de Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica conforme o parametro o Valor para o Tipo
 =====================================================================================
 */
@@ -905,7 +905,7 @@ User Function xMGC6IniTP()
 		cRet := 'C'
 	ElseIf MV_PAR01 == 4
 		cRet := 'S'     
-	ElseIf MV_PAR01 == 5 // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf MV_PAR01 == 5 // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		cRet := 'L'
 	EndIf
 	
@@ -916,10 +916,10 @@ Return cRet
 Programa............: xMG6VlCod
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realiza a Validacao do Codigo da Grade
+Descrição / Objetivo: Realiza a Validação do Código da Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Utilizado no campo ZAB_CODIGO
 =====================================================================================
 */
@@ -937,7 +937,7 @@ User Function xMG6VlCod(oMdlZAB,cFld,xValue)
 			
 			lRet := .F.
 			oMdlZAB:GetModel():SetErrorMessage(oMdlZAB:GetId(),cFld,oMdlZAB:GetModel():GetId(),cFld,cFld,;
-				"Jï¿½ Existe esse Codigo (Tipo +  Centro de Custo)", "Para realizar manutencao no registro sera necessario realizar uma revisao da Grade" + oMdlZAB:GetValue('ZAB_TIPO') + xValue )
+				"Já Existe esse Código (Tipo +  Centro de Custo)", "Para realizar manutenção no registro sera necessario realizar uma revisão da Grade" + oMdlZAB:GetValue('ZAB_TIPO') + xValue )
 		EndIf
 	EndIf
 	RestArea(aAreaZAB)
@@ -950,11 +950,11 @@ Return lRet
 Programa............: xMGC6Incl
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar a inclusao de uma Grade
+Descrição / Objetivo: Realizar a inclusão de uma Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Abre tela de inclusao
+Uso.................: Marfrig
+Obs.................: Abre tela de inclusão
 =====================================================================================
 */
 User Function xMGC6Incl()
@@ -963,7 +963,7 @@ User Function xMGC6Incl()
 	Local aButtons := {{.F.,Nil},{.F.,Nil},{.F.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,"Salvar"},{.T.,"Cancelar"},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil},{.T.,Nil}}
 	
 	If Pergunte(cPerg,.T.)
-		FWExecView('Inclusao Grade','MGFCOM06', MODEL_OPERATION_INSERT, , { || .T. }, , ,aButtons )
+		FWExecView('Inclusão Grade','MGFCOM06', MODEL_OPERATION_INSERT, , { || .T. }, , ,aButtons )
 	EndIf
 	
 Return
@@ -973,11 +973,11 @@ Return
 Programa............: xMGC6Alt
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar a Alteracao da Grade
+Descrição / Objetivo: Realizar a Alteração da Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Abre tela de Alteracao
+Uso.................: Marfrig
+Obs.................: Abre tela de Alteração
 =====================================================================================
 */
 User Function xMGC6Alt()
@@ -995,7 +995,7 @@ User Function xMGC6Alt()
 		nTp := 3
 	ElseIf cTp == 'S'
 		nTp := 4 
-	ElseIf cTp == 'L' // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf cTp == 'L' // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		nTp := 5
 	EndIf
 	
@@ -1004,9 +1004,9 @@ User Function xMGC6Alt()
 		Pergunte(cPerg,.F.)
 		MV_PAR01 := nTp
 		
-		FWExecView('Alteracao Grade','MGFCOM06', MODEL_OPERATION_UPDATE, , { || .T. }, , ,aButtons )
+		FWExecView('Alteração Grade','MGFCOM06', MODEL_OPERATION_UPDATE, , { || .T. }, , ,aButtons )
 	Else
-		Alert('Sï¿½ ï¿½ Permitida a alteracao das Grades que nao estao homologadas')
+		Alert('Só é Permitida a alteração das Grades que não estão homologadas')
 	EndIf
 Return
 
@@ -1015,11 +1015,11 @@ Return
 Programa............: xMGC6Exc
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar Exclusao da Grade
+Descrição / Objetivo: Realizar Exclusão da Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Abre tela de Exclusao
+Uso.................: Marfrig
+Obs.................: Abre tela de Exclusão
 =====================================================================================
 */
 User Function xMGC6Exc()
@@ -1037,7 +1037,7 @@ User Function xMGC6Exc()
 		nTp := 3
 	ElseIf cTp == 'S'
 		nTp := 4  
-	ElseIf cTp == 'L'  // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf cTp == 'L'  // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		nTp := 5
 	EndIf
 	
@@ -1045,9 +1045,9 @@ User Function xMGC6Exc()
 		Pergunte(cPerg,.F.)
 		MV_PAR01 := nTp
 		
-		FWExecView('Exclusao Grade','MGFCOM06', MODEL_OPERATION_DELETE, , { || .T. }, , ,aButtons )
+		FWExecView('Exclusão Grade','MGFCOM06', MODEL_OPERATION_DELETE, , { || .T. }, , ,aButtons )
 	Else
-		Alert('Sï¿½ ï¿½ Possivel realizar a Exclusao de Grades que nao estejam homologadas')
+		Alert('Só é Possivel realizar a Exclusão de Grades que não estejam homologadas')
 	EndIf
 	
 Return
@@ -1057,11 +1057,11 @@ Return
 Programa............: xMGC6Vis
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar visualizasao da Grade
+Descrição / Objetivo: Realizar visualização da Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Abre tela de Visualizacao
+Uso.................: Marfrig
+Obs.................: Abre tela de Visualização
 =====================================================================================
 */
 User Function xMGC6Vis()
@@ -1079,14 +1079,14 @@ User Function xMGC6Vis()
 		nTp := 3
 	ElseIf cTp == 'S'
 		nTp := 4 
-	ElseIf cTp == 'L'  // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf cTp == 'L'  // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		nTp := 5
 	EndIf
 	
 	Pergunte(cPerg,.F.)
 	MV_PAR01 := nTp
 	
-	FWExecView('Visualizacao Grade','MGFCOM06', MODEL_OPERATION_VIEW, , { || .T. }, , ,aButtons )
+	FWExecView('Visualização Grade','MGFCOM06', MODEL_OPERATION_VIEW, , { || .T. }, , ,aButtons )
 	
 Return
 
@@ -1095,11 +1095,11 @@ Return
 Programa............: xMGC6Cop
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar Geracao de uma nova versï¿½o para uma Grade
+Descrição / Objetivo: Realizar Geração de uma nova versão para uma Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Gera uma nova versï¿½o da Grade
+Uso.................: Marfrig
+Obs.................: Gera uma nova versão da Grade
 =====================================================================================
 */
 User Function xMGC6Cop()
@@ -1129,7 +1129,7 @@ User Function xMGC6Cop()
 				nTp := 3
 			ElseIf cTp == 'S'
 				nTp := 4
-			ElseIf cTp == 'L'  // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+			ElseIf cTp == 'L'  // Alteração Caroline Cazela 03/12/18 - Contabilidade
 	  			nTp := 5	
 			EndIf
 			
@@ -1141,10 +1141,10 @@ User Function xMGC6Cop()
 			FWExecView('Copia da Grade','MGFCOM06', 9, , { || .T. }, , ,aButtons )
 			
 		Else
-			Alert('Jï¿½ existe uma grade em edicao para esse codigo: ' + cCod)
+			Alert('Já existe uma grade em edição para esse código: ' + cCod)
 		EndIf
 	Else
-		Alert('Sï¿½ ï¿½ possivel gerar uma nova versï¿½o de grade da ultima versï¿½o homologada')
+		Alert('Só é possivel gerar uma nova versão de grade da ultima versão homologada')
 	EndIf
 	LCOPY := .F.
 	
@@ -1157,10 +1157,10 @@ Return
 Programa............: xMGC6CopCC
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar a Copia Para um Novo Centro de Custo
+Descrição / Objetivo: Realizar a Copia Para um Novo Centro de Custo
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza a Copia
 =====================================================================================
 */
@@ -1179,28 +1179,28 @@ User Function xMGC6CC()
 	Local lContinua := .T.	
 
 	If !Empty( ZAB->ZAB_VERSAO )
-		Help( ,, 'Grade - Cï¿½pia',, 'Selecione Grade Em Ediï¿½ï¿½o para geracao de cï¿½pias', 1, 0 )
+		Help( ,, 'Grade - Cópia',, 'Selecione Grade Em Edição para geração de cópias', 1, 0 )
 		RestArea( aArea )
 		Return
 	EndIf
 
 	/*
 	1 - MsGet
-	[2] : Descricao
+	[2] : Descrição
 	[3] : String contendo o inicializador do campo
 	[4] : String contendo a Picture do campo
-	[5] : String contendo a validacao
+	[5] : String contendo a validação
 	[6] : Consulta F3
-	[7] : String contendo a validacao When
+	[7] : String contendo a validação When
 	[8] : Tamanho do MsGet
-	[9] : Flag .T./.F. Parametro Obrigatorio ?
+	[9] : Flag .T./.F. Parâmetro Obrigatório ?
 	*/
 	
 	aAdd( aPergs ,{1,"Centro de Custo De  : ",cCusIni,"@!",'.T.',"CTT",'.T.',50,.T.})
-	aAdd( aPergs ,{1,"Centro de Custo Ate : ",cCusFim,"@!",'.T.',"CTT",'.T.',50,.T.})
+	aAdd( aPergs ,{1,"Centro de Custo Até : ",cCusFim,"@!",'.T.',"CTT",'.T.',50,.T.})
 	
-	If !ParamBox(aPergs ,"Grade - Parametros de Cï¿½pia",aRet)
-		Help( ,, 'Grade - Cï¿½pia',, 'Processamento Cancelado', 1, 0 )
+	If !ParamBox(aPergs ,"Grade - Parametros de Cópia",aRet)
+		Help( ,, 'Grade - Cópia',, 'Processamento Cancelado', 1, 0 )
 		RestArea( aArea )
 		Return
 	EndIf
@@ -1230,8 +1230,8 @@ User Function xMGC6CC()
 	
 		DbEval( {|| nCnt++ })              // Conta quantos sao os registros retornados pelo Select.
 			
-		If MsgYesNo("Existe(m) "+AllTrim(Str(nCnt))+" grade(s) em edicao no intervalo selecionado"+CRLF+;
-					"Deseja sobrepor as informacoes existentes?","Cï¿½pia de Grade")
+		If MsgYesNo("Existe(m) "+AllTrim(Str(nCnt))+" grade(s) em edição no intervalo selecionado"+CRLF+;
+					"Deseja sobrepor as informações existentes?","Cópia de Grade")
 			
 			(cNextAlias)->(DbGoTop())
 			
@@ -1539,10 +1539,10 @@ Return
 Programa............: xMGC6CopCC
 Autor...............: Joni Lima
 Data................: 28/12/2016
-Descricao / Objetivo: Realizar a Copia Para um Novo Centro de Custo
+Descrição / Objetivo: Realizar a Copia Para um Novo Centro de Custo
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza a Copia
 =====================================================================================
 */
@@ -1561,7 +1561,7 @@ User Function _xMGC6CC()
 		nTp := 3
 	ElseIf cTp == 'S'
 		nTp := 4 
-	ElseIf cTp == 'L'   // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+	ElseIf cTp == 'L'   // Alteração Caroline Cazela 03/12/18 - Contabilidade
 		nTp := 5
 	EndIf
 	
@@ -1579,7 +1579,7 @@ Return
 Programa............: xAtZABAnt
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: Atualiza os dados da tabela ZAB antes de homologar
+Descrição / Objetivo: Atualiza os dados da tabela ZAB antes de homologar
 =====================================================================================
 */
 Static Function xAtZABAnt(cCod,cVersao)
@@ -1617,21 +1617,21 @@ User Function xM06Homl()
 	
 	/*
 	1 - MsGet
-	[2] : Descricao
+	[2] : Descrição
 	[3] : String contendo o inicializador do campo
 	[4] : String contendo a Picture do campo
-	[5] : String contendo a validacao
+	[5] : String contendo a validação
 	[6] : Consulta F3
-	[7] : String contendo a validacao When
+	[7] : String contendo a validação When
 	[8] : Tamanho do MsGet
-	[9] : Flag .T./.F. Parametro Obrigatorio ?
+	[9] : Flag .T./.F. Parâmetro Obrigatório ?
 	*/
 	
 	aAdd( aPergs ,{1,"Centro de Custo De  : ",cCusIni,"@!",'.T.',"CTT",'.T.',50,.T.})
-	aAdd( aPergs ,{1,"Centro de Custo Ate : ",cCusFim,"@!",'.T.',"CTT",'.T.',50,.T.})
+	aAdd( aPergs ,{1,"Centro de Custo Até : ",cCusFim,"@!",'.T.',"CTT",'.T.',50,.T.})
 	
-	If !ParamBox(aPergs ,"Grade - Parametros de Homologaï¿½ï¿½o",aRet)
-		Help( ,, 'Grade - Homologaï¿½ï¿½o',, 'Processamento Cancelado', 1, 0 )
+	If !ParamBox(aPergs ,"Grade - Parametros de Homologação",aRet)
+		Help( ,, 'Grade - Homologação',, 'Processamento Cancelado', 1, 0 )
 		RestArea( aArea )
 		Return
 	EndIf
@@ -1665,7 +1665,7 @@ User Function xM06Homl()
 		EndDo
 		
 	Else
-		Help( ,, 'Grade - Homologaï¿½ï¿½o',, 'Nao  existem registros para os parametros informados!', 1, 0 )
+		Help( ,, 'Grade - Homologação',, 'Não existem registros para os parâmetros informados!', 1, 0 )
 	EndIf
 	
 	dbSelectArea(cNextAlias)
@@ -1680,7 +1680,7 @@ Return
 Programa............: xHomologar
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: Realiza a Homologaï¿½ï¿½o da grade
+Descrição / Objetivo: Realiza a Homologação da grade
 =====================================================================================
 */
 User Function xHomologar()
@@ -1775,7 +1775,7 @@ Static Function xAtVers(cCod,cVersao,cNewVers)
 			nTp := 3
 		ElseIf cTp == 'S'
 			nTp := 4   
-		ElseIf cTp == 'L'  // Alteracao Caroline Cazela 03/12/18 - Contabilidade
+		ElseIf cTp == 'L'  // Alteração Caroline Cazela 03/12/18 - Contabilidade
 			nTp := 5
 		EndIf
 		
@@ -2163,12 +2163,12 @@ Static Function xMGC6GRVGA(lInsert,lPedCom,lSolic,lConPag,aDados)
 		
 		cDesc := SubStr(aDados[1][1][2],1,TamSx3('AL_DESC')[1])
 		
-		//Codigo
+		//Código
 		//oMdlSAL:SetValue('AL_FILIAL',aDados[1][1][1])
 		//oMdlSAL:SetValue('AL_COD',aDados[1][1][2])
 		oMdlSAL:SetValue('AL_DESC',cDesc)
 		
-		//Setar quais liberacao
+		//Setar quais liberação
 		oMdlSAL:SetValue('AL_DOCAE',.F.)
 		oMdlSAL:SetValue('AL_DOCCO',.F.)
 		oMdlSAL:SetValue('AL_DOCCP',.F.)
@@ -2176,13 +2176,13 @@ Static Function xMGC6GRVGA(lInsert,lPedCom,lSolic,lConPag,aDados)
 		oMdlSAL:SetValue('AL_DOCNF',.F.)
 		oMdlSAL:SetValue('AL_DOCPC',lPedCom)//Pedido de Compra
 		oMdlSAL:SetValue('AL_DOCSA',.F.)
-		oMdlSAL:SetValue('AL_DOCSC',lSolic)//Solicitacao de Compra
+		oMdlSAL:SetValue('AL_DOCSC',lSolic)//Solicitação de Compra
 		oMdlSAL:SetValue('AL_DOCST',.F.)
 		oMdlSAL:SetValue('AL_DOCIP',.F.)
 		oMdlSAL:SetValue('AL_DOCCT',.F.)
 		oMdlSAL:SetValue('AL_DOCGA',.F.)
 		
-		//Grade de Aprovacao
+		//Grade de Aprovação
 		For ni := 1 to Len(aDados[1])
 			
 			If ni > 1
@@ -2248,7 +2248,7 @@ Static Function xInsSAL(lInsert,lPedCom,lSolic,lConPag,aDados)
 	Default lPedCom := .F.
 	Default lConPag	:= .F.
 	
-	//Grade de Aprovacao
+	//Grade de Aprovação
 	For ni := 1 to Len(aDados[1])
 		
 		cInsSAL := "INSERT INTO " + RetSQLName("SAL")
@@ -2420,7 +2420,7 @@ Return lRet
 Programa............: xMG6VlUs
 Autor...............: Joni Lima
 Data................: 29/01/2019
-Descricao / Objetivo: Realiza a Validacao do Usuario da grade
+Descrição / Objetivo: Realiza a Validação do Usuario da grade
 Obs.................: Utilizado no campo ZA0_EMPFIL e ZA0_CDUSER
 =====================================================================================
 */
@@ -2448,7 +2448,7 @@ User Function xMG6VlUs(oMdlZCU,cFld,xValue,nLin)
 			If !(ZCU->(dbSeek(cxEmpFil + cxUser)))
 				lRet := .F.
 				oMdlZCU:GetModel():SetErrorMessage(oMdlZCU:GetId(),cFld,oMdlZCU:GetModel():GetId(),cFld,cFld,;
-					"Nao  Existe cadastro de Limite para esse usuario nessa filial", "Favor realizar o cadastro do limite para esse usuario nessa filial")
+					"Não Existe cadastro de Limite para esse usuario nessa filial", "Favor realizar o cadastro do limite para esse usuario nessa filial")
 			EndIf
 		EndIf
 	EndIf
@@ -2463,8 +2463,8 @@ Return lRet
 Programa............: xMG6ExUs
 Autor...............: Joni Lima
 Data................: 30/01/2019
-Descricao / Objetivo: Verifica se Existe Grade cadastrada para o usuario na Filial
-Obs.................: Utilizado nas validacoes de Inclusao de contabilizaï¿½ï¿½es txt e automaticas(Manuais)
+Descrição / Objetivo: Verifica se Existe Grade cadastrada para o usuario na Filial
+Obs.................: Utilizado nas validações de Inclusão de contabilizações txt e automaticas(Manuais)
 =====================================================================================
 */
 User Function xMG6ExUs()
@@ -2475,7 +2475,7 @@ User Function xMG6ExUs()
 	Local cxUser		:= Alltrim(RetCodUsr())
 	
 	Local cUsDireto		:= SuperGetMV("MGF_CTB25A",.F.,"000000")
-	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que nao passaram pela grade de aprovacao.
+	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que não passaram pela grade de aprovação.
 
 	
 	If !(cxUser $ cUsDireto .OR. cEmpAnt $ cEmpDireto)  //Verifica se usuario ou Grupo de empresa passa direto
@@ -2512,7 +2512,7 @@ User Function xMG6ExUs()
 		EndDo
 		
 		If !lRet
-			MSGALERT( 'O Seu usuario nao esta cadatrado em Grade de aprovacao para essa Filial, para realizar esse processo favor cadastrar uma Grade para essa filial', 'Grade de Usuario nao cadastrada' )
+			MSGALERT( 'O Seu usuario não está cadatrado em Grade de aprovação para essa Filial, para realizar esse processo favor cadastrar uma Grade para essa filial', 'Grade de Usuario não cadastrada' )
 		EndIf
 	Else
 		lRet := .T.

@@ -13,6 +13,30 @@ Job de criação de pedidos de venda a partir da tabela ZC5
 /*/
 User function MGFFAT53(_cfiliais)
 
+Local _afiliais := StrTokArr(_cfiliais,",")
+local _nhh
+
+For _nhh := 1 to len(_afiliais)
+
+	cfilant := _afiliais[_nhh]
+	cfunname := "MGFFAT51"
+	_cfunname := "MGFFAT51"
+	MGFFAT53E(cfilant) //Executa criação de pedidos
+
+Next
+
+
+Return
+
+/*/
+=============================================================================
+{Protheus.doc} MGFFAT53
+Job de criação de pedidos de venda a partir da tabela ZC5
+@author TOTVS
+@since 14/01/2020
+/*/
+Static procedure MGFFAT53E(_cfiliais)
+
 	local nI				:= 0
 	local aSC5				:= {}
 	local aSC6				:= {}
@@ -43,22 +67,11 @@ User function MGFFAT53(_cfiliais)
 	private lMsErroAuto     := .F.
 	private lAutoErrNoFile  := .T. // Precisa estar como .T. para GetAutoGRLog() retornar o array com erros
 
-	if isBlind()
-		RPCSetType( 3 )
-
-		PREPARE ENVIRONMENT EMPRESA '01' FILIAL '010042'
-	else
-		_cfiliais := cFilAnt
-	endif
-
 	nTamProd	:= superGetMv( "MFG_WSS17A" , , 6 			)
 	cBlockRede	:= superGetMv( "MFG_WSS17B" , , "888888"	)
 	cBlockOrca	:= superGetMv( "MFG_WSS17C" , , "777777"	)
 
-    U_MFCONOUT("Iniciado ambiente da filial " + alltrim(_CFILIAIS) + " para criação de pedidos de vendas..." )
-
 	nStackSX8       := GetSx8Len()
-	//cAliasSC5		:= getNextAlias()
 
     //Carrega linhas da ZC5 para processar
     U_MFCONOUT("Carregando pedidos da filial " + alltrim(_CFILIAIS) + " para processar...")
@@ -119,24 +132,42 @@ User function MGFFAT53(_cfiliais)
 
 			Endif
 
+			If _lexecuta
+
+				cQrySC5 := "SELECT R_E_C_N_O_ REC"
+				cQrySC5 += " FROM " + retSQLName("SC5") + " SC5"
+				cQrySC5 += " WHERE"
+				cQrySC5 += " 		C5_XIDSFA	=	'" + allTrim( ZC5->ZC5_IDSFA ) + "' "
+				cQrySC5 += "    AND C5_FILIAL = '" + alltrim( ZC5->ZC5_FILIAL ) + "' "
+				cQrySC5 += "    AND C5_EMISSAO = '" + dtos(DATE()) + "' "
+				cQrySC5 += " 	AND	D_E_L_E_T_	<>	'*'"
+
+
+				If select("QRYSC5") > 0
+
+					QRYSC5->(Dbclosearea())
+
+				Endif
+
+				tcQuery cQrySC5 new alias "QRYSC5"
+
+				if !QRYSC5->(EOF())
+
+					U_MFCONOUT("Pedido já processado " + strzero(_nni,6) + " de " + strzero(_ntot,6) + " da filial " + alltrim(_CFILIAIS) + "...")
+					_lexecuta := .F.
+					SC5->(Dbgoto(QRYSC5->REC))
+
+					FAT53UZC5( cSalesOrAt, "3", "Pedido ja processado", SC5->C5_NUM )
+
+				Endif
+
+			Endif
+
 			BEGIN TRANSACTION
 
 			cpedold := ""
 			cfilold := ""
 			cstaold := ""
-
-			If _lexecuta
-
-				Reclock("ZC5",.F.)
-				if empty(ZC5->ZC5_IDPROC)
-					ZC5->ZC5_IDPROC := DTOC(DATE()) + " - " +  TIME()
-				else
-					U_MFCONOUT("Pedido já processado " + strzero(_nni,6) + " de " + strzero(_ntot,6) + " da filial " + alltrim(_CFILIAIS) + "...")
-					_lexecuta := .F.
-				Endif
-				ZC5->(Msunlock())
-
-			Endif
 
 			cfilant := alltrim(ZC5TMP->ZC5_FILIAL)
 			cSalesOrAt := ZC5TMP->ZC5_IDSFA
@@ -335,31 +366,34 @@ User function MGFFAT53(_cfiliais)
 
 				aadd(aSC5, {'C5_TPFRETE'		, cTpFretSFA 							, NIL})
 
-				if !empty( ZC5TMP->ZC5_DTENTR )
-					aadd(aSC5, {'C5_FECENT'		, sToD( ZC5TMP->ZC5_DTENTR ) 			, NIL})
-					aadd(aSC5, {'C5_ZDTEMBA'	, sToD( ZC5TMP->ZC5_DTENTR ) 			, NIL})
+				if !empty( ZC5TMP->ZC5_DTEMBA )
+					aadd(aSC5, {'C5_ZDTEMBA'	, sToD( ZC5TMP->ZC5_DTEMBA ) 			, NIL})
 				endif
 
-				aadd(aSC5, {'C5_XIDSFA'		, ZC5TMP->ZC5_IDSFA						, NIL})
-				aadd(aSC5, {'C5_XIDEXTE'	, ZC5TMP->ZC5_IDSFA						, NIL})
-				aadd(aSC5, {'C5_XINTEGR'	, "P"									, NIL})
+				if !empty( ZC5TMP->ZC5_DTENTR )
+					aadd(aSC5, {'C5_FECENT'		, sToD( ZC5TMP->ZC5_DTENTR ) 			, NIL})
+				endif
 
-				aadd(aSC5, {'C5_XORIGEM'	, ZC5TMP->ZC5_ORIGEM					, NIL})
-				aadd(aSC5, {'C5_XCALLBA'	, "S"									, NIL})
+				aadd(aSC5, {'C5_XIDSFA'		, ZC5TMP->ZC5_IDSFA							, NIL})
+				aadd(aSC5, {'C5_XIDEXTE'	, ZC5TMP->ZC5_IDSFA							, NIL})
+				aadd(aSC5, {'C5_XINTEGR'	, "P"										, NIL})
+
+				aadd(aSC5, {'C5_XORIGEM'	, ZC5TMP->ZC5_ORIGEM						, NIL})
+				aadd(aSC5, {'C5_XCALLBA'	, "S"										, NIL})
 
 				if !empty( ZC5->ZC5_XOBSPE )
-					aadd(aSC5, {'C5_XOBSPED'	, ZC5->ZC5_XOBSPE					, NIL})
+					aadd(aSC5, {'C5_XOBSPED'	, ZC5->ZC5_XOBSPE						, NIL})
 				endif
 
 				if !empty( ZC5TMP->ZC5_PEDCLI )
-					aadd(aSC5, {'C5_ZPEDCLI'	, ZC5TMP->ZC5_PEDCLI				, NIL})
+					aadd(aSC5, {'C5_ZPEDCLI'	, ZC5TMP->ZC5_PEDCLI					, NIL})
 				endif
 
 				if !empty( ZC5TMP->ZC5_MSGNOT )
-					aadd(aSC5, {'C5_MENNOTA'	, ZC5TMP->ZC5_MSGNOT				, NIL})
+					aadd(aSC5, {'C5_MENNOTA'	, ZC5TMP->ZC5_MSGNOT					, NIL})
 				endif
 
-				aadd(aSC5, {'C5_XREDE'	, ZC5TMP->ZC5_PVREDE						, NIL})
+				aadd(aSC5, {'C5_XREDE'	, ZC5TMP->ZC5_PVREDE							, NIL})
 
 				cSalesOrAt := ZC5TMP->ZC5_IDSFA
 				aSC6 := {}
@@ -530,6 +564,36 @@ User function MGFFAT53(_cfiliais)
 						endif
 					endif
 					// FIM - CASO PEDIDO DE REDE - GERA BLOQUEIO PARA NÃO FATURAR
+
+					//Já grava integração keyconsult
+					ZHL->(dbsetorder(2)) //ZHL_IDSFA   
+					_lachou := .F.                                                                                                                                        
+						
+					//Verifica se tem consultas válidas
+					If ZHL->(Dbseek(SC5->C5_XIDSFA))
+
+
+						Do while alltrim(SC5->C5_XIDSFA) == alltrim(ZHL->ZHL_IDSFA)
+
+							If ZHL->ZHL_STATUS == "C"
+								cStatRec := ZHL->ZHL_STATR
+								cStatSIN := ZHL->ZHL_STATS
+								cStatSUF := ZHL->ZHL_STATU
+								_lachou := .T.
+							Endif
+
+							ZHL->(Dbskip())
+
+						Enddo
+
+						If _lachou
+
+							u_MGFAT53S(cStatRec,cStatSIN,cStatSUF) //Grava keyconsult no pedido
+
+						Endif
+
+					Endif
+
        			else
 
                     //Não criou o pedido de vendas
@@ -559,7 +623,7 @@ User function MGFFAT53(_cfiliais)
 					If _lexecuta
 
 						//Se deu erro tenta reprocessar 3 vezes
-						If cstaold = '9' .OR. cstaold = '1'
+						If cstaold = '9' .OR. cstaold = '2'
 							Disarmtransaction()
 							cpedold := cSalesOrAt
 							cfilold := cfilant
@@ -586,11 +650,11 @@ User function MGFFAT53(_cfiliais)
 
 			END TRANSACTION
 
-			If cstaold == "1" .or. cstaold == "9"
+			If cstaold == "2" .or. cstaold == "9" .and. !(ZC5->ZC5_STATUS == '3')
 				ZC5->( DBSetOrder( 1 ) )
 				if ZC5->( DBSeek( cfilold + cpedold ) ) // ZC5_FILIAL+ZC5_IDSFA
 					recLock("ZC5", .F.)
-					ZC5->ZC5_STATUS := iif(cstaold == "1","9","8")
+					ZC5->ZC5_STATUS := iif(cstaold == "2","9","8")
 					ZC5->(mSUNLOCK())
 				Endif
 			Endif
@@ -599,7 +663,7 @@ User function MGFFAT53(_cfiliais)
 
 	ZC5TMP->( DBCloseArea() )
 
-	U_MFCONOUT("Completou geração de pedidos de vendas do SFA para filial " + _cfiliais + "...")
+	U_MFCONOUT("Completou geração de pedidos de vendas dos tablets para filial " + _cfiliais + "...")
 
 return
 
@@ -611,7 +675,7 @@ Retorna dados do Tipo de Pedido
 @since 14/01/2020
 /*/
 static function FAT53SZJ( cSZJCod )
-	local cQrySZJ	:= ""
+	local cQrySZJ
 	local aRetSZJ	:= {}
 	local aArea		:= getArea()
 
@@ -646,14 +710,14 @@ Retorna dados do cliente
 /*/
 static function FAT53CLI(cCliCnpj)
 	local aRet		:= {}
-	local cQrySA1	:= ""
+	local cQrySA1
 	local cAliasSA1	:= getNextAlias()
 
 	if len(allTrim(cCliCnpj)) > 14
 		cCliCnpj := right(allTrim( cCliCnpj ), 14)
 	endif
 
-	cQrySA1 += "SELECT A1_COD, A1_LOJA, A1_ZVIDAUT, A1_TIPO, A1_NATUREZ"	+ CRLF
+	cQrySA1 := "SELECT A1_COD, A1_LOJA, A1_ZVIDAUT, A1_TIPO, A1_NATUREZ"	+ CRLF
 	cQrySA1 += " FROM " + retSQLName("SA1") + " SA1"						+ CRLF
 	cQrySA1 += " WHERE"														+ CRLF
 	cQrySA1 += " 		SA1.A1_CGC		=	'" + cCliCnpj		+ "'"		+ CRLF
@@ -676,12 +740,12 @@ Selecione pedidos a serem incluidos
 @author TOTVS
 @since 14/01/2020
 /*/
-static function FAT53QRY(_cfiliais)
+static procedure FAT53QRY(_cfiliais)
 
-    local cQryZC5		:= ""
+    local cQryZC5
 	Default _cfiliais   := ""
 
-	cQryZC5 += "SELECT ZC5.ZC5_STATUS ZC5_STATUS, ZC5.R_E_C_N_O_ ZC5RECNO, ZC6.R_E_C_N_O_ ZC6RECNO, ZC5_DTENTR, ZC6_PRCLIS,"	+ CRLF
+	cQryZC5 := "SELECT ZC5.ZC5_STATUS ZC5_STATUS, ZC5.R_E_C_N_O_ ZC5RECNO, ZC6.R_E_C_N_O_ ZC6RECNO, ZC5_DTENTR, ZC5_DTEMBA, ZC6_PRCLIS,"	+ CRLF
 	cQryZC5 += " ZC5_FILIAL, ZC5_CLIENT, ZC5_TABELA, ZC5_CONDPG, ZC5_ZTIPPE, ZC5_VENDED, ZC6_OPER,"								+ CRLF
 	cQryZC5 += " ZC5_ZIDEND, ZC5_IDSFA, ZC6_ITEM, ZC6_PRODUT, ZC6_QTDVEN, ZC6_PRCVEN, ZC5_ZTIPOP, ZC6_DTMINI, ZC6_DTMAXI,"		+ CRLF
 	cQryZC5 += " ZC5_IDEXTE, ZC5_ORCAME, ZC5_RESERV, ZC5_CODTAB, ZC5_CODCON, ZC5_ORIGEM, ZC5_XOBSPE, ZC5_PEDCLI, ZC5_MSGNOT, ZC5_PVPAI, ZC5_PVREDE"										+ CRLF
@@ -689,10 +753,9 @@ static function FAT53QRY(_cfiliais)
 	cQryZC5 += " INNER JOIN "	+ retSQLName("ZC6") + " ZC6"								+ CRLF
 	cQryZC5 += " ON ZC5.ZC5_IDSFA = ZC6.ZC6_IDSFA AND ZC5.ZC5_FILIAL = ZC6.ZC6_FILIAL"		+ CRLF
 	cQryZC5 += " WHERE"																		+ CRLF
-	cQryZC5 += " 		( ZC5.ZC5_STATUS	=	'1' OR "									+ CRLF  //1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
+	cQryZC5 += " 		( ZC5.ZC5_STATUS	=	'2' OR "									+ CRLF  //1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
 	cQryZC5 += " 			 ZC5.ZC5_STATUS	=	'9' OR "									+ CRLF  //Processado com erro uma vez
 	cQryZC5 += " 			 ZC5.ZC5_STATUS	=	'8' OR "									+ CRLF  //Processado com erro duas vezes
-	//cQryZC5 += " 		( ZC5.ZC5_STATUS	=	'4' AND SUBSTR(ZC5_IDSFA,1,8) = '" + DTOS(date()) + "')) "	+ CRLF
 	cQryZC5 += " 		( ZC5.ZC5_STATUS	=	'4' AND ZC5_DTRECE = '" + DTOS(date()) + "')) "	+ CRLF
 
 	If !empty(_cfiliais)
@@ -703,10 +766,11 @@ static function FAT53QRY(_cfiliais)
 	cQryZC5 += " 	AND	ZC6.D_E_L_E_T_	<>	'*'"											+ CRLF
 	cQryZC5 += " 	AND	ZC5.D_E_L_E_T_	<>	'*'"											+ CRLF
 
-	// NÃO SELECIONAR PEDIDOS DO SALESFORCE - APENAS REGISTROS COM O CAMPO ZC5_IDEXTE IGUAL A BRANCO
-	//cQryZC5 += " 	AND	ZC5.ZC5_IDEXTE	=	' '"											+ CRLF
-
 	cQryZC5 += " ORDER BY ZC5_FILIAL,ZC5_IDSFA,ZC6_ITEM"									+ CRLF
+
+	If select("ZC5TMP") > 0
+		("ZC5TMP")->(Dbclosearea())
+	Endif
 
 	TcQuery cQryZC5 New Alias "ZC5TMP"
 
@@ -720,7 +784,7 @@ Retorna codigo da tabela de Preco
 @since 14/01/2020
 /*/
 static function FAT53TAB( cZC5Tabela )
-	local cQryDA0 := ""
+	local cQryDA0
 	local cRetDA0 := ""
 
 	cQryDA0 := "SELECT DA0_CODTAB"
@@ -746,7 +810,7 @@ Retorna codigo da Condicao de Pagto
 @since 14/01/2020
 /*/
 static function FAT53SE4( cZC5Cond )
-	local cQrySE4 := ""
+	local cQrySE4
 	local cRetSE4 := ""
 
 	cQrySE4 := "SELECT E4_CODIGO"
@@ -773,7 +837,7 @@ Retorna preço para tem do produto
 /*/
 static function FAT53PRC( nZC5Tabela, cProdZC6 , cZC5Tabela )
 	local nRetValor		:= 0
-	local cQryDA1		:= ""
+	local cQryDA1
 
 	default nZC5Tabela := 0
 	default cZC5Tabela := ""
@@ -829,7 +893,7 @@ Atualiza status do pedido na ZC5
 @author TOTVS
 @since 14/01/2020
 /*/
-static function FAT53UZC5( cIDSFA, cStatus, cObs, cPV )
+static procedure FAT53UZC5( cIDSFA, cStatus, cObs, cPV )
 	local aArea		:= getArea()
 	local aAreaZC5	:= {}
 	local cTimeProc	:= time()
@@ -865,7 +929,7 @@ return
 //***********************************************
 static function chkPvPai( cIdSfa )
 	local lPvPai	:= .T.
-	local cQryPVPai	:= ""
+	local cQryPVPai
 
 	cQryPVPai := "SELECT ZC5_IDEXTE, C5_FILIAL, C5_NUM, C6_PRODUTO, ZC6_PRODUT, NVL( C6_QTDVEN , 0 ) C6_QTDVEN, ZC6_QTDVEN"	+ CRLF
 	cQryPVPai += " FROM "		+ retSQLName( "ZC5" ) + " ZC5"														+ CRLF
@@ -910,8 +974,8 @@ return lPvPai
 //***********************************************
 // Verifica se Pedido Pai é valido
 //***********************************************
-static function getItens( cIdSfa )
-	local cQryZC52	:= ""
+static procedure getItens( cIdSfa )
+	local cQryZC52
 
 	cQryZC52 := "SELECT ZC5_IDEXTE, ZC6_PRODUT, ZC6_QTDVEN"						+ CRLF
 	cQryZC52 += " FROM "		+ retSQLName( "ZC5" ) + " ZC5"					+ CRLF
@@ -927,3 +991,117 @@ static function getItens( cIdSfa )
 
 	tcQuery cQryZC52 new alias "QRYZC52"
 return
+
+/*/
+=============================================================================
+{Protheus.doc} MGFAT53S
+Faz liberação ou bloqueio do pedido na SC5
+@author Joni Lima
+@since 03/11/2016
+/*/
+User Function MGFAT53S(cStatRec,cStatSIN,cStatSUF)
+
+Local _llib := .T.
+Local _aszv := SZV->(GetArea())
+
+DbSelectArea('SZV')
+SZV->(dbSetOrder(1))//ZV_FILIAL+ZV_PEDIDO+ZV_ITEMPED+ZV_CODRGA
+
+If (SZV->(DbSeek(SC5->C5_FILIAL+SC5->C5_NUM)))
+
+	Do while SZV->ZV_FILIAL == SC5->C5_FILIAL .AND. SZV->ZV_PEDIDO == SC5->C5_NUM
+
+		If SZV->ZV_CODRGA == '000096' .OR. SZV->ZV_CODRGA == '000097' .OR. SZV->ZV_CODRGA == '000098'  
+
+			Reclock("SZV",.F.)
+			SZV->ZV_CODAPR := '999999'
+			SZV->ZV_DTAPR := DATE()
+			SZV->ZV_HRAPR := TIME()
+			SZV->ZV_MOTAPRO := 'AUTO VIA KEYCONSULT'
+			SZV->(Msunlock())
+
+		Elseif empty(SZV->ZV_DTAPR)
+
+			_llib := .F. //Tem bloqueio de outras regras
+		
+		Endif
+
+		SZV->(Dbskip())
+
+	Enddo
+
+
+	If cstatRec == "B" //bloqueio da receita
+
+		Reclock("SZV",.T.)
+		SZV->ZV_FILIAL := SC5->C5_FILIAL
+		SZV->ZV_PEDIDO := SC5->C5_NUM
+		SZV->ZV_ITEMPED := '01'
+		SZV->ZV_CODRGA := '000090'
+		SZV->ZV_MOTAPRO := 'AUTO VIA KEYCONSULT'
+		SZV->ZV_DTBLQ  := DATE()
+		SZV->ZV_HRBLQ  := TIME()
+		SZV->(Msunlock())
+
+	Endif
+
+	If cStatSIN == "B" //bloqueio do sintegra
+
+		Reclock("SZV",.T.)
+		SZV->ZV_FILIAL := SC5->C5_FILIAL
+		SZV->ZV_PEDIDO := SC5->C5_NUM
+		SZV->ZV_ITEMPED := '01'
+		SZV->ZV_CODRGA := '000092'
+		SZV->ZV_MOTAPRO := 'AUTO VIA KEYCONSULT'
+		SZV->ZV_DTBLQ  := DATE()
+		SZV->ZV_HRBLQ  := TIME()
+		SZV->(Msunlock())
+
+	Endif
+
+	If cStatSUF == "B" //bloqueio do suframa
+
+		Reclock("SZV",.T.)
+		SZV->ZV_FILIAL := SC5->C5_FILIAL
+		SZV->ZV_PEDIDO := SC5->C5_NUM
+		SZV->ZV_CODRGA := '000094'
+		SZV->ZV_MOTAPRO := 'AUTO VIA KEYCONSULT'
+		SZV->ZV_DTBLQ  := DATE()
+		SZV->ZV_HRBLQ  := TIME()
+		SZV->(Msunlock())
+
+	Endif
+
+	If cstatRec == "L" .AND.  cStatSIN == "L" .AND. cStatSUF == "L"
+
+		Reclock("SC5", .F.)
+		SC5_XINTEGR = 'P'
+		SC5->C5_ZCONWS := 'S'
+		SC5->C5_ZLIBENV := 'S'
+		SC5->C5_ZTAUREE := 'S'
+
+		If _llib 
+
+			SC5->C5_ZBLQRGA := 'L'
+
+		Else
+
+			SC5->C5_ZBLQRGA := 'B'
+
+		Endif	
+
+		SC5->(Msunlock())	
+
+
+	Endif
+
+
+Endif
+
+RestArea(_aszv)
+
+Return
+
+
+
+

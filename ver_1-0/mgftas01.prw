@@ -10,7 +10,7 @@
 Programa............: MGFTAS01
 Autor...............: Mauricio Gresele
 Data................: 24/10/2016
-Descricao / Objetivo: Integracao Protheus-Taura, para envio de PV
+Descricao / Objetivo: Integração Protheus-Taura, para envio de PV
 Doc. Origem.........: Protheus-Taura Saida
 Solicitante.........: Cliente
 Uso.................: Marfrig
@@ -18,96 +18,377 @@ Obs.................: A. Carlos - Incuido converter memo em caracter
 Data................: 12/11/2019
 =====================================================================================
 */
-User Function  xTestTAS01
+User Function MGFTAS01()
+	
+Local cQ 		:= ""
+Local cAliasTrb := ""
+Local lRet 		:= .F.
+Local nRet 		:= 0
+Local cIDTaura 	:= ""
+Local cEmpSel   := "'x'"
+Local nI		:= 0
+Local cFilMafig	:= ""
+Local nVezes    := 1
+Local cVezes    := ''
+Local _apeds    := {}
+
+Private nI         := 0
+Private cObs       := " "
+
+PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010041"
+
+cAliasTrb := GetNextAlias()
+
+U_MFCONOUT('Iniciando integração de pedidos de venda para o Taura...')
 
 
-	U_TAS01({99,{'010041'}})
+U_MFCONOUT('Atualizando tabela intermediária de pedidos de venda...')
 
-Return
+cQ := " SELECT SC5.R_E_C_N_O_ REC FROM "
+cQ += RetSqlName("SC5")+" SC5 WHERE SC5.D_E_L_E_T_ <> '*' "
+cQ += " AND C5_EMISSAO >= '"+dTos(dDataBase-GetMv("MGF_TAS01I",,30))+"' "
+cQ += " AND NOT EXISTS (SELECT ZHW_PEDIDO ZHW FROM "
+cQ += 					RetSqlName("ZHW")+" ZHW "
+cQ += "                    WHERE ZHW.D_E_L_E_T_ <> '*' AND ZHW_FILIAL = C5_FILIAL AND ZHW_PEDIDO = C5_NUM )  "
+
+If select(cAliasTrb) > 0
+	(cAliasTrb)->(dbclosearea())
+Endif
+
+dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
+
+_ntot := 0
+_nni := 1
+
+(cAliasTrb)->(dbGoTop())
+While (cAliasTrb)->(!Eof())
+	_ntot++
+	(cAliasTrb)->(dbSkip())
+Enddo
+
+(cAliasTrb)->(dbGoTop())
+
+ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
+
+While (cAliasTrb)->(!Eof())
+
+	SC5->(Dbgoto((cAliasTrb)->REC))
+	U_MFCONOUT('Registrando pedido ' + SC5->C5_FILIAL + "/" +SC5->C5_NUM + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+	_nni++
+
+	If !(ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM)))
+
+		Reclock("ZHW",.T.)
+		ZHW->ZHW_FILIAL := SC5->C5_FILIAL
+		ZHW->ZHW_PEDIDO := SC5->C5_NUM
+		ZHW->(Msunlock())
+
+	Endif
+
+	(cAliasTrb)->(dbSkip())
+
+Enddo
+
+nVezes    := GetMv("MGF_TAUVEZ",,5)
+
+cVezes := "'N',' ','S'"
+For nI := 1 To nVezes-1
+	cVezes += ",'"+Alltrim(STR(nI))+"'"
+Next nI
+
+U_MFCONOUT('Carregando pedidos para integração...')
+
+cQ := 	" SELECT  SUM(C6.ORA_ROWSCN) C6HASH, "
+cQ +=   "         SUM(C5.ORA_ROWSCN) C5HASH, "
+cQ +=   "         (SELECT NVL(SUM(ZV.ORA_ROWSCN),0) FROM " + RetSqlName("SZV") + " ZV WHERE ZV.D_E_L_E_T_ <> '*' "
+cQ +=   " 									AND ZV_FILIAL = C5_FILIAL AND ZV_PEDIDO = C5_NUM ) ZVHASH, "
+cQ +=   "          (select MAX(ZHW_HASHC6) FROM ZHW010 ZHWC5 WHERE ZHWC5.D_E_L_E_T_ <> '*' AND ZHWC5.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "          																		 AND ZHWC5.ZHW_PEDIDO = C5_NUM )  ZHWC6, "
+cQ +=   "          (select MAX(ZHW_HASHC5) FROM ZHW010 ZHWC5 WHERE ZHWC5.D_E_L_E_T_ <> '*' AND ZHWC5.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "          																		 AND ZHWC5.ZHW_PEDIDO = C5_NUM )  ZHWC5, "
+cQ +=   "          (select MAX(ZHW_HASHZV) FROM ZHW010 ZHWC5 WHERE ZHWC5.D_E_L_E_T_ <> '*' AND ZHWC5.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "          																		 AND ZHWC5.ZHW_PEDIDO = C5_NUM )  ZHWZV, "
+cQ +=   "         							C5_FILIAL,C5_NUM, C5.R_E_C_N_O_ SC5_RECNO "
+cQ +=   " FROM " + RetSqlName("SC5") + " C5 "
+cQ +=   " JOIN " + RetSqlName("SC6") + " C6 ON C6_FILIAL = C5_FILIAL AND C5_NUM = C6_NUM "
+cQ +=   " WHERE C5.D_E_L_E_T_ <> '*'   "
+cQ +=   "       AND C6.D_E_L_E_T_ <> '*' "
+cQ +=   "       AND C5_EMISSAO >= '"+dTos(dDataBase-GetMv("MGF_TAS01I",,30))+"' "
+cQ +=   " HAVING (TRIM(TO_CHAR(SUM(C5.ORA_ROWSCN))) <> TRIM((select MAX(ZHW_HASHC5) FROM ZHW010 ZHWC5 WHERE ZHWC5.D_E_L_E_T_ <> '*' AND ZHWC5.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "                    														   AND ZHWC5.ZHW_PEDIDO = C5_NUM )) OR "
+cQ +=   "        TRIM(TO_CHAR(SUM(C6.ORA_ROWSCN))) <> TRIM((select MAX(ZHW_HASHC6) FROM ZHW010 ZHWC6 WHERE ZHWC6.D_E_L_E_T_ <> '*' AND ZHWC6.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "                    														   AND ZHWC6.ZHW_PEDIDO = C5_NUM )) OR "
+cQ +=   "        TRIM(TO_CHAR((SELECT NVL(SUM(ZV.ORA_ROWSCN),0) FROM SZV010 ZV WHERE ZV.D_E_L_E_T_ <> '*'  "
+cQ +=   "         									AND ZV_FILIAL = C5_FILIAL AND ZV_PEDIDO = C5_NUM ))) <> TRIM((select MAX(ZHW_HASHZV) FROM ZHW010 ZHWZV WHERE ZHWZV.D_E_L_E_T_ <> '*' AND ZHWZV.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "                   														   AND ZHWZV.ZHW_PEDIDO = C5_NUM )) "
+cQ +=   "		OR  (exists((select ZHW_HASHC5 FROM ZHW010 ZHWC5 WHERE ZHWC5.D_E_L_E_T_ <> '*' AND ZHWC5.ZHW_FILIAL = C5_FILIAL "
+cQ +=   "         	        												AND ZHWC5.ZHW_PEDIDO = C5_NUM and ZHW_HASHC5 = ' ' ))))"
+
+cQ +=   " GROUP BY C5_FILIAL,C5_NUM,C5.R_E_C_N_O_ "
+cQ +=   " ORDER BY C5_FILIAL,C5_NUM,C5.R_E_C_N_O_ "
 
 
-User Function MGFTAS01(cPar1,cPar2,cPar3,cPar4,cPar5,cPar6,cPar7,cPar8)
-	Local aParam	:= {}
+If select(cAliasTrb) > 0
+	(cAliasTrb)->(dbclosearea())
+Endif
 
-	// tratamento do job por grupo de filiais passado por parï¿½mentros
+dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
 
-	If ValType(cPar2) == "C"
-		aAdd( aParam , cPar2)
-	EndIf
-	If ValType(cPar3) == "C"
-		aAdd( aParam , cPar3)
-	EndIf
-	If ValType(cPar4) == "C"
-		aAdd( aParam , cPar4)
-	EndIf
-	If ValType(cPar5) == "C"
-		aAdd( aParam , cPar5)
-	EndIf
-	If ValType(cPar6) == "C"
-		aAdd( aParam , cPar6)
-	EndIf
-	If ValType(cPar7) == "C"
-		aAdd( aParam , cPar7)
-	EndIf
-	If ValType(cPar8) == "C"
-		aAdd( aParam , cPar8)
-	EndIf
+_ntot := 0
+_nni := 1
 
-	U_TAS01({Val(cPar1),aParam})
+(cAliasTrb)->(dbGoTop())
+While (cAliasTrb)->(!Eof())
+	_ntot++
+	(cAliasTrb)->(dbSkip())
+Enddo
 
-Return()
+(cAliasTrb)->(dbGoTop())
+While (cAliasTrb)->(!Eof())
 
-User Function TAS01(aParam)
-	Private _aMatriz   := {"01","010001"}
-	Private lIsBlind   :=  IsBlind() .OR. Type("__LocalDriver") == "U"
-	Private cTipo      := aParam[01]
-	Private cObs       := " "
+	U_MFCONOUT("Analisando pedido " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+	
+	SC5->(Dbgoto((cAliasTrb)->SC5_RECNO))
 
-	IF lIsBlind
+	ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
 
-		RpcSetType(3)
-		RpcSetEnv(_aMatriz[1],_aMatriz[2])
+	If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
 
-		cTipo := STRZERO(cTipo,2)
+		_lenviat := .T.
+		_lenvias := .T.
 
-		If !LockByName("TAES01_"+cTipo)
-			Conout("JOB jï¿½ em Execucao : MGFTAS01_"+cTipo +" "+ DTOC(dDATABASE) + " - " + TIME() )
-			RpcClearEnv()
-			Return
-		EndIf
-		conOut("********************************************************************************************************************"+ CRLF)
-		conOut('--------------------- Inicio do processamento - MGFTAS01_'+cTipo +' - Envio PV Taura - ' + DTOC(dDATABASE) + " - " + TIME())
-		conOut("********************************************************************************************************************"+ CRLF)
+		If alltrim(str((cAliasTrb)->C5HASH)) == alltrim((cAliasTrb)->ZHWC5);
+			.AND. alltrim(str((cAliasTrb)->C6HASH)) == alltrim((cAliasTrb)->ZHWC6);
+			.AND. alltrim(str((cAliasTrb)->ZVHASH)) == alltrim((cAliasTrb)->ZHWZV);
+			.AND. (ZHW->ZHW_STATUT = 200 .OR. ZHW->ZHW_STATUT = 999);
+			.AND. (ZHW->ZHW_STATUS = 200 .OR. ZHW->ZHW_STATUS = 999)
 
-		U_TAS01FilPV(aParam[02])
+			//Atualiza hash
+			Reclock("ZHW",.F.)
+			ZHW->ZHW_HASHC5 := alltrim(str((cAliasTrb)->C5HASH))
+			ZHW->ZHW_HASHC6 := alltrim(str((cAliasTrb)->C6HASH))
+			ZHW->ZHW_HASHZV := alltrim(str((cAliasTrb)->ZVHASH))
+			ZHW->(Msunlock())
 
-		conOut("********************************************************************************************************************"+ CRLF)
-		conOut('---------------------- Fim  - MGFTAS01_'+cTipo +' - Envio PV Taura - ' + DTOC(dDATABASE) + " - " + TIME()  				  )
-		conOut("********************************************************************************************************************"+ CRLF)
 
-		RpcClearEnv()
+			_nni++
+			(cAliasTrb)->(dbSkip())
+			Loop
+		
+		Elseif  alltrim(str((cAliasTrb)->C5HASH)) == alltrim((cAliasTrb)->ZHWC5);
+			.AND. alltrim(str((cAliasTrb)->C6HASH)) == alltrim((cAliasTrb)->ZHWC6);
+			.AND. alltrim(str((cAliasTrb)->ZVHASH)) == alltrim((cAliasTrb)->ZHWZV);
+			.AND. (ZHW->ZHW_STATUT = 200 .OR. ZHW->ZHW_STATUT = 999 .OR. ZHW->ZHW_STATUT = 998)
 
-		UnLockByName(ProcName())
-	EndIF
+			_lenviat := .F.
 
+		Elseif  alltrim(str((cAliasTrb)->C5HASH)) == alltrim((cAliasTrb)->ZHWC5);
+			.AND. alltrim(str((cAliasTrb)->C6HASH)) == alltrim((cAliasTrb)->ZHWC6);
+			.AND. alltrim(str((cAliasTrb)->ZVHASH)) == alltrim((cAliasTrb)->ZHWZV);
+			.AND. (ZHW->ZHW_STATUS = 200 .OR. ZHW->ZHW_STATUS = 999)
+
+			_lenvias := .F.
+
+		Endif
+
+	Endif
+
+	BEGIN TRANSACTION
+	BEGIN SEQUENCE
+
+	If !SC5->(MsRLock(SC5->(RECNO())))
+
+		U_MFCONOUT("Pedido já em processamento " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+		BREAK
+
+	Endif
+
+	
+	cEmpAnt := Subs(SC5->C5_FILIAL,1,2)
+	cFilAnt := Subs(SC5->C5_FILIAL,1,6)
+
+	////Valida para integrar com Taura
+	_ltaura := .F.
+	lret := .F.
+
+	If _lenviat .and. SC5->C5_XRESERV != "N" .AND. (EMPTY(SC5->C5_NOTA) .OR. ALLTRIM(SC5->C5_NOTA) == 'XXXXXX')
+
+		SZJ->(Dbsetorder(1))	//ZJ_FILIAL+ZJ_COD
+
+		If SZJ->(Dbseek(xfilial("SZJ")+SC5->C5_ZTIPPED)) .AND. SZJ->ZJ_TAURA = 'S'
+
+			_ltaura := .T.
+			nRet := U_TAS01EnvPV(,.T.,_nni,_ntot)
+
+			If nret == 1 .or. nret == 3
+
+				U_MFCONOUT('Atualizando controle de integração do  pedido ' + SC5->C5_FILIAL + "/" + SC5->C5_NUM + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+
+				ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
+
+				If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+					Reclock("ZHW",.F.)
+	
+				Else
+
+					Reclock("ZHW",.T.)
+
+				Endif
+
+				ZHW->ZHW_FILIAL := SC5->C5_FILIAL
+				ZHW->ZHW_PEDIDO := SC5->C5_NUM
+				ZHW->ZHW_HASHC5 := alltrim(str((cAliasTrb)->C5HASH))
+				ZHW->ZHW_HASHC6 := alltrim(str((cAliasTrb)->C6HASH))
+				ZHW->ZHW_HASHZV := alltrim(str((cAliasTrb)->ZVHASH))
+				ZHW->(Msunlock())
+
+				//Apaga bloqueios taura
+
+				cQ := " SELECT ZV.R_E_C_N_O_ REC FROM "
+				cQ += RetSqlName("SZV")+" ZV WHERE ZV.D_E_L_E_T_ <> '*' "
+				cQ += " AND ZV_FILIAL = '" + ZHW->ZHW_FILIAL + "' AND ZV_PEDIDO = '" + ZHW->ZHW_PEDIDO + "' "
+				cQ += " AND (ZV_CODRGA = '000088' OR ZV_CODRGA = '000089') "
+
+				If select("SZVTMP") > 0
+					SZVTMP->(dbclosearea())
+				Endif
+
+				dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),"SZVTMP",.T.,.T.)
+
+				SZVTMP->(dbGoTop())
+				
+				While SZVTMP->(!Eof())
+
+					SZV->(Dbgoto(SZVTMP->REC))
+
+					Reclock("SZV",.F.)
+					SZV->(Dbdelete())
+					SZV->(Msunlock())
+
+					SZVTMP->(dbSkip())
+
+				Enddo
+
+				U_MFCONOUT('Completou a integração do pedido ' + (cAliasTrb)->C5_FILIAL + "/" + (cAliasTrb)->C5_NUM + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+
+			Elseif nret == 2
+
+				U_MFCONOUT('Falhou a integração do pedido ' + (cAliasTrb)->C5_FILIAL + "/" + (cAliasTrb)->C5_NUM + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+
+			Elseif nret == 4 .or. nret == 5 //Falha permanente de integração
+
+				ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
+
+				If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+					Reclock("ZHW",.F.)
+	
+				Else
+
+					Reclock("ZHW",.T.)
+
+				Endif
+
+				ZHW->ZHW_FILIAL := SC5->C5_FILIAL
+				ZHW->ZHW_PEDIDO := SC5->C5_NUM
+				ZHW->ZHW_HASHC5 := alltrim(str((cAliasTrb)->C5HASH))
+				ZHW->ZHW_HASHC6 := alltrim(str((cAliasTrb)->C6HASH))
+				ZHW->ZHW_HASHZV := alltrim(str((cAliasTrb)->ZVHASH))
+				ZHW->ZHW_JSONET := "Falha permanente de integração com Taura"
+				ZHW->ZHW_STATUT := 998
+				ZHW->ZHW_DATAET := Date()
+				ZHW->ZHW_HORAET := time()
+
+				If nret == 5 //Falha permanente sem nenhum envio bem sucedido para o Taura manda para o salesforce
+
+					ZHW->ZHW_JSONES := " "
+					ZHW->ZHW_JSONTS := " "
+					ZHW->ZHW_JSONRS := " "
+					ZHW->ZHW_STATUS := 0
+					ZHW->ZHW_DATAES := stod(" ")
+					ZHW->ZHW_HORAES := " "
+
+				Endif
+
+				ZHW->(Msunlock())
+			
+			Endif
+
+		Endif
+
+	Endif
+
+	If !_ltaura .and. _lenviat
+
+		If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+			Reclock("ZHW",.F.)
+	
+		Else
+
+			Reclock("ZHW",.T.)
+
+		Endif
+
+		//Se é pedido com origem do Salesforce já marca para envio ao Salesforce
+		If !empty(SC5->C5_XIDSFA) .AND. ZHW->ZHW_STATUT != 999
+		
+			ZHW->ZHW_JSONES := " "
+			ZHW->ZHW_JSONTS := " "
+			ZHW->ZHW_JSONRS := " "
+			ZHW->ZHW_STATUS := 0
+			ZHW->ZHW_DATAES := stod(" ")
+			ZHW->ZHW_HORAES := " "
+
+		Endif
+
+
+		ZHW->ZHW_FILIAL := SC5->C5_FILIAL
+		ZHW->ZHW_PEDIDO := SC5->C5_NUM
+		ZHW->ZHW_HASHC5 := alltrim(str((cAliasTrb)->C5HASH))
+		ZHW->ZHW_HASHC6 := alltrim(str((cAliasTrb)->C6HASH))
+		ZHW->ZHW_HASHZV := alltrim(str((cAliasTrb)->ZVHASH))
+		ZHW->ZHW_JSONET := "Não integra com Taura"
+		ZHW->ZHW_STATUT := 999
+		ZHW->ZHW_DATAET := Date()
+		ZHW->ZHW_HORAET := time()
+
+	
+		ZHW->(Msunlock())
+
+	Endif
+
+	
+	END SEQUENCE
+	END TRANSACTION
+
+	SC5->(Msunlock())
+
+	_nni++
+	(cAliasTrb)->(dbSkip())
+
+Enddo
+
+(cAliasTrb)->(dbCloseArea())
+
+U_MFCONOUT('Completou integração de pedidos de venda para o Taura!')
 
 Return()
 
 // funcao de envio do PV para o Taura
-User Function TAS01EnvPV(aParam)
+User Function TAS01EnvPV(aParam, _lnovo,_nni,_ntot)
 
-	Local aArea    := {SC5->(GetArea()),SC6->(GetArea()),GetArea()}
-	Local cURLPost := Alltrim(GetMv("MGF_URLTPV")) //http://SPDWVAPL203:8081/taura-pedido-venda
-	Local cPV      := aParam[1]
-	Local cStatus  := Alltrim(Str(aParam[2]))
+	Local cURLPost := Alltrim(GetMv("MGFTAS01NP")) //http://SPDWVAPL203:8081/taura-pedido-venda
+	Local cPV      := Alltrim(SC5->C5_NUM)
+	Local cStatus  := IIf( SC5->C5_LIBEROK == "Z","3","1")
 	Local oItens   := Nil
-	Local lRet     := .F.
+	Local nRet     := 2
 	Local nCnt     := 0
 	Local cChave   := ""
 	Local nRet     := 0
 	Local cQ       := ""
 	Local cTamErro := TAMSX3("C5_ZERRO")[1]
-	Local bTaura := .F.
 	Local cQuant := ''
 	Local aRecnoSC6 := {}
 
@@ -116,118 +397,291 @@ User Function TAS01EnvPV(aParam)
 	Private oPV    := Nil
 	Private oWSPV  := Nil
 
-	SC5->(dbGoto(aParam[3]))
-	If SC5->(Recno()) == aParam[3]
-		If IsInCallStack("U_MGFFAT64")
-			cChave := SC5->C5_FILIAL + " - " + Alltrim(cPV)
-		Else
-			cChave := cPV
-		EndIf
-
-		oPV := Nil
-		oPV := GravarPedidoVenda():New()
-		oPV:GravarPVCab(cStatus)
-
-		aRecnoSC6 := ItensSC6(cStatus)
-
-		For nCnt:=1 To Len(aRecnoSC6)
-			SC6->(dbGoto(aRecnoSC6[nCnt]))
-			If SC6->(Recno()) == aRecnoSC6[nCnt]
-				oItens := Nil
-				oItens := ItensPV():New()
-				oPV:GravarPVItens(oItens)
-			Endif
-		Next
-
-		oWSPV := MGFINT53():New(cURLPost,oPV/*oObjToJson*/,SC5->(Recno())/*nKeyRecord*/,/*"SC5"/*cTblUpd*/,/*"C5_ZTAUFLA"/*cFieldUpd*/,AllTrim(GetMv("MGF_MONI01"))/*cCodint*/,AllTrim(GetMv("MGF_MONT08")),cChave/*cChave*/,.F./*lDeserialize*/,.F.,.T.)
-
-		StaticCall(MGFTAC01,ForcaIsBlind,oWSPV)
-
-		SZJ->(dbSetOrder(1))
-		If SZJ->(dbSeek(xFilial('SZJ')+SC5->C5_ZTIPPED))
-			If SZJ->ZJ_TAURA == 'S'
-				bTaura := .T.
-			EndIf
-		EndIf
-
-		If oWSPV:lOk
-			If cStatus <> "3"
-				u_TAS06_DelRegra(SC5->C5_FILIAL,SC5->C5_NUM)
-			Endif
-
-			IF oWSPV:nStatus == 1
-
-				cUpdSC6 := ""
-				cUpdSC6 += "UPDATE " + retSQLName("SC6")												+ chr(13) + chr(10)
-				cUpdSC6 += " SET"																		+ chr(13) + chr(10)
-				cUpdSC6 += " 	C6_XULTQTD = C6_QTDVEN"													+ chr(13) + chr(10)
-				cUpdSC6 += " WHERE"																		+ chr(13) + chr(10)
-				cUpdSC6 += " 	R_E_C_N_O_ IN"															+ chr(13) + chr(10)
-				cUpdSC6 += " 	("																		+ chr(13) + chr(10)
-				cUpdSC6 += " 		SELECT SUBSC6.R_E_C_N_O_"											+ chr(13) + chr(10)
-				cUpdSC6 += " 		FROM "			+ retSQLName("SC5") + " SUBSC5"						+ chr(13) + chr(10)
-				cUpdSC6 += " 		INNER JOIN " 	+ retSQLName("SC6") + " SUBSC6"						+ chr(13) + chr(10)
-				cUpdSC6 += " 		ON"																	+ chr(13) + chr(10)
-				cUpdSC6 += " 			SUBSC6.C6_NUM		=	SUBSC5.C5_NUM"							+ chr(13) + chr(10)
-				cUpdSC6 += " 		AND	SUBSC6.C6_FILIAL	=	SUBSC5.C5_FILIAL"						+ chr(13) + chr(10)
-				cUpdSC6 += " 		AND	SUBSC6.D_E_L_E_T_	<>	'*'"									+ chr(13) + chr(10)
-				cUpdSC6 += " 		WHERE"																+ chr(13) + chr(10)
-				cUpdSC6 += "			SUBSC5.R_E_C_N_O_	=	" + allTrim( str( SC5->( recno() ) ) )	+ chr(13) + chr(10)
-				cUpdSC6 += " 		AND	SUBSC5.D_E_L_E_T_	<>	'*'"									+ chr(13) + chr(10)
-				cUpdSC6 += " 	)"																		+ chr(13) + chr(10)
-
-				if tcSQLExec( cUpdSC6 ) < 0
-					conout( "Nao foi possivel executar UPDATE." + chr(13) + chr(10) + tcSqlError() )
-				endif
-
-				cQ := "UPDATE "+ RetSqlName("SC5")+" "
-				cQ += "SET  C5_ZBLQTAU = ' ',"
-				cQ += "     C5_ZLIBENV = 'N',"
-				cQ += "     C5_ZERRO   = ' ',"
-				cQ += "     C5_ZTAUREE = 'N',"
-				cQ += "		C5_ZTAUINT = 'S'"
-				cQ += "WHERE R_E_C_N_O_ = "+Alltrim(Str(SC5->(Recno())))
-			ElseIF oWSPV:nStatus == 2
-				If bTaura
-					u_TAS06_GRV(SC5->C5_FILIAL,SC5->C5_NUM,'01','000089')
-					cQ := "UPDATE "+ RetSqlName("SC5")+" "
-					cQ += "SET  C5_ZBLQTAU = ' ' ,"
-					cQ += "     C5_ZLIBENV = 'N',"
-					cQ += "     C5_ZTAUREE = 'N',"
-					cQ += "     C5_ZERRO   = '"+SUBSTR(oWSPV:cDetailInt,1,cTamErro)+"'"
-					cQ += "WHERE R_E_C_N_O_ = "+Alltrim(Str(SC5->(Recno())))
-				Endif
-			EndIF
-		Else
-			IF oWSPV:lErro500
-				IF SC5->C5_ZTAUREE $ "S N"
-					cQuant := '1'
-				ElseIF SC5->C5_ZTAUREE $ '123456789'
-					cQuant := SOMA1(SC5->C5_ZTAUREE)
-				Else
-					cQuant := '1'
-				EndIF
-
-				cQ := "UPDATE "+ RetSqlName("SC5")+" "
-				cQ += "SET  C5_ZTAUREE = '"+cQuant+"' "
-				cQ += "WHERE R_E_C_N_O_ = "+Alltrim(Str(SC5->(Recno())))
-
-			EndIF
-		Endif
+	Default _lnovo := .F.
 
 
-		nRet := tcSqlExec(cQ)
-		If nRet == 0
-		Else
-			ConOut("Problemas na gravacao dos campos do pedido de venda, para envio ao Taura.")
-			Return()
-		EndIf
+	//Irá ignorar os pontos de chamada de atualização de fora desse job
+	If !_lnovo
+
+		Return .T.
 
 	Endif
 
-	aEval(aArea,{|x| RestArea(x)})
+	cChave := cPV
 
-Return(lRet)
+	oPV := Nil
+	oPV := GravarPedidoVenda():New()
+	oPV:GravarPVCab(cStatus)
+
+	SC6->(Dbsetorder(1)) //C6_FILIAL+C6_NUM+C6_ITEM
+
+	If SC6->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+		Do while SC5->C5_FILIAL+SC5->C5_NUM == SC6->C6_FILIAL+SC6->C6_NUM
+	
+			oItens := Nil
+			oItens := ItensPV():New()
+			oPV:GravarPVItens(oItens)
+		
+			SC6->(Dbskip())
+
+		Enddo
+
+	Endif
+	
+	ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
+
+	If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+		_cJsonT := fwJsonSerialize(oPV, .T., .T.)
+
+	Else
+
+		Return 2 // ERRO POR NÃO ACHAR SZW
+	
+	Endif
+
+	//Não refaz envio bem sucedido com mesmo json
+	If alltrim(ZHW->ZHW_JSONET) == _cJsonT .and. ZHW->ZHW_STATUT >= 200 .AND. ZHW->ZHW_STATUT <= 299
+
+		//Verifica se não teve outros envios pelo TAS06
+		cQ := " select z1_tpinteg from  "
+		cQ += RetSqlName("SZ1")+" SZ1 WHERE SZ1.D_E_L_E_T_ <> '*' "
+		cQ += " and z1_docori = '"+ ALLTRIM(ZHW->ZHW_PEDIDO) + "' and z1_filial = '" + ALLTRIM(ZHW->ZHW_FILIAL) + "' "
+		cQ += "  order by z1_dtexec desc, z1_hrexec desc"
+	
+		If select("SZ1TMP") > 0
+			SZ1TMP->(dbclosearea())
+		Endif
+
+		dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),"SZ1TMP",.T.,.T.)
+
+		SZ1TMP->(Dbgotop())
+
+		If SZ1TMP->(Eof()) .or. !(alltrim(SZ1TMP->Z1_TPINTEG) = '008') //Ultima integracao feita pelo mgftas06
+	
+			Return 3 // CÓDIGO DE NÃO ENVIO POR NÃO TER ALTERAÇÃO NO JSON DE ENVIO FEITO PELO MGFTAS01
+
+		ENDIF
+
+	Endif
+
+	//Pedido já faturado ou em carga não envia mais integrações de alterações
+	DAI->(Dbsetorder(4)) //DAI_FILIAL+DAI_PEDIDO
+	If !EMPTY(ALLTRIM(SC5->C5_NOTA)) .or. DAI->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+		Return 3
+
+	Endif 
+
+	U_MFCONOUT('Integrando pedido ' + SC5->C5_FILIAL + "/" + SC5->C5_NUM + " - " + strzero(_nni,6) + " de " + strzero(_ntot,6) + "...")
+	
+	oWSPV := MGFINT53():New(cURLPost,oPV/*oObjToJson*/,SC5->(Recno())/*nKeyRecord*/,/*"SC5"/*cTblUpd*/,/*"C5_ZTAUFLA"/*cFieldUpd*/,/*cCodint*/,     ,cChave/*cChave*/,.F./*lDeserialize*/,.F.   ,.F.)
+
+
+	cSavcInternet := Nil
+	cSavcInternet := __cInternet
+	__cInternet := "AUTOMATICO"
+
+	oWSPV:SendByHttpPost()
+
+	__cInternet := cSavcInternet
+
+	conout(" [TAURA] [MGFTAS01] * * * * * Status da integracao * * * * *"								)
+	conout(" [TAURA] [MGFTAS01] URL..........................: " + cURLPost 							)
+	conout(" [TAURA] [MGFTAS01] HTTP Method..................: " + "POST"								)
+	conout(" [TAURA] [MGFTAS01] Status Http (200 a 299 ok)...: " + allTrim(  STR( oWSPV:nstatuhttp)  ) 	)
+	conout(" [TAURA] [MGFTAS01] Envio Body...................: " + SUBSTR(_cjsont,1,100) 				)
+	conout(" [TAURA] [MGFTAS01] Retorno......................: " + alltrim(oWSPV:cpostret) 			)
+	conout(" [TAURA] [MGFTAS01] * * * * * * * * * * * * * * * * * * * * "								)
+
+	ZHW->(Dbsetorder(1)) //ZHW_FILIAL+ZHW_PEDIDO
+
+	If ZHW->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+		Reclock("ZHW",.F.)
+		ZHW->ZHW_JSONET := ALLTRIM(_cjsont)
+		ZHW->ZHW_JSONRT := alltrim(oWSPV:cpostret)
+		ZHW->ZHW_STATUT := oWSPV:nstatuhttp
+		ZHW->ZHW_DATAET := Date()
+		ZHW->ZHW_HORAET := time()
+
+		If oWSPV:nstatuhttp >= 200 .and. oWSPV:nstatuhttp <= 201
+
+			ZHW->ZHW_JSONES := " "
+			ZHW->ZHW_JSONTS := " "
+			ZHW->ZHW_JSONRS := " "
+			ZHW->ZHW_STATUS := 0
+			ZHW->ZHW_DATAES := stod(" ")
+			ZHW->ZHW_HORAES := " "
+
+		Endif
+
+		ZHW->(Msunlock())
+
+	Endif
+
+	//Grava log de envio
+	U_MGFMONITOR(	SC5->C5_FILIAL								,;
+					IIf(oWSPV:lOk,ALLTRIM(STR(oWSPV:nStatus)),'2')				,;
+					'001'										,;
+					'023'										,;
+					IIf(!(oWSPV:lOk) .and. VALTYPE(oWSPV:cpostret)=="C",alltrim(oWSPV:cpostret),"")											,;
+					SC5->C5_NUM									,;
+					""											,;
+					_cjsont										,;
+					SC5->(Recno())								,;
+					ALLTRIM(STR(oWSPV:nstatuhttp))				,;
+					.F.											,;
+					{SC5->C5_FILIAL}							,;
+					""											,;
+					IIf(VALTYPE(oWSPV:cpostret)=="C",alltrim(oWSPV:cpostret),"")   ,;
+					""											,;
+					""											,;
+					""											,;
+					STOD(" ")									,;
+					""			 								,;
+					""											,;
+					""											,;
+					""											,;
+					""											,;
+					""					)
+
+	_lfalha := .T.
+
+	If oWSPV:lOk
+
+		IF oWSPV:nStatus == 1	
+			
+			SC6->(Dbsetorder(1)) //C6_FILIAL+C6_NUM+C6_ITEM
+
+			If SC6->(Dbseek(SC5->C5_FILIAL+SC5->C5_NUM))
+
+				Do while SC5->C5_FILIAL+SC5->C5_NUM == SC6->C6_FILIAL+SC6->C6_NUM
+	
+					If SC6->C6_XULTQTD != SC6->C6_QTDVEN
+
+						Reclock("SC6",.F.)
+						SC6->C6_XULTQTD := SC6->C6_QTDVEN
+						SC6->(Msunlock())
+
+					Endif
+				
+				SC6->(Dbskip())
+
+				Enddo
+
+			Endif
+
+			If SC5->C5_ZBLQTAU != ' ' .or.;
+				SC5->C5_ZLIBENV != 'N' .or.;
+				SC5->C5_ZERRO   != ' ' .or.;
+				SC5->C5_ZTAUREE != 'N' .or.;
+				SC5->C5_ZTAUINT != 'S' 
+
+				Reclock("SC5",.F.)
+				SC5->C5_ZBLQTAU := ' '
+				SC5->C5_ZLIBENV := 'N'
+				SC5->C5_ZERRO   := ' '
+				SC5->C5_ZTAUREE := 'N'
+				SC5->C5_ZTAUINT := 'S'
+				SC5->(Msunlock())
+
+			Endif
+		
+			nRet := 1
+			_lfalha := .F.
+
+		Endif
+	
+	Endif
+
+	If _lfalha 
+
+		//Valida se é uma falha permanente
+		cQ := " select r_e_c_n_o_ REC from " + RetSqlName("SZ1") + " where d_e_l_e_t_ <> '*' "
+		cQ += " and (z1_tpinteg = '023' or z1_tpinteg = '008') and z1_integra = '001' and z1_docori = '" + SC5->C5_NUM 
+		cq +=  "' and z1_filial = '" + SC5->C5_FILIAL + "' "
+ 		cQ += " order by z1_dtexec desc, z1_hrexec desc " 
+
+		If select("SZ1TMP") > 0
+			SZ1TMP->(dbclosearea())
+		Endif
+
+		dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),"SZ1TMP",.T.,.T.)
+
+
+		_ntent := 0
+		_lsucesso := .F.
+
+		Do while !(SZ1TMP->(Eof()))
+
+			SZ1->(Dbgoto(SZ1TMP->REC))
+
+			If SZ1->Z1_STATUS = '2' .AND. SZ1->Z1_TPINTEG = '023' .AND. ;
+						 alltrim(SZ1->Z1_JSON) == alltrim(_cjsont) .and.;
+						 alltrim(SZ1->Z1_JSONR) == alltrim(IIf(VALTYPE(oWSPV:cpostret)=="C",alltrim(oWSPV:cpostret),""))
+
+					_ntent++
+
+			Endif
+
+			If SZ1->Z1_STATUS = '1'
+				_lsucesso := .T.
+			Endif
+
+			SZ1TMP->(Dbskip())
+
+		Enddo
+
+		If _ntent > 10
+
+			nret := 4 //Retorno de falha permanente n a integração
+
+		Endif
+
+		If !(_lsucesso) //Se tem falha permanente sem nenhum envio com sucesso grava bloqueio taura e manda para salesforce
+
+			nret := 5
+
+			cQ := "SELECT ZV_PEDIDO "
+			cQ += "FROM "+RetSqlName("SZV")+" SZV "
+			cQ += "WHERE SZV.D_E_L_E_T_ = ' ' "
+			cQ += "AND ZV_FILIAL = '" + SC5->C5_FILIAL + "' "
+			cQ += "AND ZV_PEDIDO = '" + SC5->C5_NUM + "' "
+			cQ += "AND ZV_CODRGA = '000088' " 
+			cQ += "AND ZV_CODAPR = ' ' " 
+
+			If select("SZVTMP") > 0
+				SZVTMP->(dbclosearea())
+			Endif
+
+			dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),"SZVTMP",.T.,.T.)
+
+			SZVTMP->(dbGoTop())
+				
+			If SZVTMP->(Eof())
+
+				Reclock("SZV",.T.)
+				SZV->ZV_FILIAL := SC5->C5_FILIAL
+				SZV->ZV_PEDIDO := SC5->C5_NUM
+				SZV->ZV_ITEMPED := '01'
+				SZV->ZV_CODRGA := '000088'
+				SZV->ZV_MOTREJE := IIf(VALTYPE(oWSPV:cpostret)=="C",alltrim(oWSPV:cpostret),"") 
+				SZV->ZV_DTBLQ  := DATE()
+				SZV->ZV_HRBLQ  := TIME()
+				SZV->(Msunlock())
+
+			Endif
+
+			SZVTMP->(dbclosearea())
+
+		Endif
+
+
+	Endif
+
+Return(nRet)
 
 
 // funcao de consulta do status do PV no Taura
@@ -260,7 +714,7 @@ User Function TAS01StatPV(aParam,_lshow,_lJob)
 	SC5->(dbSetOrder(1))
 	If SC5->(dbSeek(xFilial("SC5")+cPV))
 
-		//Perfil de PCP nao pode ter acesso a alteracao de pedidos Especie VE ï¿½ Venda /Tipo Operacao BJ e Pedido FIFO operacao FG.
+		//Perfil de PCP não pode ter acesso a alteração de pedidos Espécie VE – Venda /Tipo Operação BJ e Pedido FIFO operação FG.
 		If IsInCallStack("A410Altera")
 			If !Empty(cUser)
 				aRet := FWSFUsrGrps(cUser)
@@ -272,7 +726,7 @@ User Function TAS01StatPV(aParam,_lshow,_lJob)
 						cGrupo:= Upper(AllTrim(FWGetNameGrp(aRet[nCt])))
 						If !Empty(cGrupo)
 							If 'PCP' $ cGrupo
-								APMsgAlert("[MGFTAS01/001] - Pedido do Tipo: "+_cTpPed+" e Operacao: "+_cOper+" nao pode ser alterado conforme Regra.")
+								APMsgAlert("[MGFTAS01/001] - Pedido do Tipo: "+_cTpPed+" e Operação: "+_cOper+" não pode ser alterado conforme Regra.")
 								lCont := .F.
 								Exit
 							EndIf
@@ -287,24 +741,16 @@ User Function TAS01StatPV(aParam,_lshow,_lJob)
 			If (IsInCallStack("A410Devol") .or. SC5->C5_TIPO == "D" .or. IIf(_lJob,.F.,Inclui) .or. M->C5_TIPO == "D")
 				aEval(aArea,{|x| RestArea(x)})
 				If _lJob
-					Return({.T., 'Pedido bloqueado com sucesso. Sem integracao com taura.' })
+					Return({.T., 'Pedido bloqueado com sucesso. Sem integração com taura.' })
 				Else
 					Return(.T.)
 				EndIf
 			Endif
 
-			dbSelectArea('SZJ')
-			SZJ->(dbSetOrder(1))
-			IF SZJ->(dbSeek(xFilial('SZJ')+SC5->C5_ZTIPPED))
-				IF SZJ->ZJ_TAURA == 'S'
-					bTaura := .T.
-				EndIF
-			EndIF
-
 			IF !bTaura
 				aEval(aArea,{|x| RestArea(x)})
 				If _lJob
-					Return({.T.,'Pedido bloqueado com sucesso. Sem integracao com taura.'})
+					Return({.T.,'Pedido bloqueado com sucesso. Sem integração com taura.'})
 				Else
 					Return(.T.)
 				EndIf
@@ -352,18 +798,25 @@ User Function TAS01StatPV(aParam,_lshow,_lJob)
 
 		oWSStPV := MGFINT23():New(cURLPost,oStPV/*oObjToJson*/,SC5->(Recno())/*nKeyRecord*/,/*cTblUpd*/,/*cFieldUpd*/,AllTrim(GetMv("MGF_MONI01"))/*cCodint*/,AllTrim(GetMv("MGF_MONI14"))/*cCodtpint*/,cChave/*cChave*/,.F./*lDeserialize*/,.F.,.T.)
 
-		StaticCall(MGFTAC01,ForcaIsBlind,oWSStPV)
+		cSavcInternet := Nil
+		cSavcInternet := __cInternet
+		__cInternet := "AUTOMATICO"
+
+		oWSStPV:SendByHttpPost()
+
+		__cInternet := cSavcInternet
+
 
 		If (Type("oWSStPV:nStatus") != "U" .and. (oWSStPV:nStatus == 1 .or. oWSStPV:nStatus == 3)) .or. (Type("oWSStPV:CDETAILINT") != "U" .and. 'result' $ oWSStPV:CDETAILINT .and. 'ok' $ oWSStPV:CDETAILINT)
 			lRet := .T.
 		Endif
 
 		If !lRet .and. !IsIncallStack("U_MGFFATA7") .and. _lshow
-			APMsgAlert("Nao sera permitida manutencao no Pedido de Venda."+CRLF+;
+			APMsgAlert("Não será permitida manutenção no Pedido de Venda."+CRLF+;
 			"Motivo: "+oWSStPV:CDETAILINT)
 		ElseIf IsIncallStack("U_MGFFATA7") .and. !lRet .and. _lshow
 			If Type("_cMensTaura") == "U"
-				_cMensTaura += "Nao sera permitida manutencao no Pedido de Venda." + CRLF
+				_cMensTaura += "Não será permitida manutenção no Pedido de Venda." + CRLF
 				_cMensTaura += "Motivo: " + oWSStPV:CDETAILINT + CRLF
 				_cMensTaura += "--------------------------------------------------------"
 			EndIf
@@ -374,207 +827,10 @@ User Function TAS01StatPV(aParam,_lshow,_lJob)
 	aEval(aArea,{|x| RestArea(x)})
 
 	If _lJob
-		Return({lRet, Iif( Type('oWSStPV:CDETAILINT') <> 'U' , oWSStPV:CDETAILINT , 'Pedido nao localizado.' )})
+		Return({lRet, Iif( Type('oWSStPV:CDETAILINT') <> 'U' , oWSStPV:CDETAILINT , 'Pedido não localizado.' )})
 	EndIf
 
 Return(lRet)
-
-
-Class PodeAlterarExcluirPedidoVenda
-
-Data Acao				as String
-Data Filial				as String
-Data Pedido				as String
-Data TipoPedido	   		as String
-Data DataPedido	   		as String
-Data ApplicationArea	as ApplicationArea
-
-Method New()
-
-Return
-
-
-Method New(cStatus) Class PodeAlterarExcluirPedidoVenda
-
-Local cStringTime := "T00:00:00"
-
-::Acao := cStatus
-::Filial := SC5->C5_FILIAL
-::Pedido := Alltrim(SC5->C5_NUM)
-::TipoPedido := Alltrim(IIf(SC5->(FieldPos("C5_ZTIPPED"))>0,SC5->C5_ZTIPPED,""))
-::DataPedido := IIf(!Empty(SC5->C5_EMISSAO),Subs(dTos(SC5->C5_EMISSAO),1,4)+"-"+Subs(dTos(SC5->C5_EMISSAO),5,2)+"-"+Subs(dTos(SC5->C5_EMISSAO),7,2)+cStringTime,"")
-::ApplicationArea := ApplicationArea():New()
-
-Return
-
-
-// funcao de filtragem dos PVï¿½s que serao enviados ao Taura
-// serah chamada por job
-// ******************************
-//OBS: nao deixar nenhum reclock neste fonte e nem nos fontes chamados por este, pois esta rotina eh executada em job, e caso algum registro do cadastro
-//esteja em alteracao pelo usuario, o job vai parar aguardando o final da alteracao do usuario, bloqueando toda a execucao do job, o qual eh executado
-// para este e demais cadastros e movimentos.
-// ******************************
-User Function TAS01FilPV(aEmpSel)
-
-Local cQ 		:= ""
-Local cEmpSav	:= cEmpAnt
-Local cFilSav 	:= cFilAnt
-Local cAliasTrb := GetNextAlias()
-Local lRet 		:= .F.
-Local nRet 		:= 0
-Local cIDTaura 	:= GetMV("MGF_IDTSPV",.F.,) // 0000000001
-Local cEmpSel   := "'x'"
-Local nI		:= 0
-Local cFilMafig	:= ""
-Local nVezes    := GetMv("MGF_TAUVEZ",,5)
-Local cVezes    := ''
-
-Private nI            := 0
-
-// alterado em 16/04/2018 - Paulo Fernandes
-// tratamento do job por grupo de filiais
-For nI := 1 To Len(aEmpSel)
-	cEmpSel += ",'"+aEmpSel[nI]+"'"
-Next nI
-// fim
-/*
-C5_ZTAUFLA, flags:
-1=enviado com sucesso
-2=enviado e rejeitado - Erro
-3=enviado e Taura nao usou PV
-*/
-
-If Empty(cIDTaura)
-	ConOut("Nao encontrado parametro 'MGF_IDTSPV'.")
-	Return()
-Endif
-
-cIDTaura := Soma1(cIDTaura)
-PutMV("MGF_IDTSPV",cIDtaura)
-
-cVezes := "'N',' ','S'"
-For nI := 1 To nVezes-1
-	cVezes += ",'"+Alltrim(STR(nI))+"'"
-Next nI
-
-// flega todos os pedidos selecionados como "em processamento", para que outro job nao pegue o mesmo pedido para processar
-cQ := " UPDATE "
-cQ += RetSqlName("SC5")+" "
-cQ += " SET C5_ZTAUID = '"+cIDTaura+"' "
-cQ += " WHERE (C5_ZBLQTAU = 'S' OR C5_ZLIBENV = 'S')" // PV nao enviado ainda ao Taura
-cQ += " AND C5_ZTIPPED in ( Select ZJ_COD from "+RetSqlName("SZJ")+" SZJ Where SZJ.D_E_L_E_T_ = ' ' AND ( ZJ_TAURA='S' OR ZJ_KEYCONS='S' )) "
-cQ += " AND (C5_NOTA = ' ' OR C5_NOTA like 'XXXX%') "
-// alterado em 16/04/2018 - Paulo Fernandes
-cQ += " AND C5_FILIAL in ("+cEmpSel+") "
-cQ += " AND C5_ZTAUREE in ("+cVezes+") "
-cQ += "	AND C5_ZTAUINT <> 'N' " // N = nao enviado ao taura, pois o envio deve ser feito on-line pelo fonte mgftas06. O inicializador padrao deste campo eh 'N', apos o envio pelo mgftas06, o campo vai para 'S' e se ocorrer erro no envio da inclusao vai para 'E'. Conteudos possiveis do campo, N/E/S.
-cQ += " AND C5_EMISSAO >= '"+dTos(dDataBase-GetMv("MGF_TAS011",,30))+"' "
-cQ += " AND C5_XRESERV	<>	'N'"
-
-conout("[MGFTAS01] [TAS01FilPV] [1] " + cQ)
-
-nRet := tcSqlExec(cQ)
-If nRet == 0
-Else
-	ConOut("Problemas na gravacao do semï¿½foro do pedido de venda, para envio ao Taura.")
-	conout("[MGFTAS01] [TAS01FilPV] [1] Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
-	Return()
-EndIf
-
-// FLAG DE INTEGRACAO DE PEDIDOS - USA O MESMO FILTRO - MAS SEM A FLAG C5_XRESERV
-cQ := ""
-cQ := " UPDATE "
-cQ += RetSqlName("SC5")+" "
-cQ += " SET C5_XINTEGR = 'P'"
-cQ += " WHERE (C5_ZBLQTAU = 'S' OR C5_ZLIBENV = 'S')" // PV nao enviado ainda ao Taura
-cQ += " AND C5_ZTIPPED in ( Select ZJ_COD from "+RetSqlName("SZJ")+" SZJ Where SZJ.D_E_L_E_T_ = ' ' AND ( ZJ_TAURA='S' OR ZJ_KEYCONS='S' )) "
-cQ += " AND (C5_NOTA = ' ' OR C5_NOTA like 'XXXX%') "
-// alterado em 16/04/2018 - Paulo Fernandes
-cQ += " AND C5_FILIAL in ("+cEmpSel+") "
-cQ += " AND C5_ZTAUREE in ("+cVezes+") "
-cQ += "	AND C5_ZTAUINT <> 'N' " // N = nao enviado ao taura, pois o envio deve ser feito on-line pelo fonte mgftas06. O inicializador padrao deste campo eh 'N', apos o envio pelo mgftas06, o campo vai para 'S' e se ocorrer erro no envio da inclusao vai para 'E'. Conteudos possiveis do campo, N/E/S.
-cQ += " AND C5_EMISSAO >= '"+dTos(dDataBase-GetMv("MGF_TAS011",,30))+"' "
-
-conout("[MGFTAS01] [TAS01FilPV] [2] [INICIO]" + cQ)
-
-if tcSQLExec( cQ ) < 0
-	ConOut("Problemas na gravacao do semï¿½foro do pedido de venda, para envio ao Taura.")
-	conout("[MGFTAS01] [TAS01FilPV] [2] Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
-	Return()
-EndIf
-cQ := ""
-
-conout("[MGFTAS01] [TAS01FilPV] [2] [FIM]")
-// FIM - FLAG DE INTEGRACAO DE PEDIDOS
-
-// processamento de filiais que nao integram taura, mas integram com keyconsult, envio da alteracao do pedido que as vezes nao estah sendo enviada de forma sincrona, entao
-// o job terah a funcao de enviar o pedido apos a alteracao
-If GetMv("MGF_TAS012",,.T.)
-	cQ := " UPDATE "
-	cQ += RetSqlName("SC5")+" "
-	cQ += " SET C5_ZTAUID = '"+cIDTaura+"' "
-	cQ += " WHERE R_E_C_N_O_ IN "
-	cQ += " ( "
-	cQ += " SELECT SC5.R_E_C_N_O_ "
-	cQ += " FROM "+RetSqlName("SC5")+" SC5, "+RetSqlName("SZV")+" SZV "
-	cQ += " WHERE C5_FILIAL IN "+FormatIn(GetMv("MGF_TAS014"),"/")+" "
-	cQ += " AND C5_ZTIPPED IN ( Select ZJ_COD from "+RetSqlName("SZJ")+" SZJ Where SZJ.D_E_L_E_T_ = ' ' AND (ZJ_TAURA<>'S' AND ZJ_KEYCONS='S') ) "
-	cQ += " AND C5_NOTA = ' ' "
-	cQ += " AND C5_ZTAUREE in ("+cVezes+") "
-	cQ += "	AND C5_ZTAUINT = 'S' " // jah enviado
-	cQ += " AND C5_EMISSAO >= '"+dTos(dDataBase-GetMv("MGF_TAS013",,3))+"' "
-	cQ += " AND SZV.D_E_L_E_T_ = ' ' " // OBS: os registros da sc5 devem ser lidos mesmo deletados, para envio da exclusao do pedido
-	cQ += " AND C5_FILIAL = ZV_FILIAL "
-	cQ += " AND C5_NUM = ZV_PEDIDO "
-	cQ += " AND ZV_CODRGA IN "+FormatIn(GetMv("MGF_TAS015"),"/")+" " // somente pedidos com estes bloqueios
-	cQ += " AND ZV_CODAPR = ' ' " // somente pedidos nao aprovados
-	cQ += " AND C5_XRESERV	<>	'N'"
-	cQ += " ) "
-
-	nRet := tcSqlExec(cQ)
-	If nRet == 0
-	Else
-		ConOut("Problemas na gravacao do semï¿½foro do pedido de venda, para envio ao Taura.")
-	EndIf
-Endif
-
-cQ := "SELECT SC5.R_E_C_N_O_ SC5_RECNO,C5_FILIAL,C5_NUM,C5_ZTAUFLA,C5_ZTAUINT,C5_LIBEROK,SC5.D_E_L_E_T_ DELET "
-cQ += "FROM "+RetSqlName("SC5")+" SC5 "
-cQ += "WHERE "
-cQ += "C5_ZTAUID = '"+cIDTaura+"' "
-// alterado em 16/04/2018 - Paulo Fernandes
-cQ += "AND C5_FILIAL in ("+cEmpSel+")"
-If GetMv("MGF_TAS012",,.T.)
-	cQ += "UNION "
-	cQ += "SELECT SC5.R_E_C_N_O_ SC5_RECNO,C5_FILIAL,C5_NUM,C5_ZTAUFLA,C5_ZTAUINT,C5_LIBEROK,SC5.D_E_L_E_T_ DELET "
-	cQ += "FROM "+RetSqlName("SC5")+" SC5 "
-	cQ += "WHERE "
-	cQ += "C5_ZTAUID = '"+cIDTaura+"' "
-	cQ += "AND C5_FILIAL IN "+FormatIn(GetMv("MGF_TAS014"),"/")+" "
-Endif
-cQ += "ORDER BY C5_FILIAL,C5_NUM "
-
-cQ := ChangeQuery(cQ)
-dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
-
-(cAliasTrb)->(dbGoTop())
-While (cAliasTrb)->(!Eof())
-	cEmpAnt := Subs((cAliasTrb)->C5_FILIAL,1,2)
-	cFilAnt := Subs((cAliasTrb)->C5_FILIAL,1,6)
-
-	lRet := U_TAS01EnvPV({(cAliasTrb)->C5_NUM,IIf((cAliasTrb)->DELET=="*" .or. SC5->C5_LIBEROK == "Z",3,1),(cAliasTrb)->SC5_RECNO})
-
-	(cAliasTrb)->(dbSkip())
-Enddo
-
-(cAliasTrb)->(dbCloseArea())
-
-cEmpAnt := cEmpSav
-cFilAnt := cFilSav
-
-Return()
-
 
 // verifica se PV pode sofrer manutencao
 User Function TAS01VldMnt(aParam,_lJob)
@@ -607,7 +863,7 @@ If SC5->C5_NUM != cPV
 	SC5->(dbSeek(xFilial("SC5")+cPV))
 	If SC5->(!Found())
 		lRet := .F.
-		cBloqueio	:= "Pedido nao encontrado."
+		cBloqueio	:= "Pedido não encontrado."
 		APMsgAlert(cBloqueio)
 	Endif
 Endif
@@ -615,7 +871,7 @@ Endif
 If lRet
 	If SC5->C5_ZTAUSEM == "S"
 		lRet := .F.
-		cBloqueio	:= "Pedido nao podera sofrer manutencao agora, pois esta sendo enviado para o Taura. Aguarde o envio."
+		cBloqueio	:= "Pedido não poderá sofrer manutenção agora, pois está sendo enviado para o Taura. Aguarde o envio."
 		APMsgAlert(cBloqueio)
 	Endif
 Endif
@@ -623,27 +879,27 @@ If lRet
 	If SC5->C5_ZROAD == "S"
 		IF !INCLUI .and. !ALTERA .and. !_lJob
 			IF !( cUserAlt $ cExcPed)
-				cBloqueio	:= "Pedido jï¿½ roterizado, nao ï¿½ possivel excluir."
+				cBloqueio	:= "Pedido já roterizado, não é possivel excluir."
 				APMsgAlert(cBloqueio)
 			EndIF
 		Else
 			lRet := .F.
-			cBloqueio	:= "Pedido jï¿½ roterizado, nao ï¿½ possivel alterar."
+			cBloqueio	:= "Pedido já roterizado, não é possivel alterar."
 			APMsgAlert(cBloqueio)
 		Endif
 	EndIF
 
 	If (SC5->C5_ZTIPPED $ cTiPPEco) .and. lRet
-		IF !INCLUI .and. !ALTERA .and. _lJob //Exclusao
+		IF !INCLUI .and. !ALTERA .and. _lJob //Exclusão
 			IF !( cUserAlt $ cUserEco)
 				lRet := .F.
-				cBloqueio	:= "Pedido do Ecommerce, nao ï¿½ possivel excluir."
+				cBloqueio	:= "Pedido do Ecommerce, não é possivel excluir."
 				APMsgAlert(cBloqueio)
 			EndIF
-		ElseIf ALTERA .Or. _lJob  //Alteracao
+		ElseIf ALTERA .Or. _lJob  //Alteração
 			IF !( cUserAlt $ cUserEco)
 				lRet := .F.
-				cBloqueio	:= "Pedido do Ecommerce, nao ï¿½ possivel alterar."
+				cBloqueio	:= "Pedido do Ecommerce, não é possivel alterar."
 				APMsgAlert(cBloqueio)
 			EndIf
 		Endif
@@ -653,7 +909,7 @@ Endif
 If lRet
 	If !Empty(SC5->C5_NOTA)
 		lRet := .F.
-		cBloqueio	:= "Pedido jï¿½ Faturado, nao ï¿½ possivel alterar."
+		cBloqueio	:= "Pedido já Faturado, não é possivel alterar."
 		APMsgAlert(cBloqueio)
 	Endif
 Endif
@@ -718,12 +974,12 @@ If !Empty(cSC6)
 	&(bSC6)
 Endif
 
-//Se encontrar o campo na grid, sobrepï¿½e o valor
+//Se encontrar o campo na grid, sobrepõe o valor
 If nPosProd > 0
 	//Percorrendo linhas da grid
     For nLinAtu := 1 To Len(aCols)
-    	n := nLinAtu // variavel publica que indica a linha posicionada
-        // verifica se hï¿½ trigger e executa, caso exista
+    	n := nLinAtu // variável publica que indica a linha posicionada
+        // verifica se há trigger e executa, caso exista
         If ExistTrigger("C6_PRODUTO")
         	//RunTrigger(2,n,nil,,C6_PRODUTO)
 			RunTrigger(2,Len(aCols),,"C6_PRODUTO")
@@ -779,43 +1035,6 @@ Endif
 
 Return()
 
-
-// rotina para carregar os itens do pv usando query, para nao usar seek na tabela, pois eh necessario carregar itens deletados tb
-// sc5 estah posicionado e pode estar deletado
-Static Function ItensSC6(cStatus)
-
-Local aArea := {GetArea()}
-Local cAliasTrb := GetNextAlias()
-Local cQ := ""
-Local aRecno := {}
-
-cQ := "SELECT SC6.R_E_C_N_O_ SC6_RECNO "
-cQ += "FROM "+RetSqlName("SC6")+" SC6 "
-cQ += "WHERE "
-If cStatus != "3"
-	cQ += "SC6.D_E_L_E_T_ <> '*' "
-Else
-	cQ += "SC6.D_E_L_E_T_ = '*' "
-Endif
-cQ += "AND C6_FILIAL = '"+SC5->C5_FILIAL+"' "
-cQ += "AND C6_NUM = '"+SC5->C5_NUM+"' "
-
-cQ := ChangeQuery(cQ)
-dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
-
-(cAliasTrb)->(dbGoTop())
-While (cAliasTrb)->(!Eof())
-	aAdd(aRecno,(cAliasTrb)->SC6_RECNO)
-	(cAliasTrb)->(dbSkip())
-Enddo
-
-(cAliasTrb)->(dbCloseArea())
-
-aEval(aArea,{|x| RestArea(x)})
-
-Return(aRecno)
-
-
 // avalia se pedido tem alguma regra de bloqueio do keyconsult
 Static Function AvalRgaKey(cPed)
 
@@ -844,6 +1063,35 @@ aEval(aArea,{|x| RestArea(x)})
 
 Return(lRet)
 
+
+Class PodeAlterarExcluirPedidoVenda
+
+Data Acao				as String
+Data Filial				as String
+Data Pedido				as String
+Data TipoPedido	   		as String
+Data DataPedido	   		as String
+Data ApplicationArea	as ApplicationArea
+
+Method New()
+
+End Class
+
+
+Method New(cStatus) Class PodeAlterarExcluirPedidoVenda
+
+Local cStringTime := "T00:00:00"
+
+::Acao := cStatus
+::Filial := SC5->C5_FILIAL
+::Pedido := Alltrim(SC5->C5_NUM)
+::TipoPedido := Alltrim(IIf(SC5->(FieldPos("C5_ZTIPPED"))>0,SC5->C5_ZTIPPED,""))
+::DataPedido := IIf(!Empty(SC5->C5_EMISSAO),Subs(dTos(SC5->C5_EMISSAO),1,4)+"-"+Subs(dTos(SC5->C5_EMISSAO),5,2)+"-"+Subs(dTos(SC5->C5_EMISSAO),7,2)+cStringTime,"")
+::ApplicationArea := ApplicationArea():New()
+
+Return
+
+
 Class GravarPedidoVenda
 
 Data Acao					as String
@@ -861,6 +1109,11 @@ Data TipoFrete				as String
 Data Observacao				as String
 Data CodigoBarras			as String
 Data EnderecoEntrega		as String
+Data DescricaoEnderecoEntrega		as String
+Data CidadeEntrega			as String
+Data EstadoEntrega			as String
+Data LogradouroEntrega		as String
+Data BairroEntrega			as String
 Data PedidoCliente			as String
 Data ApplicationArea		as ApplicationArea
 Data Documento				as String
@@ -879,7 +1132,6 @@ Method New()
 Method GravarPVCab()
 Method GravarPVItens()
 
-//Return
 EndClass
 
 
@@ -930,12 +1182,47 @@ Method GravarPVCab(cStatus) Class GravarPedidoVenda
 		Endif
 	Endif
 
-	//A. Carlos - Incuido chamada funcao para converter memo em caracter
 	if SC5->C5_ZTIPPED == "EX"
 		cObs := allTrim( SC5->C5_ZOBSND ) + " -- " + allTrim( SC5->C5_ZOBS )
 	else
 	   cObs := allTrim( SC5->C5_ZOBS ) + " -- " + allTrim( SC5->C5_XOBSPED )
 	endif
+
+	SZ9->(Dbsetorder(1)) //Z9_FILIAL+Z9_CLIENTE+Z9_ZIDEND
+
+	If SZ9->(Dbseek(xfilial("SZ9")+SC5->C5_CLIENTE+SC5->C5_LOJACLI+SC5->C5_ZIDEND))
+
+		_cendereco := alltrim(SZ9->Z9_ZENDER)
+		_ccidade := alltrim(SZ9->Z9_ZMUNIC)
+		_cbairro := alltrim(SZ9->Z9_ZBAIRRO)
+		_cestado := alltrim(SZ9->Z9_ZEST)
+
+	Else
+
+		If SC5->C5_TIPO $ ("D/B")
+			SA2->(dbSetOrder(1))
+			If SA2->(dbSeek(xFilial("SA2")+SC5->C5_CLIENTE+SC5->C5_LOJACLI))
+		
+				_cendereco := alltrim(SA2->A2_END)
+				_ccidade := alltrim(SA2->A2_MUN)
+				_cbairro := alltrim(SA2->A2_BAIRRO)
+				_cestado := alltrim(SA2->A2_EST)
+
+			Endif
+		Else
+			SA1->(dbSetOrder(1))
+			If SA1->(dbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI))
+			
+				_cendereco := IIF(!EMPTY(SA1->A1_ENDENT),alltrim(SA1->A1_ENDENT),alltrim(SA1->A1_END))
+				_ccidade := alltrim(SA1->A1_MUN)
+				_cbairro := alltrim(SA1->A1_BAIRRO)
+				_cestado := alltrim(SA1->A1_EST)
+
+			Endif
+		Endif
+
+	
+	Endif
 
 	::Acao            := IIf(SC5->(Deleted()) .or. SC5->C5_LIBEROK == "Z","3",IIf(SC5->C5_ZTAUINT=="S","2","1")) //'1' //cStatus
 	::Filial 		  := SC5->C5_FILIAL
@@ -952,6 +1239,11 @@ Method GravarPVCab(cStatus) Class GravarPedidoVenda
 	::Observacao 	  := Alltrim(cObs)   //era Alltrim(SC5->C5_ZOBS))
 	::CodigoBarras 	  := Alltrim(SC5->C5_ZCODBAR)
 	::EnderecoEntrega := cCliente+IIf(Empty(SC5->C5_ZIDEND),"0",Alltrim(Str(Val(SC5->C5_ZIDEND)))) //Alltrim(IIf(SC5->(FieldPos("C5_ZIDEND"))>0,IIf(Empty(SC5->C5_ZIDEND),"0",SC5->C5_ZIDEND),"0"))
+	::DescricaoEnderecoEntrega 	:= _cendereco
+	::CidadeEntrega				:= _ccidade
+	::EstadoEntrega 			:= _cestado
+	::LogradouroEntrega 		:= _cendereco
+	::BairroEntrega 			:= _cbairro
 	::PedidoCliente   := Alltrim(SC5->C5_ZPEDCLI)
 	::Consulta_Hab 	  := IIf((GetMv("MGF_TAS012",,.T.) .and. SC5->C5_FILIAL $ GetMv("MGF_TAS014") .and. !Empty(GetMv("MGF_TAS015")) .and. GetAdvFVal("SZJ","ZJ_KEYCONS",xFilial("SZJ")+SC5->C5_ZTIPPED,1,"")=="S" .and. AvalRgaKey(SC5->C5_NUM)),"S",SC5->C5_ZCONFIS)
 	::Taura			  := IIf(GetAdvFVal("SZJ","ZJ_TAURA",xFilial("SZJ")+SC5->C5_ZTIPPED,1,"")=="S","S","N")
@@ -960,7 +1252,6 @@ Method GravarPVCab(cStatus) Class GravarPedidoVenda
 	::Itens	:= {}
 
 Return()
-
 
 Class ItensPV
 
@@ -981,8 +1272,7 @@ Data Observacao				as String
 
 Method New()
 
-Return
-
+End Class
 
 Method New() Class ItensPV
 
@@ -1012,6 +1302,13 @@ EndIF
 ::DataPedido := IIf(!Empty(SC5->C5_EMISSAO),Subs(dTos(SC5->C5_EMISSAO),1,4)+"-"+Subs(dTos(SC5->C5_EMISSAO),5,2)+"-"+Subs(dTos(SC5->C5_EMISSAO),7,2)+cStringTime,"")
 ::TipoPedido := Alltrim(IIf(SC5->(FieldPos("C5_ZTIPPED"))>0,SC5->C5_ZTIPPED,"")) //"VE"
 ::QuantidadeVolumes := SC6->C6_ZVOLUME
+
+if SC5->C5_ZTIPPED == "EX"
+	cObs := allTrim( SC5->C5_ZOBSND ) + " -- " + allTrim( SC5->C5_ZOBS )
+else
+   cObs := allTrim( SC5->C5_ZOBS ) + " -- " + allTrim( SC5->C5_XOBSPED )
+endif
+
 ::Observacao := Alltrim(cObs)     //era Alltrim(SC5->C5_ZOBS)
 
 Return()

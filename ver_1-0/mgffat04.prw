@@ -3,7 +3,7 @@
 #include "FWMVCDEF.CH"
 #include "TBICONN.CH"
 #Include "topconn.ch"
-//#include 'FWADAPTEREAI.CH'    //Include para rotinas de integracao com EAI
+//#include 'FWADAPTEREAI.CH'    //Include para rotinas de integração com EAI
 //#include 'FILEIO.CH'
 
 /*
@@ -14,13 +14,13 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina para gravar dados adicionais na tabela de preco
 =====================================================================================
-@alteracoes 06/02/2020 - Henrique Vidal
-	PRB0040687 - Desenvolvido processo para nao permitir alteracoes no preco para o 
+@alterações 06/02/2020 - Henrique Vidal
+	PRB0040687 - Desenvolvido processo para não permitir alterações no preço para o 
 	             produto posicionado, quando o campo B1_zlinha estiver inconsistente.
-				 Funcoes acionadas, somente quando campo DA0_XENVECO == 1
+				 Funções acionadas, somente quando campo DA0_XENVECO == 1
 */
 
 User Function MGFFAT04()
@@ -135,7 +135,7 @@ T04SZM( @aSZM )
 	//List Box Filial
 	//-----------------------------------------------------------------------------------------------
 	@ 007, 005 LISTBOX oLstSZB	 	VAR nListBox1 ;
-    								Fields HEADER "Filial", "Descricao" ;
+    								Fields HEADER "Filial", "Descrição" ;
     								SIZE 265, 158 OF oFolder1:aDialogs[1] COLORS 0, 16777215 PIXEL
 
 	oLstSZB:SetArray(aSZB)
@@ -237,7 +237,7 @@ T04SZM( @aSZM )
 	//List Box Regiao
 	//-----------------------------------------------------------------------------------------------
 	@ 007, 005 LISTBOX oLstSZI	 	VAR nListBox1 ;
-    								Fields HEADER "Cod.Reg", "Descricao" ;
+    								Fields HEADER "Cod.Reg", "Descrição" ;
     								SIZE 265, 158 OF oFolder1:aDialogs[6] COLORS 0, 16777215 PIXEL
 
 
@@ -259,7 +259,7 @@ T04SZM( @aSZM )
 	//List Box Tipo de Pedido
 	//-----------------------------------------------------------------------------------------------
 	@ 007, 005 LISTBOX oLstSZJ	 	VAR nListBox1 ;
-    								Fields HEADER "Tipo Ped", "Descricao" ;
+    								Fields HEADER "Tipo Ped", "Descrição" ;
     								SIZE 265, 158 OF oFolder1:aDialogs[7] COLORS 0, 16777215 PIXEL
 
 
@@ -317,7 +317,7 @@ T04SZM( @aSZM )
     												SIZE 037, 012 OF oFolder1:aDialogs[9] PIXEL
 
 	//-----------------------------------------------------------------------------------------
-	//Botï¿½o Sair da Rotina
+	//Botão Sair da Rotina
 	//-----------------------------------------------------------------------------------------
 	@ 227, 298 BUTTON oButton1 PROMPT "&Sair" Action(oDlg1:End()) SIZE 037, 012 OF oDlg1 PIXEL
 
@@ -336,7 +336,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Filial
 =====================================================================================
 */
@@ -389,7 +389,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Vendedor
 =====================================================================================
 */
@@ -435,7 +435,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Vendedor
 =====================================================================================
 */
@@ -480,7 +480,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Vendedor
 =====================================================================================
 */
@@ -525,7 +525,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Estado
 =====================================================================================
 */
@@ -571,7 +571,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Regiao
 =====================================================================================
 */
@@ -618,7 +618,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Tipo de Pedido
 =====================================================================================
 */
@@ -668,7 +668,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Regiao
 =====================================================================================
 */
@@ -713,7 +713,7 @@ Data................: 15/09/2016
 Descricao / Objetivo: Cadastro de departamentos
 Doc. Origem.........: Contrato - GAP FAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna o cadastro  Tabela de Preco x Quantidade
 =====================================================================================
 */
@@ -759,7 +759,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona opcao no menu da tabela de preco
 =====================================================================================
 */
@@ -782,7 +782,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Filial x Tabela de Preco
 =====================================================================================
 */
@@ -803,7 +803,7 @@ Local cDescr	:= Space(60)
   SX3->(dbSetOrder(2))
   SX3->(dbSeek('A1_COD'))
 
-  DEFINE MSDIALOG oDlg3 TITLE "Filial x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Filial x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 225 PROMPT "" OF oDlg3 COLOR 0, 16777215 	PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Filial" 								SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -811,15 +811,15 @@ Local cDescr	:= Space(60)
     							Valid(T4ValSZB(cCod,@cDescr))					;
 																						SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "SM0" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
-                        {"Informe o codigo da filial."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Informe o código da filial."},2,;
+                        {"Solução"},2)}
 
-    @ 020, 064 SAY 		oSay2 PROMPT "Descricao" 										SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
+    @ 020, 064 SAY 		oSay2 PROMPT "Descrição" 										SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 VAR cDescr 												SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
-                        {"Descricao da filial."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Descrição da filial."},2,;
+                        {"Solução"},2)}
 
     @ 053, 135 BUTTON oButton2 PROMPT "Confirmar" 		Action(	IIF(T4GRVSZB(@oLstSZ,@aSZ,cCod,cDescr),oDlg3:End(),)) 	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -843,7 +843,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Vendedor x Tabela de Preco
 =====================================================================================
 */
@@ -866,7 +866,7 @@ Local cCod		:= Space(TamSx3("A3_COD")[1])
 Local cDescr	:= Space(TamSx3("A3_NOME")[1])
 Local nPerComis	:=0
 
-  DEFINE MSDIALOG oDlg3 TITLE "Vendedor x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Vendedor x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 093, 226 PROMPT "" OF oDlg3 COLOR 0, 16777215 		PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Codigo" 									SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -874,22 +874,22 @@ Local nPerComis	:=0
     							Valid(T4ValSZC(cCod,@cDescr))						;
 																					SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "SA3" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
-                        {"Informe o codigo do vendedor."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Informe o código do vendedor."},2,;
+                        {"Solução"},2)}
 
     @ 020, 064 SAY 		oSay2 	PROMPT "Nome" 										SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 	VAR cDescr 											SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
                         {"Nome do vendedor."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 052, 016 SAY 		oSay3 PROMPT "% Comissao" 									SIZE 041, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 064, 015 MSGET 	oGet3 VAR nPerComis Picture PesqPict( "SZC","ZC_PERCOMI" ) 	SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet3:bHelp := {||    ShowHelpCpo(    "nPerComis",;
-                        {"Percentual de comissï¿½o para a tabela."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Percentual de comissão para a tabela."},2,;
+                        {"Solução"},2)}
 
     @ 064, 135 BUTTON oButton2 	PROMPT "Confirmar" 		Action(	IIF(T4GRVSZC(@oLstSZ,@aSZ,cCod,cDescr,nPerComis),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
     @ 064, 178 BUTTON oButton1 	PROMPT "Cancelar" 								;
@@ -912,7 +912,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Departamento x Tabela de Preco
 =====================================================================================
 */
@@ -929,7 +929,7 @@ Local oDlg3
 Local cCod		:= Space(TamSx3("ZD_COD")[1])
 Local cDescr	:= Space(TamSx3("ZD_NOME")[1])
 
-  DEFINE MSDIALOG oDlg3 TITLE "Departamento x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Departamento x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 225 PROMPT "" OF oDlg3 COLOR 0, 16777215 	PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Codigo" 								SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -937,15 +937,15 @@ Local cDescr	:= Space(TamSx3("ZD_NOME")[1])
     							Valid(T4ValSZF(cCod,@cDescr))					;
 																				SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "SZD" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
-                        {"Informe o codigo do departamento."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Informe o código do departamento."},2,;
+                        {"Solução"},2)}
 
     @ 020, 064 SAY 		oSay2 	PROMPT "Nome" 									SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 	VAR cDescr 										SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
                         {"Departamento."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 053, 135 BUTTON oButton2 	PROMPT "Confirmar" 		Action(	IIF(T4GRVSZF(@oLstSZ,@aSZ,cCod,cDescr),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -970,7 +970,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Cliente x Tabela de Preco
 =====================================================================================
 */
@@ -988,7 +988,7 @@ Local cCod		:= Space(TamSx3("A1_COD")[1])
 Local cLoja		:= Space(TamSx3("A1_LOJA")[1])
 Local cDescr	:= Space(TamSx3("A1_NOME")[1])
 
-  DEFINE MSDIALOG oDlg3 TITLE "Cliente x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Cliente x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 244 PROMPT "" OF oDlg3 COLOR 0, 16777215 	PIXEL
 
@@ -997,8 +997,8 @@ Local cDescr	:= Space(TamSx3("A1_NOME")[1])
     							Valid(T4ValSZG(cCod, cLoja, @cDescr))			;
 																				SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "SA1" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
-                        {"Informe o codigo do cliente."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Informe o código do cliente."},2,;
+                        {"Solução"},2)}
 
     @ 020, 056 SAY oSay3 PROMPT "Loja" 											SIZE 019, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 056 MSGET oGet3 VAR  cLoja 											;
@@ -1006,14 +1006,14 @@ Local cDescr	:= Space(TamSx3("A1_NOME")[1])
 
 	oGet3:bHelp := {||    ShowHelpCpo(    "cLoja",;
                         {"Loja do cliente."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 020, 082 SAY 		oSay2 	PROMPT "Nome" 									SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 082 MSGET 	oGet2 	VAR cDescr 										SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
                         {"Nome do cliente."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 053, 153 BUTTON oButton2 	PROMPT "Confirmar" 		Action(	IIF(T4GRVSZG(@oLstSZ,@aSZ,cCod,cLoja,cDescr),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -1038,7 +1038,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Estado x Tabela de Preco
 =====================================================================================
 */
@@ -1055,7 +1055,7 @@ Local oDlg3
 Local cCod		:= Space(2)
 Local cDescr	:= Space(60)
 
-  DEFINE MSDIALOG oDlg3 TITLE "Estado x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Estado x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 225 PROMPT "" OF oDlg3 COLOR 0, 16777215 	PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Sigla" 								SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -1064,14 +1064,14 @@ Local cDescr	:= Space(60)
 																				SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "12" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
                         {"Informe o Estado."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 020, 064 SAY 		oSay2 	PROMPT "Nome" 									SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 	VAR cDescr 										SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
                         {"Nome do Estado."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 053, 135 BUTTON oButton2 	PROMPT "Confirmar" 		Action(	IIF(T4GRVSZH(@oLstSZ,@aSZ,cCod,cDescr),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -1095,7 +1095,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Regiao x Tabela de Preco
 =====================================================================================
 */
@@ -1113,7 +1113,7 @@ Local cCod		:= Space(3)
 Local cDescr	:= Space(60)
 
 
-  DEFINE MSDIALOG oDlg3 TITLE "Regiao x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Regiao x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 225 PROMPT "" OF oDlg3 COLOR 0, 16777215 	PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Cod.Reg" 								SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -1121,15 +1121,15 @@ Local cDescr	:= Space(60)
     							Valid(T4ValSZI(cCod,@cDescr))					;
 																				SIZE 037, 010 OF oDlg3 COLORS 0, 16777215 F3 "SZP" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
-                        {"Informe o codigo da regiï¿½o."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Informe o código da região."},2,;
+                        {"Solução"},2)}
 
     @ 020, 064 SAY 		oSay2 	PROMPT "Nome" 									SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 	VAR cDescr 										SIZE 152, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
-                        {"Nome da Regiao."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Nome da Região."},2,;
+                        {"Solução"},2)}
 
     @ 053, 135 BUTTON oButton2 	PROMPT "Confirmar" 		Action(	IIF(T4GRVSZI(@oLstSZ,@aSZ,cCod,cDescr),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -1152,7 +1152,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de Tipo de Pedido x Tabela de Preco
 =====================================================================================
 */
@@ -1170,7 +1170,7 @@ Local cCodTPed	:= Space(TamSx3("ZJ_COD")[1])
 Local cNomTped	:= Space(TamSx3("ZJ_NOME")[1])
 
 
-  DEFINE MSDIALOG oDlg2 TITLE "Tipo de Pedido x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg2 TITLE "Tipo de Pedido x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 225 PROMPT "" OF oDlg2 COLOR 0, 16777215 PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Tipo de Pedido" 								SIZE 041, 012 OF oDlg2 COLORS 0, 16777215 PIXEL
@@ -1179,15 +1179,15 @@ Local cNomTped	:= Space(TamSx3("ZJ_NOME")[1])
 																						SIZE 037, 010 OF oDlg2 COLORS 0, 16777215 F3 "SZJ" PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
                         {"Informe o tipo de pedido."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
 
-    @ 020, 064 SAY 		oSay2 PROMPT "Descricao" 										SIZE 046, 007 OF oDlg2 COLORS 0, 16777215 PIXEL
+    @ 020, 064 SAY 		oSay2 PROMPT "Descrição" 										SIZE 046, 007 OF oDlg2 COLORS 0, 16777215 PIXEL
     @ 033, 064 MSGET 	oGet2 VAR cNomTped 												SIZE 152, 010 OF oDlg2 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "cDescr",;
                         {"Tipo de pedido."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 053, 135 BUTTON oButton2 PROMPT "Confirmar" 		Action(	IIF(T4GRVSZK(@oLstSZJ,@aSZJ,cCodTPed,cNomTped),oDlg2:End(),))	SIZE 037, 012 OF oDlg2 PIXEL
 
@@ -1210,7 +1210,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro Volume x Tabela de Preco
 =====================================================================================
 */
@@ -1228,7 +1228,7 @@ Local nVolume	:= 0
 Local nPerc		:= 0
 
 
-  DEFINE MSDIALOG oDlg3 TITLE "Volume x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Volume x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 168 PROMPT "" OF oDlg3 COLOR 0, 16777215 			PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Volume" 										SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -1237,7 +1237,7 @@ Local nPerc		:= 0
 																						SIZE 052, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
                         {"Informe o volume para desconto."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
 
     @ 020, 089 SAY 		oSay2 PROMPT "% Desconto" 										SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -1245,7 +1245,7 @@ Local nPerc		:= 0
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "nPerc",;
                         {"% de desconto para o volume."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 059, 056 BUTTON oButton2 PROMPT "Confirmar" 		Action(	IIF(T4GRVSZL(@oLstSZ,@aSZ,nVolume,nPerc),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -1268,7 +1268,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro Quantidade x Tabela de Preco
 =====================================================================================
 */
@@ -1286,7 +1286,7 @@ Local nQtde		:= 0
 Local nPerc		:= 0
 
 
-  DEFINE MSDIALOG oDlg3 TITLE "Quantidade x Tabela de Preco" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
+  DEFINE MSDIALOG oDlg3 TITLE "Quantidade x Tabela de Preço" FROM 000, 000  TO 250, 500 COLORS 0, 16777215 PIXEL
 
     @ 010, 007 GROUP oGroup1 TO 080, 168 PROMPT "" OF oDlg3 COLOR 0, 16777215 			PIXEL
     @ 020, 016 SAY 		oSay1 	PROMPT "Quantidade" 									SIZE 041, 012 OF oDlg3 COLORS 0, 16777215 PIXEL
@@ -1296,14 +1296,14 @@ Local nPerc		:= 0
 
 	oGet1:bHelp := {||    ShowHelpCpo(    "cCod",;
                         {"Informe a quantidade para desconto."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 020, 089 SAY 		oSay2 PROMPT "% Desconto" 										SIZE 046, 007 OF oDlg3 COLORS 0, 16777215 PIXEL
     @ 033, 089 MSGET 	oGet2 VAR nPerc Picture PesqPict( "SZM","ZM_PERDESC" )			SIZE 052, 010 OF oDlg3 COLORS 0, 16777215 PIXEL
 
 	oGet2:bHelp := {||    ShowHelpCpo(    "nPerc",;
                         {"% de desconto para a quantidade."},2,;
-                        {"Soluï¿½ï¿½o"},2)}
+                        {"Solução"},2)}
 
     @ 059, 056 BUTTON oButton2 PROMPT "Confirmar" 		Action(	IIF(T4GRVSZM(@oLstSZ,@aSZ,nQtde,nPerc),oDlg3:End(),))	SIZE 037, 012 OF oDlg3 PIXEL
 
@@ -1326,8 +1326,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o tipo de pedido esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o tipo de pedido esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZB(xCod,xNom)
@@ -1341,7 +1341,7 @@ If !Empty(xCod)
 	DbSelectArea("SZB")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZB")+DA0->DA0_CODTAB+xCod)
-		Alert("Filial jï¿½ cadastrada para esta tabela de preco!")
+		Alert("Filial já cadastrada para esta tabela de preço!")
 		xNom	:= " "
 		lRet	:= .F.
 	Else
@@ -1353,7 +1353,7 @@ If !Empty(xCod)
 		If DbSeek(cEmpAnt+xCod)
 			xNom	:= SM0->M0_NOME
 		Else
-			Alert("Filial nao encontrada!")
+			Alert("Filial não encontrada!")
 			xNom	:= Space(60)
 			lRet	:= .F.
 		Endif
@@ -1372,8 +1372,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o vendedor esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o vendedor esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZC(xCod,xDesc)
@@ -1387,7 +1387,7 @@ If !Empty(xCod)
 	DbSelectArea("SZC")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZC")+DA0->DA0_CODTAB+xCod)
-		Alert("Vendedor jï¿½ cadastrado para esta tabela de preco!")
+		Alert("Vendedor já cadastrado para esta tabela de preço!")
 		xDesc		:= " "
 		lRet		:= .F.
 	Else
@@ -1396,7 +1396,7 @@ If !Empty(xCod)
 		If DbSeek(xFilial("SA3")+xCod)
 			xDesc	:= SA3->A3_NOME
 		Else
-			Alert("Vendedor nao encontrado!")
+			Alert("Vendedor não encontrado!")
 			xDesc		:= " "
 			lRet		:= .F.
 		Endif
@@ -1415,8 +1415,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o departamento esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o departamento esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZF(xCod,xDesc)
@@ -1430,7 +1430,7 @@ If !Empty(xCod)
 	DbSelectArea("SZF")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZF")+DA0->DA0_CODTAB+xCod)
-		Alert("Departamento jï¿½ cadastrado para esta tabela de preco!")
+		Alert("Departamento já cadastrado para esta tabela de preço!")
 		xDesc		:= " "
 		lRet		:= .F.
 	Else
@@ -1439,7 +1439,7 @@ If !Empty(xCod)
 		If DbSeek(xFilial("SZD")+xCod)
 			xDesc	:= SZD->ZD_NOME
 		Else
-			Alert("Departamento nao encontrado!")
+			Alert("Departamento não encontrado!")
 			xDesc		:= " "
 			lRet		:= .F.
 		Endif
@@ -1458,8 +1458,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o cliente esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o cliente esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZG(xCod,xLoja,xDesc, lGrava)
@@ -1483,7 +1483,7 @@ If !Empty(xCod+xLoja)
 	DbSelectArea("SZG")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZG")+DA0->DA0_CODTAB+xCod+xLoja)
-		Alert("Cliente jï¿½ cadastrado para esta tabela de preco!")
+		Alert("Cliente já cadastrado para esta tabela de preço!")
 		xDesc		:= " "
 		lRet		:= .F.
 	Else
@@ -1493,7 +1493,7 @@ If !Empty(xCod+xLoja)
 			If DbSeek(xFilial("SA1")+xCod)
 				xDesc	:= SA1->A1_NOME
 			Else
-				Alert("Cliente nao encontrado!")
+				Alert("Cliente não encontrado!")
 				xDesc		:= " "
 				lRet		:= .F.
 			Endif
@@ -1501,7 +1501,7 @@ If !Empty(xCod+xLoja)
 			If DbSeek(xFilial("SA1")+xCod+xLoja)
 				xDesc	:= SA1->A1_NOME
 	        Else
-				Alert("Cliente nao encontrado!")
+				Alert("Cliente não encontrado!")
 				xDesc		:= " "
 				lRet		:= .F.
 			Endif
@@ -1521,8 +1521,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o Estado esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o Estado esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZH(xCod,xDesc)
@@ -1538,7 +1538,7 @@ If !Empty(xCod)
 	DbSelectArea("SZH")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZH")+DA0->DA0_CODTAB+xCod)
-		Alert("Estado jï¿½ cadastrado para esta tabela de preco!")
+		Alert("Estado já cadastrado para esta tabela de preço!")
 		xDesc		:= " "
 		lRet		:= .F.
 	Else
@@ -1553,7 +1553,7 @@ If !Empty(xCod)
 		dbUseArea(.T., 'TOPCONN', TcGenQry(,,cQuery), cAlias1)
 
 		If (cAlias1)->(Eof())
-			Alert("Estado nao encontrado!")
+			Alert("Estado não encontrado!")
 			xDesc		:= " "
 			lRet		:= .F.
 		Else
@@ -1577,8 +1577,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se a regiao esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se a regiao esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZI(xCod,xDesc)
@@ -1592,7 +1592,7 @@ If !Empty(xCod)
 	DbSelectArea("SZI")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZI")+DA0->DA0_CODTAB+xCod)
-		Alert("Regiao jï¿½ cadastrada para esta tabela de preco!")
+		Alert("Regiao já cadastrada para esta tabela de preço!")
 		xDesc		:= " "
 		lRet		:= .F.
 	Else
@@ -1601,7 +1601,7 @@ If !Empty(xCod)
 		If DbSeek(xFilial("SZP")+xCod)
 			xDesc	:= SZP->ZP_DESCREG
 		Else
-			Alert("Regiao nao encontrada!")
+			Alert("Regiao não encontrada!")
 			xDesc		:= " "
 			lRet		:= .F.
 		Endif
@@ -1622,8 +1622,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o tipo de pedido esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o tipo de pedido esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T04ValSZK(xCodTPed,xNomTped)
@@ -1637,7 +1637,7 @@ If !Empty(xCodTPed)
 	DbSelectArea("SZK")
 	DbSetOrder(1)
 	If DbSeek(xFilial("SZK")+DA0->DA0_CODTAB+xCodTPed)
-		Alert("Tipo de Pedido jï¿½ cadastrado para esta tabela de preco!")
+		Alert("Tipo de Pedido já cadastrado para esta tabela de preço!")
 		xNomTped	:= " "
 		lRet	:= .F.
 	Else
@@ -1646,7 +1646,7 @@ If !Empty(xCodTPed)
 		If DbSeek(xFilial("SZJ")+xCodTPed)
 			xNomTped	:= SZJ->ZJ_NOME
 		Else
-			Alert("Tipo de Pedido nao encontrado!")
+			Alert("Tipo de Pedido não encontrado!")
 			xNomTped	:= " "
 			lRet	:= .F.
 		Endif
@@ -1665,8 +1665,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o tipo de pedido esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o tipo de pedido esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZL(xVolume,xDesc)
@@ -1685,7 +1685,7 @@ If xVolume > 0
 			 	SZL->ZL_CODTAB	== DA0->DA0_CODTAB
 
 			If SZL->ZL_VOLUME == xVolume
-				Alert("Faixa de Volume jï¿½ cadastrado para esta tabela de preco!")
+				Alert("Faixa de Volume já cadastrado para esta tabela de preço!")
 				lRet	:= .F.
 				Exit
 			Endif
@@ -1706,8 +1706,8 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Valida se o % De desconto esta vinculado ï¿½ tabela de preco
+Uso.................: Marfrig
+Obs.................: Valida se o % De desconto esta vinculado à tabela de preço
 =====================================================================================
 */
 Static Function T4ValSZM(xQtde,xDesc)
@@ -1726,7 +1726,7 @@ If xQtde > 0
 			 	SZM->ZM_CODTAB	== DA0->DA0_CODTAB
 
 			If SZM->ZM_QTDE == xQtde
-				Alert("Regra jï¿½ cadastrado para esta tabela de preco!")
+				Alert("Regra já cadastrado para esta tabela de preço!")
 				lRet	:= .F.
 				Exit
 			Endif
@@ -1748,7 +1748,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Filial
 =====================================================================================
 */
@@ -1758,7 +1758,7 @@ Local lRet		:= .T.
 local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	//---------------------------------------------------------------
@@ -1797,7 +1797,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Vendedor
 =====================================================================================
 */
@@ -1810,7 +1810,7 @@ local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 //Grava os dados na tabela
 //---------------------------------------------------------------
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:=.F.
 Else
 	DbSelectArea("SZC")
@@ -1847,7 +1847,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Departamento
 =====================================================================================
 */
@@ -1860,7 +1860,7 @@ local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 //Grava os dados na tabela
 //---------------------------------------------------------------
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	DbSelectArea("SZF")
@@ -1896,7 +1896,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Cliente
 =====================================================================================
 */
@@ -1906,7 +1906,7 @@ Local lRet		:= .T.
 local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
 If Empty(cCod+cLoja )
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	If T4ValSZG(cCod,cLoja, nil,.T.)
@@ -1948,7 +1948,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Estado
 =====================================================================================
 */
@@ -1961,7 +1961,7 @@ local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 //Grava os dados na tabela
 //---------------------------------------------------------------
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	DbSelectArea("SZH")
@@ -1997,7 +1997,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Filial
 =====================================================================================
 */
@@ -2010,7 +2010,7 @@ local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 //Grava os dados na tabela
 //---------------------------------------------------------------
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	DbSelectArea("SZI")
@@ -2046,7 +2046,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Tipo Pedido na tabela SZK
 =====================================================================================
 */
@@ -2059,7 +2059,7 @@ local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 //Grava os dados na tabela
 //---------------------------------------------------------------
 If Empty(cCod)
-	Alert("Informe um codigo valido!")
+	Alert("Informe um código válido!")
 	lRet	:= .F.
 Else
 	DbSelectArea("SZK")
@@ -2096,7 +2096,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Filial
 =====================================================================================
 */
@@ -2146,7 +2146,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + % DESCONTO POR QUANTIDADE
 =====================================================================================
 */
@@ -2195,7 +2195,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Filial
 =====================================================================================
 */
@@ -2250,7 +2250,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Vendedor
 =====================================================================================
 */
@@ -2302,7 +2302,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Departamento
 =====================================================================================
 */
@@ -2354,7 +2354,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Vendedor
 =====================================================================================
 */
@@ -2406,7 +2406,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Estado
 =====================================================================================
 */
@@ -2458,7 +2458,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Regiao
 =====================================================================================
 */
@@ -2514,7 +2514,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Grava o codigo da tab.preco + Tipo Pedido na tabela SZK
 =====================================================================================
 */
@@ -2572,7 +2572,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X Filial
 =====================================================================================
 */
@@ -2629,7 +2629,7 @@ Data................: 14/09/2016
 Descricao / Objetivo: Cadastro de Dados Adicionais da tabela de preco
 Doc. Origem.........: Contrato - GAP MGFFAT01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Deleta Registro da tab.preco X % DESCONTO POR QUANTIDADE
 =====================================================================================
 */
@@ -2954,7 +2954,7 @@ If cIdPonto == "MODELCOMMITNTTS"
 	cUpdTbl += " 		R_E_C_N_O_ = " + allTrim( str( nDA0Recno ) ) + ""	+ CRLF
 
 	if tcSQLExec( cUpdTbl ) < 0
-		conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+		conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 	endif
 
 	If nOpcx <> MODEL_OPERATION_INSERT
@@ -2976,7 +2976,7 @@ If cIdPonto == "MODELCOMMITNTTS"
 				cUpdTbl += " 		R_E_C_N_O_ = " + allTrim( str( nDA1Recno ) ) + ""	+ CRLF
 
 				if tcSQLExec( cUpdTbl ) < 0
-					conout("Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 				endif
 
 			EndIf
@@ -2986,7 +2986,7 @@ If cIdPonto == "MODELCOMMITNTTS"
 	EndIf
 ElseIf cIdPonto == "BUTTONBAR"
 	If nOpcx == MODEL_OPERATION_INSERT .or. nOpcx == MODEL_OPERATION_UPDATE
-		//uRet := {{'MGF-Importa Tab.Preco',,{|| MsgRun("Aguarde, carregando Tabela de Preco...",,{ ||u_FAT01IImpTab(oObj,nOpcx)})}, OemtoAnsi("MGF-Importa Tab.Preco")}}
+		//uRet := {{'MGF-Importa Tab.Preco',,{|| MsgRun("Aguarde, carregando Tabela de Preço...",,{ ||u_FAT01IImpTab(oObj,nOpcx)})}, OemtoAnsi("MGF-Importa Tab.Preco")}}
 		uRet := {{'MGF-Importa Tab.Preco',,{|| Processa({|| u_FAT01IImpTab(oObj,nOpcx)})}, OemtoAnsi("MGF-Importa Tab.Preco")}}
 	Endif
 	If nOpcx == MODEL_OPERATION_UPDATE
@@ -3011,8 +3011,8 @@ ElseIf cIdPonto == "FORMLINEPRE"
 				If !ExistCpo("ZC4",Retfield("SB1",1,xFilial("SB1") + nPrd ,"B1_ZLINHA") )
 					uRet	:= T04INB1()
 					If !uRet
-						Help( ,, 'Pendï¿½ncia de cadastro',, 'Campo LINHA do cadastro de produto invï¿½lido. O preco para esse item nao sera atualizado.' , 1, 0 ,,,,,,; 
-						{"Informe a linha atraves da janela, ou corrija o campo linha diretamente no cadastro de produtos, para prosseguir."} )
+						Help( ,, 'Pendência de cadastro',, 'Campo LINHA do cadastro de produto inválido. O preço para esse item não será atualizado.' , 1, 0 ,,,,,,; 
+						{"Informe a linha através da janela, ou corrija o campo linha diretamente no cadastro de produtos, para prosseguir."} )
 					EndIf
 				EndIf 
 			EndIf 
@@ -3031,13 +3031,13 @@ Static Function T04ZCLimp(oLstSZ,aSZ)
 Local aArea		:= {SZC->(GetArea()),GetArea()}
 local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
-If !APMsgYesNo("Esta operacao vai excluir todas as amarracoes existentes entre esta Tabela de Preco com os Vendedores."+CRLF+;
+If !APMsgYesNo("Esta operação vai excluir todas as amarrações existentes entre esta Tabela de Preço com os Vendedores."+CRLF+;
 "Deseja continuar ?")
 	Return()
 Endif
 
 If Len(aSZ) == 1 .and. Empty(aSZ[1][1])
-	APMsgStop("Nao existem Vendedores amarrados a esta Tabela de Preco.")
+	APMsgStop("Não existem Vendedores amarrados a esta Tabela de Preço.")
 	Return()
 Endif
 
@@ -3077,10 +3077,10 @@ Local lContinua := .T.
 Local nCnt := 0
 local cIDInteg		:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
-cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 
 If !File(cArq)
-	MsgStop("O arquivo " +cArq + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArq + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return()
 EndIf
 
@@ -3103,8 +3103,8 @@ If lContinua
 	For nCnt:=1 to Len(aDados)
 		If SA3->(dbSeek(xFilial("SA3")+aDados[nCnt][1]))
 			If SA3->A3_MSBLQL == "1"
-				ApMsgAlert("Vendedor esta bloqueado, codigo: "+aDados[nCnt][1]+CRLF+;
-				"Esta linha do arquivo nao sera importada.")
+				ApMsgAlert("Vendedor está bloqueado, código: "+aDados[nCnt][1]+CRLF+;
+				"Esta linha do arquivo não será importada.")
 			Elseif SZC->(dbSeek(xFilial("SZC")+DA0->DA0_CODTAB+aDados[nCnt][1]))
 				If SZC->ZC_PERCOMI != Val(aDados[nCnt][2])
 					SZC->(RecLock("SZC",.F.))
@@ -3122,8 +3122,8 @@ If lContinua
 				SZC->(MsUnLock())
 			Endif
 		Else
-			ApMsgAlert("Vendedor nao cadastrado, codigo: "+aDados[nCnt][1]+CRLF+;
-			"Esta linha do arquivo nao sera importada.")
+			ApMsgAlert("Vendedor não cadastrado, código: "+aDados[nCnt][1]+CRLF+;
+			"Esta linha do arquivo não será importada.")
 		Endif
 	Next
 
@@ -3138,9 +3138,9 @@ If lContinua
 	oLstSZ:nAt := 1
 	oLstSZ:bLine := { || {aSZ[oLstSZ:nAt,1], aSZ[oLstSZ:nAt,2], aSZ[oLstSZ:nAt,3]}}
 	oLstSZ:Refresh()
-	APMsgInfo("Importacao realizada com sucesso.")
+	APMsgInfo("Importação realizada com sucesso.")
 Else
-	ApMsgStop("Arquivo com lay-out invï¿½lido, devem haver 2 colunas ( Codigo do Vendedor e %Comissï¿½o ) para cada linha do arquivo.")
+	ApMsgStop("Arquivo com lay-out inválido, devem haver 2 colunas ( Código do Vendedor e %Comissão ) para cada linha do arquivo.")
 Endif
 
 aEval(aArea,{|x| RestArea(x)})
@@ -3154,13 +3154,13 @@ Static Function T04ZGLimp(oLstSZ,aSZ)
 Local aArea		:= {SZG->(GetArea()),GetArea()}
 local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
-If !APMsgYesNo("Esta operacao vai excluir todas as amarracoes existentes entre esta Tabela de Preco com os Clientes."+CRLF+;
+If !APMsgYesNo("Esta operação vai excluir todas as amarrações existentes entre esta Tabela de Preço com os Clientes."+CRLF+;
 "Deseja continuar ?")
 	Return()
 Endif
 
 If Len(aSZ) == 1 .and. Empty(aSZ[1][1])
-	APMsgStop("Nao existem Clientes amarrados a esta Tabela de Preco.")
+	APMsgStop("Não existem Clientes amarrados a esta Tabela de Preço.")
 	Return()
 Endif
 
@@ -3200,10 +3200,10 @@ Local lContinua := .T.
 Local nCnt := 0
 local cIDInteg	:= fwTimeStamp( 1 ) // aaaammddhhmmss
 
-cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretorio onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
+cArq := cGetFile("Todos os Arquivos|*.csv", OemToAnsi("Informe o diretório onde se encontra o arquivo."), 0, "SERVIDOR\", .F., GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE ,.T.)
 
 If !File(cArq)
-	MsgStop("O arquivo " +cArq + " nao foi selecionado. A importacao sera abortada!","ATENCAO")
+	MsgStop("O arquivo " +cArq + " não foi selecionado. A importação será abortada!","ATENCAO")
 	Return()
 EndIf
 
@@ -3226,8 +3226,8 @@ If lContinua
 	For nCnt:=1 to Len(aDados)
 		If SA1->(dbSeek(xFilial("SA1")+aDados[nCnt][1]+aDados[nCnt][2]))
 			If SA1->A1_MSBLQL == "1"
-				ApMsgAlert("Cliente esta bloqueado, codigo/loja: "+aDados[nCnt][1]+"/"+aDados[nCnt][2]+CRLF+;
-				"Esta linha do arquivo nao sera importada.")
+				ApMsgAlert("Cliente está bloqueado, código/loja: "+aDados[nCnt][1]+"/"+aDados[nCnt][2]+CRLF+;
+				"Esta linha do arquivo não será importada.")
 			Elseif SZG->(!dbSeek(xFilial("SZG")+DA0->DA0_CODTAB+aDados[nCnt][1]+aDados[nCnt][2]))
 				SZG->(RecLock("SZG",.T.))
 				SZG->ZG_FILIAL	:= xFilial("SZG")
@@ -3238,8 +3238,8 @@ If lContinua
 				SZG->(MsUnLock())
 			Endif
 		Else
-			ApMsgAlert("Cliente nao cadastrado, codigo/loja: "+aDados[nCnt][1]+"/"+aDados[nCnt][2]+CRLF+;
-			"Esta linha do arquivo nao sera importada.")
+			ApMsgAlert("Cliente não cadastrado, código/loja: "+aDados[nCnt][1]+"/"+aDados[nCnt][2]+CRLF+;
+			"Esta linha do arquivo não será importada.")
 		Endif
 	Next
 
@@ -3254,9 +3254,9 @@ If lContinua
 	oLstSZ:nAt := 1
 	oLstSZ:bLine := { || {aSZ[oLstSZ:nAt,1], aSZ[oLstSZ:nAt,2], aSZ[oLstSZ:nAt,3]}}
 	oLstSZ:Refresh()
-	APMsgInfo("Importacao realizada com sucesso.")
+	APMsgInfo("Importação realizada com sucesso.")
 Else
-	ApMsgStop("Arquivo com lay-out invï¿½lido, devem haver 2 colunas ( Codigo do Cliente e Loja do Cliente ) para cada linha do arquivo.")
+	ApMsgStop("Arquivo com lay-out inválido, devem haver 2 colunas ( Código do Cliente e Loja do Cliente ) para cada linha do arquivo.")
 Endif
 
 aEval(aArea,{|x| RestArea(x)})
@@ -3265,18 +3265,18 @@ Return()
 
 
 /*
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Programa  ï¿½txtbal    ï¿½Autor  ï¿½ TOTVS              ï¿½ Data ï¿½  Junho/18   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Desc.     ï¿½Utilizado para Gerar TXT Balanï¿½a Toledo                     ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½                                                            ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºPrograma  ³txtbal    ºAutor  ³ TOTVS              º Data ³  Junho/18   º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDesc.     ³Utilizado para Gerar TXT Balança Toledo                     º±±
+±±º          ³                                                            º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³                                                            º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 */
 
 User Function txtbal()
@@ -3301,8 +3301,8 @@ Local cMVTABPAD 	:= Alltrim(SuperGetMv("MV_TABPAD",,""))
 
 DEFAULT lJob		:= .F.
 
-cDirLoc := 	cGetFile('','Selecione o Diretï¿½rio',0,,.F.,GETF_LOCALHARD+ GETF_RETDIRECTORY+GETF_NETWORKDRIVE)
-//cGetFile( "" , "Local para gravar o arquivo", , , , nOR(GETF_MULTISELECT, GETF_NETWORKDRIVE, GETF_LOCALHARD) ) //cGetFile("","Local dos arquivos XML para importacao",,"",.T.,GETF_RETDIRECTORY,.T.)
+cDirLoc := 	cGetFile('','Selecione o Diretório',0,,.F.,GETF_LOCALHARD+ GETF_RETDIRECTORY+GETF_NETWORKDRIVE)
+//cGetFile( "" , "Local para gravar o arquivo", , , , nOR(GETF_MULTISELECT, GETF_NETWORKDRIVE, GETF_LOCALHARD) ) //cGetFile("","Local dos arquivos XML para importação",,"",.T.,GETF_RETDIRECTORY,.T.)
 
 //cDirLoc		:= GetMV( 'MGF_TOLEDO',, "C:\Microsiga\Marfrig\LIVE\" )
 cFile		:= cDirLoc + "TXITENS.TXT"
@@ -3312,7 +3312,7 @@ cFile		:= cDirLoc + "TXITENS.TXT"
 //---------------------------
 If File(cFile)
 	If FErase( cFile  ) ==-1
-		Alert( "Erro ao deletar o arquivo " + cFile + ": Arquivo de exportacao nao sera gerado!")
+		Alert( "Erro ao deletar o arquivo " + cFile + ": Arquivo de exportação não será gerado!")
 		lRet:=.F.
 	Endif
 Endif
@@ -3353,7 +3353,7 @@ If lRet
 			(_cAlias)->( DbGoTop() )
 			While (_cAlias)->(!Eof())
 	  			If !lJob
-					IncProc("Gravando arquivo de produtos para exportacao...")
+					IncProc("Gravando arquivo de produtos para exportação...")
 				Endif
 
 				fWrite(nH, 	'01000'														+;
@@ -3388,15 +3388,15 @@ Local lRet		:= 	.F.
 
 		nUltLin    := 15
 		nCol       := 15
-		@ nUltLin,nCol SAY "Codigo da Linha" SIZE 45, 07 OF oDlgMain PIXEL 
+		@ nUltLin,nCol SAY "Código da Linha" SIZE 45, 07 OF oDlgMain PIXEL 
 		@ nUltLin-2,nCol+50 MSGET oLinha Var cCodLin  WHEN .T.  SIZE 65, 08 OF oDlgMain PIXEL F3 "ZC4" VALID ExistCpo("ZC4",cCodLin) .Or. Empty(cCodLin)
 
 		nUltLin += 18
-		@ nUltLin		,nCol SAY "Campo LINHA do cadastro de produto invï¿½lido." SIZE 176, 07 OF oDlgMain  PIXEL 
-		@ nUltLin + 15	,nCol SAY "Necessario ajustar a linha do produto. " +;
-								  "Ao confirmar o codigo da linha, "			SIZE 176, 07 OF oDlgMain  PIXEL 
-		@ nUltLin + 22	,nCol SAY "este sera atualizado automaticamente no cadastro de produtos.  "  SIZE 176, 07 OF oDlgMain  PIXEL 
-		@ nUltLin + 35	,nCol SAY  "Informe codigo da linha para prosseguir."  	SIZE 176, 07 OF oDlgMain  PIXEL 
+		@ nUltLin		,nCol SAY "Campo LINHA do cadastro de produto inválido." SIZE 176, 07 OF oDlgMain  PIXEL 
+		@ nUltLin + 15	,nCol SAY "Necessário ajustar a linha do produto. " +;
+								  "Ao confirmar o código da linha, "			SIZE 176, 07 OF oDlgMain  PIXEL 
+		@ nUltLin + 22	,nCol SAY "este será atualizado automaticamente no cadastro de produtos.  "  SIZE 176, 07 OF oDlgMain  PIXEL 
+		@ nUltLin + 35	,nCol SAY  "Informe código da linha para prosseguir."  	SIZE 176, 07 OF oDlgMain  PIXEL 
 
 
 		oBtn := TButton():New( 015, 186 ,"Confirmar Linha"   , oDlgMain,{||  lOk:= .T. , oDlgMain:End()  	},50, 011,,,.F.,.T.,.F.,,.F.,,,.F. ) 

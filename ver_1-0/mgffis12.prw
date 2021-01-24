@@ -8,8 +8,8 @@ Data.....:              11/11/2016
 Descricao / Objetivo:   
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Cria Log das alteracoes feitas nas NFs
+Uso......:              Marfrig
+Obs......:              Cria Log das alterações feitas nas NFs
 =====================================================================================
 */
 user function MGFFIS12(cTbl, cSeek, nRecno, cTblAlter, nRecnoAlte, cField, cOld, cNew, dDate, cHour, cUser)
@@ -55,8 +55,8 @@ user function MGFFIS12(cTbl, cSeek, nRecno, cTblAlter, nRecnoAlte, cField, cOld,
 	cHtml += "	</STYLE>"
 	cHtml += "</HEAD>"
 	cHtml += "<BODY LANG='pt-BR' DIR='LTR'>"
-	cHtml += "<P><font face = 'verdana' size='4'><strong>ALTERACAO DE NF-E PARA TRANSMISSï¿½O SEFAZ</strong></font></p>" +CRLF
-	cHtml += CRLF+"<P><font face = 'verdana' size='2'>FILIAL/NOTA FISCAL-Sï¿½RIE: </font></p>"
+	cHtml += "<P><font face = 'verdana' size='4'><strong>ALTERAÇÃO DE NF-E PARA TRANSMISSÃO SEFAZ</strong></font></p>" +CRLF
+	cHtml += CRLF+"<P><font face = 'verdana' size='2'>FILIAL/NOTA FISCAL-SÉRIE: </font></p>"
 	cHtml += "<P><font face = 'verdana' size='2' color='blue'><strong>"+cNotaSerie+"</strong></font></p>" +CRLF
 	cHtml += "<P><font face = 'verdana' size='2'> TABELA ALTERADA: </font></p>"
 	cHtml += "<P><font face = 'verdana' size='2' color='blue'><strong>"+cTblAlter+"</strong></font></p>" +CRLF
@@ -64,7 +64,7 @@ user function MGFFIS12(cTbl, cSeek, nRecno, cTblAlter, nRecnoAlte, cField, cOld,
 	cHtml += "<P><font face = 'verdana' size='2' color='blue'><strong>"+cField+"</strong></font></p>" +CRLF
 	cHtml += "<P><font face = 'verdana' size='2'> VALOR ORIGINAL->VALOR ALTERADO: </font></p>"
 	cHtml += "<P><font face = 'verdana' size='2' color='blue'><strong>"+cOld+"->"+cNew+"</strong></font></p>" +CRLF
-	cHtml += "<P><font face = 'verdana' size='2'> USUï¿½RIO, DATA E HORA DA ALTERACAO: </font></p>"
+	cHtml += "<P><font face = 'verdana' size='2'> USUÁRIO, DATA E HORA DA ALTERAÇÃO: </font></p>"
 	cHtml += "<P><font face = 'verdana' size='2' color='blue'><strong>"+cUser+", "+dtoc(dDate)+" "+cHour+"</strong></font></p>" +CRLF
 	cHtml += "</BODY>"
 	cHtml += "</HTML>"
@@ -134,7 +134,7 @@ Static Function EnvMail()
 	oMessage:cFrom                  := cEmail
 	oMessage:cTo                    := cPara
 	oMessage:cCc                    := ""
-	oMessage:cSubject               := "Aviso de alteracao de NF-e"
+	oMessage:cSubject               := "Aviso de alteração de NF-e"
 	oMessage:cBody                  := cHtml
 	nErro := oMessage:Send( oMail )
 

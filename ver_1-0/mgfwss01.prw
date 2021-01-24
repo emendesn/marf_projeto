@@ -3,17 +3,11 @@
 #include "TBICONN.CH"
 #INCLUDE "TOPCONN.CH"
 #INCLUDE "APWEBEX.CH"
-/*
-=====================================================================================
-Programa.:              MGFWSS01
-Autor....:              Atilio Amarilla
-Data.....:              15/08/2016
-Descricao / Objetivo:   Integração PROTHEUS x RH Evolution
-Doc. Origem:            Contrato - GAP MGFINT01
-Solicitante:            Cliente
-Uso......:              Marfrig
-Obs......:              WS Server para Importação de Colaboradores (Fornecedores e Clientes)
-=====================================================================================
+//-----------------------------------------------------------------------------------
+/*/{Protheus.doc}MGFWSS01 
+Integração PROTHEUS x RH Evolution
+@author  Atilio Amarilla
+@since 15/08/2016
 */
 
 // Estrutura de dados. Montagem do Array de requisição
@@ -140,65 +134,212 @@ Local StructTemp
 Local lReturn	:= .T.
 Local oColabRet
 
-aRetFuncao	:= U_MGFINT02(	"C" ,	{	::aReqColab:ColabOper			,;
-										::aReqColab:ColabTipo			,;
-										::aReqColab:ColabCNPJ			,;
-										::aReqColab:ColabInscEst		,;
-										::aReqColab:ColabInscMun		,;
-										::aReqColab:ColabNome			,;
-										::aReqColab:ColabNReduz			,;
-										::aReqColab:ColabContato		,;
-										::aReqColab:ColabEndereco		,;
-										::aReqColab:ColabBairro			,;
-										::aReqColab:ColabCodMun			,;
-										::aReqColab:ColabCEP			,;
-										::aReqColab:ColabTelefone		,;
-										::aReqColab:ColabFax			,;
-										::aReqColab:ColabMicroEmp		,;
-										::aReqColab:ColabDataME			,;
-										::aReqColab:ColabEmail			,;
-										::aReqColab:ColabOrigem			,;
-										::aReqColab:ColabObs			,;
-										::aReqColab:ColabEst			,;
-										::aReqColab:ColabCCusto			,;
-										::aReqColab:ColabDTNasc			,;
-										::aReqColab:ColabCodMGF			,;
-										::aReqColab:ColabContDeb 		,;
-										::aReqColab:ColabPaisBC			,;
-										::aReqColab:ColabGrpTrib		,;
-										::aReqColab:ColabContCli		,;
-										::aReqColab:ColabGTrbCli		,;
-										::aReqColab:Natureza_Cliente	,;
-										::aReqColab:Natureza_Fornecedor	,;
-										::aReqColab:ColabPais			,;
-										::aReqColab:ColabComp			,;
-										::aReqColab:ColabDDD			,; //RAFAEL 28/12/2018
-										::aReqColab:ColabDDI			,; //RAFAEL 28/12/2018
-										::aReqColab:ColabFilial			,;
-										::aReqColab:ColabNacion			,;
-										::aReqColab:ColabSetor			,;
-										::aReqColab:ColabDescSet 		,;
-										::aReqColab:ColabUnidade		,;
-										::aReqColab:ColabDtAdmiss		,;
-										::aReqColab:ColabDtDemiss		} )	
-										// Passagem de parâmetros para rotina
+_coper := "inclusão"
+//"I/A/B/E" // Inclusão / Alteração / Bloqueio / Exclusão
 
-	// Cria a instância de retorno ( WSDATA aRetColab AS aRetColabArray )
-	::aRetColab := WSClassNew( "aRetColabArray")
-    
-	// inicializa a propriedade da estrutura de retorno
-	::aRetColab:ColabArray := {}
+If alltrim(::aReqColab:ColabOper)="A"
+	_coper := "alteração"
+Endif
+
+If alltrim(::aReqColab:ColabOper)="B"
+	_coper := "bloqueio"
+Endif
+
+If alltrim(::aReqColab:ColabOper)="E"
+	_coper := "exclusão"
+Endif
+
+/*
+	ColabTipo
+	B - Beneficiário - Fornecedor – pensão judicial / pensão alimentícia;
+	F - Funcionário	 - Fornecedor e Cliente
+	E - Empresa 	 - Fornecedor
+	*/
+
+_ctipo := "funcionário"
+
+If alltrim(::aReqColab:ColabTipo)="B"
+	_ctipo := "beneficiário"
+Endif
+
+If alltrim(::aReqColab:ColabTipo)="E"
+	_ctipo := "empresa"
+Endif
+
+U_MFCONOUT("Recebida integração de " + _coper + " do " + _ctipo + "  de cpf/cnpj " + alltrim(::aReqColab:ColabCNPJ) + "...")
+
+//monta hash dos dados da integração recebida
+_chash := sha1( iif(type("aReqColab:ColabOper")=="C",::aReqColab:ColabOper," ")			+;
+				iif(type("aReqColab:ColabTipo")=="C",::aReqColab:ColabTipo," ")			+;
+				iif(type("aReqColab:ColabCNPJ")=="C",::aReqColab:ColabCNPJ," ")			+;
+				iif(type("aReqColab:ColabInscEst")=="C",::aReqColab:ColabInscEst," ")		+;
+				iif(type("aReqColab:ColabInscMun")=="C",::aReqColab:ColabInscMun," ")		+;
+				iif(type("aReqColab:ColabNome")=="C",::aReqColab:ColabNome," ")			+;
+				iif(type("aReqColab:ColabNReduz")=="C",::aReqColab:ColabNReduz," ")			+;
+				iif(type("aReqColab:ColabContato")=="C",::aReqColab:ColabContato," ")		+;
+				iif(type("aReqColab:ColabEndereco")=="C",::aReqColab:ColabEndereco," ")		+;
+				iif(type("aReqColab:ColabBairro")=="C",::aReqColab:ColabBairro," ")			+;
+				iif(type("aReqColab:ColabCodMun")=="C",::aReqColab:ColabCodMun," ")			+;
+				iif(type("aReqColab:ColabCEP")=="C",::aReqColab:ColabCEP," ")			+;
+				iif(type("aReqColab:ColabTelefone")=="C",::aReqColab:ColabTelefone," ")		+;
+				iif(type("aReqColab:ColabFax")=="C",::aReqColab:ColabFax," ")			+;
+				iif(type("aReqColab:ColabMicroEmp")=="C",::aReqColab:ColabMicroEmp," ")		+;
+				iif(type("aReqColab:ColabDataME")=="C",::aReqColab:ColabDataME," ")			+;
+				iif(type("aReqColab:ColabEmail")=="C",::aReqColab:ColabEmail," ")			+;
+				iif(type("aReqColab:ColabOrigem")=="C",::aReqColab:ColabOrigem," ")			+;
+				iif(type("aReqColab:ColabObs")=="C",::aReqColab:ColabObs," ")			+;
+				iif(type("aReqColab:ColabEst")=="C",::aReqColab:ColabEst," ")			+;
+				iif(type("aReqColab:ColabCCusto")=="C",::aReqColab:ColabCCusto," ")			+;
+				iif(type("aReqColab:ColabDTNasc")=="C",::aReqColab:ColabDTNasc," ")			+;
+				iif(type("aReqColab:ColabCodMGF")=="C",::aReqColab:ColabCodMGF," ")			+;
+				iif(type("aReqColab:ColabContDeb")=="C",::aReqColab:ColabContDeb ," ")		+;
+				iif(type("aReqColab:ColabPaisBC")=="C",::aReqColab:ColabPaisBC," ")			+;
+				iif(type("aReqColab:ColabGrpTrib")=="C",::aReqColab:ColabGrpTrib," ")		+;
+				iif(type("aReqColab:ColabContCli")=="C",::aReqColab:ColabContCli," ")		+;
+				iif(type("aReqColab:ColabGTrbCli")=="C",::aReqColab:ColabGTrbCli," ")		+;
+				iif(type("aReqColab:Natureza_Cliente")=="C",::aReqColab:Natureza_Cliente," ")	+;
+				iif(type("aReqColab:Natureza_Fornecedor")=="C",::aReqColab:Natureza_Fornecedor," ")	+;
+				iif(type("aReqColab:ColabPais")=="C",::aReqColab:ColabPais," ")			+;
+				iif(type("aReqColab:ColabComp")=="C",::aReqColab:ColabComp," ")			+;
+				iif(type("aReqColab:ColabDDD")=="C",::aReqColab:ColabDDD," ")			+; 
+				iif(type("aReqColab:ColabDDI")=="C",::aReqColab:ColabDDI," ")			+; 
+				iif(type("aReqColab:ColabFilial")=="C",::aReqColab:ColabFilial," ")			+;
+				iif(type("aReqColab:ColabNacion")=="C",::aReqColab:ColabNacion," ")			+;
+				iif(type("aReqColab:ColabSetor")=="C",::aReqColab:ColabSetor," ")			+;
+				iif(type("aReqColab:ColabDescSet")=="C",::aReqColab:ColabDescSet," ") 		+;
+				iif(type("aReqColab:ColabUnidade")=="C",::aReqColab:ColabUnidade," ")		+;
+				iif(type("aReqColab:ColabDtAdmiss")=="C",::aReqColab:ColabDtAdmiss," ")		+;
+				iif(type("aReqColab:ColabDtDemiss")=="C",::aReqColab:ColabDtDemiss," "), 1)	
+
+//Verifica se já existe na tabela intermediária
+ZH3->(Dbsetorder(4)) //ZH3_HASH
+
+If ZH3->(Dbseek(_chash)) //Já possui registro da integracao na tabela intermediaria
+
+	If alltrim(ZH3->ZH3_STATUS) = '3' //Integracao completada com sucesso
+
+		U_MFCONOUT("Retornando integração completada com sucesso para o cpf/cnpj " + alltrim(ZH3->ZH3_CNPJ) + "!")
+
+		aRetDados := {}
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CNPJ)})								// 1
+		aAdd(aRetDados ,{::aReqColab:ColabOper})								// 2
+		aAdd(aRetDados ,{"S"})													// 3
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CLIENT)+ALLTRIM(ZH3->ZH3_LOJAC)})		// 4
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_FORNEC)+ALLTRIM(ZH3->ZH3_LOJAF)})  	// 5
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_RESULT)})								// 6
+
+
+	Elseif  alltrim(ZH3->ZH3_STATUS) == '4' // com erro
+
+		U_MFCONOUT("Retornando erro no processamento para o cpf/cnpj " + alltrim(ZH3->ZH3_CNPJ) + "!")
+
+		aRetDados := {}
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CNPJ)})								// 1
+		aAdd(aRetDados ,{::aReqColab:ColabOper})								// 2
+		aAdd(aRetDados ,{"N"})													// 3
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CLIENT)+ALLTRIM(ZH3->ZH3_LOJAC)})		// 4
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_FORNEC)+ALLTRIM(ZH3->ZH3_LOJAF)})  	// 5
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_RESULT)})					
+
+	Else //Aguardando processamento
+
+		U_MFCONOUT("Retornando aguardando processamento para o cpf/cnpj " + alltrim(ZH3->ZH3_CNPJ) + "!")
+
+		aRetDados := {}
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CNPJ)})								// 1
+		aAdd(aRetDados ,{::aReqColab:ColabOper})								// 2
+		aAdd(aRetDados ,{"S"})													// 3
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_CLIENT)+ALLTRIM(ZH3->ZH3_LOJAC)})		// 4
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_FORNEC)+ALLTRIM(ZH3->ZH3_LOJAF)})  	// 5
+		aAdd(aRetDados ,{alltrim(ZH3->ZH3_RESULT)})								// 6
+
 	
-	// Cria e alimenta uma nova instancia do cliente
-	oColabRet :=  WSClassNew( "aRetColabData" )
-	oColabRet:ColabCNPJ		:= aRetFuncao[1][1]
-	oColabRet:ColabOper		:= aRetFuncao[2][1]
-	oColabRet:ColabStatus	:= aRetFuncao[3][1]
-	oColabRet:ColabCodCli	:= aRetFuncao[4][1]
-	oColabRet:ColabCodFor	:= aRetFuncao[5][1]
-	oColabRet:ColabObs		:= aRetFuncao[6][1]
+	Endif
 
-	AAdd( ::aRetColab:ColabArray, oColabRet )
+Else //Ainda não tem registro na tabela intermediaria
+
+	U_MFCONOUT("Incluindo registro e Retornando aguardando processamento para o cpf/cnpj " + alltrim(ZH3->ZH3_CNPJ) + "!")
+
+	Reclock("ZH3", .T.)
+
+	ZH3->ZH3_DTRECE		:= alltrim(DTOC(DATE()))
+	ZH3->ZH3_HRRECE		:= alltrim(TIME())
+	ZH3->ZH3_STATUS		:= " "
+	ZH3->ZH3_RESULT		:= "AGUARDANDO PROCESSAMENTO"
+	ZH3->ZH3_TIPO 		:= alltrim(::aReqColab:ColabTipo)
+	ZH3->ZH3_OPER 		:= alltrim(::aReqColab:ColabOper)
+	ZH3->ZH3_CNPJ		:= alltrim(::aReqColab:ColabCNPJ)	  
+	ZH3->ZH3_IE 		:= alltrim(::aReqColab:ColabInscEst)	   
+	ZH3->ZH3_IM 		:= alltrim(::aReqColab:ColabInscMun )  
+	ZH3->ZH3_NOME		:= alltrim(::aReqColab:ColabNome  )
+	ZH3->ZH3_NREDUZ		:= alltrim(::aReqColab:ColabNReduz	)
+	ZH3->ZH3_CONTAT		:= alltrim(::aReqColab:ColabContato)
+	ZH3->ZH3_ENDERE		:= alltrim(::aReqColab:ColabEndereco)
+	ZH3->ZH3_BAIRRO		:= alltrim(::aReqColab:ColabBairro	)
+	ZH3->ZH3_CODMUN		:= alltrim(::aReqColab:ColabCodMun	)
+	ZH3->ZH3_CEP  		:= alltrim(::aReqColab:ColabCEP )
+	ZH3->ZH3_TELEFO		:= alltrim(::aReqColab:ColabTelefone)
+	ZH3->ZH3_FAX  		:= alltrim(::aReqColab:ColabFax )
+	ZH3->ZH3_MICROE		:= alltrim(::aReqColab:ColabMicroEmp)
+	ZH3->ZH3_DATAME		:= alltrim(::aReqColab:ColabDataME	)
+	ZH3->ZH3_EMAIL 		:= alltrim(::aReqColab:ColabEmail	)
+	ZH3->ZH3_ORIGEM		:= alltrim(::aReqColab:ColabOrigem)
+	ZH3->ZH3_OBS   		:= alltrim(::aReqColab:ColabObs)
+	ZH3->ZH3_ESTADO		:= alltrim(::aReqColab:ColabEst)
+	ZH3->ZH3_CCUSTO		:= alltrim(::aReqColab:ColabCCusto)	
+	ZH3->ZH3_DTNASC		:= alltrim(::aReqColab:ColabDTNasc)
+	ZH3->ZH3_CODMGF		:= alltrim(::aReqColab:ColabCodMGF)
+	ZH3->ZH3_CONTDE		:= alltrim(::aReqColab:ColabContDeb)
+	ZH3->ZH3_PAISBC		:= alltrim(::aReqColab:ColabPaisBC)
+	ZH3->ZH3_GRPTRI		:= alltrim(::aReqColab:ColabGrpTrib)
+	ZH3->ZH3_GRPTRC		:= alltrim(::aReqColab:ColabGTrbCli)
+	ZH3->ZH3_CONTCL		:= alltrim(::aReqColab:ColabContCli)
+	ZH3->ZH3_NATCLI		:= alltrim(::aReqColab:Natureza_Cliente)
+	ZH3->ZH3_NATFOR		:= alltrim(::aReqColab:Natureza_Fornecedor)	
+	ZH3->ZH3_PAIS  		:= alltrim(::aReqColab:ColabPais)
+	ZH3->ZH3_COMP  		:= alltrim(::aReqColab:ColabComp)
+	ZH3->ZH3_DDD   		:= alltrim(::aReqColab:ColabDDD)
+	ZH3->ZH3_DDI   		:= alltrim(::aReqColab:ColabDDI)
+	ZH3->ZH3_CFILIA		:= alltrim(::aReqColab:ColabFilial)	
+	ZH3->ZH3_NACION		:= alltrim(::aReqColab:ColabNacion)	
+	ZH3->ZH3_SETOR 		:= alltrim(::aReqColab:ColabSetor)
+	ZH3->ZH3_DSETOR		:= alltrim(::aReqColab:ColabDescSet)
+	ZH3->ZH3_UNIDAD		:= alltrim(::aReqColab:ColabUnidade)
+	ZH3->ZH3_DTADMI		:= alltrim(::aReqColab:ColabDtAdmiss)
+	ZH3->ZH3_DTDEMI		:= alltrim(::aReqColab:ColabDtDemiss)	
+	ZH3->ZH3_UUID  		:= alltrim(fwUUIDv4( .T. ))
+	ZH3->ZH3_ORIGEM		:= alltrim("RHEVOLUTION")
+	ZH3->ZH3_HASH  		:= alltrim(_chash)
+
+	ZH3->(MsUnLock())
+
+	aRetDados := {}
+	aAdd(aRetDados ,{alltrim(ZH3->ZH3_CNPJ)})								// 1
+	aAdd(aRetDados ,{::aReqColab:ColabOper})								// 2
+	aAdd(aRetDados ,{"S"})													// 3
+	aAdd(aRetDados ,{alltrim(ZH3->ZH3_CLIENT)+ALLTRIM(ZH3->ZH3_LOJAC)})		// 4
+	aAdd(aRetDados ,{alltrim(ZH3->ZH3_FORNEC)+ALLTRIM(ZH3->ZH3_LOJAF)})  	// 5
+	aAdd(aRetDados ,{alltrim(ZH3->ZH3_RESULT)})								// 6
+
+Endif
+
+
+// Cria a instância de retorno ( WSDATA aRetColab AS aRetColabArray )
+::aRetColab := WSClassNew( "aRetColabArray")
+    
+// inicializa a propriedade da estrutura de retorno
+::aRetColab:ColabArray := {}
+	
+// Cria e alimenta uma nova instancia do cliente
+oColabRet :=  WSClassNew( "aRetColabData" )
+oColabRet:ColabCNPJ		:= aRetDados[1][1]
+oColabRet:ColabOper		:= aRetDados[2][1]
+oColabRet:ColabStatus	:= aRetDados[3][1]
+oColabRet:ColabCodCli	:= aRetDados[4][1]
+oColabRet:ColabCodFor	:= aRetDados[5][1]
+oColabRet:ColabObs		:= aRetDados[6][1]
+
+AAdd( ::aRetColab:ColabArray, oColabRet )
    
 Return lReturn
 

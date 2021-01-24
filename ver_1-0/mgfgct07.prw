@@ -8,7 +8,7 @@ Data.....:              20/10/16
 Descricao / Objetivo:   Execucao do P.E. para permitir execucao da rotina 'MsDocument"
 Doc. Origem:            Contrato - GAP VEN01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

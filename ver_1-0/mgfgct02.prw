@@ -6,7 +6,7 @@ Data.....:              27/09/2016
 Descricao / Objetivo:   Chamada do ponto de entrada CNTA300
 Doc. Origem:            Contrato - GAP MGFGCT02
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -49,7 +49,7 @@ USER FUNCTION CNTA300
 
 	EndIf
 
-    //Tratamento Revisao do Contrato  Salesforce
+    //Tratamento Revisão do Contrato  Salesforce
     if ( FunName() == "CNTA300" .AND. (cAliasCN9)->(CN9_ESPCTR) == "2" )
 
 		aParam := PARAMIXB
@@ -58,7 +58,7 @@ USER FUNCTION CNTA300
 			cIdForm  := aParam[3]
         endif
 
-		if (cIdPonto == "FORMPOS" .AND.  cIdForm == "CALC_CNS") //Formulario pos revisao
+		if (cIdPonto == "FORMPOS" .AND.  cIdForm == "CALC_CNS") //Formulário pos revisão
        		xRet	:= U_MGFFINX7("2")
 		endif
 	endif

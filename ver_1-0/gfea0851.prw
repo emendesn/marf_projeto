@@ -3,13 +3,13 @@
 /*
 =========================================================================================================
 Programa.................: GFEA0851
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Controle de aprovacoes de ajustes baseado no cadastro de aprovadores
+Descrição / Objetivo.....: Controle de aprovações de ajustes baseado no cadastro de aprovadores
 Doc. Origem..............: GAP - GFE02
 Solicitante..............: Cliente
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de ajustes conforme tabela de aprovadores
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de ajustes conforme tabela de aprovadores
 =========================================================================================================
 */
 

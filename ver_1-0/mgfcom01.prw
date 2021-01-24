@@ -9,11 +9,11 @@
 Programa............: MGFCOM01
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Envio de Workflow de cotacao aos fornecedores
+Uso.................: Marfrig
+Obs.................: Envio de Workflow de cotação aos fornecedores
 =====================================================================================
 */
 User Function MGFCOM01(nModo,cCotacao,oProcess)
@@ -44,7 +44,7 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 	Private _aEmail	 := {}
 	Private cContato := ""
 
-	//IF MsgYesNo("Deseja enviar o Workflow de Cotaï¿½ï¿½o ?")
+	//IF MsgYesNo("Deseja enviar o Workflow de Cotação ?")
 
 		conout("==========>  entrando na MGFCOM01 <==============")
 		DbSelectArea("SY1")
@@ -66,7 +66,7 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 			_cCotacao 	:= SC8->C8_NUM
 			_cFornece 	:= SC8->C8_FORNECE
 			_cLoja		:= SC8->C8_LOJA
-			// Workflow jï¿½ enviado
+			// Workflow já enviado
 			if ! Empty(SC8->C8_ZWFID)
 				SC8->(DbSkip())
 				Loop
@@ -94,7 +94,7 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 		dbSelectArea("SC8")
 		dbSetOrder(1)
 		dbSeek(xFilial("SC8")+cCotacao)
-		conout("==========>  antes do while da funcao retorno <==============")
+		conout("==========>  antes do while da função retorno <==============")
 		while ! SC8->(eof()) .and. xFilial("SC8")+cCotacao==SC8->C8_FILIAL+SC8->C8_NUM
 			_cC8_NUM     	:= SC8->C8_NUM
 			_cC8_FORNECE 	:= SC8->C8_FORNECE
@@ -113,12 +113,12 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 
 
 			if ! Empty(_cEmlFor)
-				oProcess := TWFProcess():New( "000001", "Cotaï¿½ï¿½o de Preï¿½os" )
+				oProcess := TWFProcess():New( "000001", "Cotação de Preços" )
 				oProcess :NewTask("Fluxo de Compras", cDirLayout+"COTACAO_" + cEmpAtual + ".HTML" )
 				oProcess:cTo		:= "000000"	// Administrador
-				conout("==========>  chamando funcao retorno <==============")
+				conout("==========>  chamando função retorno <==============")
 				oProcess:bReturn	:= "U_W1881503(1)" // retorno
-				oProcess:cSubject	:= "Solicitacao de Cotaï¿½ï¿½o de Preï¿½os " + _cC8_NUM
+				oProcess:cSubject	:= "Solicitação de Cotação de Preços " + _cC8_NUM
 				oProcess:UserSiga	:= "000000"
 				oProcess:NewVersion(.T.)
 
@@ -169,14 +169,14 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 				oHtml:ValByname("LOCALENTREGA",	Alltrim(SM0->M0_ENDENT) + " - " + AllTrim(SM0->M0_CIDENT) + " - " + AllTrim(SM0->M0_ESTENT) + " - " + AllTrim(SM0->M0_BAIRENT) + " - CEP:" + Transform(SM0->M0_CEPENT,"@R 99999-999")		)
 
 				// Roberto - 14/10/16              
-				// Endereco de entrega
+				// Endereço de entrega
 				oHtml:ValByName( "M0_ENDENT"   , SM0->M0_ENDENT )
 				oHtml:ValByName( "M0_BAIRENT"  , SM0->M0_BAIRENT  )
 				oHtml:ValByName( "M0_CIDENT"   , SM0->M0_CIDENT )
 				oHtml:ValByName( "M0_CEPENT"   , SM0->M0_CEPENT ) 
 				oHtml:ValByName( "M0_ESTENT"   , SM0->M0_ESTENT )  
 
-				// Endereco de cobranca
+				// Endereço de cobrança
 				oHtml:ValByName( "M0_ENDCOB"   , SM0->M0_ENDCOB )
 				oHtml:ValByName( "M0_CEPCOB"   , SM0->M0_CEPCOB  )
 				oHtml:ValByName( "M0_CIDCOB"   , SM0->M0_CIDCOB )
@@ -317,7 +317,7 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 
 				oProcess:nEncodeMime := 0
 
-				//garante que o arquivo esteja na pasta onde o arquivo sera carregado.
+				//garante que o arquivo esteja na pasta onde o arquivo será carregado.
 				IF !File("\workflow\messenger\emp" +cEmpAtual  + "\" + _cUser + "\Marfrig.gif")
 					__CopyFile(cDirLayout+"Marfrig.gif","\workflow\messenger\emp" +cEmpAtual  + "\" + _cUser + "\Marfrig.gif" )
 				endif
@@ -338,25 +338,25 @@ User Function MGFCOM01(nModo,cCotacao,oProcess)
 					aMsg := {}
 					aAdd(aMsg, "Sr.(a) " + cContato )
 					AADD(aMsg, "</BR>")
-					AADD(aMsg, " Nos da Marfrig S/A atraves do departamento de compras, gostariamos de fazer uma cotacao com a sua empresa.")
-					AADD(aMsg, " O numero da cotacao ï¿½ <b>" + _cC8_NUM + "</b> e para participar basta clicar no link logo abaixo :")
+					AADD(aMsg, " Nós da Marfrig S/A através do departamento de compras, gostariamos de fazer uma cotação com a sua empresa.")
+					AADD(aMsg, " O número da cotação é <b>" + _cC8_NUM + "</b> e para participar basta clicar no link logo abaixo :")
 					If Len(aProdProc) > 0 .and. File(cArqProdProc)
 						AADD(aMsg, "</BR>")
-						AADD(aMsg, " Em anexo encontra-se o arquivo em .PDF, com as descricoes dos produtos constantes na Cotaï¿½ï¿½o.")
+						AADD(aMsg, " Em anexo encontra-se o arquivo em .PDF, com as descrições dos produtos constantes na Cotação.")
 						aAdd(aAttach,cArqProdProc)
 					Endif	
 					AADD(aMsg, "</BR>")
 					AADD(aMsg, "</BR>")
 					AADD(aMsg, "Atenciosamente ")
 					AADD(aMsg, "</BR>")
-					AADD(aMsg, "Favor nao responder este email, em caso de duvida entrar em contato :")
+					AADD(aMsg, "Favor não responder este email, em caso de dúvida entrar em contato :")
 					AADD(aMsg, "</BR>")
 					AADD(aMsg, cNComprador)
 					AADD(aMsg, cTEL)
 					AADD(aMsg, cEmail)
 					AADD(aMsg, "Marfrig S/A")
 					AADD(aMsg, "</BR>")
-					aAdd(aMsg, '<p><a href="' +GetNewPar("MGF_WFHTTP","http://localhost:8091/WF/")+'/messenger/emp' +cEmpAtual  + '/' + _cUser + '/' + alltrim(cProcess) + '.html">Clique aqui para responder a cotacao </a></p>')
+					aAdd(aMsg, '<p><a href="' +GetNewPar("MGF_WFHTTP","http://localhost:8091/WF/")+'/messenger/emp' +cEmpAtual  + '/' + _cUser + '/' + alltrim(cProcess) + '.html">Clique aqui para responder a cotação </a></p>')
 					AADD(aMsg, "</BR>")
 					AADD(aMsg, "</BR>")
 					//	aAdd(aMsg, SM0->M0_NOMECOM)
@@ -386,10 +386,10 @@ Return
 Programa............: MT130A
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Programa executado durante retorno de cotacoes preenchidas
 fornecedores
 =====================================================================================
@@ -397,17 +397,17 @@ fornecedores
 
 User Function MT130A()
 
-Return("Nos da Marfrig S/A agradecemos o envio da sua cotacao.")
+Return("Nós da Marfrig S/A agradecemos o envio da sua cotação.")
 
 /*
 =====================================================================================
 Programa............: W1881503
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina de retorno de cotacao dos fornecedores.
 Produto Produtivo
 =====================================================================================
@@ -427,7 +427,7 @@ User Function W1881503(AOpcao, oProcess)
 	
 	Local cCodFor := ""
 	
-	Conout("=============>Inicio Retorno da Cotaï¿½ï¿½o <=============")
+	Conout("=============>Inicio Retorno da Cotação <=============")
 	
 	If ValType(aOpcao) = "A"
 		aOpcao := aOpcao[1]
@@ -495,7 +495,7 @@ User Function W1881503(AOpcao, oProcess)
 			SC8->(dbSetOrder(1))
 			If SC8->(dbSeek( xFilial("SC8") + Padr(_cC8_NUM,6) + Padr(_cC8_FORNECE,6) + _cC8_LOJA + _cC8_ITEM ) )
 				
-				//Realiza a Verificacao da Moeda utilizada
+				//Realiza a Verificação da Moeda utilizada
 				If Substr(oProcess:oHtml:RetByName("it.moeda")[_nind] ,1,1) == "R"
 					nMoeda := 1
 				ElseIf Substr(oProcess:oHtml:RetByName("it.moeda")[_nind] ,1,1) == "D"
@@ -567,7 +567,7 @@ User Function W1881503(AOpcao, oProcess)
 				
 				SC8->(MsUnlock())
 			Else
-				Conout("=============> Nao  Encontrou Registro Chave: " + xFilial("SC8") + Padr(_cC8_NUM,6) + Padr(_cC8_FORNECE,6) + _cC8_LOJA + _cC8_ITEM + "  <=============")	
+				Conout("=============> Não Encontrou Registro Chave: " + xFilial("SC8") + Padr(_cC8_NUM,6) + Padr(_cC8_FORNECE,6) + _cC8_LOJA + _cC8_ITEM + "  <=============")	
 			EndIf
 			_cProd := oProcess:oHtml:RetByName("it.produto")[_nind]
 		Else
@@ -575,19 +575,19 @@ User Function W1881503(AOpcao, oProcess)
 		EndIf
 	Next _nind
 	
-	Conout("=============>Termino Retorno da Cotaï¿½ï¿½o <=============")
+	Conout("=============>Termino Retorno da Cotação <=============")
 	
 Return
 
 /*
 =====================================================================================
-Programa............: ï¿½fSelec130
+Programa............: ³fSelec130
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de selecao das quantidades de cada produto.
 =====================================================================================
 */
@@ -603,9 +603,9 @@ Static Function fSelec130(_aCot)
 	Private oGetD
 
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Monta o Array aHeader.                                       ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Monta o Array aHeader.                                       ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 	dbSelectArea("SX3")
 	dbSetOrder(1)
@@ -681,10 +681,10 @@ Return
 Programa............: fGrava130
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: uncao para gravacao das quantidades selecionadas.
 =====================================================================================
 */
@@ -722,10 +722,10 @@ Return
 Programa............: FMT130VL
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Funcao de validacao da quantidade
 =====================================================================================
 */
@@ -755,10 +755,10 @@ Return(_lRet)
 Programa............: fEnviaLink
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Funcao de notificacao.
 =====================================================================================
 */
@@ -767,7 +767,7 @@ USER FUNCTION fEnviaLink(cTo, cTitle, aMsg, aFiles )
 
 	cBody := '<html>'
 	cBody += '<DIV><SPAN class=610203920-12022004><FONT face=Verdana color=#ff0000 '
-	cBody += 'size=2><STRONG>Workflow - Servico Envio de Mensagens</STRONG></FONT></SPAN></DIV><hr>'
+	cBody += 'size=2><STRONG>Workflow - Serviço Envio de Mensagens</STRONG></FONT></SPAN></DIV><hr>'
 	For nInd := 1 TO Len(aMsg)
 		cBody += '<DIV><FONT face=Verdana color=#000080 size=3><SPAN class=216593018-10022004>' + aMsg[nInd] + '</SPAN></FONT></DIV><p>'
 	Next
@@ -782,10 +782,10 @@ Return(.T.)
 Programa............: SCHWFCOT
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: WF - Cotaï¿½ï¿½o de compras aos fornecedores
+Descricao / Objetivo: WF - Cotação de compras aos fornecedores
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Funcao de notificacao.
 =====================================================================================
 */
@@ -804,7 +804,7 @@ User Function SCHWFCOT()
 
 	// Prepara o ambiente para processamento
 	PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010001" TABLES "SM0"
-	Conout("Iniciando o process Workflow Cotaï¿½ï¿½es")
+	Conout("Iniciando o process Workflow Cotações")
 	aWF_Emp := EmpFilWF()
 
 	//aGrupos := Allgroups()
@@ -865,13 +865,13 @@ User Function SCHWFCOT()
 		// Prepara o ambiente para processamento
 		PREPARE ENVIRONMENT EMPRESA _cEmpCot FILIAL _cFilcot TABLES "SM0"
 
-		// Cotaï¿½ï¿½o para envio do Workflow
+		// Cotação para envio do Workflow
 		_cCotacao:= _aCotas[_nCot,3]
-		oProcess := TWFProcess():New( "000001", "Cotaï¿½ï¿½o de Preï¿½os" )
+		oProcess := TWFProcess():New( "000001", "Cotação de Preços" )
 		U_MGFCOM01(2,_cCotacao,oProcess)
 	Next _nCot
 
-	Conout("Finalizado processo de Workflow Cotaï¿½ï¿½es.")
+	Conout("Finalizado processo de Workflow Cotações.")
 Return()
 
 /*
@@ -882,7 +882,7 @@ Data................: 27/09/2016
 Descricao / Objetivo: Monta array com empresas e filiais para processamento
 Doc. Origem.........: COM01 - GAP MGCOM01
 Solicitante.........: Cliente
-Uso.................:            
+Uso.................: Marfrig           
 Obs.................:
 =====================================================================================
 */

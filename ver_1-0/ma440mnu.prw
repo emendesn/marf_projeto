@@ -7,10 +7,10 @@
 Programa.:              A440BUT
 Autor....:              Leonardo Kume        
 Data.....:              14/03/2017
-Descricao / Objetivo:   Incluir botao  
+Descricao / Objetivo:   Incluir botão  
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

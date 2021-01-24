@@ -7,11 +7,11 @@
 Programa.:              SF1100E
 Autor....:              Marcelo Carneiro         
 Data.....:              03/08/2017 
-Descricao / Objetivo:   Integracao TAURA - ENTRADAS
+Descricao / Objetivo:   Integração TAURA - ENTRADAS
 Doc. Origem:            PEDIDO DE ABATE - 
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de entrada SF1100E Para voltar a situacao do Abate
+Uso......:              Marfrig
+Obs......:              Ponto de entrada SF1100E Para voltar a situação do Abate
 =====================================================================================
 */                                                            '
 
@@ -21,7 +21,7 @@ IF FindFunction("U_TAE15CAN")
 	U_TAE15CAN()
 EndIF
 
-//Atualiza SZ5 na exclusao do documento de entrada (triangulacao faturamento)
+//Atualiza SZ5 na exclusão do documento de entrada (triangulação faturamento)
 If FindFunction("u_MGFFAT75")
 	u_MGFFAT75()
 EndIf

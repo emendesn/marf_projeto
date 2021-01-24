@@ -5,11 +5,11 @@
 Programa............: FA050B01
 Autor...............: Marcelo Carneiro
 Data................: 07/03/2018
-Descricao / Objetivo: O ponto de apos a confirmacao da Exclusao do CAP
+Descrição / Objetivo: O ponto de após a confirmação da Exclusão do CAP
 Doc. Origem.........: Tipo de Valor
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Para a exclusao da tabela ZDS
+Uso.................: Marfrig
+Obs.................: Para a exclusão da tabela ZDS
 =====================================================================================
 */
 User Function FA050B01()

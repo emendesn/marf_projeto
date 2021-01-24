@@ -7,46 +7,26 @@
 #include "FWMVCDEF.CH"
  
 /*/{Protheus.doc} MGFWSC47
-Integração Protheus-ME, para envio das Entregas/Devoluções/
+Integracao Protheus-ME, para envio das Entregas/Devolucoes/
 @type function
 
 @author Anderson Reis
 @since 26/02/2020
-@history CRIAÇÃO DOS CAMPOS C7_ZRECME / D1_ZMEDEV
+@history CRIACAO DOS CAMPOS C7_ZRECME / D1_ZMEDEV
 @version P12
 /*/
 
 user function MGFWSC47()
 
-RPCSetType( 3 )
-
-PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010001"
-
-conout('[MGFWSC47] Iniciada Threads (ENTREGA) - ' + dToC(dDataBase) + " - " + time())
-
-RUNINTEG47()
-
-RESET ENVIRONMENT
-return
-
-
-
-STATIC Function RUNINTEG47()
-
-
 Local cQ 		:= ""
-Local cAliasTrb := GetNextAlias()
-
+Local cAliasTrb := ""
 Local cUrl 		:= " " 
 Local cHeadRet 	:= ""
 Local aHeadOut	:= {}
-
 Local cJson		:= ""
 Local oJson		:= Nil
-
 Local cTimeIni	:= ""
 Local cTimeProc	:= ""
-
 Local xPostRet	:= Nil
 Local nStatuHttp	:= 0
 local nTimeOut		:= 120
@@ -54,27 +34,26 @@ Local cCont         := 0
 Local nret          := 0 
 Local ndevol        := 0
 
+U_MFCONOUT('Iniciando integracao de envio de entregas e devolucoes...')
+
+cAliasTrb := GetNextAlias()
 cUrl := Alltrim(GetMv("MGF_WSC47"))
 
-conout(" URL..........................: " + cUrl									)
-If Empty(cUrl)
-	ConOut("Não encontrado parâmetro 'MGF_WSC47'.")
-	Return()
-Endif
+U_MFCONOUT('Carregando pedidos...')
 
 // Entrada Nota 
 
 cQ := " SELECT C7_NUM,C7_FILIAL,C7_EMISSAO,C7_NUM,C7_FORNECE,C7_LOJA,C7_ZRECME,D1_ZMEDEV,D1_PEDIDO,D1_DOC, "
-cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'NOTA' AS STATUS    "
+cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'NOTA' AS STATUS,D1_QUANT,D1_SERIE    "
+cQ += " , SD1.R_E_C_N_O_ AS D1REC, SC7.R_E_C_N_O_ AS C7REC "
 cQ += " FROM "+RetSqlName("SD1")+" SD1 , "+RetSqlName("SC7")+" SC7 WHERE "
 cQ += " SD1.D_E_L_E_T_ = ' ' AND SC7.C7_ZPEDME <> ' ' AND   "
 cQ += " SC7.D_E_L_E_T_   = ' '              AND D1_TES <> ' '  AND "
 cQ += " SC7.C7_FILIAL    = SD1.D1_FILIAL    AND "
 cQ += " SC7.C7_FORNECE   = SD1.D1_FORNECE   AND "
-cQ += " SC7.C7_LOJA      = SD1.D1_LOJA      AND "
 cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO    AND "
 cQ += " SC7.C7_PRODUTO   = SD1.D1_COD       AND "
-cQ += " SC7.C7_ITEM      = SD1.D1_ITEM      AND SD1.D1_ZPEDME = ' ' "
+cQ += " SC7.C7_ITEM      = SD1.D1_ITEMPC    AND SD1.D1_ZPEDME = ' ' "
 cQ += " AND SD1.D1_DTDIGIT >= " + GetMv("MGF_WSC45B")+  "  "
 cq += " UNION ALL        "
 
@@ -82,84 +61,100 @@ cq += " UNION ALL        "
 // Cancel Nota - ALteradO C7_QUJE
 
 cQ += " SELECT C7_NUM,C7_FILIAL,C7_EMISSAO,C7_NUM,C7_FORNECE,C7_LOJA,C7_ZRECME,D1_ZMEDEV,D1_PEDIDO,D1_DOC,  "
-cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'NOTA_CANCELADA' AS STATUS    "
+cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'NOTA_CANCELADA' AS STATUS,D1_QUANT,D1_SERIE    "
+cQ += " , SD1.R_E_C_N_O_ AS D1REC, SC7.R_E_C_N_O_ AS C7REC "
 cQ += " FROM "+RetSqlName("SD1")+" SD1 , "+RetSqlName("SC7")+" SC7 WHERE "
 cQ += " SC7.C7_ZPEDME <> ' ' AND   SD1.D_E_L_E_T_ = '*' AND  "
 cQ += " SC7.D_E_L_E_T_   = ' '              AND D1_TES <> ' '  AND "
 cQ += " SC7.C7_FILIAL    = SD1.D1_FILIAL    AND "
 cQ += " SC7.C7_FORNECE   = SD1.D1_FORNECE   AND "
-cQ += " SC7.C7_LOJA      = SD1.D1_LOJA      AND "
 cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO    AND "
 cQ += " SC7.C7_PRODUTO   = SD1.D1_COD       AND "
-cQ += " SC7.C7_ITEM      = SD1.D1_ITEM      AND SD1.D1_ZPEDME <> 'X'  "
+cQ += " SC7.C7_ITEM      = SD1.D1_ITEMPC      AND SD1.D1_ZPEDME <> 'X'  "
 cQ += " AND SD1.D1_DTDIGIT >= " + GetMv("MGF_WSC45B")+  "  "
 
 
 cq += " UNION ALL        "
 
-// Eliminação de Resíduo
+// Eliminacao de Resi�duo
 
 cQ += " SELECT C7_NUM,C7_FILIAL,C7_EMISSAO,C7_NUM,C7_FORNECE,C7_LOJA,C7_ZRECME,D1_ZMEDEV,D1_PEDIDO,D1_DOC,  "
-cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'ELIM. RESIDUO' AS STATUS    "
+cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'ELIM. RESIDUO' AS STATUS,D1_QUANT,D1_SERIE    "
+cQ += " , SD1.R_E_C_N_O_ AS D1REC, SC7.R_E_C_N_O_ AS C7REC "
 cQ += " FROM "+RetSqlName("SD1")+" SD1 , "+RetSqlName("SC7")+" SC7 WHERE "
 cQ += " SD1.D_E_L_E_T_ = ' ' AND SC7.C7_ZPEDME <> ' ' AND   "
 cQ += " SC7.D_E_L_E_T_   = ' '              AND D1_TES <> ' '  AND "
 cQ += " SC7.C7_FILIAL    = SD1.D1_FILIAL    AND "
 cQ += " SC7.C7_FORNECE   = SD1.D1_FORNECE   AND "
-cQ += " SC7.C7_LOJA      = SD1.D1_LOJA      AND "
 cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO    AND "
 cQ += " SC7.C7_PRODUTO   = SD1.D1_COD       AND "
-cQ += " SC7.C7_ITEM      = SD1.D1_ITEM      AND "
+cQ += " SC7.C7_ITEM      = SD1.D1_ITEMPC      AND "
 cq += " SC7.C7_RESIDUO <> '  ' AND SD1.D1_DTDIGIT  >= " + GetMv("MGF_WSC45B")+  "  AND SD1.D1_ZPEDME <> 'R'  "
 
 cq += " UNION ALL        "
 
 
-// Devoluçao Parcial
+// Devolucao Parcial
 
 cQ += " SELECT C7_NUM,C7_FILIAL,C7_EMISSAO,C7_NUM,C7_FORNECE,C7_LOJA,C7_ZRECME,D1_ZMEDEV,D1_PEDIDO,D1_DOC, "
-cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'DEV. PARCIAL' AS STATUS    "
+cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'DEV. PARCIAL' AS STATUS,D1_QUANT,D1_SERIE    "
+cQ += " , SD1.R_E_C_N_O_ AS D1REC, SC7.R_E_C_N_O_ AS C7REC "
 cQ += " FROM "+RetSqlName("SD1")+" SD1 , "+RetSqlName("SC7")+" SC7 WHERE "
 cQ += " SC7.C7_ZPEDME <> ' ' AND   "
 cQ += " SC7.D_E_L_E_T_   = ' '              AND D1_TES <> ' '  AND "
 cQ += " SC7.C7_FILIAL    = SD1.D1_FILIAL    AND "
 cQ += " SC7.C7_FORNECE   = SD1.D1_FORNECE   AND "
-cQ += " SC7.C7_LOJA      = SD1.D1_LOJA      AND "
-cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO    AND "
+cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO   AND "
 cQ += " SC7.C7_PRODUTO   = SD1.D1_COD       AND "
-cQ += " SC7.C7_ITEM      = SD1.D1_ITEM      AND SD1.D1_ZPEDME <> ' ' AND  "
+cQ += " SC7.C7_ITEM      = SD1.D1_ITEMPC      AND SD1.D1_ZPEDME <> ' ' AND  "
 cQ += " SD1.D1_QTDEDEV   <>  SD1.D1_ZMEDEV  AND SD1.D1_QTDEDEV  > 0  AND SD1.D1_DTDIGIT  >= " + GetMv("MGF_WSC45B")+  " "
 
 
-//  Cancelar Devolução
+//  Cancelar Devolucao
 cq += " UNION ALL        "
 
 cQ += " SELECT C7_NUM,C7_FILIAL,C7_EMISSAO,C7_NUM,C7_FORNECE,C7_LOJA,C7_ZRECME,D1_ZMEDEV,D1_PEDIDO,D1_DOC, "
-cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'CANCEL. DEV' AS STATUS    "
+cQ += " C7_ITEM,C7_QUANT,C7_QUJE,C7_RESIDUO,C7_CONAPRO,C7_PRODUTO,D1_QTDEDEV ,D1_FILIAL,'CANCEL. DEV' AS STATUS,D1_QUANT,D1_SERIE    "
+cQ += " , SD1.R_E_C_N_O_ AS D1REC, SC7.R_E_C_N_O_ AS C7REC "
 cQ += " FROM "+RetSqlName("SD1")+" SD1 , "+RetSqlName("SC7")+" SC7 WHERE "
 cQ += " SD1.D_E_L_E_T_ = '*' AND SC7.C7_ZPEDME <> ' ' AND   "
 cQ += " SC7.D_E_L_E_T_   = ' '              AND D1_TES <> ' '  AND "
 cQ += " SC7.C7_FILIAL    = SD1.D1_FILIAL    AND "
 cQ += " SC7.C7_FORNECE   = SD1.D1_FORNECE   AND "
-cQ += " SC7.C7_LOJA      = SD1.D1_LOJA      AND "
 cQ += " SC7.C7_NUM       = SD1.D1_PEDIDO    AND "
 cQ += " SC7.C7_PRODUTO   = SD1.D1_COD       AND "
-cQ += " SC7.C7_ITEM      = SD1.D1_ITEM      AND SD1.D1_ZPEDME <> 'W'  AND "
+cQ += " SC7.C7_ITEM      = SD1.D1_ITEMPC      AND SD1.D1_ZPEDME <> 'W'  AND "
 cQ += " SD1.D1_QTDEDEV   <>  SD1.D1_ZMEDEV  AND SD1.D1_DTDIGIT  >= " + GetMv("MGF_WSC45B")+  " "
 
 
-
 cQ := ChangeQuery(cQ)
-memowrite("c:\TEMP\ENTREGAS.TXT",cQ)
 dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
+
+_ntot := 0
+_nni := 1
+
+If (cAliasTrb)->(!Eof())
+
+	U_MFCONOUT('Contando pedidos...')
+	Do While (cAliasTrb)->(!Eof())
+		_ntot++
+		(cAliasTrb)->(Dbskip())
+	Enddo
+	(cAliasTrb)->(Dbgotop())
+
+Else
+
+	U_MFCONOUT('N�o foram localizados pedidos pendentes de integra��o!')
+	Return
+
+Endif
 
 aadd( aHeadOut, 'Content-Type: application/json' )
  
-While (cAliasTrb)->(!Eof())
-	cCont ++
+Do While (cAliasTrb)->(!Eof())
+
 	cjson := " "
 	oJson := JsonObject():new()
-	
 	
 	cjson +='   {                                                           '
 	cjson +='  	"MSGENTREGA": {                                             '
@@ -170,7 +165,7 @@ While (cAliasTrb)->(!Eof())
 	
 	If ALLTRIM((cAliasTrb)->STATUS) == 'NOTA' 
 		
-		cjson +='	"QUANTIDADE":"' + str((cAliasTrb)->C7_QUJE) + '"               ,'
+		cjson +='	"QUANTIDADE":"' + str((cAliasTrb)->D1_QUANT) + '"               ,'
 		// Verificar se a quantidade  
 		If  (cAliasTrb)->C7_QUJE =  (cAliasTrb)->C7_QUANT
 			cjson +='	"FECHADO":"S"  ,'
@@ -181,7 +176,7 @@ While (cAliasTrb)->(!Eof())
 	
 	Elseif ALLTRIM((cAliasTrb)->STATUS) == 'NOTA_CANCELADA' 
 
-		cjson +='	"QUANTIDADE":"'  + str((cAliasTrb)->C7_QUANT * - 1 )   + '"               ,'
+		cjson +='	"QUANTIDADE":"'  + str((cAliasTrb)->D1_QUANT * - 1 )   + '"               ,'
 		cjson +='	"FECHADO":"S"  ,'
 		cjson +='	"ESTORNO":"S"  ,'
 
@@ -202,14 +197,10 @@ While (cAliasTrb)->(!Eof())
 		If (cAliasTrb)->D1_QTDEDEV > (cAliasTrb)->D1_ZMEDEV 
 			cjson +='	"QUANTIDADE":  "' + str(((cAliasTrb)->D1_QTDEDEV - (cAliasTrb)->D1_ZMEDEV ) * - 1 )   + '"               ,'
 		Else
-			cjson +='	"QUANTIDADE":  "' + str(((cAliasTrb)->D1_QTDEDEV - (cAliasTrb)->D1_ZMEDEV ) * - 1 )   + '"  
-		Endif
-
-
-	
+			cjson +='	"QUANTIDADE":  "' + str((cAliasTrb)->D1_QTDEDEV )   + '" ,' 
+		Endif	
 	
 	Endif
-	
 	
 	If ALLTRIM((cAliasTrb)->STATUS) == "ENCERRADO"
 		
@@ -232,8 +223,9 @@ While (cAliasTrb)->(!Eof())
 		cjson +='	"ESTORNO":"S"  ,'
 		
 	Endif
-	
-	cjson +='	"SERIENF":" "                                               ,'
+
+	cjson +='	"NUMERONF":"'+ (cAliasTrb)->D1_DOC + '"  ,'  
+	cjson +='	"SERIENF":"'+ (cAliasTrb)->D1_SERIE + '"  ,'                                              
 	cjson +='	"DATAEMISSAO":"' + Substring((cAliasTrb)->C7_EMISSAO,1,4)+"-"+Substring((cAliasTrb)->C7_EMISSAO,5,2)+"-"+Substring((cAliasTrb)->C7_EMISSAO,7,2)+"T00:00:00-00:00" + '"  , '//"2019-01-01T00:00:00-00:00"
 	
 	cjson +='  	"BORGS": [{                                                 '
@@ -263,14 +255,47 @@ While (cAliasTrb)->(!Eof())
 	cjson +='			}]}}                                                 '
 	
 	oJson:fromJson(cjson )
+
+	//Abre transa��o e atualiza os campos antes de enviar o status
+	BEGIN TRANSACTION
+
+	U_MFCONOUT('Atualizando status ' + alltrim((cAliasTrb)->STATUS) + ' do pedido ' +; 
+	 (cAliasTrb)->C7_FILIAL + '/' + (cAliasTrb)->C7_NUM + ' - ' + strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...')
+
+	SD1->(Dbgoto((cAliasTrb)->D1REC))
+	Reclock("SD1",.F.)
+
+	If ALLTRIM((cAliasTrb)->STATUS) == 'NOTA'
+		SD1->D1_ZPEDME := 'S'
+	ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'ELIM. RESIDUO'
+		SD1->D1_ZPEDME := 'R' 
+	ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'NOTA_CANCELADA'
+		SD1->D1_ZPEDME := 'X'   
+	ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'CANCEL. DEV'
+		SD1->D1_ZPEDME := 'W'   
+	Else	
+		SD1->D1_ZMEDEV :=   + SD1->D1_QTDEDEV
+	EndIf
+			
+	SD1->(Msunlock())	
 	
+	// Atualizando SC7 
+
+	SC7->(Dbgoto((cAliasTrb)->C7REC))
+	Reclock("SC7",.F.)
+	SC7->C7_ZRECME := (cAliasTrb)->C7_QUJE
+	SC7->(Msunlock())
+	
+	//Envia o Status
 	
 	cTimeIni := time()
+
+	U_MFCONOUT('Enviando status ' + alltrim((cAliasTrb)->STATUS) + ' do pedido ' +; 
+	 (cAliasTrb)->C7_FILIAL + '/' + (cAliasTrb)->C7_NUM + ' - ' + strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...')
 	
 	if !empty( cJson )
 		xPostRet := httpQuote( cUrl /*<cUrl>*/, "POST" /*<cMethod>*/, /*[cGETParms]*/, cJson/*[cPOSTParms]*/, nTimeOut /*[nTimeOut]*/, aHeadOut /*[aHeadStr]*/, @cHeadRet /*[@cHeaderRet]*/ )
 	endif
-	
 	
 	nStatuHttp	:= 0
 	nStatuHttp	:= httpGetStatus()
@@ -278,99 +303,28 @@ While (cAliasTrb)->(!Eof())
 	cTimeFin	:= time()
 	cTimeProc	:= elapTime( cTimeIni, cTimeFin )
 	
+	conout(" [MGFWSC47] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 		)
+	conout(" [MGFWSC47] cJson........................: " + allTrim( cJson ) 					)
+	conout(" [MGFWSC47] Retorno......................: " + allTrim( xPostRet ) 					)
 	
-	conout(" [MGFWSS10] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 		)
-	conout(" [MGFWSS10] cJson........................: " + allTrim( cJson ) 					)
-	conout(" [MGFWSS10] Retorno......................: " + allTrim( xPostRet ) 					)
+	//Se falhou cancela transa��o para tentar novamente
+	if !(nStatuHttp >= 200 .and. nStatuHttp <= 299)
 	
-	if nStatuHttp >= 200 .and. nStatuHttp <= 299
-	  
-	ndevol :=  (cAliasTrb)->D1_QTDEDEV 
-	
-	cQ := "UPDATE "
-	
-	
-	cQ += RetSqlName("SD1")+" "
-	
-	
-	cQ += "SET "
+		U_MFCONOUT('Falhou envio de status ' + alltrim((cAliasTrb)->STATUS) + ' do pedido ' +; 
+	 	(cAliasTrb)->C7_FILIAL + '/' + (cAliasTrb)->C7_NUM + ' - ' + strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...')
 
-		
-		If ALLTRIM((cAliasTrb)->STATUS) == 'NOTA'
-			
-			cQ += "D1_ZPEDME = 'S'"
-			
-					
-		ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'ELIM. RESIDUO'
-			
-			cQ += "D1_ZPEDME = 'R' "
-
-		ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'NOTA_CANCELADA'
-			
-			cQ += "D1_ZPEDME = 'X'   "
-
-		ElseIf ALLTRIM((cAliasTrb)->STATUS) == 'CANCEL. DEV'
-			
-			cQ += "D1_ZPEDME = 'W'   "
-		Else	
-			cQ += " D1_ZMEDEV =  '" + STR(ndevol) + "  "
-		
-		
-		EndIf
-			
-		
-		cQ += " WHERE D1_FILIAL  = '" + alltrim((cAliasTrb)->C7_FILIAL)   + "'  "
-		cQ += " AND   D1_FORNECE  = '" + alltrim((cAliasTrb)->C7_FORNECE)  + "'  "
-		cQ += " AND   D1_LOJA     = '" + alltrim((cAliasTrb)->C7_LOJA)     + "'  "
-		cQ += " AND   D1_PEDIDO   = '" + alltrim((cAliasTrb)->C7_NUM)      + "'  "
-		cQ += " AND   D1_COD      = '" + alltrim((cAliasTrb)->C7_PRODUTO)  + "'  "
-		cQ += " AND   D1_ITEM     = '" + alltrim((cAliasTrb)->C7_ITEM)     + "'  "
-		
-		
-		nRet := tcSqlExec(cQ)
-	endif
-	If nRet == 0
-		conout ("Atualizado o Status da Nota com sucesso ... ")
+		Disarmtransaction()
 	Else
-		conout ("Não atualizado o Status da Nota")
-		
-		
-	EndIf
-	
 
-// Atualizando SC7 
+		U_MFCONOUT('Completou envio de status ' + alltrim((cAliasTrb)->STATUS) + ' do pedido ' +; 
+		 (cAliasTrb)->C7_FILIAL + '/' + (cAliasTrb)->C7_NUM + ' - ' + strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...')
+	
+	Endif
 
-If (nStatuHttp >= 200 .and. nStatuHttp <= 299)            //.AND. ;
-   //ALLTRIM((cAliasTrb)->STATUS)      == 'NOTA_CANCELADA'                      
-  
+	END TRANSACTION
 
-	nRet := 0
-	
-	cQ := "UPDATE "
-	cQ += RetSqlName("SC7")+" "
-	cQ += "SET  C7_ZRECME = (cAliasTrb)->C7_C7_QUJE  " 
-	
-	cQ += " WHERE C7_FILIAL    = '" + alltrim((cAliasTrb)->C7_FILIAL)   + "'  "
-	cQ += " AND   C7_FORNECE   = '" + alltrim((cAliasTrb)->C7_FORNECE)  + "'  "
-	cQ += " AND   C7_LOJA      = '" + alltrim((cAliasTrb)->C7_LOJA)     + "'  "
-	cQ += " AND   C7_NUM       = '" + alltrim((cAliasTrb)->C7_NUM)      + "'  "
-	cQ += " AND   C7_PRODUTO   = '" + alltrim((cAliasTrb)->C7_PRODUTO)  + "'  "
-	cQ += " AND   C7_ITEM      = '" + alltrim((cAliasTrb)->C7_ITEM)     + "'  "
-				
-	nRet := tcSqlExec(cQ)
-
-	If nRet == 0
-		conout ("Atualizado o Status da Nota devolvida com sucesso ... ")
-	Else
-		conout ("Não atualizado o Status da Nota devolvida")
-			
-	EndIf
-	
-	
-Endif
-	
+	//Grava log sempre
 	Reclock("ZF1",.T.)
-	
 	ZF1->ZF1_ID     :=  GETSX8NUM("ZF1","ZF1_ID")
 	ZF1->ZF1_FILIAL :=	(cAliasTrb)->D1_FILIAL
 	ZF1->ZF1_INTERF	:=	"ET"
@@ -383,17 +337,15 @@ Endif
 	ZF1->ZF1_JSON	:=	cJson
 	ZF1->ZF1_HORA	:=	time()
 	ZF1->ZF1_TOKEN	:=	(cAliasTrb)->STATUS
-	
 	Msunlock ()
 	
-	
 	freeObj( oJson )
-	
 	(cAliasTrb)->(dbSkip())
-EndDo
-If cCont = 0
-	conout ("Não há notas a serem Integradas ... ")
-Endif
-(cAliasTrb)->(dbCloseArea())
+	_nni++
 
-	Return()
+EndDo
+
+(cAliasTrb)->(dbCloseArea())
+U_MFCONOUT('Completou integracao de envio de entregas e devolucoes...')
+
+Return

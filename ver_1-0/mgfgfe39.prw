@@ -39,7 +39,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFGFE39 DESCRIPTION "Integracao Protheus x Multiembarcador - addCarga" NameSpace "http://totvs.com.br/MGFGFE39.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos par�metros de entrada
 	WSDATA MGFGFE39RequiCarga AS MGFGFE39ReqCarga
 	// Retorno (array)
 	WSDATA MGFGFE39RetornaCarga  AS MGFGFE39RetAddCarga
@@ -692,7 +692,7 @@ method New() class Destinatario
 return
 
 /*
-Endereco
+Endere�o
 */
 class Endereco
 
@@ -1010,7 +1010,7 @@ method New() class Veiculo
 return
 
 /*
-Endereco
+Endere�o
 */
 class Reboque
 

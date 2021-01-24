@@ -18,232 +18,190 @@ Integracao Protheus-ME, para envio de Fornecedor
 
 User function MGFWSC46()
 
-	RPCSetType( 3 )
+Local cQ 		:= ""
+Local cAliasTrb := ""
+Local cUrl 		:= " "
+Local cHeadRet 	:= ""
+Local aHeadOut	:= {}
+Local cJson		:= ""
+Local oJson		:= Nil
+Local cTimeIni	:= ""
+Local cTimeProc	:= ""
+Local xPostRet	:= Nil
+Local nStatuHttp	:= 0
+local nTimeOut		:= 120
+Local nAt           := 0
+Local nvezes        := 0
+local cTimeFin		:= ""
 
-	PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010001"
+cAliasTrb := GetNextAlias()
 
-	conout('[MGFWSC46] Iniciada Threads para a empresa - 01 - ' + dToC(dDataBase) + " - " + time())
+U_MFCONOUT('Iniciando integracao de fornecedores para o Mercado Eletronico...') 
 
-	RUNINTEG46()
+cUrl := Alltrim(GetMv("MGF_WSC46")) 
+cAliasTrb := GetNextAlias()
 
-	RESET ENVIRONMENT
-return
+U_MFCONOUT('Carregando fornecedores...') 
 
+cQ := " SELECT A2_COD,A2_LOJA,A2_NOME,A2_CONTATO,A2_END,A2_MUN,A2_BAIRRO,A2_EST,A2_TIPO,A2_CGC,A2_TEL,A2_EMAIL,"
+cQ += " A2_MSBLQL,A2_ZPEDME,A2_DDD,A2_ZINTME,A2_PAIS,A2_CEP,A2_FILIAL, R_E_C_N_O_ AS SA2REC "
+cQ += " FROM "+RetSqlName("SA2")+" SA2 "
+cQ += " WHERE D_E_L_E_T_ = ' ' AND A2_ZINTME = 'S' AND A2_EMAIL <> ' ' AND  "
+cQ += " ( A2_ZPEDME = ' ' OR A2_ZPEDME = 'A' OR A2_ZPEDME = 'D' )
 
-Static Function RUNINTEG46()
+if Getmv("MGF_WSC46A") == "F"
+	cQ += " AND A2_EST <> 'EX' "
+Endif
 
-	Local cQ 		:= ""
-	Local cAliasTrb := GetNextAlias()
+cQ := ChangeQuery(cQ)
+dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.F.,.F.)
+aadd( aHeadOut, 'Content-Type: application/json' )
+
+_ntot := 0
+_nni := 1
+Do While (cAliasTrb)->(!Eof())
+	_ntot++
+	(cAliasTrb)->(Dbskip())
+Enddo
+
+(cAliasTrb)->(Dbgotop())
 	
-	Local cUrl 		:= " "//Alltrim(GetMv("MGF_MEFORN"))//"https://spdwvapl203:8059/api/fornecedor"//
-	Local cHeadRet 	:= ""
-	Local aHeadOut	:= {}
+Do While (cAliasTrb)->(!Eof())
 
-	Local cJson		:= ""
-	Local oJson		:= Nil
+	U_MFCONOUT('Enviando fornecedor ' + (cAliasTrb)->A2_COD + '/' + (cAliasTrb)->A2_LOJA + ' - ' ;
+					+strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...') 
 
-	Local cTimeIni	:= ""
-	Local cTimeProc	:= ""
+	cjson := " "
+	oJson						  := JsonObject():new()
+	cjson +='   {                                                                       '
+	cjson +=' "MSGFORNECEDOR": {                                                        '
+	cjson +='  "ID": "' + (cAliasTrb)->A2_COD + (cAliasTrb)->A2_LOJA + '"       ,'
+	cjson +=' "FORNECEDORCLIENTE": "' + (cAliasTrb)->A2_COD + (cAliasTrb)->A2_LOJA + '"  ,' 
+	cjson +=' "NOME":  "' + Substr(alltrim((cAliasTrb)->A2_NOME),1,20) + '"            ,'
+	cjson +=' "RAZAO": "' + Substr(alltrim((cAliasTrb)->A2_NOME),1,20) + '"            ,'
+	cjson +=' "CONTATO": "' + alltrim((cAliasTrb)->A2_CONTATO) + '"                    ,'
+	cjson +=' "ENDERECO":  "' + alltrim((cAliasTrb)->A2_END) + '"                      ,'
+	cjson +='  "CIDADE": "' + alltrim((cAliasTrb)->A2_MUN) + '"                        ,'
+	cjson +=' "REGIAO": "' + alltrim((cAliasTrb)->A2_BAIRRO) + '"                      ,'
+	cjson +=' "ESTADO": "' + alltrim((cAliasTrb)->A2_EST) + '"                         ,'
+	cjson +=' "PAIS": "' + POSICIONE("SYA", 1, xFilial("SYA") + alltrim((cAliasTrb)->A2_PAIS) , "YA_ZSIGLA") + '"                                                             ,' // VERIFICAR OUTRO PAIS
+	cjson +=' "CEP": "' + alltrim((cAliasTrb)->A2_CEP) + '"                            ,'
+	cjson +='  "TELEFONE": "' + alltrim((cAliasTrb)->A2_DDD) + alltrim((cAliasTrb)->A2_TEL) + '"                      ,'
 
-	Local xPostRet	:= Nil
-	Local nStatuHttp	:= 0
-	local nTimeOut		:= 120
+	nAt := AT( ",",  alltrim((cAliasTrb)->A2_EMAIL))
 
-	Local nAt           := 0
+	If nAt > 0
 
-	Local nvezes        := 0
-	local cTimeFin		:= ""
+		cjson +='  "EMAIL": "' + Substring(alltrim((cAliasTrb)->A2_EMAIL),1,nat - 1 ) + '"  ,'
+
+	Else
+
+		cjson +='  "EMAIL": "' + alltrim((cAliasTrb)->A2_EMAIL) + '"  ,'
+
+	Endif
+
+	nAt := AT( ",", alltrim((cAliasTrb)->A2_EMAIL)) 
 
 
-	cUrl := Alltrim(GetMv("MGF_WSC46")) 
-	// INCLUSAO
-	cQ := " SELECT A2_COD,A2_LOJA,A2_NOME,A2_CONTATO,A2_END,A2_MUN,A2_BAIRRO,A2_EST,A2_TIPO,A2_CGC,A2_TEL,A2_EMAIL,A2_MSBLQL,A2_ZPEDME,A2_DDD,A2_ZINTME,A2_PAIS,A2_CEP,A2_FILIAL "
-	cQ += " FROM "+RetSqlName("SA2")+" SA2 "
-	cQ += " WHERE D_E_L_E_T_ = ' ' AND A2_ZINTME = 'S' AND A2_ZPEDME = ' '  AND A2_EMAIL <> ' '  "
- 	
- 	If Getmv("MGF_WSC46A") == "F"
- 		cQ += " AND A2_EST <> 'EX' "
- 	Endif
-	
-	cQ += "  UNION ALL "
-	//ALTERCAO
-	cQ += " SELECT A2_COD,A2_LOJA,A2_NOME,A2_CONTATO,A2_END,A2_MUN,A2_BAIRRO,A2_EST,A2_TIPO,A2_CGC,A2_TEL,A2_EMAIL,A2_MSBLQL,A2_ZPEDME,A2_DDD,A2_ZINTME,A2_PAIS,A2_CEP,A2_FILIAL "
-	cQ += " FROM "+RetSqlName("SA2")+" SA2 "
-	cQ += " WHERE A2_ZPEDME = 'A' AND D_E_L_E_T_ = ' ' AND A2_EMAIL <> ' ' AND A2_ZINTME = 'S'  "
+	If nAt > 0
 
-	If Getmv("MGF_WSC46A") == "F"
- 		cQ += " AND A2_EST <> 'EX' "
- 	Endif
+		cjson +='  "EMAILSADICIONAIS": "' + Substring(alltrim((cAliasTrb)->A2_EMAIL),nat + 1,LEN(alltrim((cAliasTrb)->A2_EMAIL))) + '"  ,'
 
-	cQ += " UNION ALL "
-	// EXCLUSAO
-	cQ += " SELECT A2_COD,A2_LOJA,A2_NOME,A2_CONTATO,A2_END,A2_MUN,A2_BAIRRO,A2_EST,A2_TIPO,A2_CGC,A2_TEL,A2_EMAIL,A2_MSBLQL,A2_ZPEDME,A2_DDD,A2_ZINTME,A2_PAIS,A2_CEP,A2_FILIAL"
-	cQ += " FROM "+RetSqlName("SA2")+" SA2 "
-	cQ += "WHERE A2_ZPEDME = 'D' AND D_E_L_E_T_ = '*' AND A2_EMAIL <> ' ' AND A2_ZINTME = 'S' "
+	Else
 
-	If Getmv("MGF_WSC46A") = "F"
- 		cQ += " AND A2_EST <> 'EX' "
- 	Endif
+		cjson +=' "EMAILSADICIONAIS": " ",'
 
-	cQ := ChangeQuery(cQ)
-	conout("Query"+cq)
-	dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.F.,.F.)
-	aadd( aHeadOut, 'Content-Type: application/json' )
+	Endif
 
-	conout(" [MGFWSC46] * * * * * Status da integracao - Fornecedor * * * * *"								)
-	
-	While (cAliasTrb)->(!Eof())
-		cjson := " "
+	If (cAliasTrb)->A2_PAIS == "105"  // Brasil
+			
+		cjson +=' "CNPJ": "' + alltrim((cAliasTrb)->A2_CGC) + '"                         ,'
+		cjson +=' "INTERNACIONAL": "0"                       ,'
 
-		oJson						  := JsonObject():new()
+	ElseIF (cAliasTrb)->A2_PAIS == "249"  // EUA
+			
+		cjson +=' "CNPJ": " "                   ,'
+		cjson +=' "INTERNACIONAL": "1"                       ,'
+
+	Else // diferente de EUA e Brasil
+			
+		cjson +=' "CNPJ": " "                    ,'
+		cjson +=' "INTERNACIONAL": "2"                       ,'
+
+	Endif
 		
-		cjson +='   {                                                                       '
-		cjson +=' "MSGFORNECEDOR": {                                                        '
-		cjson +='  "ID": "' + (cAliasTrb)->A2_COD + (cAliasTrb)->A2_LOJA + '"       ,'
-		cjson +=' "FORNECEDORCLIENTE": "' + (cAliasTrb)->A2_COD + (cAliasTrb)->A2_LOJA + '"  ,' 
-		cjson +=' "NOME":  "' + Substr(alltrim((cAliasTrb)->A2_NOME),1,20) + '"            ,'
-		cjson +=' "RAZAO": "' + Substr(alltrim((cAliasTrb)->A2_NOME),1,20) + '"            ,'
-		cjson +=' "CONTATO": "' + alltrim((cAliasTrb)->A2_CONTATO) + '"                    ,'
-		cjson +=' "ENDERECO":  "' + alltrim((cAliasTrb)->A2_END) + '"                      ,'
-		cjson +='  "CIDADE": "' + alltrim((cAliasTrb)->A2_MUN) + '"                        ,'
-		cjson +=' "REGIAO": "' + alltrim((cAliasTrb)->A2_BAIRRO) + '"                      ,'
-		cjson +=' "ESTADO": "' + alltrim((cAliasTrb)->A2_EST) + '"                         ,'
+	cjson +=' "IE": ""                                                                 ,'
 
-		cjson +=' "PAIS": "' + POSICIONE("SYA", 1, xFilial("SYA") + alltrim((cAliasTrb)->A2_PAIS) , "YA_ZSIGLA") + '"                                                             ,' // VERIFICAR OUTRO PAIS
+	If alltrim((cAliasTrb)->A2_MSBLQL) = '1'
+		cjson +=' "BLOQUEADO": "S"                                                          ,'
+	Else
+		cjson +=' "BLOQUEADO": "N"                                                          ,'
+	Endif
 
-		cjson +=' "CEP": "' + alltrim((cAliasTrb)->A2_CEP) + '"                            ,'
-		cjson +='  "TELEFONE": "' + alltrim((cAliasTrb)->A2_DDD) + alltrim((cAliasTrb)->A2_TEL) + '"                      ,'
+	If alltrim((cAliasTrb)->A2_ZPEDME) = "A" .OR. alltrim((cAliasTrb)->A2_ZPEDME) = "S"
+		cjson +=' "TIPOALTERACAO": "S"                                                       '
+	Elseif alltrim((cAliasTrb)->A2_ZINTME) = "S"
+		cjson +=' "TIPOALTERACAO": "N"                                                       '
+	Else
+		cjson +=' "TIPOALTERACAO": " "                                                       '
+	Endif
 
-		nAt := AT( ",",  alltrim((cAliasTrb)->A2_EMAIL))
+	cjson +=' }}'
 
-		If nAt > 0
+	oJson:fromJson(cjson )
 
-			cjson +='  "EMAIL": "' + Substring(alltrim((cAliasTrb)->A2_EMAIL),1,nat - 1 ) + '"  ,'
+	cTimeIni := time()
 
+	if !empty( cJson )
+		xPostRet := httpQuote( cUrl /*<cUrl>*/, "POST" /*<cMethod>*/, /*[cGETParms]*/, cJson/*[cPOSTParms]*/, nTimeOut /*[nTimeOut]*/, aHeadOut /*[aHeadStr]*/, @cHeadRet /*[@cHeaderRet]*/ )
+	endif
 
-		Else
-
-			cjson +='  "EMAIL": "' + alltrim((cAliasTrb)->A2_EMAIL) + '"  ,'
-
-
-		Endif
-
-		nAt := AT( ",", alltrim((cAliasTrb)->A2_EMAIL)) 
-
-
-		If nAt > 0
-
-			cjson +='  "EMAILSADICIONAIS": "' + Substring(alltrim((cAliasTrb)->A2_EMAIL),nat + 1,LEN(alltrim((cAliasTrb)->A2_EMAIL))) + '"  ,'
-
-
-		Else
-
-			cjson +=' "EMAILSADICIONAIS": " ",'
-
-		Endif
-		// hISTORY_1
-		If (cAliasTrb)->A2_PAIS == "105"  // Brasil
-			
-			cjson +=' "CNPJ": "' + alltrim((cAliasTrb)->A2_CGC) + '"                         ,'
-			cjson +=' "INTERNACIONAL": "0"                       ,'
-
-		ElseIF (cAliasTrb)->A2_PAIS == "249"  // EUA
-			
-			cjson +=' "CNPJ": " "                   ,'
-			cjson +=' "INTERNACIONAL": "1"                       ,'
-		Else // diferente de EUA e Brasil
-			
-			cjson +=' "CNPJ": " "                    ,'
-			cjson +=' "INTERNACIONAL": "2"                       ,'
-		Endif
+	nStatuHttp	:= 0
+	nStatuHttp	:= httpGetStatus()
 		
-		cjson +=' "IE": ""                                                                 ,'
+	cTimeFin	:= time()
 
-		If alltrim((cAliasTrb)->A2_MSBLQL) = '1'
-			cjson +=' "BLOQUEADO": "S"                                                          ,'
-		Else
-			cjson +=' "BLOQUEADO": "N"                                                          ,'
-		Endif
+	If AllTrim( str( nStatuHttp ) ) == '200' 
 
-		If alltrim((cAliasTrb)->A2_ZPEDME) = "A"
-			cjson +=' "TIPOALTERACAO": "S"                                                       '
-		Elseif alltrim((cAliasTrb)->A2_ZINTME) = "S"
-			cjson +=' "TIPOALTERACAO": "N"                                                       '
-		Else
-			cjson +=' "TIPOALTERACAO": " "                                                       '
+		SA2->(Dbgoto((cAliasTrb)->SA2REC))		
+		Reclock("SA2",.F.)
+		SA2->A2_ZPEDME := 'S'
+		SA2->(Msunlock())
 
-		Endif
-
-		cjson +=' }}'
-
-		oJson:fromJson(cjson )
-
-		conout(cJson)
-		cTimeIni := time()
-
-		if !empty( cJson )
-		conout("post . "+(cAliasTrb)->A2_COD)
-			xPostRet := httpQuote( cUrl /*<cUrl>*/, "POST" /*<cMethod>*/, /*[cGETParms]*/, cJson/*[cPOSTParms]*/, nTimeOut /*[nTimeOut]*/, aHeadOut /*[aHeadStr]*/, @cHeadRet /*[@cHeaderRet]*/ )
-		endif
+		U_MFCONOUT('Completou envio do fornecedor ' + (cAliasTrb)->A2_COD + '/' + (cAliasTrb)->A2_LOJA + ' - ' ;
+					+strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...') 
 	
+	Else
 
-		nStatuHttp	:= 0
-		nStatuHttp	:= httpGetStatus()
-		
-		If nStatuHttp = 10061
-			conout ("API FORA")
-		Endif
-		cTimeFin	:= time()
+		U_MFCONOUT('Completou envio do fornecedor ' + (cAliasTrb)->A2_COD + '/' + (cAliasTrb)->A2_LOJA + ' - ' ;
+					+strzero(_nni,6) + ' de ' + strzero(_ntot,6) + '...') 
 
+	Endif
 
+	Reclock("ZF1",.T.)
 
-		If AllTrim( str( nStatuHttp ) ) == '200' 
-			
-			cQ := "UPDATE "
-			cQ += RetSqlName("SA2")+" "
-			cQ += "SET "
-			cQ += " A2_ZPEDME = 'S' "
-			cQ += " WHERE A2_COD =  '" + alltrim((cAliasTrb)->A2_COD) + "' AND A2_LOJA = '" + alltrim((cAliasTrb)->A2_LOJA) + "'   "
+	ZF1->ZF1_FILIAL :=	alltrim((cAliasTrb)->A2_FILIAL)  
+	ZF1->ZF1_INTERF	:=	"FR"
+	ZF1->ZF1_DATA	:=	dDataBase  
+	ZF1->ZF1_PREPED	:=	" "
+	ZF1->ZF1_PEDIDO	:=	" "
+	ZF1->ZF1_NOTA	:=	alltrim((cAliasTrb)->A2_COD)  
+	ZF1->ZF1_HTTP	:=	allTrim( str( nStatuHttp ) )
+	ZF1->ZF1_ERRO	:=	Alltrim(xPostRet)
+	ZF1->ZF1_JSON	:=	cJson
+	ZF1->ZF1_HORA	:=	time()
+	ZF1->ZF1_TOKEN	:=	" "
 
-			nRet := tcSqlExec(cQ)
-			
+	Msunlock ()
 
-			If nRet == 0
-				conout("Update"+alltrim((cAliasTrb)->A2_COD + alltrim((cAliasTrb)->A2_LOJA)))
-			Else
-				Conout("Problemas na gravacao dos campos do cadastro do ME, para envio ao ME.")
+	freeObj( oJson )
 
-			EndIf
-		Else
-			CONOUT ("nao atualizado FORNECEDOR"+alltrim((cAliasTrb)->A2_COD + alltrim((cAliasTrb)->A2_LOJA)))
-			
+	(cAliasTrb)->(dbSkip())
+	_nni++
 
+EndDo
 
-		Endif
+(cAliasTrb)->(dbCloseArea())
+U_MFCONOUT("Completou envio de fornecedores para o Mercado Eletronico!")
 
-
-		Reclock("ZF1",.T.)
-
-		ZF1->ZF1_FILIAL :=	alltrim((cAliasTrb)->A2_FILIAL)  
-		ZF1->ZF1_INTERF	:=	"FR"
-		ZF1->ZF1_DATA	:=	dDataBase  
-		ZF1->ZF1_PREPED	:=	" "
-		ZF1->ZF1_PEDIDO	:=	" "
-		ZF1->ZF1_NOTA	:=	alltrim((cAliasTrb)->A2_COD)  
-		ZF1->ZF1_HTTP	:=	allTrim( str( nStatuHttp ) )
-		ZF1->ZF1_ERRO	:=	Alltrim(xPostRet)
-		ZF1->ZF1_JSON	:=	cJson
-		ZF1->ZF1_HORA	:=	time()
-		ZF1->ZF1_TOKEN	:=	" "
-
-		Msunlock ()
-
-
-		freeObj( oJson )
-
-		(cAliasTrb)->(dbSkip())
-	EndDo
-
-	(cAliasTrb)->(dbCloseArea())
-
-Return()
+Return

@@ -3,7 +3,7 @@
 #INCLUDE "TOPCONN.CH"
 
 /*/{Protheus.doc} MGFEEC33
-//TODO Distribuição de EXP
+//TODO DistribuiÃ§Ã£o de EXP
 @author leonardo.kume
 @since 05/10/2017
 @version 6
@@ -31,7 +31,7 @@ User function MGFEEC33()
 	oMBrowse:SetAlias("ZB8")
 	oMBrowse:SetDescription('EXP')
 	oMBrowse:SetFieldMark( 'ZB8_MARK' )
-	oMBrowse:AddLegend("ZB8_MOTEXP = '1' ","YELLOW" ,'Aguardando Distribuição')
+	oMBrowse:AddLegend("ZB8_MOTEXP = '1' ","YELLOW" ,'Aguardando DistribuiÃ§Ã£o')
 	oMBrowse:AddLegend("ZB8_MOTEXP = '5' ","WHITE"  ,'EXP Parcialmente Distribuida')
 	oMBrowse:AddLegend("ZB8_MOTEXP = '6' ","GRAY"   ,'EXP Distribuida')
 	oMBrowse:AddLegend("ZB8_MOTEXP = '4' ","BLUE"   ,'Pedido de Venda Parcialmente Gerado')
@@ -98,7 +98,7 @@ Static function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('XMGFEEC33', /*bPreValidacao*/, /*bPosValidacao*/{|oModel|xVldMdl(oModel)}, {|oModel|xCommit(oModel)}/*bCommit*/, /*bCancel*/)
 
-	// Adiciona ao modelo uma estrutura de formulário de edição por campo
+	// Adiciona ao modelo uma estrutura de formulÃ¡rio de ediÃ§Ã£o por campo
 	oModel:AddFields('ZB8MASTER', /*cOwner*/, oStruZB8, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/)
 	oModel:AddGrid("ZB9DETAIL","ZB8MASTER",oStruZB9,/*bLinePreValid*/,/*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/)
 
@@ -107,7 +107,7 @@ Static function ModelDef()
 	// Adiciona a descricao do Componente do Modelo de Dados
 	oModel:GetModel( 'ZB8MASTER' ):SetDescription( 'EXP' )
 
-	//Adiciona chave Primária
+	//Adiciona chave PrimÃ¡ria
 	oModel:SetPrimaryKey({"ZB8_FILIAL","ZB8_EXP"})
 
 	oModel:AddCalc("EEC24CALC", "ZB8MASTER", "ZB9DETAIL", "ZB9_PRCINC", "ZB9__TOTSD", "SUM", {||.T.}, ,"Total Itens")
@@ -115,7 +115,7 @@ Static function ModelDef()
 Return oModel
 
 /*/{Protheus.doc} ViewDef
-//TODO Descrição auto-gerada.
+//TODO DescriÃ§Ã£o auto-gerada.
 @author leonardo.kume
 @since 05/10/2017
 @version 6
@@ -164,8 +164,8 @@ Static function ViewDef()
 	oView:AddGrid( 'VIEW_ZB9' , oStrZB9, 'ZB9DETAIL' )
 	oView:AddField( 'VIEW_CALC', oCalc1, 'EEC24CALC' )
 
-	oView:CreateHorizontalBox( 'SUPERIOR' , 40 )
-	oView:CreateHorizontalBox( 'INFERIOR' , 50 )
+	oView:CreateHorizontalBox( 'SUPERIOR' , 60 )
+	oView:CreateHorizontalBox( 'INFERIOR' , 30 )
 	oView:CreateHorizontalBox( 'CALC' , 10 )
 
 	oView:SetOwnerView( 'VIEW_ZB8', 'SUPERIOR' )
@@ -178,7 +178,7 @@ return oView
 
 
 /*/{Protheus.doc} M33Distr
-//TODO Distribuição de Registros
+//TODO DistribuiÃ§Ã£o de Registros
 @author leonardo.kume
 @since 05/10/2017
 @version 6
@@ -198,6 +198,77 @@ User Function M33Distr()
 	ZB9->(DbSetOrder(2))
 
 	If Pergunte(cPerg,.t.)
+		
+		// RTASK0011709 - Inicio
+        _cSemana := RETSEM(dDataBase)
+        _cYear   := Year2Str(dDataBase)
+                
+        IF 		MV_PAR04 == 1
+            	_cAnoSem 	:= '2020'
+            	_cSemdoAno  := SUBS(RETSEM(CTOD('31/12/'+_cAnoSem+"'") ),8,2)
+        ELSEIF 	MV_PAR04 == 2
+            	_cAnoSem 	:= '2021'
+            	_cSemdoAno  := SUBS(RETSEM(CTOD('31/12/'+_cAnoSem+"'") ),8,2)
+        ELSEIF 	MV_PAR04 == 3
+            	_cAnoSem 	:= '2022'
+            	_cSemdoAno  := SUBS(RETSEM(CTOD('31/12/'+_cAnoSem+"'") ),8,2)
+        ELSEIF 	MV_PAR04 == 4                     
+            	_cAnoSem 	:= '2023
+            	_cSemdoAno  := SUBS(RETSEM(CTOD('31/12/'+_cAnoSem+"'") ),8,2)
+        ELSEIF 	MV_PAR04 == 5
+            	_cAnoSem 	:= '2024'
+            	_cSemdoAno  := SUBS(RETSEM(CTOD('31/12/'+_cAnoSem+"'") ),8,2)
+        ENDIF
+                               
+        _dDiaIniAno := CTOD('01/01/'+_cAnoSem+"'")
+                               
+		IF      DOW(_dDiaIniAno) == 1     //DOMINGO
+                _dDiaIniAno := _dDiaIniAno
+        ELSEIF 	DOW(_dDiaIniAno) == 2 //SEGUNDA
+               	_dDiaIniAno := _dDiaIniAno - 1
+        ELSEIF 	DOW(_dDiaIniAno) == 3 //TERÃ‡A
+               	_dDiaIniAno := _dDiaIniAno - 2
+        ELSEIF 	DOW(_dDiaIniAno) == 4 //QUARTA
+               	_dDiaIniAno := _dDiaIniAno - 3
+        ELSEIF 	DOW(_dDiaIniAno) == 5 //QUINTA
+               	_dDiaIniAno := _dDiaIniAno - 4
+        ELSEIF 	DOW(_dDiaIniAno) == 6 //SEXTA
+               	_dDiaIniAno := _dDiaIniAno- 5 
+        ELSEIF 	DOW(_dDiaIniAno) == 7 //SABADO
+               	_dDiaIniAno := _dDiaIniAno - 6
+        ENDIF
+                               
+        If MV_PAR03 <= Subs(_cSemana,8,2) .And. _cAnoSem <= Subs(_cSemana,16,4) 
+            If Subs(_cSemana,8,2)!=alltrim(str(_cSemdoAno))  //Se semana atual for igual ao total de semanas no ano
+                Help(NIL, NIL, "Validacao Semana WEEK", NIL, "Semana WEEK informada [ "+MV_PAR03+" ] esta menor ou igual a semana em vigor. Hoje e dia "+DTOC(ddatabase)+" que corresponde a semana "+subs(_cSemana,8,2)+"/"+subs(_csemana,16,4), 1, 0, NIL, NIL, NIL, NIL, NIL, {"Na presente data sera aceito informar neste campo, a semana acima de "+subs(_cSemana,8,2)+"/"+subs(_cSemana,16,4)+"." })
+                lRet := .F.
+                Return lRet
+            EndIf
+        EndIf
+/*
+        If ( MV_PAR03 > Subs(_cSemana,8,2)) .And.  _cAnoSem > Subs(_cSemana,16,4) 
+            Help(NIL, NIL, "Validacao do Ano Semana WEEK", NIL, "Ano da Semana WEEK informada esta maior que o ano da semana em vigor.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"O ano deve ser o mesmo da presente data."})
+            lRet := .F.
+            Return lRet
+        EndIf
+*/                           
+        If MV_PAR03 > ALLTRIM(_cSemdoAno)
+            Help(NIL, NIL, "Validacao Semana Maxima WEEK", NIL, "Semana WEEK informada [ "+MV_PAR03+" ] esta maior do que o valor maximo permitido [ "+ALLTRIM(STR(_cSemdoAno))+" ]", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Informe uma semana valida." })
+            lRet := .F.
+            Return lRet
+        EndIf
+                               
+        If _cAnoSem < Subs(_cSemana,16,4) 
+            Help(NIL, NIL, "Validacao do Ano Semana WEEK", NIL, "Ano da Semana WEEK informada esta maior que o ano da semana em vigor.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"O ano deve ser o mesmo da presente data."})
+            lRet := .F.
+            Return lRet
+        Endif
+                               
+        _dDiaIniSem := _dDiaIniAno + ( 7 * (VAL(MV_PAR03)-1) )
+        _dDtEstuf   := _dDiaIniSem + 5  // resultado final
+
+		// RTASK0011709 - Fim
+	
 		ZB8->(DbGoTop())
 		While !ZB8->(Eof())
 			If ZB8->ZB8_MARK == oMBrowse:Mark()
@@ -216,23 +287,28 @@ User Function M33Distr()
 					EndDo
 				EndIf
 				cExps += "<LI>"+ZB8->(ZB8_EXP+"-"+ZB8_ANOEXP+IIF(!Empty(alltrim(ZB8_SUBEXP)),"/"+ZB8_SUBEXP,""))
-				cExps +=  IIF(lPedido,"(Somente para itens que não tem pedido gerado)","")
+				cExps +=  IIF(lPedido,"(Somente para itens que nÃ£o tem pedido gerado)","")
 				cExps +=  CRLF
 				RecLock("ZB8",.F.)
-					ZB8->ZB8_FILVEN := Mv_Par01
-					ZB8->ZB8_MARK   := " "
-					ZB8->ZB8_NOMFIL := U_fVldNfil(Mv_Par01) // Paulo da Mata - 02/07/2020 - RTASK0011075 - Salva o nome da filial
-					If !lPedido
-						ZB8->ZB8_MOTEXP := '6'
-					EndIf
+				ZB8->ZB8_FILVEN := Mv_Par01
+				//RTASK0011709-INICIO
+				ZB8->ZB8_ZDTEST := _dDtEstuf  
+				ZB8->ZB8_XWEEKP := MV_PAR03
+				ZB8->ZB8_XANOWE := _cAnoSem
+				//RTASK0011709-FIM
+				ZB8->ZB8_MARK   := " "
+				ZB8->ZB8_NOMFIL := U_fVldNfil(Mv_Par01) // Paulo da Mata - 02/07/2020 - RTASK0011075 - Salva o nome da filial
+				If !lPedido
+					ZB8->ZB8_MOTEXP := '6'
+				EndIf
 				ZB8->(MsUnlock())
-				// Paulo da Mata - 07/07/2020 - Envia o Json para o Taura através da Distribuição
+				// Paulo da Mata - 07/07/2020 - Envia o Json para o Taura atravÃ©s da DistribuiÃ§Ã£o
 				U_FM33EXPT()
 			EndIf
 			ZB8->(DbSkip())
 		EndDo
 
-		ApMsgInfo( cExps, 'Exp(s) distribuídas:' )
+		ApMsgInfo( cExps, 'Exp(s) distribuÃ­das:' )
 
 		If Select(cAliasZBY)
 			(cAliasZBY)->(DbCloseArea())
@@ -251,23 +327,18 @@ User Function M33Distr()
 				ZBX.ZBX_FILIAL = %Exp:mv_par01% AND
 				ZBX.ZBX_DNIVEL LIKE '%LOCAL%'
 		ORDER BY ZBY.ZBY_FILIAL, ZBY.ZBY_APROVA
-
 		EndSql
-
 		While !(cAliasZBY)->(Eof())
 			EnvAprov(Alltrim(UsrFullName((cAliasZBY)->ZBY_APROVA)),Alltrim(UsrRetMail((cAliasZBY)->ZBY_APROVA)),cExps,mv_par02)
 			(cAliasZBY)->(DbSkip())
 		EndDo
-
 	EndIf
-
 	ZB9->(RestArea(aAreaZB9))
 	ZB8->(RestArea(aAreaZB8))
 Return
 
 
 Static Function EnvAprov(_cNome,_cEmail,_cListOrc,_cObserv)
-
 	Local oMail, oMessage
 	Local nErro		:= 0
 	Local lRetMail 	:= .T.
@@ -328,9 +399,9 @@ Static Function EnvAprov(_cNome,_cEmail,_cListOrc,_cObserv)
 	oMessage:cFrom                  := cEmail
 	oMessage:cTo                    := alltrim(_cEmail)
 	oMessage:cCc                    := ""
-	oMessage:cSubject               := "Distribuição de EXP"
+	oMessage:cSubject               := "DistribuiÃ§Ã£o de EXP"
 
-		oMessage:cBody := "<HTML><BODY><P>Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"As seguintes EXPS foram distribuídas para sua unidade: </P>"
+		oMessage:cBody := "<HTML><BODY><P>Sr.(a) "+alltrim(_cNome)+ ","+CRLF+"As seguintes EXPS foram distribuÃ­das para sua unidade: </P>"
 		oMessage:cBody += CRLF+"<P><UL>"+alltrim(_cListOrc)+"</UL></P>"
 		oMessage:cBody += CRLF+CRLF+"<P>"+alltrim(_cObserv)+"</P>"
 		oMessage:cBody += "</BODY></HTML>"
@@ -356,7 +427,7 @@ User Function Valid33(cParam)
 	Local lRet := !Empty(Alltrim(cParam)) .AND. EXISTCPO("SM0","01"+cParam) .AND. Substr(cParam,1,2) == Substr(cFilAnt,1,2)
 
 	If !lRet
-		ApMsgInfo('Filial '+ cParam + ' não é válida.'+CRLF+'	- Filial deve existir'+CRLF+'	- Filial deve pertencer a mesma empresa', 'Filial inválida' )
+		ApMsgInfo('Filial '+ cParam + ' nÃ£o Ã© vÃ¡lida.'+CRLF+'	- Filial deve existir'+CRLF+'	- Filial deve pertencer a mesma empresa', 'Filial invÃ¡lida' )
 	EndIf
 
 Return lRet
@@ -403,7 +474,8 @@ Return cNomFil
 /*/
 User Function FM33EXPT()
 
-	Local cUrl 		 := AllTrim("http://spdwvapl203:1451/processo-exportacao/api/v1/empresa/"+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP + ZB8_ANOEXP + ZB8_SUBEXP))
+	Local cWayUrl	 := SuperGetMV("MGF_E24URL",,"http://integracoes.marfrig.com.br:1451/processo-exportacao/api/v1/empresa/")
+	Local cUrl 		 := AllTrim(AllTrim(cWayUrl)+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP)) 
 	Local cMsgErro	 := ""
 	Local cHeadRet 	 := ""
 	Local aHeadOut	 := {}
@@ -417,7 +489,7 @@ User Function FM33EXPT()
 	Local cTimeProc	 := ""
 	Local nStatuHttp := 0
 
-	// Variáveis para gravação do mointor de integração
+	// VariÃ¡veis para gravaÃ§Ã£o do mointor de integraÃ§Ã£o
 	Local cCdIntEx   := SuperGetMV("MGF_EEC24F",,"001")
 	Local cCdTipEx   := SuperGetMV("MGF_EEC24G",,"019")
 	
@@ -426,10 +498,10 @@ User Function FM33EXPT()
 	Local cCdLxt     := Posicione("SA1",1,xFilial("SA1")+ZB8->(ZB8_ZCLIET+ZB8_ZLJAET),"A1_ZCODMGF")
 
 	If 		Empty(ZB8->ZB8_FILVEN)
-	   		ApMsgAlert(OemToAnsi("O campo [FILIAL PEDID] está vazio. Para este processo, ele deve estar preeenchido"),OemToAnsi("ATENÇÃO"))
+	   		ApMsgAlert(OemToAnsi("O campo [FILIAL PEDID] estÃ¡ vazio. Para este processo, ele deve estar preeenchido"),OemToAnsi("ATENÃ‡ÃƒO"))
 	   		Return
 	ElseIf 	ZB8->ZB8_MOTEXP $ "2/3/7"
-	   		ApMsgAlert(OemToAnsi("exportação já processada, em faturamento ou cancelada."),OemToAnsi("ATENÇÃO"))
+	   		ApMsgAlert(OemToAnsi("exportaÃ§Ã£o jÃ¡ processada, em faturamento ou cancelada."),OemToAnsi("ATENÃ‡ÃƒO"))
 	   		Return
 	EndIf
 
@@ -513,14 +585,14 @@ User Function FM33EXPT()
 	freeObj( oJson )
 
 	If 	!Empty(cMsgErro)
-	   	ApMsgInfo(OemToAnsi(AllTrim(cMsgErro)),OemToAnsi("ATENÇÃO"))
+	   	ApMsgInfo(OemToAnsi(AllTrim(cMsgErro)),OemToAnsi("ATENÃ‡ÃƒO"))
 	Else   
 		ZB8->(RecLock("ZB8",.f.))
 		ZB8->ZB8_INTTAU := If(!Empty(ZB8->ZB8_INTTAU),"I","A")
 		ZB8->(MsUnLock())
 	EndIf
 
-	// Salvar os dados no monitor de integração	- Parte 1 - SZ3 - TABELA DE TIPO DE INTEGRACAO
+	// Salvar os dados no monitor de integraÃ§Ã£o	- Parte 1 - SZ3 - TABELA DE TIPO DE INTEGRACAO
 	If SZ3->(!dbSeek(xFilial("SZ3")+cCdIntEx+cCdTipEx))
 		RecLock("SZ3",.T.)
 		SZ3->Z3_FILIAL  := xFilial("SZ3")
@@ -532,7 +604,7 @@ User Function FM33EXPT()
 		MsUnlock()
 	EndIf
 
-	// Salvar os dados no monitor de integração	- Parte 2 - SZ1 - MONITOR DE INTEGRACOES
+	// Salvar os dados no monitor de integraÃ§Ã£o	- Parte 2 - SZ1 - MONITOR DE INTEGRACOES
 	U_MGFMONITOR(	ZB8->ZB8_FILVEN																							,;
 					If(nStatuHttp >= 200 .And. nStatuHttp <= 299,"1","2")													,;
 					cCdIntEx 																								,;

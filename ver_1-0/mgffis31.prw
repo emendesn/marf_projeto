@@ -4,13 +4,13 @@
 /*
 =====================================================================================
 Programa.:              MGFFIS31
-Autor....:              Natanael Simoes
+Autor....:              Natanael Simões
 Data.....:              08/03/2018
 Descricao / Objetivo:   Ajuste Fiscal
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao no cadastro de produtos
+Uso......:              Marfrig
+Obs......:              Manutenção no cadastro de produtos
 =====================================================================================
 */
 
@@ -23,7 +23,7 @@ User Function MGFFIS31()
 	Local cProd	    := ""
 	
 	If !(RetCodUsr() $ cUsuario)
-		MsgInfo("Usuario sem permissao para alteracao.","Atencao!")
+		MsgInfo("Usuário sem permissão para alteração.","Atenção!")
 		Return  
 	Else
 		DBSelectArea("SB1")
@@ -38,9 +38,9 @@ User Function MGFFIS31()
 		If !Empty(cProd)
 			if SB1->( DBSeek( xFilial("SB1") + cProd ) )
 				//UPDATE/ exclusao precisa estar possicionado
-				fwExecView("Alteracao", "MGFFIS31", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)//"Alteracao"
+				fwExecView("Alteração", "MGFFIS31", MODEL_OPERATION_UPDATE,, {|| .T.}, , ,aButtons)//"Alteracão"
 			else
-				msgAlert("Produto da da linha na Nota Fiscal nao encontrado!")
+				msgAlert("Produto da da linha na Nota Fiscal não encontrado!")
 			endif
 		Else
 			msgAlert("Produto precisa Ser Informado, Chame o ADM do Sistema, Fonte: MGFFIS31, Linha:43")
@@ -67,7 +67,7 @@ static function ModelDef()
 	oModel := MPFormModel():New("XMGFFIS31", /*bPreValidacao*/,/*bPosValidacao*/, { |oModel| cmtSB1(oModel) } /*bCommit*/,/*bCancel*/ )
 	oModel:AddFields("SB1MASTER",/*cOwner*/,oStrSB1, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription('Alteracao do Produto')
+	oModel:SetDescription('Alteração do Produto')
 	//oModel:SetPrimaryKey({"ZZ5_FILIAL","ZZ5_CODIGO"}) // NecessÃ¡rio apenas quando nao X2_UNICO em branco
 
 return(oModel)
@@ -132,6 +132,6 @@ return lRetCommit
 static function MenuDef()
 	local aRotina := {}
 
-	aadd( aRotina, { 'Alteracao do Produtos'		, 'U_MGFFIS31()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração do Produtos'		, 'U_MGFFIS31()()'	, 0, 4, 0, NIL } )
 
 return aRotina

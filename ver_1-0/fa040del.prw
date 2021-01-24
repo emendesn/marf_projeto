@@ -8,10 +8,10 @@
 Programa.:              F040DEL
 Autor....:              Leonardo Kume
 Data.....:              21/12/2016
-Descricao / Objetivo:   PE na exclusao do Contas a Pagar
+Descricao / Objetivo:   PE na exclusão do Contas a Pagar
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

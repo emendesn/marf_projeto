@@ -252,7 +252,6 @@ User Function MGFINAUT(cAlias,cCampo,nOpcE,aFatPag,lAutomato)
 	Local cClVlCR 		:= ""
 	Local cClVlDB 		:= ""
 
-	Local lFAT290SE5 	:= ExistBlock("FAT290SE5")
 	Local aTitSE5   	:= {}
 	Local cQuery2		:= ''
 	Local cCampos		:= ''
@@ -1517,7 +1516,7 @@ User Function MGFINAUT(cAlias,cCampo,nOpcE,aFatPag,lAutomato)
 							dbSelectArea("SE2")
 
 							// Tira o saldo do vencimento programado do titulo
-							AtuSldNat(SE2->E2_NATUREZ,SE2->E2_VENCREA,SE2->E2_MOEDA,"2","P",SE2->E2_VALLIQ,xMoeda(SE2->E2_VALLIQ, E2->E2_MOEDA,1),"-",,FunName(),"SE2",SE2->(Recno()),nOpcE)
+							AtuSldNat(SE2->E2_NATUREZ,SE2->E2_VENCREA,SE2->E2_MOEDA,"2","P",SE2->E2_VALLIQ,xMoeda(SE2->E2_VALLIQ, SE2->E2_MOEDA,1),"-",,FunName(),"SE2",SE2->(Recno()),nOpcE)
 
 							aAdd(aE2CCC,SE2->E2_CCC)
 							aAdd(aE2CCD,SE2->E2_CCD)
@@ -2715,7 +2714,7 @@ User Function MGFFINCHK(aSelFil,aTmpFil,cTmpSE2Fil,aStru,lUsaQry)
 	Local nCt			:= 0     
 	Local cQuery		:= ""
 	Local cFil290 		:= ""
-	Local cTipoNFat		:= SuperGetMV("MGF_TPNFAT",,"PRE|PR !NDF")
+	Local cTipoNFat		:= SuperGetMV("MGF_TPNFAT",,"PRE|PR |NDF")
 
 	DEFAULT aSelFil		:= {}
 	DEFAULT aTmpFil		:= {}
@@ -4383,9 +4382,11 @@ Static Function Fa290Inverte(cAliasSE2,cMarca,oValor,oQtdTit,lTodos,oMark,lPccBa
 						(cAliasSE2)->E2_OK	:= "  "
 						(cAliasSE2)->(MsUnlock())
 					EndIf
-
 				EndIf
-
+			Else // Paulo Mata - PRB0041033 - 15/10/2020 - Impede marcação dos mesmos títulos duas vezes
+				IW_MsgBox(STR0068,STR0046,"STOP") //"Este titulo está sendo utilizado em outro terminal, não pode ser utilizado na fatura"###"Atenção"
+				lRet := .F.
+				Exit
 			EndIf
 
 			If lTodos
@@ -4678,11 +4679,12 @@ Parametros do array a Rotina:
 /*/
 Static Function MenuDef()
 
-	Local aRotina := { 	{ OemToAnsi(STR0001),"AxPesqui"  	, 0 , 1,,.F. },; 	//"Pesquisar"
-						{ OemToAnsi(STR0002),"U_FIN78_VE"   , 0 , 2 },; 		//"Visualizar"
-						{ OemToAnsi(STR0003),"u_MGFINAut"   , 0 , 3 },; 		//"Selecionar"
-						{ OemToAnsi(STR0004),"u_MGFINCan"   , 0 , 6 },; 		//"Cancelar" 
-						{ OemToAnsi(STR0071),"FA040Legenda" , 0 , 7,,.F.}}		//"Legenda"
+	Local aRotina := { 	{ OemToAnsi(STR0001),"AxPesqui"  	, 0 , 1,,.F. },; 			//"Pesquisar"
+						{ OemToAnsi(STR0002),"U_FIN78_VE"   , 0 , 2 },; 				//"Visualizar"
+						{ OemToAnsi(STR0003),"u_MGFINAut"   , 0 , 3 },; 				//"Selecionar"
+						{ OemToAnsi("Agrupamento em Lote")  ,If(FindFunction("U_MGFFINBV"),"U_MGFFINBV","") , 0 , 4 },; 	//"Agrupamento"
+						{ OemToAnsi(STR0004),"u_MGFINCan"   , 0 , 6 },; 				//"Cancelar" 
+						{ OemToAnsi(STR0071),"FA040Legenda" , 0 , 7,,.F.}}				//"Legenda"
 
 Return(aRotina)
 
@@ -5121,17 +5123,49 @@ Static Function MudaStatus(nTipo)
 	CursorWait() 
 
 	// Marcou um REGISTRO na LINHA      
-	IF nTipo == 1                         
-		(cAliasSe2)->(dbGoTo(aBrowse[oBrowseDados:nAt][Len(aCab)+1]))
-		RecLock(cAliasSE2,.F.)
-		(cAliasSE2)->E2_OK	:= IIF(aBrowse[oBrowseDados:nAt][1],"  ",cMarca)
-		(cAliasSE2)->(MsUnlock())                                          
+	IF nTipo == 1
 
-		// ATUALIZA MARCACAO PARA A LINHA
-		Atu_Var(1) 
-		aBrowse[oBrowseDados:nAt][1] := !aBrowse[oBrowseDados:nAt][1]
-		oBrowseDados:DrawSelect()
+		(cAliasSe2)->(dbGoTo(aBrowse[oBrowseDados:nAt][Len(aCab)+1]))		
+		
+		If (cAliasSE2)->(MsRlock())
+			
+			If (cAliasSe2)->(FieldPos("RECNO")) > 0
+				dbSelectArea("SE2")
+				MsGoto((cAliasSe2)->RECNO)
+				dbSelectArea(cAliasSe2)
+			EndIf	
+	
+			cFilOrig  := SE2->E2_FILORIG
+			cChaveLbn := "FAT" + SE2->(xFilial("SE2",cFilOrig)+E2_PREFIXO+E2_NUM+E2_PARCELA+E2_TIPO)
+	
+			If Ascan(aChaveLbn,cChaveLbn) == 0
+				Aadd(aChaveLbn,cChaveLbn)
+			EndIf	
+		
+			RecLock(cAliasSE2,.F.)
+			(cAliasSE2)->E2_OK	:= IIF(aBrowse[oBrowseDados:nAt][1],"  ",cMarca)
+			(cAliasSE2)->(MsUnlock())
+
+			// Verifica se o registro nao esta sendo utilizado em outro terminal
+			If LockByName(cChaveLbn,.T.,.F.)
+				If Ascan(aChaveLbn, cChaveLbn) == 0
+					Aadd(aChaveLbn,cChaveLbn)
+				EndIf
+			Else
+				IW_MsgBox(STR0068,STR0046,"STOP") //"Este titulo está sendo utilizado em outro terminal, não pode ser utilizado na fatura"###"Atenção"
+				CursorArrow()
+				Return
+			EndIf			
+
+			// ATUALIZA MARCACAO PARA A LINHA
+			Atu_Var(1) 
+			aBrowse[oBrowseDados:nAt][1] := !aBrowse[oBrowseDados:nAt][1]
+			oBrowseDados:DrawSelect()
+			
+		EndIf	
+
 	Else
+	
 		CursorWait()
 
 		Processa({|| MG78MrkTd(nTipo)})   
@@ -5191,32 +5225,72 @@ Return
 @return ${return}, ${return_description}
 
 @type function
+Paulo Mata - PRB0041033 - 15/10/2020 - Impede marcação dos mesmos títulos duas vezes
 /*/
 Static Function MG78MrkTd(nTipo)
+	
+	Local cChaveLbn := ""
+	Local aChaveLbn := {}
+	Local nReg 		:= 0
+	
 	Cursorwait()
 	ProcRegua(Len(aBrowse))
+	
 	// Se ESTA USANDO BOTAO MARCAR TODOS
 	(cAliasSE2)->(dbGotop())
+	
+	nReg := (cAliasSE2)->(Recno())
 
 	While !(cAliasSE2)->(Eof())
+	
+		If (cAliasSE2)->(MsRLock())
+		
+			If (cAliasSe2)->(FieldPos("RECNO")) > 0
+				dbSelectArea("SE2")
+				MsGoto((cAliasSe2)->RECNO)
+				dbSelectArea(cAliasSe2)
+			EndIf	
+	
+			cFilOrig  := SE2->E2_FILORIG
+			cChaveLbn := "FAT" + SE2->(xFilial("SE2",cFilOrig)+E2_PREFIXO+E2_NUM+E2_PARCELA+E2_TIPO)
+	
+			If Ascan(aChaveLbn,cChaveLbn) == 0
+				Aadd(aChaveLbn,cChaveLbn)
+			EndIf	
 
-		RecLock(cAliasSE2,.F.)
-		(cAliasSE2)->E2_OK	:= IIF(nTipo == 2,"  ",cMarca)
-		nPosBrw:=Ascan(aBrowse,{|x|x[2]+x[3]+x[4]+x[6]+x[7]==(cAliasSE2)->E2_FILIAL+(cAliasSE2)->E2_PREFIXO+(cAliasSE2)->E2_TIPO+PadL(Alltrim((cAliasSE2)->E2_NUM),Len((cAliasSE2)->E2_NUM))+(cAliasSE2)->E2_PARCELA})
+			RecLock(cAliasSE2,.F.)
+			(cAliasSE2)->E2_OK := IIF(nTipo == 2,"  ",cMarca)
+			nPosBrw := Ascan(aBrowse,{|x|x[2]+x[3]+x[4]+x[6]+x[7]==(cAliasSE2)->E2_FILIAL+(cAliasSE2)->E2_PREFIXO+(cAliasSE2)->E2_TIPO+PadL(Alltrim((cAliasSE2)->E2_NUM),Len((cAliasSE2)->E2_NUM))+(cAliasSE2)->E2_PARCELA})
 
-		If nPosBrw>0
-			aBrowse[nPosBrw][1] := IIF(nTipo==2,.F.,.T.)
-			If alltrim(aBrowse[nPosBrw][4])=="NDF" .And. aBrowse[nPosBrw][1]
-				lMarkNDF := .T.
+			If nPosBrw > 0
+				aBrowse[nPosBrw][1] := IIF(nTipo==2,.F.,.T.)
+				If AllTrim(aBrowse[nPosBrw][4]) == "NDF" .And. aBrowse[nPosBrw][1]
+					lMarkNDF := .T.
+				EndIf
 			EndIf
-		EndIf
 
-		(cAliasSE2)->(MsUnlock())
-		IncProc()
-		(cAliasSE2)->(dbSkip())
+			(cAliasSE2)->(MsUnlock())
+			IncProc()
+		
+			// Verifica se o registro nao esta sendo utilizado em outro terminal
+			If LockByName(cChaveLbn,.T.,.F.)
+				If Ascan(aChaveLbn, cChaveLbn) == 0
+					Aadd(aChaveLbn,cChaveLbn)
+				EndIf
+			Else
+				IW_MsgBox(STR0068,STR0046,"STOP") //"Este titulo está sendo utilizado em outro terminal, não pode ser utilizado na fatura"###"Atenção"
+				CursorArrow()
+				Return
+			EndIf	
+
+			(cAliasSE2)->(dbSkip())
+
+		EndIf	
 
 	EndDo
+	
 	CursorArrow()
+
 Return
 
 /*/{Protheus.doc} GeraExcel

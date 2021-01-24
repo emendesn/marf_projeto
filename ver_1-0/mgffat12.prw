@@ -6,10 +6,10 @@
 Programa............: MGFFAT12
 Autor...............: Joni Lima
 Data................: 31/10/2016
-Descricao / Objetivo: Consulta de Bloqueio
+Descrição / Objetivo: Consulta de Bloqueio
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza a consulta de bloqueio
 =====================================================================================
 */
@@ -82,10 +82,10 @@ Return
 Programa............: xMF12Brows
 Autor...............: Joni Lima
 Data................: 31/10/2016
-Descricao / Objetivo: Monta o Browse para Consulta dos Bloqueios
+Descrição / Objetivo: Monta o Browse para Consulta dos Bloqueios
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza a montagem do Browse
 =====================================================================================
 */
@@ -101,7 +101,7 @@ Static Function xMF12Brows(lItem)
 	
 	Local aCoors      	:= FWGetDialogSize( oMainWnd )
 	
-	Local cTitle    	:= 'Liberacao de Pedidos' 
+	Local cTitle    	:= 'Liberação de Pedidos' 
 	Local cxAlias		:= IIF(lItem,'SC6','SC5')
 	Local cxDesc		:= IIF(lItem,'Itens Pedidos','Pedidos')
 	//Local cFilCab		:= ''  
@@ -117,7 +117,7 @@ Static Function xMF12Brows(lItem)
 	
 	Define MsDialog oDlgPrinc Title cTitle From aCoors[1], aCoors[2] To aCoors[3], aCoors[4] Pixel 	
 	
-	// Cria o conteiner onde serao colocados os browses 
+	// Cria o conteiner onde serão colocados os browses 
 	oFWLayer:= FWLayer():New() 
 	oFWLayer:Init( oDlgPrinc, .F., .T. )
 	
@@ -138,9 +138,9 @@ Static Function xMF12Brows(lItem)
 	oBwUp:SetOwner( oPnUp )        // Aqui se associa o browse ao componente de tela superior. 
 	oBwUp:SetDescription( cxDesc ) // 'Bilhetes'
 	oBwUp:SetAlias( cxAlias )
-	oBwUp:SetMenuDef( '' )     // Define de onde virao os botoes deste browse
+	oBwUp:SetMenuDef( '' )     // Define de onde virão os botoes deste browse
 	oBwUp:SetProfileID( '1' )        // Identificador (ID) para o Browse 
-	oBwUp:ForceQuitButton()          // Forca exibicao do botao [Sair]
+	oBwUp:ForceQuitButton()          // Força exibição do botão [Sair]
 	
 	If !Empty(cFilFil)
 		oBwUp:AddFilter('Flt. Filial',cFilFil,.T.,.T.)
@@ -171,13 +171,13 @@ Static Function xMF12Brows(lItem)
 	oBwDown:AddLegend( "Empty(ZV_DTAPR).AND.Empty(ZV_DTRJC).and. ZV_CODRGA <> '000099'" , "YELLOW"  , "Bloqueado" )
 	oBwDown:AddLegend( "Empty(ZV_DTAPR).AND.!Empty(ZV_DTRJC).and. ZV_CODRGA <> '000099'", "RED"	 , "Rejeitado" )
 	
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC) .and. Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BR_LARANJA"	 , "Bloqueado S/ Classificacao" )
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BLUE"	 , "Bloqueado C/ Classificacao" )
-	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. !Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'","BR_MARROM"	 , "Rejeitado C/ Classificacao" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC) .and. Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BR_LARANJA"	 , "Bloqueado S/ Classificaï¿½ï¿½o" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'", "BLUE"	 , "Bloqueado C/ Classificaï¿½ï¿½o" )
+	oBwDown:AddLegend( "Empty(ZV_DTAPR) .AND. !Empty(ZV_DTRJC).and. !Empty(ZV_CODPER) .and. ZV_CODRGA == '000099'","BR_MARROM"	 , "Rejeitado C/ Classificaï¿½ï¿½o" )
 
 	
 	oBwDown:SetAlias( 'SZV' )
-	oBwDown:SetMenuDef( '' ) 			// Referencia vazia para que nao exiba nenhum botao.
+	oBwDown:SetMenuDef( '' ) 			// Referencia vazia para que nao exiba nenhum botão.
 	oBwDown:SetProfileID( '2' )
 	oBwDown:DisableDetails()
 	oBwDown:SetFilterDefault( '' )     // Desabilita qualquer filtro. 	
@@ -199,6 +199,13 @@ Static Function xMF12Brows(lItem)
 		
 	Activate MsDialog oDlgPrinc Center
 
+	// Solução Contorno - Ticket: 9293564
+	//SZV->(DBCLOSEAREA())
+	//DbSelectArea('SZV')
+
+	oBwUp:Deactivate() 
+	oBwDown:Deactivate() 
+
 Return
 
 /*
@@ -206,10 +213,10 @@ Return
 Programa............: xMF12Fit
 Autor...............: Joni Lima
 Data................: 31/10/2016
-Descricao / Objetivo: Cria Filtro para aplciacao do Browse Principal
+Descrição / Objetivo: Cria Filtro para aplicação do Browse Principal
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza a montagem, do Filtro
 =====================================================================================
 */

@@ -5,9 +5,9 @@
 
 
 Static lPmsInt:= IsIntegTop(,.T.)
-//Permite reposiï¿½ï¿½o manual do caixinha com valores acima do limite: 1 - Permite; 2 - Nao permite.
+//Permite reposição manual do caixinha com valores acima do limite: 1 - Permite; 2 - Não permite.
 STATIC lRpMnAcLim	:= SuperGetMV("MV_RPCXMN",.T.,"1") == "1"
-//Permite que sejam realizadas reposiï¿½ï¿½es acima do valor do caixinha: T - Permite; F - Nao Permite
+//Permite que sejam realizadas reposições acima do valor do caixinha: T - Permite; F - Não Permite
 STATIC lRpAcVlCx	:= SuperGetMV("MV_RPVLMA",.T.,.F.)
 
 
@@ -18,11 +18,11 @@ STATIC lRpAcVlCx	:= SuperGetMV("MV_RPVLMA",.T.,.F.)
 Programa............: MGFFIN98
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Aprovacao da Unidade
+Descrição / Objetivo: Aprovação da Unidade
 Doc. Origem.........: Contrato - GAP Caixinha
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela para Aprovacao do Caixinha
+Uso.................: Marfrig
+Obs.................: Tela para Aprovação do Caixinha
 =====================================================================================
 */
 user function MGFFIN98()
@@ -41,7 +41,7 @@ user function MGFFIN98()
 
 		oBrowse:SetFilterDefault(cFiltro)
 
-		oBrowse:SetDescription('Aprovacao CAP')
+		oBrowse:SetDescription('Aprovação CAP')
 
 		oBrowse:Activate()	
 	EndIf
@@ -52,7 +52,7 @@ return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Modelo de Dados
 =====================================================================================
 */
@@ -71,7 +71,7 @@ Static Function ModelDef()
 	oModel:AddFields("ZE1MASTER",/*cOwner*/,oStrZE1, /*bPreValid*/, /*bPosValid*/, /*bCarga*/ )
 	oModel:AddGrid("ZE0DETAIL","ZE1MASTER",oStrZE0, /*bLinePreValid*/, /*bLinePosValid*/,/*bPreValid*/,/*bPosValid*/, /*bCarga*/ )
 
-	oModel:GetModel("ZE0DETAIL"):SetDescription("Itens Para Aprovacao")
+	oModel:GetModel("ZE0DETAIL"):SetDescription("Itens Para Aprovação")
 
 	oModel:AddCalc("CALC", "ZE1MASTER", "ZE0DETAIL", "ZE0_VALOR", "ZE0__TOT", "SUM", {|oModel|xVldSum(oModel)}, ,"Total")
 
@@ -90,7 +90,7 @@ return oModel
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: View da Tela
 =====================================================================================
 */
@@ -131,7 +131,7 @@ return oView
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Menu da Tela do Caixinha
 =====================================================================================
 */
@@ -148,8 +148,8 @@ Return aRotina
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Preenchimento da Tela para Aprovacao
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Preenchimento da Tela para Aprovação
 =====================================================================================
 */
 Static Function xActivMdl(oModel)
@@ -182,10 +182,10 @@ Static Function xActivMdl(oModel)
 			EndIf			
 
 			For nx := 1 to Len(oStrZE0:aFields)
-				If !oStrZE0:aFields[nx,14] //Verifica Se nao ï¿½ Virtual
+				If !oStrZE0:aFields[nx,14] //Verifica Se não é Virtual
 
 					cField  := oStrZE0:aFields[nx,3]//Pega o Id do Campo
-					cFldQry := "(cQry)->" + cField //Monta Expressï¿½o para macro execucao
+					cFldQry := "(cQry)->" + cField //Monta Expressão para macro execução
 					cConte  := &( cFldQry ) //Pega o Conteudo da Query
 
 					If !Empty(cConte) //.and. Alltrim(cField) <> "ZE0_MARKCP"//Verifica se o existe conteudo
@@ -216,7 +216,7 @@ return .t.
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Encontra os Titulos que precisam ser aprovados
 =====================================================================================
 */
@@ -247,8 +247,8 @@ return (cNextAlias)
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Validacao para soma do Total
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Validação para soma do Total
 =====================================================================================
 */
 Static Function xVldSum(oModel)
@@ -267,7 +267,7 @@ return lRet
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Commit do modelo de dados
 =====================================================================================
 */
@@ -319,7 +319,7 @@ Static Function xCommit(oModel)
 			oModel:DeActivate()
 
 		Else
-			Help(" ",1,'ERRO',,'Nao Houve Marcacao de Item no Grid da Aprovacao' ,1,0,,,,,,{'Verifique A Marcacao no Grid' } ) 
+			Help(" ",1,'ERRO',,'Não Houve Marcação de Item no Grid da Aprovação' ,1,0,,,,,,{'Verifique A Marcação no Grid' } ) 
 			RollBackSX8()
 			lRet := .F.
 			DisarmTransaction()
@@ -339,7 +339,7 @@ return lRet
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Grava o Aprovador
 =====================================================================================
 */
@@ -369,8 +369,8 @@ Return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Gera a Movimentacao do caixinha
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Gera a Movimentação do caixinha
 =====================================================================================
 */
 Static Function xMGFGerSEU(cNumApr,aSE2)
@@ -383,7 +383,7 @@ Static Function xMGFGerSEU(cNumApr,aSE2)
 
 	// Local cCaixa    := ""
 
-	PRIVATE cCadastro := OemtoAnsi("Geracao Automaica de Caixinhas")  // "Manutencao de Caixinhas"
+	PRIVATE cCadastro := OemtoAnsi("Geraçao Automática de Caixinhas")  // "Manutencao de Caixinhas"
 	Private lArgTAL   :=  (cPaisLoc == "ARG" .And. SEU->(FieldPos("EU_TALAO"))>0 ) 
 
 	Pergunte("FIA550",.F.)
@@ -441,12 +441,12 @@ Static Function xMGFGerSEU(cNumApr,aSE2)
 
 	/*
 	//************************
-	// Gerando Reposicao -> Nao sera mais aqui e sim na Baixa de Titulo
+	// Gerando Reposição -> Não será mais aqui e sim na Baixa de Título
 	//************************
 	dbSelectArea("SET")
 	dbSetOrder(1)  // filial + caixa
 	dbSeek( xFilial()+cCaixa)
-	U_MGFRepos("SET",SET->(RECNO()),4,.T.) // cAlias,nReg,nOpc,lAutomato=.T. nao mostra Tela de Reposicao!!!
+	U_MGFRepos("SET",SET->(RECNO()),4,.T.) // cAlias,nReg,nOpc,lAutomato=.T. não mostra Tela de Reposição!!!
 	*/	 
 
 	RestArea(aAreaSE0)
@@ -458,7 +458,7 @@ return(Nil)
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Gera Titulo a Pagar
 =====================================================================================
 */
@@ -472,9 +472,9 @@ Static Function xMGFGerSE2(cNumApr)
 	Local cNextAlias:= GetNextAlias()
 	Local aDados	:= {}
 
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-	//ï¿½ Carrega funcao Pergunte									         ï¿½
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+	//³ Carrega funcao Pergunte									         ³
+	//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 	Pergunte("FIA550",.F.)
 

@@ -14,7 +14,7 @@ Data.....:              05/07/2017
 Descricao / Objetivo:   Exporta CSV RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 
 =====================================================================================
@@ -33,10 +33,10 @@ static function getParam()
 
 	aadd(aParambox, {6, "Salvar arquivo CSV em"	, space(200)						, "@!"	, ""	, ""	, 070, .T., "Todos os Arquivos|*.*", GetTempPath(), GETF_LOCALFLOPPY + GETF_LOCALHARD + GETF_NETWORKDRIVE + GETF_RETDIRECTORY, .F. /*NAO MOSTRA SERVIDOR*/})
 	aadd(aParamBox, {1, "RAMI de"				, space(tamSX3("ZAV_CODIGO")[1])	, 		, 		, "ZAV" ,	, 070	, .F.})
-	aadd(aParamBox, {1, "RAMI ate"				, space(tamSX3("ZAV_CODIGO")[1])	, 		, 		, "ZAV" ,	, 070	, .F.})
+	aadd(aParamBox, {1, "RAMI atÈ"				, space(tamSX3("ZAV_CODIGO")[1])	, 		, 		, "ZAV" ,	, 070	, .F.})
 
-	aadd(aParamBox, {1, "Emissao de"			, CToD(space(8))					, 		, 		, ""	,	, 070	, .F.})
-	aadd(aParamBox, {1, "Emissao ate"			, CToD(space(8))					, 		, 		, ""	,	, 070	, .F.})
+	aadd(aParamBox, {1, "Emiss„o de"			, CToD(space(8))					, 		, 		, ""	,	, 070	, .F.})
+	aadd(aParamBox, {1, "Emiss„o atÈ"			, CToD(space(8))					, 		, 		, ""	,	, 070	, .F.})
 return paramBox(aParambox, "RAMI"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 
 //******************************************************
@@ -48,7 +48,7 @@ static function genArq()
 	local cVend		:= ""	
 
 	if !existDir(allTrim(MV_PAR01))
-		msgAlert("DiretÔøΩrio invÔøΩlido.")
+		msgAlert("DiretÛrio inv·lido.")
 		return
 	endif
 
@@ -104,9 +104,9 @@ static function genArq()
 				QRYARQ->(DBSkip())
 			enddo
 
-			msgInfo("Exportacao gerada com sucesso.")
+			msgInfo("ExportaÁ„o gerada com sucesso.")
 		else
-			msgAlert("Nao  foram encontradas informacoes a serem exportadas.")
+			msgAlert("N„o foram encontradas informaÁıes a serem exportadas.")
 		endif
 		QRYARQ->(DBCloseArea())
 	endif
@@ -127,22 +127,21 @@ impress√£o no relat√≥rio
 static function getInfo(nCountRegs)
 	local cQueryZAV		:= ""
 
-	cQueryZAV += " SELECT *"													+ CRLF
+	cQueryZAV += " SELECT *"												+ CRLF
 	cQueryZAV += " FROM " + retSQLName("ZAV") + " ZAV"						+ CRLF
-	cQueryZAV += " INNER JOIN " + retSQLName("ZAW") + " ZAW"						+ CRLF
-	cQueryZAV += " ON"						+ CRLF
-	cQueryZAV += " 		ZAV.ZAV_SERIE	=	ZAW.ZAW_SERIE"						+ CRLF
-	cQueryZAV += " 	AND	ZAV.ZAV_NOTA	=	ZAW.ZAW_NOTA"						+ CRLF
-	cQueryZAV += " INNER JOIN " + retSQLName("ZAX") + " ZAX"						+ CRLF
-	cQueryZAV += " ON"						+ CRLF
-	cQueryZAV += " 		ZAW.ZAW_ITEMNF	=	ZAX.ZAX_ITEMNF"						+ CRLF
-	cQueryZAV += " 	AND	ZAW.ZAW_SERIE	=	ZAX.ZAX_SERIE"						+ CRLF
-	cQueryZAV += " 	AND	ZAW.ZAW_NOTA	=	ZAX.ZAX_NOTA"						+ CRLF
-
-	cQueryZAV += " WHERE"													+ CRLF
-	cQueryZAV += " 		ZAX.D_E_L_E_T_	<>	'*'"						+ CRLF
-	cQueryZAV += " 	AND	ZAW.D_E_L_E_T_	<>	'*'"						+ CRLF
-	cQueryZAV += " 	AND	ZAV.D_E_L_E_T_	<>	'*'"						+ CRLF
+	cQueryZAV += " LEFT JOIN " + retSQLName("ZAW") + " ZAW"				+ CRLF
+	cQueryZAV += " ON"														+ CRLF
+	cQueryZAV += " 		ZAV.ZAV_SERIE	=	ZAW.ZAW_SERIE"					+ CRLF
+	cQueryZAV += " 	AND	ZAV.ZAV_NOTA	=	ZAW.ZAW_NOTA"					+ CRLF
+	cQueryZAV += " 	AND	ZAW.D_E_L_E_T_	<>	'*'"						    + CRLF
+	cQueryZAV += " LEFT JOIN " + retSQLName("ZAX") + " ZAX"				+ CRLF
+	cQueryZAV += " ON"														+ CRLF
+	cQueryZAV += " 		ZAW.ZAW_ITEMNF	=	ZAX.ZAX_ITEMNF"					+ CRLF
+	cQueryZAV += " 	AND	ZAW.ZAW_SERIE	=	ZAX.ZAX_SERIE"					+ CRLF
+	cQueryZAV += " 	AND	ZAW.ZAW_NOTA	=	ZAX.ZAX_NOTA"					+ CRLF
+	cQueryZAV += " 	AND ZAX.D_E_L_E_T_	<>	'*'"							+ CRLF
+	cQueryZAV += " WHERE 1=1"												+ CRLF
+	cQueryZAV += " AND	ZAV.D_E_L_E_T_	<>	'*'"							+ CRLF
 
 	if !empty(MV_PAR02)
 		cQueryZAV += " AND ZAV_CODIGO >= '" + MV_PAR02 + "'" + CRLF

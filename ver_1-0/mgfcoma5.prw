@@ -9,7 +9,7 @@ Data................: 31/10/2018
 Descricao / Objetivo: Incluir nova Legenda no Pedido de Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MT120LEG
 =====================================================================================
 */
@@ -25,7 +25,7 @@ For nCnt:=1 To Len(aLegenda)
 Next
 
 
-aAdd(a_LegUser,{'BR_PINK',"AE em Recebimento (Prï¿½-nota)"}) 
+aAdd(a_LegUser,{'BR_PINK',"AE em Recebimento (Pré-nota)"}) 
 aAdd(a_LegUser,{'BR_MARRON_OCEAN',"AE Recebida Parcialmente"})       //'BR_VERDE_ESCURO'
 aAdd(a_LegUser,{'BR_MARRON',"AE Recebida"}) 
 

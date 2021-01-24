@@ -6,10 +6,10 @@
 Programa............: MGFEST29
 Autor...............: Mauricio Gresele
 Data................: 09/06/2017
-Descricao / Objetivo: Rotina temporaria para limpar o empenho do produto. OBS: Deletar do RPO depois de rodado o refaz empenho.
+Descrição / Objetivo: Rotina temporaria para limpar o empenho do produto. OBS: Deletar do RPO depois de rodado o refaz empenho.
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     
@@ -23,7 +23,7 @@ Local aPergs := {}
 
 Private cPass := Space(50)
 
-@ 067,020 To 169,312 Dialog oDlg Title OemToAnsi("Liberacao de Acesso")
+@ 067,020 To 169,312 Dialog oDlg Title OemToAnsi("Liberação de Acesso")
 @ 015,005 Say OemToAnsi("Informe a senha para o acesso ?") Size 80,8
 @ 015,089 Get cPass Size 50,10 Password
 @ 037,055 BmpButton Type 1 Action fOK(oDlg,@lRet)
@@ -45,11 +45,11 @@ oDlg := Nil
 	  
 DEFINE FONT oFont NAME "Mono AS" SIZE 8,15
 
-Define MsDialog oDlg Title "Acerto de Empenho SB2 ( ***ROTINA TEMPORï¿½RIA*** )" From 116,090 To 300,630 Pixel
+Define MsDialog oDlg Title "Acerto de Empenho SB2 ( ***ROTINA TEMPORÁRIA*** )" From 116,090 To 300,630 Pixel
 
 @ 012,010 Say OemToAnsi("Rotina para acertar os empenhos da tabela SB2.") PIXEL OF oDlg FONT oFont
 @ 022,010 Say OemToAnsi("***Para uso temporariamente***.") PIXEL OF oDlg FONT oFont
-@ 032,010 Say OemToAnsi("Rodar somente ate o acerto dos Empenhos pelo padrao do ERP.") PIXEL OF oDlg FONT oFont
+@ 032,010 Say OemToAnsi("Rodar somente até o acerto dos Empenhos pelo padrão do ERP.") PIXEL OF oDlg FONT oFont
 
 SButton():New(060,045, 1,{|| (nOpc:=1,oDlg:End())},oDlg,.T.,,)
 SButton():New(060,095, 5,{|| Pergunte(cPerg,.T.)},oDlg,.T.,,)
@@ -67,7 +67,7 @@ Return()
 Static Function fOK(oDlg,lRet)
 
 If ALLTRIM(cPass) <> Alltrim(GetMv("MGF_PSWEMP",,"empenho"))
-   MsgStop("Senha nao Confere !!!")
+   MsgStop("Senha não Confere !!!")
    cPass  := Space(50)
    lRet := .F.
    dlgRefresh(oDlg)
@@ -123,18 +123,18 @@ Private nValTotal := 0
 // adiciona campo de marca
 aAdd(aEstrut,{"RECNO","N",10,0})
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Campos visualizados no MarkBrowse ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Campos visualizados no MarkBrowse ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 aAdd( aCampos, { "B2_OK"		,, "" } )
 aAdd( aCampos, { "B2_COD"		,, "Produto" } )
 aAdd( aCampos, { "B2_LOCAL"		,, "Local" } )
 aAdd( aCampos, { "B2_QATU"		,, "Qtd. Atual" } )
 aAdd( aCampos, { "B2_QEMP"		,, "Empenho" } )
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Cria o arquivo temporario ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Cria o arquivo temporario ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 cNomArqTRB := CriaTrab( aEstrut, .T. )
 dbUseArea( .T.,,cNomArqTRB, cAliasMark, .F., .F. )
 
@@ -162,7 +162,7 @@ ProcRegua(nReg)
 (cAliasTrb)->(dbCloseArea())
 
 If nReg == 0
-	MsgAlert("Nao hï¿½ Empenhos para exibir neste filtro.")
+	MsgAlert("Não há Empenhos para exibir neste filtro.")
 	Return()
 Endif	
 
@@ -195,7 +195,7 @@ If SB1->(dbSeek(xFilial("SB1")+(cAliasTrb)->B2_COD))
 	
 	If !lContinua	
 		(cAliasTrb)->(dbCloseArea())
-		MsgAlert("Produto com controle de Lote ou Endereco habilitado. Nao sera possivel zerar o empenho por esta rotina.")
+		MsgAlert("Produto com controle de Lote ou Endereço habilitado. Não será possível zerar o empenho por esta rotina.")
 		Return()
 	Endif
 Endif
@@ -205,11 +205,11 @@ nQuantSD4 := QuantSD4()
 
 If (cAliasTrb)->(B2_QEMP) <= nQuantSD4
 	(cAliasTrb)->(dbCloseArea())
-	MsgAlert("Empenho do produto ï¿½ devido as OPï¿½s em aberto."+CRLF+;
-	"Nao sera possivel excluir o empenho por esta rotina.")
+	MsgAlert("Empenho do produto é devido as OP´s em aberto."+CRLF+;
+	"Não será possível excluir o empenho por esta rotina.")
 	Return()
 Elseif nQuantSD4 > 0
-	MsgInfo("Empenho nao sera totalmente zerado, pois hï¿½ empenhos de OPï¿½s"+CRLF+;
+	MsgInfo("Empenho não será totalmente zerado, pois há empenhos de OP´s"+CRLF+;
 	"Total de Empenhos de OP: "+Alltrim(Str(nQuantSD4)))	
 Endif
 	
@@ -233,12 +233,12 @@ EndDo
 dbSelectArea(cAliasMark)
 dbGotop()
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Monta a Tela com MsSelect e Objetos de Check Box ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Monta a Tela com MsSelect e Objetos de Check Box ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 DEFINE FONT oFont NAME "Mono AS" SIZE 8,15 BOLD
 
-DEFINE MSDIALOG oDlg TITLE "Selecao de Empenhos" From 7,0 To 29,80
+DEFINE MSDIALOG oDlg TITLE "Seleção de Empenhos" From 7,0 To 29,80
 
 //@ 035,010 SAY "Total Marcados: " SIZE 050,010 PIXEL OF oDlg
 //@ 030,055 MSGET oTotal VAR nTotal WHEN .F. SIZE 020,010 OF oDlg PIXEL
@@ -253,7 +253,7 @@ oMark:oBrowse:bAllMark := {|| Nil} //{|| MarkAll( oMark,cAliasMark,lTodos ) }
 oMark:bMark := {|| Nil} //{ || MarkItem(cMarca,lInverte,cAliasMark)}
 
 //@ 145,010 CHECKBOX oChk VAR lTodos PROMPT "Marca/Desmarca Todos" SIZE 80,7 COLOR CLR_HBLUE OF oDlg PIXEL ON CLICK MarkAll( oMark,cAliasMark,lTodos ); lTodos := .F.; oChk:oFont := oDlg:oFont
-//@ 145,110 CHECKBOX oInv VAR lChang PROMPT "Inverte Selecao" SIZE 80,7 COLOR CLR_HBLUE OF oDlg PIXEL ON CLICK MarkInv( oMark,cAliasMark ); lChang := .F.; oChk:oFont := oDlg:oFont
+//@ 145,110 CHECKBOX oInv VAR lChang PROMPT "Inverte Seleção" SIZE 80,7 COLOR CLR_HBLUE OF oDlg PIXEL ON CLICK MarkInv( oMark,cAliasMark ); lChang := .F.; oChk:oFont := oDlg:oFont
 
 aButtons := {}
 //aadd(aButtons,{'RELATORIO',{|| GeraExcel(cAliasMark)},'Exporta para Excel'})

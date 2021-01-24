@@ -1,17 +1,17 @@
 #include "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF78R02	ï¿½Autor  ï¿½Bruno Canestre Tamanaka						ï¿½Data ï¿½06/02/19	ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: 									ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½       	ï¿½ Gestao de Frete Embarcador 78 - Tabelas de Frete									ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravez da execucao de query, e depois,  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ o usuario pode gerar uma planilha excel com eles 									ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF78R02	ºAutor  ³Bruno Canestre Tamanaka						ºData ³06/02/19	º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: 									º±±
+//±±º       	³ Gestão de Frete Embarcador 78 - Tabelas de Frete									º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois,  º±±
+//±±º			³ o usuario pode gerar uma planilha excel com eles 									º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF78R02()
 	Private _aRet	:= {}, _aParambox	:= {}, _bParameRe
@@ -20,12 +20,12 @@ User Function MGF78R02()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Gestao Frete embarcador - Tabela de Frete Normal"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecera na regua de processamento.
+	Aadd(_aDefinePl, "Gestão Frete embarcador - Tabela de Frete Normal"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	Aadd(_aDefinePl, "Tabela de Frete Normal"								)	//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Tabela de Frete Normal"}							)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Tabela de Frete Normal"}							)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}												)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }									)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, {}												)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }									)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 180													//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
@@ -81,10 +81,10 @@ User Function MGF78R02()
 	cUsrCNeg		:= "	USR_CRIACAO_NEGOCIACAO			"
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 			02			 03						 04	  05	 06	07					 	 	08	09		
 	Aadd(_aCampoQry, {"COD_FILIAL"				,cCodFil	,"Filial"				,"C",006	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"DESC_FILIAL"				,cDescFil	,"Nome da Filial"		,"C",040	,0	,""							,""	,""	})
@@ -117,31 +117,31 @@ User Function MGF78R02()
 	Aadd(_aCampoQry, {"ROTA"					,cRota		,"Rota"					,"C",006	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"INFO_ROTA"				,cInfRota	,"Informacao Rota"		,"C",076	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"COMPONENTE"				,cComp		,"Componente"			,"C",040	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"FRETE_MINIMO"			,cFrtMin	,"Frete Mï¿½nimo"			,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
+	Aadd(_aCampoQry, {"FRETE_MINIMO"			,cFrtMin	,"Frete Mínimo"			,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
 	Aadd(_aCampoQry, {"VLR_FIXO_NORMAL"			,cVlrFNor	,"Valor Fixo Normal"	,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"PERCENTUAL_NORMAL"		,cPercNor	,"Percentual Normal"	,"N",016	,3	,"@E 999,999,999,999.999"	,""	,""	})
-	Aadd(_aCampoQry, {"VLR_UNIT_NORMAL"			,cVlrUNor	,"Valor Unitario Normal","N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"VLR_UNIT_NORMAL"			,cVlrUNor	,"Valor Unitário Normal","N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"FRACAO_NORMAL"			,cFraNorm	,"Fracao Normal"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
-	Aadd(_aCampoQry, {"VLR_MIN_NORMAL"			,cVlrMNor	,"Valor Mï¿½nimo Normal"	,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"VLR_MIN_NORMAL"			,cVlrMNor	,"Valor Mínimo Normal"	,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"VLR_LIMITE"				,cVlrLim	,"Valor Limite"			,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"VLR_FIXO_EXTRA"			,cVlrFExt	,"Valor Fixo Extra"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"PERCENTUAL_EXTRA"		,cPercExt	,"Percentual Extra"		,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
-	Aadd(_aCampoQry, {"VLR_UNIT_EXTRA"			,cVlrUExt	,"Valor Unitario Extra"	,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"VLR_UNIT_EXTRA"			,cVlrUExt	,"Valor Unitário Extra"	,"N",014	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"CALC_EXCED"				,cCalExce	,"Calculo Excedente"	,"C",026	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"DATA_CRIACAO_TBL"		,cDtCrTbl	,"Data Criacao Tabela"	,"D",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"USR_CRIACAO_TBL"			,cUsrCrTb	,"Usuario Criacao Tbl"	,"C",016	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"USR_CRIACAO_TBL"			,cUsrCrTb	,"Usuário Criacao Tbl"	,"C",016	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"DATA_ATUALIZACAO_TBL"	,cDtAtuTb	,"Data Atualizacao Tbl"	,"D",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"USR_ATUALIZACAO_TBL"		,cUsrAtuT	,"Usuario Atualiz Tbl"	,"C",016	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"USR_ATUALIZACAO_TBL"		,cUsrAtuT	,"Usuário Atualiz Tbl"	,"C",016	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"DATA_CRIACAO_NEGOCIACAO"	,cDtCrNeg	,"Data Criacao Negociac","D",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"USR_CRIACAO_NEGOCIACAO"	,cUsrCNeg	,"Usuario Criacao Negoc","C",016	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"USR_CRIACAO_NEGOCIACAO"	,cUsrCNeg	,"Usuário Criacao Negoc","C",016	,0	,""							,""	,""	})
 		
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecao das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 	
-	aAdd(_aParambox,{1,"Tipo Operacao"		,Space(03)	,""		,""	,""		,""			,050	,.T.})
-	aAdd(_aParambox,{3,"Situacao"			,1			,{"Liberada","Em Negociacao"}	,050,""	,.F.})
+	aAdd(_aParambox,{1,"Tipo Operação"		,Space(03)	,""		,""	,""		,""			,050	,.T.})
+	aAdd(_aParambox,{3,"Situação"			,1			,{"Liberada","Em Negociacao"}	,050,""	,.F.})
 	
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 	
@@ -154,12 +154,12 @@ User Function MGF78R02()
 	cQryVigen	+= "	ORDER BY DATA_VIGEN	" 																					+CRLF
 	aCpoDtVig	:=	{	{ "DATA_FORMA"	,U_X3Titulo("GV9_DTVALI") 					,50		},;
 						{ "DATA_VIGEN"	,"(AnoMesDia)"								,30		}	}
-		cTitDtVig	:= "Datas de Vigencia: "
+		cTitDtVig	:= "Datas de Vigência: "
 		nPosRetorn	:= 2		// Quero que seja retornado o segundo campo: DATA_VIGEN
-		//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-		//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-		//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-		_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+		//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+		//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+		//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+		_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 		_cDtVigen	:= U_Array_In( U_MarkGene(cQryVigen, aCpoDtVig, cTitDtVig, nPosRetorn, @_lCancProg ) )
 		If _lCancProg
 			Return
@@ -169,13 +169,13 @@ User Function MGF78R02()
 	_cQuery += "	FROM " + U_IF_BIMFR( "IF_BIMFR", "V_FRETE_TABELAS_FRETE"  )  + " WHERE "	+CRLF
 	
 	_cQuery += iif(!empty(_cCODFILIA ), " COD_FILIAL  IN " + _cCODFILIA, "" ) 							+ CRLF	//Filiais
-	_cQuery += iif(!empty(_aRet[1] ), " AND TIPO_OPERACAO  = '" + _aRet[1] + "' ", " "			     )	+ CRLF	//Tipo de Operacao
-	_cQuery += iif(_aRet[2] == 1, " AND SITUACAO  = 'LIBERADA' " , " AND SITUACAO  = 'EM NEGOCIACAO' " ) + CRLF	//Situacao
+	_cQuery += iif(!empty(_aRet[1] ), " AND TIPO_OPERACAO  = '" + _aRet[1] + "' ", " "			     )	+ CRLF	//Tipo de Operação
+	_cQuery += iif(_aRet[2] == 1, " AND SITUACAO  = 'LIBERADA' " , " AND SITUACAO  = 'EM NEGOCIACAO' " ) + CRLF	//Situação
 	
 	If Empty(_cDtVigen )
 		_cQuery += " " 												+ CRLF
 	Else
-		_cQuery += " AND DATA_VINGENCIA_DE_FILTRO IN " + _cDtVigen	+ CRLF 					//Data Vigencia
+		_cQuery += " AND DATA_VINGENCIA_DE_FILTRO IN " + _cDtVigen	+ CRLF 					//Data Vigência
 	EndIf
 	
 	_cQuery += " ORDER BY  COD_FILIAL " 		+ CRLF

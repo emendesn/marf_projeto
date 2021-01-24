@@ -10,10 +10,10 @@
 Programa............: MA020BUT
 Autor...............: Marcelo Carneiro
 Data................: 23/06/2017 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: CAD04 - Cadastro de Fornecedor para monstrar msg
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada para cadastrar botao
 =====================================================================================
 */

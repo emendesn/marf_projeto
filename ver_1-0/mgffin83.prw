@@ -10,10 +10,10 @@
 Programa.:              MGFFIN83
 Autor....:              Marcelo Carneiro         
 Data.....:              16/02/2018 
-Descricao / Objetivo:   Autorizacao Debito em Conta
+Descricao / Objetivo:   Autorização Débito em Conta
 Doc. Origem:            MIT044
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 =====================================================================================
 */
 
@@ -23,21 +23,21 @@ Local aParambox	  := {}
 Private aSelFil   := {}
 
 //AAdd(aParamBox, {1, "Filial de:"       	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
-//AAdd(aParamBox, {1, "Filial Ate:"      	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
+//AAdd(aParamBox, {1, "Filial Até:"      	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Fornecedor de:"    ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Fornecedor Ate:"   ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Fornecedor Até:"   ,Space(tamSx3("A2_COD")[1])           , "@!",                           ,"SA2" ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Loja de:"			,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Loja Ate:"      	,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
+AAdd(aParamBox, {1, "Loja Até:"      	,Space(tamSx3("A2_LOJA")[1])          , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Tipo:(Use ; p/Separar)"    ,Space(50)                             , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Prefixo:(Use ; p/Separar)" ,Space(50)                             , "@!",                           ,      ,, 070	, .F.	})
 AAdd(aParamBox, {1, "Dt. da Baixa:"  	,CTOD('  /  /  ')                     , "@!",                           ,      ,, 070	, .T.	})
 AAdd(aParamBox, {1, "Banco :"        	,Space(tamSx3("A6_COD")[1])           , "@!",                           ,"SA6" ,, 070	, .T.	})
-AAdd(aParamBox, {1, "Agencia:"      	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .T.	})
+AAdd(aParamBox, {1, "Agência:"      	,Space(tamSx3("A6_AGENCIA")[1])       , "@!",                           ,      ,, 070	, .T.	})
 AAdd(aParamBox, {1, "Cta Corrente:"     ,Space(tamSx3("A6_NUMCON")[1])        , "@!",                           ,      ,, 070	, .T.	})
 IF ParamBox(aParambox, "Filtro para Selecionar os Titulos"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 	aSelFil := AdmGetFil(.F.,.T.,"SE2")
 	If Len( aSelFil ) <= 0
-		MsgAlert('Filiais nao selecionadas !!')
+		MsgAlert('Filiais não selecionadas !!')
 		Return
 	Endif
 	
@@ -53,7 +53,7 @@ Local aPrefixo := StrTokArr(MV_PAR06,';')
 Local cTipo    := ''
 Local cPrefixo := ''
 Local nI       := 0 
-Private cTitulo    := "Autorizacao de Debito em Conta Bancaria"
+Private cTitulo    := "Autorização de Debito em Conta Bancaria"
 Private oPrn      := NIL                  
 Private oFonte01  := TFont():New('Courier New',,09,,.T.,,,,,.F.,.F.) 
 Private oFonte02  := TFont():New('Courier New',,10,,.F.,,,,,.F.,.F.) 
@@ -109,7 +109,7 @@ dbSelectArea("QRY_SE2")
 
 QRY_SE2->(dbGoTop())
 IF QRY_SE2->(EOF())
-     msgAlert('Nao hï¿½ dados para emitir o relatorio !!')
+     msgAlert('Não há dados para emitir o relatorio !!')
      Return
 EndIF
 dbSelectArea('SA6')
@@ -132,7 +132,7 @@ QRY_SA6->(dbGoTop())
 IF QRY_SA6->(!EOF())
      SA6->(dbGoTo(QRY_SA6->RECA6))
 Else
-     msgAlert('Nao encontrado o Banco/Agencia/Conta !!!')
+     msgAlert('Não encontrado o Banco/Agencia/Conta !!!')
      Return
 EndIF
 
@@ -177,7 +177,7 @@ While QRY_SE2->(!EOF())
 	_nSomaE5       	:= 0
 	
 	
-	// Inserido este laï¿½o pois o mesmo titulo pode apresentar diversas SE5 - Ajuste em 07/11/18 - Andy e Eric
+	// Inserido este laço pois o mesmo título pode apresentar diversas SE5 - Ajuste em 07/11/18 - Andy e Eric
 	While QRY_SE2->(!EOF()) .And.    _cChave == QRY_SE2->E5_FILIAL+QRY_SE2->E5_PREFIXO+QRY_SE2->E5_NUMERO+QRY_SE2->E5_PARCELA+QRY_SE2->E5_TIPO+QRY_SE2->E5_CLIFOR+QRY_SE2->E5_LOJA
 		If AllTrim(QRY_SE2->E5_TIPO) == 'PA' .And. AllTrim(QRY_SE2->E5_TIPODOC) == 'PA'
 			_nSomaE5 += QRY_SE2->E5_VALOR
@@ -334,10 +334,10 @@ oPrn:Say(330,100,'Data de Pagamento : '+DTOC(MV_PAR07),oFonte03)
 
 nTam := Ret_Tam('Banco :',oFonte03)
 oPrn:Say(330,1250-nTam,'Banco :',oFonte03)
-nTam := Ret_Tam('Agencia :',oFonte03)
-oPrn:Say(430,1250-nTam,'Agencia :',oFonte03)
-nTam := Ret_Tam('Conta Bancaria :',oFonte03)
-oPrn:Say(530,1250-nTam,'Conta Bancaria :',oFonte03)
+nTam := Ret_Tam('Agência :',oFonte03)
+oPrn:Say(430,1250-nTam,'Agência :',oFonte03)
+nTam := Ret_Tam('Conta Bancária :',oFonte03)
+oPrn:Say(530,1250-nTam,'Conta Bancária :',oFonte03)
 
 oPrn:Say(330,1250,Alltrim(SA6->A6_COD)+' - '+SA6->A6_NOME,oFonte03)
 oPrn:Say(430,1250,Alltrim(SA6->A6_AGENCIA)+IIF(!Empty(SA6->A6_DVAGE),'-'+SA6->A6_DVAGE,'')+' - '+SA6->A6_NOMEAGE,oFonte03)
@@ -345,9 +345,9 @@ oPrn:Say(530,1250,Alltrim(SA6->A6_NUMCON)+IIF(!Empty(SA6->A6_DVCTA),'-'+SA6->A6_
 
 IF bTit      
 	oPrn:Say(650,0050,'Filial',oFonte03)
-	oPrn:Say(650,0160,'No. Titulo',oFonte03)
+	oPrn:Say(650,0160,'No. Título',oFonte03)
 	oPrn:Say(650,0345,'CNPJ/CPF',oFonte03)
-	oPrn:Say(650,0665,'Razao Social',oFonte03)
+	oPrn:Say(650,0665,'Razão Social',oFonte03)
 	oPrn:Say(650,1287,'Vencto.Real',oFonte03)
 	oPrn:Say(650,1500,'Valor Bruto',oFonte03)
 	oPrn:Say(650,1775,'Ajuste',oFonte03)
@@ -366,8 +366,8 @@ Local aVExtenso := {}
 Local cTexto    := ''      
 
 nLin +=100               
-cTexto    := 'AUTORIZAMOS DEBITO NA CONTA CORRENTE NUMERO '+Alltrim(SA6->A6_NUMCON)+IIF(!Empty(SA6->A6_DVCTA),'-'+SA6->A6_DVCTA,'')+;
-			 ' DA AGENCIA '+Alltrim(SA6->A6_AGENCIA)+Alltrim(IIF(!Empty(SA6->A6_DVAGE),'-'+SA6->A6_DVAGE,''))+' NA IMPORTï¿½NCIA DE'+;
+cTexto    := 'AUTORIZAMOS DÉBITO NA CONTA CORRENTE NÚMERO '+Alltrim(SA6->A6_NUMCON)+IIF(!Empty(SA6->A6_DVCTA),'-'+SA6->A6_DVCTA,'')+;
+			 ' DA AGÊNCIA '+Alltrim(SA6->A6_AGENCIA)+Alltrim(IIF(!Empty(SA6->A6_DVAGE),'-'+SA6->A6_DVAGE,''))+' NA IMPORTÂNCIA DE'+;
 			 ' R$ '+Alltrim(Transform(nTotal ,'@E 99,999,999.99'))
 
 oPrn:Say(nLin,0600,cTexto,oFonte01)           
@@ -383,7 +383,7 @@ IF !Empty(aVExtenso[03])
 	oPrn:Say(nLin,600,aVExtenso[03],oFonte01)
 EndIF
 nLin+=70
-cTexto    := 'EM '+DTOC(MV_PAR07)+', E CREDITO NAS CTAS CONRRENTES OU QUITACCAO DOS TITULOS, CONFORME RELACAO ACIMA'
+cTexto    := 'EM '+DTOC(MV_PAR07)+', E CREDITO NAS CTAS CONRRENTES OU QUITACÇÃO DOS TÍTULOS, CONFORME RELAÇÃO ACIMA'
 oPrn:Say(nLin,0600,cTexto,oFonte01)
 
 

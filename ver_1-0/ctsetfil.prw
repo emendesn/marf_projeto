@@ -6,7 +6,7 @@ Data................: Fev/2018
 Descricao / Objetivo: Ponto de entrada para poder manipular as filiais selecionada. Rotina ADMGETFIL
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

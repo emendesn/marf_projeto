@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS29
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de Tipo de Carcaca
+Descrição / Objetivo.....: Cadastro de Tipo de Carcaça
 Doc. Origem..............: GAP
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -24,7 +24,7 @@ User Function MGFFIS29()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZDG")
-	oMBrowse:SetDescription("Cadastro tipo de Carcaca")
+	oMBrowse:SetDescription("Cadastro tipo de Carcaça")
 
 	oMBrowse:AddLegend("ZDG_STATUS=='1'", "GREEN", "Liberado " )
 	oMBrowse:AddLegend("ZDG_STATUS=='2'", "RED"  , "Bloqueado" )
@@ -60,11 +60,11 @@ Static Function ModelDef()
 
 	oModel:AddFields( 'ZDGMASTER', /*cOwner*/, oStruZDG, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
-	oModel:SetDescription( 'cadastro tipo de Carcaca' )
+	oModel:SetDescription( 'cadastro tipo de Carcaça' )
 
 	oModel:SetPrimaryKey({"ZDG_FILIAL"})
 
-	oModel:GetModel( 'ZDGMASTER' ):SetDescription( 'cadastro tipo de Carcaca' )
+	oModel:GetModel( 'ZDGMASTER' ):SetDescription( 'cadastro tipo de Carcaça' )
 
 Return oModel
 
@@ -90,7 +90,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 Static Function MGFBLQF()
 
@@ -101,13 +101,13 @@ Static Function MGFBLQF()
 		ZDG->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 Static Function MGFLIBF()
 
@@ -119,7 +119,7 @@ Static Function MGFLIBF()
 		
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return

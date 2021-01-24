@@ -7,10 +7,10 @@
 Programa............: MGFCOM03
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Cadastro de Niveis
+Descrição / Objetivo: Cadastro de Niveis
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de Niveis
 =====================================================================================
 */
@@ -32,11 +32,11 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -48,7 +48,7 @@ Static Function MenuDef()
 	ADD OPTION aRotina TITLE "Incluir"    		ACTION "VIEWDEF.MGFCOM03" OPERATION MODEL_OPERATION_INSERT ACCESS 0
 	ADD OPTION aRotina TITLE "Alterar"    		ACTION "VIEWDEF.MGFCOM03" OPERATION MODEL_OPERATION_UPDATE ACCESS 0
 	ADD OPTION aRotina TITLE "Excluir"    	    ACTION "VIEWDEF.MGFCOM03" OPERATION MODEL_OPERATION_DELETE ACCESS 0
-	ADD OPTION aRotina TITLE "Log de alteracao" ACTION "U_MGFCOM33()"   OPERATION 6   				   ACCESS 0
+	ADD OPTION aRotina TITLE "Log de alteração" ACTION "U_MGFCOM33()"   OPERATION 6   				   ACCESS 0
 
 Return(aRotina)
 
@@ -61,11 +61,11 @@ Return*/
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro de Niveis
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro de Niveis
 =====================================================================================
 */
 Static Function ModelDef()
@@ -107,11 +107,11 @@ Return oModel
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizasao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()
@@ -149,11 +149,11 @@ Return oView
 Programa............: xVldAcivate
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica se ja foi utilizado o nivel em alguma grade para permitir a exclusao
+Uso.................: Marfrig
+Obs.................: Verifica se ja foi utilizado o nivel em alguma grade para permitir a exclusão
 =====================================================================================
 */
 Static Function xVldAcivate(oModel)
@@ -207,10 +207,10 @@ Return lRet
 Programa............: xActiv
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Utilizado na Ativacao do Modelo de Dados
+Descrição / Objetivo: Utilizado na Ativação do Modelo de Dados
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Carrega as unidades(filiais) na Grid
 =====================================================================================
 */
@@ -284,11 +284,11 @@ Return .T.
 Programa............: xPreLinVal
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a validacao ao tentar realizar uma deleï¿½ï¿½o de uma linha
+Uso.................: Marfrig
+Obs.................: Realiza a validação ao tentar realizar uma deleção de uma linha
 =====================================================================================
 */
 Static Function xPreLinVal(oMldZA2,nLin,cAction)
@@ -349,11 +349,11 @@ Return lRet
 Programa............: xMGFC03US
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Validar codigo de usuario vinculado a outro Nivel
+Descrição / Objetivo: Validar código de usuario vinculado a outro Nivel
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Validacao do codigo de usuario
+Uso.................: Marfrig
+Obs.................: Validação do código de usuario
 =====================================================================================
 */
 User Function xOldMGFC03US(oMdlZA2,cFld,xValor,nLin)
@@ -385,7 +385,7 @@ User Function xOldMGFC03US(oMdlZA2,cFld,xValor,nLin)
 			If SAK->AK_ZNIVEL <> cNivel
 				lRet := .F.
 				oMdlZA2:GetModel():SetErrorMessage(oMdlZA2:GetId(),cFld,oMdlZA2:GetModel():GetId(),cFld,cFld,;
-				"Usuario dessa Filial jï¿½ esta vinculado a outro Nivel de aprovacao", "Favor Verificar o Nivel: '" + SAK->AK_ZNIVEL + "' , e realizar os ajustes necessarios." )
+				"Usuario dessa Filial já esta vinculado a outro Nivel de aprovação", "Favor Verificar o Nivel: '" + SAK->AK_ZNIVEL + "' , e realizar os ajustes necessarios." )
 			EndIf
 		EndIf
 	EndIf
@@ -441,7 +441,7 @@ User Function xMGFC03US(oMdlZA2,cFld,xValor,nLin)
 		While (cNextAlias)->(!EOF())
 			lRet := .F.
 			oMdlZA2:GetModel():SetErrorMessage(oMdlZA2:GetId(),cFld,oMdlZA2:GetModel():GetId(),cFld,cFld,;
-			"Usuario dessa Filial jï¿½ esta vinculado a outro Nivel de aprovacao", "Favor Verificar o Nivel: '" + (cNextAlias)->ZA2_NIVEL + "' , e realizar os ajustes necessarios." )
+			"Usuario dessa Filial já esta vinculado a outro Nivel de aprovação", "Favor Verificar o Nivel: '" + (cNextAlias)->ZA2_NIVEL + "' , e realizar os ajustes necessarios." )
 			Exit
 			(cNextAlias)->(dbSkip())
 		EndDo
@@ -459,10 +459,10 @@ Return lRet
 Programa............: xMGFC3VUN
 Autor...............: Joni Lima
 Data................: 27/12/2016
-Descricao / Objetivo: Validar Valores da Unidade se a mesma ja se encontra cadastrada
+Descrição / Objetivo: Validar Valores da Unidade se a mesma ja se encontra cadastrada
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se existe apenas uma unidade para esse nivel
 =====================================================================================
 */
@@ -478,7 +478,7 @@ User Function xMGFC3VUN(oMdlZA2,cFld,xValor,nLin)
 		If AllTrim(oMdlZA2:GetValue('ZA2_EMPFIL')) == AllTrim(xValor) .and. nLinAt <> ni 
 			lRet := .F.
 			oMdlZA2:GetModel():SetErrorMessage(oMdlZA2:GetId(),cFld,oMdlZA2:GetModel():GetId(),cFld,cFld,;
-			"Unidade jï¿½ vinculada em outra linha, que nao esta bloqueada", "Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios." )
+			"Unidade já vinculada em outra linha, que não esta bloqueada", "Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios." )
 			Exit
 		EndIf
 	Next ni
@@ -492,10 +492,10 @@ Return lRet
 Programa............: xMGF3VerUn
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: Validar Valores da Unidade se a mesma ja se encontra cadastrada ao mudar de linha
+Descrição / Objetivo: Validar Valores da Unidade se a mesma ja se encontra cadastrada ao mudar de linha
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se existe apenas uma unidade para esse nivel
 =====================================================================================
 */
@@ -517,9 +517,9 @@ Static Function xMGF3VerUn(oMdlZA2)
 
 			If AllTrim(oMdlZA2:GetValue('ZA2_EMPFIL')) == AllTrim(cUni) .and. nLinAt <> ni 
 				lRet := .F.
-				Help('',1,"Unidade jï¿½ vinculada em outra linha, que nao esta bloqueada",,"Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios.",1,0)
+				Help('',1,"Unidade já vinculada em outra linha, que não esta bloqueada",,"Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios.",1,0)
 				//oMdlZA2:GetModel():SetErrorMessage(oMdlZA2:GetId(),cFld,oMdlZA2:GetModel():GetId(),cFld,cFld,;
-				//	"Unidade jï¿½ vinculada em outra linha, que nao esta bloqueada", "Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios." )
+				//	"Unidade já vinculada em outra linha, que não esta bloqueada", "Favor Verificar a Linha: '" + AllTrim(str(ni)) + "' , e realizar os ajustes necessarios." )
 				Exit
 			EndIf
 
@@ -535,11 +535,11 @@ Return lRet
 Programa............: xMGFC03VL
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Validar Valores de Min e Maximo
+Descrição / Objetivo: Validar Valores de Min e Maximo
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Validacao de valores Minimo e Maximo
+Uso.................: Marfrig
+Obs.................: Validação de valores Minimo e Maximo
 =====================================================================================
 */
 User Function xMGFC03VL(oMdlZA2,cFld,xValor,nLin)
@@ -558,7 +558,7 @@ User Function xMGFC03VL(oMdlZA2,cFld,xValor,nLin)
 
 	If ( !Empty(nVldMin) .And. !Empty(nVldMax) .And. (nVldMin > nVldMax ))
 		oMdlZA2:GetModel():SetErrorMessage(oMdlZA2:GetId(),cFld,oMdlZA2:GetModel():GetId(),cFld,cFld,;
-		"Valor Minimo nao pode ser Superior ao valor Maximo", "verifique os valores digitados" )
+		"Valor Minimo não pode ser Superior ao valor Maximo", "verifique os valores digitados" )
 		lRet := .F.
 	Endif
 
@@ -569,11 +569,11 @@ Return(lRet)
 Programa............: xMGFC03Ins
 Autor...............: Joni Lima
 Data................: 20/12/2016
-Descricao / Objetivo: Validar Valores que so Podem ser alterados na inclusao
+Descrição / Objetivo: Validar Valores que so Podem ser alterados na inclusão
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica se a linha ï¿½ inserida.
+Uso.................: Marfrig
+Obs.................: Verifica se a linha é inserida.
 =====================================================================================
 */
 Static Function xMGFC03Ins(oMdlZA2,cField,xValue,nLine)
@@ -584,11 +584,11 @@ Return Empty(oMdlZA2:GetValue('ZA2_EMPFIL'))//oMdlZA2:IsInserted()
 Programa............: PosVld
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Validacao Antes do Commit
+Descrição / Objetivo: Validação Antes do Commit
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a validacao antes do commit
+Uso.................: Marfrig
+Obs.................: Realiza a validação antes do commit
 =====================================================================================
 */
 Static Function PosVld(oModel)
@@ -605,8 +605,8 @@ Static Function PosVld(oModel)
 	lRet := aRet[1]
 
 	If !(lRet)
-		cMsg := aRet[2]//Mensagem com as Filiais que estao sem usuarios.
-		Help('',1,'Unidades sem Usuarios',,'Existem unidades sem usuario vinculado obs.: Verificar se nao esta bloqueado',1,0)
+		cMsg := aRet[2]//Mensagem com as Filiais que estão sem usuarios.
+		Help('',1,'Unidades sem Usuarios',,'Existem unidades sem usuario vinculado obs.: Verificar se não esta bloqueado',1,0)
 	EndIf
 
 	If lRet
@@ -619,7 +619,7 @@ Static Function PosVld(oModel)
 
 			If (!Empty(nVldMin) .or. !Empty(nVldMax)) .And. (nVldMin > nVldMax)
 				lRet := .F.
-				Help('',1,'Verificar Valores',,'Valor Minimo nao pode ser Superior ao valor Maximo',1,0)
+				Help('',1,'Verificar Valores',,'Valor Minimo não pode ser Superior ao valor Maximo',1,0)
 				Exit
 			EndIf
 
@@ -633,10 +633,10 @@ Return lRet
 Programa............: Commit
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Tratamentos para Commit
+Descrição / Objetivo: Tratamentos para Commit
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Commit do Modelo
 =====================================================================================
 */
@@ -666,10 +666,10 @@ Static Function xCommit(oModel)
 				If ZA2->(DbSeek(aDados[ni,1]))
 					If ZA2->ZA2_LOGIN <> aDados[ni,2]
 						
-						//Atualizacao do usuario na tabela SCR
+						//Atualização do usuario na tabela SCR
 						xAtUser(ZA2->ZA2_CODUSU,aDados[ni,3],aDados[ni,4])
 						
-						//Criacao do Log de Aprovacao
+						//Criação do Log de Aprovação
 						U_xMC33ILog('ZA2', aDados[ni,1], ZA2->(RECNO()), 'ZA2_LOGIN', ZA2->ZA2_LOGIN, aDados[ni,2], dDataBase, Time(), __CUSERID)
 					
 					EndIf
@@ -695,10 +695,10 @@ return lRet
 Programa............: Commit
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Tratamentos para Commit
+Descrição / Objetivo: Tratamentos para Commit
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Commit do Modelo
 =====================================================================================
 */
@@ -723,7 +723,7 @@ Static Function xOldCommit(oModel)
 
 		If oModel:GetOperation() <> MODEL_OPERATION_DELETE
 
-			//Realiza Gravaï¿½ï¿½o dos Aprovadores de Pedidos
+			//Realiza Gravação dos Aprovadores de Pedidos
 			For ni := 1 to oMdlZA2:Length()
 
 				oMdlZA2:GoLine(ni)
@@ -748,7 +748,7 @@ Static Function xOldCommit(oModel)
 						oMdlZA2:SetValue('ZA2_CODAPD',cCodSAK)
 					EndIf
 
-					//Realiza Gravaï¿½ï¿½o dos Gestores Financeiros
+					//Realiza Gravação dos Gestores Financeiros
 					/*If oMdlZA1:GetValue('ZA1_APRFIN') == 'S'
 
 						cCodGFRP := oMdlZA2:GetValue('ZA2_CODAFN')
@@ -813,11 +813,11 @@ Return lRet
 Programa............: GrvSAK
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Realiza Manutencao dos Aprovadores de compras no Protheus
+Descrição / Objetivo: Realiza Manutenção dos Aprovadores de compras no Protheus
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz manutencao de registro SAK
+Uso.................: Marfrig
+Obs.................: Faz manutenção de registro SAK
 =====================================================================================
 */
 Static Function GrvSAK(oModel,aCampo)
@@ -884,11 +884,11 @@ Return cRet
 Programa............: ExcSAK
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Realiza Exclusao dos Aprovadores de compras no Protheus
+Descrição / Objetivo: Realiza Exclusão dos Aprovadores de compras no Protheus
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz exclusao de registro SAK
+Uso.................: Marfrig
+Obs.................: Faz exclusão de registro SAK
 =====================================================================================
 */
 Static Function ExcSAK(cxFil,cCod)
@@ -931,11 +931,11 @@ Return
 Programa............: GrvFRP
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Realiza Manutencao dos Aprovadores de compras no Protheus
+Descrição / Objetivo: Realiza Manutenção dos Aprovadores de compras no Protheus
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz manutencao de registro SAK
+Uso.................: Marfrig
+Obs.................: Faz manutenção de registro SAK
 =====================================================================================
 */
 Static Function GrvFRP(oModel,aCampo)
@@ -1012,11 +1012,11 @@ Return cRet
 Programa............: ExcFRP
 Autor...............: Joni Lima
 Data................: 19/12/2016
-Descricao / Objetivo: Realiza Exclusao dos Aprovadores de compras no Protheus
+Descrição / Objetivo: Realiza Exclusão dos Aprovadores de compras no Protheus
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Faz Exclusao de registro SAK
+Uso.................: Marfrig
+Obs.................: Faz Exclusão de registro SAK
 =====================================================================================
 */
 Static Function ExcFRP(cxFil,cCod)
@@ -1059,10 +1059,10 @@ Return
 Programa............: xMC3Valid
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Utilizado na Validacao antes da Gravaï¿½ï¿½o
+Descrição / Objetivo: Utilizado na Validação antes da Gravação
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se tem um usuario ativo por filial.
 =====================================================================================
 */
@@ -1109,11 +1109,11 @@ Static Function xMC3Valid(oModel)
 	Next ni
 
 	If lRet
-		cMsgErr := 'ï¿½ Necessario que em todas as Unidades existam um usuario vinculado ao nivel, favor Verficar a(s) unidade(s) :'// + CRLF
+		cMsgErr := 'É Necessario que em todas as Unidades existam um usuario vinculado ao nivel, favor Verficar a(s) unidade(s) :'// + CRLF
 		For ni := 1 to Len(aErr)
 			cMsgErr += aErr[ni] //+ CRLF
 		Next ni
-		cMsgErr += 'Obs.: ï¿½ Necessario que exista um usuario que NAO esteja bloqueado por Unidade'
+		cMsgErr += 'Obs.: é Necessario que exista um usuario que NÃO esteja bloqueado por Unidade'
 	EndIf
 
 	FWRestRows( aSaveLines )
@@ -1127,10 +1127,10 @@ Return {lRet,cMsgErr}
 Programa............: xMC3MntAr
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Monta Array na Alteracao caso algum usuario seja bloqueado
+Descrição / Objetivo: Monta Array na Alteração caso algum usuario seja bloqueado
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna Array com Filial,nivel,usuario Antigo,Encontrar
 =====================================================================================
 */
@@ -1173,10 +1173,10 @@ Return aRet
 Programa............: xMC3EncGra
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Encontra Grade onde usuario que foi bloqueado esta associado
+Descrição / Objetivo: Encontra Grade onde usuario que foi bloqueado esta associado
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Encontra as Grades onde usuario Old estava associado
 =====================================================================================
 */
@@ -1233,11 +1233,11 @@ Return aRet
 Programa............: xMC3AtGrad
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Realiza nova versï¿½o de uma grade e homologa a mesma
+Descrição / Objetivo: Realiza nova versão de uma grade e homologa a mesma
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza cadastro de uma versï¿½o para grades e homologa a mesma
+Uso.................: Marfrig
+Obs.................: Realiza cadastro de uma versão para grades e homologa a mesma
 =====================================================================================
 */
 user Function xMC3AtGrad(aDados)
@@ -1357,7 +1357,7 @@ user Function xMC3AtGrad(aDados)
 			EndIF
 		
 			If ZAB->(dbSeek(xFilial('ZAB') + aDados[ni,1] + cVersao))
-				//Homologaï¿½ï¿½o da Nova Versao
+				//Homologação da Nova Versao
 				U_xHomologar()
 			EndIF
 		
@@ -1375,10 +1375,10 @@ Return
 Programa............: xCarModel
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Carrega o Modelo de dados da Grade
+Descrição / Objetivo: Carrega o Modelo de dados da Grade
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 Static Function xCarModel(oModel,cCodigo,cVersao,cTipo)
@@ -1420,7 +1420,7 @@ Static Function xCarModel(oModel,cCodigo,cVersao,cTipo)
 
 			cChave := (cQry)->(ZAB_FILIAL + ZAB_CODIGO + ZAB_VERSAO + ZAC_GRPPRD)
 
-			//Preenche Cabecalho 
+			//Preenche Cabeçalho 
 			For ni := 1 To Len(oStruZAB:aFields)
 				If !oStruZAB:aFields[ni,14]
 					cField := oStruZAB:aFields[ni,3]
@@ -1498,7 +1498,7 @@ Static Function xCarModel(oModel,cCodigo,cVersao,cTipo)
 			oStruZAB := oMdlZAB:GetStruct()
 			oStruZAD := oMdlZAD:GetStruct()			
 			
-			//Preenche Cabecalho 
+			//Preenche Cabeçalho 
 			For ni := 1 To Len(oStruZAB:aFields)
 				If !oStruZAB:aFields[ni,14]
 					cField := oStruZAB:aFields[ni,3]
@@ -1544,7 +1544,7 @@ Static Function xCarModel(oModel,cCodigo,cVersao,cTipo)
 
 			cChave := (cQry)->(ZAB_FILIAL + ZAB_CODIGO + ZAB_VERSAO + ZAE_NATURE)
 
-			//Preenche Cabecalho 
+			//Preenche Cabeçalho 
 			For ni := 1 To Len(oStruZAB:aFields)
 				If !oStruZAB:aFields[ni,14]
 					cField := oStruZAB:aFields[ni,3]
@@ -1622,10 +1622,10 @@ Return
 Programa............: xQryCopy
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Realiza query das grades que precisaram ser executados
+Descrição / Objetivo: Realiza query das grades que precisaram ser executados
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 Static Function xQryCopy(cCodigo,cVersao,cTipo)
@@ -1723,11 +1723,11 @@ Return cNextAlias
 Programa............: xMGC3EncUs
 Autor...............: Joni Lima
 Data................: 05/01/2016
-Descricao / Objetivo: Realiza preenchimento do cod de aprovador pedido e se necessario financeiro
+Descrição / Objetivo: Realiza preenchimento do cod de aprovador pedido e se necessario financeiro
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Busca informacoes SAK e FRP
+Uso.................: Marfrig
+Obs.................: Busca informações SAK e FRP
 =====================================================================================
 */
 User Function xMGC3EncUs(xcFil,xcUser,cTp)
@@ -1777,10 +1777,10 @@ Return cRet
 Programa............: MGF3Achr
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Encontra os Prazos para o aprovador informado
+Descrição / Objetivo: Encontra os Prazos para o aprovador informado
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Retorna um array com {Prazo SC, Prazo PC, Prazo CP}
 =====================================================================================
 */
@@ -1838,10 +1838,10 @@ Return aRet
 Programa............: MGFc3USER
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Retorna Dados para o usuario
+Descrição / Objetivo: Retorna Dados para o usuario
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 User Function MGFc3USER(cCodUsu,lXIncl)
@@ -1873,7 +1873,7 @@ return cRet
 Programa............: MGFcRegUs
 Autor...............: Joni Lima
 Data................: 20/01/2016
-Descricao / Objetivo: Retorna Dados para o usuario
+Descrição / Objetivo: Retorna Dados para o usuario
 Doc. Origem.........: Contrato - GAP GRADE ERP
 =====================================================================================
 */
@@ -1940,10 +1940,10 @@ user function chkUsZA2(cCodUsr)
 		If !(Empty(QRYUSR->USR_EMAIL))
 			lRet := .T.
 		Else
-			Help('',1,'Usuario Sem E-mail',,'Usuario nao tem E-mail Cadastrado.', 1, 0)
+			Help('',1,'Usuário Sem E-mail',,'Usuário não tem E-mail Cadastrado.', 1, 0)
 		EndIf
 	else
-		Help('',1,'Usuario nao localizado',,'Usuario nao localizado. Informe um usuario valido.', 1, 0)
+		Help('',1,'Usuário não localizado',,'Usuário não localizado. Informe um usuário válido.', 1, 0)
 	endif
 
 	QRYUSR->(DBCloseArea())

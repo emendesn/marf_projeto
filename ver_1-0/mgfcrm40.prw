@@ -14,7 +14,7 @@ Data.....:              04/07/2017
 Descricao / Objetivo:   Exporta CSV das Metas
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -43,7 +43,7 @@ static function genArq()
 	local cStrCSV	:= ""
 
 	if !existDir(allTrim(MV_PAR01))
-		msgAlert("Diretï¿½rio invï¿½lido.")
+		msgAlert("Diretório inválido.")
 		return
 	endif
 
@@ -76,9 +76,9 @@ static function genArq()
 
 				QRYARQ->(DBSkip())
 			enddo
-			msgInfo("Exportacao gerada com sucesso.")
+			msgInfo("Exportação gerada com sucesso.")
 		else
-			msgAlert("Nao  foram encontradas informacoes a serem exportadas.")
+			msgAlert("Não foram encontradas informações a serem exportadas.")
 		endif
 		QRYARQ->(DBCloseArea())
 	endif

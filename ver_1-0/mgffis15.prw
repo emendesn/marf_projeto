@@ -8,9 +8,9 @@ Programa.:              MGFFIS15
 Autor....:              Marcelo Carneiro         
 Data.....:              02/02/2017 
 Descricao / Objetivo:   GAP FIS20 - FUNDEPEC
-Doc. Origem:            MIT044- Customizacoes Marfrig  Modulo Fiscal -GAP FIS20 - Fundepec_Assinada
+Doc. Origem:            MIT044- Customizações Marfrig  Módulo Fiscal -GAP FIS20 - Fundepec_Assinada
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Criar Parametros 
 ====================================================================================================
 */
@@ -36,13 +36,13 @@ Local cCalculo   := PARAMIXB[1]
 Local nItem      := PARAMIXB[2]              
 Local cFILFIS20  := GetMV('MGF_FIS20F',.F.,'01') // 010001 Filiais que tem o Imposto.
 Local cAliqFIS20 := GetMV('MGF_FIS20A',.F.,0.25) // Aliquota do Imposto
-Local cTESFIS20  := allTrim(GetMV('MGF_FIS20T',.F.,'001')) // TES que determina se ï¿½ compra de Gado
+Local cTESFIS20  := allTrim(GetMV('MGF_FIS20T',.F.,'001')) // TES que determina se é compra de Gado
 Local cProduto   := ''
 Local nPauta     := 0 
 Local cTes       := ''
 Local cUFForn    := ''							//UF do Fornecedor
 
-//Se a rotina for o Doc. de entrada (Mata103) usa a variavel CUFORIG, se for Pedido de Compra usa o campo A2_ESTADO 
+//Se a rotina for o Doc. de entrada (Mata103) usa a variável CUFORIG, se for Pedido de Compra usa o campo A2_ESTADO 
 IIF(FUNNAME()=='MATA103',cUFForn := CUFORIG,cUFForn := SA2->A2_EST)
 
 

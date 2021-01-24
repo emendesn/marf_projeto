@@ -6,10 +6,10 @@
 Programa............: MGFFAT09
 Autor...............: Joni Lima       
 Data................: 06/10/2016 
-Descricao / Objetivo: Cadastro de Aprovadores vs Regra
+Descrição / Objetivo: Cadastro de Aprovadores vs Regra
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Aprovadores vs Regra
 =====================================================================================
 */
@@ -29,11 +29,11 @@ Return
 Programa............: MenuDef
 Autor...............: Joni Lima       
 Data................: 06/10/2016 
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu      
+Uso.................: Marfrig
+Obs.................: Definição do Menu      
 =====================================================================================
 */
 Static Function MenuDef()    
@@ -53,11 +53,11 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima       
 Data................: 06/10/2016 
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro de Aprovadores vs Regra      
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro de Aprovadores vs Regra      
 =====================================================================================
 */
 Static Function ModelDef()
@@ -115,11 +115,11 @@ return .T.
 Programa............: ViewDef
 Autor...............: Joni Lima       
 Data................: 06/10/2016 
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizacao da tela      
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela      
 =====================================================================================
 */
 Static Function Viewdef()
@@ -308,24 +308,24 @@ oMark:addColumn({"Data Inclusao"	, {||aMat[oMark:nAt,6]}		, "C", pesqPict("SZU",
 oMark:addColumn({"Bloqueado"		, {||aMat[oMark:nAt,7]}		, "C", pesqPict("SZU","ZU_MSBLQL")	, 1, tamSx3("ZU_MSBLQL")[1],, .F.})
 		
 /* add(Column
-[n][01] Titulo da coluna
+[n][01] Título da coluna
 [n][02] Code-Block de carga dos dados
 [n][03] Tipo de dados
-[n][04] Mascara
+[n][04] Máscara
 [n][05] Alinhamento (0=Centralizado, 1=Esquerda ou 2=Direita)
 [n][06] Tamanho
 [n][07] Decimal
-[n][08] Indica se permite a edicao
-[n][09] Code-Block de validacao da coluna apos a edicao
+[n][08] Indica se permite a edição
+[n][09] Code-Block de validação da coluna após a edição
 [n][10] Indica se exibe imagem
-[n][11] Code-Block de execucao do duplo clique
-[n][12] Variavel a ser utilizada na edicao (ReadVar)
-[n][13] Code-Block de execucao do clique no header
-[n][14] Indica se a coluna esta deletada
-[n][15] Indica se a coluna sera exibida nos detalhes do Browse
-[n][16] Opcoes de carga dos dados (Ex: 1=Sim, 2=Nao)
+[n][11] Code-Block de execução do duplo clique
+[n][12] Variável a ser utilizada na edição (ReadVar)
+[n][13] Code-Block de execução do clique no header
+[n][14] Indica se a coluna está deletada
+[n][15] Indica se a coluna será exibida nos detalhes do Browse
+[n][16] Opções de carga dos dados (Ex: 1=Sim, 2=Não)
 [n][17] Id da coluna
-[n][18] Indica se a coluna ï¿½ virtual
+[n][18] Indica se a coluna é virtual
 */
 
 oMark:activate(.T.)

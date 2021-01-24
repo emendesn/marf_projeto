@@ -4,11 +4,11 @@
 Programa.:              SF2520E
 Autor....:              Roberto Sidney
 Data.....:              25/10/2016
-Descricao / Objetivo:   Efetua o estorno automatico da medicao no momento da exclusao da nota fiscal
+Descricao / Objetivo:   Efetua o estorno automático da medição no momento da exclusão da nota fiscal
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Chamada efetuada atraves do ponto de entrada A410CONS()
+Uso......:              Marfrig
+Obs......:              Chamada efetuada através do ponto de entrada A410CONS()
 =====================================================================================
 */
 User Function SF2520E()
@@ -34,17 +34,17 @@ return
 Programa.:              MGFSF2520E
 Autor....:              Roberto Sidney
 Data.....:              25/10/2016
-Descricao / Objetivo:   Efetua o estorno automatico da medicao no momento da exclusao da nota fiscal
+Descricao / Objetivo:   Efetua o estorno automático da medição no momento da exclusão da nota fiscal
 Doc. Origem:            VEN03 - GAP MGFVEN03
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Chamada efetuada atraves do ponto de entrada A410CONS()
+Uso......:              Marfrig
+Obs......:              Chamada efetuada através do ponto de entrada A410CONS()
 =====================================================================================
 */
 User Function MGFSF2520E()
 
 	Local _cChaveCND := '' 
-	// Declara variï¿½veis utilizados pelas rotinas automaticas
+	// Declara variáveis utilizados pelas rotinas automáticas
 	Private LAUTO      := .T.   
 	Private aAutoCab   := {}  
 	Private aAutoItens := {}
@@ -53,7 +53,7 @@ User Function MGFSF2520E()
 	{"","",0,7,0,nil},{"","",0,8,0,.F.},{"","",0,3,0,.F.},{"","",0,9,0,nil},{"","",0,4,0,nil},{"","",0,3,0,.F.}}  //
 
 
-	// Recupera o numero da medicao
+	// Recupera o numero da medição
 	DbSelectArea("SC5")
 	_cChaveCND := SC5->C5_ZNUMED
 
@@ -61,7 +61,7 @@ User Function MGFSF2520E()
 	DbSetOrder(4)
 
 	IF CND->(DbSeek(xFilial("CND")+_cChaveCND))    
-		// Monta AutoCab para rotina automatica
+		// Monta AutoCab para rotina automática
 		aAdd(aAutoCab,{"CND_CONTRA",CND->CND_CONTRA,NIL})
 		aAdd(aAutoCab,{"CND_REVISA",CND->CND_REVISA,NIL})
 		aAdd(aAutoCab,{"CND_COMPET",CND->CND_COMPET,NIL})
@@ -70,15 +70,15 @@ User Function MGFSF2520E()
 		aAdd(aAutoCab,{"CND_PARCEL",CND->CND_PARCEL,NIL})
 		aAdd(aAutoCab,{"CND_MOEDA",CND->CND_MOEDA,NIL})
 		aAdd(aAutoCab,{"CND_DESCME",CND->CND_DESCME,NIL})
-		aAdd(aAutoCab,{"CND_OBS","Estorno ocorrido atraves de exclusao de N.F.",NIL}) //medicao gerada automaticamente a partir da inclusao do pedido de venda numero ###.
+		aAdd(aAutoCab,{"CND_OBS","Estorno ocorrido através de exclusão de N.F.",NIL}) //Medição gerada automaticamente a partir da inclusão do pedido de venda número ###.
 		aAdd(aAutoCab,{"NUMPED",CND->CND_PEDIDO,NIL})
 		aAdd(aAutoCab,{"CND_SERVIC",CND->CND_SERVIC,NIL})
 		CN120Estor("CND",CND->(RECNO()),1) 
 		DbSelectArea("CNF")
 		cCompet :=  CNF->CNF_COMPET
-		//CN120Manut("CND",CND->(RECNO()),3) // Exclusao da medicao 
+		//CN120Manut("CND",CND->(RECNO()),3) // Exclusão da medição 
 		CN130Manut("CND",CND->(RECNO()),5,,CND->CND_CONTRA,CND->CND_REVISA,cCompet,,,,CND->CND_PARCEL,,,,) 
-		msgalert("Estorno da medicao efetuado com sucesso.")
+		msgalert("Estorno da medição efetuado com sucesso.")
 	Endif
 
 Return .t.

@@ -5,7 +5,7 @@
 ======================================================================================================
 Autor....: Caroline Cazela
 Data.....: 04/12/2018
-Descricao: Chamado pelo ponto de entrada DPCTB102GR pgravacaoaï¿½ï¿½o da SCR e DBM do lancamento contabil.
+Descrição: Chamado pelo ponto de entrada DPCTB102GR para gravaï¿½ï¿½o da SCR e DBM do lançamento contábil.
 ======================================================================================================
 */
 user function MGFCTB25(nxOpc)
@@ -30,14 +30,14 @@ user function MGFCTB25(nxOpc)
 	
 	Default nxOpc := 3
 
-	//Nao deve ser gerada grade quando o Execauto ï¿½ acionado pela rotina de aprovacao.
-	//Esse provblema estava causando looping e apos aprovado o registro voltava para a grade novamente
+	//Não deve ser gerada grade quando o Execauto é acionado pela rotina de aprovação.
+	//Esse provblema estava causando looping e após aprovado o registro voltava para a grade novamente
 	IF isInCallStack("U_MGFCOM14")
 		Return (.T.)
 	EndIf
 	
 	If CT2->CT2_TPSALD == "2"
-		//(nxOpc = 4 .AND. Empty(CT2->CT2_ORIGEM));  // Saldo Orï¿½ado ou Alteracao ; 18/09/2019: Alteracao de lancamento nao deve ir para a grade.
+		//(nxOpc = 4 .AND. Empty(CT2->CT2_ORIGEM));  // Saldo Orçado ou Alteração ; 18/09/2019: Alteração de lançamento não deve ir para a grade.
 
 
 		cEmpFil		:= Alltrim(CT2->CT2_FILIAL)
@@ -48,7 +48,7 @@ user function MGFCTB25(nxOpc)
 		nValTot 	:= xValLanc(xFilial('CT2'),cNum)
 		
 		
-		//Encontra a Grade de aprovacao:
+		//Encontra a Grade de aprovação:
 		If Select(cAliasGrd) > 0
 			(cAliasGrd)->(DbClosearea())
 		Endif
@@ -82,7 +82,7 @@ user function MGFCTB25(nxOpc)
 
 		(cAliasGrd)->(DbClosearea())
 
-		//Exclui a Alcada caso exista uma com a mesma chave
+		//Exclui a Alçada caso exista uma com a mesma chave
 		dbSelectArea('SCR')
 		SCR->(dbSetOrder(1))//CR_FILIAL, CR_TIPO, CR_NUM, CR_NIVEL
 
@@ -91,7 +91,7 @@ user function MGFCTB25(nxOpc)
 			lExclusao	:= nxOpc == 5
 			
 			While SCR->(!EOF()) .and. SCR->(CR_FILIAL + CR_TIPO + CR_NUM) ==  xFilial('SCR') + 'LC' + PadR(cNum,TamSX3('CR_NUM')[1])
-				If Empty(SCR->CR_DATALIB) //Verifica se falta alguma pessoa aprovar o lancamento
+				If Empty(SCR->CR_DATALIB) //Verifica se falta alguma pessoa aprovar o lançamento
 					lAprov := .F.
 				EndIf
 				RecLock('SCR',.F.)
@@ -99,7 +99,7 @@ user function MGFCTB25(nxOpc)
 				SCR->(MsUnLock())
 				SCR->(dbSkip())
 			EndDo
-			If !lAprov //Retornar o saldo apenas quando a Alcada estiver para ser aprovada
+			If !lAprov //Retornar o saldo apenas quando a Alçada estiver para ser aprovada
 				U_xMC26Som(xFilial('SCR'),cUser,nValSCR)
 			EndIf
 		EndIf
@@ -108,7 +108,7 @@ user function MGFCTB25(nxOpc)
 			(cNextAlias)->(DbClosearea())
 		Endif
 
-		//Separa Itens para criacao da Grade de aprovacao
+		//Separa Itens para criação da Grade de aprovação
 		If !lExclusao
 			BeginSql Alias cNextAlias
 	
@@ -185,7 +185,7 @@ user function MGFCTB25(nxOpc)
 Return( .T. )
 
 /*
-	Calcula Valor total do lancamento
+	Calcula Valor total do Lançamento
 */
 Static Function xValLanc(xcFil,cNum)
 
@@ -213,7 +213,7 @@ Return nRet
 
 
 /*/{Protheus.doc} CTB25Ext
-Verifica o lancamento ira para a grade ou ï¿½ uma excecao.
+Verifica o lançamento irá para a grade ou é uma exceção.
 
 @author Natanael Filho
 @since 20/10/2019
@@ -226,8 +226,8 @@ User Function xCTB25Ext()
 
 	Local _lRet			:= .F.
 	Local cUser			:= Alltrim(RetCodUsr())
-	Local cUsDireto		:= SuperGetMV("MGF_CTB25A",.F.,"000000") //Usuarios contidos no parametro MGF_CTB25A nao passam por aprovacao.
-	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que nao passaram pela grade de aprovacao.
+	Local cUsDireto		:= SuperGetMV("MGF_CTB25A",.F.,"000000") //Usuarios contidos no parametro MGF_CTB25A não passam por aprovação.
+	Local cEmpDireto	:= SuperGetMV("MGF_CTB25B",.F.,"02/") //Grupo de empresas que não passaram pela grade de aprovação.
 	
 
 	If (cUser $ cUsDireto .OR. cEmpAnt $ cEmpDireto)  //Verifica se usuario ou Grupo de empresa passa direto

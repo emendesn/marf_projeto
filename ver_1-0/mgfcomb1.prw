@@ -64,7 +64,7 @@ user function MGFCOMB1() // Tratamento para NFE do Tipo "NFS"
 	
 	
 	//Verifica qual o comportamento foi parâmetrizado para a rotina: 1-Bloquerá a gravação; 2-Apenas alertará; 0-Nada fara.
-	If !_lRetComB1 .AND. _nErroT > 0
+	If !isblind() .and. !_lRetComB1 .AND. _nErroT > 0
 		If _nBloqMSG = 0
 			_lRetComB1 := .T.
 
@@ -74,6 +74,8 @@ user function MGFCOMB1() // Tratamento para NFE do Tipo "NFS"
 		ElseIf MsgYesNo(_cMsg + "." + CRLF + "Deseja continuar?","MGFCOMB1")
 				_lRetComB1 := .T.
 		EndIf
+	Elseif isblind()
+		_lRetComB1 := .T.
 	EndIf
 	
 return _lRetComB1

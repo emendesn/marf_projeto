@@ -14,10 +14,10 @@
 Programa.:              MGFFIS14
 Autor....:              Barbieri        
 Data.....:              01/2017                                                                                                            
-Descricao / Objetivo:   Regime especial de armazem                        
+Descricao / Objetivo:   Regime especial de armazém                        
 Doc. Origem:            Contrato - GAP FIS47
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Controle de mercadoria/transferencia entre filiais
 =====================================================================================
 */
@@ -29,7 +29,7 @@ User Function MGFFIS14()
 
 	Private nLimDias := GETNEWPAR("MGF_LIDIAS",20)
 
-	Private cCadastro := "Regime especial de armazem"
+	Private cCadastro := "Regime especial de armazém"
 	Private aRotina := {}
 
 	AADD(aRotina,{"Pesquisar","u_APESQZAG()",0,1})
@@ -96,8 +96,8 @@ User Function RELNFDES()
 
 	@ 003, 003 GROUP oGroup1 TO 060, 396 PROMPT "Empresa Destino" OF oDlg COLOR CLR_BLUE, 16777215 PIXEL
 	oGroup1:oFont := oFontNeg
-	@ 012, 006 SAY oSay1 PROMPT "Codigo Empresa" SIZE 042, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
-	@ 012, 059 SAY oSay3 PROMPT "Razao Social Empresa" SIZE 058, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
+	@ 012, 006 SAY oSay1 PROMPT "Código Empresa" SIZE 042, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
+	@ 012, 059 SAY oSay3 PROMPT "Razão Social Empresa" SIZE 058, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
 	@ 012, 247 SAY oSay2 PROMPT "I.E. Empresa Destino" SIZE 058, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
 	@ 012, 320 SAY oSay4 PROMPT "CNPJ Empresa Destino" SIZE 058, 007 OF oGroup1 COLORS 0, 16777215 PIXEL
 	@ 021, 006 MSGET oEmpDest  VAR cEmpDest SIZE 037, 010 OF oDlg PICTURE "@!" VALID VlEmpDes(cEmpDest,@cRazEmpD,@cIeEmpDes,@cCnpjEmpD,@cUfEmpDes) COLORS 0, 16777215 F3 "SM0" PIXEL
@@ -107,10 +107,10 @@ User Function RELNFDES()
 	@ 060, 003 GROUP oGroup2 TO 094, 396 PROMPT "CTRC Destino" OF oDlg COLOR CLR_BLUE, 16777215 PIXEL
 	oGroup2:oFont := oFontNeg
 	@ 036, 006 SAY oSay5 PROMPT "UF Empresa" SIZE 038, 010 OF oDlg COLORS 0, 16777215 PIXEL
-	@ 036, 059 SAY oSay6 PROMPT "Data de Saida" SIZE 046, 011 OF oDlg COLORS 0, 16777215 PIXEL
+	@ 036, 059 SAY oSay6 PROMPT "Data de Saída" SIZE 046, 011 OF oDlg COLORS 0, 16777215 PIXEL
 	@ 070, 006 SAY oSay7 PROMPT "Nro CTRC " SIZE 030, 010 OF oDlg COLORS 0, 16777215 PIXEL
-	@ 070, 059 SAY oSay8 PROMPT "Data Emissao" SIZE 037, 010 OF oDlg COLORS 0, 16777215 PIXEL
-	@ 070, 121 SAY oSay9 PROMPT "Serie CTRC" SIZE 033, 010 OF oDlg COLORS 0, 16777215 PIXEL
+	@ 070, 059 SAY oSay8 PROMPT "Data Emissão" SIZE 037, 010 OF oDlg COLORS 0, 16777215 PIXEL
+	@ 070, 121 SAY oSay9 PROMPT "Série CTRC" SIZE 033, 010 OF oDlg COLORS 0, 16777215 PIXEL
 	@ 045, 006 MSGET oUfEmpDes VAR cUfEmpDes SIZE 023, 010 OF oDlg COLORS 0, 16777215 READONLY PIXEL
 	@ 045, 059 MSGET dDatSai SIZE 050, 010 OF oDlg VALID !Empty(dDatSai) COLORS 0, 16777215 PIXEL
 	@ 079, 006 MSGET oCTRC VAR cCTRC SIZE 037, 010 OF oDlg VALID VldObrig(cCTRC) COLORS 0, 16777215 PIXEL
@@ -147,7 +147,7 @@ Static Function VldObrig(cObrg)
 	Local lObrg := .T.
 
 	If Empty(cObrg)
-		Alert("Campo obrigatï¿½rio, favor preencher seu conteudo!")
+		Alert("Campo obrigatório, favor preencher seu conteúdo!")
 		lObrg := .F.
 	Endif
 
@@ -165,16 +165,16 @@ Static Function GRVZAL(cEmpDest,cRazEmpD,cIeEmpDes,cCnpjEmpD,dDatEmiss,dDatSai,c
 	Local nDifDias := 0 
 
 	If Empty(cEmpDest) .OR. !ExistCpo("SM0",cCodEmpZag+cEmpDest)
-		Alert("Informe um codigo de empresa valido!")
+		Alert("Informe um código de empresa válido!")
 		lRet	:= .F.
 	ElseIf xFilial("ZAL") != ZAG->ZAG_FILIAL
-		Alert("Filial de origem do relacionamento invï¿½lida!")
+		Alert("Filial de origem do relacionamento inválida!")
 		lRet	:= .F.
 	ElseIf xFilial("ZAL") == cEmpDest
-		Alert("Nao ï¿½ permitido transferir para a mesma filial de ORIGEM!")
+		Alert("Não é permitido transferir para a mesma filial de ORIGEM!")
 		lRet := .F.
 	ElseIf Empty(cCTRC) .OR. Empty(cSerieCtrc)
-		Alert("CTRC ou Serie destino nao preenchido, favor preencher seu conteudo!")
+		Alert("CTRC ou Série destino não preenchido, favor preencher seu conteúdo!")
 		lRet := .F. 
 	Else
 		//---------------------------------------------------------------      
@@ -185,12 +185,12 @@ Static Function GRVZAL(cEmpDest,cRazEmpD,cIeEmpDes,cCnpjEmpD,dDatEmiss,dDatSai,c
 		If !ZAL->(MsSeek(xFilial("ZAL")+ZAG->ZAG_DOC+ZAG->ZAG_SERIE+ZAG->ZAG_CODFOR+ZAG->ZAG_LOJFOR))
 			If !MsgYesNo("Deseja relacionar a filial destino na nota fiscal?")
 				lRet := .F.
-				MsgInfo("Relacionamento de filial nao efetuado!","Atencao")
+				MsgInfo("Relacionamento de filial não efetuado!","Atenção")
 			Endif
 			nDifDias := DateDiffDay(ZAG->ZAG_DTENT,dDatSai)
 			If nDifDias > nLimDias .Or. ;
 			( Month(ZAG->ZAG_DTENT) <> Month(dDatSai) .And. Year(ZAG->ZAG_DTENT) <> Year(dDatSai) ) 
-				If !MsgYesNo("Limite de dias para transferencia excedido! Deseja transferir?","Atencao")
+				If !MsgYesNo("Limite de dias para transferência excedido! Deseja transferir?","Atenção")
 					lRet := .F.
 				Endif
 			Endif
@@ -222,10 +222,10 @@ Static Function GRVZAL(cEmpDest,cRazEmpD,cIeEmpDes,cCnpjEmpD,dDatEmiss,dDatSai,c
 				ZAG->ZAG_DIAS   := nDifDias
 				ZAG->ZAG_NFTRAN := "S"
 				ZAG->(MsUnlock())
-				MsgInfo("Relacionamento de CTRC Destino efetuado para a nota fiscal "+AllTrim(ZAG->ZAG_DOC)+"-"+AllTrim(ZAG->ZAG_SERIE)+"!","Atencao")
+				MsgInfo("Relacionamento de CTRC Destino efetuado para a nota fiscal "+AllTrim(ZAG->ZAG_DOC)+"-"+AllTrim(ZAG->ZAG_SERIE)+"!","Atenção")
 			Endif
 		Else
-			Alert("Nota fiscal "+AllTrim(ZAL->ZAL_DOCORI)+"-"+AllTrim(ZAL->ZAL_SERORI)+" jï¿½ transferida!")
+			Alert("Nota fiscal "+AllTrim(ZAL->ZAL_DOCORI)+"-"+AllTrim(ZAL->ZAL_SERORI)+" já transferida!")
 			lRet := .F.
 		Endif
 	Endif
@@ -295,12 +295,12 @@ Static Function TelaConsNF()
 	Private cCadastro := "Consulta Notas Fiscais - "+IIF(MV_PAR03==1,"Com transferencias efetuadas",IIF(MV_PAR03==2,"Sem transferencias efetuadas","Todas"))
 	Private aRotina := {}
 
-	//aTRB[1] -> Nome fisico do arquivo
-	//aTRB[2] -> Nome do indice 1
-	//aTRB[3] -> Nome do indice 2
+	//aTRB[1] -> Nome físico do arquivo
+	//aTRB[2] -> Nome do índice 1
+	//aTRB[3] -> Nome do índice 2
 	MsgRun("Criando estrutura e carregando dados ...",,{|| aTRB := FileTRB() } )
 
-	//aHeadMBrow[1] -> Titulo 
+	//aHeadMBrow[1] -> Título 
 	//aHeadMBrow[2] -> Campo
 	//aHeadMBRow[3] -> Tipo
 	//aHeadMBrow[4] -> Tamanho
@@ -314,11 +314,11 @@ Static Function TelaConsNF()
 	dbSetOrder(1)
 	MBrowse(,,,,"TRB",aHeadMBrow,,,,,,"","") 
 
-	//Fecha a ï¿½rea
+	//Fecha a área
 	TRB->(dbCloseArea())
 	//Apaga o arquivo fisicamente
 	FErase( aTRB[ nTRB ] + GetDbExtension())
-	//Apaga os arquivos de indices fisicamente
+	//Apaga os arquivos de índices fisicamente
 	FErase( aTRB[ nIND1 ] + OrdBagExt())
 	FErase( aTRB[ nIND2 ] + OrdBagExt()) 
 Return
@@ -330,27 +330,27 @@ Campos da tela de consulta de notas fiscais
 */
 Static Function HeadBrow()
 	Local aHead := {}
-	//Campos que aparecerao na MBrowse, como nao ï¿½ baseado no SX3 deve ser criado.
-	//Sequencia do vetor: Titulo, Campo, Tipo, Tamanho, Decimal, Picture
+	//Campos que aparecerão na MBrowse, como não é baseado no SX3 deve ser criado.
+	//Sequência do vetor: Título, Campo, Tipo, Tamanho, Decimal, Picture
 	AAdd( aHead, { "Data de entrada CD" , {|| TRB->ZAG_DTENT}  ,"D", 8, 0, "" } )
 	AAdd( aHead, { "Dias"       	    , {|| TRB->ZAG_DIAS }  ,"N", 3, 0, "" } )
-	AAdd( aHead, { "Numero NF"   	    , {|| TRB->ZAG_DOC  }  ,"C", 9, 0, "" } )
-	AAdd( aHead, { "Serie NF"	        , {|| TRB->ZAG_SERIE}  ,"C", 3, 0, "" } )
-	AAdd( aHead, { "Data Emissao" 	    , {|| TRB->ZAG_EMIS }  ,"D", 8, 0, "" } )
+	AAdd( aHead, { "Número NF"   	    , {|| TRB->ZAG_DOC  }  ,"C", 9, 0, "" } )
+	AAdd( aHead, { "Série NF"	        , {|| TRB->ZAG_SERIE}  ,"C", 3, 0, "" } )
+	AAdd( aHead, { "Data Emissão" 	    , {|| TRB->ZAG_EMIS }  ,"D", 8, 0, "" } )
 	AAdd( aHead, { "Valor Total NF"     , {|| TRB->ZAG_VALNF}  ,"N",14, 2, "" } )
 	AAdd( aHead, { "Fornecedor"         , {|| TRB->ZAG_NOMFOR} ,"C",40, 0, "" } )
 	AAdd( aHead, { "Filial Dest."       , {|| TRB->ZAL_FILDES} ,"C", 2, 0, "" } )
 	AAdd( aHead, { "Nome da Filial"     , {|| TRB->ZAL_NFILDE} ,"C",40, 0, "" } )
 	AAdd( aHead, { "CNPJ"               , {|| TRB->ZAL_CGCFDE} ,"C",14, 0, "@R 99.999.999/9999-99" } )
 	AAdd( aHead, { "CTRC Dest."         , {|| TRB->ZAL_CTRDES} ,"C", 9, 0, "" } )
-	AAdd( aHead, { "Serie CTRC Dest."   , {|| TRB->ZAL_SCTDES} ,"C", 3, 0, "" } )
+	AAdd( aHead, { "Série CTRC Dest."   , {|| TRB->ZAL_SCTDES} ,"C", 3, 0, "" } )
 	AAdd( aHead, { "Transferida?" 		, {|| TRB->ZAG_NFTRAN} ,"C", 1, 0, "" } )
 
 Return( aHead )
 
 /*
 ========================================================
-Arquivo temporario da consulta de notas fiscais
+Arquivo temporário da consulta de notas fiscais
 ========================================================
 */
 Static Function FileTRB()
@@ -365,8 +365,8 @@ Static Function FileTRB()
 	Local nVez := 0
 	Local cIntegr := ""
 
-	//Pode ser feito de duas maneiras a criacao do arquivo temporario, porem como isto sera
-	//feito com base em um arquivo que jï¿½ existe sera mais fï¿½cil utilizar a primeira maneira.
+	//Pode ser feito de duas maneiras a criação do arquivo temporário, porém como isto será
+	//feito com base em um arquivo que já existe será mais fácil utilizar a primeira maneira.
 
 	//Primeira maneira
 	//aStruct := ZAG->( dbStruct() ) 
@@ -392,13 +392,13 @@ Static Function FileTRB()
 	cInd2 := Left( cArqTRB, 7 ) + "2"
 	// Acessar o arquivo e coloca-lo na lista de arquivos abertos.
 	dbUseArea( .T., __LocalDriver, cArqTRB, "TRB", .F., .F. )
-	// Criar os indices.
-	IndRegua( "TRB", cInd1, "ZAG_DTENT", , , "Criando indices (Data Entrada)...")
-	IndRegua( "TRB", cInd2, "ZAG_DOC+ZAG_SERIE", , , "Criando indices (NF + Serie)...")
+	// Criar os índices.
+	IndRegua( "TRB", cInd1, "ZAG_DTENT", , , "Criando índices (Data Entrada)...")
+	IndRegua( "TRB", cInd2, "ZAG_DOC+ZAG_SERIE", , , "Criando índices (NF + Série)...")
 
-	// Libera os indices.
+	// Libera os índices.
 	dbClearIndex()
-	// Agrega a lista dos indices da tabela (arquivo).
+	// Agrega a lista dos índices da tabela (arquivo).
 	dbSetIndex( cInd1 + OrdBagExt() )
 	dbSetIndex( cInd2 + OrdBagExt() )
 
@@ -470,16 +470,16 @@ User Function BLegenda()
 
 	Local aLegenda := {}
 
-	AADD(aLegenda,{"BR_VERDE" ,"Nota Fiscal Pendente de Transferï¿½ncia." })
+	AADD(aLegenda,{"BR_VERDE" ,"Nota Fiscal Pendente de Transferência." })
 	AADD(aLegenda,{"BR_AZUL" ,"Nota Fiscal Transferida." })
-	AADD(aLegenda,{"BR_VERMELHO" ,"NF Pendente - Fora do Prazo de Transferï¿½ncia." })
+	AADD(aLegenda,{"BR_VERMELHO" ,"NF Pendente - Fora do Prazo de Transferência." })
 	BrwLegenda(cCadastro, "Legenda", aLegenda)
 
 Return Nil
 
 /*
 ========================================================
-Funcao de pesquisa
+Função de pesquisa
 ========================================================
 */
 User Function APESQZAG()
@@ -490,7 +490,7 @@ User Function APESQZAG()
 	Local nOrdem := 1
 	Local nOpcao := 0
 
-	AAdd( aOrdens, "Nota Fiscal + Serie + Cod.Fornec. + Loja Fornec." )
+	AAdd( aOrdens, "Nota Fiscal + Série + Cod.Fornec. + Loja Fornec." )
 	AAdd( aOrdens, "Cod.Fornec. + Loja Fornec." )
 	AAdd( aOrdens, "CNPJ/CPF" )
 
@@ -511,7 +511,7 @@ Return
 
 /*
 ========================================================
-Valida campo de documento fiscal na inclusao
+Valida campo de documento fiscal na inclusão
 ========================================================
 */
 User Function VLZAGDOC()
@@ -519,11 +519,11 @@ User Function VLZAGDOC()
 	Local lRet
 	/*
 	If !SF1->(DbSeek(xFilial("SF1")+M->ZAG_DOC+M->ZAG_SERIE+M->ZAG_CODFOR+M->ZAG_LOJFOR+"N")) 
-	Alert("Nota fiscal inexistente, favor informar um numero valido!")
+	Alert("Nota fiscal inexistente, favor informar um número válido!")
 	lRet := .F.
 	Else*/
 	If ZAG->(DbSeek(xFilial("ZAG")+M->ZAG_DOC+M->ZAG_SERIE+M->ZAG_CODFOR+M->ZAG_LOJFOR))
-		Alert("Nota fiscal jï¿½ inserida no controle!")
+		Alert("Nota fiscal já inserida no controle!")
 		lRet := .F.
 	Else
 		lRet := .T.

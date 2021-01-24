@@ -8,7 +8,7 @@ Data................: Nov/2017
 Descricao / Objetivo: Rotina para preencher o TES a partir do tipo de operacao
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -23,7 +23,7 @@ Local cCfo := ""
 
 If !Empty(M->C5_ZTPOPER) .and. M->C5_ZTPOPER < "A"
 	lRet := .F.
-	APMsgStop("Tipo de Operacao deve ser de Saida.")
+	APMsgStop("Tipo de Operação deve ser de Saída.")
 Endif
 
 If lRet .and. !Empty(M->C5_ZTPOPER)

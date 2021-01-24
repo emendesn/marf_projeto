@@ -9,10 +9,10 @@ Static __aF3Ret
 Programa............: MGFCOM05
 Autor...............: Joni Lima
 Data................: 20/12/2016
-Descricao / Objetivo: Cadastro de Substituto
+Descrição / Objetivo: Cadastro de Substituto
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de Substituto
 =====================================================================================
 */
@@ -38,11 +38,11 @@ Return oMBrowse
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 20/12/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -62,11 +62,11 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 20/12/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro de Substituto
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro de Substituto
 =====================================================================================
 */
 Static Function ModelDef()
@@ -109,7 +109,7 @@ Static Function xVldAcivate(oModel)
 	If oModel:GetOperation() == MODEL_OPERATION_UPDATE .OR. oModel:GetOperation() == MODEL_OPERATION_DELETE
 		If ZA9->ZA9_INTFLG <> 'S'
 			lRet := .F.
-			Help('',1,'Substituicao em Integracao com Fluig',,'Favor Aguardar e tentar novamente dentro de 5 minutos',1,0)
+			Help('',1,'Substituição em Integração com Fluig',,'Favor Aguardar e tentar novamente dentro de 5 minutos',1,0)
 		EndIf
 	EndIf
 	
@@ -120,11 +120,11 @@ Return lRet
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 20/12/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizasao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()
@@ -189,10 +189,10 @@ Return oView
 Programa............: xMC5PrcGrid
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: Carrega e preenche a Grid com os Dados escolhido pelo usuario
+Descrição / Objetivo: Carrega e preenche a Grid com os Dados escolhido pelo usuario
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Carrega todos os niveis desse usuario
 =====================================================================================
 */
@@ -263,10 +263,10 @@ Return lRet
 Programa............: xMC5PosVal
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: Pos validacao do Modelo
+Descrição / Objetivo: Pos validação do Modelo
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verifica se todos os usuarios substitutos foram preenchidos
 =====================================================================================
 */
@@ -281,10 +281,10 @@ Static Function xMC5PosVal(oModel)
 	For ni := 1  to oMdlZAA:Length()
 		oMdlZAA:GoLine(ni)
 		
-		//Solicitado para permitir inclusao sem substituto
+		//Solicitado para permitir inclusão sem substituto
 		/*If Empty(oMdlZAA:GetValue('ZAA_CODSUB'))
 			lRet := .F.
-			Help('',1,'Nao  foi Escolhido o usuario Substituto',,'Favor escolher um substituo para cada item da grid',1,0)
+			Help('',1,'Não foi Escolhido o usuario Substituto',,'Favor escolher um substituo para cada item da grid',1,0)
 			Exit
 		EndIf*/
 		
@@ -313,8 +313,8 @@ Autor...............: Joni Lima
 Data................: 21/12/2016
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza validacao da Data
+Uso.................: Marfrig
+Obs.................: Realiza validação da Data
 =====================================================================================
 */
 User Function xMC05VlDt(oMdlZA9,cFld,xValue)
@@ -379,7 +379,7 @@ User Function xMC5VlLg(oMdlZAA,cFld,xValue,nLine)
 		If !lRet
 			//MsgInfo("Existe cadastro de substituto para esse aprovador nessa Data, Cadastro: " + cCod )
 			oMdlZA9:GetModel():SetErrorMessage(oMdlZA9:GetId(),cFld,oMdlZA9:GetModel():GetId(),cFld,cFld,;
-				"Existe cadastro de substituto para esse aprovador nessa Data", "Verifique o cadastro: " + cCod + " ,caso necessario realize a alteracao." )
+				"Existe cadastro de substituto para esse aprovador nessa Data", "Verifique o cadastro: " + cCod + " ,caso necessario realize a alteração." )
 		EndIf
 	
 	ElseIf AllTrim(UPPER(cFld)) == "ZAA_CODSUB" 
@@ -415,7 +415,7 @@ User Function xMC5VlLg(oMdlZAA,cFld,xValue,nLine)
 		If !lRet
 			//MsgInfo("Existe cadastro de substituto para esse aprovador nessa Data, Cadastro: " + cCod )
 			oMdlZA9:GetModel():SetErrorMessage(oMdlZA9:GetId(),cFld,oMdlZA9:GetModel():GetId(),cFld,cFld,;
-				"Existe cadastro de substituto para esse aprovador nessa Filial, dentro dessa Data, com esse Substituto", "Verifique o cadastro: " + cCod + " ,e caso necessario realize a alteracao." )
+				"Existe cadastro de substituto para esse aprovador nessa Filial, dentro dessa Data, com esse Substituto", "Verifique o cadastro: " + cCod + " ,e caso necessario realize a alteração." )
 		EndIf
 	
 	EndIf
@@ -430,11 +430,11 @@ Return lRet
 Programa............: xMC05ZA1
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: Realiza validacao do Nivel
+Descrição / Objetivo: Realiza validação do Nivel
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Verifica se o codigo de nivel Existe
+Uso.................: Marfrig
+Obs.................: Verifica se o código de nivel Existe
 =====================================================================================
 */
 User Function xMC05ZA1(oMdlZA9,cFld,xValue)
@@ -449,7 +449,7 @@ User Function xMC05ZA1(oMdlZA9,cFld,xValue)
 	If !(ZA1->(DbSeek(xFilial('ZA1')+xValue)))
 		lRet := .F.
 		oMdlZA9:GetModel():SetErrorMessage(oMdlZA9:GetId(),cFld,oMdlZA9:GetModel():GetId(),cFld,cFld,;
-			"Nao  Foi encontrado o codigo: " + xValue + ', no cadastro de Niveis', "Verifique o valor digitado" )
+			"Não Foi encontrado o código: " + xValue + ', no cadastro de Niveis', "Verifique o valor digitado" )
 	EndIf
 	
 	RestArea(aAreaZA1)
@@ -462,10 +462,10 @@ Return lRet
 Programa............: xMC5LimpGr
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: Faz limpeza da Grid
+Descrição / Objetivo: Faz limpeza da Grid
 Doc. Origem.........: Contrato - GAP GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz limpeza da Grid
 =====================================================================================
 */
@@ -491,10 +491,10 @@ Return xValue
 Programa............: xMC05FlXB
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: ViewDef
-Doc. Origem.........: Realiza o filtro da Consulta padrao
+Descrição / Objetivo: ViewDef
+Doc. Origem.........: Realiza o filtro da Consulta padrão
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza o filtro conforme preenchimento da unidade e Nivel
 =====================================================================================
 */
@@ -515,10 +515,10 @@ Return lRet
 Programa............: xMC05Fl2XB
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: ViewDef
-Doc. Origem.........: Realiza o filtro da Consulta padrao
+Descrição / Objetivo: ViewDef
+Doc. Origem.........: Realiza o filtro da Consulta padrão
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Realiza o filtro conforme preenchimento da unidade e Nivel
 =====================================================================================
 */
@@ -541,10 +541,10 @@ Return lRet
 Programa............: xMC5GatUN
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Gatilho para preenchimento do Grid
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 User Function xMC5GatUN(cFil,cCod,cTp)
@@ -604,11 +604,11 @@ Return cRet
 Programa............: xMC5Gat
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Gatilho para preenchimento do Grid
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Chama funcao para preencher o Grid
+Uso.................: Marfrig
+Obs.................: Chama função para preencher o Grid
 =====================================================================================
 */
 User Function xMC5Gat(cValue,cCod)
@@ -624,11 +624,11 @@ Return cValue
 Programa............: xMC5ValUser
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: ViewDef
-Doc. Origem.........: Validacao do campo de aprovador (usuario)
+Descrição / Objetivo: ViewDef
+Doc. Origem.........: Validação do campo de aprovador (usuario)
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Validacao do campo de aprovador (usuario)
+Uso.................: Marfrig
+Obs.................: Validação do campo de aprovador (usuario)
 =====================================================================================
 */
 User Function xMC5ValUser(oMdlZA9,cFld,xValue)
@@ -643,7 +643,7 @@ User Function xMC5ValUser(oMdlZA9,cFld,xValue)
 
 	If !lRet
 		oMdlZA9:GetModel():SetErrorMessage(oMdlZA9:GetId(),cFld,oMdlZA9:GetModel():GetId(),cFld,cFld,;
-			"Usuario nao localizado", "Usuario nao localizado. Informe um usuario valido." )
+			"Usuário não localizado", "Usuário não localizado. Informe um usuário válido." )
 	EndIf
 	
 	If lRet
@@ -688,7 +688,7 @@ User Function xMC5ValUser(oMdlZA9,cFld,xValue)
 			lRet := .T. 
 			MsgInfo("Existe cadastro de substituto para esse aprovador nessa Data, Cadastro: " + cCod )
 			//oMdlZA9:GetModel():SetErrorMessage(oMdlZA9:GetId(),cFld,oMdlZA9:GetModel():GetId(),cFld,cFld,;
-			//	"Existe cadastro de substituto para esse aprovador nessa Data", "Verifique o cadastro: " + cCod + " ,caso necessario realize a alteracao." )
+			//	"Existe cadastro de substituto para esse aprovador nessa Data", "Verifique o cadastro: " + cCod + " ,caso necessario realize a alteração." )
 		EndIf
 	EndIf
 	RestArea(aAreaZA9)
@@ -771,10 +771,10 @@ return cRet
 Programa............: xMC5CarApr
 Autor...............: Joni Lima
 Data................: 04/01/2016
-Descricao / Objetivo: ViewDef
-Doc. Origem.........: Funcao para carregar os Niveis e unidades do pessoal para Substituicao
+Descrição / Objetivo: ViewDef
+Doc. Origem.........: Função para carregar os Niveis e unidades do pessoal para Substituição
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Preenche a Grid com as unidades e com os niveis para preenchimento
 =====================================================================================
 */
@@ -839,10 +839,10 @@ Return
 Programa............: xCommit
 Autor...............: Joni Lima
 Data................: 11/04/2017
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Commit do Modelo
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 =====================================================================================
 */
 Static Function xCommit(oModel)
@@ -863,7 +863,7 @@ Static Function xCommit(oModel)
 			// Inclui substituto na SAK caso nao seja aprovador
 			//GrvSAK(oMdlZA9, oMdlZAA)
 
-			oMdlZA9:SetValue('ZA9_INTFLG','S')//Retirar na Integracao Fluig
+			oMdlZA9:SetValue('ZA9_INTFLG','S')//Retirar na Integração Fluig
 			For ni := 1 to oMdlZAA:Length()
 				
 				oMdlZAA:GoLine(ni)
@@ -943,7 +943,7 @@ Return lRet
 Programa............: xIncFluig
 Autor...............: Joni Lima
 Data................: 11/04/2017
-Descricao / Objetivo: Integracao do Fluig
+Descrição / Objetivo: Integração do Fluig
 =====================================================================================
 */
 Static Function xIncFluig(aDados)
@@ -981,7 +981,7 @@ Return
 Programa............: xAltFluig
 Autor...............: Joni Lima
 Data................: 11/04/2017
-Descricao / Objetivo: Integracao do Fluig Alteracao
+Descrição / Objetivo: Integração do Fluig Alteração
 =====================================================================================
 */
 Static Function xAltFluig(aDados)
@@ -1019,7 +1019,7 @@ Return
 Programa............: MG5USER
 Autor...............: Joni Lima
 Data................: 11/04/2017
-Descricao / Objetivo: Integracao do Fluig
+Descrição / Objetivo: Integração do Fluig
 =====================================================================================
 */
 User Function MG5USER(cCodUsu)
@@ -1047,7 +1047,7 @@ Return cRet
 Programa............: xMGF5CNP
 Autor...............: Joni Lima
 Data................: 11/04/2017
-Descricao / Objetivo: Consulta padrao para usuarios 
+Descrição / Objetivo: Consulta padrão para usuarios 
 =====================================================================================
 */
 User function xMGF5CNP()
@@ -1056,7 +1056,7 @@ User function xMGF5CNP()
 	
 	local aLstVias	:= {}
 	local cOpcoes	:= ""
-	local cTitulo	:= "Selecao de Usuarios"
+	local cTitulo	:= "Seleção de Usuarios"
 	local MvPar		:= &(Alltrim(ReadVar()))		// Carrega Nome da Variavel do Get em Questao
 	local mvRet		:= "MV_PAR01"		// Iguala Nome da Variavel ao Nome variavel de Retorno
 	Local cxFFIL	:= SUBSTR(xFilial('ZAA',FwFldGet('ZA9_EMPFIL')),1,2)

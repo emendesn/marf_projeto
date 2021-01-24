@@ -4,11 +4,11 @@
 =====================================================================================
 Programa.:              MGFFIN85
 Autor....:              Totvs
-Data.....:              Marco/2018
+Data.....:              Março/2018
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada F330AE5E
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

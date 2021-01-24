@@ -7,11 +7,11 @@
 Programa............: MGFEEC25
 Autor...............: Joni Lima
 Data................: 02/05/2017
-Descricao / Objetivo: Browse EXP
+Descrição / Objetivo: Browse EXP
 Doc. Origem.........: Banco de Horas
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela manutencao Estufa
+Uso.................: Marfrig
+Obs.................: Tela manutenção Estufa
 =====================================================================================
 */
 user function MGFEEC25()
@@ -31,7 +31,7 @@ return
 Programa............: MenuDef
 Autor...............: Joni Lima
 Data................: 02/05/2017
-Descricao / Objetivo: MenuDef Browse
+Descrição / Objetivo: MenuDef Browse
 =====================================================================================
 */
 Static function MenuDef()
@@ -51,7 +51,7 @@ return(aRotina)
 Programa............: ModelDef
 Autor...............: Joni Lima
 Data................: 02/05/2017
-Descricao / Objetivo: Modelo de Dados
+Descrição / Objetivo: Modelo de Dados
 =====================================================================================
 */
 Static function ModelDef()
@@ -62,13 +62,13 @@ Static function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('XMGFEEC25', /*bPreValidacao*/, /*bPosValidacao*/, /*bCommit*/, /*bCancel*/)
 	
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields('ZBMMASTER', /*cOwner*/, oStruZBM, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/)
 	
 	// Adiciona a descricao do Componente do Modelo de Dados
 	oModel:GetModel( 'ZBMMASTER' ):SetDescription( 'Local Estufagem' )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZBM_FILIAL","ZBM_CODIGO"})
 	
 return oModel
@@ -78,7 +78,7 @@ return oModel
 Programa............: ViewDef
 Autor...............: Joni Lima
 Data................: 02/05/2017
-Descricao / Objetivo: ViewDef Montagem 
+Descrição / Objetivo: ViewDef Montagem 
 =====================================================================================
 */
 Static function ViewDef()

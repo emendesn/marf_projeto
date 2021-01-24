@@ -41,7 +41,8 @@ User Function MGFTAE14( cACAO,;
 						cCNPJ_FOR,;
 						cCODEXP_FOR,;
 						cIDFazenda,;
-						cTipoConta)    
+						cTipoConta,;
+						nQtde_Qtpe) // Paulo da Mata - 31/08/2020 - RTASK0011418
 
 Local nI		:= 0
 Local aErro	    := {}
@@ -211,7 +212,8 @@ IF bContinua
 					ZZN->ZZN_QTKG  	 := aITEM[nI][4]
 					ZZN->ZZN_VLTOT 	 := aITEM[nI][5]
 					ZZN->ZZN_VLARRO	 := aITEM[nI][6] 
-					ZZN->ZZN_CODAGR := GetAdvFVal( "SB1", "B1_ZCODAGR", xFilial('SB1')+aITEM[nI][2], 1, "" )
+					ZZN->ZZN_CODAGR  := GetAdvFVal( "SB1", "B1_ZCODAGR", xFilial('SB1')+aITEM[nI][2], 1, "" )
+					ZZN->ZZN_QTPE    := nQtde_Qtpe // Paulo da Mata - 31/08/2020 - RTASK0011418
 					ZZN->(MsUnlock())
 				Next NI
 				// MAPA

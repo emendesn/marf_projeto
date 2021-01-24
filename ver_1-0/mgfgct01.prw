@@ -9,10 +9,10 @@
 Programa.:              MostraBrw
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Chamada da rotina que exibe a mBrowse para manipulacao dos contratos com descontos personalizados.
+Descricao / Objetivo:   Chamada da rotina que exibe a mBrowse para manipulação dos contratos com descontos personalizados.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -27,10 +27,10 @@ Return
 Programa.:              fShowBrw
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Exibir o browse para manipulacao da tabela SZR(Descontos Personalizados)
+Descricao / Objetivo:   Exibir o browse para manipulação da tabela SZR(Descontos Personalizados)
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -63,10 +63,10 @@ Return
 Programa.:              fVldDel
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Funcao para validacao de exclusao
+Descricao / Objetivo:   Função para validação de exclusão
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -86,7 +86,7 @@ User Function fVldDel()
 
 		(cAliasSZR)->(MsUnlock())
 
-		MsgAlert('Excluï¿½ o registro')
+		MsgAlert('Excluí o registro')
 
 	EndIf
 
@@ -99,10 +99,10 @@ Return .T.
 Programa.:              fVldAlt
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Funcao para validacao de alteracao
+Descricao / Objetivo:   Função para validação de alteração
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -115,10 +115,10 @@ Return .T.
 Programa.:              MenuDef
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Retornar para o array 'aRotina' as funcoes para manipulacao do mBrowse
+Descricao / Objetivo:   Retornar para o array 'aRotina' as funções para manipulação do mBrowse
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -138,11 +138,11 @@ Return aRotina
 Programa.:              fQrySZR
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Gerar a Query para exibir na MarkBrowse os descontos conforme cadastro. Registros pre-existentes serao marcados para facilitar
-						ao usuario visualizar os descontos concedidos anteriormente.
+Descricao / Objetivo:   Gerar a Query para exibir na MarkBrowse os descontos conforme cadastro. Registros pre-existentes serão marcados para facilitar
+						ao usuário visualizar os descontos concedidos anteriormente.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -260,7 +260,7 @@ User Function fQrySZR(oModel,cId)
 
 	Else
 
-		MsgAlert('Cadastre a tabela de descontos para utilizaï¿½ï¿½o desta rotina')
+		MsgAlert('Cadastre a tabela de descontos para utilização desta rotina')
 
 	EndIf
 
@@ -273,10 +273,10 @@ Return
 Programa.:              fGeraDados
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Carrega os arrays 'aHeader' e 'aCols' para exibicao na MarkBrowse
+Descricao / Objetivo:   Carrega os arrays 'aHeader' e 'aCols' para exibição na MarkBrowse
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -422,10 +422,10 @@ Return
 Programa.:              fExibeTela
 Autor....:              Luis Artuso
 Data.....:              27/09/2016
-Descricao / Objetivo:   Exibe interface para o usuario selecionar os descontos, na execucao do P.E. CNTA300
+Descricao / Objetivo:   Exibe interface para o usuário selecionar os descontos, na execução do P.E. CNTA300
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -448,7 +448,7 @@ Static Function fExibeTela(aHeader , aDados)
 
 	DEFINE MSDIALOG oDlg TITLE "Selecione de descontos" FROM 000, 000  TO 430, 600 COLORS 0, 16777215 PIXEL
 
-		@ 004 , 003 TO 212 , 300 LABEL "Selecao o(s) desconto(s) ï¿½ conceder" PIXEL OF oDlg
+		@ 004 , 003 TO 212 , 300 LABEL "Seleção o(s) desconto(s) à conceder" PIXEL OF oDlg
 
 		@ 018, 008 SAY oSay1 PROMPT " Informe o motivo de desconto :" SIZE 090, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 
@@ -481,7 +481,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Atualiza o array 'aDados', que sera exibido na MarkBrowse
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -544,10 +544,10 @@ Return
 Programa.:              fFilBrow
 Autor....:              Luis Artuso
 Data.....:              03/10/16
-Descricao / Objetivo:   Executa o filtro, conforme informado pelo usuario
+Descricao / Objetivo:   Executa o filtro, conforme informado pelo usuário
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -558,7 +558,7 @@ Static Function fFilBrow(cString , aDados , aFilter , oDlg , oWBrowse1 , aPosFil
 	Local nPosDesc		:= 0
 	Local aFilterBkp	:= {}
 
-	nPosDesc	:= 3 // Posicao em aDados referente ï¿½ descricao
+	nPosDesc	:= 3 // Posicao em aDados referente à descricao
 
 	aFilter	:= {}
 
@@ -601,7 +601,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Grava os registros
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -635,7 +635,7 @@ Static Function fGrava(aDados , oObj)
 
 	If ( (Empty(AllTrim(M->CN9_TPCTO))) )
 
-		MsgAlert('Para gravar o desconto, deverï¿½ ser concluido o processo de cadastro do contrato.')
+		MsgAlert('Para gravar o desconto, deverá ser concluído o processo de cadastro do contrato.')
 
 	Else
 
@@ -712,7 +712,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Altera o array 'aDados' para exibir na markbrowse os itens filtrados.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -760,10 +760,10 @@ Return
 Programa.:              fSelAll
 Autor....:              Luis Artuso
 Data.....:              21/09/2016
-Descricao / Objetivo:   Seleciona todos os itens da MarkBrowse. Serao considerados os itens filtrados, conforme informado na pesquisa.
+Descricao / Objetivo:   Seleciona todos os itens da MarkBrowse. Serão considerados os itens filtrados, conforme informado na pesquisa.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -805,10 +805,10 @@ Return
 Programa.:              fDelAll
 Autor....:              Luis Artuso
 Data.....:              21/09/2016
-Descricao / Objetivo:   Desmarca todos os itens da MarkBrowse. Serao considerados os itens filtrados, conforme informado na pesquisa.
+Descricao / Objetivo:   Desmarca todos os itens da MarkBrowse. Serão considerados os itens filtrados, conforme informado na pesquisa.
 Doc. Origem:            Contrato - GAP MGFGCT01
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

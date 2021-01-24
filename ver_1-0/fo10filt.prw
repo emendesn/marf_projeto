@@ -10,7 +10,7 @@ Data.....:              06/10/2016
 Descricao / Objetivo:   selecionar somentes titulos vencidos 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              titulos em aberto selecionar somente os vencidos
 =====================================================================================
 */

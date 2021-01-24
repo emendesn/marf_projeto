@@ -3,13 +3,13 @@
 /*
 =====================================================================================
 Programa.:              FA040B01
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              21/10/2016
 Descricao / Objetivo:   Ponto de entrada antes da exclusao do titulo a receber, para
 						complementar gravacao da exclusao
 Doc. Origem:            GAP FIN_CRE029_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

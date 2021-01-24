@@ -3,13 +3,13 @@
 /*
 =========================================================================================================
 Programa.................: GFEA0662
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Criado ponto de entrada para o controle de aprovacoes de Documentos de Frete
+Descrição / Objetivo.....: Criado ponto de entrada para o controle de aprovações de Documentos de Frete
 Doc. Origem..............: GAP - GFE02
 Solicitante..............: Cliente
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de Documentos de Frete
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de Documentos de Frete
 =========================================================================================================
 */                                                                                  
 

@@ -6,9 +6,9 @@ Programa............: MGFFIS18
 Autor...............: Mauricio Gresele
 Data................: Agosto/2017 
 Descricao / Objetivo: Fiscal
-Doc. Origem.........: 
+Doc. Origem.........: Marfrig
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Cadastro de amarracao de tipo de operacao X especie da nota de entrada
 =====================================================================================
 */
@@ -22,7 +22,7 @@ Private cString := "ZBT"
 dbSelectArea(cString)
 dbSetOrder(1)
 
-AxCadastro(cString,"Cadastro de Amarracao Tipo de Operacao X Especie NFE",cVldExc,cVldAlt)
+AxCadastro(cString,"Cadastro de Amarração Tipo de Operação X Espécie NFE",cVldExc,cVldAlt)
 
 Return()
 
@@ -37,9 +37,9 @@ Local nCnt := 0
 // comentado em 13/06/18 a pedido da Marcia, pois foi habilitado o parametro padrao MV_VCHVNFE, o qual faz esta validacao
 // valida se numero da nota eh igual ao da chave
 If !Empty(M->F1_CHVNFE)
-	If cNFiscal != Subs(M->F1_CHVNFE,26,09) //da posicao 26 a 34 eh o numero da nota na Chave Nfe
+	If cNFiscal != Subs(M->F1_CHVNFE,26,09) //da posição 26 a 34 eh o numero da nota na Chave Nfe
 		lRet := .F.
-		APMsgStop("Numero da NFE nao confere com a Chave.")
+		APMsgStop("Número da NFE não confere com a Chave.")
 	Endif
 Endif
 */
@@ -50,8 +50,8 @@ If lRet
 		If !gdDeleted(nCnt) .and. !Empty(gdFieldGet("D1_OPER",nCnt))
 			If ZBT->(!dbSeek(xFilial("ZBT")+gdFieldGet("D1_OPER",nCnt)+cEspecie))
 				lRet := .F.
-				APMsgStop("Nao existe amarracao do Tipo de Operacao X Especie NFE cadastrada para esta operacao."+CRLF+;
-				"Faca o cadastro desta amarracao para incluir este Documento de Entrada.")
+				APMsgStop("Não existe amarração do Tipo de Operação X Espécie NFE cadastrada para esta operação."+CRLF+;
+				"Faça o cadastro desta amarração para incluir este Documento de Entrada.")
 				Exit
 			Endif	
 		Endif

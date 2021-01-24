@@ -11,7 +11,7 @@ Data.....:              27/03/2019
 Descricao / Objetivo:   Integracao PROTHEUS x Multiembarcador - Integra NF 
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              WS Server para Integracao PROTHEUS x Multiembarcador - Integra NF 
 Componentes da integracao:
 Integracao PROTHEUS x Multiembarcador - Integra NF 
@@ -38,7 +38,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFFATAX DESCRIPTION "Integracao Protheus x Multiembarcador - Integra NF " NameSpace "http://totvs.com.br/MGFFATAX.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos par�metros de entrada
 	WSDATA MGFFATAXReqINF AS MGFFATAXRequisINF
 	// Retorno (array)
 	WSDATA MGFFATAXRetINF AS MGFFATAXRetornoINF
@@ -143,7 +143,7 @@ user Function MGFFATAX( aEmb)
 	
 
 	else
-		aRet:={"2","Registro nao Localizado"," "}
+		aRet:={"2","Registro n�o Localizado"," "}
 	endif
 	IF SELECT("QFATAX") > 0
 		QFATAX->( dbCloseArea() )

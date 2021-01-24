@@ -4,26 +4,30 @@
 #INCLUDE "COLORS.CH"   
 /*              
 +-----------------------------------------------------------------------+
-ï¿½Programa  ï¿½MTA105LEG   ï¿½ Autor ï¿½ WAGNER NEVES         ï¿½ Data ï¿½20.04.20 ï¿½
-+----------+------------------------------------------------------------ï¿½
-ï¿½Descricao ï¿½O objetivo deste fonte ï¿½ nomear a legenda                   ï¿½
-+----------+------------------------------------------------------------ï¿½
-ï¿½ Uso      ï¿½ ESPECIFICO PARA CLIENTE			                        ï¿½
-+-----------------------------------------------------------------------ï¿½
-ï¿½           ATUALIZACOES SOFRIDAS DESDE A CONSTRUCAO INICIAL            ï¿½
-+-----------------------------------------------------------------------ï¿½
-ï¿½PROGRAMADOR      ï¿½ DATA       ï¿½ MOTIVO DA ALTERACAO                    ï¿½
-+-----------------------------------------------------------------------ï¿½
-ï¿½                 ï¿½            ï¿½ 				                        ï¿½
+¦Programa  ¦MTA105LEG   ¦ Autor ¦ WAGNER NEVES         ¦ Data ¦20.04.20 ¦
++----------+------------------------------------------------------------¦
+¦Descriçào ¦O objetivo deste fonte é nomear a legenda                   ¦
++----------+------------------------------------------------------------¦
+¦ Uso      ¦ ESPECIFICO PARA MARFRIG			                        ¦
++-----------------------------------------------------------------------¦
+¦           ATUALIZACOES SOFRIDAS DESDE A CONSTRUCAO INICIAL            ¦
++-----------------------------------------------------------------------¦
+¦PROGRAMADOR      ¦ DATA       ¦ MOTIVO DA ALTERACAO                    ¦
++-----------------------------------------------------------------------¦
+¦                 ¦            ¦ 				                        ¦
 +-----------------------------------------------------------------------+
 */
 User Function MT105LEG()
 Local aItLeg := ParamIXB[1]
-Local aRet   := { { "BR_AMARELO", 'Aguardando Aprovacao-EPI' },;
-                  { "BR_BRANCO",  'Aprovado ADM-EPI' },;
-                  { "BR_AZUL",    'Rejeitado Tecnico-EPI' },;
-                  { "BR_MARROM",  'Rejeitado Adm-EPI' },;
-                  { "BR_PRETO_0", 'Aprovacao Tecnica e Aguardando Aprovacao de Funcionario' },;
-                  {"BR_VERDE_ESCURO",'Aprovado RH'} }
+Local aRet   := { { "BR_AMARELO"    , 'Aguardando Aprovação-EPI' },;
+                  { "BR_BRANCO"     , 'Aprovado ADM-EPI' },;
+                  { "BR_AZUL"       , 'Rejeitado Tecnico-EPI' },;
+                  { "BR_MARROM"     , 'Rejeitado Adm-EPI' },;
+                  { "BR_PRETO_0"    , 'Aprovação Técnica e Aguardando Aprovação de Funcionário' },;
+                  { "BR_LARANJA"    , 'Aguardando Aprovação Gerente SA Embalagem' },;       
+                  { "BR_AZUL_CLARO" , 'SA de embalagem aprovado pelo gerente' },;           
+                  { "BR_VIOLETA"    , 'SA de embalagem reprovada pelo gerente' },;       
+                  {" BR_VERDE_ESCURO", 'Aprovado RH'} }
+                  
 aEval( aItLeg, { |x| aAdd( aRet, x ) } )
 Return aRet

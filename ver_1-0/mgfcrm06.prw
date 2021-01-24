@@ -9,10 +9,10 @@
 Programa.:              MGFCRM06
 Autor....:              Gustavo Ananias Afonso - TOTVS Campinas
 Data.....:              30/03/2017
-Descricao / Objetivo:   Relatorio - RAMI
+Descricao / Objetivo:   Relatório - RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -37,19 +37,19 @@ static function getParam()
 	local aParambox	:= {}
 
 	aadd(aParamBox, {1, "Senha de"		, space(nTamSenha)	, 		, , "ZAV" ,	, 070	, .F.})
-	aadd(aParamBox, {1, "Senha ate"		, space(nTamSenha)	, 		, , "ZAV" ,	, 070	, .F.})
+	aadd(aParamBox, {1, "Senha até"		, space(nTamSenha)	, 		, , "ZAV" ,	, 070	, .F.})
 
-	aadd(aParamBox, {1, "Emissao de"	, CToD(space(8))	, 		, , "" ,	, 070	, .F.})
-	aadd(aParamBox, {1, "Emissao ate"	, CToD(space(8))	, 		, , "" ,	, 070	, .F.})
+	aadd(aParamBox, {1, "Emissão de"	, CToD(space(8))	, 		, , "" ,	, 070	, .F.})
+	aadd(aParamBox, {1, "Emissão até"	, CToD(space(8))	, 		, , "" ,	, 070	, .F.})
 
-return paramBox(aParambox, "Relatorio de RAMI"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
+return paramBox(aParambox, "Relatório de RAMI"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 
 //-------------------------------------------------------------------
 static function defRelat()
 	local cLogo		:= ""//iif(cEmpAnt == "05", "\system\TR05.png", "\system\TR04.png")
 	local cNomeRel	:= funName()
-	local cTitRel	:= "Relatorio de Anï¿½lise de Mercado Interno"
-	local cDescRel	:= "Relatorio de Anï¿½lise de Mercado Interno"
+	local cTitRel	:= "Relatório de Análise de Mercado Interno"
+	local cDescRel	:= "Relatório de Análise de Mercado Interno"
 
 	private oReport		:= nil
 	private oSecZAV		:= nil
@@ -69,12 +69,12 @@ static function defRelat()
 	oSecZAV:lOnPageBreak := .T.				// CabeÃ§alho das seÃ§Ãµes impressas apÃ³s a quebra de pÃ¡gina
 	oSecZAV:setTotalInLine(.F.)				// Define que a impressÃ£o dos totalizadores serÃ¡ em linha.
 
-	oSecZAW := TRSection():New(oSecZAV, "Ocorrï¿½ncias",,,,,,.T.)
+	oSecZAW := TRSection():New(oSecZAV, "Ocorrências",,,,,,.T.)
 	oSecZAW:SetHeaderSection(.T.)				// Define que imprime cabeÃ§alho das cÃ©lulas na quebra de seÃ§Ã£o
 	oSecZAW:SetHeaderBreak(.T.)
 	oSecZAW:lOnPageBreak := .T.				// CabeÃ§alho das seÃ§Ãµes impressas apÃ³s a quebra de pÃ¡gina
 
-	oSecZAX := TRSection():New(oSecZAW, "Resoluï¿½ï¿½es",,,,,,.T.)
+	oSecZAX := TRSection():New(oSecZAW, "Resoluções",,,,,,.T.)
 	oSecZAX:SetHeaderSection(.T.)				// Define que imprime cabeÃ§alho das cÃ©lulas na quebra de seÃ§Ã£o
 	oSecZAX:SetHeaderBreak(.T.)
 	oSecZAX:lOnPageBreak := .T.				// CabeÃ§alho das seÃ§Ãµes impressas apÃ³s a quebra de pÃ¡gina
@@ -82,32 +82,32 @@ static function defRelat()
 	TRCell():New(oSecZAV, "ZAV_CODIGO"		, "QRYZAV"	, "Senha"		, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
 	TRCell():New(oSecZAV, "ZAV_DTABER"		, "QRYZAV"	, "Abertura"	, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
 	TRCell():New(oSecZAV, "ZAV_NOTA"		, "QRYZAV"	, "Nota"		, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
-	TRCell():New(oSecZAV, "ZAV_SERIE"		, "QRYZAV"	, "Serie"		, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
-	TRCell():New(oSecZAV, "ZAV_NFEMIS"		, "QRYZAV"	, "Emissao NF"	, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
-	TRCell():New(oSecZAV, "ZAV_NOMEUS"		, "QRYZAV"	, "Usuario"		, , /*tamanho*/, , , "LEFT"				, .T.	, "LEFT",, 1 /*nColSpace*/)
+	TRCell():New(oSecZAV, "ZAV_SERIE"		, "QRYZAV"	, "Série"		, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
+	TRCell():New(oSecZAV, "ZAV_NFEMIS"		, "QRYZAV"	, "Emissão NF"	, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
+	TRCell():New(oSecZAV, "ZAV_NOMEUS"		, "QRYZAV"	, "Usuário"		, , /*tamanho*/, , , "LEFT"				, .T.	, "LEFT",, 1 /*nColSpace*/)
 	TRCell():New(oSecZAV, "ZAV_MAILUS"		, "QRYZAV"	, "E-mail"		, , /*tamanho*/, , , "LEFT"				, .T.	, "LEFT",, 1 /*nColSpace*/)
 	TRCell():New(oSecZAV, "ZAV_STATUS"		, "QRYZAV"	, "Status"		, , /*tamanho*/, , , "LEFT"				, 		, "LEFT",, 1 /*nColSpace*/)
 
 	TRCell():New(oSecZAW, "ZAW_ITEMNF"		, "QRYZAV"	, "Item"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_NOTA"		, "QRYZAV"	, "Nota"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
-	TRCell():New(oSecZAW, "ZAW_SERIE"		, "QRYZAV"	, "Serie"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
+	TRCell():New(oSecZAW, "ZAW_SERIE"		, "QRYZAV"	, "Série"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_CDPROD"		, "QRYZAV"	, "Produto"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
-	TRCell():New(oSecZAW, "ZAW_DESCPR"		, "QRYZAV"	, "Descricao"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
+	TRCell():New(oSecZAW, "ZAW_DESCPR"		, "QRYZAV"	, "Descrição"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_QTD"			, "QRYZAV"	, "Qtd"				, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
-	TRCell():New(oSecZAW, "ZAW_PRECO"		, "QRYZAV"	, "Preco Un"		, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
+	TRCell():New(oSecZAW, "ZAW_PRECO"		, "QRYZAV"	, "Preço Un"		, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_TOTAL"		, "QRYZAV"	, "Total"			, "@E 99,999,999.99", , , , "RIGHT"				, 					, "CENTER"					,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_MOTIVO"		, "QRYZAV"	, "Motivo"			, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAW, "ZAW_JUSTIF"		, "QRYZAV"	, "Justificativa"	, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 
 	TRCell():New(oSecZAX, "ZAX_ITEMNF"		, "QRYZAV"	, "Item"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
 //	TRCell():New(oSecZAX, "ZAX_NOTA"		, "QRYZAV"	, "Nota"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
-//	TRCell():New(oSecZAX, "ZAX_SERIE"		, "QRYZAV"	, "Serie"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
+//	TRCell():New(oSecZAX, "ZAX_SERIE"		, "QRYZAV"	, "Série"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAX, "ZAX_CDPROD"		, "QRYZAV"	, "Produto"			, 					, , , , "LEFT"				, 					, "LEFT"					,, 1 /*nColSpace*/)
-	TRCell():New(oSecZAX, "ZAX_DESCPR"		, "QRYZAV"	, "Descricao"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
+	TRCell():New(oSecZAX, "ZAX_DESCPR"		, "QRYZAV"	, "Descrição"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAX, "ZAX_QTD"			, "QRYZAV"	, "Qtd"				, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
-	TRCell():New(oSecZAX, "ZAX_PRECO"		, "QRYZAV"	, "Preco Un"		, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
+	TRCell():New(oSecZAX, "ZAX_PRECO"		, "QRYZAV"	, "Preço Un"		, "@E 99,999,999.99", , , , "RIGHT" /*cAlign*/	, /*lLineBreak*/	, "CENTER" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	TRCell():New(oSecZAX, "ZAX_TOTAL"		, "QRYZAV"	, "Total"			, "@E 99,999,999.99", , , , "RIGHT"				, 					, "CENTER"					,, 1 /*nColSpace*/)
-	//TRCell():New(oSecZAX, "ZAX_RESOLU"		, "QRYZAV"	, "Resoluï¿½ï¿½o"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
+	//TRCell():New(oSecZAX, "ZAX_RESOLU"		, "QRYZAV"	, "Resolução"		, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 	//TRCell():New(oSecZAX, "ZAX_STATUS"		, "QRYZAV"	, "Status"			, 					, , , , "LEFT" /*cAlign*/	, .T./*lLineBreak*/	, "LEFT" /*cHeaderAlign*/	,, 1 /*nColSpace*/)
 
 	//TRFunction():New(oSecZAW:Cell("C6_VALOR")	, /* cID */,"SUM",/*oBreak*/, "Total do Cliente"/*cTitle*/,pesqPict("SC6","C6_VALOR")/*cPicture*/,/*uFormula*/, .T. /*lEndSection*/	,.T. /*lEndReport*/,/*lEndPage*/)

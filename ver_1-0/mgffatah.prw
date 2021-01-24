@@ -134,7 +134,7 @@ static function MGFFATHE()
 								cUpdZE6 := "UPDATE " + retSQLName("ZE6")								+ CRLF
 								cUpdZE6 += "	SET"													+ CRLF
 								cUpdZE6 += " 		ZE6_STATUS = '4',"									+ CRLF
-								cUpdZE6 += " 		ZE6_OBS = '" + ALLTRIM(oPayment:credit_confirm:confirm_date) + " - " + ALLTRIM(oPayment:credit_confirm:message) + "',"			+ CRLF
+								cUpdZE6 += " 		ZE6_OBS = '" + ALLTRIM(oPayment:credit_confirm:confirm_date) + " - " + ALLTRIM(oPayment:credit_confirm:message) + "'"			+ CRLF
 								cUpdZE6 += " WHERE"														+ CRLF
 								cUpdZE6 += " 		ZE6_NSU	=	'" + allTrim( QRYSF2->XC5_NSU )	+ "'"	+ CRLF
 
@@ -247,11 +247,10 @@ static function MGFFATHQ()
 	cQrySF2 += "	AND	SE1.D_E_L_E_T_	<>	'*'"										+ CRLF
 
 	cQrySF2 += " WHERE"																	+ CRLF
-	cQrySF2 += " 		XC5.XC5_PAYMEN = ' '  "											+ CRLF
-	cQrySF2 += " 	AND	SF2.F2_CHVNFE	<>	' '"										+ CRLF
+	cQrySF2 += " 	SF2.F2_CHVNFE	<>	' '"										+ CRLF
 	cQrySF2 += " 	AND	SF2.D_E_L_E_T_	<>	'*'"										+ CRLF
 	cQrySF2 += " 	AND	SF2.F2_EMISSAO 	> '" + DTOS(DATE()-GETMV("MGFFATAHP",,30)) + "'"	+ CRLF
-	cQrySF2 += "    AND   ( ZE6.ZE6_STATUS = '3' OR ZE6.ZE6_STATUS = '0' )" 										+ CRLF
+	cQrySF2 += "    AND   ( ZE6.ZE6_STATUS = '3' OR ZE6.ZE6_STATUS = '0' OR ZE6.ZE6_STATUS = '1' )" 										+ CRLF
 
 	tcQuery cQrySF2 New Alias "QRYSF2"
 

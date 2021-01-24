@@ -9,11 +9,11 @@
 Programa............: MGFFAT47
 Autor...............: Atilio Amarilla
 Data................: 22/08/2017
-Descricao / Objetivo: Chamada para reimpressï¿½o/reenvio para sistema WinPrint
+Descricao / Objetivo: Chamada para reimpressão/reenvio para sistema WinPrint
 Doc. Origem.........: FAT WINPRINT
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Integracao Protheus Faturamento x WinPrint. Chamado por PE
+Uso.................: Marfrig
+Obs.................: Integração Protheus Faturamento x WinPrint. Chamado por PE
 FISTRFNFE.
 =====================================================================================
 */
@@ -31,7 +31,7 @@ User Function MGFFAT47(aParam)
 	
 	Private cSerie		:= GetMV("MGF_FAT40A",,"200")
 	
-	Private dDatIni		:= GetMv("MGF_FAT40B",,STOD("20170715")) 	 // Data Inicio - Referencia para Integracao WinPrint
+	Private dDatIni		:= GetMv("MGF_FAT40B",,STOD("20170715")) 	 // Data Início - Referência para Integração WinPrint
 	
 	/*
 	Lexmark MGF ET0021B728772F
@@ -50,26 +50,26 @@ User Function MGFFAT47(aParam)
 	
 	/*
 	1 - MsGet
-	[2] : Descricao
+	[2] : Descrição
 	[3] : String contendo o inicializador do campo
 	[4] : String contendo a Picture do campo
-	[5] : String contendo a validacao
+	[5] : String contendo a validação
 	[6] : Consulta F3
-	[7] : String contendo a validacao When
+	[7] : String contendo a validação When
 	[8] : Tamanho do MsGet
-	[9] : Flag .T./.F. Parametro Obrigatorio ?
+	[9] : Flag .T./.F. Parâmetro Obrigatório ?
 	*/
-	aAdd( aPergs ,{1,"Numero Nota De : ",cNotaIni,Replicate("9", TamSX3("F2_DOC")[1] ),'.T.'	,	,'.T.',40,.F.})
-	aAdd( aPergs ,{1,"Numero Nota Ate: ",cNotaFim,Replicate("9", TamSX3("F2_DOC")[1] ),'.T.'	,	,'.T.',40,.T.})
+	aAdd( aPergs ,{1,"Número Nota De : ",cNotaIni,Replicate("9", TamSX3("F2_DOC")[1] ),'.T.'	,	,'.T.',40,.F.})
+	aAdd( aPergs ,{1,"Número Nota Até: ",cNotaFim,Replicate("9", TamSX3("F2_DOC")[1] ),'.T.'	,	,'.T.',40,.T.})
 	
-	If !ParamBox(aPergs ,"Parametros WINPRINT - Reimpressao",aRet)
-		Aviso("WINPRINT - Reemissao","Processamento Cancelado!",{'Ok'})
+	If !ParamBox(aPergs ,"Parametros WINPRINT - Reimpressão",aRet)
+		Aviso("WINPRINT - Reemissão","Processamento Cancelado!",{'Ok'})
 		Return aRet
 	ElseIf  Val(aRet[2])-Val(aRet[1]) < 0 .Or. aRet[2] < aRet[1]
-		Aviso("WINPRINT - Reemissao","Intervalo Invalido!",{'Ok'})
+		Aviso("WINPRINT - Reemissão","Intervalo Inválido!",{'Ok'})
 		Return aRet
 	ElseIf  Val(aRet[2])-Val(aRet[1]) > nMaxNot
-		Aviso("WINPRINT - Reemissao","Intervalo Invalido!"+CRLF+CRLF+"Selecionar maximo de "+AllTrim(Str(nMaxNot))+" notas",{'Ok'})
+		Aviso("WINPRINT - Reemissão","Intervalo Inválido!"+CRLF+CRLF+"Selecionar máximo de "+AllTrim(Str(nMaxNot))+" notas",{'Ok'})
 		Return aRet
 	EndIf
 	
@@ -116,7 +116,7 @@ User Function MGFFAT47(aParam)
 		Aviso("Marfrig - WINPRINT","Final de processamento.",{"Ok"})
 
 	Else
-		MsgStop("Nao foram localizadas notas para os parametros selecionados.","Marfrig - WINPRINT")
+		MsgStop("Não foram localizadas notas para os parâmetros selecionados.","Marfrig - WINPRINT")
 	EndIf
 	
 	dbSelectArea(cNextAlias)
@@ -125,7 +125,7 @@ User Function MGFFAT47(aParam)
 	SF2->( RestArea(aAreaSF2) )
 	RestArea(aArea)
 	
-	//MsgStop("Final de processamento.","Reimpressao WINPRINT")
+	//MsgStop("Final de processamento.","Reimpressão WINPRINT")
 	
 Return
 
@@ -138,9 +138,9 @@ Static Function MGFFAT4701()
 		SF2->( dbGoTo( (cNextAlias)->F2_RECNO ) )
 		//IncProc("Imprimindo "+SF2->F2_DOC)
 		/*
-		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		ï¿½ Posicionar na NF para chamar a impressao da DANFE que gera o PDF:                                        |
-		ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+		ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		³ Posicionar na NF para chamar a impressao da DANFE que gera o PDF:                                        |
+		ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ*/
 		
 		cGetIdEntErr := ""
 		cFilePrint   := "DANFE_"+cFilAnt+"_"+AllTrim(SF2->F2_DOC)+"_"+AllTrim(SF2->F2_SERIE)+"_"+DTOS(Date())+StrTran(Time(),":")

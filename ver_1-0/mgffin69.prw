@@ -8,7 +8,7 @@ Data................: 09/11/2017
 Descrição / Objetivo: Manter valor de desconto para título com baixa parcial 
 Doc. Origem.........: Contrato - GAP CRE041 FASE 4
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

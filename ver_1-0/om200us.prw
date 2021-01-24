@@ -9,11 +9,10 @@ User Function OM200US()
 
 Local lMGFFIS34 := SuperGetMV('MGF_FIS34L',.T.,.F.)	//Habilita a rotina de valor do frete no pedido ou carga
 
-
-	If findfunction ("U_ALTFRE")
-		AADD(aRotina,{	OemtoAnsi("Alteração Tipo de Operação GFE") ,'U_ALTFRE', 0 ,4 })  
+	If findfunction ("U_MGFFAT93")
+		AADD(aRotina,{	OemtoAnsi("Reenviar NFs da carga para o Taura") ,'U_MGFFAT93', 0 ,4 })  
 	Endif
-	
+
 	If findfunction ("U_MGFOMS02")
 		AADD(aRotina,{	OemtoAnsi("Incluir Mensagem para as Notas da Carga") ,'U_MGFOMS02', 0 ,4 })  
 	Endif
@@ -42,9 +41,17 @@ Local lMGFFIS34 := SuperGetMV('MGF_FIS34L',.T.,.F.)	//Habilita a rotina de valor
 		AADD(aRotina,{	OemtoAnsi("Historico Origem/Destino") ,'U_MGFOMS08', 0 ,4 }) 
 	EndIf		
 	
-	// Cancelar carga no MultiEmbarcador - Paulo da Mata - 21/01/2020
 	If findfunction ("U_MGFGFE58")
 		AADD(aRotina,{	OemtoAnsi("Cancelar carga no Multiembarcador") ,'U_MGFGFE58', 0 ,4 }) 
 	EndIf		
+
+	If findfunction ("U_OMS01A")
+		AADD(aRotina,{	OemtoAnsi("Reset do tipo de operação da carga") ,'U_OMS01A', 0 ,4 })  
+	Endif
+
+	If findfunction ("U_MGFFAT93")
+		AADD(aRotina,{	OemtoAnsi("Reenviar NFs de carga para o Multiembarcador") ,'U_MGFFAT93', 0 ,4 })  
+	Endif
+
 
 Return aRotina

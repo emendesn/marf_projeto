@@ -2,11 +2,11 @@
 =====================================================================================
 Programa............: F590CAN
 Autor...............: Totvs
-Data................: Marco/2018 
+Data................: Março/2018 
 Descricao / Objetivo: Ponto de entrada apos excluir titulo do bordero
 Doc. Origem.........: Financeiro
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

@@ -121,38 +121,48 @@ BEGIN SEQUENCE
                ZB8->(MsUnLock())
                lOk := .T.
             Endif
-        ELSE  // MULTISOFTWARE
-            If Select("TRBZB8") > 0
-			    TRBZB8->(dbCloseArea())
-		    Endif
+        EndIf
+    ElseIf AllTrim(OOE:ORIGEM) ==  "multisoftware" 
+        If Select("TRBZB8") > 0
+	        TRBZB8->(dbCloseArea())
+		Endif
+        cQuery := "SELECT * FROM "+RetSqlName("ZB8")+" ZB8"
+        cQuery += " WHERE"
+        cQuery += " ZB8.D_E_L_E_T_     = ' ' "
+        cQuery += " AND ZB8.ZB8_EXP    = '"+SUBSTR(OOE:IDEXP,1,9)+"'"
+        cQuery += " AND ZB8.ZB8_ANOEXP = '"+SUBSTR(OOE:IDEXP,11,2)+"'"
+        cQuery += " AND ZB8.ZB8_SUBEXP = '"+SUBSTR(OOE:IDEXP,14,3)+"'"
+        
+        //PRB0041064-CALLBACK-EXP-TMS-Multisoftware
+        //IDEXP
+        //O numeroExp é enviado com: SUBS(ZB8->ZB8_EXP,4,6)+"/"+alltrim(ZB8->ZB8_ANOEXP)+"-"+ZB8->ZB8_SUBEXP
+        //Retorno vem com "EXP"+SUBS(ZB8->ZB8_EXP,4,6)+"/"+alltrim(ZB8->ZB8_ANOEXP)+"-"+ZB8->ZB8_SUBEXP
+        //EXP129056/20-002 
 
-            cQuery := "SELECT * FROM "+RetSqlName("ZB8")+" "
-            cQuery += "WHERE D_E_L_E_T_ = ' ' "
-            cQuery += "AND ZB8_EXP = '"+LEFT(OOE:IDEXP,9)+"' "
-       		cQuery := ChangeQuery(cQuery)
-		    dbUseArea(.T.,"TOPCONN",TCGENQRY(,,cQuery),"TRBZB8",.F.,.T.)
-		    dbSelectArea("TRBZB8")
-            If TRBZB8->(!Eof())
-                cChave := TRBZB8->(ZB8_FILIAL+ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP)
-            EndIf                    
-            ZB8->(dbSetOrder(3))
-            If !ZB8->(dbSeek(cChave))
-                aRetorno[1] := "IDEXP não localizada, tente novamente!"
-                Break
-            Else
-                IF OOE:STATUS = "1" // DEU CERTO 
-                    RecLock("ZB8",.F.)
-                    ZB8->ZB8_ZTMSID := ALLTRIM(OOE:MENSAGEM)
-                    ZB8->(MsUnLock())
-                    lOk := .T.
-                ELSEIF OOE:STATUS $ "2|3|4"// DEU ERRADO
-                    RecLock("ZB8",.F.)
-                    ZB8->ZB8_ZRETWS := ALLTRIM(OOE:MENSAGEM)
-                    ZB8->(MsUnLock())
-                    lOk := .T.
-                ENDIF
-            Endif  
-        EndIf                      
+       	cQuery := ChangeQuery(cQuery)
+		dbUseArea(.T.,"TOPCONN",TCGENQRY(,,cQuery),"TRBZB8",.F.,.T.)
+		dbSelectArea("TRBZB8")
+        If TRBZB8->(!Eof())
+            cChave := TRBZB8->(ZB8_FILIAL+ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP)
+        EndIf                    
+        ZB8->(dbSetOrder(3))
+        If !ZB8->(dbSeek(cChave))
+            aRetorno[1] := "IDEXP não localizada, tente novamente!"
+            Break
+        Else
+            IF OOE:STATUS = "1" // DEU CERTO 
+                RecLock("ZB8",.F.)
+                ZB8->ZB8_ZTMSID := ALLTRIM(OOE:MENSAGEM)
+                ZB8->(MsUnLock())
+                lOk := .T.
+            ELSEIF OOE:STATUS $ "2|3|4"// DEU ERRADO
+                RecLock("ZB8",.F.)
+                //ZB8->ZB8_ZRETWS := ALLTRIM(OOE:MENSAGEM) - RTASK0011598
+                ZB8->ZB8_ZTMSER := ALLTRIM(OOE:MENSAGEM)
+                ZB8->(MsUnLock())
+                lOk := .T.
+            ENDIF
+         EndIf                      
     EndIf
     If lOk
         IF OOE:ORIGEM != "multisoftware" 
@@ -166,8 +176,8 @@ BEGIN SEQUENCE
         ELSE
             U_MGFMONITOR(	ZB8->ZB8_FILVEN	                                ,;
 					    If(Left(ALLTRIM(OOE:MENSAGEM),1)=="1","1","2")	,;
-					    "002" 	                                        ,;
-					    "020"                                           ,;
+					    "011" 	                                        ,;
+					    "004"                                           ,;
                         ALLTRIM(OOE:MENSAGEM)							,;
 						ZB8->ZB8_EXP                         	        ,;
 					    SubStr(Time(),1,8)								)

@@ -13,7 +13,7 @@
 |  Descricao / Objetivo:   Selecao de RAMI (markbrowse)                              |
 |  Doc. Origem.........:   GAP CRM                                                   |
 |  Solicitante.........:   Cliente                                                   |
-|  Uso.................:                                                      |
+|  Uso.................:   Marfrig                                                   |
 |  Obs.................:                                                             |
 +===================================================================================*/
 User Function MGFCRM52()
@@ -52,7 +52,7 @@ If cFormul == "S"
       Empty( cUfOrig   ) .or.;
       Empty( cEspecie  ) .or.;
       Empty( dDEmissao )
-      MsgAlert( OEMToANSI( "Para trazer os RAMI deste cliente ï¿½ necessario preencher o cabecalho." ) )
+      MsgAlert( OEMToANSI( "Para trazer os RAMI deste cliente é necessário preencher o cabeçalho." ) )
       Return( Nil )
    EndIf
 ElseIf cFormul == "N"
@@ -63,7 +63,7 @@ ElseIf cFormul == "N"
           Empty( dDEmissao ) .or.;
           Empty( cNFiscal  ) .or.;
           Empty( cSerie    )
-          MsgAlert( OEMToANSI( "Para trazer os RAMI deste cliente ï¿½ necessario preencher o cabecalho." ) )
+          MsgAlert( OEMToANSI( "Para trazer os RAMI deste cliente é necessário preencher o cabeçalho." ) )
           Return( Nil )
        EndIf
 EndIf
@@ -105,9 +105,9 @@ If .not. QRYZAV->( EoF() )
    | Pesquisa que sera exibido           |
    +------------------------------------*/
    aAdd( aSeek, { "Senha", { { "", "C", TamSX3( "ZAV_CODIGO" )[1], 0, "Senha"   ,,} } } )
-   aAdd( aSeek, { "Nota",  { { "", "C", TamSX3( "ZAV_NOTA"   )[1], 0, "Nï¿½vel 1" ,,} } } )
+   aAdd( aSeek, { "Nota",  { { "", "C", TamSX3( "ZAV_NOTA"   )[1], 0, "Nível 1" ,,} } } )
 
-   DEFINE MSDIALOG oDlg TITLE 'Relacao RAMI Cliente' FROM aCoors[1]/2, aCoors[2]/2 TO aCoors[3]/2, aCoors[4]/2 PIXEL STYLE DS_MODALFRAME
+   DEFINE MSDIALOG oDlg TITLE 'Relação RAMI Cliente' FROM aCoors[1]/2, aCoors[2]/2 TO aCoors[3]/2, aCoors[4]/2 PIXEL STYLE DS_MODALFRAME
         oMark := fwBrowse():New()
         oMark:SetDataArray()
         oMark:SetArray( aZAV )
@@ -120,8 +120,8 @@ If .not. QRYZAV->( EoF() )
         oMark:AddColumn( { "Senha",        { || aZAV[oMark:nAt,2] },         "C", , 1, TamSX3( "ZAV_CODIGO" )[1],, .F.} )
         oMark:AddColumn( { "Dt. Abertura", { || StoD( aZAV[oMark:nAt,3] ) }, "D", , 1, 10,, .F.} )
         oMark:AddColumn( { "Nota",         { || aZAV[oMark:nAt,4] },         "C", , 1, TamSX3( "ZAV_NOTA"   )[1],, .F.} )
-        oMark:AddColumn( { "Serie",        { || aZAV[oMark:nAt,5] },         "C", , 1, TamSX3( "ZAV_SERIE"  )[1],, .F.} )
-        oMark:AddColumn( { "Emissao NF",   { || StoD( aZAV[oMark:nAt,6] ) }, "D", , 1, 10,, .F.} )
+        oMark:AddColumn( { "Série",        { || aZAV[oMark:nAt,5] },         "C", , 1, TamSX3( "ZAV_SERIE"  )[1],, .F.} )
+        oMark:AddColumn( { "Emissão NF",   { || StoD( aZAV[oMark:nAt,6] ) }, "D", , 1, 10,, .F.} )
 
 		oMark:Activate( .T. )
 
@@ -129,7 +129,7 @@ If .not. QRYZAV->( EoF() )
    ACTIVATE MSDIALOG oDlg CENTER
 
 Else
-    MsgAlert( OEMToANSI( "Nao  foi encontrado nenhum RAMI para este cliente." ) )
+    MsgAlert( OEMToANSI( "Não foi encontrado nenhum RAMI para este cliente." ) )
 EndIf
 
 QRYZAV->( DBCloseArea() )
@@ -276,9 +276,9 @@ Do While .not. QRYZAW->( EoF() )
    SF4->( DBGoTop() )
    If SF4->( DbSeek( xFilial( "SF4" ) + QRYZAW->D2_TES ) )
       If Empty( QRYZAW->F4_TESDV ) .or. Empty( QRYZAW->F4_ZTESDE1 )
-         APMsgStop("Tes de Devolucao nao informado para o TES de saida: " + QRYZAW->D2_TES + "." + ENTER + ;
+         APMsgStop("Tes de Devolução não informado para o TES de saída: " + QRYZAW->D2_TES + "." + ENTER + ;
          "Verifique o cadastro do TES (Campos F4_TESDV e F4_ZTESDE1)." + ENTER + ;
-         "Nao  sera possivel incluir a Nota de Devolucao.")
+         "Não será possível incluir a Nota de Devolução.")
 
          lContinua := .F.
          Exit
@@ -423,7 +423,7 @@ Do While .not. QRYZAW->( EoF() )
 
    If isInCallStack( "MATA103" )
       If MaFisFound()
-         A103VldNFO( Len( aCols ) ) // Verifica Notas de Complemento/Devolucao vinculadas a NFE
+         A103VldNFO( Len( aCols ) ) // Verifica Notas de Complemento/Devolução vinculadas a NFE
       EndIf
    EndIf
 
@@ -572,7 +572,7 @@ Return( cRetCF )
 |  Funcao Estatica ....:   ChkRAMI                                                   |
 |  Autor ..............:   johnny.osugi@totvspartners.com.br                         |
 |  Data ...............:   22/08/2018                                                |
-|  Descricao / Objetivo:   Verifica se RAMI digitada jï¿½ foi utilizada anteriormente. |
+|  Descricao / Objetivo:   Verifica se RAMI digitada já foi utilizada anteriormente. |
 |  Observacao .........:                                                             |
 +===================================================================================*/
 Static Function ChkRAMI()
@@ -590,7 +590,7 @@ cQrySD1  +=  "  AND SUBSD1.D_E_L_E_T_  <>   '*'"                         + ENTER
 TCQuery cQrySD1 New Alias "QRYSD1"
 
 If .not. QRYSD1->( EoF() )
-   MsgAlert( OEMToANSI( "RAMI " + AllTrim( MV_PAR01 ) + " jï¿½ utilizada em outra devolucao." ) )
+   MsgAlert( OEMToANSI( "RAMI " + AllTrim( MV_PAR01 ) + " já utilizada em outra devolução." ) )
    lRet := .F.
 EndIf
 
@@ -768,10 +768,10 @@ Local   aArea    :=  GetArea()
 Local   lRet     :=  .T.
 Private lNum     :=  .T.
 
-If FunName() # "U_EST01GERNF" // Funcao usada no processo de Triangulacao, mais especificamente "Automacao de Venda Transferï¿½ncia/Gera NFS/NFE"
+If FunName() # "U_EST01GERNF" // Funcao usada no processo de Triangulacao, mais especificamente "Automação de Venda Transferência/Gera NFS/NFE"
    If cFormul == "N" .and. ( FunName()=="MATA140" .or. FunName()=="MATA103" )
       If ChkSF1() .and. .not. Empty( cSerie ) // Checa se existe a NF no SF1 e a variavel cSerie preenchida.
-         MsgAlert( OEMToANSI( "A Nota Fiscal " + AllTrim( cNFiscal ) + " / Serie " + AllTrim( cSerie ) + " jï¿½ cadastrado no Documento de Entrada. Favor verificar." ) )
+         MsgAlert( OEMToANSI( "A Nota Fiscal " + AllTrim( cNFiscal ) + " / Série " + AllTrim( cSerie ) + " já cadastrado no Documento de Entrada. Favor verificar." ) )
          lRet := .F.
       ElseIf .not. ChkSF1() .and. Empty( cSerie ) // Checa se existe a NF no SF1 e a variavel cSerie nao preenchida.
              /*----------------------------------------------------------------------+
@@ -779,7 +779,7 @@ If FunName() # "U_EST01GERNF" // Funcao usada no processo de Triangulacao, mais 
              | com o mesmo fornecedor/loja e numeracao da NF (se encontrado, nao     |
              | permitir a inclusao.                                                  |
              +----------------------------------------------------------------------*/
-             MsgAlert( OEMToANSI( "Numero de Nota Fiscal jï¿½ cadastrado para o mesmo Fornecedor. Favor verificar." ) )
+             MsgAlert( OEMToANSI( "Número de Nota Fiscal já cadastrado para o mesmo Fornecedor. Favor verificar." ) )
              lRet := .F.
       EndIf
    EndIf

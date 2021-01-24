@@ -174,12 +174,18 @@ Return( lRet )
 ¦Programa  ¦GZG9_PROD ¦ Autor ¦ Wagner Neves - Marfrig  ¦ Data ¦ 15/05/2020    ¦
 +----------+-------------------------------------------------------------------¦
 */
+
 Static Function GZG9_PROD()
 Local cRet	:= ''
 SB1->(DbSetOrder(1))
 SB1->(DBGOTOP())
 If SB1->( dbSeek( xFilial('SB1') + FwFldGet("ZG9_CODPRO") ))
-    cRet    :=  SB1->B1_DESC
+    IF ALLTRIM(SB1->B1_TIPO) $GETMV("MGF_EST75")                                                                                       
+        cRet    :=  ALLTRIM(SB1->B1_DESC)
+    Else
+        MsgInfo("A T E N Ç Ã O ...... Tipo do Produto não é de embalagem","Produto inválido")
+        cRet    :=  "A T E N Ç Ã O ...... Tipo do Produto não é de embalagem "
+    EndIf
 EndIf
 Return( cRet )
 

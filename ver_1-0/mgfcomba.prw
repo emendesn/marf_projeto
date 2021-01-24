@@ -7,13 +7,13 @@
 Programa............:  MGFTCOMBA
 Autor...............:  Marcos Vieira         
 Data................:  07/08/2019 
-Descricao / Objetivo:  Validacao de regra de tolerï¿½ncia na entrada da NF.
+Descricao / Objetivo:  Validação de regra de tolerância na entrada da NF.
 Solicitante.........:  Cliente
-Uso.................:  
-Obs.................:  Ponto de entrada no final da funcao e deve ser utilizado para 
-					   regras especificas de bloqueio pertencentes ao usuario onde sera 
+Uso.................:  Marfrig
+Obs.................:  Ponto de entrada no final da função e deve ser utilizado para 
+					   regras especificas de bloqueio pertencentes ao usuario onde será 
 					   controlada pelo retorno do ponto de entrada o qual se for .F. o 
-					   documento nao sera bloqueao e se .T. sera bloqueado.
+					   documento não será bloqueao e se .T. será bloqueado.
 ============================================================================================
 */
 

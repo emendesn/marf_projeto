@@ -12,17 +12,16 @@ Data................: 16/03/2020
 Descricao / Objetivo: 
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
 
 User Function MGFCOMBG()
-
     Local lRet      := .T.  
     Local _cAliaSf1 := GetNextAlias()
        
-    //Verifica se ï¿½ ExecAuto
+    //Verifica se é ExecAuto
     If l103Auto
         Return(.T.)
     EndIf
@@ -54,12 +53,12 @@ User Function MGFCOMBG()
     SetPrvt("_cNumNf")
     SetPrvt("_CChaveNf")
     SetPrvt("_cDigChNf")
-    //Variaveis da chave que foi informada na nota fiscal
+    //Variáveis da chave que foi informada na nota fiscal
     If FUNNAME()<>"MATA910"
         _ChaveNfe     :=   M->F1_ChvNfe
-        IF Empty(_ChaveNfe) .And. l103Class .And. Alltrim(cEspecie)="SPED"
+        IF Empty(_ChaveNfe) .And. l103Class .And. Alltrim(cEspecie) $"SPED|CTE"
             _ChaveNfe     :=   aNfeDanfe[13] //SF1->F1_ChvNfe
-        ElseIF Empty(_ChaveNfe) .And. !l103Class .And. Alltrim(cEspecie)="SPED" .And. cTipo $"PBIC"
+        ElseIF Empty(_ChaveNfe) .And. !l103Class .And. Alltrim(cEspecie) $"SPED" .And. cTipo $"PBIC"
             _ChaveNfe     :=   aNfeDanfe[13] //SF1->F1_ChvNfe
         Endif
     ElseIf FUNNAME()=="MATA910"
@@ -96,17 +95,17 @@ User Function MGFCOMBG()
         QRYSF1->( DbGoTop() )
         Count To nReg
         If nReg > 0 
-            MsgAlert("Atencao : "+Alltrim(cEspecie)+" em duplicidade.","MGFCOMBG") // ALTERACAO 14042020
+            MsgAlert("Atenção : "+Alltrim(cEspecie)+" em duplicidade.","MGFCOMBG") // ALTERACAO 14042020
         EndIf
         QRYSF1->( DbCloseArea() )
     ENDIF
-    // Verifica se o campo chave esta vazio ou nao
-    If FunName()='MATA103' .And. Empty(_ChaveNfe) .And. cFormul=='N' //ALTERACAO 14042020
-            MsgAlert("Chave de Acesso nao informada","MGFCOMBG")
+    // Verifica se o campo chave está vazio ou não
+    If FunName()='MATA103' .And. Empty(_ChaveNfe) .And. cFormul=='N' //ALTERAÇÃO 14042020
+            MsgAlert("Chave de Acesso não informada","MGFCOMBG")
             lRet := .F.
             Return lRet
-    ElseIf FunName()='MATA910' .And. Empty(_ChaveNfe) .And. cFormul = "N" //ALTERACAO 14042020
-            MsgAlert("Chave de Acesso nao informada","MGFCOMBG")
+    ElseIf FunName()='MATA910' .And. Empty(_ChaveNfe) .And. cFormul = "N" //ALTERAÇÃO 14042020
+            MsgAlert("Chave de Acesso não informada","MGFCOMBG")
             lRet := .F.
             Return lRet            
     ElseIF Len(Alltrim(_ChaveNfe)) <> 44
@@ -115,7 +114,7 @@ User Function MGFCOMBG()
         Return lRet
     EndIf
     
-    // Verifica se o campo chave contï¿½m caracteres diferente de nï¿½meros
+    // Verifica se o campo chave contém caracteres diferente de números
     lRetChv := .t.
     For nI := 1 To Len(_ChaveNfe)
         IF ! (SUBSTR(_ChaveNfe,nI,1) $ '0123456789')
@@ -124,12 +123,12 @@ User Function MGFCOMBG()
         EndIF
     Next 
     IF !lRetcHV
-        MsgAlert("A Chave da NFe deve conter somente nï¿½meros.","MGFCOMBG")
+        MsgAlert("A Chave da NFe deve conter somente números.","MGFCOMBG")
         lRet := .F.
         Return lRet
     EndIf
    
-//------------------------Verifica Chave Digitada x Variaveis informadas no cabecalho da nota fiscal  
+//------------------------Verifica Chave Digitada x Variáveis informadas no cabeçalho da nota fiscal  
     
 /*UF*/
     If FUNNAME()=="MATA910"
@@ -139,23 +138,36 @@ User Function MGFCOMBG()
             CUFORIG := SA2->A2_EST
         ENDIF
     ENDIF
-   _cUf    := Posicione("C09",1,XFILIAL("C09")+CUFORIG,"C09_CODIGO")
-    IF _cUf <> _chvUf 
-        _cMsg += "Uf Divergente Chave x Cabecalho da Nota"+CRLF
-        lRet := .F.
-    ENDIF
+    
+    IF Alltrim(cEspecie) == "CTE" .And. cTipo == "C" //.And. SF1->F1_TPCOMPL=='3'// Frete e complemento
+    /*
+        IF ! EMPTY(SF1->F1_UFDESTR)
+            _cUf  := Posicione("C09",1,XFILIAL("C09")+SF1->F1_UFDESTR,"C09_CODIGO")
+        ELSE
+    */
+        lRet := .t.
+    //_cUf  := Posicione("C09",1,XFILIAL("C09")+CUFORIG,"C09_CODIGO")            
+    //    ENDIF
+    ELSE    
+       _cUf  := Posicione("C09",1,XFILIAL("C09")+CUFORIG,"C09_CODIGO")
+        IF _cUf <> _chvUf 
+            _cMsg += "Uf Divergente Chave x Cabeçalho da Nota"+CRLF
+            lRet := .F.
+        ENDIF
+    ENDIF 
+
 
 /*Ano Emissao*/
     _cAnoEmis  := Subs(Alltrim(Str(YEAR(DDEMISSAO))),3,2)
     IF _cAnoEmis <> _chAno 
-        _cMsg += "Ano Divergente Chave x Cabecalho da Nota"+CRLF
+        _cMsg += "Ano Divergente Chave x Cabeçalho da Nota"+CRLF
         lRet := .F.
     ENDIF
 
 /*Mes Emissao*/
     _cMesEmis  := StrZero(MONTH(DDEMISSAO),2)
     IF _cMesEmis <> _chMes 
-        _cMsg += "Mï¿½s Divergente Chave x Cabecalho da Nota"+CRLF
+        _cMsg += "Mês Divergente Chave x Cabeçalho da Nota"+CRLF
         lRet := .F.
     ENDIF
 
@@ -163,7 +175,7 @@ User Function MGFCOMBG()
     If Alltrim(cEspecie) $ "CTE|CTEOS"
         _cCnPjFor   := Alltrim(POSICIONE("SA2",1,xFilial("SA2")+cA100for+cLoja,"A2_CGC"))
         IF _cCnPjFor <> _chCnpj 
-            _cMsg += "CNPJ Divergente Chave x Cabecalho da Nota"+CRLF
+            _cMsg += "CNPJ Divergente Chave x Cabeçalho da Nota"+CRLF
             lRet := .F.
         ENDIF
     ElseIf Alltrim(cEspecie) $ "SPED" 
@@ -174,20 +186,28 @@ User Function MGFCOMBG()
             _cTipo      := Alltrim(POSICIONE("SA2",1,xFilial("SA2")+cA100for+cLoja,"A2_TIPO"))
             _cCnPjFor   := Alltrim(POSICIONE("SA2",1,xFilial("SA2")+cA100for+cLoja,"A2_CGC"))
         ENDIF
+        
+                
+        //PRB0041029
+        IF _cTipo = 'F' //Fisica
+            _cCnPjFor := STRZERO(VAL(_cCnPjFor),14)
+        ENDIF
+
         /*
         If _cTipo == "J" //Pessoa Juridica           
             IF _cCnPjFor <> _chCnpj 
-                _cMsg += "Pessoa Juridica, CNPJ Divergente Chave x Cabecalho da Nota"+CRLF
+                _cMsg += "Pessoa Juridica, CNPJ Divergente Chave x Cabeçalho da Nota"+CRLF
                 lRet := .F.
             ENDIF
         ElseIf _cTipo="F"  // Pessoa Fisica*/
+
         IF _cCnPjFor <> _chCnpj                
             If ! ZG4->(DbSeek(xFilial("ZG4")+_chCnpj))            
                 If _cTipo="F"
-                    _cMsg += "Pessoa Fisica, CNPJ Divergente Chave x Cabecalho da Nota"+CRLF
+                    _cMsg += "Pessoa Fisica, CNPJ Divergente Chave x Cabeçalho da Nota"+CRLF
                     lRet := .F.
                 ElseIf _cTipo="J"
-                    _cMsg += "Pessoa Jurï¿½dica, CNPJ Divergente Chave x Cabecalho da Nota"+CRLF
+                    _cMsg += "Pessoa Jurídica, CNPJ Divergente Chave x Cabeçalho da Nota"+CRLF
                     lRet := .F.
                 EndIf
             EndIf
@@ -201,7 +221,7 @@ If Alltrim(cEspecie) $'CTE|CTEOS'
         _cModelo := '67'
     EndIf    
     If _cModelo <> _chModelo
-        _cMsg += "Modelo Divergente Chave x Cabecalho da Nota"+CRLF
+        _cMsg += "Modelo Divergente Chave x Cabeçalho da Nota"+CRLF
         lRet := .F.
     EndIf
 EndIf
@@ -209,14 +229,14 @@ EndIf
 /*Serie*/
     _cSerie   := StrZero(Val(cSerie),3)
     If _cSerie <> _chSerie
-        _cMsg += "Serie Divergente Chave x Cabecalho da Nota"+CRLF
+        _cMsg += "Série Divergente Chave x Cabeçalho da Nota"+CRLF
         lRet := .F.
     EndIf
 
-/*Numero*/
+/*Número*/
     _cNumNf   := StrZero(Val(cNFiscal),9)
     If _cNumNf <> _chNumero
-        _cMsg += "Numero do documento divergente Chave x Cabecalho da Nota"+CRLF
+        _cMsg += "Número do documento divergente Chave x Cabeçalho da Nota"+CRLF
         lRet := .F.
     EndIf
 
@@ -224,13 +244,13 @@ EndIf
     _CChaveNf := Subs(_ChaveNfe,1,43)
     _cDigChNf := GeraDv11(_cChaveNf)
     If _cDigChNf <> Val(_chDigVer)
-        _cMsg += "Digito Verificador - Chave de acesso informada ï¿½ invï¿½lida"+CRLF
+        _cMsg += "Digito Verificador - Chave de acesso informada é inválida"+CRLF
         lRet := .F.
     EndIf
 
 /*Mostra resultado quando retorno for .F. */
     If ! lRet 
-        MsgAlert(_cMsg,"Dados do documento informado nao conferem com a Chave de Acesso")
+        MsgAlert(_cMsg,"Dados do documento informado não conferem com a Chave de Acesso")
     Endif
 Return lRet
 
@@ -261,8 +281,8 @@ Local cTexto := ''
 For nI := 1 TO Len(cSerie)
     IF SubStr(cSerie,nI,1) $ 'ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789'
          cTexto += SubStr(cSerie,nI,1)
-    ElseIf SubStr(cSerie,nI,1) $ "-*+!@#$%ï¿½&*()=/<>;.,"
-        MsgAlert("Existem caracteres invï¿½lidos no campo serie. Informe a serie da nota novamente.","MGFVALSR")
+    ElseIf SubStr(cSerie,nI,1) $ "-*+!@#$%¨&*()=/<>;.,"
+        MsgAlert("Existem caracteres inválidos no campo série. Informe a série da nota novamente.","MGFVALSR")
         cTexto := SPACE(03)
     EndIF
 Next nI
@@ -276,8 +296,8 @@ Local cTexto := ''
 For nI := 1 TO Len(cnfiscal)
     IF SubStr(cnfiscal,nI,1) $ 'ABCDEFGHIJKLMNOPQRSTUVWYXZ0123456789'
          cTexto += SubStr(cnfiscal,nI,1)
-    ElseIf SubStr(cnfiscal,nI,1) $ "-*+!@#$%ï¿½&*()=/<>;.,"
-        MsgAlert("Existem caracteres invï¿½lidos no campo da nota fiscal. Informe o numero da Nota novamente.","MGFVALNF")
+    ElseIf SubStr(cnfiscal,nI,1) $ "-*+!@#$%¨&*()=/<>;.,"
+        MsgAlert("Existem caracteres inválidos no campo da nota fiscal. Informe o número da Nota novamente.","MGFVALNF")
         cTexto := SPACE(09)
     EndIF
 Next nI

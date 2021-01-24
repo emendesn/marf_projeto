@@ -10,7 +10,7 @@ Data.....:              11/01/2018
 Descricao / Objetivo:   Evitar cadastro de contratos para o mesmo produto
 Doc. Origem:            Compras 
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Gatilho para os campos C3_DATPRF
 ============================================================================================================================
 */ 

@@ -4,10 +4,10 @@
 Programa.:              MGFFIN21
 Autor....:              Rafael Garcia de Melo	
 Data.....:              14/10/2016
-Descricao / Objetivo:   Compensacao automatica de notas de Credito (devolucao de Vendas)
+Descricao / Objetivo:   Compensação automática de notas de Credito (devolução de Vendas)
 Doc. Origem:            GAP FIN_CRE035_V1
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado pelo PE SF1100I
 =====================================================================================
 */
@@ -107,71 +107,71 @@ User Function MGFFIN21()
 					"|" + SE1->E1_PARCELA  + "|" + ;
 					SE1->E1_TIPO   + "|" + SE1->E1_CLIENTE  + "|" + SE1->E1_LOJA
 					/*/
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
-					ï¿½ï¿½ï¿½Funcao    ï¿½MaIntBxCR ï¿½ Autor ï¿½ Eduardo Riera         ï¿½ Data ï¿½31.08.2001 ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½Rotina de integracao com as baixas do financeiro             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½                                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-					ï¿½ï¿½ï¿½Parametrosï¿½ExpN1: Codigo da operacao a ser efetuada                     ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [1] Baixa simples do financeiro                       ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [2] Liquidacao de titulos                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [3] Compensacao de titulos de mesma carteira (RA/NCC) ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA2: Array com os recnos dos titulos a serem baixados      ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA3: Array com os dados da baixa simples do financeiro     ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [1] Motivo da Baixa                                   ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [2] Valor Recebido                                    ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [3] Banco                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [4] Agencia                                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [5] Conta                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [6] Data de Credito                                   ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [7] Data da Baixa                                     ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA4: Array com os recnos dos titulos a serem compensados   ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA5: Array com os dados da liquidacao do financeiro        ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½     {}[1] Prefixo                                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [2] Banco                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [3] Agencia                                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [4] Conta                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [5] Numero do Cheque                                  ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [6] Data Boa                                          ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [7] Valor                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [8] Tipo                                              ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [9] Natureza                                          ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [A] Moeda                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA6: Array com os parametros da rotina                     ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [1] Contabiliza On-Line                               ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [2] Aglutina Lancamentos Contabeis                    ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [3] Digita lancamentos contabeis                      ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [4] Juros para Comissao                               ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [5] Desconto para Comissao                            ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [6] Calcula Comiss s/NCC                              ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpB7: Bloco de codigo a ser executado apos o processamento  ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       da rotina, abaixo os parametro passados               ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [1] Recno do titulo baixado                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       [2] Codigo a ser informado para cancelamento futuro.  ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA8: Utilizado quando deve-se estornar uma das baixas efe- ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       tuadas. Para tanto, deve-se informar o codigo informa-ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       do no codeBlock anterior.                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½ExpA13:Array com os valores parciais dos titulos a serem     ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       compensados - na ausencia deste parametro sera criado ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       um Array contendo o mesmo tamanho do Array definido   ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       no 4o. parametro e preenchidos com zeros (0).         ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       aNCC_RA    ( 4o. parametro)                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½       aNCC_RAvlr (13o. parametro)                           ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-					ï¿½ï¿½ï¿½Retorno   ï¿½ExpC1: Primary Key do documento gerado.                      ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½                                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-					ï¿½ï¿½ï¿½Descricao ï¿½Esta rotina tem como objetivo efetuar a integracao com as baiï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½xas do modulo financeiro e os titulos gerados pelo modulo de ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½faturamento                                                  ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½          ï¿½                                                             ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
-					ï¿½ï¿½ï¿½Uso       ï¿½ Geral                                                       ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-					ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+					±±ÚÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄ¿±±
+					±±³Fun‡„o    ³MaIntBxCR ³ Autor ³ Eduardo Riera         ³ Data ³31.08.2001 ³±±
+					±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄ´±±
+					±±³          ³Rotina de integracao com as baixas do financeiro             ³±±
+					±±³          ³                                                             ³±±
+					±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+					±±³Parametros³ExpN1: Codigo da operacao a ser efetuada                     ³±±
+					±±³          ³       [1] Baixa simples do financeiro                       ³±±
+					±±³          ³       [2] Liquidacao de titulos                             ³±±
+					±±³          ³       [3] Compensacao de titulos de mesma carteira (RA/NCC) ³±±
+					±±³          ³ExpA2: Array com os recnos dos titulos a serem baixados      ³±±
+					±±³          ³ExpA3: Array com os dados da baixa simples do financeiro     ³±±
+					±±³          ³       [1] Motivo da Baixa                                   ³±±
+					±±³          ³       [2] Valor Recebido                                    ³±±
+					±±³          ³       [3] Banco                                             ³±±
+					±±³          ³       [4] Agencia                                           ³±±
+					±±³          ³       [5] Conta                                             ³±±
+					±±³          ³       [6] Data de Credito                                   ³±±
+					±±³          ³       [7] Data da Baixa                                     ³±±
+					±±³          ³ExpA4: Array com os recnos dos titulos a serem compensados   ³±±
+					±±³          ³ExpA5: Array com os dados da liquidacao do financeiro        ³±±
+					±±³          ³     {}[1] Prefixo                                           ³±±
+					±±³          ³       [2] Banco                                             ³±±
+					±±³          ³       [3] Agencia                                           ³±±
+					±±³          ³       [4] Conta                                             ³±±
+					±±³          ³       [5] Numero do Cheque                                  ³±±
+					±±³          ³       [6] Data Boa                                          ³±±
+					±±³          ³       [7] Valor                                             ³±±
+					±±³          ³       [8] Tipo                                              ³±±
+					±±³          ³       [9] Natureza                                          ³±±
+					±±³          ³       [A] Moeda                                             ³±±
+					±±³          ³ExpA6: Array com os parametros da rotina                     ³±±
+					±±³          ³       [1] Contabiliza On-Line                               ³±±
+					±±³          ³       [2] Aglutina Lancamentos Contabeis                    ³±±
+					±±³          ³       [3] Digita lancamentos contabeis                      ³±±
+					±±³          ³       [4] Juros para Comissao                               ³±±
+					±±³          ³       [5] Desconto para Comissao                            ³±±
+					±±³          ³       [6] Calcula Comiss s/NCC                              ³±±
+					±±³          ³ExpB7: Bloco de codigo a ser executado apos o processamento  ³±±
+					±±³          ³       da rotina, abaixo os parametro passados               ³±±
+					±±³          ³       [1] Recno do titulo baixado                           ³±±
+					±±³          ³       [2] Codigo a ser informado para cancelamento futuro.  ³±±
+					±±³          ³ExpA8: Utilizado quando deve-se estornar uma das baixas efe- ³±±
+					±±³          ³       tuadas. Para tanto, deve-se informar o codigo informa-³±±
+					±±³          ³       do no codeBlock anterior.                             ³±±
+					±±³          ³ExpA13:Array com os valores parciais dos titulos a serem     ³±±
+					±±³          ³       compensados - na ausencia deste parametro sera criado ³±±
+					±±³          ³       um Array contendo o mesmo tamanho do Array definido   ³±±
+					±±³          ³       no 4o. parametro e preenchidos com zeros (0).         ³±±
+					±±³          ³       aNCC_RA    ( 4o. parametro)                           ³±±
+					±±³          ³       aNCC_RAvlr (13o. parametro)                           ³±±
+					±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+					±±³Retorno   ³ExpC1: Primary Key do documento gerado.                      ³±±
+					±±³          ³                                                             ³±±
+					±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+					±±³Descri‡„o ³Esta rotina tem como objetivo efetuar a integracao com as bai³±±
+					±±³          ³xas do modulo financeiro e os titulos gerados pelo modulo de ³±±
+					±±³          ³faturamento                                                  ³±±
+					±±³          ³                                                             ³±±
+					±±ÃÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´±±
+					±±³Uso       ³ Geral                                                       ³±±
+					±±ÀÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ±±
+					±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+					ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 					/*/
 					nRecTit:=aRecSD1[nI,3][1]
 					nRecNcc:=aRecNCC[1]

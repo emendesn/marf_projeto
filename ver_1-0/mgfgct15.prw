@@ -6,7 +6,7 @@ Data.....:              03/10/2017
 Descricao / Objetivo:   Altera query na consulta de contratos, F3.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado por PE CN120ESY, rotina CNTA120.
 =====================================================================================
 */
@@ -29,30 +29,30 @@ Local nX
 
 //Local lAutForn	:= Cn121GAutF()
 
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-//О©╫ Carrega Grupos do usuario                    О©╫
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+//здддддддддддддддддддддддддддддддддддддддддддддд©
+//Ё Carrega Grupos do usuario                    Ё
+//юдддддддддддддддддддддддддддддддддддддддддддддды
 For nX:=1 to len(aGrp)
 	cGrps += "'"+aGrp[nX]+"',"
 Next
 cGrps := SubStr(cGrps,1,len(cGrps)-1)
 
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-//О©╫GAP 75_82 - Alteracao de query para inclusao de nome de fornecedor      О©╫
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+//ЁGAP 75_82 - AlteraГЦo de query para inclusЦo de nome de fornecedor      Ё
+//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 cQuery1 := " SELECT "
 cQuery1 += " CN9_NUMERO,"
 cQuery1 += " MAX(CN9_REVISA) AS CN9_REVISA,"
 cQuery1 += " CN9_FILCTR, "
 
-// GAP 75_82 - Inclusao de nome de fornecedor
+// GAP 75_82 - InclusЦo de nome de fornecedor
 cQuery1 += " CASE WHEN A2_NOME IS NOT NULL THEN A2_NOME ELSE CASE WHEN A1_NOME IS NOT NULL THEN A1_NOME ELSE ' ' END END AS CN9_ZNOME  "
 
 cQuery1 += " FROM "
 cQuery1 += RetSqlName("CN9") + " CN9 "
 
 
-// GAP 75_82 - Inclusao de nome de fornecedor
+// GAP 75_82 - InclusЦo de nome de fornecedor
 /*
 cQuery1 += " INNER JOIN " + RetSqlName("CN1") + " CN1 ON CN1.D_E_L_E_T_ = ' ' "
 cQuery1 += " AND CN1.CN1_FILIAL = CN9.CN9_FILCTR "

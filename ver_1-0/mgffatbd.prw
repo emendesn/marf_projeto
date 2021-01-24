@@ -66,13 +66,18 @@ User Function MGFFATBD()
 		IF SF3->(DbSeek(xFilial("SF3")+_cChaveSF3))
 			While SF3->(!Eof()) .AND. SF3->F3_CLIEFOR+SF3->F3_LOJA+SF3->F3_NFISCAL+SF3->F3_SERIE =  _cChaveSF3
 				
-				If RecLock("SF3",.F.)
-					SF3->F3_EMISSAO := dDiaGravar
-					SF3->F3_ENTRADA := dDiaGravar
-					SF3->(MsUnLock())
-				EndIf
+				If SF3->F3_TIPO <> 'D'
+
+					If RecLock("SF3",.F.)
+						SF3->F3_EMISSAO := dDiaGravar
+						SF3->F3_ENTRADA := dDiaGravar
+						SF3->(MsUnLock())
+					EndIf
+				
+				Endif
 				
 				SF3->(dbSkip())
+			
 			EndDo
 		EndIf
 		

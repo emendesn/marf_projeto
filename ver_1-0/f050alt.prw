@@ -5,10 +5,10 @@
 Programa............: F050ALT
 Autor...............: Joni Lima
 Data................: 11/04/2016
-Descricao / Objetivo: O ponto de entrada F050ALT ï¿½ utilizado para validacao pï¿½s confirmacao de alteracao, executado antes de atualizar saldo do fornecedor.
+Descrição / Objetivo: O ponto de entrada F050ALT é utilizado para validação pós confirmação de alteração, executado antes de atualizar saldo do fornecedor.
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: http://tdn.totvs.com/pages/releaseview.action?pageId=6070876
 =====================================================================================
 */

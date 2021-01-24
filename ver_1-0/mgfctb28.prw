@@ -7,10 +7,10 @@
 Programa............: MGFCTB28
 Autor...............: Renato V.B.Jr
 Data................: 15/05/2020
-Descricao / Objetivo: Reprocessar Periodos contabeis Bloqueados. 
+Descrição / Objetivo: Reprocessar Periodos contabeis Bloqueados. 
 Doc. Origem.........: RTASK0011088
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Utilizado no ponto de entrada CT010TOK
 =====================================================================================
 */
@@ -24,7 +24,7 @@ Local	_lPerBlq    :=  .F.
 dbSelectArea("CTG")
 dbSetOrder(1)
 For _nI := 1 To Len(aCols)
-    // Nao  estar deletado e igual a 4 - Bloqueio
+    // Não estar deletado e igual a 4 - Bloqueio
 	If !aCols[_nI][nUsado+1]  .AND.   aCols[_nI][nPosStatus] == "4"
 		If dbSeek(xFilial() + _cCalend + _cExerci + aCols[_nI][1], .F.)
             If CTG->CTG_STATUS  <> aCols[_nI][nPosStatus]     // Bloqueado

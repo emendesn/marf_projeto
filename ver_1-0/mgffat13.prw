@@ -9,7 +9,7 @@ Data................: 14/10/2016
 Descricao / Objetivo: Ponto de entrada para trocar a chamada da tela de saldo
 Doc. Origem.........: FAT08
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Consulta especifica de saldo
 =================================================================================================
 */
@@ -107,10 +107,10 @@ If !IsInCallStack("U_MGFEST01") .and. SB1->( DbSeek( xFilial("SB1") + cB1Cod ) )
 		nMGFDTMAX := SZJ->ZJ_MAXIMO
 
 		If nMGFDTMIN <= 0
-			MsgInfo("Na tabela SZJ (Tipo de Pedido) preencher a quantidade de dias a acrescentar a Data MINIMA para a espï¿½cie de pedido: "+cC5TipPed)
+			MsgInfo("Na tabela SZJ (Tipo de Pedido) preencher a quantidade de dias a acrescentar a Data MINIMA para a espécie de pedido: "+cC5TipPed)
 			lRet := .F.
 		ElseIf nMGFDTMAX <= 0
-			MsgInfo("Na tabela SZJ (Tipo de Pedido) preencher a quantidade de dias a acrescentar a Data MAXIMA para a espï¿½cie de pedido: "+cC5TipPed)
+			MsgInfo("Na tabela SZJ (Tipo de Pedido) preencher a quantidade de dias a acrescentar a Data MAXIMA para a espécie de pedido: "+cC5TipPed)
 			lRet:= .F.
 		Endif
 		If lRet
@@ -130,9 +130,9 @@ If !IsInCallStack("U_MGFEST01") .and. SB1->( DbSeek( xFilial("SB1") + cB1Cod ) )
 	    	//Verifica se cliente valida data util
 	    	//-----------------------------------------------
 			If SA1->A1_ZVIDAUT > 0
-				//Data Minima = Data Emissao + (Vida util Cliente * Vida util Produto)
+				//Data Mínima = Data Emissão + (Vida Útil Cliente * Vida Útil Produto)
 				dDataMin := cC5Emissao + ( SA1->A1_ZVIDAUT * SB1->B1_ZVLDPR )
-				//Data Maxima = Data Emissao + Vida util Produto
+				//Data Máxima = Data Emissão + Vida Útil Produto
 				dDataMax := cC5Emissao + ( SB1->B1_ZVLDPR )
 			EndIF
 		Endif
@@ -209,7 +209,7 @@ DEFINE MSDIALOG oDlg TITLE "Consulta de Estoque"  FROM 000, 000  TO 345, 585 COL
 	oGrp1      := TGroup():New( 003,003,044,290,"",oDlg,CLR_BLACK,CLR_WHITE,.T.,.F. )
 	oGrp2      := TGroup():New( 045,003,164,290,"",oDlg,CLR_BLACK,CLR_WHITE,.T.,.F. )
 
-	@ 012, 006 SAY "Dt. Minima" 	SIZE 040, 009 OF oGrp1 COLORS 0, 16777215 PIXEL
+	@ 012, 006 SAY "Dt. Mínima" 	SIZE 040, 009 OF oGrp1 COLORS 0, 16777215 PIXEL
 	@ 008, 050 MSGET dDataMin 		SIZE 060, 010 OF oGrp1 PICTURE "@99/99/9999"   COLORS 0, 16777215 PIXEL WHEN !bFEFO  VALID IIF(bCtrData,Val_DT(dDataMin >= dVlMin,dVlMin,dVlMax), .T.)
 	@ 012, 116 SAY "Dt. Maxima" 	SIZE 040, 009 OF oGrp1 COLORS 0, 16777215 PIXEL
 	@ 008, 150 MSGET dDataMax 		SIZE 060, 010 OF oGrp1  PICTURE "@99/99/9999"  COLORS 0, 16777215 PIXEL WHEN !bFEFO  VALID IIF(bCtrData,Val_DT(dDataMax <= dVlMax,dVlMin,dVlMax) , .T.)
@@ -238,7 +238,7 @@ DEFINE MSDIALOG oDlg TITLE "Consulta de Estoque"  FROM 000, 000  TO 345, 585 COL
 	@ 122,016  SAY "Saldo"  		  SIZE 040, 009 OF oGrp2 COLOR CLR_BLUE PIXEL FONT oBold
 	@ 118,060  MSGET  oSaldo VAR aSaldo[4]		  SIZE 060, 010 OF oGrp2 COLOR CLR_BLUE PIXEL RIGHT FONT oFont1 When .F. Right
 
-	@ 049,157 SAY "Informacoes do Produto"    SIZE 120, 009 OF oGrp2 PIXEL FONT oBold COLOR CLR_RED
+	@ 049,157 SAY "Informações do Produto"    SIZE 120, 009 OF oGrp2 PIXEL FONT oBold COLOR CLR_RED
 	@ 060,145 TO 132,146  OF oGrp2 PIXEL
 
 
@@ -246,9 +246,9 @@ DEFINE MSDIALOG oDlg TITLE "Consulta de Estoque"  FROM 000, 000  TO 345, 585 COL
 	@ 062,204  MSGET   aSaldo[5] 	  SIZE 060, 010 OF oGrp2 COLORS 0, 16777215 FONT oFont2 PIXEL RIGHT When .F. Right
 	@ 080,162  SAY "Itens p/ Caixa"   SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
 	@ 076,204  MSGET   aSaldo[6]	  SIZE 060, 010 OF oGrp2 COLORS 0, 16777215 FONT oFont2 PIXEL RIGHT When .F. Right
-	@ 094,162  SAY "Peso Mï¿½dio"       SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
+	@ 094,162  SAY "Peso Médio"       SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
 	@ 090,204  MSGET   aSaldo[7]	  SIZE 060, 010 OF oGrp2 COLORS 0, 16777215 FONT oFont2 PIXEL RIGHT When .F. Right
-	@ 108,162  SAY "Peï¿½as"            SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
+	@ 108,162  SAY "Peças"            SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
 	@ 104,204  MSGET   aSaldo[8]	  SIZE 060, 010 OF oGrp2 COLORS 0, 16777215 FONT oFont2 PIXEL RIGHT When .F. Right
 	@ 122,162  SAY "Unidade Medida"   SIZE 040, 009 OF oGrp2 COLORS 0, 16777215 PIXEL
 	@ 118,204  MSGET   SB1->B1_UM 	  SIZE 060, 010 OF oGrp2 COLORS 0, 16777215 PIXEL RIGHT When .F. Right
@@ -309,7 +309,7 @@ if SZJ->ZJ_FEFO <> 'S'
 	cQuery  += "  AND C6.D_E_L_E_T_ =' '"
 	cQuery  += "  AND F4.D_E_L_E_T_ =' '"
 	cQuery	+= "  AND C6_TES = F4_CODIGO"
-	cQuery	+= "  AND C6_QTDENT =0 " // Alteracao Carneiro 05/09 sï¿½ pedidos ainda nao entregues
+	cQuery	+= "  AND C6_QTDENT =0 " // Alteração Carneiro 05/09 só pedidos ainda não entregues
 	cQuery	+= "  AND F4.F4_ESTOQUE = 'S'"
 	cQuery  += "  AND C6.C6_FILIAL = C5.C5_FILIAL"
 	cQuery  += "  AND C6.C6_NUM = C5.C5_NUM"
@@ -364,7 +364,7 @@ if SZJ->ZJ_FEFO <> 'S'
 	    QRY_SC6->(dbSkip())
 	End
 
-	If Select("QRY_SC6") > 0      //Incluido condicao de data de emissao
+	If Select("QRY_SC6") > 0      //Incluido condição de data de emissão
 		QRY_SC6->(dbCloseArea())
 	EndIf
 
@@ -403,7 +403,7 @@ if SZJ->ZJ_FEFO <> 'S'
 		cQuery  += "  AND C6_PRODUTO='"+cB1COD+"'"
 		cQuery  += "  AND C6_FILIAL='"+cC5FILIAL+"'"
 		cQuery  += "  AND C6_NUM <>'"+cC5Num+"'"
-		cQuery	+= "  AND C6_QTDENT =0 " // Alteracao Carneiro 05/09 sï¿½ pedidos ainda nao entregues
+		cQuery	+= "  AND C6_QTDENT =0 " // Alteração Carneiro 05/09 só pedidos ainda não entregues
 
 
 		cQuery  += "  AND C6_NOTA	=	'         '"
@@ -444,7 +444,7 @@ if SZJ->ZJ_FEFO <> 'S'
 		    QRY_SC6->(dbSkip())
 		End
 
-		If Select("QRY_SC6") > 0      //Incluido condicao de data de emissao
+		If Select("QRY_SC6") > 0      //Incluido condição de data de emissão
 			QRY_SC6->(dbCloseArea())
 		EndIf
 
@@ -508,7 +508,7 @@ else
 	cQuery  += "  AND C6_PRODUTO='"+cB1COD+"'"
 	cQuery  += "  AND C6_FILIAL='"+cC5FILIAL+"'"
 	cQuery  += "  AND C6_NUM <>'"+cC5Num+"'"
-	cQuery	+= "  AND C6_QTDENT =0 " // Alteracao Carneiro 05/09 sï¿½ pedidos ainda nao entregues
+	cQuery	+= "  AND C6_QTDENT =0 " // Alteração Carneiro 05/09 só pedidos ainda não entregues
 
 
 	cQuery  += "  AND C6_NOTA	=	'         '"
@@ -547,7 +547,7 @@ else
 	    QRY_SC6->(dbSkip())
 	End
 
-	If Select("QRY_SC6") > 0      //Incluido condicao de data de emissao
+	If Select("QRY_SC6") > 0      //Incluido condição de data de emissão
 		QRY_SC6->(dbCloseArea())
 	EndIf
 
@@ -583,7 +583,7 @@ else
 	cQuery  += "  AND C6_PRODUTO='"+cB1COD+"'"
 	cQuery  += "  AND C6_FILIAL='"+cC5FILIAL+"'"
 	cQuery  += "  AND C6_NUM <>'"+cC5Num+"'"
-	cQuery	+= "  AND C6_QTDENT =0 " // Alteracao Carneiro 05/09 sï¿½ pedidos ainda nao entregues
+	cQuery	+= "  AND C6_QTDENT =0 " // Alteração Carneiro 05/09 só pedidos ainda não entregues
 
 	cQuery  += "  AND C6_NOTA	=	'         '"
 	cQuery  += "  AND C6_BLQ	<>	'R'"
@@ -634,7 +634,7 @@ else
 	    QRY_SC6->(dbSkip())
 	End
 
-	If Select("QRY_SC6") > 0      //Incluido condicao de data de emissao
+	If Select("QRY_SC6") > 0      //Incluido condição de data de emissão
 		QRY_SC6->(dbCloseArea())
 	EndIf
 
@@ -701,7 +701,7 @@ EndIF
 
 
 IF Len(aListPV) == 0
-    MsgAlert('Nao hï¿½ Pedidos de Vendas'+IIF(nTipo==1,'!!',' Bloqueado !!'))
+    MsgAlert('Não há Pedidos de Vendas'+IIF(nTipo==1,'!!',' Bloqueado !!'))
     Return
 EndIF
 
@@ -722,7 +722,7 @@ DEFINE MSDIALOG oDlg2 TITLE 'Pedidos de Vendas'+IIF(nTipo==1,'',' Bloqueados') F
 	oBrowseDados:addColumn(TCColumn():new("Item"          ,{||aListPV[oBrowseDados:nAt][02]},"@!",,,"LEFT"  ,20,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new("Cliente"       ,{||aListPV[oBrowseDados:nAt][03]},"@!",,,"LEFT"  ,30,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new("Loja"          ,{||aListPV[oBrowseDados:nAt][04]},"@!",,,"LEFT"  ,20,.F.,.F.,,,,,))
-	oBrowseDados:addColumn(TCColumn():new("Razao Social"  ,{||aListPV[oBrowseDados:nAt][05]},"@!",,,"LEFT"  ,100,.F.,.F.,,,,,))
+	oBrowseDados:addColumn(TCColumn():new("Razão Social"  ,{||aListPV[oBrowseDados:nAt][05]},"@!",,,"LEFT"  ,100,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new("TES"           ,{||aListPV[oBrowseDados:nAt][06]},"@!",,,"LEFT"  ,20,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new("Entrega"       ,{||aListPV[oBrowseDados:nAt][07]},"@!",,,"LEFT"  ,30,.F.,.F.,,,,,))
 	oBrowseDados:addColumn(TCColumn():new("Quantidade"    ,{||aListPV[oBrowseDados:nAt][08]},"@E 9,999,999.99",,,"RIGHT" ,30,.F.,.F.,,,,,))
@@ -735,7 +735,7 @@ Return
 Static Function Val_DT(bFlag,dVlMin,dVlMax)
 
 IF !bFlag
-      MsgAlert('Pedido Tipo FEFO Atacado, nao ï¿½ possivel alterar a data fora dos limites: '+DTOC(dVlMin)+' a '+DTOC(dVlMax))
+      MsgAlert('Pedido Tipo FEFO Atacado, não é possivel alterar a data fora dos limites: '+DTOC(dVlMin)+' a '+DTOC(dVlMax))
 EndIF
 
 Return bFlag

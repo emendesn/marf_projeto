@@ -14,7 +14,7 @@ Data.....:              07/04/2017
 Descricao / Objetivo:   Cadastro de Regional - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -126,7 +126,7 @@ static function cmtCrm23( oModel )
 		cUpdTbl += " 		A3_COD = '" + oModel:getValue('ZBGMASTER' , 'ZBG_REPRES' ) + "'"	+ CRLF
 
 		if tcSQLExec( cUpdTbl ) < 0
-			conout("Nao  foi possivel executar UPDATE." + CRLF + tcSqlError())
+			conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
 
 		fwFormCommit( oModel )

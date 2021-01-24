@@ -10,10 +10,10 @@
 Programa............: MA040DIN
 Autor...............: Marcelo Carneiro
 Data................: 30/11/2016 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: Contrato GAPS - MIT044- Cadastro de Vendedor
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada no final do cadastro de Vendedor
 =====================================================================================
 */

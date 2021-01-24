@@ -8,7 +8,7 @@ Data................: Set/2017
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada SF2520E
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

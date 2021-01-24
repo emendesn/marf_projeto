@@ -27,15 +27,22 @@ Return
 User Function WSC78M()
 Static oDlg
 Static opanel
-Private _cverde := "#A8D4ED"
+Private _cverde1 := getmv("MGFWSC781",,"#A8D4ED")
+Private _cverde2 := getmv("MGFWSC782",,"#F781BE")
 Private _cvermelho := "#F22213"
 Private _camarelo := '#FFFF00'
+Private _ccinza := '#BDBEC0'
+Private _cpreto := '#59595C'
+Private _ntempo := getmv("MGFWSC78T",,20)
+Private _ncont := 0
+Private _ctela := '2'
 
 aSize := MsAdvSize()
 aObjects := {}
 AAdd( aObjects, { 100, 100,.F.,.T. } )
 aInfo := { aSize[ 1 ], aSize[ 2 ], aSize[ 3 ], aSize[ 4 ], 1, 1 }
 aPosObj := MsObjSize( aInfo, aObjects )
+
 		
 DEFINE MSDIALOG oDlg TITLE "Monitor de Integrações" FROM aSize[7], aSize[8] TO aSize[6]+200,aSize[5]+200 OF oMainWnd PIXEL 
 
@@ -61,6 +68,22 @@ User Function WSC78MP()
 
 Local cQry := ""
 
+//Incrementa contador de tempo da tela
+_ncont++
+
+If _ncont > _ntempo
+
+	_ncont := 0
+
+	If _ctela == '1'
+		_ctela := '2'
+	Else
+		_ctela := '1'
+	Endif
+
+Endif
+
+
 cQry := " select    ZFR_CODIGO,"
 cQry += "           ZFR_DESCRI,"
 cQry += "           ZFR_TIPO  ,"
@@ -78,8 +101,8 @@ cQry += "           ZFR_FONTE ,"
 cQry += "           ZFR_ATIVO ,"
 cQry += "           ZFR_MIN   ,"
 cQry += "           ZFR_MAN   "
-cQry += " FROM " + retsqlname("ZFR") + " where d_e_l_e_t_ <> '*' and "
-cQry += " ZFR_ATIVO = '1' "
+cQry += " FROM " + retsqlname("ZFR") + " where d_e_l_e_t_ <> '*' and"
+cQry += " ZFR_ATIVO = '" + _ctela +  "' "
 
 If select("TMPZFR") > 0
 	TMPZFR->(Dbclosearea())
@@ -90,7 +113,7 @@ TcQuery cQry New Alias "TMPZFR"
 Do while !(TMPZFR->(EOF()))
 
 	cQry := " select    ZFS_STATUS,ZFS_RESPOS FROM ( SELECT ZFS_STATUS,ZFS_RESPOS "
-	cQry += " FROM " + retsqlname("ZFS") + " where d_e_l_e_t_ <> '*' and "
+	cQry += " FROM " + retsqlname("ZFS") + " where d_e_l_e_t_ <> '*'  AND "
 	cQry += " ZFS_CODIGO = '" + alltrim(TMPZFR->ZFR_CODIGO) + "' ORDER BY R_E_C_N_O_ DESC) WHERE ROWNUM = 1"
     
 	If select("TMPZFS") > 0
@@ -100,7 +123,11 @@ Do while !(TMPZFR->(EOF()))
 	TcQuery cQry New Alias "TMPZFS"
 
 	If ALLTRIM(TMPZFS->ZFS_STATUS) == "OK"
-		_ccor := _cverde
+		If _ctela == '1'
+			_ccor := _cverde1
+		Else
+			_ccor := _cverde2
+		Endif
 	Elseif ALLTRIM(TMPZFS->ZFS_STATUS) == "FALHA"
 		_ccor := _cvermelho
 	Else
@@ -108,7 +135,7 @@ Do while !(TMPZFR->(EOF()))
 	Endif
 
 
-	If TMPZFR->ZFR_TIPO == 'J' .or. TMPZFR->ZFR_TIPO == 'G'  //Monitoramento de serviço via Json
+	If TMPZFR->ZFR_TIPO == 'J' .or. TMPZFR->ZFR_TIPO == 'G'   //Monitoramento de serviço via Json
 
 		_ctexto := ALLTRIM(TMPZFR->ZFR_DESCRI)
 
@@ -208,7 +235,7 @@ Do while !(TMPZFR->(EOF()))
 
 	Endif
 
-	If TMPZFR->ZFR_TIPO == 'T' //Monitoramento de serviço via query
+	If TMPZFR->ZFR_TIPO == 'T' .or. TMPZFR->ZFR_TIPO == 'K' .or. TMPZFR->ZFR_TIPO == 'Y' //Monitoramento de serviço via query
 
 		_ctexto := ALLTRIM(TMPZFR->ZFR_DESCRI)
 
@@ -239,5 +266,21 @@ Do while !(TMPZFR->(EOF()))
 	TMPZFR->(Dbskip())
 
 Enddo
+
+_ntotal := 1344
+_ncinza := _ntotal * (_ncont/_ntempo)
+
+
+//barra de tempo para virar a tela
+oPanel:addShape("id=0;type=1;left=0;top=0"+;
+				 ";width="+alltrim(str(_ncinza))+";height=10;"+;
+                "gradient=1,0,0,0,0,0.0," + _ccinza + ";pen-width=1;"+;
+                "pen-color=#ffffff;can-move=0;can-mark=0;is-container=1;")	
+
+oPanel:addShape("id=0;type=1;left="+alltrim(str(_ncinza+1))+";top=0"+;
+				 ";width="+alltrim(str(_ntotal-_ncinza))+";height=10;"+;
+                "gradient=1,0,0,0,0,0.0," + _cpreto + ";pen-width=1;"+;
+                "pen-color=#ffffff;can-move=0;can-mark=0;is-container=1;")	
+			
 
 Return

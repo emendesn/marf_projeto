@@ -8,12 +8,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFGFE12
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 03/04/2017
-Descricao / Objetivo.....: Relatorio de titulos de frete a pagar
+Descrição / Objetivo.....: Relatório de títulos de frete a pagar
 Doc. Origem..............: GAP - GFE10
-Solicitante..............: 
-Uso......................: 
+Solicitante..............: Cliente
+Uso......................: Marfrig
 Obs......................: Criado para regra de descontos de RCTRC
 =========================================================================================================
 */
@@ -51,37 +51,37 @@ Private cPerg := "MGFGFE12"
 
 Public cAliasGWN := GetNextAlias()
      
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Habilita as perguntas da Rotina                                         ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Habilita as perguntas da Rotina                                         ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 ValidPerg()
 
-oReport:= TReport():New("MGFGFE12","Relatorio de Titulo de Frete","MGFGFE12", {|oReport| ReportPrint(oReport)},"")
+oReport:= TReport():New("MGFGFE12","Relatório de Título de Frete","MGFGFE12", {|oReport| ReportPrint(oReport)},"")
 oReport:SetLandscape()
 oReport:SetTotalInLine(.F.)
 
 Pergunte("MGFGFE12",.T.)
 
-oSintetico := TRSection():New(oReport,"Relatorio de Titulo de Frete",{"cAliasGWN"}) //"Relacao de Pedidos de Compras"
+oSintetico := TRSection():New(oReport,"Relatório de Título de Frete",{"cAliasGWN"}) //"Relacao de Pedidos de Compras"
 oSintetico :SetTotalInLine(.F.)
 
 TRCell():New(oSintetico,"FILIAL"	       ,"cAliasGWN" , "Filial"	            /*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
 TRCell():New(oSintetico,"NUM_ROMANEIO"     ,"cAliasGWN" , "Romaneio"	            /*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"COD_TIPO_VEICULO" ,"cAliasGWN" , "Tp Veï¿½culo"	        /*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"DESC_TIPO_VEICULO","cAliasGWN" , "Descr.Tp Veï¿½culo"      /*Titulo*/	,/*Picture*/,35/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"NUM_TITULO"       ,"cAliasGWN" , "Titulo"				/*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"DT_EMISSAO"	   ,"cAliasGWN" , "Emissao"   			/*Titulo*/	,/*Picture*/,12/*Tamanho*/,/*lPixel*/,{||SUBS(cAliasGWN->DT_EMISSAO,7,2)+"/"+SUBS(cAliasGWN->DT_EMISSAO,5,2)+"/"+SUBS(cAliasGWN->DT_EMISSAO,1,4)})
+TRCell():New(oSintetico,"COD_TIPO_VEICULO" ,"cAliasGWN" , "Tp Veículo"	        /*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
+TRCell():New(oSintetico,"DESC_TIPO_VEICULO","cAliasGWN" , "Descr.Tp Veículo"      /*Titulo*/	,/*Picture*/,35/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
+TRCell():New(oSintetico,"NUM_TITULO"       ,"cAliasGWN" , "Título"				/*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
+TRCell():New(oSintetico,"DT_EMISSAO"	   ,"cAliasGWN" , "Emissão"   			/*Titulo*/	,/*Picture*/,12/*Tamanho*/,/*lPixel*/,{||SUBS(cAliasGWN->DT_EMISSAO,7,2)+"/"+SUBS(cAliasGWN->DT_EMISSAO,5,2)+"/"+SUBS(cAliasGWN->DT_EMISSAO,1,4)})
 TRCell():New(oSintetico,"DT_VENCIMENTO"    ,"cAliasGWN" , "Vencimento"  			/*Titulo*/	,/*Picture*/,12/*Tamanho*/,/*lPixel*/,{||SUBS(cAliasGWN->DT_VENCIMENTO,7,2)+"/"+SUBS(cAliasGWN->DT_VENCIMENTO,5,2)+"/"+SUBS(cAliasGWN->DT_VENCIMENTO,1,4)})
 TRCell():New(oSintetico,"DESCONTO_GERAL"   ,"cAliasGWN",  "Vlr Desconto"			/*Titulo*/	,"@E 999,999.99"/*Picture*/,15/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"DECRESCIMO"	   ,"cAliasGWN",  "Decrï¿½scimo"      		/*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
+TRCell():New(oSintetico,"DECRESCIMO"	   ,"cAliasGWN",  "Decréscimo"      		/*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
 TRCell():New(oSintetico,"FORNECEDOR"	   ,"cAliasGWN",  "Fornecedor"      		/*Titulo*/	,/*Picture*/,10/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
 TRCell():New(oSintetico,"DESC_DESCONTO"	   ,"cAliasGWN",  "Descr Desconto"   		/*Titulo*/	,/*Picture*/,30/*Tamanho*/,/*lPixel*/,{||ALLTRIM(cAliasGWN->DESC_DESCONTO)})
 TRCell():New(oSintetico,"DESCONTO_RCTRC"   ,"cAliasGWN",  "Desc RCTRC"     		/*Titulo*/	,/*Picture*/,12/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
 TRCell():New(oSintetico,"GWN_DTIMPL"	   ,"cAliasGWN",  "Data Implant"   		/*Titulo*/	,/*Picture*/,12/*Tamanho*/,/*lPixel*/,{||SUBS(cAliasGWN->GWN_DTIMPL,7,2)+"/"+SUBS(cAliasGWN->GWN_DTIMPL,5,2)+"/"+SUBS(cAliasGWN->GWN_DTIMPL,1,4)})
 TRCell():New(oSintetico,"E2_VENCTO_FILTRO" ,"cAliasGWN",  "Vencto Filtro"  		/*Titulo*/	,/*Picture*/,15/*Tamanho*/,/*lPixel*/,{||SUBS(cAliasGWN->E2_VENCTO_FILTRO,7,2)+"/"+SUBS(cAliasGWN->E2_VENCTO_FILTRO,5,2)+"/"+SUBS(cAliasGWN->E2_VENCTO_FILTRO,1,4)})
 TRCell():New(oSintetico,"GW3_EMISDF"	   ,"cAliasGWN",  "Emitente"	    	    /*Titulo*/	,/*Picture*/,18/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
-TRCell():New(oSintetico,"GW3_NRDF"	       ,"cAliasGWN",  "Numero DF"	    	    /*Titulo*/	,/*Picture*/,15/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
+TRCell():New(oSintetico,"GW3_NRDF"	       ,"cAliasGWN",  "Número DF"	    	    /*Titulo*/	,/*Picture*/,15/*Tamanho*/,/*lPixel*/,/*{|| code-block de impressao }*/)
 Return(oReport)
 
 Static Function ReportPrint(oReport)
@@ -113,9 +113,9 @@ Local lFilUsr	:= oSintetico:GetAdvplExp() <> ""
 MakeSqlExpr(oReport:uParam)
 oReport:Section(1):BeginQuery()
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Todos os campos que serao impressos no relatorioï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Todos os campos que serão impressos no relatórioÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 //BeginSql Alias cAliasGWN
 
@@ -173,6 +173,8 @@ cQuery += "   AND GW3.GW3_EMISDF = A2.A2_CGC "
 cQuery += "   AND GW3.GW3_SERDF  = E2.E2_PREFIXO "
 cQuery += "   AND GW3.GW3_NRDF   = E2.E2_NUM "
 cQuery += "   AND GW3.GW3_DTEMIS = E2.E2_EMISSAO"
+cQuery += "   AND E2.E2_LOJA = A2.A2_LOJA"
+cQuery += "  AND E2.E2_FORNECE = A2.A2_COD"
 cQuery += "   AND E2.E2_HIST     LIKE '%RCTRC%' "
 cQuery += "   AND E2.D_E_L_E_T_  = ' '       "
 cQuery += "  INNER JOIN "+RetSqlName("ZDS")+" ZDS ON ZDS.ZDS_FILIAL = E2.E2_FILIAL"
@@ -214,27 +216,27 @@ While ! cAliasGWN->(Eof())
     cAliasGWN->(DbSkip())
 ENDDO
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½Inicio da impressao do fluxo do relatorio                               ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³Inicio da impressao do fluxo do relatório                               ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 cAliasGWN->(DbCloseArea())
 
 Return NIL
 
 /*/
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-ï¿½ï¿½ï¿½Funcao    ï¿½VALIDPERG ï¿½ Autor ï¿½ Flavio Dentello    ï¿½ Data ï¿½  07/12/2015 ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Descricao ï¿½ Verifica a existencia das perguntas criando-as caso seja   ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½          ï¿½ necessario (caso nao existam).                             ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-ï¿½ï¿½ï¿½Uso       ï¿½ Programa principal                                         ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+±±ºFun‡„o    ³VALIDPERG º Autor ³ Flávio Dentello    º Data ³  07/12/2015 º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºDescri‡„o ³ Verifica a existencia das perguntas criando-as caso seja   º±±
+±±º          ³ necessario (caso nao existam).                             º±±
+±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+±±ºUso       ³ Programa principal                                         º±±
+±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±
+ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 /*/
 
 Static Function ValidPerg()
@@ -248,15 +250,15 @@ dbSelectArea("SX1")
 dbSetOrder(1)
 cPerg := PADR(cPerg,10)
 aAdd(aRegs,{cPerg,"01","Data Romaneio de :     ","","","mv_ch1" ,"D",08,0,0,"G","","MV_PAR01","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
-aAdd(aRegs,{cPerg,"02","Data Romaneio ate:     ","","","mv_ch2" ,"D",08,0,0,"G","","MV_PAR02","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"02","Data Romaneio até:     ","","","mv_ch2" ,"D",08,0,0,"G","","MV_PAR02","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
 aAdd(aRegs,{cPerg,"03","Data Vencimento de :   ","","","mv_ch3" ,"D",08,0,0,"G","","MV_PAR03","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
-aAdd(aRegs,{cPerg,"04","Data Vencimento ate:   ","","","mv_ch4" ,"D",08,0,0,"G","","MV_PAR04","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"04","Data Vencimento até:   ","","","mv_ch4" ,"D",08,0,0,"G","","MV_PAR04","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
 aAdd(aRegs,{cPerg,"05","Transportador de:      ","","","mv_ch5" ,"C",14,0,0,"G","","MV_PAR05","","","","","","","","","","","","","","","","","","","","","","","","","GU3","","","",""})
-aAdd(aRegs,{cPerg,"06","Transportador Ate:     ","","","mv_ch6" ,"C",14,0,0,"G","","MV_PAR06","","","","","","","","","","","","","","","","","","","","","","","","","GU3","","","",""})
+aAdd(aRegs,{cPerg,"06","Transportador Até:     ","","","mv_ch6" ,"C",14,0,0,"G","","MV_PAR06","","","","","","","","","","","","","","","","","","","","","","","","","GU3","","","",""})
 aAdd(aRegs,{cPerg,"07","Romaneio de:           ","","","mv_ch7" ,"C",08,0,0,"G","","MV_PAR07","","","","","","","","","","","","","","","","","","","","","","","","","GWN","","","",""})
-aAdd(aRegs,{cPerg,"08","Romaneio Ate:          ","","","mv_ch8" ,"C",08,0,0,"G","","MV_PAR08","","","","","","","","","","","","","","","","","","","","","","","","","GWN","","","",""})
+aAdd(aRegs,{cPerg,"08","Romaneio Até:          ","","","mv_ch8" ,"C",08,0,0,"G","","MV_PAR08","","","","","","","","","","","","","","","","","","","","","","","","","GWN","","","",""})
 aAdd(aRegs,{cPerg,"09","Documento de Frete de: ","","","mv_ch9" ,"C",09,0,0,"G","","MV_PAR09","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
-aAdd(aRegs,{cPerg,"10","Documento de Frete Ate:","","","mv_ch10","C",09,0,0,"G","","MV_PAR10","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
+aAdd(aRegs,{cPerg,"10","Documento de Frete Até:","","","mv_ch10","C",09,0,0,"G","","MV_PAR10","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""})
 For i:=1 to Len(aRegs)
 	If !dbSeek(cPerg+aRegs[i,2])//2
 		RecLock("SX1",.T.)

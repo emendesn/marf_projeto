@@ -14,7 +14,7 @@ Data.....:              06/03/2017
 Descricao / Objetivo:   Estrutura de Vendas
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -141,7 +141,7 @@ user function MGFCRM16()
 
 	DEFINE MSDIALOG oDlg0 TITLE OemToAnsi("Estrutura de Vendas") FROM aSizeWnd[1],aSizeWnd[2] TO aSizeWnd[3],aSizeWnd[4] PIXEL
 
-		aTFolder := { '1. Diretoria', '2. Nacional', '3. Tetica', '4. Regional', '5. Supervisï¿½o', '6. Roteiro', 'Clientes' }
+		aTFolder := { '1. Diretoria', '2. Nacional', '3. Tática', '4. Regional', '5. Supervisão', '6. Roteiro', 'Clientes' }
 		oTFolder := TFolder():New( aSizeFld[1],aSizeFld[2],aTFolder,,oDlg0,,,,.T.,,aSizeFld[3],aSizeFld[4])
 
 		oTFolder:bchange := { || fwMsgRun(, {|| loadTabs(oTFolder:nOption) }, "Processando", "Aguarde. Selecionando dados..." ) }
@@ -149,7 +149,7 @@ user function MGFCRM16()
 		//**************************************************************
 		//**************************************************************
 
-		@ 015, 005 SAY oSay11 PROMPT "Nï¿½vel 1:"				SIZE 045, 007 OF oTFolder:aDialogs[1]			 	COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay11 PROMPT "Nível 1:"				SIZE 045, 007 OF oTFolder:aDialogs[1]			 	COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet11 VAR cGet11 					SIZE 150, 010 OF oTFolder:aDialogs[1]	F3 "ZBD"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay12 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[1] 				COLORS 0, 16777215 PIXEL
@@ -170,16 +170,16 @@ user function MGFCRM16()
 
 		aCols1 := { { "", "", "", ""} }
 
-		oLbx1:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 1"			, { || aCols1[oLbx1:nAt,01] },  ,,,"LEFT"	,035,.f.,.f.,,,,.f.,) )
-		oLbx1:AddColumn( TcColumn():New( "Descricao Nï¿½vel 1"	, { || aCols1[oLbx1:nAt,02] },  ,,,"LEFT"	,100,.f.,.f.,,,,.f.,) )
-		oLbx1:AddColumn( TcColumn():New( "Cï¿½d. Repres."			, { || aCols1[oLbx1:nAt,03] },  ,,,"LEFT"	,035,.f.,.f.,,,,.f.,) )
+		oLbx1:AddColumn( TcColumn():New( "Cód. Nível 1"			, { || aCols1[oLbx1:nAt,01] },  ,,,"LEFT"	,035,.f.,.f.,,,,.f.,) )
+		oLbx1:AddColumn( TcColumn():New( "Descrição Nível 1"	, { || aCols1[oLbx1:nAt,02] },  ,,,"LEFT"	,100,.f.,.f.,,,,.f.,) )
+		oLbx1:AddColumn( TcColumn():New( "Cód. Repres."			, { || aCols1[oLbx1:nAt,03] },  ,,,"LEFT"	,035,.f.,.f.,,,,.f.,) )
 		oLbx1:AddColumn( TcColumn():New( "Representante"		, { || aCols1[oLbx1:nAt,04] },  ,,,"LEFT"	,100,.f.,.f.,,,,.f.,) )
 
 		oLbx1:SetArray(aCols1)
 
 		//**************************************************************
 		//**************************************************************
-		@ 015, 005 SAY oSay21 PROMPT "Nï¿½vel 1:" 			SIZE 045, 007 OF oTFolder:aDialogs[2] 				COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay21 PROMPT "Nível 1:" 			SIZE 045, 007 OF oTFolder:aDialogs[2] 				COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet21 VAR cGet21					SIZE 150, 010 OF oTFolder:aDialogs[2]	F3 "ZBE"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay22 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[2] 				COLORS 0, 16777215 PIXEL
@@ -200,18 +200,18 @@ user function MGFCRM16()
 
 		aCols2 := { {"", "", "", "", "", "", 0} }
 
-		oLbx2:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 1"		, { || aCols2[oLbx2:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx2:AddColumn( TcColumn():New( "Descricao Nï¿½vel 1", { || aCols2[oLbx2:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx2:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 2"		, { || aCols2[oLbx2:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
-		oLbx2:AddColumn( TcColumn():New( "Descricao Nï¿½vel 2", { || aCols2[oLbx2:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
-		oLbx2:AddColumn( TcColumn():New( "Cï¿½d. Repres"		, { || aCols2[oLbx2:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx2:AddColumn( TcColumn():New( "Cód. Nível 1"		, { || aCols2[oLbx2:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx2:AddColumn( TcColumn():New( "Descrição Nível 1", { || aCols2[oLbx2:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx2:AddColumn( TcColumn():New( "Cód. Nível 2"		, { || aCols2[oLbx2:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx2:AddColumn( TcColumn():New( "Descrição Nível 2", { || aCols2[oLbx2:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
+		oLbx2:AddColumn( TcColumn():New( "Cód. Repres"		, { || aCols2[oLbx2:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
 		oLbx2:AddColumn( TcColumn():New( "Representante"	, { || aCols2[oLbx2:nAt,06] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
 
 		oLbx2:SetArray(aCols2)
 
 		//**************************************************************
 		//**************************************************************
-		@ 015, 005 SAY oSay31 PROMPT "Nï¿½vel 2:"				SIZE 045, 007 OF oTFolder:aDialogs[3] 				COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay31 PROMPT "Nível 2:"				SIZE 045, 007 OF oTFolder:aDialogs[3] 				COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet31 VAR cGet31 					SIZE 150, 010 OF oTFolder:aDialogs[3]	F3 "ZBF"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay32 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[3] 				COLORS 0, 16777215 PIXEL
@@ -232,18 +232,18 @@ user function MGFCRM16()
 
 		aCols3 := { {"", "", "", "", "", "", 0} }
 
-		oLbx3:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 2"		, { || aCols3[oLbx3:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx3:AddColumn( TcColumn():New( "Descricao Nï¿½vel 2", { || aCols3[oLbx3:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx3:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 3"		, { || aCols3[oLbx3:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
-		oLbx3:AddColumn( TcColumn():New( "Descricao Nï¿½vel 3", { || aCols3[oLbx3:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
-		oLbx3:AddColumn( TcColumn():New( "Cï¿½d. Repres"		, { || aCols3[oLbx3:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx3:AddColumn( TcColumn():New( "Cód. Nível 2"		, { || aCols3[oLbx3:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx3:AddColumn( TcColumn():New( "Descrição Nível 2", { || aCols3[oLbx3:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx3:AddColumn( TcColumn():New( "Cód. Nível 3"		, { || aCols3[oLbx3:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx3:AddColumn( TcColumn():New( "Descrição Nível 3", { || aCols3[oLbx3:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
+		oLbx3:AddColumn( TcColumn():New( "Cód. Repres"		, { || aCols3[oLbx3:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
 		oLbx3:AddColumn( TcColumn():New( "Representante"	, { || aCols3[oLbx3:nAt,06] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
 
 		oLbx3:SetArray(aCols3)
 
 		//**************************************************************
 		//**************************************************************
-		@ 015, 005 SAY oSay41 PROMPT "Nï¿½vel 3:"				SIZE 045, 007 OF oTFolder:aDialogs[4] 				COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay41 PROMPT "Nível 3:"				SIZE 045, 007 OF oTFolder:aDialogs[4] 				COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet41 VAR cGet41 					SIZE 150, 010 OF oTFolder:aDialogs[4]	F3 "ZBG"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay42 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[4] 				COLORS 0, 16777215 PIXEL
@@ -264,18 +264,18 @@ user function MGFCRM16()
 
 		aCols4 := { {"", "", "", "", "", "", 0} }
 
-		oLbx4:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 3"		, { || aCols4[oLbx4:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx4:AddColumn( TcColumn():New( "Descricao Nï¿½vel 3", { || aCols4[oLbx4:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx4:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 4"		, { || aCols4[oLbx4:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
-		oLbx4:AddColumn( TcColumn():New( "Descricao Nï¿½vel 4", { || aCols4[oLbx4:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
-		oLbx4:AddColumn( TcColumn():New( "Cï¿½d. Repres"		, { || aCols4[oLbx4:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx4:AddColumn( TcColumn():New( "Cód. Nível 3"		, { || aCols4[oLbx4:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx4:AddColumn( TcColumn():New( "Descrição Nível 3", { || aCols4[oLbx4:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx4:AddColumn( TcColumn():New( "Cód. Nível 4"		, { || aCols4[oLbx4:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx4:AddColumn( TcColumn():New( "Descrição Nível 4", { || aCols4[oLbx4:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
+		oLbx4:AddColumn( TcColumn():New( "Cód. Repres"		, { || aCols4[oLbx4:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
 		oLbx4:AddColumn( TcColumn():New( "Representante"	, { || aCols4[oLbx4:nAt,06] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
 
 		oLbx4:SetArray(aCols4)
 
 		//**************************************************************
 		//**************************************************************
-		@ 015, 005 SAY oSay51 PROMPT "Nï¿½vel 4:"				SIZE 045, 007 OF oTFolder:aDialogs[5] 				COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay51 PROMPT "Nível 4:"				SIZE 045, 007 OF oTFolder:aDialogs[5] 				COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet51 VAR cGet51 					SIZE 150, 010 OF oTFolder:aDialogs[5]	F3 "ZBH"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay52 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[5] 				COLORS 0, 16777215 PIXEL
@@ -296,18 +296,18 @@ user function MGFCRM16()
 
 		aCols5 := { {"", "", "", "", "", "", 0} }
 
-		oLbx5:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 4"		, { ||  aCols5[oLbx5:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx5:AddColumn( TcColumn():New( "Descricao Nï¿½vel 4", { ||  aCols5[oLbx5:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx5:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 5"		, { ||  aCols5[oLbx5:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
-		oLbx5:AddColumn( TcColumn():New( "Descricao Nï¿½vel 5", { ||  aCols5[oLbx5:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
-		oLbx5:AddColumn( TcColumn():New( "Cï¿½d. Repres"		, { ||  aCols5[oLbx5:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx5:AddColumn( TcColumn():New( "Cód. Nível 4"		, { ||  aCols5[oLbx5:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx5:AddColumn( TcColumn():New( "Descrição Nível 4", { ||  aCols5[oLbx5:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx5:AddColumn( TcColumn():New( "Cód. Nível 5"		, { ||  aCols5[oLbx5:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx5:AddColumn( TcColumn():New( "Descrição Nível 5", { ||  aCols5[oLbx5:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
+		oLbx5:AddColumn( TcColumn():New( "Cód. Repres"		, { ||  aCols5[oLbx5:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
 		oLbx5:AddColumn( TcColumn():New( "Representante"	, { ||  aCols5[oLbx5:nAt,06] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
 
 		oLbx5:SetArray(aCols5)
 
 		//**************************************************************
 		//**************************************************************
-		@ 015, 005 SAY oSay61 PROMPT "Nï¿½vel 5:"				SIZE 045, 007 OF oTFolder:aDialogs[6] 				COLORS 0, 16777215 PIXEL
+		@ 015, 005 SAY oSay61 PROMPT "Nível 5:"				SIZE 045, 007 OF oTFolder:aDialogs[6] 				COLORS 0, 16777215 PIXEL
 		@ 013, 050 MSGET oGet61 VAR cGet61 					SIZE 150, 010 OF oTFolder:aDialogs[6]	F3 "ZBI"	COLORS 0, 16777215 PIXEL
 
 		@ 015, 240 SAY oSay62 PROMPT "Representan.:" 		SIZE 045, 007 OF oTFolder:aDialogs[6] 				COLORS 0, 16777215 PIXEL
@@ -328,11 +328,11 @@ user function MGFCRM16()
 
 		aCols6 := { {"", "", "", "", "", "", 0} }
 
-		oLbx6:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 5"		, { ||  aCols6[oLbx6:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx6:AddColumn( TcColumn():New( "Descricao Nï¿½vel 5", { ||  aCols6[oLbx6:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx6:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 6"		, { ||  aCols6[oLbx6:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
-		oLbx6:AddColumn( TcColumn():New( "Descricao Nï¿½vel 6", { ||  aCols6[oLbx6:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
-		oLbx6:AddColumn( TcColumn():New( "Cï¿½d. Repres"		, { ||  aCols6[oLbx6:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx6:AddColumn( TcColumn():New( "Cód. Nível 5"		, { ||  aCols6[oLbx6:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx6:AddColumn( TcColumn():New( "Descrição Nível 5", { ||  aCols6[oLbx6:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx6:AddColumn( TcColumn():New( "Cód. Nível 6"		, { ||  aCols6[oLbx6:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx6:AddColumn( TcColumn():New( "Descrição Nível 6", { ||  aCols6[oLbx6:nAt,04] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
+		oLbx6:AddColumn( TcColumn():New( "Cód. Repres"		, { ||  aCols6[oLbx6:nAt,05] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
 		oLbx6:AddColumn( TcColumn():New( "Representante"	, { ||  aCols6[oLbx6:nAt,06] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
 
 		oLbx6:SetArray(aCols6)
@@ -379,9 +379,9 @@ user function MGFCRM16()
 
 		aCols7 := { {"", "", "", "", "", "", 0} }
 
-		oLbx7:AddColumn( TcColumn():New( "Cï¿½d. Nï¿½vel 6"		, { ||  aCols7[oLbx7:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
-		oLbx7:AddColumn( TcColumn():New( "Descricao Nï¿½vel 6", { ||  aCols7[oLbx7:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
-		oLbx7:AddColumn( TcColumn():New( "Cï¿½d. Cliente"		, { ||  aCols7[oLbx7:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
+		oLbx7:AddColumn( TcColumn():New( "Cód. Nível 6"		, { ||  aCols7[oLbx7:nAt,01] },  ,,,"LEFT"      ,035,.f.,.f.,,,,.f.,) )
+		oLbx7:AddColumn( TcColumn():New( "Descrição Nível 6", { ||  aCols7[oLbx7:nAt,02] },  ,,,"LEFT"      ,100,.f.,.f.,,,,.f.,) )
+		oLbx7:AddColumn( TcColumn():New( "Cód. Cliente"		, { ||  aCols7[oLbx7:nAt,03] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
 		oLbx7:AddColumn( TcColumn():New( "Loja Cliente"		, { ||  aCols7[oLbx7:nAt,04] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
 		oLbx7:AddColumn( TcColumn():New( "CNPJ"				, { ||  aCols7[oLbx7:nAt,05] },  ,,,"LEFT"      ,035,.F.,.f.,,,,.f.,) )
 		oLbx7:AddColumn( TcColumn():New( "Cliente"			, { ||  aCols7[oLbx7:nAt,06] },  ,,,"LEFT"      ,100,.F.,.f.,,,,.f.,) )
@@ -434,7 +434,7 @@ static function chkRepres()
 			oGet74:refresh()
 			oGet742:refresh()
 
-			msgAlert("Representante nao encontrado na Estrutura de Vendas")
+			msgAlert("Representante não encontrado na Estrutura de Vendas")
 		endif
 
 		QRYSA3->(DBCloseArea())
@@ -491,7 +491,7 @@ static function chkRoteir()
 			oGet701:refresh()
 			//oGet742:refresh()
 
-			msgAlert("Roteiro nao encontrado na Estrutura de Vendas")
+			msgAlert("Roteiro não encontrado na Estrutura de Vendas")
 		endif
 
 		QRYZBI->(DBCloseArea())
@@ -1017,7 +1017,7 @@ Local lRet := .T.
 Local cQ := ""
 
 if len(allTrim(cCod)) < 6
-	Help( ,, 'Atencao',, 'O codigo deve ter 6 caracteres', 1, 0 )
+	Help( ,, 'Atenção',, 'O código deve ter 6 caracteres', 1, 0 )
 	lRet := .F.
 	return lRet
 endif
@@ -1059,7 +1059,7 @@ Endif
 dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
 
 If (cAliasTrb)->(!Eof())
-	Help( ,, 'Atencao',, 'Este codigo jï¿½ foi usado nesta mesma estrutura', 1, 0 )
+	Help( ,, 'Atenção',, 'Este código já foi usado nesta mesma estrutura', 1, 0 )
 	lRet := .F.
 Endif
 
@@ -1089,7 +1089,7 @@ QRYESTR->(DBCloseArea())
 if !empty(aF3)
 	TelaRoteiro()
 else
-	msgAlert("Nao  foram encontradas Estruturas disponï¿½veis para este Roteiro.")
+	msgAlert("Não foram encontradas Estruturas disponíveis para este Roteiro.")
 endif
 
 return(.T.)
@@ -1261,18 +1261,18 @@ oMark:setSeek(,aSeek)
 
 /*
 		SetSeek
-		Habilita a utilizaï¿½ï¿½o da pesquisa de registros no Browse
+		Habilita a utilização da pesquisa de registros no Browse
 
-		@param   bAction Code-Block executado para a pesquisa de registros, caso nao seja informado sera utilizado o padrao
+		@param   bAction Code-Block executado para a pesquisa de registros, caso não seja informado será utilizado o padrão
 		@param   aOrder  Estrutura do array
-						[n,1] Titulo da pesquisa
+						[n,1] Título da pesquisa
 						[n,2,n,1] LookUp
 						[n,2,n,2] Tipo de dados
 						[n,2,n,3] Tamanho
 						[n,2,n,4] Decimal
-						[n,2,n,5] Titulo do campo
-						[n,2,n,6] Mascara
-						[n,2,n,7] Nome Fisico do campo - Opcional - ï¿½ ajustado no programa
+						[n,2,n,5] Título do campo
+						[n,2,n,6] Máscara
+						[n,2,n,7] Nome Fisico do campo - Opcional - é ajustado no programa
 						[n,3] Ordem da pesquisa
 						[n,4] Exibe na pesquisa
 */
@@ -1283,8 +1283,8 @@ oMark:addColumn({"Roteiro"		   				, {||aF3[oMark:nAt,1]}		, "C", "@!"	, 1, tamS
 oMark:addColumn({"Desc.Roteiro"					, {||aF3[oMark:nAt,2]}		, "C", "@!"	, 1, 15							,, .F.})
 oMark:addColumn({"Representante Roteiro"		, {||aF3[oMark:nAt,3]}		, "C", "@!"	, 1, tamSx3("ZBI_REPRES")[1]	,, .F.})
 oMark:addColumn({"Desc.Representante Roteiro"	, {||aF3[oMark:nAt,4]}		, "C", "@!"	, 1, 30							,, .F.})
-oMark:addColumn({"Supervisï¿½o"					, {||aF3[oMark:nAt,5]}		, "C", "@!"	, 1, tamSx3("ZBH_CODIGO")[1]	,, .F.})
-oMark:addColumn({"Desc.Supervisï¿½o"				, {||aF3[oMark:nAt,6]}		, "C", "@!"	, 1, 15							,, .F.})
+oMark:addColumn({"Supervisão"					, {||aF3[oMark:nAt,5]}		, "C", "@!"	, 1, tamSx3("ZBH_CODIGO")[1]	,, .F.})
+oMark:addColumn({"Desc.Supervisão"				, {||aF3[oMark:nAt,6]}		, "C", "@!"	, 1, 15							,, .F.})
 oMark:addColumn({"Regional"						, {||aF3[oMark:nAt,7]}		, "C", "@!"	, 1, tamSx3("ZBG_CODIGO")[1]	,, .F.})
 oMark:addColumn({"Desc.Regional"				, {||aF3[oMark:nAt,8]}		, "C", "@!"	, 1, 15							,, .F.})
 oMark:addColumn({"Tatica"						, {||aF3[oMark:nAt,9]}		, "C", "@!"	, 1, tamSx3("ZBF_CODIGO")[1]	,, .F.})
@@ -1300,10 +1300,10 @@ oMark:addColumn({"Desc.Diretoria"				, {||aF3[oMark:nAt,14]}		, "C", "@!"	, 1, 1
 		Sintaxe
 		FWBrowse(): SetEditCell ( [ lEditCell], [ bValidEdit] ) -->
 
-		Parametros
-		Nome		Tipo	Descricao	Obrigatorio	Referencia
-		lEditCell	Logico	Indica se permite a edicao de cï¿½lulas.
-		bValidEdit	Bloco de codigo	Code-Block executado para validar a edicao da cï¿½lula.
+		Parâmetros
+		Nome		Tipo	Descrição	Obrigatório	Referência
+		lEditCell	Lógico	Indica se permite a edição de células.
+		bValidEdit	Bloco de código	Code-Block executado para validar a edição da célula.
 */
 //oMark:addColumn({"NF Origem"		, {||aProd[oMark:nAt,11]}	, "C", "@!"							, 1	, nTamSD1						,,	 .T.,, .F.,, "cNFOri"		,, .F., .T.,})
 //oMark:setEditCell(.T., {|| u_valFields() })
@@ -1311,24 +1311,24 @@ oMark:addColumn({"Desc.Diretoria"				, {||aF3[oMark:nAt,14]}		, "C", "@!"	, 1, 1
 //oMark:aColumns[11]:XF3 := 'XSD1'
 
 /* add(Column
-		[n][01] Titulo da coluna
+		[n][01] Título da coluna
 		[n][02] Code-Block de carga dos dados
 		[n][03] Tipo de dados
-		[n][04] Mascara
+		[n][04] Máscara
 		[n][05] Alinhamento (0=Centralizado, 1=Esquerda ou 2=Direita)
 		[n][06] Tamanho
 		[n][07] Decimal
-		[n][08] Indica se permite a edicao
-		[n][09] Code-Block de validacao da coluna apos a edicao
+		[n][08] Indica se permite a edição
+		[n][09] Code-Block de validação da coluna após a edição
 		[n][10] Indica se exibe imagem
-		[n][11] Code-Block de execucao do duplo clique
-		[n][12] Variavel a ser utilizada na edicao (ReadVar)
-		[n][13] Code-Block de execucao do clique no header
-		[n][14] Indica se a coluna esta deletada
-		[n][15] Indica se a coluna sera exibida nos detalhes do Browse
-		[n][16] Opcoes de carga dos dados (Ex: 1=Sim, 2=Nao )
+		[n][11] Code-Block de execução do duplo clique
+		[n][12] Variável a ser utilizada na edição (ReadVar)
+		[n][13] Code-Block de execução do clique no header
+		[n][14] Indica se a coluna está deletada
+		[n][15] Indica se a coluna será exibida nos detalhes do Browse
+		[n][16] Opções de carga dos dados (Ex: 1=Sim, 2=Não)
 		[n][17] Id da coluna
-		[n][18] Indica se a coluna ï¿½ virtual
+		[n][18] Indica se a coluna é virtual
 */
 
 oMark:setDoubleClick( { || setVars(), oDlg:end() } )
@@ -1405,6 +1405,6 @@ user function MGFUPZBJ( cCodHierar , nTabela )
 	endcase
 
 	if tcSQLExec( cUpdZBJ ) < 0
-		conout( "Nao  foi possivel executar UPDATE." + CRLF + tcSqlError() )
+		conout( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
 	endif
 return

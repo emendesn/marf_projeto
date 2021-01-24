@@ -9,7 +9,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada na rotina padrao de liberacao de documentos ( MVC )
 =====================================================================================
 */

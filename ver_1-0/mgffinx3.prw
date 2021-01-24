@@ -3,13 +3,13 @@
 /*
 =====================================================================================
 Programa.:              MGFFINX3
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              07/11/2016
-Descricao / Objetivo:   AO REALIZAR A BAIXAR DO Tï¿½TULO, GRAVAR NO CAMPO E5_HISTOR O;
+Descricao / Objetivo:   AO REALIZAR A BAIXAR DO TÍTULO, GRAVAR NO CAMPO E5_HISTOR O;
 NOME DO BANCO SELECIONADO 
 Doc. Origem:            GAP FIN_CRE003_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -61,7 +61,7 @@ RestArea(_cAlias)
 Return  
 
 ///****************************************************************///
-///Funcao que retorna o nome do Banco para o campo virtual da SE1  ///
+///Função que retorna o nome do Banco para o campo virtual da SE1  ///
 ///****************************************************************///
 
 User Function MGFNOME()  
@@ -88,7 +88,7 @@ Return POSICIONE('SA6',1,xFilial("SA6",SE1->E1_FILIAL) + SE1->(E1_PORTADO + E1_A
 
 
 ///******************************************************************///
-///Funcao que retorna a agencia e digito para o campo virtual da SE1 ///
+///Função que retorna a agência e dígito para o campo virtual da SE1 ///
 ///******************************************************************///
 
 User Function MGFAGEN()  
@@ -123,7 +123,7 @@ User Function MGFAGEN()
 Return cAgenc
 
 ///****************************************************************///
-///Funcao que retorna a Conta e digito para o campo virtual da SE1 ///
+///Função que retorna a Conta e dígito para o campo virtual da SE1 ///
 ///****************************************************************///
 
 User Function MGFCONTA()  

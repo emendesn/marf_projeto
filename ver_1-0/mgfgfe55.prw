@@ -20,6 +20,8 @@ Ao excluir “Documento de Frete” deverá ser limpo o campo no Romaneio
  
 @menu
  =====================================================================================
+ 17/09/2020 - Luiz Cesar Silva - PRB0040991 - Correção Campo Apl.Desc.Con
+
 /*/
 User Function MGFGFE55()
 
@@ -28,6 +30,7 @@ User Function MGFGFE55()
 
     dbSelectArea('GWN')
     RecLock('GWN',.F.)
+    GWN->GWN_ZDCONV := " " 
     GWN->GWN_ZVLDES := 00
     GWN->GWN_ZDOCFR := " "
     MsUnLock()	 

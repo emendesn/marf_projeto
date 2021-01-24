@@ -6,15 +6,17 @@
 #DEFINE LINHAS 999
 
 /*
+
 ==================================================================================
 Programa............: MGFEST21
 Autor...............: Marcelo Carneiro
 Data................: 20/09/2016
-Descricao / Objetivo: Painel de Gestao de Estoque
+Descricao / Objetivo: Painel de Gestão de Estoque
 Doc. Origem ........: MIT044 - GAP EST16
-Solicitante.........: 
-Uso.................: Gestao de Estoques 
+Solicitante.........: Marfrig
+Uso.................: Gestão de Estoques 
 ==================================================================================
+
 */
 
 User Function MGFEST21(_cquery)
@@ -37,7 +39,7 @@ Private aInfo
 Private aPosObj
 Private aTitles := {"Estoques","SAs","Ped.Venda","Ped.Compra","Solic.Compra","Empenho"}
 Private aBrowse      := {}
-Private aHeader      := {"Codigo Material ",'Descricao','UM','Tipo','Grupo','Saldo','SAs','Ped.Venda','Ped.Compra','Solic.Compra','Empenho','Bloqueio'}
+Private aHeader      := {"Código Material ",'Descrição','UM','Tipo','Grupo','Saldo','SAs','Ped.Venda','Ped.Compra','Solic.Compra','Empenho','Bloqueio'}
 Private aTam         := {70,120,10,15,20,60,60,60,60,60,60,60} 
 Private nColOrder    := 1
 Private nTipoOrder   := 1
@@ -68,7 +70,7 @@ Private aEstCab :={"",;
 				   "Qtd. em Terc.",;
 				   "Saldo Poder 3.",;
 				   "Qtd. Emp. NF",;
-				   "Qtd. a Endereï¿½ar",;
+				   "Qtd. a Endereçar",;
 				   "Qtd. Empenhada SA"}
 Private aSumEstDados := {0,0,0,0,0,0,0,0,0,0,0,0,0,0}		
 Private aEstDados    := {}
@@ -77,7 +79,7 @@ Private aEmpCab :={"Filial",;
 				   "Armazem",;
 				   "OP",;
 				   "Produto",;                                      
-				   "Descricao",;
+				   "Descrição",;
 				   "Fam.Tec.",;
 				   "Quant. Total",;
 				   "Quant. Faltante",;
@@ -93,7 +95,7 @@ Private aPVCab :={ "",;
 				   "Pedido",;
 				   "Cliente",;
 				   "Loja",;
-				   "Razao Social",;
+				   "Razão Social",;
 				   "Quant. Vendida",;
 				   "Saldo",;
 				   "Data Entrega",;
@@ -104,7 +106,7 @@ Private aPedCab :={"",;
 				   "Pedido",;
 				   "Fornecedor",;
 				   "Loja",;
-				   "Razao Social",;
+				   "Razão Social",;
 				   "Quant. Original",;
 				   "Saldo",;
 				   "Data Entrega",;
@@ -121,7 +123,7 @@ Private aSACab :=  {"",;
 				   "V.Total",;
 				   "Saldo",;
 				   "Necessidade",;
-				   "Observacao"}
+				   "Observação"}
 Private oDadosPed01     
 Private oListPed
 Private oListSolic
@@ -133,7 +135,7 @@ Private aSolCab :={"",;
 				   "Num.Solic.",;
 				   "Fornecedor",;
 				   "Loja",;
-				   "Razao Social",;
+				   "Razão Social",;
 				   "Quant. Original",;
 				   "Saldo",;
 				   "Data Entrega",;
@@ -164,10 +166,10 @@ aPosObj := MsObjSize( aInfo, aObjects )
 ZeraArray()
 MontaCab()
 IF Len(aBrowse) = 0 
-     MsgAlert('Nao hï¿½ dados para o filtro selecionado !')
+     MsgAlert('Não há dados para o filtro selecionado !')
      Return
 ENDIF
-DEFINE MSDIALOG oDlg2 FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Painel de Gestao de Estoque Multi Filiais"  OF oMainWnd PIXEL
+DEFINE MSDIALOG oDlg2 FROM aSizeAut[7],0 TO aSizeAut[6],aSizeAut[5] TITLE "Painel de Gestão de Estoque Multi Filiais"  OF oMainWnd PIXEL
                                             
 oBrowseDados := TWBrowse():New( 5,aPosObj[2,2],aPosObj[2,4]-aPosObj[2,2],aPosObj[2,3]-50,;
 						  ,,,oDlg2, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
@@ -208,7 +210,7 @@ nCol2 := 140
 nCol4 := 195
 nLin := 15
 																					  
-@ 006,aPosObj[3,4]-65  BUTTON "Mais Informacoes"  SIZE 050,011  FONT oDlg2:oFont ACTION MaComView(aBrowse[oBrowseDados:nAt][01]) OF oFolder:aDialogs[1] PIXEL 
+@ 006,aPosObj[3,4]-65  BUTTON "Mais Informações"  SIZE 050,011  FONT oDlg2:oFont ACTION MaComView(aBrowse[oBrowseDados:nAt][01]) OF oFolder:aDialogs[1] PIXEL 
 @ 006,aPosObj[3,4]-120 BUTTON "Legenda"           SIZE 050,011  FONT oDlg2:oFont ACTION EST21_Legenda(1)                         OF oFolder:aDialogs[1] PIXEL 
 
 
@@ -272,7 +274,7 @@ oListEst:bLine := &cbLine
 
 //FOLDER SA
 
-@ 003,005 SAY 'Solicitacoes ao Armazem' OF oFolder:aDialogs[2] PIXEL FONT oBold COLOR CLR_RED     
+@ 003,005 SAY 'Solicitações ao Armazem' OF oFolder:aDialogs[2] PIXEL FONT oBold COLOR CLR_RED     
 @ 011,005 TO 012,aPosObj[3,4]-15  OF oFolder:aDialogs[2] PIXEL
 
 					 
@@ -376,7 +378,7 @@ oListPed:bLine := 	&cbLine
 
 //FOLDER SOLICITACOES 
 
-@ 003,005 SAY 'Solicitacoes de Compra ' OF oFolder:aDialogs[5] PIXEL FONT oBold COLOR CLR_RED     
+@ 003,005 SAY 'Solicitações de Compra ' OF oFolder:aDialogs[5] PIXEL FONT oBold COLOR CLR_RED     
 @ 011,005 TO 012,aPosObj[3,4]-15        OF oFolder:aDialogs[5] PIXEL
 
 cbLine := "{||{ aSolicDados[oListSolic:nAt,01] "            
@@ -445,7 +447,7 @@ cQuery  +="        B1_DESC,"
 cQuery  +="        B1_TIPO,"       
 cQuery  +="        B1_GRUPO,"       
 cQuery  +="        B1_UM,  "
-cQuery  +="        ( Select SUM(SB2.B2_QATU) "
+cQuery  +="       to_number(trim( ( Select SUM(SB2.B2_QATU) "
 cQuery  +="  	     From "+RetSqlName("SB2")+"  SB2"
 cQuery  +="			 Where SB2.B2_STATUS   <> '2' "
 cQuery  +="			 AND SB2.B2_COD      =  B1_COD "
@@ -458,7 +460,7 @@ Else
    cQuery  += "         AND B2_FILIAL <= 'ZZ' "
 EndIf
              
-cQuery  +="		     AND SB2.D_E_L_E_T_  = ' ' ) As SALDO,"
+cQuery  +="		     AND SB2.D_E_L_E_T_  = ' ' ) ))As SALDO,"
 cQuery  +="        ( Select SUM(SB2.B2_QATU) "
 cQuery  +="  	     From "+RetSqlName("SB2")+"  SB2"
 cQuery  +="			 Where SB2.B2_STATUS   <> '2' "
@@ -473,7 +475,7 @@ EndIf
 cQuery  +="			 AND SB2.B2_COD      =  B1_COD "
 cQuery  +="			 AND '"+DTOS(dDatabase)+"' BETWEEN B2_DTINV AND B2_DINVFIM"
 cQuery  +="		     AND SB2.D_E_L_E_T_  = ' ' ) As BLOQUEIO,"
-cQuery  +="        ( Select SUM(SD4.D4_QUANT)"
+cQuery  +="       to_number(trim( ( Select SUM(SD4.D4_QUANT)"
 cQuery += "          From "+RetSqlName("SD4")+" SD4, "+RetSqlName("SC2")+" SC2 "
 cQuery += "          Where SD4.D4_FILIAL  = SC2.C2_FILIAL "
 cQuery += "                 AND SD4.D4_OP      =  SC2.C2_NUM+ SC2.C2_ITEM+ SC2.C2_SEQUEN"
@@ -488,8 +490,8 @@ Else
 EndIf
              
 cQuery  +="		            AND SD4.D4_COD      = B1_COD  "
-cQuery  +="		            AND SD4.D_E_L_E_T_  = ' ' ) As EMPENHO, "
-cQuery  +="        ( Select SUM(SCP.CP_QUANT - SCP.CP_QUJE)"
+cQuery  +="		            AND SD4.D_E_L_E_T_  = ' ' ) ))As EMPENHO, "
+cQuery  +="        to_number(trim(( Select SUM(SCP.CP_QUANT - SCP.CP_QUJE)"
 cQuery  +="	         From "+RetSqlName("SCP")+"  SCP"
 cQuery  +="		     Where SCP.CP_PRODUTO    = B1_COD  "
 
@@ -501,8 +503,8 @@ Else
    cQuery  += "         AND CP_FILIAL <= 'ZZ' "
 EndIf             
 cQuery  +="		     AND SCP.D_E_L_E_T_  = ' ' "
-cQuery  +="		     AND SCP.CP_QUJE       < SCP.CP_QUANT ) As SARMAZEN , "
-cQuery  +="        ( Select SUM( CASE WHEN C6_BLQ='R' THEN 0 ELSE SC6.C6_QTDVEN - SC6.C6_QTDENT END)"
+cQuery  +="		     AND SCP.CP_QUJE       < SCP.CP_QUANT ))) As SARMAZEN , "
+cQuery  +="       to_number(trim( ( Select SUM( CASE WHEN C6_BLQ='R' THEN 0 ELSE SC6.C6_QTDVEN - SC6.C6_QTDENT END)"
 cQuery  +="	         From "+RetSqlName("SC6")+"  SC6,"+RetSqlName("SF4")+"  SF4"
 cQuery  +="		     Where SC6.C6_PRODUTO    = B1_COD  "
 cQuery += "          AND C6_TES = F4_CODIGO"
@@ -542,11 +544,11 @@ cQuery  +="		     AND SF4.D_E_L_E_T_  = ' ' "
 
 
 
-cQuery  +="		     ) As PV , "
+cQuery  +="		     ))) As PV , "
 //cQuery  +="		     AND C6_QTDENT < C6_QTDVEN    ) As PV , "
 
 
-cQuery  +="        ( Select SUM(SC7.C7_QUANT - SC7.C7_QUJE)"
+cQuery  +="       to_number(trim( ( Select SUM(SC7.C7_QUANT - SC7.C7_QUJE)"
 cQuery  +="	         From "+RetSqlName("SC7")+"  SC7"
 cQuery  +="		     Where SC7.C7_PRODUTO    = B1_COD  "
 cQuery  +="		     AND C7_RESIDUO = ' '  "
@@ -559,8 +561,8 @@ Else
    cQuery  += "         AND C7_FILIAL <= 'ZZ' "
 EndIf             
 cQuery  +="		     AND SC7.D_E_L_E_T_  = ' ' "
-cQuery  +="		     AND SC7.C7_QUJE       < SC7.C7_QUANT ) As PEDIDO , "
-cQuery  +="        ( Select SUM(SC1.C1_QUANT - SC1.C1_QUJE)"
+cQuery  +="		     AND SC7.C7_QUJE       < SC7.C7_QUANT ))) As PEDIDO , "
+cQuery  +="        to_number(trim(( Select SUM(SC1.C1_QUANT - SC1.C1_QUJE)"
 cQuery  +="	         From "+RetSqlName("SC1")+" SC1"
 cQuery  +="		     Where SC1.C1_PRODUTO    = B1_COD  "
 cQuery  +="		     AND C1_RESIDUO = ' '  "
@@ -573,9 +575,9 @@ Else
    cQuery  += "         AND C1_FILIAL <= 'ZZ' "
 EndIf             
 cQuery  +="		     AND SC1.D_E_L_E_T_  = ' ' "
-cQuery  +="		     AND SC1.C1_QUJE       < SC1.C1_QUANT ) As SOLICITACAO "
+cQuery  +="		     AND SC1.C1_QUJE       < SC1.C1_QUANT ))) As SOLICITACAO "
 cQuery  += "FROM "+RetSqlName("SB1")
-cQuery  += "WHERE B1_FILIAL='"+xFilial("SB1")+"'"
+cQuery  += "  WHERE B1_FILIAL='"+xFilial("SB1")+"'"
 cQuery  += "  AND D_E_L_E_T_ = ' ' "
 
 If !Empty(__cquery) 
@@ -845,7 +847,7 @@ While EMP->(!Eof())
 	AADD(aReg , EMP->D4_FILIAL+'-'+Alltrim(FWFilialName(,EMP->D4_FILIAL)))
 	AADD(aReg , EMP->D4_LOCAL)
 	AADD(aReg , EMP->D4_OP)                  
-	//Produto da OP Mï¿½e
+	//Produto da OP Mãe
 	cProdutoMae := GetAdvFVal("SC2","C2_PRODUTO",EMP->D4_FILIAL+EMP->D4_OP,1,"") 
 	AADD(aReg , cProdutoMae)
 	AADD(aReg , GetAdvFVal("SB1","B1_DESC",xFilial("SB1")+cProdutoMae,1,"") )
@@ -1120,18 +1122,18 @@ Return
 Static Function EST21_Legenda(nTipo)
 Local aLegenda      := {}                        
 Local cTexto        := ''
-Local cParBloqueio  := 'Bloqueio por '+Alltrim(Str(GetMV('MGF_EST18A',.F.,90)))+' dias sem movimentacao'
+Local cParBloqueio  := 'Bloqueio por '+Alltrim(Str(GetMV('MGF_EST18A',.F.,90)))+' dias sem movimentação'
 
 IF nTipo == 1 //Estoque
     cTexto := 'Estoque'
-	aLegenda := { {"BR_VERDE"    ,"Disponï¿½vel para Uso"},;
+	aLegenda := { {"BR_VERDE"    ,"Disponível para Uso"},;
 				  {"BR_VERMELHO" ,cParBloqueio}}
 ENDIF
 
-IF nTipo == 2 // Solicitaï¿½ï¿½o Armazem
+IF nTipo == 2 // Solicitação Armazem
    cTexto := 'Solic. Armazem'
    aLegenda := {{"BR_VERDE"    ,"Pendente"},;
-                {"BR_VERMELHO" ,"Gerada Prï¿½ Requisiï¿½ï¿½o"},;
+                {"BR_VERMELHO" ,"Gerada Pré Requisição"},;
 				{'BR_CINZA'    ,"Bloqueado"} }
 EndIF
 
@@ -1147,20 +1149,20 @@ IF nTipo == 4 // Pedido de Compra
    cTexto := 'Pedido Compra'
    aLegenda := {{"BR_VERDE"    ,"Pedido ou A/E liberado"},;
                 {"BR_VERMELHO" ,"A/E Prevista"},;
-				{'BR_CINZA'    ,"Aguardando Aprovacao Compra "} }
+				{'BR_CINZA'    ,"Aguardando Aprovação Compra "} }
 EndIF
 
-IF nTipo == 5 //Solicitaï¿½ï¿½o de Compra
+IF nTipo == 5 //Solicitação de Compra
     cTexto := 'Solic. Compra'
-	aLegenda := { {"BR_VERDE"   ,"Solicitaï¿½ï¿½o em Aberto"},;
-					{'BR_LARANJA' ,"Solicitaï¿½ï¿½o Rejeitada"},;
-					{'BR_CINZA'   ,"Solicitaï¿½ï¿½o Bloqueada"},;
-					{'BR_AMARELO' ,"Solicitaï¿½ï¿½o com Pedido Colocado Parcial"},;
-					{'BR_AZUL'    ,"Solicitaï¿½ï¿½o em Processo de Cotaï¿½ï¿½o"}}
+	aLegenda := { {"BR_VERDE"   ,"Solicitação em Aberto"},;
+					{'BR_LARANJA' ,"Solicitação Rejeitada"},;
+					{'BR_CINZA'   ,"Solicitação Bloqueada"},;
+					{'BR_AMARELO' ,"Solicitação com Pedido Colocado Parcial"},;
+					{'BR_AZUL'    ,"Solicitação em Processo de Cotação"}}
 					
 ENDIF
 
-BrwLegenda( 'Painel de Gestao - '+cTexto, 'Legenda', aLegenda  ) 
+BrwLegenda( 'Painel de Gestão - '+cTexto, 'Legenda', aLegenda  ) 
 
 Return(.T.)                     
 

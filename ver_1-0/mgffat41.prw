@@ -26,6 +26,13 @@ User Function MGFFAT41(oNfe,cNomArq)
 	Local cSrvDba   := GetMv("MGF_FAT41H",,"SPDWVAPL228F") // Acesso Servidor do DbAcess
 	Local nPortDb   := GetMv("MGF_FAT41I",,7885)
 
+	Local _lRCTRC := .F.
+
+	//--------------| Verifica existência de parâmetros e caso não exista cria. |-------------------------
+	If !ExisteSx6("MGF_FAT41J")
+		CriarSX6("MGF_FAT41J", "L", "Valida Nova Regra de Exeções RCTRC (.T./.F.)?"			, '.F.' )	
+	EndIf
+
 	cNomArq += ".xml"
 
 	cDirCmp += SF2->F2_FILIAL + "\" + Tran( DTOS(SF2->F2_EMISSAO) , "@R 9999\99\99\" )
@@ -39,7 +46,7 @@ User Function MGFFAT41(oNfe,cNomArq)
 	_ndbsped := tclink(AllTrim(cAcesDb),AllTrim(cSrvDba),nPortdb)
 
 	//Muda para conexão do SPED e busca strings para montar xml
-	 TCSETCONN(_ndbsped) 
+	TCSETCONN(_ndbsped) 
 
 	_cxml := '<?xml version="1.0" encoding="UTF-8"?><nfeProc xmlns="http://www.portalfiscal.inf.br/nfe" versao="4.00">'
 
@@ -109,7 +116,7 @@ User Function MGFFAT41(oNfe,cNomArq)
 		_cxml += substr(TMP050->XML_SIGR,1,2000)
 		_cxml += substr(TMP050->XML_SIGS,1,2000)
 	Endif
-
+	
 	TMP050->(dbclosearea())
 		
 	//Busca protocolo de retorno
@@ -118,11 +125,11 @@ User Function MGFFAT41(oNfe,cNomArq)
 	cQuery += "  AND D_E_L_E_T_= ' ' "
 
 	dbUseArea( .T., "TOPCONN", TCGENQRY(,,cQuery),"TMP054", .F., .T.)
-
+	
 	If TMP054->(!eof())	
 		_cxml += alltrim(TMP054->XML_PROT)
 	Endif
-
+	
 	TMP054->(dbclosearea())
 
 	_cxml += '</nfeProc>'
@@ -152,7 +159,16 @@ User Function MGFFAT41(oNfe,cNomArq)
 		SF2->F2_ZARQXML :=  cDirGrv + cDirCmp + cNomArq
 		SF2->( msUnlock() )
 		If SF2->F2_EMISSAO >= dDatIni
-			MGFFAT4101( cDirGrv + cDirCmp + cNomArq )
+			
+			_lRCTRC := SuperGetMV("MGF_FAT41J",.F., '.T.' )	// Habilita ou Não novas regras exceções RCTRC 
+			
+			If !_lRCTRC
+				MGFFAT4101( cDirGrv + cDirCmp + cNomArq )
+			Else	
+				//Nova Regra de Exceções RCTRC
+				MGFFAT4102( cDirGrv + cDirCmp + cNomArq )
+			EndIf	
+		
 		EndIf
 	EndIf
 
@@ -207,11 +223,10 @@ Static Function MGFFAT4101( cNomArq )
 
 	Local lRet := .F.
 	Local aArea := GetArea()
-	Local cValnota := Getmv('MGF_VALAVE')
+	Local cValnota := GetMV('MGF_VALAVE',,2000000)
 	Local cPedido, cVeiculo, cPlaca
 	Local lcfop		:= .T.
-	Local cTN		:= Getmv('MGF_FATTN')
-	Local cTipProd	:= Getmv('MGF_FAT41TPE')
+	Local cTN		:= GetMV('MGF_FATTN',,'TN')
 
 	lcfop := U_BUSCACFOP() //função que verifica se existe dentro da Nota CFOP's para averbar
 
@@ -297,6 +312,200 @@ Static Function MGFFAT4101( cNomArq )
 	EndIf
 
 Return lRet
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} MGFFAT4102()
+Função Validar as Exceções RCTRC e Gravar dados na Tabela ZBS-SEGURO RCTRC
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cNomArq	- Caracter - Nome Arquivo XML
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function MGFFAT4102( _cNomArq )
+
+	Local _aArea      := GetArea()
+	Local _cTMPTAB    := GetNextAlias()		
+	Local _cTMPZH7A   := GetNextAlias()		
+	Local _cTMPZH7B   := GetNextAlias()		
+	Local _cF2SERIE   := SF2->F2_SERIE
+	Local _cF2DOC     := SF2->F2_DOC
+	Local _cF2CLIENTE := SF2->F2_CLIENTE
+	Local _cF2LOJA    := SF2->F2_LOJA
+	Local _dZH7VIGATE := dDataBase
+	Local _cZH7SITUAC := "1"	//Ativo
+	Local _cZH7CODIGO := ""
+	Local _cZH7TABELA := ""
+	Local _cZH7EXPRES := ""
+	Local _cQuery     := ""
+	Local _lRet       := .T.
+
+	//Valida Itens da Carga (DAI)
+	DBSelectArea("DAI")
+	DAI->( DBSetOrder(03) )
+	If DAI->( DBSeek( xFilial("DAI") + SF2->(F2_DOC+F2_SERIE+F2_CLIENTE+F2_LOJA) ) )
+
+		//Filtra os Codigos das Exceções Tabela (ZH7)
+		BeginSql Alias _cTMPZH7A
+
+			COLUMN ZH7_VIGDE AS DATE
+			COLUMN ZH7_VIGATE AS DATE
+
+			SELECT DISTINCT ZH7_CODIGO, ZH7_DESCR, ZH7_VIGDE, ZH7_VIGATE, ZH7_SITUAC
+			FROM %Table:ZH7% ZH7
+			WHERE ZH7.%notdel%
+			  AND ZH7.ZH7_VIGATE >= %Exp:DToS(_dZH7VIGATE)%
+			  AND ZH7.ZH7_SITUAC = %Exp:_cZH7SITUAC%
+			  ORDER BY ZH7_CODIGO
+
+		EndSql
+
+    	DBSelectArea(_cTMPZH7A)
+    	(_cTMPZH7A)->( DBGoTop() )
+
+		While (_cTMPZH7A)->( !Eof() )
+
+			_cZH7CODIGO := (_cTMPZH7A)->ZH7_CODIGO
+
+			//Filtra as Tabelas amarrada ao Codigo de Exceção Tabela (ZH7)
+			BeginSql Alias _cTMPZH7B
+
+				SELECT ZH7_ITEM, ZH7_TABELA, ZH7_NOME, ZH7_EXPRES
+				FROM %Table:ZH7% ZH7
+				WHERE ZH7.%notdel%
+			  	AND ZH7.ZH7_CODIGO = %Exp:_cZH7CODIGO%
+			  	ORDER BY ZH7_TABELA
+
+			EndSql
+
+    		DBSelectArea(_cTMPZH7B)
+    		(_cTMPZH7B)->( DBGoTop() )
+
+			While (_cTMPZH7B)->( !Eof() )
+
+				_cZH7TABELA := Alltrim((_cTMPZH7B)->ZH7_TABELA)
+				_cZH7EXPRES := AllTrim((_cTMPZH7B)->ZH7_EXPRES)
+				
+				//If At("'",_cZH7EXPRES,) == 0
+				//	(_cTMPZH7B)->( DBSkip() )
+				//	Loop
+				//EndIf	
+				
+				_cZH7EXPRES := '%' + _cZH7EXPRES + '%'
+
+				//Verifica Tabelas
+				//SF2
+				If _cZH7TABELA == "SF2"
+					_lRet := FAT41_SF2(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf	
+
+				//SD2
+				If _cZH7TABELA == "SD2"
+					_lRet := FAT41_SD2(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//SA1
+				If _cZH7TABELA == "SA1"
+					_lRet := FAT41_SA1(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//SA4
+				If _cZH7TABELA == "SA4"
+					_lRet := FAT41_SA4(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//SB1
+				If _cZH7TABELA == "SB1"
+					_lRet := FAT41_SB1(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//DAK
+				If _cZH7TABELA == "DAK"
+					_lRet := FAT41_DAK(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//DAI
+				If _cZH7TABELA == "DAI"
+					_lRet := FAT41_DAI(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//SC5	
+				If _cZH7TABELA == "SC5"
+					_lRet := FAT41_SC5(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//DA3	
+				If _cZH7TABELA == "DA3"
+					_lRet := FAT41_DA3(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+				EndIf
+
+				//Se encontrou Exceção sai do Laço
+				If !_lRet
+					EXIT
+				EndIf	
+
+				(_cTMPZH7B)->( DBSkip() )
+
+			EndDo
+
+			(_cTMPZH7B)->( DBCloseArea() )
+
+			//Se encontrou Exceção sai do Laço
+			If !_lRet
+				EXIT
+			EndIf	
+
+			(_cTMPZH7A)->( DBSkip() )
+
+		EndDo
+		
+		(_cTMPZH7A)->( DBCloseArea() )
+
+	EndIf
+
+	//Grava Registro Tabela "ZBS-SEGURO RCTRC"	
+	If _lRet
+
+		DBSelectArea("ZBS")
+		ZBS->( DBSetOrder(01) ) //ZBS->FILIAL + ZBS_NUM + ZBS_SERIE + ZBS_OPER
+		If ZBS->( DBSeek( SF2->F2_FILIAL + SF2->F2_DOC + SF2->F2_SERIE + "1" ) )
+			RecLock("ZBS",.F.)
+			ZBS->ZBS_ARQXML	:= _cNomArq
+		Else
+			RecLock("ZBS",.T.)
+			ZBS->ZBS_FILIAL	:= xFilial("ZBS")
+			ZBS->ZBS_NUM	:= SF2->F2_DOC
+			ZBS->ZBS_SERIE	:= SF2->F2_SERIE
+			ZBS->ZBS_EMISS	:= SF2->F2_EMISSAO
+			ZBS->ZBS_SITUAC	:= "N"
+			ZBS->ZBS_VALTOT	:= SF2->F2_VALBRUT
+			ZBS->ZBS_PEDIDO	:= DAI->DAI_PEDIDO
+			ZBS->ZBS_OE		:= DAI->DAI_COD
+			ZBS->ZBS_CODCLI	:= SF2->F2_CLIENTE
+			ZBS->ZBS_LOJCLI	:= SF2->F2_LOJA
+			ZBS->ZBS_NOMCLI	:= SA1->A1_NREDUZ
+			ZBS->ZBS_UF		:= SF2->F2_EST
+			ZBS->ZBS_CNPJ	:= SA1->A1_CGC
+			ZBS->ZBS_TRANSP	:= SA4->A4_CGC // SF2->F2_TRANSP
+			ZBS->ZBS_NOMTRN	:= SA4->A4_NOME
+			ZBS->ZBS_STATUS	:= "N"
+			ZBS->ZBS_ARQXML	:= _cNomArq
+			ZBS->ZBS_OPER   := "1"
+		EndIf
+		
+		ZBS->( msUnlock() )
+
+	Endif		
+	
+	RestArea( _aArea )
+	
+Return()
 
 //-------------------------------------------------------------------
 User Function MGFFT41T()
@@ -581,5 +790,490 @@ else
 
 Endif
 
-
 Return _lret
+
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SF2()
+Função Filtra Exceção RCTRC na Tabela SF2-Cabeçalho Nota Fiscal Saida
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SF2(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SF2% SF2  
+		   ON SF2.%notdel%
+          AND F2_FILIAL = DAI_FILIAL
+          AND F2_DOC =DAI_NFISCA
+          AND F2_SERIE = DAI_SERIE
+		  AND F2_CLIENTE = DAI_CLIENT
+		  AND F2_LOJA = DAI_LOJA
+          AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SD2()
+Função Filtra Exceção RCTRC na Tabela SD2-Itens Nota Fiscal Saida
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SD2(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SD2% SD2  
+		   ON SD2.%notdel%
+          AND D2_FILIAL = DAI_FILIAL
+          AND D2_DOC = DAI_NFISCA
+          AND D2_SERIE = DAI_SERIE
+		  AND D2_CLIENTE = DAI_CLIENT
+		  AND D2_LOJA = DAI_LOJA
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SA1()
+Função Filtra Exceção RCTRC na Tabela SA1-Cadastro de Clientes
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SA1(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SA1% SA1  
+		   ON SA1.%notdel%
+		  AND A1_COD = DAI_CLIENT
+		  AND A1_LOJA = DAI_LOJA
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SA4()
+Função Filtra Exceção RCTRC na Tabela SA4-Tabela de Transportadoras
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SA4(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SF2% SF2  
+		   ON SF2.%notdel%
+          AND F2_FILIAL = DAI_FILIAL
+          AND F2_DOC = DAI_NFISCA
+          AND F2_SERIE = DAI_SERIE
+		  AND F2_CLIENTE = DAI_CLIENT
+		  AND F2_LOJA = DAI_LOJA
+		INNER JOIN %Table:SA4% SA4
+		   ON SA4.%notdel%
+		  AND A4_COD = F2_TRANSP
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SB1()
+Função Filtra Exceção RCTRC na Tabela SB1-Tabela de Produtos
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SB1(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SD2% SD2  
+		   ON SD2.%notdel%
+          AND D2_FILIAL = DAI_FILIAL 
+          AND D2_DOC = DAI_NFISCA
+          AND D2_SERIE = DAI_SERIE
+		  AND D2_CLIENTE = DAI_CLIENT
+		  AND D2_LOJA = DAI_LOJA
+		INNER JOIN %Table:SB1% SB1
+		   ON SB1.%notdel%
+		  AND B1_COD = D2_COD
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_DAK()
+Função Filtra Exceção RCTRC na Tabela DAK-Tabela Carga
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_DAK(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:DAK% DAK  
+		   ON DAK.%notdel%
+          AND DAK_FILIAL = DAI_FILIAL
+          AND DAK_COD = DAI_COD
+          AND DAK_SEQCAR = DAI_SEQCAR
+          AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_DAI()
+Função Filtra Exceção RCTRC na Tabela DAI-Tabela de Itens da Carga
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_DAI(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT *
+		FROM %Table:SF2% SF2
+		INNER JOIN %Table:DAI% DAI
+		   ON DAI.%notdel%
+		  AND DAI_FILIAL=F2_FILIAL 
+		  AND DAI_SERIE = F2_SERIE
+		  AND DAI_NFISCA = F2_DOC
+		  AND DAI_CLIENT = F2_CLIENTE
+		  AND DAI_LOJA = F2_LOJA
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+		WHERE SF2.%notdel%
+          AND F2_FILIAL = %Exp:xFILIAL("SF2")%
+		  AND F2_SERIE = %Exp:_cF2SERIE%
+		  AND F2_DOC = %Exp:_cF2DOC%
+		  AND F2_CLIENTE = %Exp:_cF2CLIENTE%
+		  AND F2_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_SC5()
+Função Filtra Exceção RCTRC na Tabela SC5-Tabela Pedidos de Venda
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_SC5(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SC5% SC5
+		   ON SC5.%notdel%
+		  AND C5_FILIAL = DAI_FILIAL
+		  AND C5_NUM = DAI_PEDIDO
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)
+
+/*/
+==============================================================================================================================================================================
+{Protheus.doc} FAT41_DA3()
+Função Filtra Exceção RCTRC na Tabela DA3-Tabela de Veiculos
+
+@author Rogério Doms
+@since 08/09/2020 
+@type Function 
+
+@param 
+    _cTMPTAB	- Caracter - Nome da Tabela Temporaria
+	_cF2SERIE	- Caracter - Serie da Nota Fiscal de Saida
+	_cF2DOC		- Caracter - Numero da Nota Fiscal de Saida
+	_cF2CLIENTE	- Caracter - Código do Cliente
+	_cF2LOJA	- Caracter - Código da Loja do Cliente
+	_cZH7EXPRES	- Caracter - Expressão com a Regra da Exceção do RCTRC na Tabela ZH7-Tabela de Exeções
+
+@return
+    _lRet - Lógico - Verdadeiro ou Falso 
+/*/
+Static Function FAT41_DA3(_cTMPTAB,_cF2SERIE,_cF2DOC,_cF2CLIENTE,_cF2LOJA,_cZH7EXPRES)
+
+	Local _lRet := .T.
+
+	BeginSql Alias _cTMPTAB
+
+		SELECT * 
+  		FROM  %Table:DAI% DAI
+		INNER JOIN %Table:SC5% SC5
+		   ON SC5.%notdel%
+		  AND C5_FILIAL = DAI_FILIAL
+		  AND C5_NUM = DAI_PEDIDO
+		INNER JOIN %Table:DA3% DA3
+		   ON DA3.%notdel%
+		  AND DA3_COD = C5_VEICULO
+		  AND %Exp:AllTrim(_cZH7EXPRES)%
+        WHERE DAI.%notdel%
+          AND DAI_FILIAL = %Exp:xFILIAL("DAI")%
+          AND DAI_NFISCA = %Exp:_cF2DOC%
+		  AND DAI_SERIE = %Exp:_cF2SERIE%
+		  AND DAI_CLIENT = %Exp:_cF2CLIENTE%
+		  AND DAI_LOJA = %Exp:_cF2LOJA%
+
+	EndSql
+
+	DBSelectArea(_cTMPTAB)
+	If (_cTMPTAB)->( !Eof() )
+		_lRet := .F.
+	EndIf
+
+	(_cTMPTAB)->( DBCloseArea() )				
+
+Return(_lRet)

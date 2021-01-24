@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada EECPEM44
 Doc. Origem.........: Comex
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Verificar se eh possivel realizar a copia do pedido
 =====================================================================================
 */
@@ -31,16 +31,16 @@ If lRet
 					If !Empty(WorkIt->EE8_ZTESSI) .or. !Empty(WorkIt->EE8_ZQTDSI) .or. WorkIt->EE8_ZGERSI == "S" 
 						lRet := .F.
 						APMsgAlert("Pedido tem produtos iguais em itens diferentes."+CRLF+;
-						"Nao sera possivel copiar este pedido."+CRLF+;
-						"Favor cancelar este pedido e escolher outro pedido para copia.")
+						"Não será possível copiar este pedido."+CRLF+;
+						"Favor cancelar este pedido e escolher outro pedido para cópia.")
 						Exit
 					Endif	
 					// valida produtos iguais no pedido que integra com o taura, nao pode ocorrer esta situacao
 					If aScan(aProd,WorkIt->EE8_COD_I) > 0
 						lRet := .F.
 						APMsgAlert("Pedido tem produtos iguais em itens diferentes."+CRLF+;
-						"Nao sera possivel copiar este pedido."+CRLF+;
-						"Favor cancelar este pedido e escolher outro pedido para copia.")
+						"Não será possível copiar este pedido."+CRLF+;
+						"Favor cancelar este pedido e escolher outro pedido para cópia.")
 						Exit
 					Endif
 					aAdd(aProd,WorkIt->EE8_COD_I)

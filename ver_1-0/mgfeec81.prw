@@ -52,7 +52,7 @@ User Function MGFEEC81( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _xZB8TMSA
 		Else
 			ConOut("Problemas na gravação dos campos da EXP, após o processo de envio ao Tms-MultiSoftware.")
 		EndIf
-	ElseIf ZB8->ZB8_TMSACA $"IA" .and. !EMPTY(ZB8->ZB8_ZTMSID) .and. ZB8->ZB8_MOTEXP <> '3'
+	ElseIf ZB8->ZB8_TMSACA $"IA " .and. !EMPTY(ZB8->ZB8_ZTMSID) .and. ZB8->ZB8_MOTEXP <> '3'
 		_cUltAcao := "A"
 		cQ := "UPDATE "+ RetSqlName("ZB8")+" "
 		cQ += "SET  ZB8_TMSACA = 'A'" 
@@ -163,7 +163,8 @@ User Function MGFEEC81( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _xZB8TMSA
 	oExp["pesoBruto"]   	                        := iif(_PesoBruto==0,_PesoLiquido,_PesoBruto)
 
 	SA1->(DBSETORDER(1))
-	SA1->(DBSEEK(xFilial("SA1")+ZB8->ZB8_CONSIG+ZB8->ZB8_COLOJA))
+	//SA1->(DBSEEK(xFilial("SA1")+ZB8->ZB8_CONSIG+ZB8->ZB8_COLOJA))
+	SA1->(DBSEEK(xFilial("SA1")+ZB8->ZB8_ZBUYER+ZB8->ZB8_ZBUYLJ)) //RTASK0011735
 
 //CLIENTE
 	oCliAdic                                        := nil
@@ -464,17 +465,17 @@ User Function MGFEEC81( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _xZB8TMSA
 	nStatuHttp	:= 0
 	nStatuHttp	:= httpGetStatus()
 
-	conout(" [TMS] [MGFEEC81] * * * * * Status da integracao TMS * * * * *"									)
-	conout(" [TMS] [MGFEEC81] Inicio.......................: " + cTimeIni + " - " + dToC( dDataBase )	)
-	conout(" [TMS] [MGFEEC81] Fim..........................: " + cTimeFin + " - " + dToC( dDataBase )	)
-	conout(" [TMS] [MGFEEC81] Tempo de Processamento.......: " + cTimeProc 								)
-	conout(" [TMS] [MGFEEC81] URL..........................: " + cURLUse 								)
-	conout(" [TMS] [MGFEEC81] HTTP Method..................: " + cHTTPMetho								)
-	conout(" [TMS] [MGFEEC81] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 			)
-	conout(" [TMS] [MGFEEC81] Envio Headers................: " + varInfo( "aHeadStr" , aHeadStr ) 		)
-	conout(" [TMS] [MGFEEC81] Envio Body...................: " + cJson 									)
-	conout(" [TMS] [MGFEEC81] Retorno......................: " + cHttpRet 								)
-	conout(" [TMS] [MGFEEC81] * * * * * * * * * * * * * * * * * * * * "									)
+	U_MFCONOUT(" [TMS] [MGFEEC81] * * * * * Status da integracao TMS * * * * *"									)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Inicio.......................: " + cTimeIni + " - " + dToC( dDataBase )	)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Fim..........................: " + cTimeFin + " - " + dToC( dDataBase )	)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Tempo de Processamento.......: " + cTimeProc 								)
+	U_MFCONOUT(" [TMS] [MGFEEC81] URL..........................: " + cURLUse 								)
+	U_MFCONOUT(" [TMS] [MGFEEC81] HTTP Method..................: " + cHTTPMetho								)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Status Http (200 a 299 ok)...: " + allTrim( str( nStatuHttp ) ) 			)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Envio Headers................: " + varInfo( "aHeadStr" , aHeadStr ) 		)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Envio Body...................: " + cJson 									)
+	U_MFCONOUT(" [TMS] [MGFEEC81] Retorno......................: " + cHttpRet 								)
+	U_MFCONOUT(" [TMS] [MGFEEC81] * * * * * * * * * * * * * * * * * * * * "									)
 
 	MemoWrite( "C:\TEMP\TMSEXP_MS_"+ALLTRIM(ZB8->ZB8_EXP)+".TXT",cJson)
 
@@ -487,11 +488,38 @@ User Function MGFEEC81( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _xZB8TMSA
 	EndIf
 
 	If 	! Empty(cMsgErro)
+		cStaLog		:= "2"	// Erro
 	   	Alert(AllTrim(cMsgErro),"ATENÇÃO")
-	Else   
+	Else
+		cStaLog		:= "1"	// Sucesso   
 		Alert("Envio do EXP ao TMS MULTISOFTWARE finalizado com sucesso !!! ","TMS-MULTISOFTWARE")
 	EndIf	
-//
+
+    U_MGFMONITOR(ZB8->ZB8_FILVEN	                    ,;
+		cStaLog											,;
+		"011" 	                                        ,;
+		"003"                                           ,;
+        iif( empty( cMsgErro ) , "Processamento realizado com sucesso!" , cMsgErro),;
+		ZB8->ZB8_EXP                         	        ,;
+		SubStr(Time(),1,8)								,;
+		cJson											,;
+		''												,;
+		cValToChar( nStatuHttp )						,;			
+		.F.												,;
+		{}												,;
+		cIdInteg	     								,;
+		iif( type( cHttpRet ) <> "U", cHttpRet, " ")    ,;
+		"A"												,;
+		" "												,;
+		" "												,;
+		sTod("    /  /  ")								,;
+		" "												,;
+		" "												,;
+		cURLUse											,;
+		" "												,;
+		" "												,;
+		" "												)
+
 	If Select("QRYREC") # 0
 		QRYREC->(dbCloseArea())
 	EndIf
@@ -507,7 +535,6 @@ User Function MGFEEC81( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _xZB8TMSA
 	If Select("QRYDEST") # 0
 		QRYDEST->(DbCloseArea())
 	EndIf
-//	
 
 Return
 

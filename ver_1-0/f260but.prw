@@ -5,11 +5,11 @@
 Programa.:              F260BUT
 Autor....:              Totvs
 Data.....:              Setembro/2018
-Descricao / Objetivo:   PE para botoes na tela do FINA260 tratando Conciliacao DDA 
+Descricao / Objetivo:   PE para botões na tela do FINA260 tratando Conciliação DDA 
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Consideracoes da regra conforme a MIT44-Tela Marcacao
+Uso......:              Marfrig
+Obs......:              Considerações da regra conforme a MIT44-Tela Marcação
 =====================================================================================
 */
 User Function F260BUT(aRotina)

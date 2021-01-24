@@ -16,12 +16,12 @@ Return
 Programa............: MC8FilXB
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Realiza Filtro consulta padrao SB1
+Descrição / Objetivo: Realiza Filtro consulta padrão SB1
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Quando chamada pela rotina de solicitacao de compra realiza o filtro por Grupo
-Alteracao 19/03 - Mudanca da regra de Produtos Anderson Reis
+Uso.................: Marfrig
+Obs.................: Quando chamada pela rotina de solicitação de compra realiza o filtro por Grupo
+Alteração 19/03 - Mudança da regra de Produtos Anderson Reis
 =====================================================================================
 */
 User Function MC8FilXB()
@@ -39,11 +39,11 @@ Return lRet
 Programa............: MC8WheP
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Realiza When do campo C1_PRODUTO na solicitacao de compra
+Descrição / Objetivo: Realiza When do campo C1_PRODUTO na solicitação de compra
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza o bloqueio/liberacao do campo C1_PRODUTO
+Uso.................: Marfrig
+Obs.................: Realiza o bloqueio/liberação do campo C1_PRODUTO
 =====================================================================================
 */
 User Function MC8WheP()
@@ -83,11 +83,11 @@ Return lRet
 Programa............: MC8ValPo
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Realiza validacao do campo C1_PRODUTO na solicitacao de compra
+Descrição / Objetivo: Realiza validação do campo C1_PRODUTO na solicitação de compra
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza a validacao do campo C1_PRODUTO
+Uso.................: Marfrig
+Obs.................: Realiza a validação do campo C1_PRODUTO
 =====================================================================================
 */
 User Function MC8ValPo()
@@ -107,14 +107,14 @@ User Function MC8ValPo()
 
 		If Empty(cGrp)
 			lRet := .F.
-			Alert('Sï¿½ ï¿½ Permitido inclusao de produtos na solicitacao que possuam Grupo')
+			Alert('Só é Permitido inclusão de produtos na solicitação que possuam Grupo')
 		EndIf
 
 		If lRet .and. !(Empty(('ZCUSTGRADE')->GRUPO))
 
 			If lRet .and. ('ZCUSTGRADE')->GRUPO <> cGrp
 				lRet := .F.
-				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', pertence ao Grupo: ' + cGrp + ', apenas podem ser selecionados produtos do grupo : ' + ('ZCUSTGRADE')->GRUPO + CRLF +'Obs.: Caso deseje alterar o grupo de produto, cancelar e iniciar novamente a solicitacao' )
+				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', pertence ao Grupo: ' + cGrp + ', apenas podem ser selecionados produtos do grupo : ' + ('ZCUSTGRADE')->GRUPO + CRLF +'Obs.: Caso deseje alterar o grupo de produto, cancelar e iniciar novamente a solicitação' )
 			EndIf
 		EndIf
 
@@ -125,17 +125,17 @@ User Function MC8ValPo()
 
 			If ('ZCUSTGRADE')->CCUSTO <> cCC .and. cBlq == '2'
 				lRet := .F.
-				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', pertence ao Centro de Custo: ' + cCC + ',  apenas podem ser selecionados produtos do centro de custo: ' + ('ZCUSTGRADE')->CCUSTO + CRLF +'Obs.: Caso deseje alterar o centro de custo de produto, cancelar e iniciar novamente a solicitacao' )
+				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', pertence ao Centro de Custo: ' + cCC + ',  apenas podem ser selecionados produtos do centro de custo: ' + ('ZCUSTGRADE')->CCUSTO + CRLF +'Obs.: Caso deseje alterar o centro de custo de produto, cancelar e iniciar novamente a solicitação' )
 			EndIf
 
 		EndIf   
 		        
-		// Validacao do Campo B1_ZBLQSC - definido pelo CDM dia 06/08/2019, somente 
+		// Validação do Campo B1_ZBLQSC - definido pelo CDM dia 06/08/2019, somente 
 		If lRet
             cBloqueia  := Posicione('SB1',1,xFilial('SB1') + M->C1_PRODUTO, 'B1_ZBLQSC')               
             IF cBloqueia == '1'
 				lRet := .F.
-				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', esta com o campo de bloqueia solicitacao ativo no seu cadastro.' )            
+				Alert('O Produto: ' + AllTrim(M->C1_PRODUTO) + ', está com o campo de bloqueia solicitação ativo no seu cadastro.' )            
             EndIF     
         EndIF
 		// 10/08/18
@@ -241,16 +241,16 @@ Return cRet
 Programa............: MC8M110GET
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de enrada MT110GET
+Descrição / Objetivo: Utilizado no Ponto de enrada MT110GET
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Realiza aumento do cabecalho da Solicitacao de Compra
+Uso.................: Marfrig
+Obs.................: Realiza aumento do cabeçalho da Solicitação de Compra
 =====================================================================================
 */
 User Function M110C8GET(aPosObj)
 
-	aPosObj[2][1]	+=	20 //Aumento o Espacamento
+	aPosObj[2][1]	+=	20 //Aumento o Espaçamento
 	aPosObj[1][3]	+=	20 //Aumento o Box
 
 Return
@@ -260,10 +260,10 @@ Return
 Programa............: MC8M110TEL
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT110TEL
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT110TEL
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona campos no Ponto de Entrada
 =====================================================================================
 */
@@ -336,10 +336,10 @@ User Function xMG8VGrd()
 				lRet := U_MC6ExisGA('SC',cCC,cGrp)
 				If !lRet
 					If IsBlind()
-						Help(" ",1,'SEMGRADE',,'Nao  existe grade tï¿½cnica cadastrada para este CENTRO DE CUSTO + GRUPO DE PRODUTOS.'+CRLF+;
-						'Esta SC nao sera gravada. Entre em contato com o responsï¿½vel pelo cadastramento da grade e informe esta mensagem.',1,0)
+						Help(" ",1,'SEMGRADE',,'Não existe grade técnica cadastrada para este CENTRO DE CUSTO + GRUPO DE PRODUTOS.'+CRLF+;
+						'Esta SC não será gravada. Entre em contato com o responsável pelo cadastramento da grade e informe esta mensagem.',1,0)
 					Else
-						Alert('Nao  existe grade tï¿½cnica cadastrada para este CENTRO DE CUSTO (' + Alltrim(cCC) + ') + GRUPO DE PRODUTOS (' + Alltrim(cGrp) + '). Esta SC nao sera gravada. Entre em contato com o responsï¿½vel pelo cadastramento da grade e informe esta mensagem.')
+						Alert('Não existe grade técnica cadastrada para este CENTRO DE CUSTO (' + Alltrim(cCC) + ') + GRUPO DE PRODUTOS (' + Alltrim(cGrp) + '). Esta SC não será gravada. Entre em contato com o responsável pelo cadastramento da grade e informe esta mensagem.')
 					EndIf
 				EndIf
 			EndIf
@@ -371,10 +371,10 @@ Return lRet
 Programa............: MC8M110GRV
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT110GRV
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT110GRV
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona grava o cc e adiciona no acols
 =====================================================================================
 */
@@ -416,11 +416,11 @@ Return
 Programa............: MC8M110FIM
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MTALCFIM
+Descrição / Objetivo: Utilizado no Ponto de Entrada MTALCFIM
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Apos a gravacao da alcada de aprovacao
+Uso.................: Marfrig
+Obs.................: Após a gravação da alçada de aprovação
 =====================================================================================
 */
 User Function MC8M110FIM()
@@ -438,11 +438,11 @@ Return
 Programa............: xMC8PosAlc
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MTALCFIM
+Descrição / Objetivo: Utilizado no Ponto de Entrada MTALCFIM
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Apos a gravacao da alcada de aprovacao
+Uso.................: Marfrig
+Obs.................: Após a gravação da alçada de aprovação
 =====================================================================================
 */
 User Function xMC8PosAlc()
@@ -467,7 +467,7 @@ User Function xMC8PosAlc()
 
 		TcSQLExec(cDelet)
 
-		//Realiza inclusao
+		//Realiza inclusão
 		//XMC8CAD("SC1","SCX",cA110Num,"SC",aHeader,aCols,/*aHeadSCX*/,/*aColsSCX*/,1,dA110Data)
 		//xGerAlcSC(cA110Num)
 	EndIf
@@ -610,11 +610,11 @@ return
 Programa............: XMC8CAD
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Realiza a gravacao do grupo de aprovacao correto
+Descrição / Objetivo: Realiza a gravação do grupo de aprovação correto
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Apos a gravacao da alcada de aprovacao ï¿½ gravado a alcada correta
+Uso.................: Marfrig
+Obs.................: Após a gravação da alçada de aprovação é gravado a alçada correta
 =====================================================================================
 */
 Static Function XMC8CAD(cAlias,cAlsRat,cDocto,cTpDoc,aHeader,aCols,aHeadRat,aColsRat,nOpcao,dDtDoc)
@@ -683,7 +683,7 @@ Static Function XMC8CAD(cAlias,cAlsRat,cDocto,cTpDoc,aHeader,aCols,aHeadRat,aCol
 		EndIf
 	EndIf
 
-	//-- Verifica Revisao do Item caso seja IC, IR ou IM
+	//-- Verifica Revisão do Item caso seja IC, IR ou IM
 	If cTpDoc $ "IC|IR|IM"
 		cCpo := cAlsCpo + "_REVISA"
 		If lContinua .AND. !Empty( (cAlias)->( FieldPos(cCpo) ) )
@@ -765,7 +765,7 @@ Static Function XMC8CAD(cAlias,cAlsRat,cDocto,cTpDoc,aHeader,aCols,aHeadRat,aCol
 					nRateio := aScan(aColsRat, {|x| x[1] == cItemDoc .And. !Empty(x[2])} )
 
 					If(nRateio > 0 .And. Empty(aColsRat[nRateio][2][1][2]))
-						nRateio := 0 //tratativa para pedido por cotacao pois ele cria o aColsRat mesmo sem rateio com os campos da SCH vazios
+						nRateio := 0 //tratativa para pedido por cotação pois ele cria o aColsRat mesmo sem rateio com os campos da SCH vazios
 					EndIf
 				EndIf
 
@@ -1050,11 +1050,11 @@ return aRet
 Programa............: xMC8ApGru
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Encontra o Grupo de Aprovacao correto
+Descrição / Objetivo: Encontra o Grupo de Aprovação correto
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Busca o Grupo de aprovacao com a alcada correta
+Uso.................: Marfrig
+Obs.................: Busca o Grupo de aprovação com a alçada correta
 =====================================================================================
 */
 Static Function xMC8ApGru()
@@ -1119,16 +1119,16 @@ Return cRet
 Programa............: MC8M140GET
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT120TEL
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT120TEL
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona campos no Ponto de Entrada
 =====================================================================================
 */
 User Function MC8MGET120(aPosObj)
 
-	aPosObj[2][1]	+=	20 //Aumento o Espacamento
+	aPosObj[2][1]	+=	20 //Aumento o Espaçamento
 	aPosObj[1][3]	+=	20 //Aumento o Box
 
 Return
@@ -1138,10 +1138,10 @@ Return
 Programa............: MC8M120TEL
 Autor...............: Joni Lima
 Data................: 06/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MT120TEL
+Descrição / Objetivo: Utilizado no Ponto de Entrada MT120TEL
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Adiciona campos no Ponto de Entrada
 =====================================================================================
 */
@@ -1259,10 +1259,10 @@ Return aCampo
 Programa............: xMC8TSSC
 Autor...............: Joni Lima
 Data................: 25/01/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada M110STTS
+Descrição / Objetivo: Utilizado no Ponto de Entrada M110STTS
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Carrega os dados e envia ao Fluig
 =====================================================================================
 */
@@ -1293,11 +1293,11 @@ Return
 Programa............: xPreDadSC
 Autor...............: Joni Lima
 Data................: 25/01/2016
-Descricao / Objetivo: Realiza a preparaï¿½ï¿½o dos dados para envio ao Fluig
+Descrição / Objetivo: Realiza a preparação dos dados para envio ao Fluig
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Prepara Array com Cabecalho, Itens e Alcada de Aprovacao
+Uso.................: Marfrig
+Obs.................: Prepara Array com Cabeçalho, Itens e Alçada de Aprovação
 =====================================================================================
 */
 Static Function xPreDadSC(cSC)
@@ -1325,7 +1325,7 @@ Static Function xPreDadSC(cSC)
 
 	If SC1->(DbSeek( xFilial('SC1') + cSC))
 
-		//Cabecalho
+		//Cabeçalho
 		AADD(aCabSol,SC1->C1_FILIAL)
 		AADD(aCabSol,SC1->C1_NUM)
 		AADD(aCabSol,SC1->C1_SOLICIT)
@@ -1336,12 +1336,12 @@ Static Function xPreDadSC(cSC)
 
 		AADD(aDados,aCabSol)
 
-		//Itens da Solicitacao de Compra
+		//Itens da Solicitação de Compra
 		While SC1->(!Eof()) .and. xFilial('SC1') + cSC == SC1->(C1_FILIAL + C1_NUM)
 
 			aItemSol  := {}
 
-			cRateio := IIF(SC1->C1_RATEIO=='1','Sim','Nao ')
+			cRateio := IIF(SC1->C1_RATEIO=='1','Sim','Não')
 
 			AADD(aItemSol,SC1->C1_ITEM)
 			AADD(aItemSol,SC1->C1_PRODUTO)
@@ -1440,7 +1440,7 @@ User Function xMG8FIM(cPed,nOpx,nOpca)
 		lGradeExp := lGradeSC7
 	endif
 
-	// Mercado Eletronico 28/02/2020. Nao  deve gerar grade de aprovacao para o ME.
+	// Mercado Eletronico 28/02/2020. Não deve gerar grade de aprovação para o ME.
 	If isInCallStack("U_MGFWSC48")	
 		Return
 	Endif
@@ -1453,7 +1453,7 @@ User Function xMG8FIM(cPed,nOpx,nOpca)
 	SC7->(dbSetOrder(1))//C7_FILIAL, C7_NUM, C7_ITEM, C7_SEQUEN
 
 	If !(IsBlind())
-		//Ponto para nao enviar para Grade novamente
+		//Ponto para não enviar para Grade novamente
 		If SC7->(dbSeek(cChavSC7))
 			if nOpx == 4 .AND. SC7->C7_ENVGRAD == "N"
 
@@ -1699,7 +1699,7 @@ Static Function xPreDadPC(cPed)
 
 	If SC7->(DbSeek( xFilial('SC7') + cPed))
 
-		//Cabecalho C7_FORNECE,C7_LOJA
+		//Cabeçalho C7_FORNECE,C7_LOJA
 		AADD(aCabSol,SC7->C7_FORNECE)
 		AADD(aCabSol,SC7->C7_LOJA)
 		AADD(aCabSol,SC7->C7_COND + ' - ' + POSICIONE('SE4',1,xFilial('SE4') + SC7->C7_COND ,'E4_COND') )
@@ -1716,7 +1716,7 @@ Static Function xPreDadPC(cPed)
 
 		AADD(aDados,aCabSol)
 
-		//Itens da Solicitacao de Compra
+		//Itens da Solicitação de Compra
 		While SC7->(!Eof()) .and. xFilial('SC7') + cPed == SC7->(C7_FILIAL + C7_NUM)
 
 			aItemSol  := {}
@@ -1980,10 +1980,10 @@ User Function xMC8GSCR()
 			SE2->E2_ZBLQFLG := 'S'
 			SE2->(MsUnlock())
 		Else
-			Alert('Nao  Existe Grade de Aprovacao para essa Natureza : ' + Alltrim(SE2->E2_NATUREZ) + ' , CC: ' + Alltrim(SE2->E2_CCUSTO))
+			Alert('Não Existe Grade de Aprovação para essa Natureza : ' + Alltrim(SE2->E2_NATUREZ) + ' , CC: ' + Alltrim(SE2->E2_CCUSTO))
 		EndIf
 	Else
-		Alert('Sï¿½ ï¿½ possivel utilizar essa rotina para titulos que em sua geracao/alteracao nao possuï¿½am grade de aprovacao.')
+		Alert('Só é possivel utilizar essa rotina para titulos que em sua geração/alteração não possuíam grade de aprovação.')
 	EndIf
 
 	RestArea(aArea)
@@ -2146,7 +2146,7 @@ User function xMg8VlTT()
 	If Alltrim(M->E2_TIPO) = 'PA'
 		If lOp05MV .Or. lOp09MV
 			lRet := .F.
-			Alert('Nao e Possivel gerar um titulo do Tipo PA, para incluir um titulo do Tipo PA, sera necessario alterar o Prefixo(E2_PREFIXO) para "PAM" e o Tipo para "PR"')
+			Alert('Não é Possivel gerar um titulo do Tipo PA, para incluir um titulo do Tipo PA, sera necessario alterar o Prefixo(E2_PREFIXO) para "PAM" e o Tipo para "PR"')
 		EndIf
 	EndIf
 
@@ -2157,8 +2157,8 @@ return lRet
 Programa............: xMG8When
 Autor...............: Joni Lima
 Data................: 17/01/2018
-Descricao / Objetivo: Utilizado no WHEN dos campos E2_ZBCOAD,E2_ZAGAD,E2_ZCNTAD
-Obs.................: Valida se o campo tipo ï¿½ igual ao MPA
+Descrição / Objetivo: Utilizado no WHEN dos campos E2_ZBCOAD,E2_ZAGAD,E2_ZCNTAD
+Obs.................: Valida se o campo tipo é igual ao MPA
 =====================================================================================
 */
 User Function xMG8When()
@@ -2305,11 +2305,11 @@ Return cRet
 Programa............: xMC8GrAp
 Autor...............: Joni Lima
 Data................: 01/02/2016
-Descricao / Objetivo: Encontra o Grupo de Aprovacao correto
+Descrição / Objetivo: Encontra o Grupo de Aprovação correto
 Doc. Origem.........: GRADE ERP
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Busca o Grupo de aprovacao com a alcada correta
+Uso.................: Marfrig
+Obs.................: Busca o Grupo de aprovação com a alçada correta
 =====================================================================================
 */
 Static Function xMC8GrAp(cCC)
@@ -2362,7 +2362,7 @@ Return cRet
 User Function xMC8GSE2()
 
 	Local aCols   := PARAMIXB[1]
-	Local nxxOpc  := PARAMIXB[2] //1=inclusao de titulos, 2=exclusao de titulos
+	Local nxxOpc  := PARAMIXB[2] //1=inclusão de títulos, 2=exclusão de títulos
 	Local aHeadSE2:= PARAMIXB[3]
 
 	Local cCC 	  := SD1->D1_CC
@@ -2370,7 +2370,7 @@ User Function xMC8GSE2()
 	Local cTit	  := SE2->(E2_PREFIXO + E2_NUM + E2_PARCELA + E2_TIPO + E2_FORNECE + E2_LOJA)
 
 
-	If nxxOpc == 1 //Inclusao
+	If nxxOpc == 1 //Inclusão
 		SE2->E2_CCUSTO	:= SD1->D1_CC
 		//cGrupo := xMC8GrpTit(SD1->D1_CC,SE2->E2_NATUREZ)
 		/*If !Empty(cGrupo)
@@ -2513,15 +2513,15 @@ User Function xMC8PAM()
 				dDataBase := MV_PAR04
 				U_MGFCOM15(SE2->(Recno()))
 			Else
-				Alert("Data deve ser maior ou igual a emissao para geracao do PA")
+				Alert("Data deve ser maior ou igual a emissão para geração do PA")
 			EndIf
 		EndIf
 
 		dDataBase := dOldData
 
 	Else
-		//Alert('Opcao disponivel para titulos de Tipo "MPA" que estejam Liberados')
-		Alert('Opcao disponivel para titulos de Tipo "MPA" e Naturezas: ' + cNatur + ' , Parametro "MV_ZMF15AD" ')
+		//Alert('Opção disponivel para titulos de Tipo "MPA" que estejam Liberados')
+		Alert('Opção disponivel para titulos de Tipo "MPA" e Naturezas: ' + cNatur + ' , Parametro "MV_ZMF15AD" ')
 	EndIf
 
 Return
@@ -2643,8 +2643,8 @@ User Function xM8verCC()
 Return lRet
 
 //---------------------------------
-// Valida se os itens do contrato estao com o mesmo CC
-// Faz a mesma funcao que a u_xM8verCC para as mediï¿½ï¿½es de contrato
+// Valida se os itens do contrato estão com o mesmo CC
+// Faz a mesma função que a u_xM8verCC para as medições de contrato
 //---------------------------------
 user function cntVerCC()
 	local lRet		:= .T.
@@ -2667,16 +2667,16 @@ user function cntVerCC()
 				lRet := .F.
 				If IsBlind()
 					Help(" ",1,'DIFFCCUSTO',,'Itens do Pedido com diferentes CENTROS DE CUSTOS.'+CRLF+;
-					'Nao e possivel conter centros de custos diferentes no mesmo pedido.',1,0)
+					'Não é possível conter centros de custos diferentes no mesmo pedido.',1,0)
 				Else
-					msgAlert("Itens do Pedido com diferentes CENTROS DE CUSTOS. Nao e possivel conter centros de custos diferentes no mesmo pedido.")
+					msgAlert("Itens do Pedido com diferentes CENTROS DE CUSTOS. Não é possível conter centros de custos diferentes no mesmo pedido.")
 				EndIf
 				exit
 			endif
 			QRYCNE->(DBSkip())
 		enddo
 	else
-		msgAlert("Nao  foram encontrados itens para a medicao " + CND->CND_NUMMED)
+		msgAlert("Não foram encontrados itens para a medição " + CND->CND_NUMMED)
 		lRet := .F.
 	endif
 
@@ -2684,7 +2684,7 @@ user function cntVerCC()
 return lRet
 
 //---------------------------------
-// Retorna CC da Mediï¿½ï¿½o posicionada
+// Retorna CC da Medição posicionada
 //---------------------------------
 user function getCCCnt()
 	local cQryCNE	:= ""
@@ -2713,11 +2713,11 @@ User Function MG8110VLD(nOpx)
 
 	If (nOpx == 4 .or. nOpx == 5) .and. !lCopia
 		If SC1->C1_APROV == 'R'
-			Alert('SC esta rejeitada, favor incluir uma nova SC.')
+			Alert('SC está rejeitada, favor incluir uma nova SC.')
 			lRet := .F.
 			/*
 			ElseIf SC1->C1_APROV <> 'R' .and. SC1->C1_ZBLQFLG <> 'N'
-			Alert('SC esta Aguardando Integracao com o Fluig, favor aguardar cerca de 2 minutos para integracao.')
+			Alert('SC está Aguardando Integração com o Fluig, favor aguardar cerca de 2 minutos para integração.')
 			lRet := .F.
 			*/
 		Endif
@@ -2789,10 +2789,10 @@ User Function MC8110OK(cNumSc)
 
 		If !lRet
 			If IsBlind()
-				Help(" ",1,'SEMGRADE',,'Nao  existe grade tï¿½cnica cadastrada para este CENTRO DE CUSTO + GRUPO DE PRODUTOS.'+CRLF+;
-				'Esta SC nao sera gravada. Entre em contato com o responsï¿½vel pelo cadastramento da grade e informe esta mensagem.',1,0)
+				Help(" ",1,'SEMGRADE',,'Não existe grade técnica cadastrada para este CENTRO DE CUSTO + GRUPO DE PRODUTOS.'+CRLF+;
+				'Esta SC não será gravada. Entre em contato com o responsável pelo cadastramento da grade e informe esta mensagem.',1,0)
 			Else
-				Alert('Nao  existe grade tï¿½cnica cadastrada para este CENTRO DE CUSTO (' + Alltrim(cCC) + ') + GRUPO DE PRODUTOS(' + Alltrim(cGR) + ').Esta SC nao sera gravada. Entre em contato com o responsï¿½vel pelo cadastramento da grade e informe esta mensagem.')
+				Alert('Não existe grade técnica cadastrada para este CENTRO DE CUSTO (' + Alltrim(cCC) + ') + GRUPO DE PRODUTOS(' + Alltrim(cGR) + ').Esta SC não será gravada. Entre em contato com o responsável pelo cadastramento da grade e informe esta mensagem.')
 			EndIf
 		EndIf
 	else
@@ -2869,7 +2869,7 @@ User Function xM8120ALT()
 
 		/*
 		If lRet .and. SC7->C7_ZBLQFLG <> 'N'
-		Alert('PC esta Aguardando Integracao com o Fluig, favor aguardar cerca de 2 minutos para integracao.')
+		Alert('PC está Aguardando Integração com o Fluig, favor aguardar cerca de 2 minutos para integração.')
 		lRet := .F.
 		EndIf
 		*/
@@ -3060,7 +3060,7 @@ user function mgf8CkGd()
 return
 
 //----------------------------------------------------------------------------------------------------------
-// Verifica se a alteracao do Solicitacao de Compra vai para Grade de Aprovacao
+// Verifica se a alteracao do Solicitação de Compra vai para Grade de Aprovacao
 //----------------------------------------------------------------------------------------------------------
 user function mgf8GdC1()
 
@@ -3231,8 +3231,8 @@ User Function MGFC8SC()
 Return lRet
 
 /*/{Protheus.doc} xPAEIC
-//Descricao : Funcao Para Alteracao de campos de Vencimentos em SE2 atraves do Ponto de Entrada FA750BRW() em FINA750
-// 			  Regra de Permissao E2_TIPO=="PA" | E2_PREFIXO == "EIC" | E2_ORIGEM == "SIGAEIC" | A2_EST do Fornecedor <> "EX" |
+//Descrição : Função Para Alteração de campos de Vencimentos em SE2 através do Ponto de Entrada FA750BRW() em FINA750
+// 			  Regra de Permissão E2_TIPO=="PA" | E2_PREFIXO == "EIC" | E2_ORIGEM == "SIGAEIC" | A2_EST do Fornecedor <> "EX" |
 //            Atualizando a Tabela SWB
 @author Andy Pudja
 @since 08/11/2018
@@ -3251,18 +3251,18 @@ User Function xPAEIC()
 	Local lBxTxa 	:= SuperGetMv("MV_BXTXA",.F.,"1") == "1"
 
 	IF (SE2->E2_SALDO + SE2->E2_SDACRES == 0) .or. (!lBxTxa .and. SE2->E2_OK == 'TA' .and. !SE2->E2_TIPO $ MVPAGANT)
-		*----------- Titulo Baixado ----------*
-		Help(" ",1,"TITBAIXADO") // Regra do Padrao, vide FINA080
+		*----------- Título Baixado ----------*
+		Help(" ",1,"TITBAIXADO") // Regra do Padrão, vide FINA080
 		*-------------------------------------*
 	Else
 		_cNome   := Posicione('SA2', 1, xFilial('SA2')+SE2->E2_FORNECE+SE2->E2_LOJA, 'A2_NOME')
 		If (Alltrim(SE2->E2_TIPO) == "PA") .And. (Alltrim(SE2->E2_PREFIXO) == "EIC") .And. (Alltrim(SE2->E2_ORIGEM) == "SIGAEIC") // .And. (Alltrim(_cEstado)=="EX")
 
-			@ 0,0 TO 200,500 DIALOG oDlg1 TITLE "Altera Vencimento PA-EIC" 			// DIALOG oDlg para Formar a Janela de Informacoes e Entrada de Dados
+			@ 0,0 TO 200,500 DIALOG oDlg1 TITLE "Altera Vencimento PA-EIC" 			// DIALOG oDlg para Formar a Janela de Informações e Entrada de Dados
 
-			*------------------------- Dados do Titulo --------------------------------------*
+			*------------------------- Dados do Título --------------------------------------*
 			@ 05,010 Say "Fornecedor: "	+ SE2->E2_FORNECE + "/" + SE2->E2_LOJA + " - " + Alltrim(_cNome)
-			@ 15,010 Say "Titulo: "		+ SE2->E2_NUM + "/" + Alltrim(SE2->E2_PREFIXO)
+			@ 15,010 Say "Título: "		+ SE2->E2_NUM + "/" + Alltrim(SE2->E2_PREFIXO)
 			@ 25,010 Say "Tipo: " 		+ Alltrim(SE2->E2_TIPO)
 			@ 35,010 Say "Parcela: " 	+ Alltrim(SE2->E2_PARCELA)
 
@@ -3276,29 +3276,29 @@ User Function xPAEIC()
 			@ 70,130 GET _dVenRea Picture PesqPict("SE2","E2_VENCREA") 	Valid _dVenRea >= DataValida(_dVenCto) 	SIZE 45,15
 			*---------------------------------------------------------------------------------*
 
-			*------------------------ Botï¿½es -------------------------------------------------*
-			@ 045,200 BUTTON "Processar" SIZE 35,15 ACTION (AltVenc(_dVenCto, _dVenRea), Close(oDlg1))	// Botï¿½o ativando Funcao que ira gravar os Vencimentos Informados
-			@ 065,200 BUTTON "Sair"      SIZE 35,15 ACTION Close(oDlg1)									// Botï¿½o Fechando a Janela
+			*------------------------ Botões -------------------------------------------------*
+			@ 045,200 BUTTON "Processar" SIZE 35,15 ACTION (AltVenc(_dVenCto, _dVenRea), Close(oDlg1))	// Botão ativando Função que irá gravar os Vencimentos Informados
+			@ 065,200 BUTTON "Sair"      SIZE 35,15 ACTION Close(oDlg1)									// Botão Fechando a Janela
 			*---------------------------------------------------------------------------------*
 
 			ACTIVATE DIALOG oDlg1 CENTER 											// Ativando Janela para Informe das Datas de Vencimento
 
 		Else
-			*----------------- Nao  Condiz com a Regra de Permissao PA-EIC --------------------*
+			*----------------- Não Condiz com a Regra de Permissão PA-EIC --------------------*
 			If (Alltrim(SE2->E2_TIPO) 		<> "PA")
-				_cMsg:= "pois o Tipo ï¿½: " 		+ Alltrim(SE2->E2_TIPO)
+				_cMsg:= "pois o Tipo é: " 		+ Alltrim(SE2->E2_TIPO)
 			EndIf
 			If (Alltrim(SE2->E2_PREFIXO) 	<> "EIC")
-				_cMsg:= "pois o Prefixo ï¿½: " 	+ Alltrim(E2_PREFIXO)
+				_cMsg:= "pois o Prefixo é: " 	+ Alltrim(E2_PREFIXO)
 			EndIf
 			If Alltrim(SE2->E2_ORIGEM) 		<> "SIGAEIC"
-				_cMsg:= "pois a Origem ï¿½: " 	+ Alltrim(E2_ORIGEM)
+				_cMsg:= "pois a Origem é: " 	+ Alltrim(E2_ORIGEM)
 			EndIf
-			Alert('Nao  Pode Alterar os Vencimentos!!!, '+_cMsg)
+			Alert('Não Pode Alterar os Vencimentos!!!, '+_cMsg)
 			*----------------------------------------------------------------------------------*
 		EndIf
 	EndIf
-	*-------- Restaurando ï¿½rea -----------*
+	*-------- Restaurando Área -----------*
 	RestArea(_aArSE2)
 	RestArea(_aArea)
 	*-------------------------------------*
@@ -3306,8 +3306,8 @@ Return
 
 
 /*/{Protheus.doc} AltVenc
-//Descricao : Funcao Para Gravaï¿½ï¿½o dos campos de Vencimentos em SE2 e em SWB, chamada pela funcao xPAEIC()
-//			  Botï¿½o Processar do Dialog em xPAEIC().
+//Descrição : Função Para Gravação dos campos de Vencimentos em SE2 e em SWB, chamada pela função xPAEIC()
+//			  Botão Processar do Dialog em xPAEIC().
 @author Andy Pudja
 @since 08/11/2018
 @version 1.0
@@ -3344,13 +3344,13 @@ Local _lGraSWB	:= .F.
 			Alert('Todos os Vencimentos Atualizados!!! ')
 		Else
 			If _lGraSE2
-				Alert('Vencimentos dos Titulos Foram Atualizados, Exceto Registro de ï¿½tem de Cï¿½mbio (SWB) !!! ')
+				Alert('Vencimentos dos Títulos Foram Atualizados, Exceto Registro de Ítem de Câmbio (SWB) !!! ')
 			Else
 				If !_lGraSWB
-					Alert('Os Vencimentos Nao  Foram Atualizados!!! ')
-					// Nunca vai acontecer, pois a principio nem precisamos controlar a gravacao do SE2,
-					// pois o titulo sempre existirï¿½ e a rotina esta posicionada!
-					// No entanto vamos deixar a estutura da consistï¿½ncia como esta para a questï¿½o de entendimento da possibilidade dos cenï¿½rios.
+					Alert('Os Vencimentos Não Foram Atualizados!!! ')
+					// Nunca vai acontecer, pois a principio nem precisamos controlar a gravação do SE2,
+					// pois o título sempre existirá e a rotina está posicionada!
+					// No entanto vamos deixar a estutura da consistência como está para a questão de entendimento da possibilidade dos cenários.
 				EndIf
 			EndIf
 		EndIf

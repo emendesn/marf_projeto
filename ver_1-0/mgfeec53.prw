@@ -8,7 +8,7 @@ Data................: Junho/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada EECAP100
 Doc. Origem.........: Comex
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Limpar campos usados no GAP FIS45 durante a copia do pedido e setar variavel public para uso no PE EECPEM44
 =====================================================================================
 */
@@ -35,15 +35,15 @@ If IsInCallStack("EECAP100") .and. IsInCallStack("AP100CopyFrom") .and. cParam =
 					If !Empty(WorkIt->EE8_ZTESSI) .or. !Empty(WorkIt->EE8_ZQTDSI) .or. WorkIt->EE8_ZGERSI == "S" 
 						//__lVldCopia := .F.
 						APMsgAlert("Pedido tem produtos iguais em itens diferentes."+CRLF+;
-						"Nao sera possivel copiar este pedido."+CRLF+;
-						"Favor cancelar este pedido e escolher outro pedido para copia.")
+						"Não será possível copiar este pedido."+CRLF+;
+						"Favor cancelar este pedido e escolher outro pedido para cópia.")
 						Exit
 					Endif	
 					// valida produtos iguais no pedido que integra com o taura, nao pode ocorrer esta situacao
 					If aScan(aProd,WorkIt->EE8_COD_I) > 0
 						APMsgAlert("Pedido tem produtos iguais em itens diferentes."+CRLF+;
-						"Nao sera possivel copiar este pedido."+CRLF+;
-						"Favor cancelar este pedido e escolher outro pedido para copia.")
+						"Não será possível copiar este pedido."+CRLF+;
+						"Favor cancelar este pedido e escolher outro pedido para cópia.")
 						Exit
 					Endif
 					aAdd(aProd,WorkIt->EE8_COD_I)

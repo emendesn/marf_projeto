@@ -10,8 +10,8 @@ Data.....:              09/11/2016
 Descricao / Objetivo:   Ajuste Fiscal
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao dos Livros Fiscais
+Uso......:              Marfrig
+Obs......:              Manutenção dos Livros Fiscais
 =====================================================================================
 */
 User Function MGFFIS08()
@@ -25,9 +25,9 @@ User Function MGFFIS08()
 
 	if SF3->( DBSeek( xFilial("SF3") + SF2->(F2_CLIENTE + F2_LOJA + F2_DOC + F2_SERIE ) ) )
 		//UPDATE/ exclusao precisa estar possicionado
-		fwExecView("Alteracao", "MGFFIS08", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"Alteracao"
+		fwExecView("Alteração", "MGFFIS08", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)//"AlteraÃ§Ã£o"
 	else
-		msgAlert("Livro Fiscal nao encontrado!")
+		msgAlert("Livro Fiscal não encontrado!")
 	endif
 
 	SF3->(DBCloseArea())
@@ -51,8 +51,8 @@ static function ModelDef()
 	oStrSFT:SetProperty( 'FT_CEST'		, MODEL_FIELD_WHEN		, {||.T.})
 	oStrSFT:SetProperty( 'FT_CTIPI'		, MODEL_FIELD_WHEN		, {||.T.})
 
-	oStrSF3:SetProperty( '*'			, MODEL_FIELD_OBRIGAT	, .F.) // Indica se o campo tem preenchimento obrigatï¿½rio
-	oStrSFT:SetProperty( '*'			, MODEL_FIELD_OBRIGAT	, .F.) // Indica se o campo tem preenchimento obrigatï¿½rio
+	oStrSF3:SetProperty( '*'			, MODEL_FIELD_OBRIGAT	, .F.) // Indica se o campo tem preenchimento obrigatório
+	oStrSFT:SetProperty( '*'			, MODEL_FIELD_OBRIGAT	, .F.) // Indica se o campo tem preenchimento obrigatório
 
 	oModel := MPFormModel():New("XMGFFIS08", /*bPreValidacao*/,/*bPosValidacao*/, { |oModel| cmtFIS08(oModel) }/*bCommit*/,/*bCancel*/ )
 	oModel:AddFields("SF3MASTER",/*cOwner*/,oStrSF3, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )

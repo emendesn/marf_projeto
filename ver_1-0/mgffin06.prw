@@ -214,8 +214,8 @@ User Function RF01B062(xBanco,xAgencia,xConta,xSubCt,lSetup,cNotIni,cNotFim,cSer
 	Private oFont24  := TFont():New("Arial",9,24,.T.,.T.,5,.T.,5,.T.,.F.)
 	Private oBrush1  := TBrush():New( , CLR_BLACK )
 
-
-	oPrint:= tNewMsprinter():New( "Boleto Laser" )
+	//oPrint:= tNewMsprinter():New( "Boleto Laser" )
+	oPrint:= TMSPrinter():New( "Boleto Laser" )
 
 	aDadosEmp    := {	SM0->M0_NOMECOM															             ,;	//	[1]	Nome da Empresa
 	SM0->M0_ENDCOB																                ,;	//	[2]	Endereço

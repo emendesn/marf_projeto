@@ -8,11 +8,11 @@
 Programa.:              MGFFIN29  - PE
 Autor....:              Antonio Carlos
 Data.....:              04/10/2016
-Descricao / Objetivo:   incluir informacoes de Notas Fiscais emitidas por Rede
+Descricao / Objetivo:   incluir informações de Notas Fiscais emitidas por Rede
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
-Obs......:              incluir informacoes de Notas Fiscais emitidas por Rede
+Uso......:              Marfrig
+Obs......:              incluir informações de Notas Fiscais emitidas por Rede
 =====================================================================================
 */
 User Function  MGFFIN29(cQueryori)

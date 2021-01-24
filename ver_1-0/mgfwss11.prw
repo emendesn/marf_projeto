@@ -50,6 +50,9 @@ WSSTRUCT WSS11_CUSTOMER
 	WSDATA MSGCALLBACK	AS STRING OPTIONAL
 	WSDATA UUID			AS STRING OPTIONAL
 	WSDATA REACTIVATION	AS BOOLEAN OPTIONAL
+	WSDATA A1_TIPO		AS STRING OPTIONAL
+	WSDATA A1_DDI		AS STRING OPTIONAL
+	WSDATA A1_PAIS		AS STRING OPTIONAL
 ENDWSSTRUCT
 
 //--------------------------------------------------------------------
@@ -84,6 +87,7 @@ WSSTRUCT WSS11_ADDRESS
 	WSDATA Z9_ZCOMPLE	AS STRING OPTIONAL
 	WSDATA DELETE		AS BOOLEAN OPTIONAL
 	WSDATA INTEGRATED	AS BOOLEAN OPTIONAL
+	WSDATA Z9_PAIS		AS STRING OPTIONAL
 ENDWSSTRUCT
 
 //--------------------------------------------------------------------
@@ -112,6 +116,7 @@ WSSTRUCT WSS11_CONTACT
 	WSDATA INTEGRATED	AS BOOLEAN OPTIONAL
 	WSDATA U5_XDEPTO	AS STRING OPTIONAL
 	WSDATA U5_XCARGO	AS STRING OPTIONAL
+	WSDATA U5_XDDI		AS STRING OPTIONAL
 ENDWSSTRUCT
 
 //--------------------------------------------------------------------
@@ -125,6 +130,7 @@ WSSTRUCT WSS11_ZC5
 	WSDATA ZC5_CODCON	as string optional // CONDIÇÃO DE PAGAMENTO
 	WSDATA ZC5_CODTAB	as string optional // TABELA DE PREÇO
 	WSDATA ZC5_DTENTR	as string optional
+	WSDATA ZC5_DTEMBA	as string optional
 	WSDATA ZC5_IDEXTE	as string optional // ID Unico
 	WSDATA ZC5_RESERV	as string optional // Reserva estoque?
 	WSDATA ZC5_ORCAME	as string optional // Orçamento?
@@ -197,7 +203,8 @@ WSSTRUCT WSS11_RETURN
 	WSDATA TIPO						as STRING optional
 	WSDATA CONDICAOPAGAMENTO		as STRING optional
 	WSDATA STATUS					as STRING optional
-	WSDATA DATAENTREGA				as STRING optional // 1 - SUCESSO, 2 - ERRO NEGOCIO, 3 - ERRO APLICAÇÃO
+	WSDATA DATAEMBARQUE				as STRING optional
+	WSDATA DATAENTREGA				as STRING optional
 	WSDATA IDVENDEDOR				as STRING optional
 	WSDATA NUMERONF					as STRING optional
 	WSDATA CLIENTEID				as STRING optional
@@ -381,8 +388,12 @@ RETURN .T.
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
 WSMETHOD callbackIntegration WSRECEIVE callbackIntegration WSSEND generalResponse WSSERVICE MGFWSS11
+	local cQrySZ1		:= ""
+	local cUpdTbl		:= ""
 	local bError		:= ErrorBlock( { |oError| MyError( oError ) } )
 	local cSystemTMS	:= allTrim( superGetMv( "MFG_WSS11G" , , "011" ) ) // Cod. de busca na SZ2, Tabela de Integração
+	local cSystemSFO	:= allTrim( superGetMv( "MFG_WSS11N" , , "008" ) ) // Cod. de busca na SZ2, Tabela de Integração
+	local cSFOCustom	:= allTrim( superGetMv( "MFG_WSS11O" , , "001" ) ) // Cod. de busca na SZ2, Tabela de Integração
 
 	setFunName( "MGFWSS11" )
 
@@ -417,7 +428,7 @@ WSMETHOD callbackIntegration WSRECEIVE callbackIntegration WSSEND generalRespons
 			_cSitWss11 := ' '
 			_cMsgWss11 := ::callbackIntegration:MENSAGEM
 			_cEntWss11 := ::callbackIntegration:ENTIDADE
-			_cStaWss11 := ::callbackIntegration:STATUS			
+			_cStaWss11 := ::callbackIntegration:STATUS
 			_cUidWss11 := ::callbackIntegration:UUID
 			_cProtWss11 := ' '
 			if ::callbackIntegration:CAMPOS[2]:CHAVE != nil
@@ -428,11 +439,11 @@ WSMETHOD callbackIntegration WSRECEIVE callbackIntegration WSSEND generalRespons
 			if ::callbackIntegration:CAMPOS[3]:CHAVE != nil
 				if ::callbackIntegration:CAMPOS[3]:CHAVE == "situacao"
 					_cSitWss11	:= ::callbackIntegration:CAMPOS[3]:VALOR
-				endif	
+				endif
 			endif
 			_cControle := 0
-			If _cSitWss11 == '1'	
-				if ::callbackIntegration:CAMPOS[ _cControle+1 ]:CHAVE != Nil		
+			If _cSitWss11 == '1'
+				if ::callbackIntegration:CAMPOS[ _cControle+1 ]:CHAVE != Nil
 					if ::callbackIntegration:CAMPOS[ _cControle+1 ]:CHAVE == "protocolo"
 						_cProtWss11 := ::callbackIntegration:CAMPOS[_cControle+1 ]:VALOR				//PROTOCOLO
 						_cControle += 1
@@ -457,22 +468,66 @@ WSMETHOD callbackIntegration WSRECEIVE callbackIntegration WSSEND generalRespons
 					_cControle += 1
 				endif
 			endif
-				
-			// _cSisWss11 = 1 	-	Inclusão  -  Atualiza C5_ZTMSID 
-			//				3	-	Alteração -  
+
+			// _cSisWss11 = 1 	-	Inclusão  -  Atualiza C5_ZTMSID
+			//				3	-	Alteração -
 			//				4	-	Cancelar  |  Atualiza C5_ZTMSERR COM MENSAGEM
-			//				2	-	Erro	  -  
+			//				2	-	Erro	  -
 			DBSelectaREA("SC5")
 			SC5->( DBSetOrder(1) )
 			if SC5->( DBSeek( _cFilWss11 + _cPedWss11 ) )
 				reclock("SC5",.F.)
 				if  _cSitWss11 == '1'
-					SC5->C5_ZTMSID := _cProtWss11 
+					SC5->C5_ZTMSID := _cProtWss11
 				elseif _cSitWss11 $ '2|3|4'
-					SC5->C5_ZTMSERR := _cMsgWss11 
+					SC5->C5_ZTMSERR := _cMsgWss11
 				endif
 				SC5->(MSUNLOCK())
 			EndIf
+		elseif ::callbackIntegration:SISTEMA == cSystemSFO .and. ::callbackIntegration:ENTIDADE == cSFOCustom
+
+			// BUSCA UUID NA SZ1
+			cQrySZ1 := ""
+			cQrySZ1 += "SELECT Z1_DOCRECN"														+ CRLF
+			cQrySZ1 += " FROM " + retSQLName( "SZ1" ) + " SZ1"									+ CRLF
+			cQrySZ1 += " WHERE" 																+ CRLF
+			cQrySZ1 += " 		SZ1.Z1_UUID		= '" + ::callbackIntegration:UUID		+ "'"	+ CRLF
+			cQrySZ1 += " 	AND SZ1.Z1_TPINTEG	= '" + ::callbackIntegration:ENTIDADE	+ "'"	+ CRLF
+			cQrySZ1 += " 	AND SZ1.Z1_INTEGRA	= '" + ::callbackIntegration:SISTEMA	+ "'"	+ CRLF
+			cQrySZ1 += " 	AND SZ1.D_E_L_E_T_	= ' '" 											+ CRLF
+
+			tcQuery cQrySZ1 new alias "QRYSZ1"
+
+			if !QRYSZ1->( EOF() )
+				// NA SA1 GRAVA O ID SALESFORCE
+				cUpdTbl	:= ""
+
+				cUpdTbl := "UPDATE " + retSQLName("SA1")																			+ CRLF
+				cUpdTbl += "	SET"																								+ CRLF
+				cUpdTbl += " 		A1_XINTSFO	=	'I',"																			+ CRLF
+				cUpdTbl += " 		A1_XIDSFOR	=	'" + ::callbackIntegration:CAMPOS[1]:VALOR + "'"												+ CRLF
+				cUpdTbl += " WHERE"																									+ CRLF
+				cUpdTbl += " 		R_E_C_N_O_	=	" + allTrim( str( QRYSZ1->Z1_DOCRECN ) )
+
+				if tcSQLExec( cUpdTbl ) < 0
+					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
+
+					::generalResponse:status			:= "0"
+					::generalResponse:message			:= tcSqlError()
+					::generalResponse:codProtheus		:= ::callbackIntegration:UUID
+					::generalResponse:codExternal		:= ""
+					::generalResponse:blocked			:= .F.
+				else
+					::generalResponse:status			:= "1"
+					::generalResponse:message			:= "Callback recebido"
+					::generalResponse:codProtheus		:= ::callbackIntegration:UUID
+					::generalResponse:codProtheusLoja	:= ::callbackIntegration:UUID
+					::generalResponse:codExternal		:= ::callbackIntegration:UUID
+					::generalResponse:blocked			:= .F.
+				endif
+			endif
+
+			QRYSZ1->( DBCloseArea() )
 		endif
 
 		::generalResponse:status			:= "1"
@@ -560,10 +615,18 @@ WSMETHOD cancelSalesOrder WSRECEIVE cancelSalesOrder WSSEND response WSSERVICE M
 
 					::response:STATUS				:= "1"
 					::response:MENSAGEMERRO			:= ""
+
+					// Atualiza as Flags para envio do Taura
+					RecLock("SC5", .F.)
+					SC5->C5_ZBLQTAU	:= 'S'
+					SC5->C5_ZLIBENV	:= 'S'
+					SC5->(MSUnlock())
+
 				endif
 
 				::response:TIPO					:= SC5->C5_ZTIPPED
 				::response:CONDICAOPAGAMENTO	:= SC5->C5_CONDPAG
+				::response:DATAEMBARQUE			:= dTos( SC5->C5_ZDTEMBA )
 				::response:DATAENTREGA			:= dTos( SC5->C5_FECENT )
 				::response:IDVENDEDOR			:= SC5->C5_VEND1
 				::response:NUMERONF				:= ""
@@ -690,6 +753,7 @@ WSMETHOD updateSalesOrder WSRECEIVE salesOrder WSSEND response WSSERVICE MGFWSS1
 						::response:MENSAGEMERRO			:= ""
 						::response:TIPO					:= SC5->C5_ZTIPPED
 						::response:CONDICAOPAGAMENTO	:= SC5->C5_CONDPAG
+						::response:DATAEMBARQUE			:= dTos( SC5->C5_ZDTEMBA )
 						::response:DATAENTREGA			:= dTos( SC5->C5_FECENT )
 						::response:IDVENDEDOR			:= SC5->C5_VEND1
 						::response:NUMERONF				:= ""
@@ -886,13 +950,19 @@ USER FUNCTION RUNFAT53( oSalesOrde , oResponse )
 			endif
 
 			if !empty( oSalesOrde:header:ZC5_ORCAME )
-				aadd(aSC5, {'C5_XORCAME'	, oSalesOrde:header:ZC5_ORCAME						, NIL})
+				if SC5->C5_XORCAME <> "N"
+					// UMA VEZ QUE O PEDIDO EFETIVADO NAO PODERA VOLTAR PARA C5_XORCAME == 'S'
+					aadd(aSC5, {'C5_XORCAME'	, oSalesOrde:header:ZC5_ORCAME						, NIL})
+				endif
 			else
 				aadd(aSC5, {'C5_XORCAME'	, SC5->C5_XORCAME									, NIL})
 			endif
 
 			if !empty( oSalesOrde:header:ZC5_RESERV )
-				aadd(aSC5, {'C5_XRESERV'	, oSalesOrde:header:ZC5_RESERV						, NIL})
+				if SC5->C5_XRESERV <> "S"
+					// UMA VEZ QUE O PEDIDO RESERVA ESTOQUE NAO PODERA VOLTAR PARA C5_XRESERV == 'N'
+					aadd(aSC5, {'C5_XRESERV'	, oSalesOrde:header:ZC5_RESERV					, NIL})
+				endif
 			else
 				aadd(aSC5, {'C5_XRESERV'	, SC5->C5_XRESERV									, NIL})
 			endif
@@ -917,16 +987,17 @@ USER FUNCTION RUNFAT53( oSalesOrde , oResponse )
 				endif
 			endif
 
+			if !empty( oSalesOrde:header:ZC5_DTEMBA )
+				aadd(aSC5, {'C5_ZDTEMBA'	, sToD( oSalesOrde:header:ZC5_DTEMBA ) 				, NIL})
+			else
+				aadd(aSC5, {'C5_ZDTEMBA'	, SC5->C5_ZDTEMBA									, NIL})
+			endif
+
 			if !empty( oSalesOrde:header:ZC5_DTENTR )
 				aadd(aSC5, {'C5_FECENT'		, sToD( oSalesOrde:header:ZC5_DTENTR ) 				, NIL})
-				aadd(aSC5, {'C5_ZDTEMBA'	, sToD( oSalesOrde:header:ZC5_DTENTR ) 				, NIL})
 			else
 				if !empty( SC5->C5_FECENT )
 					aadd(aSC5, {'C5_FECENT'		, SC5->C5_FECENT								, NIL})
-				endif
-
-				if !empty( SC5->C5_ZDTEMBA )
-					aadd(aSC5, {'C5_ZDTEMBA'	, SC5->C5_ZDTEMBA								, NIL})
 				endif
 			endif
 
@@ -1217,6 +1288,7 @@ USER FUNCTION RUNFAT53( oSalesOrde , oResponse )
 
 			oResponse:TIPO					:= SC5->C5_ZTIPPED
 			oResponse:CONDICAOPAGAMENTO		:= SC5->C5_CONDPAG
+			oResponse:DATAEMBARQUE			:= dTos( SC5->C5_ZDTEMBA )
 			oResponse:DATAENTREGA			:= dTos( SC5->C5_FECENT )
 			oResponse:IDVENDEDOR			:= SC5->C5_VEND1
 			oResponse:NUMERONF				:= ""
@@ -1373,6 +1445,10 @@ WSMETHOD insertSalesOrder WSRECEIVE salesOrder WSSEND generalResponse WSSERVICE 
 						ZC5->ZC5_DTENTR	:= sToD( allTrim( ::salesOrder:header:ZC5_DTENTR ) )
 					endif
 
+					if !empty( ::salesOrder:header:ZC5_DTEMBA )
+						ZC5->ZC5_DTEMBA	:= sToD( allTrim( ::salesOrder:header:ZC5_DTEMBA ) )
+					endif
+
 					if val( ::salesOrder:header:ZC5_ZIDEND ) > 0
 						ZC5->ZC5_ZIDEND	:=  strZero( val( ::salesOrder:header:ZC5_ZIDEND ) , 9 )
 					endif
@@ -1523,146 +1599,132 @@ WSMETHOD updateFinancialLimit WSRECEIVE financialLimit WSSEND generalResponse WS
 
 	DBSelectArea( "SA1" )
 
-	if ::financialLimit:APPROVED
-		if	empty( ::financialLimit:A1_LC		)	.or. ;
-			empty( ::financialLimit:A1_COND		)	.or. ;
-			empty( ::financialLimit:A1_ZGDERED	)	.or. ;
-			empty( ::financialLimit:A1_ZBOLETO	)	.or. ;
-			empty( ::financialLimit:A1_VENCLC	)
+	cQrySA1 := "SELECT SA1.R_E_C_N_O_ SA1RECNO"																	+ CRLF
+	cQrySA1 += " FROM " + retSQLName( "SA1" ) + " SA1"															+ CRLF
+	cQrySA1 += " WHERE"																							+ CRLF
+	cQrySA1 += " 		SA1.A1_COD || SA1.A1_LOJA	=	'" + allTrim( ::financialLimit:CODIGO_LOJA )	+ "'"	+ CRLF
+	cQrySA1 += " 	AND	SA1.A1_FILIAL				=	'" + xFilial("SA1")								+ "'"	+ CRLF
+	cQrySA1 += " 	AND	SA1.D_E_L_E_T_				<>	'*'"													+ CRLF
 
-			lValid := .F.
+	tcQuery cQrySA1 new alias "QRYSA1"
 
-			::generalResponse:status			:= "0"
-			::generalResponse:message			:= "Campos obrigatórios não enviados na Aprovação - A1_LC | A1_COND | A1_ZGDERED | A1_ZBOLETO | A1_VENCLC"
-			::generalResponse:codProtheus		:= ""
-			::generalResponse:codProtheusLoja	:= ""
-			::generalResponse:codExternal		:= ""
-			::generalResponse:blocked			:= .F.
-		endif
-	endif
+	if !QRYSA1->( EOF() )
+		SA1->( DBGoTo( QRYSA1->SA1RECNO ) )
 
-	if lValid
-		cQrySA1 := "SELECT SA1.R_E_C_N_O_ SA1RECNO"																	+ CRLF
-		cQrySA1 += " FROM " + retSQLName( "SA1" ) + " SA1"															+ CRLF
-		cQrySA1 += " WHERE"																							+ CRLF
-		cQrySA1 += " 		SA1.A1_COD || SA1.A1_LOJA	=	'" + allTrim( ::financialLimit:CODIGO_LOJA )	+ "'"	+ CRLF
-		cQrySA1 += " 	AND	SA1.A1_FILIAL				=	'" + xFilial("SA1")								+ "'"	+ CRLF
-		cQrySA1 += " 	AND	SA1.D_E_L_E_T_				<>	'*'"													+ CRLF
+		// DBRLock - Retorna verdadeiro (.T.), se o registro for bloqueado com sucesso; caso contrário, falso (.F.).
+		if SA1->( DBRLock( QRYSA1->SA1RECNO ) )
+			if ::financialLimit:APPROVED
+				if	empty( ::financialLimit:A1_LC		)	.or. ;
+					empty( ::financialLimit:A1_COND		)	.or. ;
+					empty( ::financialLimit:A1_ZGDERED	)	.or. ;
+					empty( ::financialLimit:A1_ZBOLETO	)	.or. ;
+					empty( ::financialLimit:A1_VENCLC	)
 
-		tcQuery cQrySA1 new alias "QRYSA1"
+					lValid := .F.
 
-		if !QRYSA1->( EOF() )
-			SA1->( DBGoTo( QRYSA1->SA1RECNO ) )
-
-			// DBRLock - Retorna verdadeiro (.T.), se o registro for bloqueado com sucesso; caso contrário, falso (.F.).
-			if SA1->( DBRLock( QRYSA1->SA1RECNO ) )
-				/*
-				if ::financialLimit:REACTIVATION
-					// ELIMINAR GRADES PENDENTES DO FINANCEIRO - SOMENTE SE NAO HOUVER PENDENCIA FINANCEIRA
-					if SA1->A1_XPENFIN <> "S"
-						getZB1( .T. )
-
-						cUpdSA1 := ""
-						cUpdSA1 := "UPDATE " + retSQLName("SA1")																+ CRLF
-						cUpdSA1 += "	SET"																					+ CRLF
-						cUpdSA1 += " 		A1_MSBLQL	= '2' "																	+ CRLF
-						cUpdSA1 += " WHERE"																						+ CRLF
-						cUpdSA1 += " 		SA1.A1_COD || SA1.A1_LOJA	=	'" + allTrim( ::financialLimit:CODIGO_LOJA ) + "'"	+ CRLF
-						cUpdSA1 += " 	AND	A1_FILIAL	=	'" + xFilial("SA1")	+ "'"											+ CRLF
-						cUpdSA1 += " 	AND	D_E_L_E_T_	<>	'*'"																+ CRLF
-
-						if tcSQLExec( cUpdSA1 ) < 0
-							conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-						endif
-					else
-						nOpcX := 0
-
-						::generalResponse:status		:= "0"
-						::generalResponse:message		:= "Cliente com Pendência Financeira"
-						::generalResponse:codProtheus	:= ""
-						::generalResponse:codExternal	:= ::customer:A1_CGC
-						::generalResponse:blocked		:= .T.
-					endif
+					::generalResponse:status			:= "0"
+					::generalResponse:message			:= "Campos obrigatórios não enviados na Aprovação - A1_LC | A1_COND | A1_ZGDERED | A1_ZBOLETO | A1_VENCLC"
+					::generalResponse:codProtheus		:= ""
+					::generalResponse:codProtheusLoja	:= ""
+					::generalResponse:codExternal		:= ""
+					::generalResponse:blocked			:= .F.
 				endif
-				*/
 
-				U_MGFFATBE() // Cadastra o cliente automaticamente na estrutura de vendas (carteira) do vendedor
+				if lValid
+					U_MGFFATBE() // Cadastra o cliente automaticamente na estrutura de vendas (carteira) do vendedor
 
-				aSA1 := {}
-				aadd( aSA1, { "A1_COD"		, SA1->A1_COD								, nil } )
-				aadd( aSA1, { "A1_LOJA"		, SA1->A1_LOJA								, nil } )
+					aSA1 := {}
+					aadd( aSA1, { "A1_COD"		, SA1->A1_COD								, nil } )
+					aadd( aSA1, { "A1_LOJA"		, SA1->A1_LOJA								, nil } )
 
-				if ::financialLimit:APPROVED
 					aadd( aSA1, { "A1_LC"		, ::financialLimit:A1_LC				, nil } )
 					aadd( aSA1, { "A1_COND"		, ::financialLimit:A1_COND				, nil } )
 					aadd( aSA1, { "A1_ZGDERED"	, ::financialLimit:A1_ZGDERED			, nil } )
 					aadd( aSA1, { "A1_ZBOLETO"	, ::financialLimit:A1_ZBOLETO			, nil } )
 					aadd( aSA1, { "A1_VENCLC"	, sToD( ::financialLimit:A1_VENCLC )	, nil } )
+					aadd( aSA1, { "A1_MSBLQL"	, '2'	, nil } )
 
 					if !empty( ::financialLimit:A1_ZREDE )
 						aadd( aSA1, { "A1_ZREDE"	, ::financialLimit:A1_ZREDE			, nil } )
 					endif
-				endif
 
-				if !empty( ::financialLimit:A1_ZALTCRE )
-					aadd( aSA1, { "A1_ZALTCRE"	, ::financialLimit:A1_ZALTCRE									, nil } )
-				endif
+					if !empty( ::financialLimit:A1_ZALTCRE )
+						aadd( aSA1, { "A1_ZALTCRE"	, ::financialLimit:A1_ZALTCRE									, nil } )
+					endif
 
-				aSA1 := fwVetByDic( aSA1 /*aVetor*/ , "SA1" /*cTable*/ , .F. /*lItens*/ )
+					aSA1 := fwVetByDic( aSA1 /*aVetor*/ , "SA1" /*cTable*/ , .F. /*lItens*/ )
 
-				varInfo( "aSA1" , aSA1 )
+					varInfo( "aSA1" , aSA1 )
 
-				msExecAuto( { | x , y | MATA030( x , y ) } , aSA1 , nOpcX ) // SA1 Cliente
+					msExecAuto( { | x , y | MATA030( x , y ) } , aSA1 , nOpcX ) // SA1 Cliente
 
-				if lMsErroAuto
-					aErro := GetAutoGRLog() // Retorna erro em array
-					cErro := ""
+					if lMsErroAuto
+						aErro := GetAutoGRLog() // Retorna erro em array
+						cErro := ""
 
-					for nI := 1 to len( aErro )
-						cErro += aErro[ nI ] + CRLF
-					next nI
+						for nI := 1 to len( aErro )
+							cErro += aErro[ nI ] + CRLF
+						next nI
 
-					::generalResponse:status			:= "0"
-					::generalResponse:message			:= allTrim( cErro )
-					::generalResponse:codProtheus		:= ""
-					::generalResponse:codProtheusLoja	:= ""
-					::generalResponse:codExternal		:= ""
-					::generalResponse:blocked			:= .F.
-				else
-					getZB1( .F. /*lReactivat*/ , ::financialLimit:APPROVED /*lUpdCredit*/ )
+						::generalResponse:status			:= "0"
+						::generalResponse:message			:= allTrim( cErro )
+						::generalResponse:codProtheus		:= ""
+						::generalResponse:codProtheusLoja	:= ""
+						::generalResponse:codExternal		:= ""
+						::generalResponse:blocked			:= .F.
+					else
+						updZB1( "04" )
 
-					::generalResponse:status			:= "1"
-					::generalResponse:codProtheus		:= allTrim( SA1->A1_COD )
-					::generalResponse:codProtheusLoja	:= allTrim( SA1->A1_LOJA )
-					::generalResponse:codExternal		:= allTrim( SA1->A1_XIDSFOR )
-					::generalResponse:message			:= ""
-					::generalResponse:blocked			:= ( SA1->A1_MSBLQL == "1" )
+						::generalResponse:status			:= "1"
+						::generalResponse:codProtheus		:= allTrim( SA1->A1_COD )
+						::generalResponse:codProtheusLoja	:= allTrim( SA1->A1_LOJA )
+						::generalResponse:codExternal		:= allTrim( SA1->A1_XIDSFOR )
+						::generalResponse:message			:= ""
+						::generalResponse:blocked			:= ( SA1->A1_MSBLQL == "1" )
 
-					if ::generalResponse:blocked
-						::generalResponse:message += getZB1()
+						if ::generalResponse:blocked
+							::generalResponse:message += getZB1()
+						endif
 					endif
 				endif
-
-				SA1->( DBRUnlock( QRYSA1->SA1RECNO ) )
 			else
-				::generalResponse:status			:= "0"
-				::generalResponse:message			:= "Registro bloqueado no momento."
-				::generalResponse:codProtheus		:= ""
-				::generalResponse:codProtheusLoja	:= ""
-				::generalResponse:codExternal		:= ""
-				::generalResponse:blocked			:= .F.
+				recLoCK( "SA1" , .F. )
+					SA1->A1_ZALTCRE := ::financialLimit:A1_ZALTCRE
+			//		SA1->A1_MSBLQL	:= "1"
+				SA1->( msUnlock() )
+
+				::generalResponse:status			:= "1"
+				::generalResponse:codProtheus		:= allTrim( SA1->A1_COD )
+				::generalResponse:codProtheusLoja	:= allTrim( SA1->A1_LOJA )
+				::generalResponse:codExternal		:= allTrim( SA1->A1_XIDSFOR )
+				::generalResponse:message			:= ""
+				::generalResponse:blocked			:= ( SA1->A1_MSBLQL == "1" )
+
+				if ::generalResponse:blocked
+					::generalResponse:message += getZB1()
+				endif
 			endif
+
 		else
 			::generalResponse:status			:= "0"
-			::generalResponse:message			:= "Cliente não encontrado"
+			::generalResponse:message			:= "Registro bloqueado no momento."
 			::generalResponse:codProtheus		:= ""
 			::generalResponse:codProtheusLoja	:= ""
 			::generalResponse:codExternal		:= ""
 			::generalResponse:blocked			:= .F.
 		endif
 
-		QRYSA1->( DBCloseArea() )
+		SA1->( DBRUnlock( QRYSA1->SA1RECNO ) )
+	else
+		::generalResponse:status			:= "0"
+		::generalResponse:message			:= "Cliente não encontrado"
+		::generalResponse:codProtheus		:= ""
+		::generalResponse:codProtheusLoja	:= ""
+		::generalResponse:codExternal		:= ""
+		::generalResponse:blocked			:= .F.
 	endif
+
+	QRYSA1->( DBCloseArea() )
 
 	restArea( aAreaX )
 	restArea( aAreaSA1 )
@@ -1845,16 +1907,25 @@ WSMETHOD insertOrUpdateAddress WSRECEIVE address WSSEND generalResponse WSSERVIC
 			aadd( aSZ9, { 'Z9_ZCEP'		, strTran( ::address:Z9_ZCEP , "-" ) } )
 		endif
 
-		if !empty( ::address:Z9_ZEST )
-			aadd( aSZ9, { 'Z9_ZEST'		, ::address:Z9_ZEST		} )
-		endif
+		if ::address:Z9_PAIS == "105"
+			if !empty( ::address:Z9_ZEST )
+				aadd( aSZ9, { 'Z9_ZEST'		, ::address:Z9_ZEST		} )
+			endif
 
-		if !empty( ::address:Z9_ZCODMUN )
-			aadd( aSZ9, { 'Z9_ZCODMUN'	, ::address:Z9_ZCODMUN	} )
-		endif
+			if !empty( ::address:Z9_ZCODMUN )
+				aadd( aSZ9, { 'Z9_ZCODMUN'	, ::address:Z9_ZCODMUN	} )
+			endif
 
-		if !empty( ::address:Z9_ZMUNIC )
-			aadd( aSZ9, { 'Z9_ZMUNIC'	, ::address:Z9_ZMUNIC	} )
+			if !empty( ::address:Z9_ZMUNIC )
+				aadd( aSZ9, { 'Z9_ZMUNIC'	, ::address:Z9_ZMUNIC	} )
+			endif
+		else
+			if !empty( ::address:Z9_PAIS )
+				aadd( aSZ9, { 'Z9_PAIS'	, ::address:Z9_PAIS	} )
+			endif
+
+			aadd( aSZ9, { 'Z9_ZEST'		, "EX"		} )
+			aadd( aSZ9, { 'Z9_ZCODMUN'	, "99999"	} )
 		endif
 
 		if !empty( ::address:Z9_ZCOMPLE )
@@ -1866,6 +1937,9 @@ WSMETHOD insertOrUpdateAddress WSRECEIVE address WSSEND generalResponse WSSERVIC
 		aadd( aSZ9, { 'Z9_XSFA'		, "S"					} )
 		//aadd( aSZ9, { 'Z9_MSBLQL'	, "1"					} )
 		aadd( aSZ9, { 'Z9_XSFAX'	, "S"					} )
+		aadd( aSZ9, { 'Z9_XINTEGR'	, "P"					} )
+		aadd( aSZ9, { 'Z9_ALROAD'	, "P"					} )
+
 
 		aSZ9 := fwVetByDic( aSZ9 /*aVetor*/ , "SZ9" /*cTable*/ , .F. /*lItens*/ )
 
@@ -2057,10 +2131,20 @@ local cTimeFin		    := ""
 local cTimeResul	    := ""
 local cVarInfoX		    := ""
 local lCNAEOk			:= .F. // Verifica se CNAE não esta bloqueado
+local aStatusSA1		:= {} // SALVA STATUS DO CLIENTE NA SA1 - ANTES DA ATUALIZACAO
+local aRecnoGrad		:= {} // SALVA AS GRADES QUE ESTAO ATIVAS NO MOMENTO - ANTES DA ATUALIZAZAO
+local cA1ContExt		:= allTrim( superGetMv( "MFG_WSS11H" , , "112011001"	) )
+local cA1NatuExt		:= allTrim( superGetMv( "MFG_WSS11I" , , "10102"		) )
+local cA1ContNac		:= allTrim( superGetMv( "MFG_WSS11J" , , "112010001"	) )
+local cA1NatuNac		:= allTrim( superGetMv( "MFG_WSS11K" , , "10101"		) )
+local cA1GTriNac		:= allTrim( superGetMv( "MFG_WSS11L" , , "ZZZ"			) )
+local cA1GTriExt		:= allTrim( superGetMv( "MFG_WSS11M" , , "CEX"			) )
 
 private lMsHelpAuto     := .T. // Se .T. direciona as mensagens de help para o arq. de log
 private lMsErroAuto     := .F.
 private lAutoErrNoFile  := .T. // Precisa estar como .T. para GetAutoGRLog() retornar o array com erros
+
+private lPulaGrade		:= .F. // Indica se deve 'pular' a grade de aprovacao
 
 setFunName( "MGFWSS11" )
 
@@ -2072,7 +2156,12 @@ cVarInfoX := varInfo( "::customer" , ::customer )
 
 cTimeIni := time()
 
-aCodSA1 := chkSA1( ::customer:A1_CGC )
+//PRB0041096
+if !empty( ::customer:A1_XIDSFOR )
+	aCodSA1 := chkSA1( ::customer:A1_XIDSFOR,1 )
+else
+	aCodSA1 := chkSA1( ::customer:A1_CGC,2 )
+endif
 
 if len( aCodSA1 ) > 0
 	nOpcX := 4
@@ -2080,7 +2169,7 @@ if len( aCodSA1 ) > 0
 	if ::customer:REACTIVATION
 		// ELIMINAR GRADES PENDENTES POIS VIRAO DADOS ATUALIZADOS DA AZIX
 		if aCodSA1[6] <> "S"
-			getZB1( .T. )
+			updZB1()
 
 			cUpdSA1 := ""
 			cUpdSA1 := "UPDATE " + retSQLName("SA1")									+ CRLF
@@ -2133,52 +2222,55 @@ elseif len( aCodSA1 ) == 0
 endif
 
 if nOpcX == 3
+	if ::customer:A1_TIPO <> "X"
+		// VERIFICACAO DE CNAE APENAS PARA CLIENTES NACIONAIS
 
-	aListCnae := {}
-	if !empty( ::customer:A1_CNAES )
-		aListCnae := strTokArr2( allTrim( ::customer:A1_CNAES ), ";", .F. )
-	endif
+		aListCnae := {}
+		if !empty( ::customer:A1_CNAES )
+			aListCnae := strTokArr2( allTrim( ::customer:A1_CNAES ), ";", .F. )
+		endif
 
-	// VERIFICA SE CNAE ESTA BLOQUEADO
-	lCNAEOk := .F.
+		// VERIFICA SE CNAE ESTA BLOQUEADO
+		lCNAEOk := .F.
 
-	if blockCNAE( ::customer:A1_CNAE ) // VERIFICA SE CNAE PRINCIPAL ESTA BLOQUEADO
-		for nI := 1 to len( aListCnae )
-			if !blockCNAE( aListCnae[ nI ] ) // VERIFICA SE CNAES SECUNDARIOS ESTAO BLOQUEADO
-				lCNAEOk	:= .T.
-				cCNAE2	:= aListCnae[ nI ]
-				exit
-			endif
-		next
-	else
-		lCNAEOk	:= .T.
-	endif
+		if blockCNAE( ::customer:A1_CNAE ) // VERIFICA SE CNAE PRINCIPAL ESTA BLOQUEADO
+			for nI := 1 to len( aListCnae )
+				if !blockCNAE( aListCnae[ nI ] ) // VERIFICA SE CNAES SECUNDARIOS ESTAO BLOQUEADO
+					lCNAEOk	:= .T.
+					cCNAE2	:= aListCnae[ nI ]
+					exit
+				endif
+			next
+		else
+			lCNAEOk	:= .T.
+		endif
 
-	if !lCNAEOk
-		lExecAutoX := .F. // SE CNAE ESTIVER BLOQUEADO NAO EXECUTA ROTINA AUTOMATICA
-	endif
-	// FIM - VERIFICA SE CNAE ESTA BLOQUEADO
+		if !lCNAEOk
+			lExecAutoX := .F. // SE CNAE ESTIVER BLOQUEADO NAO EXECUTA ROTINA AUTOMATICA
+		endif
+		// FIM - VERIFICA SE CNAE ESTA BLOQUEADO
 
-	// SE INCLUSAO VERIFICA REGRA DE CNAE
-	// SALESFORCE NAO FARA ALTERACAO DE VENDEDOR NO CLIENTE
-	// NAO HAVERA ALTERACAO DE CNAE
+		// SE INCLUSAO VERIFICA REGRA DE CNAE
+		// SALESFORCE NAO FARA ALTERACAO DE VENDEDOR NO CLIENTE
+		// NAO HAVERA ALTERACAO DE CNAE
 
-	if lCNAEOk
-		if !excessCNAE( ::customer:A1_VEND )
-			if !chkCNAE( ::customer:A1_CGC , "" , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELO CNPJ
-				lExecAutoX := .F.
+		if lCNAEOk
+			if !excessCNAE( ::customer:A1_VEND )
+				if !chkCNAE( ::customer:A1_CGC , "" , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELO CNPJ
+					lExecAutoX := .F.
 
-				if !chkCNAE( "" , ::customer:A1_CNAE , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELO CNAE PRINCIPAL
-					for nI := 1 to len( aListCnae )
-						if chkCNAE( "" , aListCnae[ nI ] , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELOS CNAES SECUNDARIOS
-							// SE ENCONTROU CNAE CONTINUA GRAVACAO
-							lExecAutoX	:= .T.
-							cCNAE2		:= aListCnae[ nI ]
-							exit
-						endif
-					next
-				else
-					lExecAutoX := .T.
+					if !chkCNAE( "" , ::customer:A1_CNAE , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELO CNAE PRINCIPAL
+						for nI := 1 to len( aListCnae )
+							if chkCNAE( "" , aListCnae[ nI ] , @nRecnoZE9 ) // VERIFICA SE ENCONTRA HIERARQUIA PELOS CNAES SECUNDARIOS
+								// SE ENCONTROU CNAE CONTINUA GRAVACAO
+								lExecAutoX	:= .T.
+								cCNAE2		:= aListCnae[ nI ]
+								exit
+							endif
+						next
+					else
+						lExecAutoX := .T.
+					endif
 				endif
 			endif
 		endif
@@ -2195,6 +2287,22 @@ endif
 
 if lExecAutoX .and. nOpcX == 4
 	SA1->( DBGoTo( aCodSA1[ 7 ] ) )
+
+	if !::customer:REACTIVATION .and. !::customer:INTEGRATED
+		lPulaGrade := .T.
+
+		// ESTE CASO DEVERA ATUALIZAR O REGISTRO SEM DESBLOQUEAR O CLIENTE
+		// CASO O CLIENTE ESTEJA DESBLOQUEADO MANTER ATIVO
+
+		aStatusSA1 := {} // SALVA STATUS DO CLIENTE NA SA1 - ANTES DA ATUALIZACAO
+		aadd( aStatusSA1 , { "A1_MSBLQL"	, SA1->A1_MSBLQL	} )
+		aadd( aStatusSA1 , { "A1_XPENFIN"	, SA1->A1_XPENFIN	} )
+		aadd( aStatusSA1 , { "A1_ZINATIV"	, SA1->A1_ZINATIV	} )
+
+		getZB1( @aRecnoGrad ) // SALVA AS GRADES QUE ESTAO ATIVAS NO MOMENTO - ANTES DA ATUALIZAZAO
+
+		updZB1() // LIBERA GRADE PARA CONSEGUIR ATUALIZAR REGISTRO
+	endif
 
 	// DBRLock - Retorna verdadeiro (.T.), se o registro for bloqueado com sucesso; caso contrário, falso (.F.).
 	if !SA1->( DBRLock( aCodSA1[ 7 ] ) )
@@ -2214,16 +2322,22 @@ if lExecAutoX .and. nOpcX > 0
 	ZE9->( DBGoTo( nRecnoZE9 ) )
 
 	if nOpcX == 3
-		aadd( aSA1, { "A1_TIPO"		, "R"									, nil } )
+		aadd( aSA1, { "A1_TIPO"		, ::customer:A1_TIPO					, nil } )
+
+		if ::customer:A1_TIPO == "X"
+			aadd( aSA1, { "A1_CONTA"	, cA1ContExt						, nil } )
+			aadd( aSA1, { "A1_NATUREZ"	, cA1NatuExt						, nil } )
+			aadd( aSA1, { "A1_GRPTRIB"	, cA1GTriExt						, nil } )
+		else
+			aadd( aSA1, { "A1_CONTA"	, cA1ContNac						, nil } )
+			aadd( aSA1, { "A1_NATUREZ"	, cA1NatuNac						, nil } )
+			aadd( aSA1, { "A1_GRPTRIB"	, cA1GTriNac						, nil } )
+			aadd( aSA1, { "A1_DDI"		, "55"								, nil } )
+		endif
+
 		aadd( aSA1, { "A1_PESSOA"	, "J"									, nil } )
-		aadd( aSA1, { "A1_NATUREZ"	, "10101"								, nil } )
-		aadd( aSA1, { "A1_CONTA"	, "112010001"							, nil } )
 		aadd( aSA1, { "A1_TIPCLI"	, "4"									, nil } )
-		aadd( aSA1, { "A1_CODPAIS"	, "01058"								, nil } )
-		aadd( aSA1, { "A1_GRPTRIB"	, "ZZZ"									, nil } )
 		aadd( aSA1, { "A1_TPESSOA"	, "CI"									, nil } )
-		aadd( aSA1, { "A1_PAIS"		, "105"									, nil } )
-		aadd( aSA1, { "A1_DDI"		, "55"									, nil } )
 		aadd( aSA1, { "A1_XIDSFOR"	, ::customer:A1_XIDSFOR					, nil } )
 		aadd( aSA1, { "A1_CGC"		, ::customer:A1_CGC						, nil } )
 		aadd( aSA1, { "A1_LC"		, nLimiteIni							, nil } )
@@ -2244,6 +2358,66 @@ if lExecAutoX .and. nOpcX > 0
 
 	aadd( aSA1, { "A1_XENVSFO"	, "S"								, nil } )
 	aadd( aSA1, { "A1_XINTSFO"	, "P"								, nil } )
+	aadd( aSA1, { "A1_XINTEGR"	, "P"								, nil } )
+	aadd( aSA1, { "A1_ZALTROA"	, "N"								, nil } )
+/*
+	if !empty( ::customer:A1_PAIS )
+		aadd( aSA1, { "A1_PAIS"		, ::customer:A1_PAIS			, nil } )
+		aadd( aSA1, { "A1_CODPAIS"	, "0" + ::customer:A1_PAIS		, nil } )
+	endif
+*/
+	if !empty( ::customer:A1_PAIS )
+		_vCodPais := ''
+		_vCodPais := fBuscaPais(::customer:A1_PAIS)
+		aadd( aSA1, { "A1_PAIS"		, ::customer:A1_PAIS			, nil } )
+		//aadd( aSA1, { "A1_CODPAIS"	, "0" + ::customer:A1_PAIS		, nil } )
+		aadd( aSA1, { "A1_CODPAIS"	, _vCodPais		, nil } )	
+	endif
+
+	if !empty( ::customer:A1_CEP )
+		aadd( aSA1, { "A1_CEP"		, allTrim( ::customer:A1_CEP )		, nil } )
+	endif
+
+	if ::customer:A1_TIPO == "X"
+		aadd( aSA1, { "A1_EST"		, "EX"			, nil } )
+		aadd( aSA1, { "A1_COD_MUN"	, "99999"		, nil } )
+		aadd( aSA1, { "A1_CNAE"		, "0000-0/01"	, nil } )
+
+		if !empty( ::customer:A1_DDI )
+			aadd( aSA1, { "A1_DDI"		, ::customer:A1_DDI					, nil } )
+		endif
+	else
+		if !empty( ::customer:A1_EST )
+			aadd( aSA1, { "A1_EST"		, allTrim( ::customer:A1_EST )		, nil } )
+		endif
+
+		if nOpcX == 4
+			if SA1->A1_TIPO == "X"
+				aadd( aSA1, { "A1_COD_MUN"	, "99999"		, nil } )
+			else
+				if !empty( ::customer:A1_COD_MUN )
+					aadd( aSA1, { "A1_COD_MUN"	, allTrim( ::customer:A1_COD_MUN )	, nil } )
+				endif
+			endif
+		else
+			if !empty( ::customer:A1_COD_MUN )
+				aadd( aSA1, { "A1_COD_MUN"	, allTrim( ::customer:A1_COD_MUN )	, nil } )
+			endif
+		endif
+
+		if !empty( cCNAE2 )
+			// SE VALIDOU PELO CNAE SECUNDARIO - UTILIZA NO CADASTRO PRINCIPAL
+			aadd( aSA1, { "A1_CNAE"		, allTrim( TRANSFORM( allTrim( cCNAE2 )				,  "@R 9999-9/99" ) ) , nil } )
+		else
+			if !empty( ::customer:A1_CNAE )
+				aadd( aSA1, { "A1_CNAE"		, allTrim( TRANSFORM( allTrim( ::customer:A1_CNAE )	,  "@R 9999-9/99" ) ) , nil } )
+			endif
+		endif
+
+		if !empty( cCNAE2 )
+			aadd( aSA1, { "A1_XCNAE"	, allTrim( cCNAE2 )				, nil } )
+		endif
+	endif
 
 	if !empty( ::customer:A1_NOME )
 		aadd( aSA1, { "A1_NOME"		, allTrim( ::customer:A1_NOME )		, nil } )
@@ -2253,24 +2427,12 @@ if lExecAutoX .and. nOpcX > 0
 		aadd( aSA1, { "A1_NREDUZ"	, left( allTrim( ::customer:A1_NREDUZ ) , tamSX3("A1_NREDUZ")[1] )	, nil } )
 	endif
 
-	if !empty( ::customer:A1_CEP )
-		aadd( aSA1, { "A1_CEP"		, allTrim( ::customer:A1_CEP )		, nil } )
-	endif
-
 	if !empty( ::customer:A1_END )
 		aadd( aSA1, { "A1_END"		, allTrim( ::customer:A1_END )		, nil } )
 	endif
 
 	if !empty( ::customer:A1_COMPLEM )
 		aadd( aSA1, { "A1_COMPLEM"	, allTrim( ::customer:A1_COMPLEM )	, nil } )
-	endif
-
-	if !empty( ::customer:A1_EST )
-		aadd( aSA1, { "A1_EST"		, allTrim( ::customer:A1_EST )		, nil } )
-	endif
-
-	if !empty( ::customer:A1_COD_MUN )
-		aadd( aSA1, { "A1_COD_MUN"	, allTrim( ::customer:A1_COD_MUN )	, nil } )
 	endif
 
 	if !empty( ::customer:A1_DDD )
@@ -2398,14 +2560,67 @@ if lExecAutoX .and. nOpcX > 0
 		::generalResponse:codExternal		:= allTrim( SA1->A1_XIDSFOR )
 		::generalResponse:message			:= ""
 
-		::generalResponse:message += getZB1()
-		//::generalResponse:message += "FINANCEIRA;INATIVIDADE"
+		if len( aStatusSA1 ) > 0
+			// DEVERA RESTAURAR O STATUS DO CLEINTE E GRADE SE HOUVER
 
-		if empty( ::generalResponse:message )
-			// CASO NAO TENHA PENDENCIAS NA GRADE DESBLOQUEIA O REGISTRO
+			// RESTAURA CAMPOS SA1
 			recLock( "SA1" , .F. )
-				SA1->A1_MSBLQL := "2"
+				for nI := 1 to len( aStatusSA1 )
+					&( "SA1->" + aStatusSA1[ nI , 1 ] ) := aStatusSA1[ nI , 2 ]
+				next
 			SA1->( msUnlock() )
+			// FIM - RESTAURA CAMPOS SA1
+
+			// RESTAURA GRADE - CASO EXISTA
+			for nI := 1 to len( aRecnoGrad )
+				/*
+				aadd( aRecnoGrad , {
+					QRYZB1->ZB1RECNO	,
+					QRYZB1->ZB1_STATUS	,
+					QRYZB1->ZB2RECNO	,
+					QRYZB1->ZB2_STATUS	} )
+				*/
+
+				if nI == 1
+					cUpdGrade := ""
+					cUpdGrade := "UPDATE " + retSQLName("ZB1")																		+ CRLF
+					cUpdGrade += "	SET"																							+ CRLF
+					cUpdGrade += " 		ZB1_STATUS	= '" + aRecnoGrad[ nI , 2 ] + "' , ZB1_IDSET = '" + aRecnoGrad[ nI , 5 ] + "' "	+ CRLF
+					cUpdGrade += " WHERE"																							+ CRLF
+					cUpdGrade += "		R_E_C_N_O_	=	'" + alltrim( str( aRecnoGrad[ nI , 1 ] ) ) + "'"							+ CRLF
+
+					if tcSQLExec( cUpdGrade ) < 0
+						conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
+					endif
+				endif
+
+				cUpdGrade := ""
+				cUpdGrade := "UPDATE " + retSQLName("ZB2")												+ CRLF
+				cUpdGrade += "	SET"																	+ CRLF
+				cUpdGrade += " 		ZB2_STATUS	= '" + aRecnoGrad[ nI , 4 ] + "' ,"						+ CRLF
+				cUpdGrade += " 		ZB2_OBS		= ' ' ,"												+ CRLF
+				cUpdGrade += " 		ZB2_IDAPR	= ' ' ,"												+ CRLF
+				cUpdGrade += " 		ZB2_DATA	= ' ' ,"												+ CRLF
+				cUpdGrade += " 		ZB2_HORA	= ' '"													+ CRLF
+				cUpdGrade += " WHERE"																	+ CRLF
+				cUpdGrade += "		R_E_C_N_O_	=	'" + alltrim( str( aRecnoGrad[ nI , 3 ] ) ) + "'"	+ CRLF
+
+				if tcSQLExec( cUpdGrade ) < 0
+					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
+				endif
+
+				::generalResponse:message += getZB1()
+			next
+			// FIM - RESTAURA GRADE - CASO EXISTA
+		else
+			::generalResponse:message += getZB1()
+
+			if empty( ::generalResponse:message )
+				// CASO NAO TENHA PENDENCIAS NA GRADE DESBLOQUEIA O REGISTRO
+				recLock( "SA1" , .F. )
+					SA1->A1_MSBLQL := "2"
+				SA1->( msUnlock() )
+			endif
 		endif
 
 		::generalResponse:blocked := ( SA1->A1_MSBLQL == "1" )
@@ -2471,7 +2686,7 @@ return .T.
 
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
-static function chkSA1( cA1Cod )
+static function chkSA1( cA1Cod,cTipCons )
 	local cQWSS07	:= ""
 	local aRetSA1	:= {}
 	local aArea		:= getArea()
@@ -2479,9 +2694,11 @@ static function chkSA1( cA1Cod )
 	cQWSS07 := "SELECT A1_COD, A1_LOJA, A1_TIPO, A1_PESSOA, A1_MSBLQL, A1_XPENFIN, SA1.R_E_C_N_O_ SA1RECNO"	+ CRLF
 	cQWSS07 += " FROM " + retSQLName("SA1") + " SA1"								+ CRLF
 	cQWSS07 += " WHERE"																+ CRLF
-	cQWSS07 += " 		SA1.A1_CGC		=	'" + cA1Cod			+ "'"				+ CRLF
-	//cQWSS07 += " 		SA1.A1_LOJA		=	'" + right( allTrim( ::contact:cA1Cod ) , 2 )	+ "'"	+ CRLF
-	//cQWSS07 += " 	AND	SA1.A1_COD		=	'" + left( allTrim( ::contact:cA1Cod ) , 6 )	+ "'"	+ CRLF
+	if cTipCons = 1 //a1_xidsfor
+		cQWSS07 += " 		SA1.A1_XIDSFOR	=	'" + cA1Cod			+ "'"				+ CRLF
+	else // a1_cgc
+		cQWSS07 += " 		SA1.A1_CGC	=	'" + cA1Cod			+ "'"				+ CRLF
+	endIf
 	cQWSS07 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial( "SA1" )	+ "'"	+ CRLF
 	cQWSS07 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"							+ CRLF
 
@@ -2520,6 +2737,11 @@ return aRetSA1
 	local cTimeResul	    := ""
 	local nRecnoCT          := 0
 	local cVarInfoX			:= ""
+
+	local aSU5				:= {} // CONTATO
+	local aAGA				:= {} // ENDEREÇOS
+	local aAGB				:= {} // TELEFONES
+	local aAuxDados			:= {}
 
 	private lMsHelpAuto     := .T. // Se .T. direciona as mensagens de help para o arq. de log
 	private lMsErroAuto     := .F.
@@ -2633,21 +2855,6 @@ return aRetSA1
 			aadd( aSU5 , { "U5_CONTAT"	, ::contact:U5_CONTAT	, nil } )
 		endif
 
-		if !empty( ::contact:U5_DDD )
-			::contact:U5_DDD := strTran( ::contact:U5_DDD , ")" , "" )
-			::contact:U5_DDD := strTran( ::contact:U5_DDD , "(" , "" )
-
-			aadd( aSU5 , { "U5_DDD" , ::contact:U5_DDD , nil } )
-		endif
-
-		if !empty( ::contact:U5_FCOM2 )
-			aadd( aSU5 , { "U5_FCOM2"	, ::contact:U5_FCOM2	, nil } )
-		endif
-
-		if !empty( ::contact:U5_CELULAR )
-			aadd( aSU5 , { "U5_CELULAR"	, ::contact:U5_CELULAR	, nil } )
-		endif
-
 		if !empty( ::contact:U5_EMAIL )
 			aadd( aSU5 , { "U5_EMAIL"	, ::contact:U5_EMAIL	, nil } )
 		endif
@@ -2662,15 +2869,180 @@ return aRetSA1
 
 		if nOpcX == 3
 			aadd( aSU5 , { "U5_XIDSFOR"	, ::contact:U5_XIDSFOR	, nil } )
-			aadd( aSU5 , { "U5_CLIENTE"	, right( allTrim( ::contact:U5_CLIENTE ) , 6 )	, nil } )
-			aadd( aSU5 , { "U5_LOJA"	, left( allTrim( ::contact:U5_CLIENTE ) , 2 )	, nil } )
+			aadd( aSU5 , { "U5_CLIENTE"	, right( allTrim( ::contact:U5_CLIENTE )	, 6 )	, nil } )
+			aadd( aSU5 , { "U5_LOJA"	, left( allTrim( ::contact:U5_CLIENTE )		, 2 )	, nil } )
 		endif
 
 		if nOpcX == 4 .or. nOpcX == 5
 			aadd( aSU5 , { "U5_CODCONT"	, ::contact:U5_CODCONT	, nil } )
 		endif
+/*
+		if !empty( ::contact:U5_XDDI )
+			aadd( aSU5 , { "U5_CODPAIS"	, ::contact:U5_XDDI		, nil } )
+		endif
 
-		msExecAuto( { | x , y | TMKA070( x , y ) } , aSU5 , nOpcX )
+		if SA1->A1_TIPO <> "X"
+			if !empty( ::contact:U5_DDD )
+				::contact:U5_DDD := strTran( ::contact:U5_DDD , ")" , "" )
+				::contact:U5_DDD := strTran( ::contact:U5_DDD , "(" , "" )
+
+				aadd( aSU5 , { "U5_DDD" , ::contact:U5_DDD , nil } )
+			endif
+		endif
+
+		if !empty( ::contact:U5_FCOM2 )
+			aadd( aSU5 , { "U5_FCOM2"	, ::contact:U5_FCOM2	, nil } )
+		endif
+
+		if !empty( ::contact:U5_CELULAR )
+			aadd( aSU5 , { "U5_CELULAR"	, ::contact:U5_CELULAR	, nil } )
+		endif
+*/
+		// AGB - Telefones - utiliza sempre o da tabela SU5
+		if !empty( ::contact:U5_FCOM2 )
+			aAuxDados := {}
+
+			aadd( aAuxDados , { "AGB_FILIAL"	, xFilial("AGB")			, nil } )
+
+			if nOpcX == 4
+				//AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+				//GetAdvFVal("AGB","AGB_CODIGO",xFilial("AGB") + "SU5" + ::contact:U5_CODCONT + "1" + "1" , 1 , "" )
+
+				//aadd( aAuxDados , { "AGB_CODIGO"	, "000014"				, nil } )
+				//aadd( aAuxDados , { 'AUTDELETA' ,'N'					, Nil			} )
+				//aadd( aAuxDados , { 'LINPOS'	,'AGB_TELEFO'			, SU5->U5_FCOM1	} )
+
+
+				aadd( aSU5 , { "U5_AGBCOM"	, getAGBCod( ::contact:U5_CODCONT , "1" )	, nil } )
+
+				aadd( aAuxDados , { "AGB_CODIGO"	, getAGBCod( ::contact:U5_CODCONT , "1" )	, nil } )
+				aadd( aAuxDados , { "AGB_ENTIDA"	, "SU5"										, nil } )
+				aadd( aAuxDados , { "AGB_CODENT"	, padR( alltrim( ::contact:U5_CODCONT ) , tamSx3( "AGB_CODENT" )[ 1 ] )						, nil } )
+			endif
+
+			aadd(aAuxDados , { "AGB_TIPO"	, "1"			, Nil	}	) // 1=Comercial;2=Residencial;3=Fax comercial;4=Fax residencial;5=Celular
+			aadd(aAuxDados , { "AGB_PADRAO"	, "1"			, Nil	}	) // 1=Sim;2=Não
+
+			if !empty( ::contact:U5_XDDI )
+				if SA1->A1_TIPO == "X"
+					aadd(aAuxDados , { "AGB_DDI"	, ::contact:U5_XDDI		, Nil	}	)
+				else
+					aadd(aAuxDados , { "AGB_DDI"	, "55"					, Nil	}	)
+				endif
+			endif
+
+			if SA1->A1_TIPO <> "X"
+				if !empty( ::contact:U5_DDD )
+					::contact:U5_DDD := strTran( ::contact:U5_DDD , ")" , "" )
+					::contact:U5_DDD := strTran( ::contact:U5_DDD , "(" , "" )
+
+					aadd(aAuxDados , { "AGB_DDD"	, ::contact:U5_DDD			, Nil	}	)
+				endif
+			endif
+
+			aadd(aAuxDados , { "AGB_TELEFO"	, ::contact:U5_FCOM2	, Nil	}	)
+
+			// if nOpcX == 4
+			// 	aadd( aAuxDados , { "AUTDELETA"		, 'N'					, nil })
+			// endif
+
+			aadd(aAGB , aAuxDados)
+		/*else
+			aAGB := {}
+			aadd(aAuxDados , { "AGB_DDI"	, SU5->U5_CODPAIS	, Nil	}	)
+			aadd(aAuxDados , { "AGB_DDD"	, SU5->U5_DDD		, Nil	}	)
+			aadd(aAuxDados , { "AGB_TELEFO"	, SU5->U5_FCOM1		, Nil	}	)
+			aadd(aAGB , aAuxDados)*/
+		endif
+
+		if !empty( ::contact:U5_CELULAR )
+			aAuxDados := {}
+
+			aadd( aAuxDados , { "AGB_FILIAL"	, xFilial("AGB")			, nil } )
+
+
+/*
+	1=Comercial;
+	2=Residencial;
+	3=Fax comercial;
+	4=Fax residencial;
+	5=Celular
+
+	If cTipo == "1"
+		cRet := "U5_AGBCOM"
+	ElseIf cTipo == "2"
+		cRet := "U5_AGBRES"
+	ElseIf cTipo == "3"
+		cRet := "U5_AGBFAX"
+	ElseIf cTipo == "5"
+		cRet := "U5_AGBCEL"
+	EndIf
+*/
+
+			if nOpcX == 4
+				aadd( aSU5 , { "U5_AGBCEL"	, getAGBCod( ::contact:U5_CODCONT , "5" )	, nil } )
+
+				aadd( aAuxDados , { "AGB_CODIGO"	, getAGBCod( ::contact:U5_CODCONT , "5" )				, nil } )
+				aadd( aAuxDados , { "AGB_ENTIDA"	, "SU5"					, nil } )
+				aadd( aAuxDados , { "AGB_CODENT"	, padR( alltrim( ::contact:U5_CODCONT ) , tamSx3( "AGB_CODENT" )[ 1 ] )	, nil } )
+			endif
+
+			aadd(aAuxDados , { "AGB_TIPO"	, "5"			, Nil	}	) // 1=Comercial;2=Residencial;3=Fax comercial;4=Fax residencial;5=Celular
+			aadd(aAuxDados , { "AGB_PADRAO"	, "1"			, Nil	}	) // 1=Sim;2=Não
+
+			if !empty( ::contact:U5_XDDI )
+				if SA1->A1_TIPO == "X"
+					aadd(aAuxDados , { "AGB_DDI"	, ::contact:U5_XDDI		, Nil	}	)
+				else
+					aadd(aAuxDados , { "AGB_DDI"	, "55"					, Nil	}	)
+				endif
+			endif
+
+			if SA1->A1_TIPO <> "X"
+				if !empty( ::contact:U5_DDD )
+					::contact:U5_DDD := strTran( ::contact:U5_DDD , ")" , "" )
+					::contact:U5_DDD := strTran( ::contact:U5_DDD , "(" , "" )
+
+					aadd(aAuxDados , { "AGB_DDD"	, ::contact:U5_DDD			, Nil	}	)
+				endif
+			endif
+
+			aadd( aAuxDados , { "AGB_TELEFO"	, ::contact:U5_CELULAR	, nil } )
+
+			// if nOpcX == 4
+			// 	aadd( aAuxDados , { "AUTDELETA"		, 'N'					, nil })
+			// endif
+
+			aadd(aAGB , aAuxDados)
+		/*else
+			if nOpcX == 4
+				if !empty( SU5->U5_CELULAR )
+					aAGB := {}
+					aadd( aAuxDados , { "AGB_FILIAL"	, xFilial("AGB")							, nil } )
+					aadd( aAuxDados , { "AGB_CODIGO"	, getAGBCod( ::contact:U5_CODCONT , "5" )	, nil } )
+					aadd( aAuxDados , { "AGB_ENTIDA"	, "SU5"										, nil } )
+					aadd( aAuxDados , { "AGB_CODENT"	, ::contact:U5_CODCONT						, nil } )
+					aadd( aAuxDados , { "AGB_TIPO"		, "5"										, Nil }	) // 1=Comercial;2=Residencial;3=Fax comercial;4=Fax residencial;5=Celular
+					aadd( aAuxDados , { "AGB_PADRAO"	, "1"										, Nil }	) // 1=Sim;2=Não
+					aadd( aAuxDados , { "AGB_DDI"		, SU5->U5_CODPAIS							, Nil }	)
+					aadd( aAuxDados , { "AGB_DDD"		, SU5->U5_DDD								, Nil }	)
+					aadd( aAuxDados , { "AGB_TELEFO"	, SU5->U5_CELULAR							, Nil }	)
+					aadd( aAGB , aAuxDados )
+				endif
+			endif*/
+		endif
+		// FIM - AGB - Telefones - utiliza sempre o da tabela SU5
+
+		aSU5 := fwVetByDic( aSU5 /*aVetor*/ , "SU5" /*cTable*/ , .F. /*lItens*/ )
+		aAGB := fwVetByDic( aAGB /*aVetor*/ , "AGB" /*cTable*/ , .T. /*lItens*/ )
+
+		varInfo( "aSU5" , aSU5 )
+		varInfo( "aAGB" , aAGB )
+
+		msExecAuto( { | x , y , z , a , b | TMKA070( x , y , z , a , b ) } , aSU5 , nOpcX , nil , aAGB , .F. )
+		//msExecAuto( { | x , y , z , a , b | TMKA070( x , y , z , a , b ) } , aSU5 , nOpcX , nil , aAGB , .T. )
+		//msExecAuto( { | x , y , z , a , b | TMKA070( x , y , z , a , b ) } , aSU5 , nOpcX , nil , aAGB , .T. )
+		//msExecAuto( { | x , y , z , a , b | TMKA070( x , y , z , a , b ) } , aSU5 , nOpcX , nil , nil , .T. )
 
 		if lMsErroAuto
 			aErro := GetAutoGRLog() // Retorna erro em array
@@ -2694,6 +3066,16 @@ return aRetSA1
 				AC8->AC8_CODENT := SA1->( A1_COD + A1_LOJA )
 				AC8->AC8_CODCON := SU5->U5_CODCONT // U5_CODCONT = AC8_CODCON
 				AC8->( msUnlock() )
+			elseif nOpcX == 4
+
+				if !empty( ::contact:U5_FCOM2 )
+					grvAGBFone( SU5->U5_CODCONT , "1" , ::contact:U5_XDDI , ::contact:U5_DDD , ::contact:U5_FCOM2 )
+				endif
+
+				if !empty( ::contact:U5_CELULAR )
+					grvAGBFone( SU5->U5_CODCONT , "5" , ::contact:U5_XDDI , ::contact:U5_DDD , ::contact:U5_CELULAR )
+				endif
+
 			elseif nOpcX == 5
 				AC8->( DBSetOrder( 1 ) ) // 1 - AC8_FILIAL+AC8_CODCON+AC8_ENTIDA+AC8_FILENT+AC8_CODENT
 				if AC8->( DBSeek( xFilial("AC8") + SU5->U5_CODCONT + "SA1" + xFilial("AC8") + SA1->( A1_COD + A1_LOJA ) ) )
@@ -2825,80 +3207,49 @@ return lExcessao
 
 //--------------------------------------------------------------------
 // Retorna as aprovações pendentes da Grade de Aprovação
-// Se lReactivat igual a .T. aprova a grade para a reativação do cliente
-// lReactivat - Se verdadeiro aprova as pendencias para gerar reativacao
-// lUpdCredit - Se verdadeiro operacao vem do metodo updateFinancialLimit e devera aprovar apenas bloqueios de financeiro
 //--------------------------------------------------------------------
-static function getZB1( lReactivat , lUpdCredit )
-	local aAreaX		:= getArea()
-	local aAreaZB1		:= ZB1->( getArea() )
-	local aAreaZB2		:= ZB2->( getArea() )
-	local cQryZB1		:= ""
-	local cUpdSA1		:= ""
-	local cUpdZB1		:= ""
-	local cApprovals	:= ""
-	local nZB1Recno		:= 0
+static function getZB1( aRecnoGrad )
 
-	default lReactivat	:= .F. // Se verdadeiro aprova as pendencias para gerar reativacao
-	default lUpdCredit	:= .F. // Se verdadeiro operacao vem do metodo updateFinancialLimit e devera aprovar apenas bloqueios de financeiro
+	local aAreaX		:= getArea()
+	local cQryZB1		:= ""
+	local cApprovals	:= ""
+	local cSetorCDM		:= allTrim( superGetMv( "MFG_WSS11Q" , , "01" ) )
+
+	default aRecnoGrad	:= {}	// Grava os Recnos usados na Grade de Aprovação
 
 	DBSelectArea( "ZB1" )
 	DBSelectArea( "ZB2" )
 
-	cQryZB1 := "SELECT ZB1.R_E_C_N_O_ ZB1RECNO , ZB6_NOME, ZB2.R_E_C_N_O_ ZB2RECNO"		+ CRLF
-	cQryZB1 += " FROM "			+ retSQLName( "ZB1" ) + " ZB1"							+ CRLF
-	cQryZB1 += " INNER JOIN "	+ retSQLName( "ZB2" ) + " ZB2"							+ CRLF
-	cQryZB1 += " ON"																	+ CRLF
-	cQryZB1 += " 		ZB2.ZB2_ID		=	ZB1.ZB1_ID"									+ CRLF
-	cQryZB1 += " 	AND	ZB2.ZB2_STATUS	<>	'1'"										+ CRLF
-	cQryZB1 += " 	AND	ZB2.ZB2_FILIAL	=	'" + xFilial("ZB2")	+ "'"					+ CRLF
-	cQryZB1 += " 	AND	ZB2.D_E_L_E_T_	<>	'*'"										+ CRLF
-
-	if lUpdCredit
-		// Se verdadeiro operacao vem do metodo updateFinancialLimit e devera aprovar apenas bloqueios de financeiro
-		cQryZB1 += " INNER JOIN "	+ retSQLName( "ZB6" ) + " ZB6"						+ CRLF
-		cQryZB1 += " ON"																+ CRLF
-		cQryZB1 += " 		ZB6.ZB6_ID    	=	'04'"									+ CRLF
-		cQryZB1 += " 	AND	ZB6.ZB6_ID    	=	ZB2.ZB2_IDSET"							+ CRLF
-		cQryZB1 += " 	AND	ZB6.ZB6_FILIAL	=	'" + xFilial("ZB6")	+ "'"				+ CRLF
-		cQryZB1 += " 	AND	ZB6.D_E_L_E_T_	<>	'*'"									+ CRLF
-	else
-		// Se verdadeiro aprova as pendencias para gerar reativacao
-		cQryZB1 += " LEFT JOIN "	+ retSQLName( "ZB6" ) + " ZB6"						+ CRLF
-		cQryZB1 += " ON"																+ CRLF
-		cQryZB1 += " 		ZB6.ZB6_ID    	=	ZB2.ZB2_IDSET"							+ CRLF
-		cQryZB1 += " 	AND	ZB6.ZB6_FILIAL	=	'" + xFilial("ZB6")	+ "'"				+ CRLF
-		cQryZB1 += " 	AND	ZB6.D_E_L_E_T_	<>	'*'"									+ CRLF
-	endif
-
-	cQryZB1 += " WHERE"																	+ CRLF
+	cQryZB1 := "SELECT ZB1.R_E_C_N_O_ ZB1RECNO , ZB6_NOME, ZB2.R_E_C_N_O_ ZB2RECNO, ZB1_STATUS , ZB2_STATUS, ZB2_IDSET"		+ CRLF
+	cQryZB1 += " FROM "			+ retSQLName( "ZB1" ) + " ZB1"								+ CRLF // ZB1 - MESTRE DAS PENDENCIAS DE CAD04
+	cQryZB1 += " INNER JOIN "	+ retSQLName( "ZB2" ) + " ZB2"								+ CRLF // ZB2 - APROVACOES DO CAD04
+	cQryZB1 += " ON"																		+ CRLF
+	cQryZB1 += " 		ZB2.ZB2_ID		=	ZB1.ZB1_ID"										+ CRLF
+	cQryZB1 += " 	AND	ZB2.ZB2_STATUS	<>	'1'"											+ CRLF // ZB2_STATUS == '1' -> ETAPA APROVADA / ZB2_STATUS == '2' -> ETAPA REJEITADA / ZB2_STATUS == '3' -> ETAPA PENDENTE
+	cQryZB1 += " 	AND	ZB2.ZB2_FILIAL	=	'" + xFilial("ZB2")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB2.D_E_L_E_T_	<>	'*'"											+ CRLF
+	cQryZB1 += " LEFT JOIN "	+ retSQLName( "ZB6" ) + " ZB6"								+ CRLF // ZB6 - SETOR CAD04
+	cQryZB1 += " ON"																		+ CRLF
+	cQryZB1 += " 		ZB6.ZB6_ID    	=	ZB2.ZB2_IDSET"									+ CRLF
+	cQryZB1 += " 	AND	ZB6.ZB6_FILIAL	=	'" + xFilial("ZB6")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB6.D_E_L_E_T_	<>	'*'"											+ CRLF
+	cQryZB1 += " WHERE"																		+ CRLF
 	cQryZB1 += "		ZB1.ZB1_RECNO	=	'" + alltrim( str( SA1->( RECNO() ) ) ) + "'"	+ CRLF
-	cQryZB1 += " 	AND	ZB1.ZB1_STATUS	IN	( '3' , '4' )"				+ CRLF // Solicitação Aberta / Aprovação em Andamento
-	cQryZB1 += " 	AND	ZB1.ZB1_CAD		=	'1'"						+ CRLF // SA1 - Clientes
-	cQryZB1 += " 	AND	ZB1.ZB1_FILIAL	=	'" + xFilial("ZB1")	+ "'"	+ CRLF
-	cQryZB1 += " 	AND	ZB1.D_E_L_E_T_	<>	'*'"						+ CRLF
+	cQryZB1 += " 	AND	ZB1.ZB1_STATUS	IN	( '3' , '4' )"									+ CRLF // Solicitação Aberta / Aprovação em Andamento
+	cQryZB1 += " 	AND	ZB1.ZB1_CAD		=	'1'"											+ CRLF // SA1 - Clientes
+	cQryZB1 += " 	AND	ZB1.ZB1_FILIAL	=	'" + xFilial("ZB1")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB1.D_E_L_E_T_	<>	'*'"											+ CRLF
+	cQryZB1 += " ORDER BY ZB2_IDSET"													+ CRLF
 
 	tcQuery cQryZB1 new alias "QRYZB1"
 
 	while !QRYZB1->( EOF() )
-		nZB1Recno := QRYZB1->ZB1RECNO
-
-		if lReactivat .or. lUpdCredit
-			ZB2->( DBGoTo( QRYZB1->ZB2RECNO ) )
-			recLock( "ZB2" , .F. )
-				ZB2->ZB2_STATUS	:= '1' //Aprovado
-				if lUpdCredit
-					ZB2->ZB2_OBS	:= "Liberação automática - crédito aprovado via Salesforce"
-				else
-					ZB2->ZB2_OBS	:= "Liberação automática - Reativação Salesforce"
-				endif
-				ZB2->ZB2_IDAPR	:= "MGFWSS11 - SALESFORCE"
-				ZB2->ZB2_DATA	:= date()
-				ZB2->ZB2_HORA	:= time()
-			ZB2->( msUnlock() )
-		else
-			cApprovals += allTrim( QRYZB1->ZB6_NOME ) + ";"
+		if ZB2_IDSET <> cSetorCDM
+			// RESTAURA APENAS GRADES DIFERENTES DO CDM - DADOS VINDOS DA INTEGRACAO SAO VALIDADOS NA AZIX
+			aadd( aRecnoGrad , { QRYZB1->ZB1RECNO , QRYZB1->ZB1_STATUS , QRYZB1->ZB2RECNO , QRYZB1->ZB2_STATUS , QRYZB1->ZB2_IDSET } )
 		endif
+
+		cApprovals += allTrim( QRYZB1->ZB6_NOME ) + ";"
 
 		QRYZB1->( DBSkip() )
 	enddo
@@ -2909,32 +3260,103 @@ static function getZB1( lReactivat , lUpdCredit )
 
 	QRYZB1->( DBCloseArea() )
 
-	if lReactivat .or. lUpdCredit
-		if empty( getZB1( .F. /*lReactivat*/ , .F. /*lUpdCredit*/ ) )
-			// CASO NAO EXISTA PENDENCIAS APROVA A ZB1 E CLIENTE
-			cUpdZB1 := ""
-			cUpdZB1 := "UPDATE " + retSQLName("ZB1")									+ CRLF
-			cUpdZB1 += "	SET"														+ CRLF
-			cUpdZB1 += " 		ZB1_STATUS	= '1' "										+ CRLF
-			cUpdZB1 += " WHERE"															+ CRLF
-			cUpdZB1 += "		R_E_C_N_O_	=	'" + alltrim( str( nZB1Recno ) ) + "'"	+ CRLF
+	restArea( aAreaX )
+return cApprovals
 
-			if tcSQLExec( cUpdZB1 ) < 0
-				conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
+//--------------------------------------------------------------------
+// Atualiza as aprovações pendentes da Grade de Aprovação
+// de acordo com setor de aprovação enviado
+//--------------------------------------------------------------------
+static function updZB1( cSetorApro )
+
+	local aAreaX		:= getArea()
+	local aAreaZB1		:= ZB1->( getArea() )
+	local aAreaZB2		:= ZB2->( getArea() )
+	local cQryZB1		:= ""
+	local cUpdZB1		:= ""
+	local cApprovals	:= ""
+	local nZB1Recno		:= 0
+
+	default cSetorApro	:= ""
+
+	DBSelectArea( "ZB1" )
+	DBSelectArea( "ZB2" )
+
+	cQryZB1 := "SELECT ZB1.R_E_C_N_O_ ZB1RECNO , ZB6_NOME, ZB2.R_E_C_N_O_ ZB2RECNO, ZB1_STATUS , ZB2_STATUS"		+ CRLF
+	cQryZB1 += " FROM "			+ retSQLName( "ZB1" ) + " ZB1"								+ CRLF
+	cQryZB1 += " INNER JOIN "	+ retSQLName( "ZB2" ) + " ZB2"								+ CRLF
+	cQryZB1 += " ON"																		+ CRLF
+	cQryZB1 += " 		ZB2.ZB2_ID		=	ZB1.ZB1_ID"										+ CRLF
+	cQryZB1 += " 	AND	ZB2.ZB2_STATUS	<>	'1'"											+ CRLF
+	cQryZB1 += " 	AND	ZB2.ZB2_FILIAL	=	'" + xFilial("ZB2")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB2.D_E_L_E_T_	<>	'*'"											+ CRLF
+	cQryZB1 += " LEFT JOIN "	+ retSQLName( "ZB6" ) + " ZB6"								+ CRLF
+	cQryZB1 += " ON"																		+ CRLF
+	cQryZB1 += " 		ZB6.ZB6_ID    	=	ZB2.ZB2_IDSET"									+ CRLF
+	cQryZB1 += " 	AND	ZB6.ZB6_FILIAL	=	'" + xFilial("ZB6")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB6.D_E_L_E_T_	<>	'*'"											+ CRLF
+
+	if !empty( cSetorApro )
+		cQryZB1 += " 	AND	ZB6.ZB6_ID	=	'" + cSetorApro + "'"							+ CRLF
+	endif
+
+	cQryZB1 += " WHERE"																		+ CRLF
+	cQryZB1 += "		ZB1.ZB1_RECNO	=	'" + alltrim( str( SA1->( RECNO() ) ) ) + "'"	+ CRLF
+	cQryZB1 += " 	AND	ZB1.ZB1_STATUS	IN	( '3' , '4' )"									+ CRLF // Solicitação Aberta / Aprovação em Andamento
+	cQryZB1 += " 	AND	ZB1.ZB1_CAD		=	'1'"											+ CRLF // SA1 - Clientes
+	cQryZB1 += " 	AND	ZB1.ZB1_FILIAL	=	'" + xFilial("ZB1")	+ "'"						+ CRLF
+	cQryZB1 += " 	AND	ZB1.D_E_L_E_T_	<>	'*'"											+ CRLF
+
+	tcQuery cQryZB1 new alias "QRYZB1"
+
+	while !QRYZB1->( EOF() )
+		nZB1Recno := QRYZB1->ZB1RECNO
+
+		ZB2->( DBGoTo( QRYZB1->ZB2RECNO ) )
+
+		recLock( "ZB2" , .F. )
+			ZB2->ZB2_STATUS	:= '1' //Aprovado
+
+			if cSetorApro == "04"
+				ZB2->ZB2_OBS	:= "Liberação automática - crédito aprovado via Salesforce"
+			else
+				ZB2->ZB2_OBS	:= "Liberação automática - Reativação Salesforce"
 			endif
 
-			// CASO NAO TENHA PENDENCIAS NA GRADE DESBLOQUEIA O REGISTRO
-			recLock( "SA1" , .F. )
-				SA1->A1_MSBLQL	:= "2"
-				SA1->A1_ZINATIV	:= "0"
-			SA1->( msUnlock() )
+			ZB2->ZB2_IDAPR	:= "MGFWSS11 - SALESFORCE"
+			ZB2->ZB2_DATA	:= date()
+			ZB2->ZB2_HORA	:= time()
+		ZB2->( msUnlock() )
+
+		QRYZB1->( DBSkip() )
+	enddo
+
+	QRYZB1->( DBCloseArea() )
+
+	if empty( getZB1() )
+		// CASO NAO EXISTA PENDENCIAS APROVA A ZB1 E CLIENTE
+		cUpdZB1 := ""
+		cUpdZB1 := "UPDATE " + retSQLName("ZB1")									+ CRLF
+		cUpdZB1 += "	SET"														+ CRLF
+		cUpdZB1 += " 		ZB1_STATUS	= '1' "										+ CRLF
+		cUpdZB1 += " WHERE"															+ CRLF
+		cUpdZB1 += "		R_E_C_N_O_	=	" + alltrim( str( nZB1Recno ) )
+
+		if tcSQLExec( cUpdZB1 ) < 0
+			conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
+
+		// CASO NAO TENHA PENDENCIAS NA GRADE DESBLOQUEIA O REGISTRO
+		recLock( "SA1" , .F. )
+			SA1->A1_MSBLQL	:= "2"
+			SA1->A1_ZINATIV	:= "0"
+		SA1->( msUnlock() )
 	endif
 
 	restArea( aAreaZB2 )
 	restArea( aAreaZB1 )
 	restArea( aAreaX )
-return cApprovals
+return
 
 //--------------------------------------------------------------------
 // Verifica se CNAE esta bloqueado
@@ -2982,3 +3404,123 @@ static function getMaxSC6( cC6Filial , cC6Num )
 
 	QRYSC6->( DBCloseArea() )
 return cMaxSequen
+
+//--------------------------------------------------------------
+//--------------------------------------------------------------
+static function getAGBCod( cU5CODCONT , cAGBTipo )
+	local cQryAGB	:= ""
+	local cAGBCod	:= ""
+
+	cQryAGB := "SELECT AGB_CODIGO"											+ CRLF
+	cQryAGB += " FROM " + retSQLName( "AGB" ) + " AGB"						+ CRLF
+	cQryAGB += " WHERE"														+ CRLF
+	cQryAGB += " 		AGB.AGB_PADRAO	=	'1'"							+ CRLF
+	cQryAGB += " 	AND	AGB.AGB_TIPO	=	'" + cAGBTipo + "'"				+ CRLF
+	cQryAGB += " 	AND AGB.AGB_CODENT	=	'" + padR( alltrim( cU5CODCONT ) , tamSx3( "AGB_CODENT" )[ 1 ] ) + "'" 							+ CRLF
+	cQryAGB += " 	AND AGB.AGB_ENTIDA	=	'SU5'"							+ CRLF
+	cQryAGB += " 	AND AGB.AGB_FILIAL	=	'" + xFilial("AGB") + "'"		+ CRLF
+	cQryAGB += " 	AND AGB.D_E_L_E_T_	=	' '"							+ CRLF
+
+	tcQuery cQryAGB new alias "QRYAGB"
+
+	if !QRYAGB->( EOF() )
+		cAGBCod := QRYAGB->AGB_CODIGO
+	endif
+
+	QRYAGB->( DBCloseArea() )
+/*
+AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+AGB_FILIAL	C	6
+AGB_CODIGO	C	6
+AGB_ENTIDA	C	3
+AGB_CODENT	C	25
+AGB_TIPO  	C	1
+AGB_PADRAO	C	1
+AGB_DDI   	C	6
+AGB_DDD   	C	3
+AGB_TELEFO	C	15
+AGB_COMP  	C	40
+*/
+//AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+//GetAdvFVal("AGB","AGB_CODIGO",xFilial("AGB") + "SU5" + ::contact:U5_CODCONT + "1" + "1" , 1 , "" )
+//aadd( aAuxDados , { "AGB_CODIGO"	, "000014"				, nil } )
+//aadd( aAuxDados , { "AGB_CODIGO"	, GetAdvFVal("AGB","AGB_CODIGO",xFilial("AGB") + "SU5" + Padr(alltrim(::contact:U5_CODCONT),TamSx3("U5_CODCONT")[1]) + "11" , 1 , "" )				, nil } )
+
+return cAGBCod
+
+
+//--------------------------------------------------------------
+// Forca atualizacao dos telefones na tabela AGB
+// Apos confirmacao da execauto de alteracao
+//--------------------------------------------------------------
+static function grvAGBFone( cU5CODCONT , cAGBTipo , cAGBDDI , cAGBDDD , cAGBTelefo )
+	local aAreaX	:= getArea()
+	local aAreaAGB	:= AGB->( getArea() )
+
+	DBSelectArea( "AGB" )
+	AGB->( DBSetOrder( 1 ) ) // AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+	AGB->( DBGoTop() )
+	if AGB->( DBSeek( xFilial("AGB") + "SU5" + padR( alltrim( cU5CODCONT ) , tamSx3( "AGB_CODENT" )[ 1 ] ) + cAGBTipo + "1" ) )
+		recLock( "AGB" , .F. )
+			AGB->AGB_TIPO	:= cAGBTipo
+			AGB->AGB_PADRAO	:= "1"
+			AGB->AGB_TELEFO	:= cAGBTelefo
+
+			if !empty( cAGBDDI )
+				if SA1->A1_TIPO == "X"
+					AGB->AGB_DDI	:= cAGBDDI
+				else
+					AGB->AGB_DDI	:= "55"
+				endif
+			endif
+
+			if SA1->A1_TIPO <> "X"
+				if !empty( cAGBDDD )
+					AGB->AGB_DDD	:= cAGBDDD
+				endif
+			endif
+
+		AGB->( msUnlock() )
+	endif
+
+/*
+AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+AGB_FILIAL	C	6
+AGB_CODIGO	C	6
+AGB_ENTIDA	C	3
+AGB_CODENT	C	25
+AGB_TIPO  	C	1
+AGB_PADRAO	C	1
+AGB_DDI   	C	6
+AGB_DDD   	C	3
+AGB_TELEFO	C	15
+AGB_COMP  	C	40
+*/
+//AGB - 1 - AGB_FILIAL+AGB_ENTIDA+AGB_CODENT+AGB_TIPO+AGB_PADRAO
+//GetAdvFVal("AGB","AGB_CODIGO",xFilial("AGB") + "SU5" + ::contact:U5_CODCONT + "1" + "1" , 1 , "" )
+//aadd( aAuxDados , { "AGB_CODIGO"	, "000014"				, nil } )
+//aadd( aAuxDados , { "AGB_CODIGO"	, GetAdvFVal("AGB","AGB_CODIGO",xFilial("AGB") + "SU5" + Padr(alltrim(::contact:U5_CODCONT),TamSx3("U5_CODCONT")[1]) + "11" , 1 , "" )				, nil } )
+
+	restArea( aAreaAGB )
+	restArea( aAreaX )
+return
+
+Static Function fBuscaPais(vA1CodPais)
+	local _vCodPais := ""
+	local aArea		:= getArea()
+	cQryPais := ' '
+	cQryPais := "SELECT CCH_CODIGO,CCH_PAIS,YA_CODGI,YA_DESCR" 			+CRLF
+	cQryPais += " FROM "									   			+CRLF
+    cQryPais += " CCH010 CCH,SYA010 SYA"					   			+CRLF
+	cQryPais += " WHERE "									   			+CRLF
+    cQryPais += " SUBSTR(CCH_CODIGO,2,3)='"+Alltrim(vA1CodPais)+"' "    +CRLF
+    cQryPais += " AND SYA.YA_CODGI = '"+Alltrim(vA1CodPais)+"' "	    +CRLF
+    cQryPais += " AND CCH.D_E_L_E_T_ = ' '" 				     		+CRLF
+    cQryPais += " AND SYA.D_E_L_E_T_ = ' '"    							+CRLF
+	TcQuery cQryPais New Alias "QRYPAIS"
+	If ! QRYPAIS->( EOF() )
+		_vCodPais := QRYPAIS->CCH_CODIGO
+	Endif
+	QRYPAIS->(DBCloseArea())
+	restArea( aArea )
+return _vCodPais

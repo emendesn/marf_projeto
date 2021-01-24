@@ -11,7 +11,7 @@ Data.....:              31/05/2019
 Descricao / Objetivo:   Integracao PROTHEUS x MultiEmbarcador
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              WS Server para validacao se todos os pedidos da Carga tem protocolo
 =====================================================================================
 */
@@ -41,7 +41,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFFATAZ DESCRIPTION "Integracao Protheus x Multiembarcador - validacao protocolos" NameSpace "http://totvs.com.br/MGFFATAZ.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos parâmetros de entrada
 	WSDATA MGFFATAZPROTOCOLO AS MGFFATAZPROTO
 	// Retorno (array)
 	WSDATA MGFFATAZRetProtocolo  AS MGFFATAZRetProto

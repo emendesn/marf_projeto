@@ -8,10 +8,10 @@
 Programa.:              MGFCOM48 
 Autor....:              Antonio Carlos        
 Data.....:              16/10/2017                                                                                                            
-Descricao / Objetivo:   Implementaï¿½ï¿½o do Ponto de Entrada MT120FIM que srï¿½ utilizado para salvar Obs no PC
+Descricao / Objetivo:   Implementação do Ponto de Entrada MT120FIM que srá utilizado para salvar Obs no PC
 Doc. Origem:            Compras - GAP ID068
 Solicitante:            Cliente 
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Ponto de Entrada para salvar a xObs no PC.
 ============================================================================================================================
 */  

@@ -14,7 +14,7 @@ Data.....:              07/04/2017
 Descricao / Objetivo:   Cadastro de Supervisao - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -28,22 +28,22 @@ user function MGFCRM26(nOpcX, cCodPos, nRecno)
 	//ZBH->(DBGoTop())
 
 	if nOpcX == 3
-		fwExecView("Inclusao", "MGFCRM25", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
+		fwExecView("Inclusão", "MGFCRM25", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
 	else
 		//if ZBH->(DBSeek( xFilial("ZBH") + cCodPos ))
 		ZBH->(dbGoto(nRecno))
 		If ZBH->(Recno()) == nRecno
 			if nOpcX == 4
-				fwExecView("Alteracao", "MGFCRM25", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
+				fwExecView("Alteração", "MGFCRM25", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
 			elseif nOpcX == 5
 				if chkRelat()
-					fwExecView("Alteracao", "MGFCRM25", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
+					fwExecView("Alteração", "MGFCRM25", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
 				else
-					msgAlert("Este registro nao podera ser excluido. O mesmo possui Roteiro abaixo dele.")
+					msgAlert("Este registro não poderá ser excluído. O mesmo possui Roteiro abaixo dele.")
 				endif
 			endif
 		else
-			msgAlert("Registro nao encontrado.")
+			msgAlert("Registro não encontrado.")
 		endif
 	endif
 

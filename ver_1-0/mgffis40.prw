@@ -39,6 +39,8 @@ User Function MGFFIS40(opc)//1: Fornecedor / 2:Cliente
 		If SA1->A1_ZTPRHE <> "F"//A Rotina de aprovação do Fiscal não pode ser executada quando o Cliente é funcionario
 			FIS40VlCli()
 		EndIf
+	Elseif opc = 3 //Atualiza Produto
+		FIS40VlPro()
 	EndIf
 
 	RestArea(aArea)
@@ -57,6 +59,8 @@ User Function FIS40Aprov(idSet,cCad) //Setor (ZB6),Cadastro (Conforme U_INT38_CA
 		lRet := IIf(idSet $ SA1->A1_ZAUTAPR,.T.,.F.)
 	ElseIf cCad = '3' //Fornecedor
 		lRet := IIf(idSet $ SA2->A2_ZAUTAPR,.T.,.F.)
+	ElseIf cCad = '8' //Produto
+		lRet := IIf(idSet $ SB1->B1_ZAUTAPR,.T.,.F.)
 	EndIf
 
 	Return lRet
@@ -214,6 +218,73 @@ Static Function FIS40VlCli()
 		EndIf
 
 		SA1->A1_ZAUTAPR := cAutApr //Alimenta o campo com os códigos dos setores que serão liberados automativamente pela aprovação de cadastro.
+		MSUNLOCK()
+	EndIf
+
+	ZEATMP->(DbCloseArea())
+	Return Nil
+
+	//------------------------------
+	/*
+	Preenchimento automático do campo B1_GRTRIB
+	*/
+	//------------------------------
+Static Function FIS40VlPro()
+	Local cTipo
+	Local cGrupo
+	Local cPosIpi
+	Local cEx_ncm
+	Local cOrigem
+	Local cAutApr
+	Local cGrpTrib := ''
+	Local cPar39D
+
+	cTipo		:= SB1->B1_TIPO
+	cGrupo		:= SB1->B1_GRUPO
+	cPosIpi		:= SB1->B1_POSIPI
+	cEx_ncm		:= SB1->B1_EX_NCM
+	cOrigem		:= SB1->B1_ORIGEM
+
+	cAutApr := AllTrim(SB1->B1_ZAUTAPR)
+
+	//Query na ZEA - Regras de Aprov. Automática
+	BeginSQL Alias 'ZEATMP'
+		SELECT
+		ZEA_TIPO,
+		ZEA_GRUPO,
+		ZEA_TEC,
+		ZEA_EX_NCM,
+		ZEA_ORIGEM,
+		ZEA_GRTRIb
+		FROM
+		%Table:ZEA%
+		WHERE
+		ZEA_CLIFOR = 'P' //C : cliente ; F: Fornecedor ; P:Produto
+		AND (ZEA_TIPO	= %Exp:cTipo%		OR ZEA_TIPO = ' ')
+		AND (ZEA_GRUPO	= %Exp:cGrupo%		OR ZEA_GRUPO = ' ')
+		AND (ZEA_TEC	= %Exp:cPosIpi%		OR ZEA_TEC = ' ')
+		AND (ZEA_ORIGEM	= %Exp:cOrigem%		OR ZEA_ORIGEM	= ' ')
+		AND %NotDel%
+	EndSQL
+
+	ZEATMP->(DBGoTop())
+	If ZEATMP->(!EOF())
+
+		cGrpTrib := ZEATMP->ZEA_GRTRIB
+		Reclock("SB1",.F.)
+		If !Empty(cGrpTrib)
+			SB1->B1_GRTRIB := cGrpTrib
+			cPar39D := Alltrim(SuperGetMV("MGF_FIS39D",.T.,''))
+
+			if !cPar39D $ cAutApr
+				If !Empty(cAutApr)
+					cAutApr += '/'
+				EndIf
+				cAutApr += SuperGetMV("MGF_FIS39D",.T.,'') //Código relacionado ao setor Fiscal no cadastro de Setores (ZB6)
+			EndIf
+		EndIf
+
+		SB1->B1_ZAUTAPR := cAutApr //Alimenta o campo com os códigos dos setores que serão liberados automativamente pela aprovação de cadastro.
 		MSUNLOCK()
 	EndIf
 

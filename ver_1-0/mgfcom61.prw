@@ -5,10 +5,10 @@
 Programa............: MGFCOM61
 Autor...............: Gresele
 Data................: Nov/2017
-Descricao / Objetivo: Rotina chamada pelo ponto de entrada MTA125MNU
+Descrição / Objetivo: Rotina chamada pelo ponto de entrada MTA125MNU
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -23,7 +23,7 @@ If FindFunction("U_MGFCOM58")
 EndIf
 
 If FindFunction("U_MGFCOM55")
-	aAdd(aRotina,{OemToAnsi("Cï¿½pia do Contrato"),"U_MGFCOM55",0,4,0,nil})
+	aAdd(aRotina,{OemToAnsi("Cópia do Contrato"),"U_MGFCOM55",0,4,0,nil})
 EndIf
 
 If FindFunction("U_xCP8110M")

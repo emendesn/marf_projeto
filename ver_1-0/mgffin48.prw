@@ -5,11 +5,11 @@
 Programa.:              MGFFIN48
 Autor....:              Atilio Amarilla
 Data.....:              08/01/2017
-Descricao / Objetivo:   Retorno CNAB - Tratamento de rejeicao de remessa/recompra FIDC
+Descricao / Objetivo:   Retorno CNAB - Tratamento de rejeição de remessa/recompra FIDC
 Doc. Origem:            Contrato - GAP CRE019/20/21
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Transacoes referentes a Banco/Carteira FIDC
+Uso......:              Marfrig
+Obs......:              Transações referentes a Banco/Carteira FIDC
 						Chamado por PE FA200REJ
 =====================================================================================
 */
@@ -41,7 +41,7 @@ User Function MGFFIN48()
 	cSubFIDC	:= Stuff( Space( TamSX3("EE_SUBCTA")[1] ) , 1 , Len(AllTrim(aBcoFIDC[4])) , Alltrim(aBcoFIDC[4]) )
 	
 	/*
-	FIDC - Baixa pelo valor do titulo, sem considerar valores de desconto, juros,...
+	FIDC - Baixa pelo valor do título, sem considerar valores de desconto, juros,...
 	*/
 	If cBanco == cBcoFIDC .And. AllTrim(cOcorr) == "03"
 		
@@ -51,9 +51,9 @@ User Function MGFFIN48()
 		
 		cAlias	:= GetNextAlias()
 		
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-		//ï¿½ Verifica se ï¿½ltimo do titulo ativo ï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+		//³ Verifica se último do título ativo ³
+		//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 		BeginSQL Alias cAlias
 			
 			SELECT ZA8.R_E_C_N_O_ ZA8_RECNO, ZA7.R_E_C_N_O_ ZA7_RECNO, ZA8.*, ZA7.*

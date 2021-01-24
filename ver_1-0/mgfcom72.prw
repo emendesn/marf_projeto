@@ -8,7 +8,7 @@ Data................: 02/02/2018
 Descricao / Objetivo: Compras 
 Doc. Origem.........: Compras
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo ponto de entrada MT094END e outros
 =====================================================================================
 */
@@ -44,7 +44,7 @@ If Alltrim(SCR->CR_TIPO) == "NF" .and. SCR->CR_FILIAL == SF1->F1_FILIAL .and. Su
 	Endif
 	//If lContinua			
 		// verifica todos os bloqueios para o documento
-		//.T. = Estï¿½ liberado, .F. = nao esta liberdado.
+		//.T. = Está liberado, .F. = não está liberdado.
 		lLib := _MtGLastSCR("NF",cDocto) .and. _MtGLastSCR("NF",cDocto+"_VALOR_NFE") 	
 		SF1->(RecLock("SF1",.F.))
 		SF1->F1_STATUS := IIf(lLib," ","B")
@@ -63,13 +63,13 @@ Return()
 
 //--------------------------------------------------------------------
 /*/{Protheus.doc} MtGLastSCR()
-Verifica se todos os niveis de alcada foram liberados
+Verifica se todos os niveis de alçada foram liberados
 @author Rafael Duram
 @Param cTipo:	Tipo do documento
 @Param cNum:	Numero do documento
 @since 25/09/2015
 @version 1.0
-@return Ret :=  .T. = Estï¿½ liberado, .F. = nao esta liberdado.
+@return Ret :=  .T. = Está liberado, .F. = não está liberdado.
 /*/
 //--------------------------------------------------------------------
 Static Function _MtGLastSCR(cTipo,cNum)

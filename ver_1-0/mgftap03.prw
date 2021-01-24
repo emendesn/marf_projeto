@@ -23,8 +23,6 @@ Local aRotThread:= aParam[2]
 Local cArqThr	:= aParam[3]
 Local cDirLog	:= aParam[4]
 Local cIdProc	:= aParam[5]
-Local _cuuid	:= aParam[7]
-Local _nRecno   := aParam[8]
 Local aErro, cErro, cArqLog
 Local cFilOrd, dDatOrd, cNumOrd, cCodPro, nQtdOrd, cTpOrd, cNumLot
 Local cCodInt, cCodTpInt

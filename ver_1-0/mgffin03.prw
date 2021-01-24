@@ -8,7 +8,7 @@ Data.....:              22/09/2016
 Descricao / Objetivo:   Funcao principal, para chamada via menu
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -27,7 +27,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Funcao chamadora da tela principal
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -66,32 +66,32 @@ Static Function fExibeTela()
 
 	DEFINE FONT oFont NAME "ARIAL" SIZE 6,15 BOLD
 
-/*	DEFINE MSDIALOG oDlg TITLE "Localizador de Titulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
+/*	DEFINE MSDIALOG oDlg TITLE "Localizador de Títulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
 
-		@ 004 , 003 TO 212 , 622 LABEL "Selecao de Titulos para gravacao de Codigo de barras" PIXEL OF oDlg
+		@ 004 , 003 TO 212 , 622 LABEL "Seleção de Títulos para gravação de código de barras" PIXEL OF oDlg
 		@ 018, 008 SAY oSay1 PROMPT " Digite o Codigo de barras :" SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 		@ 016, 080 MSGET oGet1 VAR cGet1 SIZE 160, 010 OF oDlg COLORS 0, 16777215 PIXEL
 		@ 015, 250 BUTTON oButton1 PROMPT "Pesquisar" SIZE 037, 015 OF oDlg PIXEL ACTION fGeraQry(cFields , @aDados , @cGet1, oDlg , oWBrowse1 , @lCodBarra)
 		fWBrowse1(aHeader , @aDados , oDlg , @oWBrowse1 , .F.)
 		@ 190, 495 BUTTON oButton2 PROMPT "&Limpa Pesquisa" SIZE 042, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .T. , lCodBarra)
-		@ 190, 540 BUTTON oButton3 PROMPT "&Grava o Titulo" SIZE 038, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .F. , lCodBarra)
+		@ 190, 540 BUTTON oButton3 PROMPT "&Grava o Título" SIZE 038, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .F. , lCodBarra)
 		@ 190, 580 BUTTON oButton4 PROMPT "&Encerra" SIZE 038, 20 OF oDlg PIXEL ACTION oDlg:End()
 
 	ACTIVATE MSDIALOG oDlg CENTERED
 */
-	DEFINE MSDIALOG oDlg TITLE "Localizador de Titulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg TITLE "Localizador de Títulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
 
-		@ 004, 003 TO 212 , 622 LABEL "Selecao de Titulos para gravacao de Codigo de barras" PIXEL OF oDlg
+		@ 004, 003 TO 212 , 622 LABEL "Seleção de Títulos para gravação de código de barras" PIXEL OF oDlg
 		@ 018, 008 SAY oSay1 PROMPT " Digite o Codigo de barras :" SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 		@ 018, 260 SAY oSay2 PROMPT " Vencto de :" SIZE 040, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
-		@ 018, 370 SAY oSay2 PROMPT " Vencto ate :" SIZE 040, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
+		@ 018, 370 SAY oSay2 PROMPT " Vencto até :" SIZE 040, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 		@ 016, 080 MSGET oGet1 VAR cGet1 SIZE 160, 010 OF oDlg COLORS 0, 16777215 PIXEL
 		@ 016, 300 MSGET oGet2 VAR dGet2 SIZE 60, 010 OF oDlg COLORS 0, 16777215 PIXEL
 		@ 016, 410 MSGET oGet3 VAR dGet3 SIZE 60, 010 OF oDlg COLORS 0, 16777215 PIXEL
 		@ 015, 480 BUTTON oButton1 PROMPT "Pesquisar" SIZE 037, 015 OF oDlg PIXEL ACTION fGeraQry(cFields , @aDados , @cGet1, @dGet2, @dGet3, oDlg , oWBrowse1 , @lCodBarra)
 		fWBrowse1(aHeader , @aDados , oDlg , @oWBrowse1 , .F.)
 		@ 190, 495 BUTTON oButton2 PROMPT "&Limpa Pesquisa" SIZE 042, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .T. , lCodBarra)
-		@ 190, 540 BUTTON oButton3 PROMPT "&Grava o Titulo" SIZE 038, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .F. , lCodBarra)
+		@ 190, 540 BUTTON oButton3 PROMPT "&Grava o Título" SIZE 038, 20 OF oDlg PIXEL ACTION fVldGrava(aHeader , @aDados , oDlg , @oWBrowse1 , @cGet1 , .F. , lCodBarra)
 		@ 190, 580 BUTTON oButton4 PROMPT "&Encerra" SIZE 038, 20 OF oDlg PIXEL ACTION oDlg:End()
 
 	ACTIVATE MSDIALOG oDlg CENTERED
@@ -106,7 +106,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Atualiza o array 'aDados', que sera exibido na MarkBrowse
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -204,7 +204,7 @@ nAt	:= IIF(nAt==NIL,1,nAt)
 If !(nAt == 1 .And. Empty(aBrowse[nAt,4]))
 
 	If !aBrowse[nAt,1] .And. !Empty(aBrowse[nAt,18])
-		MsgAlert('Titulo em bordero, nao pode ser selecionado!')
+		MsgAlert('Título em borderô, não pode ser selecionado!')
 	Else
 		aBrowse[nAt,1] := !aBrowse[nAt,1]
 	EndIf
@@ -221,7 +221,7 @@ Data.....:              15/09/2016
 Descricao / Objetivo:   Gera a Query para avaliar se ha titulos para o codigo de barras informado
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -259,7 +259,7 @@ Static Function fGeraQry(	cFields		,; // String contendo os campos que serao uti
 	Local lOk       := .F.
 	Local cBarTmp   := ""
 
-  	// Paulo Henrique - TOTVS - 15/08/2019 - Verifica se o Codigo de barras existe
+  	// Paulo Henrique - TOTVS - 15/08/2019 - Verifica se o código de barras existe
 	lOk := fVerCodBar(cCodBarra)
 	
 	If lOk
@@ -305,7 +305,7 @@ Static Function fGeraQry(	cFields		,; // String contendo os campos que serao uti
 	cWhere	+= "SE2.E2_SALDO > 0 "
 	//cWhere	+=		"AND ( SE2.E2_VENCTO = '" + dToS( dDataCob ) + "' OR SE2.E2_VENCREA = '" + dToS( dDataCob ) + "' )"
 	If Empty(dVctode) .AND. Empty(dVctoAte)
-	// 13/03/2018 - Atilio - Incluir tratamento para data = feriado. Incluir prï¿½ximo dia util (resultado de DataValida())
+	// 13/03/2018 - Atilio - Incluir tratamento para data = feriado. Incluir prï¿½ximo dia ï¿½til (resultado de DataValida())
 		cWhere	+=		"AND ( SE2.E2_VENCTO IN ('" + dToS( dDataCob ) + "','" + dToS( DataValida(dDataCob,.T.) ) + "') "
 		cWhere	+=				"OR SE2.E2_VENCREA IN ('" + dToS( dDataCob ) + "','" + dToS( DataValida(dDataCob,.T.) ) + "' )  )"
 	Else
@@ -340,11 +340,11 @@ Static Function fGeraQry(	cFields		,; // String contendo os campos que serao uti
 
 		Do Case
 			Case ( lExistCod )
-				MsgAlert('Este Codigo de barra jï¿½ existe no Titulo : ' +  cCodTit)
+				MsgAlert('Este código de barra já existe no Título : ' +  cCodTit)
 				cCodBarra := Space(50)
 				aDados	  := Array(1,15)
 			Case !( lDisp )
-				MsgAlert('Nao existem Titulos disponï¿½veis para este Codigo de barras')
+				MsgAlert('Nao existem Títulos disponíveis para este código de barras')
 				cCodBarra := Space(50)
 				aDados	  := Array(1,15)
 		EndCase
@@ -356,7 +356,7 @@ Static Function fGeraQry(	cFields		,; // String contendo os campos que serao uti
 
 	Else
 
-		MsgAlert('nao existem Titulos para o Codigo de barras informado')
+		MsgAlert('não existem Títulos para o código de barras informado')
 		aDados		:= Array(1,15)
 		cCodBarra	:= Space(50)
 		fWBrowse1(aHeader , aDados , oDlg , oWBrowse1 , .T.)
@@ -373,7 +373,7 @@ Data.....:              15/09/2016
 Descricao / Objetivo:   Monta aHeader e aCols para serem exibidos na MarkBrowse
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -574,7 +574,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Verifica a quantidade de titulos selecionados.
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -589,7 +589,7 @@ Static Function fVldGrava(aHeader , aDados , oDlg , oWBrowse1 , cCodBarra , lLim
 
 		aGrava	:= aClone(OWBROWSE1:AARRAY)
 
-		If ( MsgYesNo("Confirma a Selecao?" , "Selecao de Titulos") )
+		If ( MsgYesNo("Confirma a Seleção?" , "Seleção de Títulos") )
 
 			lContinua	:= fVldSel(aGrava , @nReg )
 
@@ -639,7 +639,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Verifica a quantidade de titulos selecionados.
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -671,7 +671,7 @@ Static Function fVldSel(aDados , nReg)
 
 		Case ( nCount == 0 )
 
-			MsgAlert('Nenhum Titulo foi selecionado')
+			MsgAlert('Nenhum Título foi selecionado')
 
 		Case ( nCount == 1 )
 
@@ -693,7 +693,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Atualiza o campo E2_CODBAR
 Doc. Origem:            Contrato - GAP MGFFIN03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -733,7 +733,7 @@ Static Function fGrava(cCodBarra , nReg , lCodBarra)
 
 	If ( lCodOk ) .AND. ( RecLock( cAliasSE2 , .F.) )
 
-		// Alteracao solicitada pelo Eric em 21/05/2018
+		// Alteraï¿½ï¿½o solicitada pelo Eric em 21/05/2018
 		(cAliasSE2)->(E2_DATAAGE) := (cAliasSE2)->(E2_VENCREA)
 
 		If ( lCodBarra )
@@ -798,7 +798,7 @@ Static Function fGrava(cCodBarra , nReg , lCodBarra)
 
 		(cAliasSE2)->(MsUnlock())
 
-		MsgAlert('Codigo de barras gravado com sucesso no Titulo : ' + (cAliasSE2)->(E2_NUM))
+		MsgAlert('código de barras gravado com sucesso no Título : ' + (cAliasSE2)->(E2_NUM))
 
 	EndIf
 
@@ -807,10 +807,10 @@ Static Function fGrava(cCodBarra , nReg , lCodBarra)
 Return
 
 ///--------------------------------------------------------------------------\
-//| Funcao: fConVld				Autor: Flavio Novaes		Data: 19/10/2003 |
+//| Funï¿½ï¿½o: fConVld				Autor: Flï¿½vio Novaes		Data: 19/10/2003 |
 //|--------------------------------------------------------------------------|
-//| Descricao: Funcao para Conversao da Representacao Numerica do Codigo de  |
-//|            Barras - Linha Digitavel (LD) em Codigo de Barras (CB).       |                                                                          |
+//| Descriï¿½ï¿½o: Funï¿½ï¿½o para Conversï¿½o da Representaï¿½ï¿½o Numï¿½rica do código de  |
+//|            Barras - Linha Digitï¿½vel (LD) em código de Barras (CB).       |                                                                          |
 //\--------------------------------------------------------------------------/
 Static FUNCTION fConVld(cCodBarra)
 	Local lCodOk	:= .F.
@@ -820,11 +820,11 @@ Static FUNCTION fConVld(cCodBarra)
 	cStr := LTRIM(RTRIM(cCodbarra))
 
 	IF VALTYPE(cCodbarra) == NIL .OR. EMPTY(cCodbarra)
-		// Se o Campo esta em Branco nao Converte nada.
+		// Se o Campo estï¿½ em Branco não Converte nada.
 		cStr := ""
 	ELSE
-		// Se o Tamanho do String for menor que 44, completa com zeros ate 47 digitos. Isso ï¿½
-		// necessario para Bloquetos que nao tï¿½m o vencimento e/ou o valor informados na LD.
+		// Se o Tamanho do String for menor que 44, completa com zeros até 47 dï¿½gitos. Isso ï¿½
+		// necessï¿½rio para Bloquetos que não tï¿½m o vencimento e/ou o valor informados na LD.
 		cStr := IF(LEN(cStr)<44,cStr+REPL("0",47-LEN(cStr)),cStr)
 	ENDIF
 
@@ -846,29 +846,29 @@ Static FUNCTION fConVld(cCodBarra)
 RETURN(cStr)
 
 ///--------------------------------------------------------------------------\
-//| Funcao: fCodBar				Autor:         		Data:
+//| Funï¿½ï¿½o: fCodBar				Autor:         		Data:
 //|--------------------------------------------------------------------------|
 //             |
 //|--------------------------------------------------------------------------|
-//| Descricao: Funcao para Validacao de Codigo de Barras (CB) e Representacao|
-//|            Numerica do Codigo de Barras - Linha Digitavel (LD).          |
+//| Descriï¿½ï¿½o: Funï¿½ï¿½o para Validaï¿½ï¿½o de código de Barras (CB) e Representaï¿½ï¿½o|
+//|            Numï¿½rica do código de Barras - Linha Digitï¿½vel (LD).          |
 //|                                                                          |
-//|            A LD de Bloquetos possui tres Digitos Verificadores (DV) que  |
-//|				sao consistidos pelo Modulo 10, alem do Digito Verificador   |
-//|				Geral (DVG) que ï¿½ consistido pelo Modulo 11. Essa LD tï¿½m 47  |
-//|            Digitos.                                                      |
+//|            A LD de Bloquetos possui trï¿½s Digitos Verificadores (DV) que  |
+//|				sï¿½o consistidos pelo Mï¿½dulo 10, alï¿½m do Dï¿½gito Verificador   |
+//|				Geral (DVG) que ï¿½ consistido pelo Mï¿½dulo 11. Essa LD tï¿½m 47  |
+//|            Dï¿½gitos.                                                      |
 //|                                                                          |
-//|            A LD de Titulos de Concessinarias do Servico Publico e IPTU   |
-//|				possui quatro Digitos Verificadores (DV) que sao consistidos |
-//|            pelo Modulo 10, alem do Digito Verificador Geral (DVG) que    |
-//|            tambem ï¿½ consistido pelo Modulo 10. Essa LD tï¿½m 48 Digitos.   |
+//|            A LD de Títulos de Concessinï¿½rias do Serviï¿½o Pï¿½blico e IPTU   |
+//|				possui quatro Digitos Verificadores (DV) que sï¿½o consistidos |
+//|            pelo Mï¿½dulo 10, alï¿½m do Digito Verificador Geral (DVG) que    |
+//|            tambï¿½m ï¿½ consistido pelo Mï¿½dulo 10. Essa LD tï¿½m 48 Dï¿½gitos.   |
 //|                                                                          |
-//|            O CB de Bloquetos e de Titulos de Concessionarias do Servico  |
-//|            Publico e IPTU possui apenas o Digito Verificador Geral (DVG) |
-//|            sendo que a ï¿½nica diferenca ï¿½ que o CB de Bloquetos ï¿½         |
-//|            consistido pelo Modulo 11 enquanto que o CB de Titulos de     |
-//|            Concessionarias ï¿½ consistido pelo Modulo 10. Todos os CBï¿½s    |
-//|            tï¿½m 44 Digitos.                                               |
+//|            O CB de Bloquetos e de Títulos de Concessionï¿½rias do Serviï¿½o  |
+//|            Pï¿½blico e IPTU possui apenas o Dï¿½gito Verificador Geral (DVG) |
+//|            sendo que a ï¿½nica diferenï¿½a ï¿½ que o CB de Bloquetos ï¿½         |
+//|            consistido pelo Mï¿½dulo 11 enquanto que o CB de Títulos de     |
+//|            Concessionï¿½rias ï¿½ consistido pelo Mï¿½dulo 10. Todos os CBï¿½s    |
+//|            tï¿½m 44 Dï¿½gitos.                                               |
 //\--------------------------------------------------------------------------/
 
 Static Function fCodBar(cCodBarra)
@@ -884,23 +884,23 @@ ENDIF
 
 cStr := LTRIM(RTRIM(cCodbarra))
 
-// Se o Tamanho do String for 45 ou 46 esta errado! Retornarï¿½ .F.
+// Se o Tamanho do String for 45 ou 46 estï¿½ errado! Retornarï¿½ .F.
 lRet := IF(LEN(cStr)==45 .OR. LEN(cStr)==46,.F.,.T.)
 
-// Se o Tamanho do String for menor que 44, completa com zeros ate 47 digitos. Isso ï¿½
-// necessario para Bloquetos que nao tï¿½m o vencimento e/ou o valor informados na LD.
+// Se o Tamanho do String for menor que 44, completa com zeros até 47 dï¿½gitos. Isso ï¿½
+// necessï¿½rio para Bloquetos que não tï¿½m o vencimento e/ou o valor informados na LD.
 cStr := IF(LEN(cStr)<44,cStr+REPL("0",47-LEN(cStr)),cStr)
 
 // Verifica se a LD ï¿½ de (B)loquetos ou (C)oncessionï¿½rias/IPTU. Se for CB retorna (I)ndefinido.
 cTipo := IF(LEN(cStr)==47,"B",IF(LEN(cStr)==48,"C","I"))
 
-// Verifica se todos os digitos sao numï¿½rios.
+// Verifica se todos os dï¿½gitos sï¿½o numï¿½rios.
 FOR i := LEN(cStr) TO 1 STEP -1
 	lRet := IF(SUBSTR(cStr,i,1) $ "0123456789",lRet,.F.)
 NEXT
 
 IF LEN(cStr) == 47 .AND. lRet
-	// Consiste os tres DVï¿½s de Bloquetos pelo Modulo 10.
+	// Consiste os trï¿½s DVï¿½s de Bloquetos pelo Mï¿½dulo 10.
 	nConta  := 1
 	WHILE nConta <= 3
 		nMult  := 2
@@ -918,12 +918,12 @@ IF LEN(cStr) == 47 .AND. lRet
 		lRet    := IF(lRet,(nDVCalc==nDV),.F.)
 		nConta  := nConta + 1
 	ENDDO
-	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o numero para CB para consistir o DVG.
+	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o nï¿½mero para CB para consistir o DVG.
 	cStr := IF(lRet,SUBSTR(cStr,1,4)+SUBSTR(cStr,33,15)+SUBSTR(cStr,5,5)+SUBSTR(cStr,11,10)+SUBSTR(cStr,22,10),cStr)
 ENDIF
 
 IF LEN(cStr) == 48 .AND. lRet
-	// Consiste os quatro DVï¿½s de Titulos de Concessionarias de Servico Publico e IPTU pelo Modulo 10.
+	// Consiste os quatro DVï¿½s de Títulos de Concessionï¿½rias de Serviï¿½o Pï¿½blico e IPTU pelo Mï¿½dulo 10.
 	nConta  := 1
 	WHILE nConta <= 4
 		nMult  := 2
@@ -941,13 +941,13 @@ IF LEN(cStr) == 48 .AND. lRet
 		lRet    := IF(lRet,(nDVCalc==nDV),.F.)
 		nConta  := nConta + 1
 	ENDDO
-	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o numero para CB para consistir o DVG.
+	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o nï¿½mero para CB para consistir o DVG.
 	cStr := IF(lRet,SUBSTR(cStr,1,11)+SUBSTR(cStr,13,11)+SUBSTR(cStr,25,11)+SUBSTR(cStr,37,11),cStr)
 ENDIF
 
 IF LEN(cStr) == 44 .AND. lRet
 	IF cTipo $ "BI"
-		// Consiste o DVG do CB de Bloquetos pelo Modulo 11.
+		// Consiste o DVG do CB de Bloquetos pelo Mï¿½dulo 11.
 		nMult  := 2
 		nVal   := 0
 		nDV    := VAL(SUBSTR(cStr,5,1))
@@ -961,11 +961,11 @@ IF LEN(cStr) == 44 .AND. lRet
 		// Se o DV Calculado for 0,10 ou 11 ï¿½ assumido 1 (Um).
 		nDVCalc := IF(nDVCalc==0 .OR. nDVCalc==10 .OR. nDVCalc==11,1,nDVCalc)
 		lRet    := IF(lRet,(nDVCalc==nDV),.F.)
-		// Se o Tipo ï¿½ (I)ndefinido E o DVG nao foi consistido com sucesso (lRet=.F.), tentara
-		// consistir como CB de Titulo de Concessionarias/IPTU no IF abaixo.
+		// Se o Tipo ï¿½ (I)ndefinido E o DVG não foi consistido com sucesso (lRet=.F.), tentarï¿½
+		// consistir como CB de Título de Concessionï¿½rias/IPTU no IF abaixo.
 	ENDIF
 	IF cTipo == "C" .OR. (cTipo == "I" .AND. !lRet)
-		// Consiste o DVG do CB de Titulos de Concessionarias pelo Modulo 10.
+		// Consiste o DVG do CB de Títulos de Concessionï¿½rias pelo Mï¿½dulo 10.
 		lRet   := .T.
 		nMult  := 2
 		nVal   := 0
@@ -983,14 +983,14 @@ IF LEN(cStr) == 44 .AND. lRet
 	ENDIF
 ENDIF
 
-// Caso lRet seja .F. tenta validar pelo Modulo 11
-// (GPS ï¿½ validado por este modulo e possui 48 posicoes)
+// Caso lRet seja .F. tenta validar pelo Mï¿½dulo 11
+// (GPS ï¿½ validado por este mï¿½dulo e possui 48 posiï¿½ï¿½es)
 // (Guia do Fundo de Garantia e validado por este modulo e possui 48 posicoes)
-// As validacoes acima nao conseguem validar pois esta sendo validado pelo modulo 10
+// As validaï¿½ï¿½es acima não conseguem validar pois esta sendo validado pelo mï¿½dulo 10
 
 IF LEN(cStr) == 48 .AND. !lRet
 	//
-	// Verifica se todos os digitos sao numï¿½rios.
+	// Verifica se todos os dï¿½gitos sï¿½o numï¿½rios.
 	lRet := .T.
 
 	For i := LEN(cStr) TO 1 STEP -1
@@ -1050,7 +1050,7 @@ EndIf
 
 If (Len(cStr) == 44 .And. !lRet ) .Or. lGPS
 	//
-	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o numero para CB para consistir o DVG.
+	// Se os DVï¿½s foram consistidos com sucesso (lRet=.T.), converte o nï¿½mero para CB para consistir o DVG.
 	//
 	lRet   := .T.
 	nMult  := 2
@@ -1087,7 +1087,7 @@ If (Len(cStr) == 44 .And. !lRet ) .Or. lGPS
 EndIf
 
 If !( lRet )
-	MsgAlert('Codigo de barras invï¿½lido')
+	MsgAlert('código de barras inválido')
 EndIf
 
 RETURN(lRet)
@@ -1097,12 +1097,12 @@ RETURN(lRet)
 Programa.:            fVerCodBar
 Autor....:            Paulo Henrique
 Data.....:            15/08/2018
-Descricao / Objetivo: Verifica se o Codigo de barras jï¿½ existe
+Descricao / Objetivo: Verifica se o código de barras já existe
 Doc. Origem:          Contrato - GAP MGFFIN03
 Solicitante:          Cliente
-Uso......:            
+Uso......:            Marfrig
 Obs......:            Faz a busca pelo novo indice
-					  Indice 20 - E2_FILIAL+E2_CODBAR (Codigo de Barras)
+					  Indice 20 - E2_FILIAL+E2_CODBAR (código de Barras)
 =====================================================================================
 */
 Static Function fVerCodBar(cCodBarra)
@@ -1110,30 +1110,30 @@ Static Function fVerCodBar(cCodBarra)
 Local aArea   := GetArea()
 Local lRet    := .F.
 Local cLinDig := cCodBarra
-Local cCodBar := fConVld(cLinDig) // Converte a linha digitavel em Codigo de barras ou verifica se o codigo de barra esta ok
+Local cCodBar := fConVld(cLinDig) // Converte a linha digitï¿½vel em código de barras ou verifica se o codigo de barra estï¿½ ok
 
 //Alterado Carneiro
-//Validando se tem informacao no ccampo cCodBarra
+//Validando se tem informação no ccampo cCodBarra
 
 IF Empty(cCodBarra) 
-	ApMsgAlert(OemToAnsi('Codigo de barra em branco'),OemToAnsi('ATENCAO'))
+	ApMsgAlert(OemToAnsi('Código de barra em branco'),OemToAnsi('ATENÇÃO'))
 	Return .F.
 EndIf   
 	
 
-// Verifica se jï¿½ existe o Codigo de barras
+// Verifica se já existe o código de barras
 dbSelectArea("SE2")
 dbSetOrder(22) // E2_CODBAR
 If !Empty(cCodBar) .AND. dbSeek(cCodBar)
-   ApMsgAlert(OemToAnsi('Codigo de barra jï¿½ existe no Titulo : '+SE2->E2_NUM),OemToAnsi('ATENCAO'))
+   ApMsgAlert(OemToAnsi('Código de barra já existe no Título : '+SE2->E2_NUM),OemToAnsi('ATENÇÃO'))
    lRet := .T.
 EndIf   			
 
-// Verifica se jï¿½ existe a linha digitavel tambï¿½m
+// Verifica se já existe a linha digitável também
 dbSelectArea("SE2")   
 dbSetOrder(23) // E2_LINDIG
 If !Empty(cCodBarra) .AND. dbSeek(cCodBarra)
-   ApMsgAlert(OemToAnsi('Linha digitavel jï¿½ existe no Titulo : '+SE2->E2_NUM),OemToAnsi('ATENCAO'))
+   ApMsgAlert(OemToAnsi('Linha digitável já existe no Título : '+SE2->E2_NUM),OemToAnsi('ATENÇÃO'))
    If Empty(SE2->E2_CODBAR)
       RecLock("SE2",.F.)
 	  SE2->E2_CODBAR := cCodBar

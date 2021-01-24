@@ -22,7 +22,7 @@ User Function MT089CD()//As variaveis foram carregada com paramixb somente para 
 	Local bIRWhile 	:= PARAMIXB[3] //Regra de selecao dos registros do SFM
 	Local bAddTes 	:= PARAMIXB[4] //Conteudo a ser acrescentado no array
 	Local cTabela 	:= PARAMIXB[5] //Tabela que esta sendo tratada
-	Local cTpOper 	:= PARAMIXB[6] //Tipo de Operacao
+	Local cTpOper 	:= PARAMIXB[6] //Tipo de Opera��o
 //	Local _nProd
 
 	If cTabela == "SD1"

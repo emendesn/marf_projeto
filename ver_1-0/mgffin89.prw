@@ -4,17 +4,17 @@
 =======================================================================================
 Programa.:              MGFFIN89
 Autor....:              Totvs
-Data.....:              Marco/2018
+Data.....:              Março/2018
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada F200VAR
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Funcao chamada pelos P.E's F200VAR(FINA200) e FR650FIL(FINR650)
+Uso......:              Marfrig
+Obs......:              Função chamada pelos P.E's F200VAR(FINA200) e FR650FIL(FINR650)
 =======================================================================================
 */
 
 // OBS:
-// CONCENTRAR TODOS OS TRATAMENTOS PARA POSICIONAMENTO DA SE1 E FILTROS NESTE PE, NAO USAR OUTROS PEï¿½S PARA ESTE TRATAMENTO EM HIPOTESE NENHUMA, 
+// CONCENTRAR TODOS OS TRATAMENTOS PARA POSICIONAMENTO DA SE1 E FILTROS NESTE PE, NAO USAR OUTROS PE´S PARA ESTE TRATAMENTO EM HIPOTESE NENHUMA, 
 // PARA NAO CONFLITAREM AS REGRAS.
 
 User Function MGFFIN89()
@@ -29,7 +29,7 @@ Local lEOFSA1	:= .F.
 Private lFina200	:= IsInCallStack("FINA200")
 Private lFinR650	:= IsInCallStack("FINR650")	.OR. FUNNAME() == "MGFINR650"
 /*
-CNAB - Verifica se possui E1_ZIDCNAB, 24 posicoes (titulo importado, chave/Id CNAB com origem no Logix)
+CNAB - Verifica se possui E1_ZIDCNAB, 24 posições (título importado, chave/Id CNAB com origem no Logix)
 */
 
 If lFinR650 .And. MV_PAR07 == 2
@@ -155,18 +155,18 @@ Local cNomeCli 		:= ""
 Local cCodCli	   	:= ""
 Local cLojCli	   	:= ""
 Local nRecno 		:= 0
-// variavel criada para obter a primeira parte do nome do cliente. Necessario pois em boletos criados manualmente no site do banco 
-// foi encontrado titulos no retorno do CNAB que o nome do cliente diverge do cadastro do Protheus(A1_NOME ou A1_NREDUZ)
+// variavel criada para obter a primeira parte do nome do cliente. Necessário pois em boletos criados manualmente no site do banco 
+// foi encontrado títulos no retorno do CNAB que o nome do cliente diverge do cadastro do Protheus(A1_NOME ou A1_NREDUZ)
 Local cPalavra		:= ""
 		
 // somente faz o tratamento se a linha veio sem o idcnab
 If Empty(cNum)
 	cNumMarfrig := Padl(Alltrim(Subs(cLinha,117,6)),Len(SE1->E1_NUM),"0")
 	cParcMarfrig := Padl(Alltrim(Subs(cLinha,123,2)),Len(SE1->E1_PARCELA),"0")
-	// as variaveis abaixo para numero do titulo e parcela se deve a ainda existir remessas com a regra de 8 posicoes para titulo e 2 para parcela
+	// as variaveis abaixo para número do título e parcela se deve a ainda existir remessas com a regra de 8 posições para título e 2 para parcela
 	cTitNumAux := Padl(Alltrim(Subs(cLinha,117,8)),Len(SE1->E1_NUM),"0")
 	cParNumAux := Padl(Alltrim(Subs(cLinha,125,2)),Len(SE1->E1_PARCELA),"0")
-	// as variaveis abaixo para numero do titulo e parcela se deve ao legado LOGIX
+	// as variaveis abaixo para número do título e parcela se deve ao legado LOGIX
 	cTitLogix  := Padl(Alltrim(Subs(cLinha,119,6)),Len(SE1->E1_NUM),"0")
 	cParLogix  := Padl(Alltrim(Subs(cLinha,125,2)),Len(SE1->E1_PARCELA),"0")
 
@@ -190,7 +190,7 @@ If Empty(cNum)
 	   		cPalavra   := AllTrim(SubStr(cNomeCli,1,AT(" ",cNomeCli)))
 	   	Endif
    	Endif
-   	// obtem as 20 posicoes devido ao tamanho do campo E1_NOMCLI
+   	// obtem as 20 posições devido ao tamanho do campo E1_NOMCLI
    	cNomeCli := Left(cNomeCli,20)
 	If !Empty(cNumMarfrig) .and. !Empty(cParcMarfrig)
 		cQAux := "FROM "+RetSqlName("SE1")+" SE1 "
@@ -200,9 +200,9 @@ If Empty(cNum)
 		Else // todas as filiais desta Empresa
 			cQAux += "AND SUBSTRING(E1_FILIAL,1,2) = '"+FWCompany('SE1')+"' "                   
 		Endif	
-		cQAux += "AND ((E1_NUM = '"+cNumMarfrig+"' AND E1_PARCELA = '"+cParcMarfrig+"') "		// cenario cnab atual
-		cQAux += " OR (E1_NUM = '"+cTitNumAux+"' AND E1_PARCELA = '"+cParNumAux+"') "			// cenario inicial e ignorado porem possui titulos em aberto
-		cQAux += " OR (E1_NUM = '"+cTitLogix+"' AND E1_PARCELA = '"+cParLogix+"')) "			// cenario LOGIX
+		cQAux += "AND ((E1_NUM = '"+cNumMarfrig+"' AND E1_PARCELA = '"+cParcMarfrig+"') "		// cenário cnab atual
+		cQAux += " OR (E1_NUM = '"+cTitNumAux+"' AND E1_PARCELA = '"+cParNumAux+"') "			// cenário inicial e ignorado porém possui títulos em aberto
+		cQAux += " OR (E1_NUM = '"+cTitLogix+"' AND E1_PARCELA = '"+cParLogix+"')) "			// cenário LOGIX
 		cQAux += "AND E1_TIPO = '"+MVNOTAFIS+"' "
 		If !Empty(cCodcli)
 			cQAux += "AND E1_CLIENTE = '" + cCodCli + "'

@@ -11,10 +11,10 @@
 Programa.:              MGFCRM25
 Autor....:              Gustavo Ananias Afonso - TOTVS Campinas
 Data.....:              07/04/2017
-Descricao / Objetivo:   Cadastro de Supervisï¿½o - Estrutura de Venda
+Descricao / Objetivo:   Cadastro de Supervisão - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -26,7 +26,7 @@ user function MGFCRM25()
 	//Define um alias para o Browse
 	oBrowse:SetAlias('ZBH')
 	//Adiciona uma descriÃ§Ã£o para o Browse
-	oBrowse:SetDescription('Cadastro de Supervisï¿½o')
+	oBrowse:SetDescription('Cadastro de Supervisão')
 	//Ativa o Browse
 	oBrowse:Activate()
 
@@ -53,14 +53,14 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('CRM25MDL', /*bPreValidacao*/, /*bPosValidacao*/, { | oModel | cmtCrm25( oModel ) }/*bCommit*/, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'ZBHMASTER', /*cOwner*/, oStruZBH, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Cadastro de Supervisï¿½o' )
+	oModel:SetDescription( 'Cadastro de Supervisão' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'ZBHMASTER' ):SetDescription( 'Dados de Supervisï¿½o' )
+	oModel:GetModel( 'ZBHMASTER' ):SetDescription( 'Dados de Supervisão' )
 
 	oModel:SetPrimaryKey({})
 
@@ -131,7 +131,7 @@ static function cmtCrm25( oModel )
 		cUpdTbl += " 		A3_COD = '" + oModel:getValue('ZBHMASTER' , 'ZBH_REPRES' ) + "'"	+ CRLF
 
 		if tcSQLExec( cUpdTbl ) < 0
-			conout("Nao  foi possivel executar UPDATE." + CRLF + tcSqlError())
+			conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
 
 		fwFormCommit( oModel )
@@ -151,13 +151,13 @@ return lRet
 
 /*
 =====================================================================================
-Funcao...:              FGERAOV
+Função...:              FGERAOV
 Autor....:              Paulo da Mata - MARFRIG
 Data.....:              18/02/2020
 Descricao / Objetivo:   Gera ou altera dados na tabela AOV, baseado no R_E_C_N_O_ da ZBH
 Doc. Origem:            RTASK0010772
 Solicitante:            Contas a Receber
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -225,13 +225,13 @@ Return
 
 /*
 =====================================================================================
-Funcao...:              FATUOV
+Função...:              FATUOV
 Autor....:              Paulo da Mata - MARFRIG
 Data.....:              19/02/2020
 Descricao / Objetivo:   Bloqueia o registro na tabela AOV, baseado no R_E_C_N_O_ da ZBH
 Doc. Origem:            RTASK0010772
 Solicitante:            Contas a Receber
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

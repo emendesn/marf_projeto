@@ -9,13 +9,13 @@
 Programa............: MGFINT37
 Autor...............: Marcelo Carneiro
 Data................: 28/03/2017
-Descricao / Objetivo: Integracao De Cadastros
+Descricao / Objetivo: Integraï¿½ï¿½o De Cadastros
 Doc. Origem.........: Contrato GAPS - MIT044- BLOQUEIO DE CADASTROS
 Solicitante.........: Cliente
 Uso.................: Marfrig
-Obs.................: Aprovacoes
+Obs.................: Aprovaï¿½ï¿½es
 Data................: 27/09/2019
-Atualizacao.........: Foi inserida uma funcao INT37_EST para incluir
+Atualizaï¿½ï¿½o.........: Foi inserida uma funï¿½ï¿½o INT37_EST para incluir
 					  automaticamente o Cliente na Estrutura de Venda do vendedor.
 History_1 - No final da aprovaÃ§Ã£o da grade , atualizar o campo de alteraÃ§Ã£o do 
 Mercado EletrÃ´nico 					   
@@ -23,12 +23,12 @@ Mercado EletrÃ´nico
 */
 User Function MGFINT37
 
-	Private cCadastro := "Aprovacoes de Cadastro"
+	Private cCadastro := "Aprovações de Cadastro"
 	Private aRotina   := { {"Pesquisar" ,"AxPesqui",0,1},;
 		{"Etapas"    ,"U_INT37_MAN", 0,2},;
 		{"Visualizar","AxVisual", 0,2},;
 		{"Analisar"  ,"U_INT37_APR",0,3},;
-		{"Visualiza Alteracoes","U_INT37_VIS",0,2},;
+		{"Visualiza Alterações","U_INT37_VIS",0,2},;
 		{"Legenda"   ,"U_INT37_Legenda", 0, 6 }}
 
 	Private aCores    := { {'ZB1_STATUS=="1"','ENABLE' },;
@@ -51,7 +51,7 @@ User Function INT37_L2()
 	AADD(aLegenda, {"DISABLE"	 ,'Etapa Rejeitada'})
 	AADD(aLegenda, {"BR_AMARELO" ,'Etapa Pendente'})
 
-	BrwLegenda('Aprovacoes de Cadastro','CDM',aLegenda)
+	BrwLegenda('Aprovações de Cadastro','CDM',aLegenda)
 
 Return
 
@@ -60,12 +60,12 @@ User Function INT37_Legenda()
 
 	local aLegenda:= {}
 
-	AADD(aLegenda, {"ENABLE"	 ,'Solicitacao Aprovada'})
-	AADD(aLegenda, {"DISABLE"	 ,'Solicitacao Rejeitada'})
-	AADD(aLegenda, {"BR_AZUL"	 ,'Solicitacao Aberta'})
-	AADD(aLegenda, {"BR_AMARELO" ,'Aprovacao em Andamento'})
+	AADD(aLegenda, {"ENABLE"	 ,'Solicitação Aprovada'})
+	AADD(aLegenda, {"DISABLE"	 ,'Solicitação Rejeitada'})
+	AADD(aLegenda, {"BR_AZUL"	 ,'Solicitação Aberta'})
+	AADD(aLegenda, {"BR_AMARELO" ,'Aprovação em Andamento'})
 
-	BrwLegenda('Aprovacoes de Cadastro','CDM',aLegenda)
+	BrwLegenda('Aprovações de Cadastro','CDM',aLegenda)
 
 Return
 	**************************************************************************************************
@@ -81,7 +81,7 @@ User Function INT37_MAN( cAlias, nReg, nOpc )
 		{'ZB2_STATUS=="3"','BR_AMARELO'}}
 
 
-	cCadastro := 'Consulta Roteiro de Aprovacoes'
+	cCadastro := 'Consulta Roteiro de Aprovações'
 	aRotina := {}
 	AADD(aRotina, { 'Pesquisar',  'AxPesqui', 0, 1 })
 	AADD(aRotina, { 'Visualizar', 'AxVisual'  , 0, 2 })
@@ -111,11 +111,11 @@ User Function INT37_APR
 	local cABA    := ''
 	Private nRecZB2 := 0
 
-// Verifica a etapa que esta parada
+// Verifica a etapa que estï¿½ parada
 // Verifica se o usuario pertence ao Grupo IDSET da ZB2
 // Verifica o tipo de Cadastro
 	IF ZB1->ZB1_STATUS =='1' .OR. ZB1->ZB1_STATUS =='2'
-		MsgAlert('Solicitacao jï¿½ Aprovada/Rejeitada !!')
+		MsgAlert('Solicitação já Aprovada/Rejeitada !!')
 	Else
 		ZB2->(dbSetOrder(1))
 		ZB2->(dbSeek(ZB1->ZB1_ID))
@@ -144,11 +144,37 @@ User Function INT37_APR
 				ZAZ->(dbSkip())
 			End
 			IF !bPassou
-				msgAlert('Usuario nao pertence ao Setor pendente de aprovacao!!')
+				msgAlert('Usuário não pertence ao Setor pendente de aprovação!!')
 			Else
 				IF ZB1->ZB1_TIPO == '1' // Cadastro
 					INT37_INC(cIDSet)
-				ElseIF ZB1->ZB1_TIPO == '2' // Alteracao
+				ElseIF ZB1->ZB1_TIPO == '2' // Alteração
+					If ZB1->ZB1_CAD == '3'
+
+						_cHash   := GetNextAlias()
+
+						BeginSql Alias _cHash
+							SELECT
+								ZH3_HASH
+							FROM
+								%table:ZH3% ZH3, %table:SA2% SA2 
+							WHERE
+								SubStr(ZH3_CHAVE,1,6)=SA2.A2_FILIAL AND
+								SubStr(ZH3_CHAVE,7,6)=SA2.A2_COD AND
+								SubStr(ZH3_CHAVE,13,2)=SA2.A2_LOJA AND
+								ZH3_CODINT='008' AND ZH3_CODTIN='018' AND ZH3_STATUS in ('1','6') AND
+								SA2.R_E_C_N_O_=%exp:ZB1->ZB1_RECNO% AND
+								ZH3.%notDel%
+						EndSql
+
+						If !Eof()
+							bPassou:=.f.
+							msgAlert('Callback para o Salesforce pendente para ser enviado!!')
+							(_cHash)->(dbcloseArea())
+							Return
+						End
+						(_cHash)->(dbcloseArea())
+					End
 					INT37_ALT(cIDSET,cABA)
 				EndIF
 			EndIF
@@ -189,7 +215,7 @@ Static Function INT37_ALT(cIDSET,cABA)
 		cDados     := SA1->A1_NOME
 		bAba       := .T.
 	CASE ZB1->ZB1_CAD == '2'
-		cCadZB1    :=  "Cadastro de Endereco de Entrega"
+		cCadZB1    :=  "Cadastro de Endereço de Entrega"
 		cTab       := 'SZ9'
 		dbSelectArea('SZ9')
 		SZ9->(dbGoTo(ZB1->ZB1_RECNO))
@@ -255,7 +281,7 @@ Static Function INT37_ALT(cIDSET,cABA)
 		ZB3->(dbSkip())
 	End
 
-	DEFINE MSDIALOG oDlg1 TITLE "Analise da Alteracao" FROM 000, 000  TO 570, 810 COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg1 TITLE "Analise da Alteração" FROM 000, 000  TO 570, 810 COLORS 0, 16777215 PIXEL
 
 	@ 005,005 SAY cCadZB1   SIZE 120, 020 OF oDLG1 PIXEL FONT oBold COLOR CLR_BLUE
 	@ 017,005 TO 018,400  OF oDLG1 PIXEL
@@ -271,14 +297,14 @@ Static Function INT37_ALT(cIDSET,cABA)
 	@ 054,089  MSGET  cDados          SIZE 179, 010 OF oDLG1 COLORS 0, 16777215 PIXEL RIGHT When .F. Right
 
 
-	oListDados := TWBrowse():New( 072,009,391,150,,{'Campo','Descricao','Conteudo Anterior','Conteudo Atual'},{30,40,120,90},oDlg1, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
+	oListDados := TWBrowse():New( 072,009,391,150,,{'Campo','Descrição','Conteúdo Anterior','Conteúdo Atual'},{30,40,120,90},oDlg1, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
 	oListDados:SetArray(aDados)
 	cbLine := "{||{ aDados[oListDados:nAt,01], aDados[oListDados:nAt,02], aDados[oListDados:nAt,03], aDados[oListDados:nAt,04]} }"
 	oListDados:bLine       := &cbLine
 
 	//oListDados     := TListBox():New( 072,009,,,391,150,,oDlg1,,CLR_BLACK,CLR_WHITE,.T.,,,,"",,,,,,, )
 
-	@ 225,009  SAY "Observacao"    SIZE 040, 009 OF oDLG1 COLORS 0, 16777215 PIXEL
+	@ 225,009  SAY "Observação"    SIZE 040, 009 OF oDLG1 COLORS 0, 16777215 PIXEL
 	@ 225,044  MSGET  cOBS         SIZE 232,026  OF oDLG1 COLORS 0, 16777215 PIXEL
 
 
@@ -299,7 +325,7 @@ Static Function INT37_APV(cTab)
 	local lNotAltSA1 := .F.
 	local lAchei := .f.
 	local I := 0
-	IF MsgYESNO('Aprova as Alteracoes ?')
+	IF MsgYESNO('Aprova as Alterações ?')
 		bRet := .T.
 		ZB2->(dbGoto(nRecZB2))
 		RecLock("ZB2", .F.)
@@ -358,7 +384,7 @@ Static Function INT37_APV(cTab)
 						SA1->A1_XINTECO:= "0"
 					EndIf
 
-					if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+					if SA1->A1_PESSOA == "J"
 						if SA1->A1_XENVSFO == "S"
 							SA1->A1_XINTSFO := "P"
 						endif
@@ -378,7 +404,7 @@ Static Function INT37_APV(cTab)
 							SA1->A1_XINTECO:= "0"
 						EndIf
 
-						if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+						if SA1->A1_PESSOA == "J"
 							if SA1->A1_XENVSFO == "S"
 								SA1->A1_XINTSFO := "P"
 							endif
@@ -393,7 +419,7 @@ Static Function INT37_APV(cTab)
 				SZ9->Z9_XINTSFO := "P"
 			endif
 
-			if cTab == "SB1"  //Tratamento aprov. alteracao produto p/ Salesforce
+			if cTab == "SB1"  //Tratamento aprov. alteraï¿½ï¿½o produto p/ Salesforce
 				
 				if SB1->B1_XENVSFO == "S"
 					SB1->B1_XINTSFO := "P"
@@ -413,6 +439,11 @@ Static Function INT37_APV(cTab)
 
 			IF cTab == 'SB1' .OR. cTab =='SA2' .OR. cTab =='SA4'
 				&(cTab+"->"+cSuf+"_ZTAUREE") := 'S'
+
+				If cTab =='SA2'
+					_AtuCalback('1') //Prepara o ZH3 para fazer o callback
+				End
+
 			ENDIF
 			IF cTab == 'DA3' .OR. cTab =='DA4'
 				&(cTab+"->"+cSuf+"_ZTAURE") := 'S'
@@ -431,7 +462,7 @@ Static Function INT37_APV(cTab)
 			EndIF
 			IF cTab == 'SA4' .OR. cTab == 'SA1' .OR. cTab == 'SA2'
 				If !(cTab == 'SA1' .and. lNotAltSA1)
-					Atu_GFE(cTab,.T.) // .T. Alteracao
+					Atu_GFE(cTab,.T.) // .T. Alteraï¿½ï¿½o
 				Endif
 			EndIF
 		EndIF
@@ -445,9 +476,9 @@ Static Function INT37_REP(cTab)
 	local nI     := 0
 	local cTipX3 := ''
 
-	IF MsgYESNO('Reprovar as Alteracoes ?')
+	IF MsgYESNO('Reprovar as Alterações ?')
 		IF Empty(Alltrim(cOBS))
-			MsgAlert('Observacao em Branco, favor prencher !!')
+			MsgAlert('Observação em Branco, favor prencher !!')
 		Else
 			bRet := .T.
 			ZB2->(dbGoto(nRecZB2))
@@ -479,7 +510,7 @@ Static Function INT37_REP(cTab)
 					SA1->A1_XINTECO:= "0"
 				EndIf
 
-				if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+				if SA1->A1_PESSOA == "J"
 					if SA1->A1_XENVSFO == "S"
 						SA1->A1_XINTSFO := "P"
 					endif
@@ -507,13 +538,18 @@ Static Function INT37_REP(cTab)
 			Next nI
 			IF cTab == 'SB1' .OR. cTab =='SA2' .OR. cTab =='SA4'
 				&(cTab+"->"+cSuf+"_ZTAUREE") := 'S'
+				
+				If cTab =='SA2'
+					_AtuCalback('2') //Prepara o ZH3 para fazer o callback
+				End
+			
 			ENDIF
 			IF cTab == 'DA3' .OR. cTab =='DA4'
 				&(cTab+"->"+cSuf+"_ZTAURE") := 'S'
 			ENDIF
 			&(cTab)->(msUnlock())
 			IF cTab == 'SA4' .OR. cTab == 'SA2' .OR. cTab == 'SA1'
-				Atu_GFE(cTab,.T.) //Alteracao
+				Atu_GFE(cTab,.T.) //Alteraï¿½ï¿½o
 			EndIF
 		EndIF
 	EndIF
@@ -615,7 +651,7 @@ Static Function INT37_INC(cIDSET)
 				ZB3->(msUnlock())
 			EndIF
 		Next nI
-		cMsg := 'Deseja Aprovar a Inclusao ?'
+		cMsg := 'Deseja Aprovar a Inclusão ?'
 		IF MsgYESNO(cMsg)
 			RecLock("ZB2", .F.)
 			ZB2->ZB2_IDAPR  := RetCodUsr()
@@ -654,7 +690,7 @@ Static Function INT37_INC(cIDSET)
 						SA1->A1_XINTECO:= "0"
 					EndIf
 
-					if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+					if SA1->A1_PESSOA == "J"
 						if SA1->A1_XENVSFO == "S"
 							SA1->A1_XINTSFO := "P"
 						endif
@@ -665,7 +701,7 @@ Static Function INT37_INC(cIDSET)
 				elseif cAlias == "SZ9"
 					SZ9->Z9_XINTSFO := "P"
 
-				elseif cAlias == "SB1"  //Tratamento aprov. inclusao p/ Salesforce
+				elseif cAlias == "SB1"  //Tratamento aprov. inclusï¿½o p/ Salesforce
 					if SB1->B1_XENVSFO == "S"
 						SB1->B1_XINTSFO := "P"
 					endif
@@ -673,6 +709,11 @@ Static Function INT37_INC(cIDSET)
 
 				IF cAlias == 'SB1' .OR. cAlias =='SA2' .OR. cAlias =='SA4'
 					&(cAlias+"->"+cSuf+"_ZTAUREE") := 'S'
+
+					If cAlias =='SA2'
+						_AtuCalback('1') //Prepara o ZH3 para fazer o callback
+					End
+					
 				ENDIF
 				IF cAlias == 'DA3' .OR. cAlias =='DA4'
 					&(cAlias+"->"+cSuf+"_ZTAURE") := 'S'
@@ -691,14 +732,14 @@ Static Function INT37_INC(cIDSET)
 				EndIF
 
 				IF cAlias == 'SA4' .OR. cAlias == 'SA1' .OR. cAlias == 'SA2'
-					Atu_GFE(cAlias,.F.) //Inclusao
+					Atu_GFE(cAlias,.F.) //Inclusï¿½o
 				EndIF
 			EndIF
 		Else
 			//IF ZB2->ZB2_SEQ == '01'
-			cOBS := Ret_Obs('Observacao')
+			cOBS := Ret_Obs('Observação')
 			IF Empty(Alltrim(cOBS))
-				MsgAlert('Observacao em Branco, favor prencher !!')
+				MsgAlert('Observação em Branco, favor prencher !!')
 			Else
 				RecLock("ZB2", .F.)
 				ZB2->ZB2_IDAPR  := RetCodUsr()
@@ -720,6 +761,10 @@ Static Function INT37_INC(cIDSET)
 				RecLock(cAlias, .F.)
 				&(cAlias)->(dbDelete())
 				&(cAlias)->(msUnlock())
+
+				If cAlias =='SA2'
+						_AtuCalback('3') //Prepara o ZH3 para fazer o callback
+				End
 
 			EndIF
 		EndIF
@@ -762,7 +807,7 @@ static function INT37_EST(xcCod, xcLoja)
 
 		ZBJ->(msUnlock())
 	// else
-	// 	alert('Representante Nao localizado ou Em Branco')
+	// 	alert('Representante Nï¿½o localizado ou Em Branco')
 	endif
 
 Return
@@ -799,7 +844,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 		aadd(PARAMIXB1,{"A2_LOJA",SA2->A2_LOJA,})
 		if ZB1->ZB1_STATUS=='2'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF alltrim(aTodos[I][1]) == "A2_MSBLQL"
 						aadd(PARAMIXB1,{"A2_MSBLQL",aTodos[I][3],})
 						lachei:= .t.
@@ -808,10 +853,10 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			endIF
 			if !lachei
 				aadd(PARAMIXB1,{"A2_MSBLQL","1",})
-			ENDIF //FIM ALTERACAO RAFAEL 28/12/2018
+			ENDIF //FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 		ELSEIF ZB1->ZB1_STATUS=='1'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF  alltrim(aTodos[I][1]) == "A2_MSBLQL"
 						aadd(PARAMIXB1,{"A2_MSBLQL",aTodos[I][4],})
 						lachei:= .t.
@@ -820,12 +865,12 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			EndIF
 			if !lachei
 				aadd(PARAMIXB1,{"A2_MSBLQL","2",})
-			endif	//FIM ALTERACAO RAFAEL 28/12/2018
+			endif	//FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 		ENDIF
 		//aadd(PARAMIXB1,{"A2_MSBLQL",SA2->A2_MSBLQL,}) ALTERADO RAFAEL 01/11/2018
 		MSExecAuto({|x,y| mata020(x,y)},PARAMIXB1,4)
 		If lMsErroAuto
-			msgAlert("Erro! Aprovacao/Reprovaï¿½ï¿½o da alteracao do FORNECEDOR nao refletida no cadastro de EMITENTES do GFE!")
+			msgAlert("Erro! Aprovação/Reprovação da alteração do FORNECEDOR não refletida no cadastro de EMITENTES do GFE!")
 		EndIf
 	ElseIF cTab == 'SA1'
 		dbSelectArea('SA1')
@@ -834,7 +879,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 		aadd(PARAMIXB1,{"A1_LOJA",SA1->A1_LOJA,})
 		if ZB1->ZB1_STATUS=='2'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF  alltrim(aTodos[I][1]) == "A1_MSBLQL"
 						aadd(PARAMIXB1,{"A1_MSBLQL",aTodos[I][3],})
 						lachei:= .t.
@@ -843,11 +888,11 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			EndIF
 			if !lachei
 				aadd(PARAMIXB1,{"A1_MSBLQL","1",})
-			ENDIF //FIM ALTERACAO RAFAEL 28/12/2018
+			ENDIF //FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 
 		ELSEIF ZB1->ZB1_STATUS=='1'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF alltrim(aTodos[I][1]) == "A1_MSBLQL"
 						aadd(PARAMIXB1,{"A1_MSBLQL",aTodos[I][4],})
 						lachei:= .t.
@@ -856,7 +901,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			EndIF
 			if !lachei
 				aadd(PARAMIXB1,{"A1_MSBLQL","2",})
-			ENDIF //FIM ALTERACAO RAFAEL 28/12/2018
+			ENDIF //FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 			If SA1->A1_ZINATIV == "1"
 				aadd(PARAMIXB1,{"A1_ZINATIV", "0",})
 			EndIf
@@ -864,7 +909,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 				aadd(PARAMIXB1,{"A1_XINTECO", "0",})
 			EndIf
 
-			if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+			if SA1->A1_PESSOA == "J"
 				if SA1->A1_XENVSFO == "S"
 					aadd(PARAMIXB1,{"A1_XINTSFO", "P",})
 				endif
@@ -876,7 +921,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 
 		MSExecAuto({|x,y| mata030(x,y)},PARAMIXB1,4)
 		If lMsErroAuto
-			msgAlert("Erro! Aprovacao/Reprovaï¿½ï¿½o da alteracaoï¿½ï¿½o do CLIENTE nao refletida no cadastro de EMITENTES do GFE!")
+			msgAlert("Erro! Aprovação/Reprovaï¿½ï¿½o da alteraçãoï¿½ï¿½o do CLIENTE não refletida no cadastro de EMITENTES do GFE!")
 		EndIf
 	ElseIF	cTab == 'SA4'
 		dbSelectArea('SA4')
@@ -884,7 +929,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 		aadd(PARAMIXB1,{"A4_COD",SA4->A4_COD,})
 		if ZB1->ZB1_STATUS=='2'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF alltrim(aTodos[I][1]) == AllTrim("A4_MSBLQL")
 						aadd(PARAMIXB1,{"A4_MSBLQL",aTodos[I][3],})
 						lachei:= .t.
@@ -893,10 +938,10 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			EndIF
 			if !lachei
 				aadd(PARAMIXB1,{"A4_MSBLQL","1",})
-			ENDIF //FIM ALTERACAO RAFAEL 28/12/2018
+			ENDIF //FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 		ELSEIF ZB1->ZB1_STATUS=='1'
 			IF bAlteracao
-				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERACAO RAFAEL 28/12/2018
+				FOR I:= 1 TO LEN(aTodos) //INICIO ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 					IF alltrim(aTodos[I][1]) == AllTrim("A4_MSBLQL")
 						aadd(PARAMIXB1,{"A4_MSBLQL",aTodos[I][4],})
 						lachei:= .t.
@@ -905,7 +950,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 			EndIF
 			if !lachei
 				aadd(PARAMIXB1,{"A4_MSBLQL","2",})
-			ENDIF //FIM ALTERACAO RAFAEL 28/12/2018
+			ENDIF //FIM ALTERAï¿½ï¿½O RAFAEL 28/12/2018
 
 
 			//	aadd(PARAMIXB1,{"A4_MSBLQL","2",})
@@ -914,7 +959,7 @@ Static Function Atu_GFE(cTAB,bAlteracao)
 		//aadd(PARAMIXB1,{"A4_MSBLQL",SA4->A4_MSBLQL,})ALTERADO RAFAEL 01/11/2018 tratamento para bloquear registro reprovado
 		MSExecAuto({|x,y| mata050(x,y)},PARAMIXB1,4)
 		If lMsErroAuto
-			msgAlert("Erro! Aprovacao/Reprovaï¿½ï¿½o da alteracao da TRANSPORTADORA nao refletida no cadastro de EMITENTES do GFE!")
+			msgAlert("Erro! Aprovação/Reprovação da alteração da TRANSPORTADORA não refletida no cadastro de EMITENTES do GFE!")
 		EndIf
 	EndIF
 /*
@@ -1016,7 +1061,7 @@ Static Function INT37_BAS(cIDSET)
 	ENDCASE
 
 	IF !bTem
-		MsgAlert('Tipo de Cadastro nao tem base de conhecimento!')
+		MsgAlert('Tipo de Cadastro não tem base de conhecimento!')
 		Return
 	EndIF
 
@@ -1084,7 +1129,7 @@ Static Function Cad_Transportadora()
 		For nI := 1 to Len(aErro)
 			cErro += aErro[nI] + CRLF
 		Next nI
-		MsgStop("Erro na gravacao da transportadora: " +cErro)
+		MsgStop("Erro na gravação da transportadora: " +cErro)
 	EndIf
 
 	RestArea(cArea)
@@ -1094,7 +1139,7 @@ Return
 User Function INT37_VIS
 
 //local aCoors  := 	FWGetDialogSize( oMainWnd )
-//DEFINE MSDIALOG oDlg TITLE 'Consulta Alteracoes' FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] PIXEL
+//DEFINE MSDIALOG oDlg TITLE 'Consulta Alteraï¿½ï¿½es' FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] PIXEL
 	local oDlg1
 	local oButton
 	local oBold
@@ -1122,7 +1167,7 @@ User Function INT37_VIS
 		cDados     := SA1->A1_NOME
 		bAba       := .T.
 	CASE ZB1->ZB1_CAD == '2'
-		cCadZB1    :=  "Cadastro de Endereco de Entrega"
+		cCadZB1    :=  "Cadastro de Endereço de Entrega"
 		cTab       := 'SZ9'
 		dbSelectArea('SZ9')
 		SZ9->(dbGoTo(ZB1->ZB1_RECNO))
@@ -1195,7 +1240,7 @@ User Function INT37_VIS
 		ZB2->(dbSkip())
 	End
 
-	cCadZB1 += IIF(ZB1->ZB1_TIPO =='1', ' - Inclusao',' - Alteracao')
+	cCadZB1 += IIF(ZB1->ZB1_TIPO =='1', ' - Inclusão',' - Alteração')
 	Carrega_dados(aAprova[01,08])
 
 	DEFINE MSDIALOG oDlg1 TITLE "Consulta Campos Alterados" FROM 000, 000  TO 570, 810 COLORS 0, 16777215 PIXEL
@@ -1215,7 +1260,7 @@ User Function INT37_VIS
 	oListDados:bChange     := {||AtualizaBrowse()}
 
 
-	oListZB3 := TWBrowse():New( 120,009,391,150,,{'Campo','Descricao','Conteudo Anterior','Conteudo Atual'},{30,40,120,90},oDlg1, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
+	oListZB3 := TWBrowse():New( 120,009,391,150,,{'Campo','Descrição','Conteúdo Anterior','Conteúdo Atual'},{30,40,120,90},oDlg1, , , ,,{||}, , , , ,,,.F.,,.T.,,.F.,,, )
 	oListZB3:SetArray(aZB3)
 	cbLine := "{||{ aZB3[oListZB3:nAt,01], aZB3[oListZB3:nAt,02], aZB3[oListZB3:nAt,03], aZB3[oListZB3:nAt,04]} }"
 	oListZB3:bLine       := &cbLine
@@ -1272,3 +1317,76 @@ Static Function AtualizaBrowse
 	oListZB3:Refresh()
 
 Return
+
+/*/
+{Protheus.doc} _AtuCalback()
+Atualiza status para fazer o callback
+
+@description
+Atualiza status para fazer o callback
+- 
+'1' = Inclusão grade aprovada
+'2' = Inclusão grade rejeitada
+'3' = Alteração grade rejeitada
+
+@author Edson Bella Gonçalves
+@since 25/11/2020
+
+@version P12.1.017
+@country Brasil
+@language Português
+
+@type Function
+@table
+	ZH3 - Status integração
+@param
+@return
+
+@menu
+@history
+/*/
+
+Static Function _AtuCalback(_cOper)
+
+_cHash   := GetNextAlias()
+
+BeginSql Alias _cHash
+
+	SELECT
+		ZH3_HASH
+	FROM
+		%table:ZH3% ZH3
+	WHERE
+		SubStr(ZH3_CHAVE,1,6)=%exp:SA2->A2_FILIAL% AND
+		SubStr(ZH3_CHAVE,7,6)=%exp:SA2->A2_COD% AND
+		SubStr(ZH3_CHAVE,13,2)=%exp:SA2->A2_LOJA% AND
+		ZH3_CODINT='008' AND ZH3_CODTIN='018' AND ZH3_STATUS='3' AND
+		ZH3.%notDel%
+EndSql
+
+If !Eof()
+
+	dbSelectArea("ZH3")
+	dbSetOrder(4)
+	If dbSeek((_cHash)->ZH3_HASH)
+		RecLock("ZH3")
+		ZH3->ZH3_STATUS:=If(_cOper=='1','4',If(_cOper=='2','B','9')) //Pronto para enviar o callback
+		_cReturn:=ZH3->ZH3_RETURN
+		If _cReturn<>''
+			_cReturn+=CRLF+"========================"+CRLF
+		End
+		_cReturn+=DtoC(date())+" - "+Time()+CRLF
+		If _cOper=='1'
+			_cReturnA:="Passado pela aprovação"+CRLF
+		ElseIf _cOper=='2'
+			_cReturnA:="Alteração REJEITADA"+CRLF
+		ElseIf _cOper=='3'
+			_cReturnA:="Inclusão REJEITADA. Cadastro NÃO EFETUADO no Protheus"+CRLF
+		EndIf
+		ZH3->ZH3_RETURN:=_cReturn+"Status "+ZH3->ZH3_STATUS+" - "+_cReturnA
+		MsUnlock()
+	End
+End
+dbSelectArea("SA2")
+
+Return .t.

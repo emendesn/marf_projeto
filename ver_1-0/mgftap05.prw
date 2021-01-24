@@ -100,7 +100,6 @@ User Function MGFTAP05( aParam )
 				SC2->( dbSetOrder(1) ) //D3_FILIAL+D3_DOC+D3_COD
 				SC2->( dbSeek( cFilAnt+cNumOrd ) )
 
-
 				SD3->( dbSetOrder(2) ) //D3_FILIAL+D3_DOC+D3_COD
 				SD3->( dbSeek( cFilAnt+cNumDoc+cCodPro ) )
 
@@ -173,7 +172,31 @@ User Function MGFTAP05( aParam )
 
 					Endif
 
+					
+					SC2->( dbSetOrder(1) ) //D3_FILIAL+D3_DOC+D3_COD
+					SC2->( dbSeek( cFilAnt+cNumOrd ) )
+
+					//Reabre op se precisar
+					If !Empty(SC2->C2_DATRF)
+						_nsc2pos := SC2->(Recno())
+						lOpEnc	:= .T.
+						_dorifec := SC2->C2_DATRF
+						Reclock("SC2",.F.)
+						SC2->C2_DATRF := stod(" ")
+						SC2->(Msunlock())
+					Else
+						lOpEnc	:= .F.
+					EndIf
+
 					msExecAuto({|x,Y| Mata240(x,Y)},aRotAuto,nOpc)
+
+					//Fecha novamente op que estava encerrada
+					If lOpEnc
+						SC2->(Dbgoto(_nsc2pos))
+						Reclock("SC2",.F.)
+						SC2->C2_DATRF := _dorifec
+						SC2->(Msunlock())
+					Endif
 
 					//Apaga registro criado na SD4 para não poluir a base de dados
 					If _npossd4 > 0

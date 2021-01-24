@@ -15,7 +15,7 @@ Data.....:              25/03/2017
 Descricao / Objetivo:   RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -29,13 +29,13 @@ user function MGFCRM05()
 	//Define um alias para o Browse
 	oBrowse:SetAlias(_cAlias)
 	//Adiciona uma descriÃ§Ã£o para o Browse
-	oBrowse:SetDescription('Relatorio de Anï¿½lise de Mercado Interno')
+	oBrowse:SetDescription('Relatório de Análise de Mercado Interno')
 
 	/*Define legenda para o Browse de acordo com uma variavel
 	Obs: Para visuzalir as legenda em MVC basta dar duplo clique no marcador de legenda*/
 	oBrowse:AddLegend( _cAlias + "_STATUS=='0' .AND. " + _cAlias + "_TPFLAG<>'1'"	, "RED"		, "Em andamento"	)
 	oBrowse:AddLegend( _cAlias + "_STATUS=='1' .AND. " + _cAlias + "_TPFLAG<>'1'" 	, "GREEN"	, "Finalizado"		)
-	oBrowse:AddLegend( _cAlias + "_STATUS<>' ' .AND. " + _cAlias + "_TPFLAG=='1'"	, "Orange"	, "Reclamaï¿½ï¿½o"		)
+	oBrowse:AddLegend( _cAlias + "_STATUS<>' ' .AND. " + _cAlias + "_TPFLAG=='1'"	, "Orange"	, "Reclamação"		)
 
 	//Ativa o Browse
 	oBrowse:Activate()
@@ -56,9 +56,9 @@ static function MenuDef()
 	ADD OPTION aRotina TITLE 'Alterar'		 			ACTION 'VIEWDEF.MGFCRM05'	OPERATION 4 ACCESS 0
 	ADD OPTION aRotina TITLE 'Excluir'		 			ACTION 'VIEWDEF.MGFCRM05'	OPERATION 5 ACCESS 0
 	ADD OPTION aRotina TITLE 'Conhecimento'	 			ACTION 'U_ZAVRECNO'			OPERATION 2 ACCESS 0
-	ADD OPTION aRotina TITLE 'Relatorio'	 			ACTION 'U_MGFCRM45'			OPERATION 2 ACCESS 0
+	ADD OPTION aRotina TITLE 'Relatório'	 			ACTION 'U_MGFCRM45'			OPERATION 2 ACCESS 0
 	ADD OPTION aRotina TITLE 'Finaliza RAMI' 			ACTION 'U_MGFIMRAM'			OPERATION 2 ACCESS 0
-	ADD OPTION aRotina TITLE 'Estorna Finalizacao RAMI' ACTION 'U_MGFEXTRAM'		OPERATION 2 ACCESS 0
+	ADD OPTION aRotina TITLE 'Estorna Finalização RAMI' ACTION 'U_MGFEXTRAM'		OPERATION 2 ACCESS 0
 	ADD OPTION aRotina TITLE 'Imprimir Motivo' 			ACTION 'U_MGFCRM53'			OPERATION 2 ACCESS 0
 
 return aRotina
@@ -91,12 +91,12 @@ static function ModelDef()
 	'BT'				, ;	// [04]  C   Tipo do campo
 	2					, ;	// [05]  N   Tamanho do campo
 	0					, ;	// [06]  N   Decimal do campo
-						, ;	// [07]  B   Code-block de validacao do campo
-						, ;	// [08]  B   Code-block de validacao When do campo
+						, ;	// [07]  B   Code-block de validação do campo
+						, ;	// [08]  B   Code-block de validação When do campo
 						, ;	// [09]  A   Lista de valores permitido do campo
-	.F.					, ;	// [10]  L   Indica se o campo tem preenchimento obrigatï¿½rio
+	.F.					, ;	// [10]  L   Indica se o campo tem preenchimento obrigatório
 	{|| iniBtnAdd() }	, ;	// [11]  B   Code-block de inicializacao do campo
-	)						// [14]  L   Indica se o campo ï¿½ virtual
+	)						// [14]  L   Indica se o campo é virtual
 
 	oStruSD2:AddField(		;	// Ord. Tipo Desc.
 	""						, ;	// [01]  C   Titulo do campo
@@ -105,12 +105,12 @@ static function ModelDef()
 	'C'						, ;	// [04]  C   Tipo do campo
 	76						, ;	// [05]  N   Tamanho do campo
 	0						, ;	// [06]  N   Decimal do campo
-							, ;	// [07]  B   Code-block de validacao do campo
-							, ;	// [08]  B   Code-block de validacao When do campo
+							, ;	// [07]  B   Code-block de validação do campo
+							, ;	// [08]  B   Code-block de validação When do campo
 							, ;	// [09]  A   Lista de valores permitido do campo
-	.F.						, ;	// [10]  L   Indica se o campo tem preenchimento obrigatï¿½rio
+	.F.						, ;	// [10]  L   Indica se o campo tem preenchimento obrigatório
 	{ || iniD2Desc() }		, ;	// [11]  B   Code-block de inicializacao do campo
-	)							// [14]  L   Indica se o campo ï¿½ virtual
+	)							// [14]  L   Indica se o campo é virtual
 
 	//----------------------------------------------------------------------------------------
 	// ADICAO DE GATILHOS
@@ -131,8 +131,8 @@ static function ModelDef()
 	oStruSD2:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                                       // [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                                       // [04] Bloco de codigo de execução do gatilho
 
 
 
@@ -150,8 +150,8 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1], ;                                                   	// [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                                       // [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                                       // [04] Bloco de codigo de execução do gatilho
 
 	aAux := FwStruTrigger(;
 	'ZAW_PRECO'					,;	// DOMINIO
@@ -167,8 +167,8 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1], ;                                                      // [01] Id do campo de origem
 	aAux[2], ;                                                      // [02] Id do campo de destino
-	aAux[3], ;                                                      // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                                       // [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                                      // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                                       // [04] Bloco de codigo de execução do gatilho
 
 
 	aAux := FwStruTrigger(;
@@ -185,8 +185,8 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1], ;                                          // [01] Id do campo de origem
 	aAux[2], ;                                          // [02] Id do campo de destino
-	aAux[3], ;                                          // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )                                     		// [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;                                          // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )                                     		// [04] Bloco de codigo de execução do gatilho
 
 	aAux := FwStruTrigger(;
 	'ZAW_DIRECI'								,;		// DOMINIO
@@ -202,8 +202,8 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1]			,;		// [01] Id do campo de origem
 	aAux[2]			,;		// [02] Id do campo de destino
-	aAux[3]			,;		// [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )        		// [04] Bloco de codigo de execucao do gatilho
+	aAux[3]			,;		// [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )        		// [04] Bloco de codigo de execução do gatilho
 
 
 	aAux := FwStruTrigger(;
@@ -220,10 +220,10 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1], ; 					// [01] Id do campo de origem
 	aAux[2], ; 					// [02] Id do campo de destino
-	aAux[3], ;					// [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] )					// [04] Bloco de codigo de execucao do gatilho
+	aAux[3], ;					// [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] )					// [04] Bloco de codigo de execução do gatilho
 
-	//identifica o usuario de alteracao do status das ocorrencias
+	//identifica o usuário de alteração do status das ocorrências
 	aAux := FwStruTrigger(;
 	"ZAW_STATUS"		,;			// DOMINIO
 	"ZAW_LOGUSR"		,;			// CONTRA DOMINIO
@@ -238,8 +238,8 @@ static function ModelDef()
 	oStruZAW:AddTrigger( ;
 	aAux[1]				,;          // [01] Id do campo de origem
 	aAux[2]				,;          // [02] Id do campo de destino
-	aAux[3]				,;          // [03] Bloco de codigo de validacao da execucao do gatilho
-	aAux[4] 			) 			// [04] Bloco de codigo de execucao do gatilho
+	aAux[3]				,;          // [03] Bloco de codigo de validação da execução do gatilho
+	aAux[4] 			) 			// [04] Bloco de codigo de execução do gatilho
 
 	oStruZAW:SetProperty("ZAW_DIRECI"	, MODEL_FIELD_VALID		, { || U_MGFCRM50( 3 ) } )
 
@@ -277,7 +277,7 @@ static function ModelDef()
 	oModel:SetRelation( 'ZAWDETAIL' , aZAWRel , ZAW->(IndexKey( 1 )) )
 	oModel:SetRelation( 'ZAXDETAIL' , aZAXRel , ZAX->(IndexKey( 1 )) )
 
-	oModel:SetDescription( 'Relatorio de Anï¿½lise de Mercado Interno' )
+	oModel:SetDescription( 'Relatório de Análise de Mercado Interno' )
 
 	oModel:GetModel( 'ZAWDETAIL'):SetOptional(.T.)
 	oModel:GetModel( 'ZAXDETAIL'):SetOptional(.T.)
@@ -286,8 +286,8 @@ static function ModelDef()
 
 	oModel:GetModel( 'ZAVMASTER' ):SetDescription( 'RAMI' )
 	oModel:GetModel( 'SD2DETAIL' ):SetDescription( 'Notas' )
-	oModel:GetModel( 'ZAWDETAIL' ):SetDescription( 'Ocorrï¿½ncias' )
-	oModel:GetModel( 'ZAXDETAIL' ):SetDescription( 'Resoluï¿½ï¿½o' )
+	oModel:GetModel( 'ZAWDETAIL' ):SetDescription( 'Ocorrências' )
+	oModel:GetModel( 'ZAXDETAIL' ):SetDescription( 'Resolução' )
 
 	oModel:GetModel( 'SD2DETAIL' ):SetNoInsertLine( .T. )
 	oModel:GetModel( 'ZAWDETAIL' ):SetNoInsertLine( .T. )
@@ -308,41 +308,41 @@ static function ViewDef()
 
 	oStruSD2:AddField(	"D2_ZCRITIC"								,;	// [01]  C   Nome do Campo
 	"01"															,;	// [02]  C   Ordem
-	"Add"															,;	// [03]  C   Titulo do campo//"Descricao"
-	"Critica"														,;	// [04]  C   Descricao do campo//"Descricao"
+	"Add"															,;	// [03]  C   Titulo do campo//"Descrição"
+	"Critica"														,;	// [04]  C   Descricao do campo//"Descrição"
 	NIL																,;	// [05]  A   Array com Help
 	"BT"															,;	// [06]  C   Tipo do campo
 	""																,;	// [07]  C   Picture
 	NIL																,;	// [08]  B   Bloco de Picture Var
 	NIL																,;	// [09]  C   Consulta F3
-	.T.																,;	// [10]  L   Indica se o campo ï¿½ alteravel
+	.T.																,;	// [10]  L   Indica se o campo é alteravel
 	NIL																,;	// [11]  C   Pasta do campo
 	NIL																,;	// [12]  C   Agrupamento do campo
 	NIL																,;	// [13]  A   Lista de valores permitido do campo (Combo)
-	NIL																,;	// [14]  N   Tamanho maximo da maior opcao do combo
+	NIL																,;	// [14]  N   Tamanho maximo da maior opção do combo
 	NIL																,;	// [15]  C   Inicializador de Browse
-	.T.																,;	// [16]  L   Indica se o campo ï¿½ virtual
+	.T.																,;	// [16]  L   Indica se o campo é virtual
 	NIL																,;	// [17]  C   Picture Variavel
-	NIL																)	// [18]  L   Indica pulo de linha apos o campo
+	NIL																)	// [18]  L   Indica pulo de linha após o campo
 
 	oStruSD2:AddField(	"D2_ZDESCB1"												,;	// [01]  C   Nome do Campo
 	"04"																			,;	// [02]  C   Ordem
-	"Descricao"																		,;	// [03]  C   Titulo do campo//"Descricao"
-	"Descricao"																		,;	// [04]  C   Descricao do campo//"Descricao"
+	"Descrição"																		,;	// [03]  C   Titulo do campo//"Descrição"
+	"Descrição"																		,;	// [04]  C   Descricao do campo//"Descrição"
 	NIL																				,;	// [05]  A   Array com Help
 	"C"																				,;	// [06]  C   Tipo do campo
 	""																				,;	// [07]  C   Picture
 	NIL																				,;	// [08]  B   Bloco de Picture Var
 	NIL																				,;	// [09]  C   Consulta F3
-	.F.																				,;	// [10]  L   Indica se o campo ï¿½ alteravel
+	.F.																				,;	// [10]  L   Indica se o campo é alteravel
 	NIL																				,;	// [11]  C   Pasta do campo
 	NIL																				,;	// [12]  C   Agrupamento do campo
 	NIL																				,;	// [13]  A   Lista de valores permitido do campo (Combo)
-	NIL																				,;	// [14]  N   Tamanho maximo da maior opcao do combo
+	NIL																				,;	// [14]  N   Tamanho maximo da maior opção do combo
 	NIL																				,;	// [15]  C   Inicializador de Browse
-	.T.																				,;	// [16]  L   Indica se o campo ï¿½ virtual
+	.T.																				,;	// [16]  L   Indica se o campo é virtual
 	NIL																				,;	// [17]  C   Picture Variavel
-	NIL																				)	// [18]  L   Indica pulo de linha apos o campo
+	NIL																				)	// [18]  L   Indica pulo de linha após o campo
 
 	oView:SetModel( oModel )
 
@@ -363,11 +363,11 @@ static function ViewDef()
 	oView:SetOwnerView( 'VIEW_ZAW', 'OCORRENCIA' )
 	oView:SetOwnerView( 'VIEW_ZAX', 'RESOLUCAO' )
 
-	//Habilitando titulo
+	//Habilitando título
 	oView:EnableTitleView('ZAVMASTER','RAMI')
 	oView:EnableTitleView('SD2DETAIL','Itens da Nota')
-	oView:EnableTitleView('ZAWDETAIL','Ocorrï¿½ncias')
-	oView:EnableTitleView('ZAXDETAIL','Resoluï¿½ï¿½o')
+	oView:EnableTitleView('ZAWDETAIL','Ocorrências')
+	oView:EnableTitleView('ZAXDETAIL','Resolução')
 
 	oStruZAV:SetProperty(_cAlias + '_COMERC'	, MVC_VIEW_CANCHANGE	, .T.)
 	oStruZAV:SetProperty(_cAlias + '_QUALID'	, MVC_VIEW_CANCHANGE	, .T.)
@@ -453,7 +453,7 @@ static function chkStatZAX(cNotaZAX, cSerieZAX, cItemZAX)
 return lChkZAX
 
 //--------------------------------------------------------
-// Nao  permite alterar o cabecalho da RAMI
+// Não permite alterar o cabeçalho da RAMI
 //--------------------------------------------------------
 user function chkAlt()
 	Local lRet		:= .T.
@@ -467,7 +467,7 @@ user function chkAlt()
 return lRet
 
 //--------------------------------------------------------
-// Nao  permite alterar o cabecalho da RAMI
+// Não permite alterar o cabeçalho da RAMI
 //--------------------------------------------------------
 user function chkAlt2()
 	Local lRet		:= .T.
@@ -548,20 +548,20 @@ user function gatilNota(cRet)
 
 	if empty(cNota) .or. empty(cSerie)
 		lRet	:= .F.
-		Help( ,, 'MGFCRM05',, 'Nota e/ou serie invï¿½lida(s).', 1, 0 )
+		Help( ,, 'MGFCRM05',, 'Nota e/ou série inválida(s).', 1, 0 )
 	else
 		cAlias := getItensNF(cNota, cSerie)
 		if (cAlias)->(!eof())
 			carregaItensNF()
 		else
-			Help( ,, 'MGFCRM05',, 'Nota e/ou serie nao Localizada(s).', 1, 0 )
+			Help( ,, 'MGFCRM05',, 'Nota e/ou série não Localizada(s).', 1, 0 )
 		endif
 		(cAlias)->(dbCloseArea())
 	endif
 return cRet
 
 /*
-*	Funcao responsï¿½vel pelo retorno dos itens da NF.
+*	Função responsável pelo retorno dos itens da NF.
 */
 static function getItensNF(cNota, cSerie)
 	Local _cQuery	:= ""
@@ -645,12 +645,12 @@ static function getItensNF(cNota, cSerie)
 	tcQuery _cQuery New Alias (cAlias)
 
 	If (CALIAS)->(EOF())
-		MsgAlert('NF jï¿½ possui RAMI vinculada a todos os seus itens!')
+		MsgAlert('NF já possui RAMI vinculada a todos os seus itens!')
 	EndIf
 return cAlias
 
 /*
-*	Funcao responsï¿½vel pela carga dos itens da NF.
+*	Função responsável pela carga dos itens da NF.
 */
 static function carregaItensNF()
 	Local oModel 		:= FWModelActive()
@@ -714,11 +714,11 @@ user function sd2ADD(xRet)
 
 		nQtdDispo := (nQtdDispo - nQtdUtil)
 		if nQtdDispo <= 0
-			msgAlert("Este item nao possui quantidade disponivel.")
+			msgAlert("Este item não possui quantidade disponível.")
 			return xRet
 		endif
 	else
-		msgAlert("Este item nao possui quantidade disponivel.")
+		msgAlert("Este item não possui quantidade disponível.")
 	endif
 
 	// INSERE OCORRENCIA
@@ -816,7 +816,7 @@ user function stsZAW()
 	local _cUser		:=	''
 
 
-	// Atualiza Log de usuario da ZAW
+	// Atualiza Log de usuário da ZAW
 	_cUser	:=	ALLTRIM(cUserName) + '-' + DTOC(dDataBase) + '-' + left(time(), 5)
 	oMdlZAW:SetValue("ZAW_LOGUSR", _cUser)
 	// FWRestRows( aSaveLines )
@@ -847,7 +847,7 @@ user function getDirec(cDirec, nTipo)
 			cRetZAU := QRYZAU->ZAU_JUSTIF
 		endif
 	else
-		msgAlert("Nao  encontrado o codigo do direcionamento.")
+		msgAlert("Não encontrado o código do direcionamento.")
 	endif
 
 	QRYZAU->(DBCloseArea())
@@ -877,7 +877,7 @@ user function MDLCRM05()
 	Local cAliasSD1e	:= ""
 
 	If ParamIxb[2] == 'MODELVLDACTIVE' .and. nOperation == MODEL_OPERATION_UPDATE
-		If ZAV->ZAV_STATUS ==  "1" //inicio Alteracao Rafael
+		If ZAV->ZAV_STATUS ==  "1" //inicio Alteração Rafael
 			If Select("QRYZAU")   > 0
 				QRYZAU->(DBCLOSEAREA())
 			endif
@@ -932,9 +932,9 @@ user function MDLCRM05()
 			If Select("QRYSYS")   > 0
 				QRYSYS->(DBCLOSEAREA())
 			endif
-			Help( ,, 'MGFCRM05',, 'Processo finalizado. Nao e possivel alterar.', 1, 0 )
+			Help( ,, 'MGFCRM05',, 'Processo finalizado. Não é possível alterar.', 1, 0 )
 			return .F.
-		else //fim alteracao Rafael
+		else //fim alteração Rafael
 			return .T.
 		endif
 	Elseif ParamIxb[2] == 'MODELVLDACTIVE' .and. nOperation == MODEL_OPERATION_DELETE
@@ -956,7 +956,7 @@ user function MDLCRM05()
 
 			If (cAliasSD1e)->(!eof())
 
-				MsgAlert('RAMI nao pode ser excluida! Hï¿½ processos vinculados a essa RAMI')
+				MsgAlert('RAMI não pode ser excluída! Há processos vinculados a essa RAMI')
 
 				Return .F.
 			Else
@@ -1224,7 +1224,7 @@ static function getEmails(cPara)
 		cPara += ";" + cMailAux
 	endif
 
-	//	If QRYZAV->ZAV_ORDRET == "1"  //0=Nao ,1=Sim ALTERADO RAFAEL
+	//	If QRYZAV->ZAV_ORDRET == "1"  //0=Não,1=Sim ALTERADO RAFAEL
 	If ZAV->ZAV_ORDRET == "1"
 		cMailAux := ""
 		cMailAux := getMailZBK()
@@ -1405,7 +1405,7 @@ static function bodyMail(cCorpo, cCdRami)
 	cHtml += "	</STYLE>"
 	cHtml += "</HEAD>"
 	cHtml += "<BODY LANG='pt-BR' DIR='LTR'>"
-	cHtml += "<P><font face = 'verdana' size='5'><strong>RAMI - Relatorio de Anï¿½lise de Mercado Interno</strong></font></p>" +CRLF
+	cHtml += "<P><font face = 'verdana' size='5'><strong>RAMI - Relatório de Análise de Mercado Interno</strong></font></p>" +CRLF
 	cHtml += CRLF+"<P><b><font face = 'verdana' size='3'>Senha do RAMI:" + cCdRami + "</font></b></p>"
 	cHtml += CRLF+"<P><b><font face = 'verdana' size='3'>Itens:</font></b></p>"
 	cHtml += cCorpo
@@ -1460,7 +1460,7 @@ static function bodyMail(cCorpo, cCdRami)
 		DbSetOrder(1)
 		SA1->(MsSeek(xFilial('SA1') + (cAliasZAW)->ZAV_CLIENTE + (cAliasZAW)->ZAV_LOJA ))
 
-		///posiciona Endereco de entrega
+		///posiciona Endereço de entrega
 		DbSelectArea('SZ9')
 		DbSetOrder(1)//Z9_FILIAL+Z9_ZCLIENT+Z9_ZLOJA+Z9_ZIDEND
 		SZ9->(MsSeek(xFilial('SZ9') + SC5->C5_CLIENTE + SC5->C5_LOJACLI + SC5->C5_ZIDEND ))
@@ -1511,7 +1511,7 @@ static function bodyMail(cCorpo, cCdRami)
 		cHtml += "</tr>"
 		cHtml += "<tr>"
 		cHtml += "<td>Unidade:  " + (cAliasZAW)->ZAV_FILIAL + "</td>"
-		cHtml += "<td>Dt.Ocorrencia  " + DTOC(STOD((cAliasZAW)->ZAV_DTABER)) + "</td>"
+		cHtml += "<td>Dt.Ocorrência  " + DTOC(STOD((cAliasZAW)->ZAV_DTABER)) + "</td>"
 
 		cHtml += "</tr>"
 		cHtml += "<tr>"
@@ -1544,7 +1544,7 @@ static function bodyMail(cCorpo, cCdRami)
 		cHtml += "</body>"
 		cHtml += "</html>"
 
-		// Cabecalho dos Itens
+		// Cabeçalho dos Itens
 
 		cHtml += "<HTML>"
 		cHtml += "<HEAD>"
@@ -1567,7 +1567,7 @@ static function bodyMail(cCorpo, cCdRami)
 		cHtml += "</tr>"
 		cHtml += "<tr>"
 		cHtml += "<td>Codigo</td>"
-		cHtml += "<td>Descricao</td>"
+		cHtml += "<td>Descrição</td>"
 		cHtml += "<td>Qtd</td>"
 		cHtml += "<td>Unid.</td>"
 		cHtml += "<td>Valor</td>"
@@ -1717,11 +1717,11 @@ static function prevldSD2(oModel, nLin, cPonto, cCpo, e)
 
 	If cPonto == 'DELETE'
 		xRet := .F.
-		Help( ,, 'Nao  permitido',, "Nao e possivel excluir linhas da Nota Fiscal.", 1, 0 )
+		Help( ,, 'Não permitido',, "Não é possível excluir linhas da Nota Fiscal.", 1, 0 )
 	else
 		if nOper <> MODEL_OPERATION_INSERT
 			xRet := .F.
-			Help( ,, 'Nao  permitido',, "Nao e possivel alterar linhas da Nota Fiscal.", 1, 0 )
+			Help( ,, 'Não permitido',, "Não é possível alterar linhas da Nota Fiscal.", 1, 0 )
 		endif
 	EndIf
 Return xRet
@@ -1747,7 +1747,7 @@ static function prevldZAV(oModel, cPonto, cCpo, xConteud)
 			if oMdlZAW:Length() > 0
 				oMdlZAW:goLine(1)
 				if !empty( oMdlZAW:getValue("ZAW_NOTA") )
-					help( ,, 'MGFCRM05',, 'Nao  perimtido alterar este campo apos a inclusao de Ocorrï¿½ncias.', 1, 0 )
+					help( ,, 'MGFCRM05',, 'Não perimtido alterar este campo após a inclusão de Ocorrências.', 1, 0 )
 					xRet := .F.
 				endif
 			endif
@@ -1778,7 +1778,7 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 	DbSetOrder(1)//ZAU_FILIAL+ZAU_CODIGO
 	ZAU->(Msseek(xFilial('ZAU') + oMdlZAW:getValue("ZAW_DIRECI")))
 	if ZAV_STATUS<>'1'
-		cUserAlt:=GETMV('MGF_USRCOM')///Usuarios comercial
+		cUserAlt:=GETMV('MGF_USRCOM')///Usuários comercial
 	ENDIF
 	if cPonto == 'DELETE'
 		oMdlZAX:goLine( nLin )
@@ -1813,7 +1813,7 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 									nQtdDisp := ( oMdlSD2:getValue("D2_QUANT") - nQtdOcor )
 
 									if M->ZAW_QTD > nQtdDisp
-										Help( ,, 'Nao  permitido',, "Quantidade informada ï¿½ maior que a quantidade da Nota Fiscal.", 1, 0 )
+										Help( ,, 'Não permitido',, "Quantidade informada é maior que a quantidade da Nota Fiscal.", 1, 0 )
 										xRet := .F.
 										exit
 									endif
@@ -1827,7 +1827,7 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 					endif
 
 
-				else //inicio alteracao Rafael
+				else //inicio alteração Rafael
 					if !__cUserID $ ZAU->ZAU_USUARI
 						if oMdlZAV:getValue("ZAV_STATUS")=="1" .AND. (cCpo=="ZAW_STATUS" .OR. cCpo=="ZAW_RESOLU")
 							xRet := .T.
@@ -1882,11 +1882,11 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 							endif
 							if !lAchou
 								xRet := .F.
-								Help( ,, 'Nao  permitido',, "Apenas usuario responsï¿½vel pela abertura do RAMI ou responsï¿½vel pelo direcionamento podera fazer alteracoes.", 1, 0 )
+								Help( ,, 'Não permitido',, "Apenas usuário responsável pela abertura do RAMI ou responsável pelo direcionamento poderá fazer alterações.", 1, 0 )
 							endif
 						else
 							xRet := .F.
-							Help( ,, 'Nao  permitido',, "Apenas usuario responsï¿½vel pela abertura do RAMI ou responsï¿½vel pelo direcionamento podera fazer alteracoes.", 1, 0 )
+							Help( ,, 'Não permitido',, "Apenas usuário responsável pela abertura do RAMI ou responsável pelo direcionamento poderá fazer alterações.", 1, 0 )
 						endif
 					endif
 				endif
@@ -1895,7 +1895,7 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 		else
 			if oMdlZAV:getValue("ZAV_STATUS")=="1" .AND. (cCpo=="ZAW_STATUS" .OR. cCpo=="ZAW_RESOLU")
 				xRet := .T.
-			endif//fim alteracao Rafael
+			endif//fim alteração Rafael
 
 			if cPonto == 'SETVALUE'
 				if cCpo == 'ZAW_QTD'
@@ -1918,7 +1918,7 @@ Static Function prevldZAW(oModel, nLin, cPonto, cCpo, e)
 							nQtdDisp := ( oMdlSD2:getValue("D2_QUANT") - nQtdOcor )
 
 							if M->ZAW_QTD > nQtdDisp
-								Help( ,, 'Nao  permitido',, "Quantidade informada ï¿½ maior que a quantidade da Nota Fiscal.", 1, 0 )
+								Help( ,, 'Não permitido',, "Quantidade informada é maior que a quantidade da Nota Fiscal.", 1, 0 )
 								xRet := .F.
 								exit
 							endif
@@ -1950,7 +1950,7 @@ Static Function prevldZAX(oModel, nLin, cPonto, cCpo, e)
 
 	if cPonto == 'DELETE' .and. !isInCallStack ( "prevldZAW" )
 		xRet := .F.
-		Help( ,, 'Nao  permitido',, "Nao e possivel excluir linhas da Resoluï¿½ï¿½o.", 1, 0 )
+		Help( ,, 'Não permitido',, "Não é possível excluir linhas da Resolução.", 1, 0 )
 	else
 		if cPonto == 'SETVALUE'
 			if cCpo == 'ZAX_QTD'
@@ -1971,7 +1971,7 @@ Static Function prevldZAX(oModel, nLin, cPonto, cCpo, e)
 						nQtdDisp := ( oMdlZAW:getValue("ZAW_QTD") - nQtdReso )
 
 						if M->ZAX_QTD > nQtdDisp
-							Help( ,, 'Nao  permitido',, "Quantidade informada ï¿½ maior que a quantidade da ocorrencia.", 1, 0 )
+							Help( ,, 'Não permitido',, "Quantidade informada é maior que a quantidade da ocorrência.", 1, 0 )
 							xRet := .F.
 							exit
 						endif
@@ -1998,12 +1998,12 @@ static function CRM05POS( oModel )
 	if nOper == MODEL_OPERATION_UPDATE .or. nOper == MODEL_OPERATION_INSERT
 		if isEcomBole()
 			if empty( oModelZAV:getValue("ZAV_CREDEC") )
-				help( ,, 'MGFCRM05',, 'Pedido de E-Commerce com Cond de Pagamento em Boleto.' + CRLF + 'Informar o Credito E-Commerce (Sim/Nao )', 1, 0 )
+				help( ,, 'MGFCRM05',, 'Pedido de E-Commerce com Cond de Pagamento em Boleto.' + CRLF + 'Informar o Crédito E-Commerce (Sim/Não)', 1, 0 )
 				return .F.
 			endif
 
 			if oModelZAV:getValue("ZAV_CREDEC") == "N" .and. empty( oModelZAV:getValue("ZAV_CONTA") )
-				help( ,, 'MGFCRM05',, 'Cliente solicitou depï¿½sito em Conta.' + CRLF + 'Informar Dados Bancï¿½rios.', 1, 0 )
+				help( ,, 'MGFCRM05',, 'Cliente solicitou depósito em Conta.' + CRLF + 'Informar Dados Bancários.', 1, 0 )
 				return .F.
 			endif
 		endif
@@ -2012,11 +2012,11 @@ static function CRM05POS( oModel )
 				empty(oModelZAV:getValue("ZAV_SERIE")) .or.;
 				empty(oModelZAV:getValue("ZAV_NFEMIS"))
 
-			help( ,, 'MGFCRM05',, 'Dados da Nota Fiscal invï¿½lidos.', 1, 0 )
+			help( ,, 'MGFCRM05',, 'Dados da Nota Fiscal inválidos.', 1, 0 )
 			return .F.
 		else
 			if !chkSF2(oModelZAV:getValue("ZAV_NOTA"), oModelZAV:getValue("ZAV_SERIE"), oModelZAV:getValue("ZAV_NFEMIS"))
-				help( ,, 'MGFCRM05',, 'Dados da Nota Fiscal invï¿½lidos.', 1, 0 )
+				help( ,, 'MGFCRM05',, 'Dados da Nota Fiscal inválidos.', 1, 0 )
 				return .F.
 			endif
 		endif
@@ -2025,7 +2025,7 @@ static function CRM05POS( oModel )
 			oModelZAW:GoLine( nI )
 			if !oModelZAW:isDeleted()
 				if empty(oModelZAW:getValue("ZAW_DIRECI", nI))
-					Help( ,, 'MGFCRM05',, 'Nao  foi informado o direcionamento.', 1, 0 )
+					Help( ,, 'MGFCRM05',, 'Não foi informado o direcionamento.', 1, 0 )
 					return .F.
 				endif
 			endif
@@ -2069,7 +2069,7 @@ static function iniBtnAdd()
 return 'MAIS.PNG'
 
 //------------------------------------------------
-// Verifica se usuario pode alterar os campos de Aprovacao
+// Verifica se usuário pode alterar os campos de Aprovação
 //------------------------------------------------
 user function chkUsRam(cCpoChk)
 	Local lRet		:= .F.
@@ -2295,11 +2295,11 @@ user function zawAdd(xZAWAdd)
 
 		nQtdDispo := (nQtdDispo - nQtdUtil)
 		if nQtdDispo <= 0
-			msgAlert("Esta ocorrencia nao possui quantidade disponivel.")
+			msgAlert("Esta ocorrência não possui quantidade disponível.")
 			return xZAWAdd
 		endif
 	else
-		msgAlert("Esta ocorrencia nao possui quantidade disponivel.")
+		msgAlert("Esta ocorrência não possui quantidade disponível.")
 		return xZAWAdd
 	endif
 
@@ -2361,7 +2361,7 @@ static function chkNf()
 				DbSelectArea('ZAV')
 				DbSetOrder(2)//ZAV_FILIAL+ZAV_NOTA+ZAV_SERIE
 				if ZAV->(Msseek(xFilial('ZAV') + M->ZAV_NOTA + M->ZAV_SERIE ))
-					lRetm := Msgyesno('Essa Nota jï¿½ foi utilizada em outra RAMI, deseja continuar?')
+					lRetm := Msgyesno('Essa Nota já foi utilizada em outra RAMI, deseja continuar?')
 					If lRetm
 						Return lRetm
 					Else
@@ -2388,7 +2388,7 @@ User Function GetTran()
 	If !EMPTY(SF2->F2_TRANSP)
 		cTransp := SF2->F2_TRANSP
 	Else
-		MsgAlert('O campo Transp NF nao sera preenchido, pois nao foi encontrado Transportadora para a Nota Selecionada!')
+		MsgAlert('O campo Transp NF não será preenchido, pois não foi encontrado Transportadora para a Nota Selecionada!')
 	EndIf
 
 Return cTransp
@@ -2408,7 +2408,7 @@ User Function GetNMTran()
 Return cNmTransp
 
 
-// Funcao que finaliza a RAMI
+// Função que finaliza a RAMI
 
 User Function MGFIMRAM()
 	Local lRet := .F.
@@ -2423,16 +2423,16 @@ User Function MGFIMRAM()
 			ZAV->ZAV_STATUS := "1"
 			ZAV->(MsUnlock())
 		Else
-			MsgInfo('RAMI nao finalizada')
+			MsgInfo('RAMI não finalizada')
 		EndIf
 	Else
-		MsgAlert('Processo nao executado! RAMI jï¿½ esta finalizada!')
+		MsgAlert('Processo não executado! RAMI já está finalizada!')
 	EndIf
 
 Return
 
 
-// Funcao que Extorna a finalizaï¿½ï¿½o da RAMI
+// Função que Extorna a finalização da RAMI
 
 User Function MGFEXTRAM()
 
@@ -2468,11 +2468,11 @@ User Function MGFEXTRAM()
 				ZAV->ZAV_STATUS := "0"
 				ZAV->(MsUnlock())
 			Else
-				MsgInfo('RAMI nao foi reaberta! Hï¿½ processos vinculados a essa RAMI!')
+				MsgInfo('RAMI não foi reaberta! Há processos vinculados a essa RAMI!')
 			EndIf
 		EndIf
 	Else
-		MsgAlert('Processo nao executado! RAMI nao esta finalizada!')
+		MsgAlert('Processo não executado! RAMI não está finalizada!')
 	EndIf
 
 Return
@@ -2552,7 +2552,7 @@ Return
 
 /*/
 {Protheus.doc} GATTPRAMI
-	Gatilho para verificar se popula automaticamente os itens da Ocorrencia.
+	Gatilho para verificar se popula automáticamente os itens da Ocorrência.
 
 @author Marcos Cesar Donizeti Vieira
 @since 20/11/2019
@@ -2574,15 +2574,15 @@ user function GATTPRAMI()
 
 	If _nOper == MODEL_OPERATION_INSERT
 		If _cTpRami = "T" .AND. _cTpDevRe = "2"
-			If MsgYesNo("Deseja adicionar todos itens da NF na Grade das Ocorrï¿½ncias?")
+			If MsgYesNo("Deseja adicionar todos itens da NF na Grade das Ocorrências?")
 				If EMPTY(_cNota) .OR. EMPTY(_cSerie)
-					Help( ,, 'MGFCRM05',, 'Nota e/ou serie invï¿½lida(s).', 1, 0 )
+					Help( ,, 'MGFCRM05',, 'Nota e/ou série inválida(s).', 1, 0 )
 				Else
 					_cAliasD2 := GetItensNF(_cNota, _cSerie)
 					If (_cAliasD2)->(!eof())
 						CarregOco(_cAliasD2)
 					Else
-						Help( ,, 'MGFCRM05',, 'Nota e/ou serie nao Localizada(s).', 1, 0 )
+						Help( ,, 'MGFCRM05',, 'Nota e/ou série não Localizada(s).', 1, 0 )
 					Endif
 					(_cAliasD2)->(dbCloseArea())
 				EndIf
@@ -2595,7 +2595,7 @@ Return
 
 /*/
 {Protheus.doc} CarregOco
-	Rotina para popular automaticamente os itens da Ocorrencia.
+	Rotina para popular automáticamente os itens da Ocorrência.
 
 @author Marcos Cesar Donizeti Vieira
 @since 20/11/2019

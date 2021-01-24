@@ -8,14 +8,14 @@ Data.....:              Nov/2017
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada MTA094RO
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
 User Function MGFCOM57(aButtons)
 
 If IsInCallStack("MATA094")
-	aAdd(aButtons,{OemToAnsi("Historico Contratos Parceria"),"U_COM57Proc",0,4,0,Nil})
+	aAdd(aButtons,{OemToAnsi("Histórico Contratos Parceria"),"U_COM57Proc",0,4,0,Nil})
 Endif	
 	
 Return(aButtons)
@@ -25,15 +25,15 @@ User Function COM57Proc()
 
 Local oListBox
 Local cListBox
-Local aSC3 := {"Contrato","Item","Produto","Valor Unitï¿½rio","Quantidade","Condicao Pagamento","Emissao","Fornecedor"}
-Local cTitulo := "Historico Contratos Parceria"
+Local aSC3 := {"Contrato","Item","Produto","Valor Unitário","Quantidade","Condição Pagamento","Emissão","Fornecedor"}
+Local cTitulo := "Histórico Contratos Parceria"
 Local aList := {}
 Local oDlg
 //Local nVal := 0
 Local oVar
 
 If SCR->CR_TIPO != "CP"
-	ApMsgAlert("Esta consulta somente ï¿½ disponivel para documentos provenientes de 'Contrato de Parceria'.")
+	ApMsgAlert("Esta consulta somente é disponível para documentos provenientes de 'Contrato de Parceria'.")
 	Return()
 Endif	
 
@@ -42,7 +42,7 @@ ProcCons(@aList)
 //nVal := GetAdvFVal("SC3","C3_PRECO",xFilial("SC3")+Alltrim(SCR->CR_NUM),1,0)
 
 DEFINE MSDIALOG oDlg TITLE cTitulo From 000,000 To 310,650 OF oMainWnd PIXEL
-//@ 003,005 SAY "Valor Unitï¿½rio Item/Contrato:" SIZE 080,08 OF oDlg PIXEL
+//@ 003,005 SAY "Valor Unitário Item/Contrato:" SIZE 080,08 OF oDlg PIXEL
 //@ 003,080 SAY oVal VAR nVal Picture("999,999,999.99") SIZE 050,08 OF oDlg PIXEL 
 
 @ 015,005 LISTBOX oListBox VAR cListBox Fields HEADER aSC3[1],aSC3[2],aSC3[3],aSC3[4],aSC3[5],aSC3[6],aSC3[7],aSC3[8] SIZE 315,120  PIXEL

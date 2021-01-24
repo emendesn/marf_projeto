@@ -8,7 +8,7 @@ Data................: Nov/2018
 Descricao / Objetivo: Rotina chamada pelo ponto de entrada EECAE100
 Doc. Origem.........: Comex
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Validar cancelamento de embarquet1004717
 =====================================================================================
 */
@@ -25,7 +25,7 @@ User Function MGFEEC62(aParam)
 			DBSELECTAREA("EET")
 			DBSETORDER(1)
 			IF DBSEEK(XFILIAL("EET")+alltrim(aParam[2]))
-				Help( ,, 'Help',, 'Este processo possui despesas lanï¿½adas no financeiro, nao pode ser eliminado. Favor entrar em contato com depto financeiro.', 1, 0 )
+				Help( ,, 'Help',, 'Este processo possui despesas lançadas no financeiro, não pode ser eliminado. Favor entrar em contato com depto financeiro.', 1, 0 )
 				lRet := .f.
 			ELSE
 				RECLOCK("EEC",.F.)

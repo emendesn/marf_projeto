@@ -12,7 +12,7 @@ Data.....:              03/04/2017
 Descricao / Objetivo:   Habilita a tecla F4 para amarracao da senha do RAMI
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

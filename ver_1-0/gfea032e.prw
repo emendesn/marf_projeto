@@ -3,13 +3,13 @@
 /*
 =========================================================================================================
 Programa.................: GFEA032E
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Controle de aprovacoes de ocorrencias baseado no cadastro de alcada de Aprovacao
+Descrição / Objetivo.....: Controle de aprovações de ocorrências baseado no cadastro de alçada de aprovação
 Doc. Origem..............: GAP - GFE02
 Solicitante..............: Cliente
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de ocorrencias conforme tabela de aprovadores
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de ocorrências conforme tabela de aprovadores
 =========================================================================================================
 */                                                                                                                            
 

@@ -14,12 +14,12 @@
 Programa............: MGFFIN16
 Autor...............: Roberto Sidney
 Data................: 06/10/2016
-Descricao / Objetivo: Markbrose com tabela temporaria para selecao dos titulos e Ordem de entrega para registro de sinistro
+Descricao / Objetivo: Markbrose com tabela temporária para seleção dos titulos e Ordem de entrega para registro de sinistro
 aos fornecedores
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Alteracoes realizadas por Barbieri em 01/2017
+Uso.................: Marfrig
+Obs.................: Alterações realizadas por Barbieri em 01/2017
 =====================================================================================
 */
 User Function MGFFIN16()
@@ -36,8 +36,8 @@ User Function MGFFIN16()
 	Private cMark    := GetMark()
 	Private cCadastro
 	Private nRegLoc  := 0
-	Private aSituaca := Strtokarr(GetMv("MGF_SITSIN"),";") // K - Codigo da ocorrencia da situacao de sinistro
-	Private aOcorSin := Strtokarr(GetMv("MGF_OCOSIN"),";") // Ocorrencia bancaria utilizada no processo de sinisitro - Nao protesto separadas por ;
+	Private aSituaca := Strtokarr(GetMv("MGF_SITSIN"),";") // K - Código da ocorrencia da situação de sinistro
+	Private aOcorSin := Strtokarr(GetMv("MGF_OCOSIN"),";") // Ocorrencia bancária utilizada no processo de sinisitro - Não protesto separadas por ;
 	Private _cProcSini:= ''
 	Private _cFil		:= ''
 	Private _cPrefixo := ''
@@ -55,22 +55,22 @@ User Function MGFFIN16()
 	//   aAdd(_aAux,StrToKArr(aOcorSin[I],"/"))
 	//Next I
 
-	// Verifica se o codigo de ocorrencia existe
+	// Verifica se o codigo de ocorrência existe
 	DbSelectArea("FRV")
 	IF ! FRV->(DbSeek(xFilial("FRV")+_cSituaca))
-		alert("Ocorrencia da situacao de Sininistro nao informada ou localizada")
+		alert("Ocorrência da situação de Sininistro não informada ou localizada")
 		Return(.F.)
 	Endif
 
-	cCadastro := "Posicao de Sinistro"
+	cCadastro := "Posição de Sinistro"
 
-	MsgRun("Criando tela de Posicao de Sinistro...",,{|| aTRB := Cria_TRB() } )	// Barbieri: Alterado comando para alimentar variavel aTRB e criado funcao ï¿½nica de tabela temporaria
+	MsgRun("Criando tela de Posição de Sinistro...",,{|| aTRB := Cria_TRB() } )	// Barbieri: Alterado comando para alimentar variavel aTRB e criado função única de tabela temporária
 
 	aCores := {}
-	AADD(aCores,{"RB_ZORDENT == SPACE(10) .and. RB_ZSINIST = 'Nao'","BR_PRETO" })
+	AADD(aCores,{"RB_ZORDENT == SPACE(10) .and. RB_ZSINIST = 'Não'","BR_PRETO" })
 	AADD(aCores,{"RB_ZORDENT == SPACE(10) .and. RB_ZSINIST = 'Sim'","BR_AMARELO" })
 	AADD(aCores,{"RB_ZSINIST == 'Sim'" ,"BR_VERMELHO" })
-	AADD(aCores,{"RB_ZSINIST == 'Nao'" ,"BR_VERDE" })
+	AADD(aCores,{"RB_ZSINIST == 'Não'" ,"BR_VERDE" })
 
 	aCampos := u_CPOSINIS()
 
@@ -88,12 +88,12 @@ User Function MGFFIN16()
 	//MarkBrow('TRB','RB_OK',,aCampos,, cMark,'u_MarkAllSin(1)',,,,'u_MarcarSin()',,,,aCores,,,,.T.)
 	//MarkBrow('TRB','RB_OK',,aCampos,, cMark,'u_MarkAllSin(1)',,,,'u_MarcarSin()',{|| u_MarkAllSin(1)},,,aCores,,,,.F.)
 
-	//Barbieri: Criado controles para arquivo temporario
-	//Fecha a ï¿½rea
+	//Barbieri: Criado controles para arquivo temporário
+	//Fecha a área
 	TRB->(dbCloseArea())
 	//Apaga o arquivo fisicamente
 	FErase( aTRB[ nTRB ] + GetDbExtension())
-	//Apaga os arquivos de indices fisicamente
+	//Apaga os arquivos de índices fisicamente
 	FErase( aTRB[ nIND1 ] + OrdBagExt())
 	FErase( aTRB[ nIND2 ] + OrdBagExt()) 
 	FErase( aTRB[ nIND3 ] + OrdBagExt())
@@ -106,10 +106,10 @@ Return
 Programa............: MarkAllSin
 Autor...............: Roberto Sidney
 Data................: 06/10/2016
-Descricao / Objetivo: funcao auxiliar a Markbrowse para selecao de todos os registres
+Descricao / Objetivo: função auxiliar a Markbrowse para seleção de todos os registres
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -139,7 +139,7 @@ User Function MarkAllSin(nParMark)
 		Enddo
 	Endif
 	MarkBRefresh()
-	// forï¿½a o posicionamento do browse no primeiro registro
+	// força o posicionamento do browse no primeiro registro
 	oMark:oBrowse:Gotop()
 
 return
@@ -149,10 +149,10 @@ return
 Programa............: DesmAllSin
 Autor...............: Roberto Sidney
 Data................: 06/10/2016
-Descricao / Objetivo: funcao auxiliar a Markbrowse para cancelar selecao de todos os registros
+Descricao / Objetivo: função auxiliar a Markbrowse para cancelar seleção de todos os registros
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -169,7 +169,7 @@ User Function DesmAllSin()
 		TRB->(DbSkip())
 	Enddo
 	MarkBRefresh( )
-	// forï¿½a o posicionamento do browse no primeiro registro
+	// força o posicionamento do browse no primeiro registro
 	oMark:oBrowse:Gotop()
 
 Return
@@ -179,10 +179,10 @@ Return
 Programa............: InverSin
 Autor...............: Roberto Sidney
 Data................: 10/06/2016
-Descricao / Objetivo: funcao auxiliar a Markbrowse para inverter selecao de registros
+Descricao / Objetivo: função auxiliar a Markbrowse para inverter seleção de registros
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -208,10 +208,10 @@ Return
 Programa............: MarcarSin
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: funcao auxiliar a Markbrowse para marcar e desmarcar unico registro
+Descricao / Objetivo: função auxiliar a Markbrowse para marcar e desmarcar unico registro
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -232,11 +232,11 @@ Return
 Programa............: Cria_TRB
 Autor...............: Roberto Sidney
 Data................: 23/09/2016
-Descricao / Objetivo: Criacao da tabela temporaria - TRB
+Descricao / Objetivo: Criação da tabela temporária - TRB
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Alterado por Barbieri em 01/2017, criacao e carga dos	dados Static Funtcion
+Uso.................: Marfrig
+Obs.................: Alterado por Barbieri em 01/2017, criação e carga dos	dados Static Funtcion
 =====================================================================================
 */
 Static FUNCTION Cria_TRB()
@@ -284,17 +284,17 @@ Static FUNCTION Cria_TRB()
 	AADD(aStru,{"RB_IDCNAB"   ,"C",10,0})
 	//AADD(aStru,{"RB_REGIS"    ,"N",10,0}) Barbieri: retirado do MarkBrowser
 
-	//Barbieri: Criacao de indices para o arquivo temporario
+	//Barbieri: Criação de índices para o arquivo temporário
 	cArq := Criatrab(aStru,.T.)
 	cInd1 := Left( cArq, 5 ) + "1"
 	cInd2 := Left( cArq, 5 ) + "2"
 	cInd3 := Left( cArq, 5 ) + "3"
 	cInd4 := Left( cArq, 5 ) + "4"	
 	dbUseArea( .T., __LocalDriver, cArq, "TRB", .F., .F. )
-	IndRegua( "TRB", cInd1, "RB_FILIAL+RB_NUM", , , "Criando indices (Numero)...")
-	IndRegua( "TRB", cInd2, "RB_FILIAL+RB_ZORDENT", , , "Criando indices (Embarque)...")
-	IndRegua( "TRB", cInd3, "RB_FILIAL+RB_PREFIXO+RB_NUM+RB_PARCELA", , , "Criando indices (Prefixo + Numero + Parcela)...")
-	IndRegua( "TRB", cInd4, "RB_FILIAL+RB_CLIENTE+RB_LOJA", , , "Criando indices (Cliente + Loja)...")
+	IndRegua( "TRB", cInd1, "RB_FILIAL+RB_NUM", , , "Criando índices (Número)...")
+	IndRegua( "TRB", cInd2, "RB_FILIAL+RB_ZORDENT", , , "Criando índices (Embarque)...")
+	IndRegua( "TRB", cInd3, "RB_FILIAL+RB_PREFIXO+RB_NUM+RB_PARCELA", , , "Criando índices (Prefixo + Número + Parcela)...")
+	IndRegua( "TRB", cInd4, "RB_FILIAL+RB_CLIENTE+RB_LOJA", , , "Criando índices (Cliente + Loja)...")
 	dbClearIndex()
 	dbSetIndex( cInd1 + OrdBagExt() )
 	dbSetIndex( cInd2 + OrdBagExt() )
@@ -372,7 +372,7 @@ Static FUNCTION Cria_TRB()
 			Endif
 		Next
 		//	TRB->RB_REGIS := _nReg
-		TRB->RB_ZSINIST := IIF(alltrim(TRB->RB_ZSINIST) $ "''/N",'Nao','Sim')
+		TRB->RB_ZSINIST := IIF(alltrim(TRB->RB_ZSINIST) $ "''/N",'Não','Sim')
 
 		MsUnLock()
 		//	_nReg ++
@@ -385,7 +385,7 @@ Static FUNCTION Cria_TRB()
 	Dbselectarea("TRB")
 	//DbGoTop()
 
-Return ({cArq,cInd1,cInd2,cInd3,cInd4}) //Barbieri: Incluï¿½do para abertura do arquivo e MarkBrowser
+Return ({cArq,cInd1,cInd2,cInd3,cInd4}) //Barbieri: Incluído para abertura do arquivo e MarkBrowser
 
 /*
 =====================================================================================
@@ -395,15 +395,15 @@ Data................: 06/10/2016
 Descricao / Objetivo: Legenda
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
 User Function LEGSINIS()
 
-	aLegenda := {{"BR_VERMELHO","Sinistro gerado / Cobranca cancelada"},;
-	{"BR_VERDE","Sem sinistro / Cobranca em andamendo"},;
-	{"BR_AMARELO","Sem O.E / Sinistro gerado / Cobranca cancelada"},;
+	aLegenda := {{"BR_VERMELHO","Sinistro gerado / Cobrança cancelada"},;
+	{"BR_VERDE","Sem sinistro / Cobrança em andamendo"},;
+	{"BR_AMARELO","Sem O.E / Sinistro gerado / Cobrança cancelada"},;
 	{"BR_PRETO","Sem O.E - Ordem de Embarque"}}
 
 	BRWLEGENDA( "Registro de Sinistro", "Legenda", aLegenda )
@@ -416,10 +416,10 @@ Return .T.
 Programa............: VisuTit
 Autor...............: Roberto Sidney
 Data................: 06/10/2016
-Descricao / Objetivo: Visualizacao do registro
+Descricao / Objetivo: Visualização do registro
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -432,9 +432,9 @@ User Function VisuTit()
 	DbSetOrder(1)
 	IF SE1->(DbSeek(xFilial("SE1")+_cChvPes))
 		//AxVisual("SE1",SE1->(RECNO()),6,,,"6",,,.T.)
-		AxVisual("SE1",SE1->(RECNO()),2) //Barbieri: Alterado para funcionar a funcao Visualizar
+		AxVisual("SE1",SE1->(RECNO()),2) //Barbieri: Alterado para funcionar a função Visualizar
 	Else
-		alert("Titulo "+TRB->RB_PREFIXO+"-"+TRB->RB_NUM+"-"+TRB->RB_PARCELA+" nao localizado.")
+		alert("Titulo "+TRB->RB_PREFIXO+"-"+TRB->RB_NUM+"-"+TRB->RB_PARCELA+" não localizado.")
 	Endif
 	RestArea(_cAreaTRB)
 Return(.T.)
@@ -445,10 +445,10 @@ Return(.T.)
 Programa............: APESQSIN
 Autor...............: Roberto Sidney
 Data................: 06/10/2016
-Descricao / Objetivo: Funcao de pesquisa
+Descricao / Objetivo: Função de pesquisa
 Doc. Origem.........: CRE24 - GAP MGCRE24
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Alterado completamente por Barbieri em 01/2017
 =====================================================================================
 */
@@ -490,7 +490,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Funcao chamadora da tela principal
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -535,18 +535,18 @@ User Function MarkProc()
 
 	DEFINE FONT oFont NAME "ARIAL" SIZE 6,15 BOLD
 
-	//DEFINE MSDIALOG oDlg TITLE "Localizador de Titulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
-	DEFINE MSDIALOG oDlg TITLE "Localizador de Titulos" FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] COLORS 0, 16777215 PIXEL
+	//DEFINE MSDIALOG oDlg TITLE "Localizador de Títulos" FROM 000, 000  TO 430, 1250 COLORS 0, 16777215 PIXEL
+	DEFINE MSDIALOG oDlg TITLE "Localizador de Títulos" FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] COLORS 0, 16777215 PIXEL
 
-	//@ 004 , 003 TO 212 , 622 LABEL "Selecao de titulos pela O.E - Ordem de Embarque" PIXEL OF oDlg
+	//@ 004 , 003 TO 212 , 622 LABEL "Seleção de títulos pela O.E - Ordem de Embarque" PIXEL OF oDlg
 
 	//@ 010, 008 SAY oSay1 PROMPT " Filial:"		SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 	//@ 008, 065 MSGET oGetFilial VAR cGetFilial	SIZE 040, 010 OF oDlg COLORS 0, 16777215 PIXEL
 
-	@ 010, 130 SAY oSay1 PROMPT "Emissao de:"					SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
+	@ 010, 130 SAY oSay1 PROMPT "Emissão de:"					SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 	@ 008, 165 MSGET oGet1 VAR cGetEmisDe		PICTURE "@D"	SIZE 060, 010 OF oDlg COLORS 0, 16777215 PIXEL
 
-	@ 010, 235 SAY oSay1 PROMPT "Emissao ate:"					SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
+	@ 010, 235 SAY oSay1 PROMPT "Emissão até:"					SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 	@ 008, 270 MSGET oGetEmisAt VAR cGetEmisAt	PICTURE "@D"	SIZE 060, 010 OF oDlg COLORS 0, 16777215 PIXEL
 
 	@ 025, 008 SAY oSay1 PROMPT " Ordem de Embarque:" SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
@@ -554,7 +554,7 @@ User Function MarkProc()
 
 	@ 025, 250 BUTTON oButton1 PROMPT "Pesquisar" SIZE 037, 015 OF oDlg PIXEL ACTION fwMsgRun(, {|| cSomaT := "", cQtdeT := "", fGeraQry(cFields , @aDados , @cGet1, oDlg , oWBrowse1 , @lOrdEntre, cGetEmisDe, cGetEmisAt, cGetFilial) }, "Processando", "Aguarde. Selecionando dados..." )
 
-	@ 026, 300 SAY oSaySoma	PROMPT "Somatoria: " 			+ cSomaT	SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
+	@ 026, 300 SAY oSaySoma	PROMPT "Somatória: " 			+ cSomaT	SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 	@ 035, 300 SAY oSayQtd	PROMPT "Qtde selecionada: "		+ cQtdeT	SIZE 070, 007 OF oDlg COLORS 0, 16777215 PIXEL FONT oFont
 
 	@ 015, 400 BUTTON oButton1 PROMPT "Marcar todos" SIZE 037, 015 OF oDlg PIXEL ACTION { || mAllFin16(@aDados, @oWBrowse1), fWBrowse1(aHeader , @aDados , oDlg , oWBrowse1 , .T.), atuSelec(oWBrowse1) }
@@ -580,8 +580,8 @@ static function mAllFin16(aDados, oWBrowse1)
 	For nI:=1 To Len(aDados)
 		If !Empty(cOrdEmb)
 			If cOrdEmb != aDados[nI,7]
-				APMsgStop("Ordens de Embarque marcadas com codigos diferentes."+CRLF+;
-				"Escolha apenas titulos com ordens de embarque de mesmo codigo.")
+				APMsgStop("Ordens de Embarque marcadas com códigos diferentes."+CRLF+;
+				"Escolha apenas títulos com ordens de embarque de mesmo código.")
 				lContinua := .F.
 				Exit
 			Endif
@@ -662,7 +662,7 @@ Data.....:              21/09/2016
 Descricao / Objetivo:   Atualiza o array 'aDados', que sera exibido na MarkBrowse
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -789,7 +789,7 @@ Data.....:              15/09/2016
 Descricao / Objetivo:   Gera a Query para avaliar se ha titulos para o codigo de barras informado
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -872,7 +872,7 @@ Static Function fGeraQry(	cFields		,; // String contendo os campos que serao uti
 	
 	Else
 	
-		MsgAlert('Nao existem titulos para o codigo de barras informado')
+		MsgAlert('Não existem títulos para o código de barras informado')
 		aDados	:= Array(1,15)
 		//cOrdEnte	:= Space(10)
 		fWBrowse1(aHeader , aDados , oDlg , oWBrowse1 , .T.)
@@ -893,7 +893,7 @@ Return lRet
 	Descricao / Objetivo:   Monta aHeader e aCols para serem exibidos na MarkBrowse
 	Doc. Origem:            CRE24 - GAP MGCRE24
 	Solicitante:            Cliente
-	Uso......:              
+	Uso......:              Marfrig
 	Obs......:
 	=====================================================================================
 	*/
@@ -1026,7 +1026,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Verifica a quantidade de titulos selecionados.
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1049,7 +1049,7 @@ Static Function fVldGrava(aHeader , aDados , oDlg , oWBrowse1 , cOrdEnte , lLimp
 
 		aTitulos	:= aClone(OWBROWSE1:AARRAY)
 
-		If ( MsgYesNo("Confirma geracao ?" , "Geracao de sinistro") )
+		If ( MsgYesNo("Confirma geração ?" , "Geração de sinistro") )
 
 			lContinua	:= fVldSel(aTitulos , @nReg, cOrdEnte )
 
@@ -1069,7 +1069,7 @@ Static Function fVldGrava(aHeader , aDados , oDlg , oWBrowse1 , cOrdEnte , lLimp
                               
 						Begin Transaction // gresele 19/05/17
 						
-						// Atualiza o titulo com as informacoes referentes ao sinistro
+						// Atualiza o titulo com as informações referentes ao sinistro
 						fGrava(_cChvPesq , lOrdEntre)
 						
 						End Transaction
@@ -1082,7 +1082,7 @@ Static Function fVldGrava(aHeader , aDados , oDlg , oWBrowse1 , cOrdEnte , lLimp
 				Cria_TRB()
 
 				PutMv("MGF_PROSIN",_cProcSini)
-				MsgInfo("Processo de sinistro: "+alltrim(_cProcSini),"Atencao")
+				MsgInfo("Processo de sinistro: "+alltrim(_cProcSini),"Atenção")
 
 				//- Limpa e reinicia o browse para as proximas pesquisas
 				cOrdEnte	:= Space(10)
@@ -1116,7 +1116,7 @@ Static Function fVldGrava(aHeader , aDados , oDlg , oWBrowse1 , cOrdEnte , lLimp
 Return              
 
 //----------------------------------------------------
-// Executa gravacao na ZZ8 - CADASTRO DE INTERACAO
+// Executa gravação na ZZ8 - CADASTRO DE INTERACAO
 //----------------------------------------------------
 static function recZZB()
 	local aArea		:= getArea()
@@ -1129,8 +1129,8 @@ static function recZZB()
 	If ZZ9->(Found())
 		lGrvPos := .T.
 	Else
-		APMsgStop("Codigo da Posicao do Cliente cadastrado no parametro 'MGF_CODPOS' nao esta cadastrado no sistema."+CRLF+;
-		"Codigo cadastrado no parametro: "+cCodPos)	
+		APMsgStop("Código da Posição do Cliente cadastrado no parâmetro 'MGF_CODPOS' não está cadastrado no sistema."+CRLF+;
+		"Código cadastrado no parâmetro: "+cCodPos)	
 	Endif	
 	
 	DBSelectArea("ZZB")
@@ -1165,7 +1165,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Verifica a quantidade de titulos selecionados.
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1195,8 +1195,8 @@ Static Function fVldSel(aDados,nReg,cOrdEnte)
 
 	if ( nCount == 0 )
 
-		ShowHelpDlg("NOTIT", {"Nao localizado titulos para O.E:"+cOrdEnte,""},3,;
-		{"Informe uma O.E valida.",""},3)
+		ShowHelpDlg("NOTIT", {"Não localizado titulos para O.E:"+cOrdEnte,""},3,;
+		{"Informe uma O.E válida.",""},3)
 
 	Else
 		lRet	:= .T.
@@ -1212,7 +1212,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Atualiza o campo E1_CODBAR
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1240,7 +1240,7 @@ Static Function fGrava(_cChaveSE1 , lOrdEntre)
 			IF ZA6->(DbSeek(xFilial("ZA6")+SE1->E1_PORTADO+"S"))  
 				_cOcorren := ZA6->ZA6_OCOR 
 				//ELSE    
-				//   alert("Ocorrencia nao encontrada. ")
+				//   alert("Ocorrencia não encontrada. ")
 			ENDIF
 		ENDIF
 
@@ -1266,18 +1266,18 @@ Static Function fGrava(_cChaveSE1 , lOrdEntre)
 			ENDIF
 			//Endif
 
-			// Atualiza situacao de cobranca do bordero
+			// Atualiza situação de cobrança do borderô
 			u_JusInstCob(_cOcorren,_cBordero,.T.)
 
-			// Ajusta a instruï¿½ï¿½o de cobraï¿½a do titulo
-			// Gera uma nova ocorrencia de cobranca caso o envio ja tenha ocorrido
+			// Ajusta a instrução de cobraça do titulo
+			// Gera uma nova ocorrencia de cobrança caso o envio ja tenha ocorrido
 			IF _cIDCNAB <> ''
 				u_JusInstCob(_cOcorren,_cBordero,.F.)
 			Endif
 
 			recZZB()
 		Endif
-		// Atualiza parametro de controle do numero do sinistro
+		// Atualiza parâmetro de controle do numero do sinistro
 	Endif
 
 	RestArea(aAreaSE1)
@@ -1292,7 +1292,7 @@ Data.....:              23/12/2016
 Descricao / Objetivo:   Cancela Registro do Sinistro
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1306,7 +1306,7 @@ User Function CancSin()
 	If SE1->(MsSeek(xFilial("SE1") + TRB->RB_PREFIXO + TRB->RB_NUM + TRB->RB_PARCELA + TRB->RB_TIPO))
 		If !MsgYesNo("Deseja confirmar o cancelamento do registro de sinistro?")
 			lCancRegS := .T.
-			MsgInfo("Cancelamento de Registro de Sinistro nao efetuado!","Atencao")
+			MsgInfo("Cancelamento de Registro de Sinistro não efetuado!","Atenção")
 		Endif
 		If !lCancRegS 	
 			SE1->(RecLock("SE1" , .F.))
@@ -1324,7 +1324,7 @@ User Function CancSin()
 				ZZB->(MsUnLock())
 			Endif
 				
-			MsgInfo("Registro de Sinistro Cancelado para o titulo "+TRB->RB_NUM+TRB->RB_PARCELA+"!","Atencao")
+			MsgInfo("Registro de Sinistro Cancelado para o título "+TRB->RB_NUM+TRB->RB_PARCELA+"!","Atenção")
 		Endif
 	Endif
 	RestArea(aAreaSE1)
@@ -1340,7 +1340,7 @@ Data.....:              19/09/2016
 Descricao / Objetivo:   Cria estrutura de campos para o browse
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1360,15 +1360,15 @@ User Function CPOSINIS()
 	AADD(aCampos,{"Loja"			, "RB_LOJA"     ,"C",02,0,})
 	AADD(aCampos,{"Nome"			, "RB_NOMCLI"   ,"C",20,0,})
 	AADD(aCampos,{"Banco"			, "RB_PORTADO"  ,"C",03,0,})
-	AADD(aCampos,{"Emisssï¿½o"		, "RB_EMISSAO"  ,"D",08,0,})
+	AADD(aCampos,{"Emisssão"		, "RB_EMISSAO"  ,"D",08,0,})
 	AADD(aCampos,{"Vencimento"		, "RB_VENCTO"   ,"D",08,0,}) //Barbieri: Estava com tipo C, alterado para D
 	AADD(aCampos,{"Venc. Real"		, "RB_VENCREA"  ,"D",08,0,}) //Barbieri: Estava com tipo C, alterado para D
 	AADD(aCampos,{"Valor"			, "RB_VALOR"    ,"N",16,2,})
 	AADD(aCampos,{"Dt. Baixa"		, "RB_BAIXA"    ,"D",08,0,})
-	AADD(aCampos,{"Bordero"			, "RB_NUMBOR"   ,"C",06,0,})
-	AADD(aCampos,{"Dt. Bordero"		, "RB_DATABOR"  ,"D",08,2,})
-	AADD(aCampos,{"Historico"		, "RB_HIST"     ,"C",25,0,})
-	AADD(aCampos,{"Situaï¿½ï¿½o"		, "RB_SITUACA"  ,"C",01,0,})
+	AADD(aCampos,{"Borderô"			, "RB_NUMBOR"   ,"C",06,0,})
+	AADD(aCampos,{"Dt. Borderô"		, "RB_DATABOR"  ,"D",08,2,})
+	AADD(aCampos,{"Histórico"		, "RB_HIST"     ,"C",25,0,})
+	AADD(aCampos,{"Situação"		, "RB_SITUACA"  ,"C",01,0,})
 	AADD(aCampos,{"Ocor. Bancaria"	, "RB_OCORREN"  ,"C",02,0,})
 	AADD(aCampos,{"Saldo"			, "RB_SALDO"    ,"N",16,2,})
 	AADD(aCampos,{"Pedido"			, "RB_PEDIDO"   ,"C",06,0,})
@@ -1376,7 +1376,7 @@ User Function CPOSINIS()
 	AADD(aCampos,{"Serie"			, "RB_SERIE"    ,"C",03,0,})
 	AADD(aCampos,{"ID CNAB"			, "RB_IDCNAB"   ,"C",10,0,})
 	/*
-[n][1]=>Descricao do campo
+[n][1]=>Descrição do campo
 [n][2]=>Nome do campo
 [n][3]=>Tipo
 [n][4]=>Tamanho
@@ -1394,7 +1394,7 @@ Data.....:              10/10/201
 Descricao / Objetivo:   Ajusta a situacao de cobran do titulo
 Doc. Origem:            CRE24 - GAP MGCRE24
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -1402,19 +1402,19 @@ User Function JusInstCob(_cOcorren,_cBordero,lBord)
 	LOCAL _cVALANT 
 
 	if lBord
-		// Verifica se hï¿½ bordero
+		// Verifica se há borderô
 		//IF _cBordero <> ''
 		IF SE1->E1_NUMBOR <> ' '	
-			// Atualiza caso tenha bordero as informacoes referentes ao sinistro
+			// Atualiza caso tenha borderô as informações referentes ao sinistro
 			DbSelectarea("SEA")
 			DbSetOrder(2)
 			//IF ! SEA->(DbSeek(iif(!empty(xFilial("SEA")), _cFil, xFilial("SEA"))+_cChaveSEA)) // retirado por gresele em 18/05/17, pois compartilhamento da tabela SE1 e SEA sao
 			// diferentes, desta forma, nao funciona fazer o seek na SEA pela variavel _cfil, que eh a filial da se1.
 			IF ! SEA->(DbSeek(xFilial("SEA")+_cChaveSEA))			
-				alert("Bordero "+alltrim(_cBordero) + " nao localizado")
+				alert("Borderô "+alltrim(_cBordero) + " não localizado")
 			Else
 				_cVALANT := SEA->EA_OCORR
-				_cSitAnt := SEA->EA_SITUACA // Situaï¿½ï¿½o atual sera a anterior
+				_cSitAnt := SEA->EA_SITUACA // Situação atual será a anterior
 				Reclock("SEA",.F.)
 				SEA->EA_OCORR   := _cOcorren
 				SEA->EA_SITUACA := _cSituaca
@@ -1432,7 +1432,7 @@ User Function JusInstCob(_cOcorren,_cBordero,lBord)
 				_cBordero := SE1->E1_NUMBOR 
 			ENDIF    
 		ENDIF
-		// Atualiza situacao de cobranca
+		// Atualiza situação de cobrança
 		DBSELECTAREA("FI2")
 		DBSETORDER(1) //FILIAL+CARTEIRA+BORDERO+PREFIXO+TITULO+PARCELA+TIPO+CLIENTE+LOJA 
 		DBSEEK(iif(!empty(xFilial("FI2")), _cFil, xFilial("FI2"))+SE1->E1_NUMCART+SE1->E1_NUMBOR+SE1->E1_PREFIXO+SE1->E1_NUM+SE1->E1_PARCELA+SE1->E1_TIPO+SE1->E1_CLIENTE+SE1->E1_LOJA)                
@@ -1451,9 +1451,9 @@ User Function JusInstCob(_cOcorren,_cBordero,lBord)
 		FI2->FI2_LOJCLI := SE1->E1_LOJA    //_cLojaCli
 		FI2->FI2_DTOCOR := Date()
 		FI2->FI2_DTGER  := Date()
-		FI2->FI2_OCORR  := ZA6->ZA6_OCOR        // Codigo da ocorrencia 
-		FI2->FI2_DESCOC := ZA6->ZA6_DESCR  //- Descricao da Ocorrencia do Sinistro
-		FI2->FI2_GERADO := '2'             // Ocorrencia nao enviada ao banco 
+		FI2->FI2_OCORR  := ZA6->ZA6_OCOR        // Código da ocorrência 
+		FI2->FI2_DESCOC := ZA6->ZA6_DESCR  //- Descrição da Ocorrência do Sinistro
+		FI2->FI2_GERADO := '2'             // Ocorrencia não enviada ao banco 
 		FI2->FI2_VALANT := _cVALANT        // SE1->E1_OCORREN
 		FI2->FI2_VALNOV := _cOcorren
 		FI2->FI2_CAMPO  := "E1_OCORREN"
@@ -1475,8 +1475,8 @@ Local nLinha := oWBrowse1:nAt
 For nI:=1 To Len(aBrowse)
 	If aBrowse[nI,1] .or. (nI == nLinha .and. !aBrowse[nI,1])/*linha estah sendo marcada agora*/
 		If cOrdEmb != aBrowse[nI,7] .and. !Empty(cOrdEmb)
-			APMsgStop("Ordens de Embarque marcadas com codigos diferentes."+CRLF+;
-			"Escolha apenas titulos com ordens de embarque de mesmo codigo.")
+			APMsgStop("Ordens de Embarque marcadas com códigos diferentes."+CRLF+;
+			"Escolha apenas títulos com ordens de embarque de mesmo código.")
 			lRet := .F.
 			Exit
 		Endif

@@ -6,10 +6,10 @@
 Programa............: MGFFIN37
 Autor...............: Marcos Andrade
 Data................: 26/10/2016
-Descricao / Objetivo: Cadastro de Atendimento
+Descrição / Objetivo: Cadastro de Atendimento
 Doc. Origem.........: Contrato - GAP CR025
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro das ocorrencias do titulo
 ================================================================='====================
 */
@@ -44,11 +44,11 @@ Return
 Programa............: MenuDef
 Autor...............: Marcos Andrade
 Data................: 26/10/2016
-Descricao / Objetivo: MenuDef da rotina
+Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP CR025
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao do Menu
+Uso.................: Marfrig
+Obs.................: Definição do Menu
 =====================================================================================
 */
 Static Function MenuDef()
@@ -68,11 +68,11 @@ Return(aRotina)
 Programa............: ModelDef
 Autor...............: Marcos Andrade
 Data................: 26/10/2016
-Descricao / Objetivo: ModelDef
+Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP CR025
 Solicitante.........: Cliente                     
-Uso.................: 
-Obs.................: Definicao do Modelo de Dados para cadastro Classificacao de Perda
+Uso.................: Marfrig
+Obs.................: Definição do Modelo de Dados para cadastro Classificação de Perda
 =====================================================================================
 */               
 
@@ -89,10 +89,10 @@ Static Function ModelDef()
 	oStrZZB:setproperty("ZZB_PARCEL"	, MODEL_FIELD_INIT, { || aListBox1[oListBox1:nAT,05] })
 	oStrZZB:setproperty("ZZB_TIPO"		, MODEL_FIELD_INIT, { || aListBox1[oListBox1:nAT,06] })
                                                                
-	// Busca dados do usuario para saber qtos digitos usa no ANO.
+	// Busca dados do usuário para saber qtos digitos usa no ANO.
 	 PswOrder(2)
 	 If PswSeek( _cNomUsr, .T. )
-	   	aDadosUsu := PswRet() // Retorna vetor com informacoes do usuario
+	   	aDadosUsu := PswRet() // Retorna vetor com informações do usuário
 		oStrZZB:setproperty("ZZB_USUARI"		, MODEL_FIELD_INIT, { || aDadosUsu[1][1] })
 		oStrZZB:setproperty("ZZB_USRNOM"		, MODEL_FIELD_INIT, { || aDadosUsu[1][2] })	
 	 EndIf
@@ -112,11 +112,11 @@ Return(oModel)
 Programa............: ViewDef
 Autor...............: Marcos Andrade
 Data................: 26/10/2016
-Descricao / Objetivo: ViewDef
+Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP CR025
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Definicao da visualizacao da tela
+Uso.................: Marfrig
+Obs.................: Definição da visualização da tela
 =====================================================================================
 */
 Static Function ViewDef()

@@ -8,11 +8,11 @@
 Programa............: MGFCOMA7
 Autor...............: Juscelino Alves dos Santos
 Data................: 26/11/2018
-Descricao / Objetivo: Ativar a Tecla <F4> na Inclusao da Solicitacao 
-                      para consultar o Painel de Gestao de Estoque
+Descricao / Objetivo: Ativar a Tecla <F4> na Inclusão da Solicitação 
+                      para consultar o Painel de Gestão de Estoque
 Doc. Origem ........: MIT680 - GAP EST16
-Solicitante.........: 
-Uso.................: Gestao de Compras 
+Solicitante.........: Marfrig
+Uso.................: Gestão de Compras 
 ==================================================================================
 */
 

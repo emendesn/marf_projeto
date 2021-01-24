@@ -10,7 +10,7 @@ Data.....:				11/2017
 Descricao / Objetivo:   
 Doc. Origem:            GAP SC5->TABELA
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

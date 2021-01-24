@@ -1,5 +1,25 @@
 #INCLUDE "rwMake.ch"                        
 #INCLUDE "PROTHEUS.CH" 
+#INCLUDE "topconn.CH" 
+
+/*
+
+{Protheus.doc} MGF260Conc	 
+Conciliação de Informações DDA 
+processamento de arquivo de retorno DDA com os dados dos regitros de tïulos de
+@type function
+
+@author Anderson Reis - History
+@since 
+@version P12
+@history Inclusao     Nao encontrado informações
+@history Alteração 28/08 - feature/RTASK0011084_DDA  Anderson Reis
+   **  Adicionado a gravação do tipo de valor para mais ou menos conforme valores do Boleto e Título
+   **  Utilização da função datavalida, para que seja automática a busca pellos dias úteis ,feriados ...
+   ** nao tem mais funcionalidade os parametros de avançar e retroceder . pois está contemplado na função acima
+   
+*/
+
 
 Static oTrabFig
 Static oTrabSE2
@@ -15,8 +35,8 @@ Local lAutomato	   := .F.
 Pergunte("FIN260",.F.)
 
 If !lAutomato
-	aADD(aSays,"MARFRIG - Esta rotina tem como objetivo a conciliação das informações importadas através de") 	//
-	aADD(aSays,"processamento de arquivo de retorno DDA com os dados dos regitros de títulos de  ") 	//
+	aADD(aSays,"MARFRIG - Esta rotina tem como objetivo a conciliações das informações importadas através de") 	//
+	aADD(aSays,"processamento de arquivo de retorno DDA com os dados dos regitros de tí­tulos de  ") 	//
 	aADD(aSays,"contas a pagar(tabela SE2) para obtenção dos códigos de barra dos boletos bancários.") 	//
 	
 	aADD(aButtons, { 5,.T.,{|| Pergunte("FIN260",.T. ) } } )
@@ -28,7 +48,7 @@ Else
 Endif			
 
 If lOk
-	Processa({|lEnd| MGF260Gera(lAutomato)})  
+	Processa({|lEnd| MGF260Gera(lAutomato)})   
 Endif
 
 RestArea(aArea)
@@ -78,6 +98,8 @@ Local nValCsl := 0
 Local nValIrf := 0
 Local nValIns := 0
 Local nValIss := 0
+Local nvalACR := 0
+Local nvalDCR := 0
 Local nValImp	:= 0
 Local cTitSE2	:= ""
 Local cSeqSe2  	:= ""
@@ -110,13 +132,22 @@ Local lOk := nil
 Local aTab := {}
 Local lDup := .F.
 Local nNivel:= 9 
-Local lChave := .F. //para verificar se a conc será usado a condicional de filial de filial de origem.
+Local lChave := .F. //para verificar se a conc serÃ¡ usado a condicional de filial de filial de origem.
 Local cFilOSE2 := ""
 Local nRecFIG := 0
 Local aAreaFIG := {}
 Local cLojaFIG := ""
 Local aConcil:={}
 Local aAnalise:={}
+Local nrets := 0 // boleto para 2 titulos
+Local cQy := " "
+Local cvaloraux := 0
+Local aAreas   := GetArea()
+Local aAreaE2  := SE2->(GetArea())
+Local aAreaFG  := FIG->(GetArea())
+Local ldt      := .F.
+Local cqy      := " "
+Local nValPP   := 0
 
 Aadd(aCores,oOk)
 Aadd(aCores,oN2)
@@ -175,7 +206,7 @@ dDtFin	:= Max(dDtFin,Iif(Empty(mv_par10),dDtFin,mv_par10))
 dDtIni	:= dDtIni - mv_par14
 dDtFin	:= dDtFin + mv_par13
 
-// Criar arquivo de Trabalho temporário TRB
+// Criar arquivo de Trabalho temporÃ¡rio TRB
 MGF260CRIARQ()
 
 FIG->(dbSetOrder(2)) //Filial+Fornecedor+Loja+Vencto+Titulo
@@ -188,7 +219,7 @@ cFilIn 		:= MGF260Filial()
 aEval(aStru,{|x| cCampos += ","+AllTrim(x[1])})
 cQuery := "SELECT "+SubStr(cCampos,2) + ", R_E_C_N_O_ RECNOFIG "
 cQuery += "FROM " + RetSqlName("FIG") + " FIG  WHERE "
-// Considerar ou Não a FILIAL no FIG ? (Email p/ Eric)
+// Considerar ou NÃ£o a FILIAL no FIG ? (Email p/ Eric)
 //cQuery +=		"FIG_FILIAL IN "  + FormatIn(cFilIn,"/") + " AND "		
 cQuery += 		"FIG_FORNEC  <> ' ' AND "
 cQuery += 		"FIG_FORNEC  >= '"+ mv_par04 + "' AND "
@@ -200,8 +231,8 @@ cQuery +=		"FIG_VENCTO <= '"	+ DTOS(dDtFin) + "' AND "
 cQuery +=		"FIG_DATA >= '"	+ DTOS(mv_par11) + "' AND "
 cQuery +=		"FIG_DATA <= '"	+ DTOS(mv_par12) + "' AND "
 cQuery += 		"FIG_VALOR > 0 AND "
-cQuery +=		"FIG_CONCIL = '2' AND "									// Não Conciliado
-cQuery +=		"FIG_CODBAR <> '"	+ Space(nTamCodbar) + "' AND " 		// Com código de Barra
+cQuery +=		"FIG_CONCIL = '2' AND "									// NÃ£o Conciliado
+cQuery +=		"FIG_CODBAR <> '"	+ Space(nTamCodbar) + "' AND " 		// Com cÃ³digo de Barra
 cQuery +=		"D_E_L_E_T_ = ' ' "
 cQuery +=	"ORDER BY " + SqlOrder(cChave)
 
@@ -222,12 +253,12 @@ If ((cAliasFIG)->(Bof()) .or. (cAliasFIG)->(Eof())) .and. !lAutomato
 Else
 	While !((cAliasFIG)->(Eof()))
 	
-		// Testa se alguns dos campos da tabela FIG estão em Branco
-		// Se estiver em branco não adiciona no TRB
+		// Testa se alguns dos campos da tabela FIG estÃ£o em Branco
+		// Se estiver em branco nÃ£o adiciona no TRB
 		If !MgF260Verif(cAliasFIG)
 			DbSelectArea("TRB")
 			RecLock("TRB",.T.)
-			// Recno do TRB para sequencia de Movientaçao
+			// Recno do TRB para sequencia de MovientaÃ§ao
 			cRecTRB := STRZERO(TRB->(Recno()))
 			
 			nRecFIG := If(lQuery,(cAliasFIG)->RECNOFIG,(cAliasFIG)->(Recno())) 
@@ -269,7 +300,7 @@ If !lSaida
 	cQuery +=		"E2_FILIAL,E2_PREFIXO,E2_NUM,E2_PARCELA,E2_TIPO,E2_FORNECE,E2_LOJA,E2_NOMFOR,E2_EMISSAO,"
 	cQuery +=		"E2_VENCTO,E2_VENCREA,E2_VALOR,E2_EMIS1,E2_HIST,E2_SALDO,E2_ACRESC,E2_ORIGEM,E2_TXMOEDA,"
 	cQuery +=		"E2_SDACRES,E2_DECRESC,E2_SDDECRE,E2_IDCNAB,E2_FILORIG,E2_CODBAR,E2_STATUS,E2_DTBORDE,"
-	cQuery +=		"E2_PIS,E2_COFINS,E2_CSLL,E2_IRRF,E2_INSS,E2_ISS,"
+	cQuery +=		"E2_PIS,E2_COFINS,E2_CSLL,E2_IRRF,E2_INSS,E2_ISS,E2_ACRESC,E2_DECRESC,"
 	cQuery +=		"SE2.R_E_C_N_O_ RECNOSE2 "
 	cQuery += " FROM " + RetSqlName("SE2")+ " SE2"		//+",  "+RetSqlName("FIG")+" FIG "
 	cQuery += " WHERE "
@@ -332,23 +363,23 @@ If !lSaida
 		dbSelectArea(cAliasSE2)
 		dbGoTop()
 		// Varrer a Query do SE2 e Grava no TRBSE2
-		// Neste ponto avaliar se existe algum título do TRBSE2 que se encaixa no Registro do TRB(FIG)
+		// Neste ponto avaliar se existe algum tÃ­tulo do TRBSE2 que se encaixa no Registro do TRB(FIG)
 		While !((cAliasSE2)->(Eof()))
 			
 			// Grava dados do SE2 no arquivo de trabalho
-			// Lembrar: Não devo Adicionar novas linhas no TRB
-			// uma vez que ele é apenas referente ao FIG.
+			// Lembrar: NÃ£o devo Adicionar novas linhas no TRB
+			// uma vez que ele Ã© apenas referente ao FIG.
 			// Para o browse inferior preciso adicionar os dados
 			// da tabela SE2 no TRBSE2.
 			
 			DbSelectArea("TRBSE2")
-			// 14/11/2018 - GDN - Correção para pesquisar se a chave KEYSE2 já existe no TRB
-			// Não adicionar novo registro.
+			// 14/11/2018 - GDN - CorreÃ§Ã£o para pesquisar se a chave KEYSE2 jÃ¡ existe no TRB
+			// NÃ£o adicionar novo registro.
 			dbSetOrder(2)
 			dbSeek((cAliasSE2)->(E2_FORNECE+E2_PREFIXO+E2_NUM+E2_PARCELA))
 			//dbSeek((cAliasSE2)->(E2_FORNECE+E2_PREFIXO+E2_NUM+E2_PARCELA+E2_LOJA))
 			
-			// Se este título não existe no TRBSE2, então adicionar a tabela do Browse Inferior.
+			// Se este tÃ­tulo nÃ£o existe no TRBSE2, entÃ£o adicionar a tabela do Browse Inferior.
 			If !Found()
 						
 				// Adiciono no TRB do SE2 uso no MarkBrowse
@@ -379,15 +410,17 @@ If !lSaida
 				TRBSE2->IRF_SE2	:= (cAliasSE2)->E2_IRRF
 				TRBSE2->INS_SE2	:= (cAliasSE2)->E2_INSS
 				TRBSE2->ISS_SE2	:= (cAliasSE2)->E2_ISS
+				TRBSE2->ACR_SE2	:= (cAliasSE2)->E2_ACRESC
+				TRBSE2->DCR_SE2	:= (cAliasSE2)->E2_DECRESC
 	
-				// Valor na MarkBrow desconsiderando o PCC conforme definição.
-				// 17/10/2018 - Conforme definição do modelo de tela, não cons/iderar os demais impostos E2_IRRF+E2_INSS+E2_ISS
-				TRBSE2->VLQ_SE2	:= Transform((cAliasSE2)->E2_SALDO-(cAliasSE2)->(E2_PIS+E2_COFINS+E2_CSLL),"@E 999,999,999,999.99")
+				// Valor na MarkBrow desconsiderando o PCC conforme definiÃ§Ã£o.
+				// 17/10/2018 - Conforme definiÃ§Ã£o do modelo de tela, nÃ£o cons/iderar os demais impostos E2_IRRF+E2_INSS+E2_ISS
+				TRBSE2->VLQ_SE2	:= Transform((cAliasSE2)->E2_SALDO-(cAliasSE2)->(E2_PIS+E2_COFINS+E2_CSLL)-(cAliasSE2)->E2_DECRESC + (cAliasSE2)->E2_ACRESC ,"@E 999,999,999,999.99")
 				TRBSE2->REC_SE2	:= If(lQuery,(cAliasSE2)->RECNOSE2,(cAliasSE2)->(Recno()))
 	
-				// FLAG de Registro não conciliado
+				// FLAG de Registro nÃ£o conciliado
 				TRBSE2->OK     	:= 9		// NAO CONCILIADO
-				nNivel			:= 9		// Controle do Nivel da Conciliação quando Identificado no TRB FIG
+				nNivel			:= 9		// Controle do Nivel da ConciliaÃ§Ã£o quando Identificado no TRB FIG
 				nDifVlr:=0
 				nDifDtv:=0
 				 //-----------------------------------------------------//			
@@ -417,16 +450,19 @@ If !lSaida
 		         nValIns 	:= TRBSE2->INS_SE2
 		         nValIss 	:= TRBSE2->ISS_SE2  
 		       
-		         // Desconta o valor dos impostos do Valor Total SALDO do Título do SE2
+				 nvalACR    := TRBSE2->ACR_SE2
+				 nvalDCR    := TRBSE2->DCR_SE2
 		         nValImp -= IIF(lPccBaixa,nValpis+nValCof+nValCsl,0) 
 		         nValImp -= IIF(lIRPFBaixa,nValIrf,0)
 		         nValImp -= IIf(lCalcIssBx,nValIss,0)
 		         nValImp -= IIF(lInssBx,nValIns,0)
 		         
+				 nValImp += nvalACR
+		         nValImp -= nvalDCR
 		         // Valor a ser apresentado na Tela do SE2 sem os IMPOSTOS
 		         cValor := Transform(nValImp,"@E 999,999,999,999.99")
 	         
-	         	 // SALDO mais / menos o valor informado no parametro para diferença do SE2 
+	         	 // SALDO mais / menos o valor informado no parametro para diferenÃ§a do SE2 
 				 //nValorMin:= (cAliasSE2)->E2_SALDO - mv_par15
 				 //nValorMax:= (cAliasSE2)->E2_SALDO + mv_par16
 
@@ -446,10 +482,10 @@ If !lSaida
 		         cSeqSe2  	:= TRBSE2->SEQMOV
 		         nRecTrbSE2 := TRBSE2->(Recno())
 	
-				//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-				//³ Tento pre-reconciliacao dentro da tabela TRB (FIG)			³
-				//³ Fornecedor + Loja + Data Vencto + Valor + Ttulo     		³
-				//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+				//ÃšÃ„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Â¿
+				//Â³ Tento pre-reconciliacao dentro da tabela TRB (FIG)			Â³
+				//Â³ Fornecedor + Loja + Data Vencto + Valor + Ttulo     		Â³
+				//Ã€Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã„Ã™
 				DbSelectArea("TRB")
 				DbSetOrder(1)					//FOR_DDA+DTV_DDA+TIT_DDA - Removido a loja do fornecedor, conforme chamado RITM0017555
 				
@@ -458,20 +494,20 @@ If !lSaida
 				// Buscar TRB por Fornecedor, Loja Vencimento
 				// Valor DDA com Valor Titulo (descontando o PCC-Impostos)
 				// e conseguiu fazer o LOCK dos registros nas tabelas
-				// DDA e SE2 comparação  
-				// O NIVEL será 1
+				// DDA e SE2 comparaÃ§Ã£o  
+				// O NIVEL serÃ¡ 1
 				
-				// Busco esse FORNECEDOR+LOJA no TRB FIG para verificar se tem conciliação
-				// para este título SE2.
+				// Busco esse FORNECEDOR+LOJA no TRB FIG para verificar se tem conciliaÃ§Ã£o
+				// para este tÃ­tulo SE2.
 				/*Removido o campo loja da busca, conforme chamado RITM0017555
 				If TRB->(DbSeek(cFornece+cLoja))*/
 				If TRB->(DbSeek(cFornece))  
 					
-					// Salva posição do TRB FIG
+					// Salva posiÃ§Ã£o do TRB FIG
 					nRecno := TRB->(Recno())
 	
 					// Enquanto for mesmo Fornecedor FIG e Fornecedor SE2
-					// Compara os campos para identificar a conciliação por VENCIMENTO e VALOR (SALDO)
+					// Compara os campos para identificar a conciliaÃ§Ã£o por VENCIMENTO e VALOR (SALDO)
 					/*Removido o campo loja da busca, conforme chamado RITM0017555
 					While !(TRB->(Eof())) .and. TRB->(FOR_DDA+LOJ_DDA) == cFornece+cLoja*/
 					While !(TRB->(Eof())) .and. TRB->(FOR_DDA) == cFornece
@@ -480,11 +516,76 @@ If !lSaida
 
 						//Data Vencto - OK
 						//Valor (SALDO) - OK 
-						//Conciliar Automático e colocar [X] na MarkBrowse.
+						//Conciliar AutomÃ¡tico e colocar [X] na MarkBrowse.
 						//msgalert("aqui "+TRB->VLR_DDA+" "+TRB->TIT_DDA+" "+DTOS(TRB->DTV_DDA))
 						
+						If cVencto >  DTOS(TRB->DTV_DDA)             .AND.  ;
+						    TRB->VLR_DDA == cValor                   .AND.  ;
+							DataValida(TRB->DTV_DDA) = TRB->DTV_DDA   
+							
+							nNivel := 9
+							nRecno := Recno()
+							Exit
+						Endif  
+
+						If cVencto <  DTOS(TRB->DTV_DDA)           
+						   							
+							nNivel := 9
+							nRecno := Recno()
+							Exit
+						Endif  
+						
+						If  TRB->DTV_DDA  <  STOD(cVencto)              .AND. ;
+						     DataValida(TRB->DTV_DDA) == STOD(CVENCTO)   .AND. ;
+ 							 TRB->VLR_DDA == cValor 
+							
+							cValoraux := cvalor
+
+							cValoraux := STRTRAN(cValoraux,".","")
+							cValoraux := STRTRAN(cValoraux,",",".")
+						
+					   
+							// Fazer query para verificar 1 boleto para vários titulos
+								
+							//If  nNivel = 1
+
+								aAreaS   := GetArea()
+								aAreaE2 := SE2->(GetArea())
+
+								cQy := " SELECT E2_VENCREA,E2_VALOR "
+								cQy += " FROM "+RetSqlName("SE2")+" SE2 "
+								cQy += " WHERE  SE2.E2_FORNECE   = '" + cFornece+ "'        AND "
+								cQy += "       SE2.E2_VALOR     = " + cvaltochar(cValoraux) + "         AND "
+								cQy += "        SE2.E2_VENCREA   = '" + cvaltochar(cVencto) + "'   "
+								cQy += "       AND SE2.D_E_L_E_T_   = ' '  "
+ 
+								TCQuery cQy New Alias "cSE2"
+														
+								Count To nRets
+						
+								If nRets > 1 // Analisar 1 boleto para mais de uma titulo
+									nnivel := 6
+								Else
+									nnivel := 1
+								Endif
+
+								dbCloseArea ("cSe2")
+								RestArea(aAreaE2)
+								RestArea(aAreas)
+
+							//Endif
+
+
+							
+							//nNivel := 1
+							nRecno := Recno()
+							Exit
+						Endif
+
+						
+											
 						If 	TRB->VLR_DDA == cValor .and. DTOS(TRB->DTV_DDA) == cVencto
-							// Verificar se por acaso este Registro já foi conciliado neste processamento.
+							// Verificar se por acaso este Registro jÃ¡ foi conciliado neste processamento.
 							If TRB->RECTRBSE2 > 0						//TRB->OK==1
 								nNivel := 6
 							Else
@@ -552,15 +653,15 @@ If !lSaida
 							// Posiciona no registro do TRB
 							TRB->(dbGoto(nRecno))
 	
-							// Marcar o REGISTRO do TRBSE2 como Título que foi 
-							// IDENTIFICADO para Conciliação com este TRB (FIG)
+							// Marcar o REGISTRO do TRBSE2 como TÃ­tulo que foi 
+							// IDENTIFICADO para ConciliaÃ§Ã£o com este TRB (FIG)
 							If (TRB->OK==1 .or. TRB->OK==9)
 								RecLock("TRBSE2",.F.)
 								TRBSE2->MARK := iif(nNivel==1,cMarca," ")				// Coloco uma Marca nesse Titulo
 								MsUnlock()
 						 	Endif				
 						 	
-						 	// Se Já existe alguma marcação no TRBSE2 para este FORN, Valor e DATA limpo a MARCA
+						 	// Se JÃ¡ existe alguma marcaÃ§Ã£o no TRBSE2 para este FORN, Valor e DATA limpo a MARCA
 						 	If nNivel == 6
 						 		If TRB->RECTRBSE2 > 0 
 							 		TRBSE2->(dbGoTo(TRB->RECTRBSE2))
@@ -586,9 +687,9 @@ If !lSaida
 	
 
 							// Posiciona no Registro do TRB
-							// e identifico em qual NIVEL esta conciliação do 
-							// SE2 com o DDA está classificada de 1 a 8
-							// fazendo a associação do NIVEL IDENTIFICADO
+							// e identifico em qual NIVEL esta conciliaÃ§Ã£o do 
+							// SE2 com o DDA estÃ¡ classificada de 1 a 8
+							// fazendo a associaÃ§Ã£o do NIVEL IDENTIFICADO
 							RecLock("TRB",.F.)
 							// Armazena o numero fisico da tabela SE2
 							TRB->REC_SE2	:= If(lQuery,(cAliasSE2)->RECNOSE2,(cAliasSE2)->(Recno()))
@@ -596,8 +697,8 @@ If !lSaida
 							TRB->RECTRBSE2  := TRBSE2->(RECNO())
 							TRB->OK     	:= nNivel					// NIVEL DE CONCILIACAO
 							TRB->OKINI     	:= nNivel			
-							TRB->FIL_DDA	:= (cAliasSE2)->E2_FILIAL	// Filial do Título
-							TRB->DTC_DDA 	:= dDataBase				// Data da Conciliação 
+							TRB->FIL_DDA	:= (cAliasSE2)->E2_FILIAL	// Filial do TÃ­tulo
+							TRB->DTC_DDA 	:= dDataBase				// Data da ConciliaÃ§Ã£o 
 
 							MsUnlock()
 
@@ -617,8 +718,8 @@ If !lSaida
 	
 				Endif
 				
-	/*---------- 30/10/2018 - Gilson - pensar se devo DELETAR o TRBSE2 não CONCILIADO */
-				// Se este título TRBSE2 não foi conciliado ou identificado, excluir da TELA da MarkBrowse
+	/*---------- 30/10/2018 - Gilson - pensar se devo DELETAR o TRBSE2 nÃ£o CONCILIADO */
+				// Se este tÃ­tulo TRBSE2 nÃ£o foi conciliado ou identificado, excluir da TELA da MarkBrowse
 				If nNivel == 9 
 					dbSelectArea('TRBSE2')
 					RecLock('TRBSE2',.F.)
@@ -633,9 +734,9 @@ If !lSaida
 				
 			Endif
 	
-			IncProc("Processando Título: "+(cAliasSE2)->(E2_PREFIXO+"-"+E2_NUM+"-"+E2_PARCELA))
+			IncProc("Processando Tí­tulo: "+(cAliasSE2)->(E2_PREFIXO+"-"+E2_NUM+"-"+E2_PARCELA))
 
-			// Próximo registro da VIEW do SE2 dentro dos parâmetros
+			// PrÃ³ximo registro da VIEW do SE2 dentro dos parÃ¢metros
 			(cAliasSE2)->(dbSkip())
 
 		Enddo
@@ -643,14 +744,14 @@ If !lSaida
 		nTotConcil  := Len(aConcil)
 		nTotAnalise := Len(aAnalise)
 				
-		// Apresentar ao usuário mensagem informando sobre necessidade de Conciliação MANUAL
+		// Apresentar ao usuÃ¡rio mensagem informando sobre necessidade de ConciliaÃ§Ã£o MANUAL
 		// Pois todos os registros do TRB DDA e foram processados e existem duplicidades
-		// para ser analisada no SE2 ( Tomada de Decisão )
+		// para ser analisada no SE2 ( Tomada de DecisÃ£o )
 		If !lAutomato
-			Alert("Existe mais de uma chave possivel para a conciliação automática, por este motivo a conciliação de alguns títulos deverá ser feita de forma manual.")
+			Alert("Existe mais de uma chave possivel para a conciliação automática por este motivo a conciliação de alguns tí­tulos deverá ser feita de forma manual.")
 		EndIf
 	
-		// Browse de Marcação do SE2 para Seleção do Título
+		// Browse de MarcaÃ§Ã£o do SE2 para SeleÃ§Ã£o do TÃ­tulo
 		dbSelectArea("TRBSE2")
 		DbSetOrder(1)	 
 		dbGoTop()
@@ -660,7 +761,7 @@ If !lSaida
 		DbSetOrder(1)	 
 		dbGoTop()
 		
-		If !lAutomato //Abre interface só caso não for processo automatico 
+		If !lAutomato //Abre interface sÃ³ caso nÃ£o for processo automatico 
 		
 			// Faz o calculo automatico de dimensoes de objetos    
 			aSize := MSADVSIZE()
@@ -670,7 +771,7 @@ If !lSaida
 	
 			oPanel := TPanel():New(0,0,'',oDlg,, .T., .T.,, ,30,30,.T.,.T. )
 
-			// 30/11/2018 - Colocar Informação sobre quantidade de títulos-------------------------------------
+			// 30/11/2018 - Colocar InformaÃ§Ã£o sobre quantidade de tÃ­tulos-------------------------------------
     		oTBitmap1 := TBitmap():New(10,30,10,10,"DISABLE",,.T.,oPanel,{||.T.},,.F.,.F.,,,.F.,,.T.,,.F.)
 			@ 10,040 Say OemToAnsi("Geral:")           FONT oDlg:oFont PIXEL Of oPanel	
 			@ 10,058 Say oTotGeral    VAR nTotGeral    Picture "@E 999,999"     FONT oDlg:oFont PIXEL Of oPanel
@@ -704,7 +805,7 @@ If !lSaida
 
 			dbGoTop()
 	
-			// Browse para apresentação da tabela FIG filtrada pelos PARAMETROS	
+			// Browse para apresentaÃ§Ã£o da tabela FIG filtrada pelos PARAMETROS	
 			@ .5,.5 LISTBOX oDadosFig VAR cVarTRB FIELDS ;
 					 		HEADER 	" ",;
 					 				"Código",;	
@@ -741,7 +842,7 @@ If !lSaida
 
 			oDadosFig:bChange := {|| MgfFilter(oTitulo,TRB->FOR_DDA,TRB->DTV_DDA,TRB->VLR_DDA,TRB->FIL_DDA,strzero(TRB->REC_DDA,15)) } 	
 
-			// Browse de Marcação do SE2 para Seleção do Título
+			// Browse de MarcaÃ§Ã£o do SE2 para SeleÃ§Ã£o do TÃ­tulo
 			dbSelectArea("TRBSE2")
 			DbSetOrder(1)	//SEQMOV+FOR_DDA+LOJ_DDA+DTV_DDA+TIT_DDA"
 			dbGoTop()
@@ -751,27 +852,27 @@ If !lSaida
 					 					"Filial",;	//
 										"Código",;	//
 										"Fornecedor",;	//
-										"Loja",;	//
 										"Titulo",;	//
-										"Tipo",;	//
 										"Vencto",;	//
 										"Valor",;	//
 										"PIS",;	//
 										"COFINS",;	//
 										"CSLL",;	//
+										"ACR",;	//
+										"DCR",;	//
 										"Valor Liq",;   //		SALDO -  (PCC )
 							 COLSIZES 	 GetTextWidth(0,"BB"),;
 							 			 GetTextWidth(0,"BBBB"),;			//Filial
 										 GetTextWidth(0,"BBBBB"),;			//Fornecedor
 										 GetTextWidth(0,"BBBBBBBBBBB"),;	//Titulo
-										 GetTextWidth(0,"BBBB"),;			//Loja
 										 GetTextWidth(0,"BBBBBBBBBBB"),;	//Titulo
-										 GetTextWidth(0,"BBBB"),;			//Tipo
 										 GetTextWidth(0,"BBBBBB"),;			//Vencto
 										 GetTextWidth(0,"BBBBBBBBB"),;		//Valor
 										 GetTextWidth(0,"BBBBBBBBB"),;		//PIS
 										 GetTextWidth(0,"BBBBBBBBB"),;		//COFINS
 										 GetTextWidth(0,"BBBBBBBBB"),;		//CSLL
+										 GetTextWidth(0,"BBBB"),;		//ACR
+										 GetTextWidth(0,"BBBB"),;		//DCR
 										 GetTextWidth(0,"BBBBBBBBB") ;		//Valor Liq
 			SIZE 670,100 ON DBLCLICK (MGF260Marca(oTitulo),oTitulo:DrawSelect(),oTitulo:Refresh(.T.)) NOSCROLL
 	
@@ -779,14 +880,14 @@ If !lSaida
 									TRBSE2->FIL_SE2	,;
 									TRBSE2->FOR_SE2	,;
 									TRBSE2->NOM_SE2	,;
-									TRBSE2->LOJ_SE2	,;
 									TRBSE2->TIT_SE2	,;
-									TRBSE2->TIP_SE2	,;
 									TRBSE2->DTV_SE2	,;
 									PADR(TRBSE2->VLR_SE2,18),;
 									TRBSE2->PIS_SE2,;
 									TRBSE2->COF_SE2,;
 									TRBSE2->CSL_SE2,;																		
+									TRBSE2->ACR_SE2,;
+									TRBSE2->DCR_SE2,;																				
 									PADR(TRBSE2->VLQ_SE2,18) }}
  	
 			ACTIVATE MSDIALOG oDlg ON INIT (oDadosFig:GoDown(),oDadosFig:GoUp(),oTitulo:GoPosition(1),oTitulo:DrawSelect(),oTitulo:Refresh(.T.)) CENTERED 
@@ -794,7 +895,7 @@ If !lSaida
           nOpca := 1
         Endif     
 
-		// Ao confirmar a tela, processar a atualização dos campos nas tabelas 
+		// Ao confirmar a tela, processar a atualizaÃ§Ã£o dos campos nas tabelas 
 		// DDA e SE2 Originais.
 		If nOpca == 1 .or. lAutomato
 
@@ -809,7 +910,7 @@ If !lSaida
 			ProcRegua(RecCount())
 			
 			While !(TRB->(Eof()))
-				IncProc("Processando Conciliação: "+TRB->TIT_DDA)
+				IncProc("Processando Conciliações: "+TRB->TIT_DDA) 
 				If TRB->RECTRBSE2>0
 					TRBSE2->(dbGoTo(TRB->RECTRBSE2))
 					
@@ -825,7 +926,7 @@ If !lSaida
 							// Atualizar a tabela FISICA do SE2 e do FIG
 							dbSelectArea("SE2")
 							dbGoto(nRecSE2)
-							If RecLock("SE2",.F.)
+							If RecLock("SE2",.F.) 
 								SE2->E2_CODBAR	:= TRB->CODBAR
 								cTitSE2			:= SE2->E2_FILIAL+"|"+;
 													SE2->E2_PREFIXO+"|"+;
@@ -845,6 +946,62 @@ If !lSaida
 								FIG->FIG_DTCONC	:= dDatabase	//Data da Conciliacao
 								FIG->FIG_USCONC	:= cUsername	//Usuario responsavel pela conciliacao
 							Endif
+							// History - Gravar dados na ZDS
+							nValPP := STRTRAN(TRBSE2->VLQ_SE2,".","")
+							nValPP := STRTRAN(nValPP,",",".")
+							nValPP := VAL(nValPP)
+
+							If nValPP  <>  FIG->FIG_VALOR 
+							   //( (FIG->FIG_VALOR - TRBSE2->VLQ_SE2 ) <= mv_par15  .OR.  ;
+							   //  (FIG->FIG_VALOR - TRBSE2->VLQ_SE2 ) <= mv_par16 )
+								
+								dbSelectArea('ZDS')
+								ZDS->(dbSetOrder(1))
+								ZDS->(dbSeek(SE2->E2_FILIAL+SE2->E2_PREFIXO+SE2->E2_NUM+SE2->E2_PARCELA+SE2->E2_TIPO+SE2->E2_FORNECE+SE2->E2_LOJA))
+							
+								//dbSelectArea('ZDS')
+								//ZDS->(dbSetOrder(1)) 
+								Reclock("ZDS",.T.)
+			
+									ZDS->ZDS_FILIAL := SE2->E2_FILIAL
+									ZDS->ZDS_PREFIX := SE2->E2_PREFIXO
+									ZDS->ZDS_NUM    := SE2->E2_NUM
+									ZDS->ZDS_PARCEL := SE2->E2_PARCELA
+									ZDS->ZDS_TIPO   := SE2->E2_TIPO
+									ZDS->ZDS_FORNEC := SE2->E2_FORNECE
+									ZDS->ZDS_LOJA   := SE2->E2_LOJA
+									ZDS->ZDS_HISTOR := 'AJUSTE DE ARREDONDAMENTO INCLUIDO PELA CONCILIACAO DDA'
+
+
+									// Estipulado pelo Mauricio estas 2 situaçõe (001/503)
+									If  FIG->FIG_VALOR  > nValPP
+										ZDS->ZDS_COD    := "001" 
+										ZDS->ZDS_VALOR  := (FIG->FIG_VALOR  - nValPP )  
+									Else
+										ZDS->ZDS_COD    := "503" 
+										ZDS->ZDS_VALOR  := ( nValPP  - FIG->FIG_VALOR)   
+									Endif
+							
+								ZDS->(MsUnlock()) 
+
+								dbSelectArea("SE2")
+								dbGoto(nRecSE2)
+								If RecLock("SE2",.F.)
+									If  FIG->FIG_VALOR > nValPP
+										SE2->E2_ACRESC	:=  SE2->E2_ACRESC   + ( FIG->FIG_VALOR  - nValPP )
+										SE2->E2_SDACRES	:=  SE2->E2_SDACRES  + ( FIG->FIG_VALOR  - nValPP )
+									Else
+										SE2->E2_DECRESC :=  SE2->E2_DECRESC  + ( nValPP - FIG->FIG_VALOR )
+										SE2->E2_SDDECRE	:=  SE2->E2_SDDECRE  + ( nValPP - FIG->FIG_VALOR )
+									
+									Endif
+								ENDIF
+							Endif
+
+							
+							//Endif
+
+							// Fim History  
 						EndIf
 					Endif
 				Endif
@@ -870,7 +1027,7 @@ dbSelectArea("TRB")
 Set Filter To
 dbCloseArea()
 
-//Deleta tabela temporária criada no banco de dados
+//Deleta tabela temporÃ¡ria criada no banco de dados
 If oTrabFig <> Nil
 	oTrabFig:Delete()
 	oTrabFig := Nil
@@ -959,7 +1116,7 @@ Else
 				AAdd(aRLocksFIG, FIG->(Recno()))
 				lRet	:=	.T.
 			ElseIf lHelp
-				MsgAlert("Um dos registros relacionados está sendo utilizado em outro terminal e não pode ser utilizado na Conciliação DDA")		//
+				MsgAlert("Um dos registros relacionados está sendo utilizado em outro terminal e nÃ£o pode ser utilizado na Conciliação DDA")		//
 			Endif
 		Endif
 	Else
@@ -1015,14 +1172,14 @@ Static Function MgAdmAbreSM0()
 	RestArea( aArea )
 Return aRetSM0
 
-Static Function MGF260CriArq()
+Static Function MGF260CriArq()  
 Local aDbStru := {}
 Local aDbStruSE2 := {}
 Local nTamFil := TamSX3("E2_FILIAL")[1]
 Local nTamTip := TamSX3("E2_TIPO")[1]
 Local nTamFor := TamSX3("E2_FORNECE")[1]
 Local nTamLoj := TamSX3("E2_LOJA")[1]
-//Ao tamanho do titulo serão somados os separadores
+//Ao tamanho do titulo serÃ£o somados os separadores
 Local nTamTit := TamSX3("E2_PREFIXO")[1]+TamSX3("E2_NUM")[1]+TamSX3("E2_PARCELA")[1]+nTamFil+5
 Local nTamKey := TamSX3("E2_PREFIXO")[1]+TamSX3("E2_NUM")[1]+TamSX3("E2_PARCELA")[1]+nTamTip+nTamFil
 Local nTamNom := TamSX3("E2_NOMFOR")[1]
@@ -1080,6 +1237,8 @@ aadd(aDbStruSE2,{"SLD_SE2   ","N",18,2})
 aadd(aDbStruSE2,{"IRF_SE2   ","N",18,2})
 aadd(aDbStruSE2,{"INS_SE2   ","N",18,2})
 aadd(aDbStruSE2,{"ISS_SE2   ","N",18,2})
+aadd(aDbStruSE2,{"ACR_SE2   ","N",18,2})
+aadd(aDbStruSE2,{"DCR_SE2   ","N",18,2})
 aadd(aDbStruSE2,{"DIFVLR    ","N",1,0})
 aadd(aDbStruSE2,{"DIFDTV    ","N",1,0})
 aadd(aDbStruSE2,{"VLQ_SE2   ","C",18,0})
@@ -1088,7 +1247,7 @@ aadd(aDbStruSE2,{"TIT_SE2   ","C",nTamTit,0})  //Numero do titulo com separadore
 aadd(aDbStruSE2,{"TIP_SE2   ","C",nTamTip,0})
 
 //----------------------------
-//Criação da tabela temporaria 
+//CriaÃ§Ã£o da tabela temporaria 
 //----------------------------
 If oTrabFig <> Nil
 	oTrabFig:Delete()
@@ -1100,7 +1259,7 @@ If oTrabSE2 <> Nil
 	oTrabSE2 := Nil
 Endif
 
-// Temporária para uso no Browse Superior ( TRB da DDA )
+// TemporÃ¡ria para uso no Browse Superior ( TRB da DDA )
 
 oTrabFig := FWTemporaryTable():New( "TRB" )  
 oTrabFig:SetFields(aDbStru)
@@ -1117,7 +1276,7 @@ oTrabFig:AddIndex("5", {"OK","FOR_DDA","LOJ_DDA","DTV_DDA","TIT_DDA"})
 
 oTrabFig:Create()	
 
-// Temporária para uso no Browse Inferior Marcação ( TRB da SE2 )
+// TemporÃ¡ria para uso no Browse Inferior MarcaÃ§Ã£o ( TRB da SE2 )
 oTrabSE2 := FWTemporaryTable():New( "TRBSE2" )  
 oTrabSE2:SetFields(aDbStruSE2) 	
 /* Loja removido, conforme chamado Marfrig RITM0017555. Onde um unico CPF pode estar cadastrado em mais de uma loja do fornecedor.
@@ -1144,13 +1303,13 @@ While !TRBSE2->(Eof())
 	TRBSE2->(dbSkip())
 End
 TRBSE2->(dbGoTo(nRec))
-// Só pode marcar se o valor Bater
+// SÃ³ pode marcar se o valor Bater
 If (TRBSE2->(VLQ_SE2) == TRB->VLR_DDA) .or. (TRBSE2->DIFVLR == 1 .and. TRBSE2->(VLQ_SE2) <> TRB->VLR_DDA)
 	RecLock("TRBSE2",.F.)
 	TRBSE2->MARK 	 := iif(Empty(cOldMark),cMarca,' ')
 	TRBSE2->REC_DDA  := TRB->REC_DDA
 	MsUnLock()
-	// Gravar o Recno do TRBSE2 no TRB para usar na confirmação se estiver MARCADO com [X]
+	// Gravar o Recno do TRBSE2 no TRB para usar na confirmaÃ§Ã£o se estiver MARCADO com [X]
 	RecLock("TRB",.F.)
 	TRB->REC_SE2   := iif(Empty(TRBSE2->MARK),0,TRBSE2->REC_SE2)
 	TRB->DTC_DDA   := iif(Empty(TRBSE2->MARK),STOD('  /  /  '),dDataBase)
@@ -1255,9 +1414,9 @@ aAdd(aPesqui,{"Fornecedor DDA + Loja DDA + Vencto. DDA + Titulo DDA",1})
 WndxPesqui(,aPesqui,cSeek,.F.)
 dbSelectArea("TRB")
 dbSetOrder(nIndex)
-//Caso não tenha achado, volto para o registro de partida
+//Caso nÃ£o tenha achado, volto para o registro de partida
 IF TRB->(EOF())
-	MsgStop(" Não foi possível identificar a pesquisa. ")
+	MsgStop(" Não foi possí­vel identificar a pesquisa. ")
 	TRB->(dbgoto(nRecno))
 Endif
 

@@ -14,7 +14,7 @@ Data.....:              07/04/2017
 Descricao / Objetivo:   Cadastro de Tatica - Estrutura de Venda
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -28,22 +28,22 @@ user function MGFCRM22(nOpcX, cCodPos, nRecno)
 	//ZBF->(DBGoTop())
 
 	if nOpcX == 3
-		fwExecView("Inclusao", "MGFCRM21", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
+		fwExecView("Inclusão", "MGFCRM21", MODEL_OPERATION_INSERT,, {|| .T.}, , , aButtons)
 	else
 		//if ZBF->(DBSeek( xFilial("ZBF") + cCodPos ))
 		ZBF->(dbGoto(nRecno))
 		If ZBF->(Recno()) == nRecno
 			if nOpcX == 4
-				fwExecView("Alteracao", "MGFCRM21", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
+				fwExecView("Alteração", "MGFCRM21", MODEL_OPERATION_UPDATE,, {|| .T.}, , , aButtons)
 			elseif nOpcX == 5
 				if chkRelat()
-					fwExecView("Alteracao", "MGFCRM21", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
+					fwExecView("Alteração", "MGFCRM21", MODEL_OPERATION_DELETE,, {|| .T.}, , , aButtons)
 				else
-					msgAlert("Este registro nao podera ser excluido. O mesmo possui Regional abaixo dele.")
+					msgAlert("Este registro não poderá ser excluído. O mesmo possui Regional abaixo dele.")
 				endif
 			endif
 		else
-			msgAlert("Registro nao encontrado.")
+			msgAlert("Registro não encontrado.")
 		endif
 	endif
 

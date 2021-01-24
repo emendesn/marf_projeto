@@ -85,7 +85,7 @@ Rotina de execução da integração
 @since 10/01/2020
 @version P12
 /*/
-static function runInteg81()
+static procedure runInteg81()
 
 	local cIdInteg		:= ""
 	local cIDMgf		:= allTrim( superGetMv( "MGFIDINTEG", , "7899b75c-c6fc-42cb-99c5-7930166b121f" ) )
@@ -119,6 +119,7 @@ static function runInteg81()
 	local cCodTpInt		:= allTrim( superGetMv( "MGFWSC81F" , , "008" ) )//Cod. de busca na SZ3, Tabela Tipo de Integração
 
 	local cHeadHttp		:= ""
+	local nI
 
 	conout("[SALESFORCE] - MGFWSC81- Selecionando Titulos aptos a integrar com SALESFORCE")
 
@@ -213,20 +214,25 @@ static function runInteg81()
 			if nStatuHttp >= 200 .and. nStatuHttp <= 299
 			    cStaLog  := "1"
 				cErroLog := ""
-				cUpdSE1	 := ""
 
-				cUpdSE1 := "UPDATE " + retSQLName("SE1")										+ CRLF
-				cUpdSE1 += "	SET"															+ CRLF
-				cUpdSE1 += "	E1_XINTSFO = 'I' "												+ CRLF
+				begin transaction
 
-				cUpdSE1 += " WHERE"																+ CRLF
-				cUpdSE1 += " 		R_E_C_N_O_ IN ("+ left( cSE1Recno , len(cSE1Recno)-1 )+")"  + CRLF
+					cUpdSE1 := "UPDATE " + retSQLName("SE1")										+ CRLF
+					cUpdSE1 += "	SET"															+ CRLF
+					cUpdSE1 += "	E1_XINTSFO = 'I' "												+ CRLF
 
-				if tcSQLExec( cUpdSE1 ) < 0
-					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-					cErroLog := "Não foi possível executar UPDATE. "+ tcSqlError()
-					cStaLog  := "2" //Erro
-				endif
+					cUpdSE1 += " WHERE"																+ CRLF
+					cUpdSE1 += " 		R_E_C_N_O_ IN ("+ left( cSE1Recno , len(cSE1Recno)-1 )+")"  + CRLF
+
+					if tcSQLExec( cUpdSE1 ) < 0
+						conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
+						cErroLog := "Não foi possível executar UPDATE. "+ tcSqlError()
+						cStaLog  := "2" //Erro
+						DisarmTransaction()
+					endif
+					
+				end transaction
+
 			else
 				cErroLog := "Erro - Integração retornou estatus Http diferente de sucesso!"
 				cStaLog := "2"//Erro
@@ -282,7 +288,7 @@ Seleciona os registros para exportação
 @since 09/01/2020
 @version P12
 /*/
-static function getRegs( )
+static procedure getRegs( )
 
 	Local dDtINI  := SuperGetMV('MGFWSC81D', ,StoD('20191201'))
 	Local cTipos  := SuperGetMv( "MGFWSC81E" , , "NF/JR/RA")

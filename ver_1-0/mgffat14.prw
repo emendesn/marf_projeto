@@ -5,10 +5,10 @@
 Programa............: MGFFAT14
 Autor...............: Joni Lima
 Data................: 17/10/2016
-Descricao / Objetivo: Utilizado no Ponto de Entrada MA410COR
+Descrição / Objetivo: Utilizado no Ponto de Entrada MA410COR
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ajusta e adiciona Legenda no Browse de pedidos de venda
 =====================================================================================
 */

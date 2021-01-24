@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS22
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de Origem
+Descrição / Objetivo.....: Cadastro de Origem
 Doc. Origem..............: GAP 
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -91,7 +91,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 User Function MGFXBLQ()
 
@@ -102,13 +102,13 @@ User Function MGFXBLQ()
 		ZDA->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 User Function MGFXLIB()
 
@@ -120,13 +120,13 @@ User Function MGFXLIB()
 
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return
 
 /*===============================================
-Valida exclusao do cadastro
+Valida exclusão do cadastro
 ================================================*/
 Static Function ValidExcl(oModel)
 Local nOperation := oModel:GetOperation()
@@ -141,7 +141,7 @@ If nOperation == MODEL_OPERATION_DELETE
 	DBSelectArea(cAliasTMP1)
 	If !EOF()
 		lRet := .F.
-		Help( ,, 'Validacao de Registro',, 'O Registro jï¿½ foi relacionado a um Produto.', 1, 0 )
+		Help( ,, 'Validação de Registro',, 'O Registro já foi relacionado a um Produto.', 1, 0 )
 	EndIf
 	DBCloseArea()
 EndIf

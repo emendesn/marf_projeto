@@ -8,7 +8,7 @@ Data................: 07/10/2016
 Descricao / Objetivo: Cadastro especifico do Controle de conta do vendedor
 Doc. Origem.........: CRM - GAP CRM05
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -136,7 +136,7 @@ If lRet
 	ADL->(dbSetOrder(5))
 	If ADL->(dbSeek(xFilial("ADL")+M->ADL_VEND+M->ADL_ENTIDA+M->ADL_CODENT+M->ADL_LOJENT))
 		lRet := .F.
-		APMsgStop("Jï¿½ existe registro com esta chave na tabela ADL, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
+		APMsgStop("Já existe registro com esta chave na tabela ADL, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
 	Endif	
 Endif
 	
@@ -166,7 +166,7 @@ If cTipo == "1" // alteracao
 	// se nao houve alteracao nos campos da chave, nao deixa confirmar a alteracao
 	If cChaveAlt == xFilial("AO4")+M->ADL_ENTIDA+Padr(M->ADL_CODENT+M->ADL_LOJENT,TamSX3("AO4_CHVREG")[1])+cUsuario+M->ADL_VEND  	
 		lRet := .F.
-		APMsgStop("Nao  houve alteracao nos campos. Feche a tela pelo botao 'Cancelar'.")
+		APMsgStop("Não houve alteração nos campos. Feche a tela pelo botão 'Cancelar'.")
 	Endif	
 Endif
 	
@@ -176,7 +176,7 @@ If lRet
 		ADL->(dbSetOrder(5))
 		If ADL->(dbSeek(xFilial("ADL")+M->ADL_VEND+M->ADL_ENTIDA+M->ADL_CODENT+M->ADL_LOJENT))
 			lRet := .F.
-			APMsgStop("Jï¿½ existe registro com esta chave na tabela ADL, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
+			APMsgStop("Já existe registro com esta chave na tabela ADL, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
 		Endif	
 	    
 		If lRet
@@ -185,7 +185,7 @@ If lRet
 			AO4->(dbSetOrder(1))
 			If AO4->(dbSeek(xFilial("AO4")+M->ADL_ENTIDA+Padr(M->ADL_CODENT+M->ADL_LOJENT,TamSX3("AO4_CHVREG")[1])+cUsuarioNew))
 				lRet := .F.
-				APMsgStop("Jï¿½ existe registro com esta chave na tabela AO4, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
+				APMsgStop("Já existe registro com esta chave na tabela AO4, Vendedor+Entidade+Cod_Entidade+Loja_Entidade. Verifique!")
 			Endif	
 		Endif
 	Endif
@@ -210,7 +210,7 @@ If lRet
 			
 			If (cAliasTrb)->(!Eof())
 				lRet := .F.
-				APMsgStop("Este registro nao pode ser alterado/excluido pois esta associado a uma ESTRUTURA DE NEGï¿½CIOS")
+				APMsgStop("Este registro não pode ser alterado/excluído pois está associado a uma ESTRUTURA DE NEGÓCIOS")
 			Endif
 			
 			(cAliasTrb)->(dbCloseArea())

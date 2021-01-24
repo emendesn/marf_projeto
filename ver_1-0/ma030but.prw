@@ -5,11 +5,11 @@
 Programa............: MA030BUT
 Autor...............: Roberto Sidney
 Data................: 09/09/2016
-Descricao / Objetivo: Amarracao Endereco de Entrega
+Descricao / Objetivo: Amarração Endereço de Entrega
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Pontos de entrada para chamada da amarracao Clientes x Endereco
+Uso.................: Marfrig
+Obs.................: Pontos de entrada para chamada da amarração Clientes x Endereço
 =====================================================================================
 */
 

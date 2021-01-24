@@ -1,5 +1,5 @@
 /*/{Protheus.doc} EECAE104
-    (Ponto de entrada desenvolvido para habilitar a alteracao de campos na rotina de carregamento do embarque)
+    (Ponto de entrada desenvolvido para habilitar a altera��o de campos na rotina de carregamento do embarque)
     @type  Function
     @William Silva
     @since 10/07/2019

@@ -9,10 +9,10 @@
 Programa............: MGFCOMA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Tratamento desconto pedido de compras
+Descrição / Objetivo: Tratamento desconto pedido de compras
 Doc. Origem.........:
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -53,8 +53,8 @@ Return nPrunit
 Programa............: MGFCOMA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Tratamento desconto pedido de compras
-Uso.................: 
+Descrição / Objetivo: Tratamento desconto pedido de compras
+Uso.................: Marfrig
 =====================================================================================
 */
 
@@ -96,8 +96,8 @@ Return nPrunit
 Programa............: MGFCOTA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Tratamento desconto cotacao
-Uso.................: 
+Descrição / Objetivo: Tratamento desconto cotação
+Uso.................: Marfrig
 =====================================================================================
 */
 
@@ -151,8 +151,8 @@ Return nPrunit
 Programa............: MGFCOA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: Tratamento desconto cotacao
-Uso.................: 
+Descrição / Objetivo: Tratamento desconto cotação
+Uso.................: Marfrig
 =====================================================================================
 */
 user function MGFCOA2()
@@ -202,8 +202,8 @@ Return nPrunit
 Programa............: MGFCOA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: gatilho para desconto cotacao
-Uso.................: 
+Descrição / Objetivo: gatilho para desconto cotação
+Uso.................: Marfrig
 =====================================================================================
 */
 user function MGFCOTAG()
@@ -239,8 +239,8 @@ Return nProrig
 Programa............: MGFCOA2
 Autor...............: Tarcisio Galeano
 Data................: 10/2018
-Descricao / Objetivo: gatilho para desconto cotacao
-Uso.................: 
+Descrição / Objetivo: gatilho para desconto cotação
+Uso.................: Marfrig
 =====================================================================================
 */
 user function MGFCOAG()

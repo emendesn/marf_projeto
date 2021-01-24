@@ -7,10 +7,10 @@
 Programa.:              MGFFIN53
 Autor....:              Leonardo Kume        
 Data.....:              14/03/2017
-Descricao / Objetivo:   Chamada da posicao do cliente 
+Descricao / Objetivo:   Chamada da posição do cliente 
 Doc. Origem:            Contrato - GAP MGFCRE007
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

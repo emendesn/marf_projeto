@@ -1,15 +1,15 @@
 #INCLUDE "totvs.ch" 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF06R16	ï¿½Autor  ï¿½ Geronimo Benedito Alves																	ï¿½Data ï¿½  20/04/18  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.		ï¿½ Rotina que mostra na tela os dados da planilha: Financeiro -  Contas a Receber - Titulos em Aberto CR			(Modulo 06-FIN)    ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½			ï¿½ Os dados sao obtidos e mostrados na tela atravez da execucao de query, e depois, o usuario pode gerar uma planilha excel com elesï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso		ï¿½ Cliente Global Foods																											   ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF06R16	ºAutor  ³ Geronimo Benedito Alves																	ºData ³  20/04/18  º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.		³ Rotina que mostra na tela os dados da planilha: Financeiro -  Contas a Receber - Títulos em Aberto CR			(Módulo 06-FIN)    º±±
+//±±º			³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com elesº±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso		³ Marfrig Global Foods																											   º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF06R16()
 
@@ -19,43 +19,43 @@ User Function MGF06R16()
 	Private _aEmailQry , _cWhereAnd
 	_aEmailQry	:= {}  ; _cWhereAnd	:= ""
 	
-	Aadd(_aDefinePl, "Contas a Receber - Titulos em Aberto"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecera na regua de processamento.
-	Aadd(_aDefinePl, "Titulos em Aberto"					)	//02-	_cArqName  - Nome da planilha Excel a ser criada
-	Aadd(_aDefinePl, {"Titulos em Aberto"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
-	Aadd(_aDefinePl, {"Titulos em Aberto"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
-	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba  
+	Aadd(_aDefinePl, "Contas a Receber - Títulos em Aberto"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
+	Aadd(_aDefinePl, "Títulos em Aberto"					)	//02-	_cArqName  - Nome da planilha Excel a ser criada
+	Aadd(_aDefinePl, {"Títulos em Aberto"}					)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
+	Aadd(_aDefinePl, {"Títulos em Aberto"}					)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
+	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry 
+	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba  
 	_nInterval	:= 35											//		Intervalo maximo de dias permitido entre a data Inicial e a Data Final
 	_aCpoExce	:= {}
 	_cTmp01		:= ""								
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar 
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado    
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes  		
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado    
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes  		
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02										 03							 04	 05		 06		07					  	 08	 09		
-	Aadd(_aCampoQry, {"E2_FILIAL"	,"COD_FILIAL"							,"Cod. Filial"				,"C",006	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E2_FILIAL"	,"COD_FILIAL"							,"Cód. Filial"				,"C",006	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"M0_FILIAL"	,"NOM_FILIAL"							,"Descr. Filial"			,"C",040	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"A1_COD"		,"COD_CLIENTE			as COD_CLIENT"	,"Cod. do Cliente"			,"C",006	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"A1_COD"		,"COD_CLIENTE			as COD_CLIENT"	,"Cód. do Cliente"			,"C",006	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOM_CLIENTE			as NOM_CLIENT"	,"Nome do Cliente"			,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_LOJA"		,"COD_LOJA				as COD_LOJA"	,"Loja do Cliente"			,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A2_CGC"		,"COD_CNPJ_CLIENTE		as CNPJCLIENT"	,"CNPJ do Cliente"			,"C",018	,0	,"@!"						,""	,"@!" })
-	Aadd(_aCampoQry, {"A1_INSCR"	,"COD_INSCR_EST_CLIENTE"				,"Inscriï¿½ï¿½o Estadual"		,"C",018	,0	,""							,""	,""	})	
+	Aadd(_aCampoQry, {"A1_INSCR"	,"COD_INSCR_EST_CLIENTE"				,"Inscrição Estadual"		,"C",018	,0	,""							,""	,""	})	
 	Aadd(_aCampoQry, {"A1_DDD"		,"COD_DDD_CLIENTE		as DDD_CLIENT"	,"DDD do Cliente"			,"C",003	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_TEL"		,"NUM_TELEFONE_CLIENTE	as TEL_CLIENT"	,"Telefone do Cliente"		,"C",015	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A2_NOME"		,"NOM_CONTATO_CLIENTE	as CONTACCLIE"	,"Nome para Contato"		,"C",040	,0	,""  						,""	,""	})
 	Aadd(_aCampoQry, {"A2_NOME"		,"EMAIL_CLIENTE			as EMAIL_CLIE"	,"E-mail Cliente"			,"C",040	,0	,""  						,"" ,""	})
-	Aadd(_aCampoQry, {"AOV_DESSEG"	,"DESC_SEGMENTO			as DESCSEGMEN"	,"Descricao do Segmento"	,"C",040	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"AOV_DESSEG"	,"DESC_SEGMENTO			as DESCSEGMEN"	,"Descrição do Segmento"	,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A3_NOME"		,"NOM_VENDEDOR			as NOMVENDEDO"	,"Nome do Vendedor"			,"C",040	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"ZQ_DESCR"	,"DESC_REDE"							,"Descricao Rede"			,"C",040	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_EMISSAO"	,"DT_EMISSAO"							,"Data de Emissao"			,"D",008	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"ZQ_DESCR"	,"DESC_REDE"							,"Descrição Rede"			,"C",040	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_EMISSAO"	,"DT_EMISSAO"							,"Data de Emissão"			,"D",008	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"E1_VENCTO"	,"DT_VENCIMENTO			as DTVENCIMEN"	,"Data de Vencimento"		,"D",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_NUM"		,"NUM_TITULO"							,"Nï¿½ Titulo"				,"C",009	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_NUM"		,"NUM_TITULO"							,"Nº Título"				,"C",009	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"E1_PARCELA"	,"NUM_PARCELA			as NUMPARCELA"	,"Parcela"					,"C",002	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_NATUREZ"	,"COD_NATUREZA_OPERACAO	as CODNATUREZ"	,"Cod. Natureza"			,"C",010	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_TIPO"		,"TIP_TITULO"							,"Tipo Titulo"				,"C",003	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_VALOR"	,"VLR_TITULO"							,"Valor Titulo"				,"N",017	,2	,"@E 99,999,999,999.99"		,""	,""	})
+	Aadd(_aCampoQry, {"E1_NATUREZ"	,"COD_NATUREZA_OPERACAO	as CODNATUREZ"	,"Cód. Natureza"			,"C",010	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_TIPO"		,"TIP_TITULO"							,"Tipo Título"				,"C",003	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_VALOR"	,"VLR_TITULO"							,"Valor Título"				,"N",017	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"E5_VALOR"	,"VLR_RECEBIDO			as VLRECEBIDO"	,"Valor Recebido"			,"N",014	,2	,"@E 999,999,999.99"		,""	,""	}) 
 	Aadd(_aCampoQry, {"E5_VALOR"	,"VLR_DEVOLVIDO			as VLRDEVOLVE"	,"Valor Devolvido"			,"N",017	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"E5_VALOR"	,"VLR_DESCONTO			as VLRDESCONT"	,"Valor Desconto"			,"N",017	,2	,"@E 99,999,999,999.99"		,""	,""	})
@@ -63,26 +63,26 @@ User Function MGF06R16()
 	Aadd(_aCampoQry, {"E5_VALOR"	,"VLR_ADIANTAMENTO		as VLRADIANTA"	,"Valor Adiantamento"		,"N",014	,2	,"@E 999,999,999.99"		,""	,""	})
 	AADD(_aCampoQry, {"E1_SALDO"	,"VLR_SALDO_TITULO		as SALDOTITUL"	,"Valor Saldo do Titulo"	,"N",017	,2	,"@E 99,999,999,999.99"		,""	,""	})
 	Aadd(_aCampoQry, {"E1_SALDO"	,"PERC_SALDO"							,"% Saldo"					,"N",006	,2	,"@E 999.99"				,""	,""	})
-	Aadd(_aCampoQry, {"E1_NUMBCO"	,"NUM_TIT_BANCO			as NUMTITBANC"	,"Nï¿½ no Banco"				,"C",015	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_PORTADO"	,"COD_PORTADOR			as CODPORTADO"	,"Cod. do Portador"			,"C",003	,0	,""							,""	,""	})
-	AADD(_aCampoQry, {"E1_AGEDEP"	,"NUM_AGENCIA			as NUMAGENCIA"	,"Nï¿½ Agencia"				,"C",005	,0	,""							,""	,""	})
-	AADD(_aCampoQry, {"E1_CONTA"	,"NUM_CONTA				as NUM_CONTA"	,"Nï¿½ Conta"					,"C",010	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_NUMBCO"	,"NUM_TIT_BANCO			as NUMTITBANC"	,"Nº no Banco"				,"C",015	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_PORTADO"	,"COD_PORTADOR			as CODPORTADO"	,"Cód. do Portador"			,"C",003	,0	,""							,""	,""	})
+	AADD(_aCampoQry, {"E1_AGEDEP"	,"NUM_AGENCIA			as NUMAGENCIA"	,"Nº Agencia"				,"C",005	,0	,""							,""	,""	})
+	AADD(_aCampoQry, {"E1_CONTA"	,"NUM_CONTA				as NUM_CONTA"	,"Nº Conta"					,"C",010	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"E1_ZATEND"	,"ATENDENTE"							,"Atendente"				,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"ZZB_CONTAT"	,"CONTATO"								,"Contato"					,"C",050	,0	,"",  						""	,""	})
 	Aadd(_aCampoQry, {"ZZB_RESPOS"	,"RESPOSTA"								,"Resposta"					,"C",250	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"ZZB_NRONFD"	,"DEVOLUCAO"							,"Devolucao"				,"C",250	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"ZZ9_DESPOS"	,"POSICAO"								,"Posicao"					,"C",040	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"ZZB_NRONFD"	,"DEVOLUCAO"							,"Devolução"				,"C",250	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"ZZ9_DESPOS"	,"POSICAO"								,"Posição"					,"C",040	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"ZZB_DATA"	,"DATA_CONTATO			as DT_CONTATO"	,"Data Contato"				,"D",008	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"ZZB_HORA"	,"HORA_CONTATO			as HR_CONTATO"	,"Hora Contato"				,"C",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_HIST"		,"HISTORICO_TITULO		as HISTOR_TIT"	,"Historico Titulo"			,"C",250	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"A1_END"		,"NOM_ENDERECO			as NOM_ENDERE"	,"Endereco"					,"C",080	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_HIST"		,"HISTORICO_TITULO		as HISTOR_TIT"	,"Histórico Título"			,"C",250	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"A1_END"		,"NOM_ENDERECO			as NOM_ENDERE"	,"Endereço"					,"C",080	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_BAIRRO"	,"NOM_BAIRRO_CLIENTE	as BAIRROCLIE"	,"Bairro Cliente"			,"C",040	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"A1_ESTADO"	,"NOM_MUNICIPIO_CLIENTE	as MUNICICLIE"	,"Municipio Cliente"		,"C",020	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"A1_ESTADO"	,"NOM_MUNICIPIO_CLIENTE	as MUNICICLIE"	,"Município Cliente"		,"C",020	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_MUN"		,"NOM_ESTADO_CLIENTE	as ESTADOCLIE"	,"Estado Cliente"			,"C",060	,0	,""							,""	,""	})
 	Aadd(_aCampoQry, {"A1_CEP"		,"NUM_CEP_CLIENTE		as NUMCEPCLIE"	,"Cep Cliente"				,"C",008	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_PREFIXO"	,"NUM_PREFIXO_TITULO	as PREFIXOTIT"	,"Prefixo Titulo"			,"C",003	,0	,""							,""	,""	})
-	Aadd(_aCampoQry, {"E1_MOEDA"	,"COD_MOEDA"							,"Cod. Moeda"				,"N",002	,0	,"99"						,""	,""	})
-	Aadd(_aCampoQry, {"XXDESMOE01"	,"DESC_MOEDA"							,"Descricao da Moeda"		,"C",005	,0	,""							,""	,""	})	
+	Aadd(_aCampoQry, {"E1_PREFIXO"	,"NUM_PREFIXO_TITULO	as PREFIXOTIT"	,"Prefixo Título"			,"C",003	,0	,""							,""	,""	})
+	Aadd(_aCampoQry, {"E1_MOEDA"	,"COD_MOEDA"							,"Cód. Moeda"				,"N",002	,0	,"99"						,""	,""	})
+	Aadd(_aCampoQry, {"XXDESMOE01"	,"DESC_MOEDA"							,"Descrição da Moeda"		,"C",005	,0	,""							,""	,""	})	
 		
 	aAdd(_aParambox,{1,"Dt Vencimento Inicial"	,Ctod("")						,""		,""														,""		,"",050,.F.})
 	aAdd(_aParambox,{1,"Dt Vencimento Final"	,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR01, MV_PAR02, 'Data de Vencimento')"	,""		,"",050,.F.})
@@ -93,7 +93,7 @@ User Function MGF06R16()
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecao das FILIAIS a processar e as armazena na array _aSelFil  
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil  
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
@@ -103,12 +103,12 @@ User Function MGF06R16()
 	cQryTitPro	+= "  WHERE TMPSE1.D_E_L_E_T_ = ' ' " 
 
 	aCpoTitPro	:=	{	{"E1_TIPO"		,U_X3Titulo("E1_TIPO")	,TamSx3("E1_TIPO")[1]}	 } 
-	cTituTipo	:= "Marque opcao do Tipo de Titulo a serem listado: "
+	cTituTipo	:= "Marque opção do Tipo de Titulo a serem listado: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: A6_COD
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	cTitulProd	:= U_Array_In( U_MarkGene(cQryTitPro, aCpoTitPro, cTituTipo, nPosRetorn, @_lCancProg ) )
 	
 	If _lCancProg
@@ -123,12 +123,12 @@ User Function MGF06R16()
 
 	aCpoRede	:=	{	{ "ZQ_COD"		,U_X3Titulo("ZQ_COD")	,TamSx3("ZQ_COD")[1]	 } ,;
 	aCpoRede	:=		{ "ZQ_DESCR"	,U_X3Titulo("ZQ_DESCR")	,TamSx3("ZQ_DESCR")[1] }	} 
-	cTituRede	:= "Selecione os Codigos de Rede ï¿½ serem listados: "
+	cTituRede	:= "Selecione os Códigos de Rede à serem listados: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: ZQ_COD
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	cRede	:= U_Array_In( U_MarkGene(cQryRede, aCpoRede, cTituRede, nPosRetorn, @_lCancProg ) )
 	If _lCancProg
 		Return
@@ -146,30 +146,30 @@ User Function MGF06R16()
 	cTituVende	:= "Marque os Cod. Vendedor a serem listadas: "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: A3_COD
 	
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa. 
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro) 
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa. 
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro) 
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	cVendedor	:= U_Array_In( U_MarkGene(cQryVended, aCpoVended, cTituVende, nPosRetorn, @_lCancProg ) )
 	If _lCancProg
 		Return
 	Endif 
 	
 	_cQuery += " FROM " + U_IF_BIMFR( "IF_BIMFR", "V_CR_TITULOS_EM_ABERTO" )          + CRLF
-	_cQuery += U_WhereAnd( !empty(_cCODFILIA ),   " COD_FILIAL IN "                   + _cCODFILIA                             ) // OBRIGATORIO (SELECAO DO COMBO)  CAMPO FILIAL(06 posicoes)
-	_cQuery += U_WhereAnd( !empty(_aRet[2] ),     " DT_VENCIMENTO_FILTRO BETWEEN '"   + _aRet[1] + "' AND '" + _aRet[2] + "' " ) // OBRIGATORIO, COM A VALIDACAO DE 35 DIAS
-	_cQuery += U_WhereAnd( !empty(_aRet[4] ),     " COD_CLIENTE BETWEEN '"            + _aRet[3] + "' AND '" + _aRet[4] + "' " ) // NAO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_cCODFILIA ),   " COD_FILIAL IN "                   + _cCODFILIA                             ) // OBRIGATORIO (SELEÇÃO DO COMBO)  CAMPO FILIAL(06 posições)
+	_cQuery += U_WhereAnd( !empty(_aRet[2] ),     " DT_VENCIMENTO_FILTRO BETWEEN '"   + _aRet[1] + "' AND '" + _aRet[2] + "' " ) // OBRIGATORIO, COM A VALIDAÇÃO DE 35 DIAS
+	_cQuery += U_WhereAnd( !empty(_aRet[4] ),     " COD_CLIENTE BETWEEN '"            + _aRet[3] + "' AND '" + _aRet[4] + "' " ) // NÃO OBRIGATORIO
 	If empty(cTitulProd)
-		_cQuery +=  ""		// Nao  incrementa a clausula Where
+		_cQuery +=  ""		// Não incrementa a clausula Where
 	ElseIF AT("' '", cTitulProd ) <> 0
 		_cQuery += U_WhereAnd( .T.  ,             " ( TIP_TITULO IS NULL OR TIP_TITULO IN " + cTitulProd + " )"                ) 
 	Else	
 		_cQuery += U_WhereAnd( .T. ,              " TIP_TITULO IN " + cTitulProd                                               )	
 	Endif
-	_cQuery += U_WhereAnd( !empty(_aRet[6] ),     " COD_NATUREZA_OPERACAO BETWEEN '"  + _aRet[5] + "' AND '" + _aRet[6] + "' " ) // NAO OBRIGATORIO
+	_cQuery += U_WhereAnd( !empty(_aRet[6] ),     " COD_NATUREZA_OPERACAO BETWEEN '"  + _aRet[5] + "' AND '" + _aRet[6] + "' " ) // NÃO OBRIGATORIO
 
 	If empty(cRede)
-		_cQuery +=  ""		// Nao  incrementa a clausula Where
+		_cQuery +=  ""		// Não incrementa a clausula Where
 	ElseIF AT("' '", cRede ) <> 0
 		_cQuery += U_WhereAnd( .T. ,             " ( COD_REDE_FILTRO IS NULL OR COD_REDE_FILTRO IN " + cRede + " )"                         )
 	Else	
@@ -177,7 +177,7 @@ User Function MGF06R16()
 	Endif
 
 	If empty(cVendedor)
-		_cQuery +=  ""		// Nao  incrementa a clausula Where
+		_cQuery +=  ""		// Não incrementa a clausula Where
 	ElseIF AT("' '", cVendedor ) <> 0
 		_cQuery += U_WhereAnd(  .T. , " ( COD_VENDEDOR_FILTRO IS NULL OR COD_VENDEDOR_FILTRO IN " + cVendedor + " )"                             ) 
 	Else	

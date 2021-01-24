@@ -6,15 +6,15 @@
 Programa............: MGFCOM84
 Autor...............: Tarcisio Galeano
 Data................: 04/2018
-Descricao / Objetivo: 
+Descrição / Objetivo: 
 Doc. Origem.........: 
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */     
 
-/// Funcao que apresenta a descricao do produto na solicitacao de compras
+/// Função que apresenta a descrição do produto na solicitação de compras
 User Function MGFCOM84() 
 
 Local 	cDescri  := Space(500)
@@ -156,10 +156,10 @@ Return
 
 
 
-/*	DEFINE DIALOG oDlg TITLE "Amarracao de filiais" FROM 180,180 TO 450,1000 PIXEL 
+/*	DEFINE DIALOG oDlg TITLE "Amarração de filiais" FROM 180,180 TO 450,1000 PIXEL 
 
 	@ 25,58 GET oDesc var cDescri memo SIZE 300,80 OF oDlg PIXEL
-	@ 26,08 SAY "Descricao:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
+	@ 26,08 SAY "Descrição:" SIZE  260,80 OF oDlg PIXEL                                                                                                                  
 	oTButton := TButton():New( 120, 270, "&OK",oDlg	,{|| lOk:= .T., oDlg:End() },40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
 	
 	ACTIVATE DIALOG oDlg CENTERED

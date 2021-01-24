@@ -62,7 +62,8 @@ static function getCN9()
 	cQryCN9 += " 	CN9.CN9_CONDPG = '" + M->C5_CONDPAG		+ "'	AND" + CRLF
 	cQryCN9 += " 	CNA.CNA_CLIENT = '" + M->C5_CLIENTE		+ "'	AND" + CRLF
 	cQryCN9 += " 	CNA.CNA_LOJACL = '" + M->C5_LOJACLI		+ "'	AND" + CRLF
-	cQryCN9 += " 	CN9.CN9_SITUAC = '05'							AND" + CRLF
+	cQryCN9 += " 	CN9.CN9_SITUAC = '05' " 				+ "		AND" + CRLF
+	cQryCN9 += "    CN9.CN9_ZTOTDE > 0 	AND " + CRLF
 	cQryCN9 += " 	CN9.D_E_L_E_T_ <> '*'"
 
 	memoWrite( "C:\TEMP\mgffat33.sql", cQryCN9 )

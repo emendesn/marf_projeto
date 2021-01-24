@@ -5,11 +5,11 @@
 Programa.:              EAP100MNU
 Autor....:              Leonardo Kume
 Data.....:              Out/2016
-Descricao / Objetivo:   Ponto de entrada chamado no Pedido de Exportacao
-para inclusao de botoes nas acoes relacionadas
+Descricao / Objetivo:   Ponto de entrada chamado no Pedido de Exportação
+para inclusão de botões nas ações relacionadas
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

@@ -9,14 +9,14 @@
 Cadastro de Aprovadores
 
 @description
-Este cadastro tem como funcao fazer a manutencao do cadastro de Aprovadores.
+Este cadastro tem como função fazer a manutenção do cadastro de Aprovadores.
  
 @author Marcos Cesar Donizeti Vieira
 @since 22/01/2020
 
 @version P12.1.017
 @country Brasil
-@language Portugues
+@language Português
 
 @type Function 
 @table 
@@ -33,7 +33,7 @@ User Function MGFGFE01()
 	oMBrowse:=FWMBrowse():New()
 	oMBrowse:SetCanSaveArea(.t.)
 	oMBrowse:SetAlias("SZO")
-	oMBrowse:SetDescription("Cadastro de Alcada de Aprovacao")
+	oMBrowse:SetDescription("Cadastro de Alçada de Aprovação")
 	oMBrowse:Activate()
 
 return nil
@@ -80,9 +80,9 @@ Static Function ModelDef()
 
 	oModel:= MPFormModel():New('XMGFGFE01', /*bPreValidacao*/,  , /*bCommit*/, /*bCancel*/ )
 	oModel:AddFields('SZOMASTER', /*cOwner*/, oStruSZO, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
-	oModel:SetDescription("Cadastro de Alcada de Aprovacao")
+	oModel:SetDescription("Cadastro de Alçada de Aprovação")
 	oModel:SetPrimaryKey({"ZO_FILIAL","ZO_USUARIO"})
-	oModel:GetModel('SZOMASTER'):SetDescription("Cadastro de Alcada de Aprovacao")
+	oModel:GetModel('SZOMASTER'):SetDescription("Cadastro de Alçada de Aprovação")
 Return oModel
 
 
@@ -114,7 +114,7 @@ Return oView
 
 
 /*{Protheus.doc} GFE01SUB
-Funcao que efetua a montagem da tela da Substituicao do Aprovador.
+Função que efetua a montagem da tela da Substituição do Aprovador.
 
 @author Marcos Cesar Donizeti Vieira
 @since 23/01/2020
@@ -152,7 +152,7 @@ User Function GFE01SUB()
 	Private _dVigFin	:= CTOD("//") 
 
 	If SZO->ZO_SUBSTIT = "S"
-		Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Nao ï¿½ possivel substituir um substituto!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Escolha um Aprovador Oficial."})
+		Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Não é possível substituir um substituto!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Escolha um Aprovador Oficial."})
 		Return Nil
 	EndIf
 
@@ -201,7 +201,7 @@ User Function GFE01SUB()
 			SZO->(dbSetOrder(2))	//ZO_USUARIO
 			If SZO->(dbSeek(_cCodUsSb))
 				If dDatabase <= SZO->ZO_VIGFIN 
-					Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Hï¿½ uma susbstituicao vigente para este usuario!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Escolha outro usuario ou altere a vigï¿½ncia deste substituto."})
+					Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Há uma susbstituição vigente para este usuário!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Escolha outro usuário ou altere a vigência deste substituto."})
 					_lgrv := .F.
 				Else
 					While !SZO->( EOF() ) .AND. SZO->ZO_USUARIO = _cCodUsSb
@@ -234,7 +234,7 @@ User Function GFE01SUB()
 				MsgInfo("Cadastro do Substituto criado com sucesso.")
 			EndIf
 		Else
-			Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Nao foi atribuida nenhuma alcada para o Substituto!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Refaï¿½a o processo de substituiï¿½ï¿½o."})
+			Help(NIL, NIL,"SUBSTITUIR APROVADOR", NIL, "Não foi atribuida nenhuma alçada para o Substituto!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Refaça o processo de substituição."})
 		EndIf
 	EndIf
 	
@@ -268,8 +268,8 @@ Static Function GFE01LAYER(oDlg, _aItensAprv,_aItensSubs)
 	// Cria instancia do fwlayer
 	oFWLayer := FWLayer():New()
 	
-	// Inicializa componente passa a Dialog criada,o segundo parametro ï¿½ para
-	// criacao de um botao de fechar utilizado para Dlg sem cabecalho
+	// Inicializa componente passa a Dialog criada,o segundo parametro é para
+	// criação de um botao de fechar utilizado para Dlg sem cabeçalho
 	oFWLayer:Init(oPanel0,.F./*,.T.*/)
 	
 	oPanel0:ReadClientCoors(.T.,.T.)
@@ -291,12 +291,12 @@ Static Function GFE01LAYER(oDlg, _aItensAprv,_aItensSubs)
 	
 	// Cria a window passando, nome da coluna onde sera criada, nome da window
 	// titulo da window, a porcentagem da altura da janela, se esta habilitada para click,
-	// se ï¿½ redimensionada em caso de minimizar outras janelas e a acao no click do split
+	// se é redimensionada em caso de minimizar outras janelas e a ação no click do split
 	oFWLayer:AddWindow("BOX1","oPanel1","Dados do Aprovador"	,100,.F.,.T.,,"LINHA1",{ || })
 	oFWLayer:AddWindow("BOX2","oPanel2","Dados do Substituto"	,100,.F.,.T.,,"LINHA1",{ || })
 	
-	oFWLayer:AddWindow("BOX3","oPanel3","Alcadas Aprovador"		,100,.F.,.T.,,"LINHA2",{ || })
-	oFWLayer:AddWindow("BOX4","oPanel4","Alcadas Substituto"	,100,.F.,.T.,,"LINHA2",{ || })
+	oFWLayer:AddWindow("BOX3","oPanel3","Alçadas Aprovador"		,100,.F.,.T.,,"LINHA2",{ || })
+	oFWLayer:AddWindow("BOX4","oPanel4","Alçadas Substituto"	,100,.F.,.T.,,"LINHA2",{ || })
 	
 	// Retorna o objeto do painel da Janela
 	oPanel1 := oFWLayer:GetWinPanel("BOX1","oPanel1","LINHA1")
@@ -340,26 +340,26 @@ Static Function GFE01LAYER(oDlg, _aItensAprv,_aItensSubs)
 	@ 67,2 SAY "Motivo"									OF oPanel2 														PIXEL
 	@ 65,35 MSGET _cMotivo 					SIZE 200,10	OF oPanel2	PICTURE PesqPict("SZO","ZO_MOTSUBS")				PIXEL	
 
-	TButton():Create(oPanel2,37,240,"Copiar Alcadas (F5)",{||U_GFE01ALSUB(_aItensSubs, _aItensAprv, @oPanel4, @oBrowse2)},70,13,,,,.T.,,"Copiar Alcadas (F5)",,,,)
+	TButton():Create(oPanel2,37,240,"Copiar Alçadas (F5)",{||U_GFE01ALSUB(_aItensSubs, _aItensAprv, @oPanel4, @oBrowse2)},70,13,,,,.T.,,"Copiar Alçadas (F5)",,,,)
 	
-	// Carga de dados das alcadas do Aprovador
+	// Carga de dados das alçadas do Aprovador
 	DEFINE FWBROWSE oBrowse1 DATA ARRAY ARRAY _aItensAprv NO CONFIG  NO REPORT NO LOCATE OF oPanel3
 	
-		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),1] } TITLE "Filial" 			HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½} 	OF oBrowse1
-		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),2] } TITLE "Cod.Usuario" 	HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½}	OF oBrowse1
-		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),3] } TITLE "Tipo Aprov." 	HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½} 	OF oBrowse1
+		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),1] } TITLE "Filial" 			HEADERCLICK { || .T. } 	OF oBrowse1
+		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),2] } TITLE "Cod.Usuario" 	HEADERCLICK { || .T. }	OF oBrowse1
+		ADD COLUMN oColumn DATA { || _aItensAprv[oBrowse1:At(),3] } TITLE "Tipo Aprov." 	HEADERCLICK { || .T. } 	OF oBrowse1
 
 		oBrowse1:bOnMove := {|oBrowse,nMoveType,nCursorPos,nQtdLinha,nVisbleRow| U_GFE01MOVE(oBrowse,nMoveType,nCursorPos,nQtdLinha,nVisbleRow,oBrowse1,oBrowse2)}
 		oBrowse1:SetLineHeight(25)
 	
 	ACTIVATE FWBROWSE oBrowse1
 
-	// Carga de dados das alcadas do Substituto
+	// Carga de dados das alçadas do Substituto
 	DEFINE FWBROWSE oBrowse2 DATA ARRAY ARRAY _aItensSubs NO CONFIG  NO REPORT NO LOCATE OF oPanel4
 
-		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),1] } TITLE "Filial" 			HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½} 	OF oBrowse2
-		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),2] } TITLE "Cod.Usuario" 	HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½}	OF oBrowse2
-		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),3] } TITLE "Tipo Aprov." 	HEADERCLICKï¿½{ï¿½||ï¿½.T.ï¿½} 	OF oBrowse2
+		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),1] } TITLE "Filial" 			HEADERCLICK { || .T. } 	OF oBrowse2
+		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),2] } TITLE "Cod.Usuario" 	HEADERCLICK { || .T. }	OF oBrowse2
+		ADD COLUMN oColumn DATA { || _aItensSubs[oBrowse2:At(),3] } TITLE "Tipo Aprov." 	HEADERCLICK { || .T. } 	OF oBrowse2
 	
 		oBrowse2:bOnMove := {|oBrowse,nMoveType,nCursorPos,nQtdLinha,nVisbleRow| U_GFE01MOVE(oBrowse,nMoveType,nCursorPos,nQtdLinha,nVisbleRow,oBrowse1,oBrowse2)}
 		oBrowse2:SetLineHeight(25)
@@ -371,7 +371,7 @@ Return
 
 
 /*/{Protheus.doc} GFE01MOVE
-Funcao responsavel por atualizar cursor nas linhas do Browser.
+Função responsavel por atualizar cursor nas linhas do Browser.
 
 @author Marcos Cesar Donizeti Vieira
 @since 24/01/2020
@@ -390,7 +390,7 @@ Return Nil
 
 
 /*/{Protheus.doc} GFE01ALSUB
-Funcao responsavel por atualizar cursor nas linhas do Browser.
+Função responsavel por atualizar cursor nas linhas do Browser.
 
 @author Marcos Cesar Donizeti Vieira
 @since 24/01/2020
@@ -404,16 +404,16 @@ User Function GFE01ALSUB(_aItensSubs, _aItensAprv, oPanel4, oBrowse2 )
 	Local _lRet := .T.
 
 	If EMPTY(_cCodUsSb)
-		Help(NIL, NIL,"SUBSTITUTO", NIL, "Codigo do Usuario Subs nao preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Selecione um usuario valido.'})
+		Help(NIL, NIL,"SUBSTITUTO", NIL, "Código do Usuário Subs não preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Selecione um usuário válido.'})
     	_lRet := .F.
 	ElseIf EMPTY(_dVigIni)
-		Help(NIL, NIL,"SUBSTITUTO", NIL, "Vigencia Ini nao preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com uma data valida.'})
+		Help(NIL, NIL,"SUBSTITUTO", NIL, "Vigência Ini não preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com uma data válida.'})
     	_lRet := .F.
 	ElseIf EMPTY(_dVigFin)
-		Help(NIL, NIL,"SUBSTITUTO", NIL, "Vigencia Fin nao preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com uma data valida.'})
+		Help(NIL, NIL,"SUBSTITUTO", NIL, "Vigência Fin não preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com uma data válida.'})
     	_lRet := .F.
 	ElseIf EMPTY(_cMotivo)
-		Help(NIL, NIL,"SUBSTITUTO", NIL, "Motivo nao preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com um Motivo valido.'})
+		Help(NIL, NIL,"SUBSTITUTO", NIL, "Motivo não preenchido!", 1, 0, NIL, NIL, NIL, NIL, NIL, {'Preencha com um Motivo válido.'})
     	_lRet := .F.
 	EndIf
 	
@@ -432,7 +432,7 @@ Return _lRet
 
 
 /*/{Protheus.doc} GFE01VLDSUB
-Funcao responsavel por validar substutos quanto a vigï¿½ncia.
+Função responsavel por validar substutos quanto a vigência.
 
 @author Marcos Cesar Donizeti Vieira
 @since 2/01/2020
@@ -444,15 +444,15 @@ Funcao responsavel por validar substutos quanto a vigï¿½ncia.
 User Function GFE01VLDSUB()
 	Local _lRet := .T.
 
-	//--------------| Verifica existencia de parametros e caso nao exista cria. |-------------------------
+	//--------------| Verifica existência de parâmetros e caso não exista cria. |-------------------------
 	If !ExisteSx6("MGF_GFE01A")
-		CriarSX6("MGF_GFE01A", "L", "Flag para habilitar ou nao a funcao" , ".T." )	
+		CriarSX6("MGF_GFE01A", "L", "Flag para habilitar ou não a função" , ".T." )	
 	EndIf
 
 	If SUPERGETMV("MGF_GFE01A",.F., '.T.' )
 		If SZO->ZO_SUBSTIT	= "S"  
 			If dDatabase < SZO->ZO_VIGINI .OR. dDatabase > SZO->ZO_VIGFIN 
-				Help(NIL, NIL,"SUBSTITUTO", NIL, "Substituto Aprovador fora do perï¿½odo de Vigencia!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Altere o perï¿½odo de vigï¿½ncia."}) 
+				Help(NIL, NIL,"SUBSTITUTO", NIL, "Substituto Aprovador fora do período de Vigência!", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Altere o período de vigência."}) 
 				_lRet := .F.
 			EndIf             
 		EndIf
@@ -465,13 +465,13 @@ Return _lRet
 /*
 =========================================================================================================
 Programa.................: GFEA0851
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 05/12/2016
-Descricao / Objetivo.....: Controle de aprovacoes de ajustes baseado no cadastro de aprovadores
+Descrição / Objetivo.....: Controle de aprovações de ajustes baseado no cadastro de aprovadores
 Doc. Origem..............: GAP - GFE02
-Solicitante..............: 
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de ajustes conforme tabela de aprovadores
+Solicitante..............: Cliente
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de ajustes conforme tabela de aprovadores
 =========================================================================================================
 */
 User Function GFE0202()
@@ -500,13 +500,13 @@ User Function GFE0202()
 		
 	Else                
 		If lMsg = .F.
-			Alert("usuario sem permissao para aprovacao!")           
+			Alert("usuário sem permissão para aprovação!")           
 			xRet := .T.
 		EndIf
 	EndIf            
 	If xRet <> .T.
 		If lMsg = .F.
-			Alert("usuario sem permissao para aprovacao!")
+			Alert("usuário sem permissão para aprovação!")
 		EndIf
 	EndIf
 
@@ -518,13 +518,13 @@ Return lRet
 /*
 =========================================================================================================
 Programa.................: GFEA032E
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Controle de aprovacoes de ocorrencias baseado no cadastro de alcada de aprovacao
+Descrição / Objetivo.....: Controle de aprovações de ocorrências baseado no cadastro de alçada de aprovação
 Doc. Origem..............: GAP - GFE02
-Solicitante..............: 
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de ocorrencias conforme tabela de aprovadores
+Solicitante..............: Cliente
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de ocorrências conforme tabela de aprovadores
 =========================================================================================================
 */                                                                                                                                                             
 User Function GFE0203()                  
@@ -549,7 +549,7 @@ User Function GFE0203()
 	EndIf	
 
 	If lMsg = .T.
-		Alert("usuario sem permissao para aprovacao da ocorrencia!")        	
+		Alert("usuário sem permissão para aprovação da ocorrência!")        	
 	EndIf
 Return lRet                                                            
 
@@ -558,13 +558,13 @@ Return lRet
 /*
 =========================================================================================================
 Programa.................: GFEA0662
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Criado ponto de entrada para o controle de aprovacoes de Documentos de Frete
+Descrição / Objetivo.....: Criado ponto de entrada para o controle de aprovações de Documentos de Frete
 Doc. Origem..............: GAP - GFE02
-Solicitante..............: 
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de Documentos de Frete
+Solicitante..............: Cliente
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de Documentos de Frete
 =========================================================================================================
 */                                                                                  
 User Function GFE0204()
@@ -605,11 +605,11 @@ User Function GFE0204()
 		cfilter :=  cFiltroPadrao  + " .AND. GW3_VLDF = '0' "	
 	EndIf
 	If lMsg1 = .T.
-		MsgAlert ("Usuario aprovador nao tem permissao para realizar aprovacoes de Documentos de Frete! Os registros bloqueados nao serao apresentados ao usuario!")         			    
+		MsgAlert ("Usuário aprovador não tem permissão para realizar aprovações de Documentos de Frete! Os registros bloqueados não serão apresentados ao usuário!")         			    
 	EndIf   
 	      
 	If lMsg2 = .T.                                                       
-		MsgAlert ("Usuario sem permissao para realizar aprovacoes! Os registros bloqueados nao serao apresentados ao usuario!")          		    
+		MsgAlert ("Usuário sem permissão para realizar aprovações! Os registros bloqueados não serão apresentados ao usuário!")          		    
 	EndIf
 Return cfilter         
 
@@ -617,13 +617,13 @@ Return cfilter
 /*
 =========================================================================================================
 Programa.................: GFEA0714
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 06/09/2016
-Descricao / Objetivo.....: Cadastro de alcada de aprovacao
+Descrição / Objetivo.....: Cadastro de alçada de aprovação
 Doc. Origem..............: GAP - GFE02
-Solicitante..............: 
-Uso......................: 
-Obs......................: Criado ponto de entrada para o controle de aprovacoes de Faturas de Frete conforme tabela de aprovadores
+Solicitante..............: Cliente
+Uso......................: Marfrig
+Obs......................: Criado ponto de entrada para o controle de aprovações de Faturas de Frete conforme tabela de aprovadores
 =========================================================================================================
 */                                                                                  
 User Function GFE0205()
@@ -665,11 +665,11 @@ User Function GFE0205()
 		cfilter :=  cFiltroPadrao  + " .AND. GW6_VLFATU = '0' "	
 	EndIf
 If lMsg1 = .T.
-	MsgAlert ("Usuario sem permissao para realizar aprovacoes!" + "Portanto os registros bloqueados nao serao apresentados ao usuario")         		
+	MsgAlert ("Usuário sem permissão para realizar aprovações!" + "Portanto os registros bloqueados não serão apresentados ao usuário")         		
 EndIf	 
 
 If lMsg2 = .T.
-	MsgAlert ("Usuario sem permissao para realizar aprovacoes!" + "Portanto os registros bloqueados nao serao apresentados ao usuario")         		
+	MsgAlert ("Usuário sem permissão para realizar aprovações!" + "Portanto os registros bloqueados não serão apresentados ao usuário")         		
 EndIf	 
 
 Return cfilter

@@ -6,11 +6,11 @@
 Programa............: MGFFAT01
 Autor...............: Roberto Sidney
 Data................: 09/09/2016
-Descricao / Objetivo: Amarracao Endereco de Entrega
+Descricao / Objetivo: Amarração Endereço de Entrega
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Pontos de entrada para chamada da amarracao Endereco de Entrega
+Uso.................: Marfrig
+Obs.................: Pontos de entrada para chamada da amarração Endereço de Entrega
 =====================================================================================
 */
 
@@ -23,7 +23,7 @@ User Function MGFFAT01()
 
 	oBrowse := FWMBrowse():New()
 	oBrowse:SetAlias('SZ9')
-	oBrowse:SetDescription('Amarracao Cliente x Endereco de Entrega')
+	oBrowse:SetDescription('Amarração Cliente x Endereço de Entrega')
 	oBrowse:setMenuDef("MGFFAT01")
 	oBrowse:SetFilterDefault( "Z9_ZCLIENT=='"+SA1->A1_COD+"' .and. Z9_ZLOJA ='"+SA1->A1_LOJA+"'" )
 	oBrowse:Activate()
@@ -54,16 +54,16 @@ Static Function ModelDef()
 	// Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('FAT01M', /*bPreValidacao*/, , { |oModel| u_FAT01CMMT( oModel ) }, /*bCancel*/ )
 
-	// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+	// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'FAT01MASTER', /*cOwner*/, oStruSZ9, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 	// Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Amarracao Cliente x Endereco de Entrega' )
+	oModel:SetDescription( 'Amarração Cliente x Endereço de Entrega' )
 
 	// Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'FAT01MASTER' ):SetDescription( 'Historico Aprovacao' )
+	oModel:GetModel( 'FAT01MASTER' ):SetDescription( 'Historico Aprovação' )
 
-	//Adiciona chave Primaria
+	//Adiciona chave Primária
 	oModel:SetPrimaryKey({"Z9_FILIAL","Z9_ZCLIENT","Z9_ZLOJA"})
 
 	oModel:SetVldActivate({|oModel| FAT01_Val_Alteracao(oModel)})
@@ -85,7 +85,7 @@ Static Function ViewDef()
 	// Cria o objeto de View
 	oView := FWFormView():New()
 
-	// Define qual o Modelo de dados sera utilizado
+	// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 	//Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)
@@ -106,10 +106,10 @@ Return oView
 Programa............: SomaIDEnd()
 Autor...............: Roberto Sidney
 Data................: 09/09/2016
-Descricao / Objetivo: Incrementa o campo Z9_ZIDEND - Id do Endereco
+Descricao / Objetivo: Incrementa o campo Z9_ZIDEND - Id do Endereço
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -170,7 +170,7 @@ User Function FAT01CMMT( oModel )
 		cUpdSA1 += " 		R_E_C_N_O_ = " + allTrim( str( SA1->(RECNO()) ) )	+ CRLF
 
 		if tcSQLExec( cUpdSA1 ) < 0
-			conout("[FAT01CMMT] Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+			conout("[FAT01CMMT] Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
 
 		cUpdSA1 := ""
@@ -180,21 +180,20 @@ User Function FAT01CMMT( oModel )
 		cUpdSA1 += " WHERE"															+ CRLF
 		cUpdSA1 += " 		R_E_C_N_O_	=	" + allTrim( str( SA1->(RECNO()) ) )	+ CRLF
 		cUpdSA1 += " 	AND A1_PESSOA	=	'J'"									+ CRLF // PARA O SALESFORCE ENVIA SOMENTE PESSOA JURIDICA
-		cUpdSA1 += " 	AND A1_CGC		<>	' '"									+ CRLF // CNPJ DEVE ESTAR PREENCHIDO
 
 		if tcSQLExec( cUpdSA1 ) < 0
-			conout("[FAT01CMMT] Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+			conout("[FAT01CMMT] Não foi possível executar UPDATE." + CRLF + tcSqlError())
 		endif
 	endif
 
 	//oModlSZ9:loadValue("Z9_XINTECO", "0")
 
-   	// GAP CAD04 Inclusao
-   	If lRetInc .And. findfunction("U_MGFINT39") .and. !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereco seja cadastrado pelo Salesforce nao gera Grade de Aprovacao
+   	// GAP CAD04 Inclusão
+   	If lRetInc .And. findfunction("U_MGFINT39") .and. !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereço seja cadastrado pelo Salesforce não gera Grade de Aprovação
 	    oModlSZ9:SetValue("Z9_MSBLQL", "1")
 	Endif
 
-   	// GAP CAD04 // Alteracao
+   	// GAP CAD04 // Alteração
    	If lRetAlt .And. findfunction("U_MGFINT38")
 
 	   	dbSelectArea("SX3")
@@ -208,7 +207,7 @@ User Function FAT01CMMT( oModel )
 			SX3->(dbSkip())
 		EndDo
 
-		if !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereco seja alterado pelo Salesforce nao gera Grade de Aprovacao
+		if !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereço seja alterado pelo Salesforce não gera Grade de Aprovação
 	    	U_MGFINT38('SZ9','Z9')
 			//oModlSZ9:SetValue("Z9_MSBLQL", "1")
 		endif
@@ -218,7 +217,7 @@ User Function FAT01CMMT( oModel )
 	lRet := FWFormCommit( oModel )
 
 	// GAP CAD04
-	If lRetInc .And. findfunction("U_MGFINT39") .and. !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereco seja cadastrado pelo Salesforce nao gera Grade de Aprovacao
+	If lRetInc .And. findfunction("U_MGFINT39") .and. !isInCallStack( "insertOrUpdateAddress" ) // Caso seja endereço seja cadastrado pelo Salesforce não gera Grade de Aprovação
 		U_MGFINT39(2,'SZ9','Z9_MSBLQL')
 	Endif
 
@@ -229,7 +228,7 @@ User Function FAT01CMMT( oModel )
 		Empty(Alltrim(oModlSZ9:GetValue("Z9_ZCROAD")))
 			cCRotaRet := U_Z9VLDROTA()
 
-			// Ajusta o parametro
+			// Ajusta o parâmetro
 			//		PutMv("MGF_CODROT",cCRotaRet)
 			PutMv("MGF_CODROT",Soma1(alltrim(cCRotaRet)))
 
@@ -246,7 +245,7 @@ User Function FAT01CMMT( oModel )
 		If oModlSZ9:GetValue("Z9_ZROTEIR") == "S"
 			cCRotaRet := U_Z9VLDROTA()
 
-			// Ajusta o parametro
+			// Ajusta o parâmetro
 			//		PutMv("MGF_CODROT",cCRotaRet)
 			PutMv("MGF_CODROT",Soma1(alltrim(cCRotaRet)))
 
@@ -277,22 +276,22 @@ Return lRet
 Programa............: Z9VLDROTA()
 Autor...............: Roberto Sidney
 Data................: 12/09/2016
-Descricao / Objetivo: Define a inicializacao e manutencao do campo Z9_ZCROAD - Codigo de roteirizacao
+Descricao / Objetivo: Define a inicialização e manutenção do campo Z9_ZCROAD - Código de roteirização
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
 User Function Z9VLDROTA()
-	Local cCodRotei := GetMv("MGF_CODROT") // Sequenci di codigo de roteirizacao
+	Local cCodRotei := GetMv("MGF_CODROT") // Sequenci di codigo de roteirização
 	//Local oModlSZ9 := oModel:GetModel("FAT01MASTER")
-	cCRotaRet := ''    // Codigo de Roteirizacao
+	cCRotaRet := ''    // Codigo de Roteirização
 
 	_cGetSZ9 := SZ9->(GetArea())
 	lRet := .T.
 
-	// Na inclusao define o codigo do roteiro
+	// Na inclusão define o codigo do roteiro
 	//if Inclui
 	//	cCRotaRet := Soma1(alltrim(cCodRotei))
 	cCRotaRet := alltrim(cCodRotei)
@@ -311,7 +310,7 @@ Data................: 09/09/2016
 Descricao / Objetivo: Valida Estado
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -332,11 +331,11 @@ User Function VLDESTSZ9()
 	EndIf
 
 	_cEstSA1 := SA1->A1_EST // Estado do cliente
-	_cEstSZ9 := oModlSZ9:GetValue("Z9_ZEST")  // Estado informado na amarracao
+	_cEstSZ9 := oModlSZ9:GetValue("Z9_ZEST")  // Estado informado na amarração
 
-	// Verifica se o estado informado ï¿½ igual ao do cliente
+	// Verifica se o estado informado é igual ao do cliente
 	if _cEstSZ9 <> _cEstSA1
-		ShowHelpDlg("VLDESTSZ9", {"Estado nao pode ser diferente do informado no cliente",""},3,;
+		ShowHelpDlg("VLDESTSZ9", {"Estado não pode ser diferente do informado no cliente",""},3,;
 		{"Utilize o estado("+alltrim(_cEstSA1)+").",""},3)
 		lRet := .F.
 	Endif
@@ -351,11 +350,11 @@ Return(lRet)
 Programa............: RetEndXML()
 Autor...............: Roberto Sidney
 Data................: 14/09/2016
-Descricao / Objetivo: Retorna para o arquivo XML o endereco de entrega conforme pedido de venda
+Descricao / Objetivo: Retorna para o arquivo XML o endereço de entrega conforme pedido de venda
 Doc. Origem.........: FAT99 - GAP MGFAT99
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Funcao executada atraves dA rotina NFESEFA
+Uso.................: Marfrig
+Obs.................: Função executada através dA rotina NFESEFA
 =====================================================================================
 */
 User Function RetEndXML(cCliente,cLoja,cCodEnd)
@@ -377,9 +376,9 @@ User Function RetEndXML(cCliente,cLoja,cCodEnd)
 		_cMunSZ9  := ALLTRIM(SZ9->Z9_ZMUNIC)
 		_cEstSZ9  := ALLTRIM(SZ9->Z9_ZEST)
 
-		cEnd := "Endereco de Entrega: "+_cNomeSZ9
+		cEnd := "Endereço de Entrega: "+_cNomeSZ9
 		cEnd += " CNPJ: "+_cCNPJSZ9
-		cEnd +=  " Endereco: "+_cEndSZ9
+		cEnd +=  " Endereço: "+_cEndSZ9
 		cEnd +=  " Bairro: "+_cBairSZ9
 		cEnd +=  " CEP: "+_cCEPSZ9
 		cEnd +=  " "+_cMunSZ9
@@ -400,8 +399,8 @@ User Function VldEndEntr()
 	_cChave := M->C5_CLIENTE+M->C5_LOJACLI+M->C5_ZCROAD
 	if ! SZ9->(DbSeek(_cChave))
 		IF Empty(_cRotaCli)
-			ShowHelpDlg("CLIENTE", {"Codigo de roteirizacao nao localizado.",""},3,;
-			{"Verique o cadastro do cliente e amarracao Local de Entrega",""},3)
+			ShowHelpDlg("CLIENTE", {"Codigo de roteirização não localizado.",""},3,;
+			{"Verique o cadastro do cliente e amarração Local de Entrega",""},3)
 			Return(.F.)
 		Endif
 	Endif
@@ -413,11 +412,11 @@ User Function VldEndEntr()
 	********************************************************************
 User Function FAT99ENT(aButtons)
 
-	//Local aButtons := {} // botoes a adicionar
+	//Local aButtons := {} // botões a adicionar
 	cAreaSA1 := SA1->(GetArea())
-	// Permite a inclusao da chamada apenas na alteracao
+	// Permite a inclusão da chamada apenas na alteração
 	if Altera
-		AAdd(aButtons,{ 'NOTE'      ,{| |  U_MGFFAT01() }, 'Endereco de Entrega','Enderecos' } )
+		AAdd(aButtons,{ 'NOTE'      ,{| |  U_MGFFAT01() }, 'Endereço de Entrega','Endereços' } )
 	Endif
 	RestArea(cAreaSA1)
 	return
@@ -457,7 +456,7 @@ Local lRet := .T.
 If oModel:GetOperation() == MODEL_OPERATION_UPDATE
 	IF SZ9->Z9_MSBLQL == '1'
 	    lRet := .F.
-		Help('',1,'Aviso',,'Nao ï¿½ possivel alterar, registro bloqueado !!',1,0)
+		Help('',1,'Aviso',,'Não é possivel alterar, registro bloqueado !!',1,0)
 	EndIf
 EndIf
 

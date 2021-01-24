@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS27
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de Negocio
+Descrição / Objetivo.....: Cadastro de Negócio
 Doc. Origem..............: GAP
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -24,7 +24,7 @@ User Function MGFFIS27()
 	oMBrowse:= FWmBrowse():New()
 
 	oMBrowse:SetAlias("ZDF")
-	oMBrowse:SetDescription("Cadastro de Negocios")
+	oMBrowse:SetDescription("Cadastro de Negócios")
 
 	oMBrowse:AddLegend("ZDF_STATUS=='1'", "GREEN", "Liberado " )
 	oMBrowse:AddLegend("ZDF_STATUS=='2'", "RED"  , "Bloqueado" )
@@ -90,7 +90,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 User Function MGFBLQN()
 
@@ -101,13 +101,13 @@ User Function MGFBLQN()
 		ZDF->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 User Function MGFLIBN()
 
@@ -119,13 +119,13 @@ User Function MGFLIBN()
 		
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return
 
 /*===============================================
-Valida exclusao do cadastro gerencial
+Valida exclusão do cadastro gerencial
 ================================================*/
 Static Function ValidExcl(oModel)
 Local nOperation := oModel:GetOperation()
@@ -140,7 +140,7 @@ If nOperation == MODEL_OPERATION_DELETE
 	DBSelectArea(cAliasTMP1)
 	If !EOF()
 		lRet := .F.
-		Help( ,, 'MGFFIS27-EXCL',, 'O Registro jï¿½ foi relacionado a um Produto.', 1, 0 )
+		Help( ,, 'MGFFIS27-EXCL',, 'O Registro já foi relacionado a um Produto.', 1, 0 )
 	EndIf
 	DBCloseArea()
 EndIf

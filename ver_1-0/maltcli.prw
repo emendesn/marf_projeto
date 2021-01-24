@@ -10,7 +10,7 @@ Data.....:              26/10/2016
 Descricao / Objetivo:   
 Doc. Origem:            GAP MGFINT06
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              http://tdn.totvs.com/display/public/PROT/MALTCLI
 =====================================================================================
 */

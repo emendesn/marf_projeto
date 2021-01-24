@@ -362,6 +362,7 @@ static function getRegs( )
 	cQRYWSC76 += "AND SA3.D_E_L_E_T_ <> '*' "										+ CRLF
 	cQRYWSC76 += "WHERE "															+ CRLF
 	cQRYWSC76 += "ZBJ.ZBJ_INTSFO   = 'P' "	    								    + CRLF
+	cQRYWSC76 += "AND SA1.A1_EST  != 'EX' "											+ CRLF //WVN 09/11/2020
 	cQRYWSC76 += "AND ZBD.ZBD_FILIAL  	  = '" + xFilial("ZBD") + "'"				+ CRLF
 	cQRYWSC76 += "AND ZBD.D_E_L_E_T_ <> '*' "                                       + CRLF
 	cQRYWSC76 += "ORDER BY SA3.A3_COD, SA1.A1_COD, SA1.A1_LOJA, ZBJDELETED DESC "	+ CRLF

@@ -75,7 +75,7 @@ user function MGFWSC82( aEmpX )
 
 	PREPARE ENVIRONMENT EMPRESA aEmpX[ 1 ] FILIAL aEmpX[ 2 ]
 
-	conout( '[MGFWSC82] Iniciada Threads para a empresa' + allTrim( aEmpX[ 2 ] ) + ' - ' + dToC(dDataBase) + " - " + time() )
+	conout( '[MGFWSC82] Iniciada Threads para a empresa - (' + allTrim( aEmpX[ 2 ] ) + ' - ' + dToC(dDataBase) + " - " + time() + ')' )
 
 	runInteg82()
 
@@ -98,7 +98,7 @@ ENVIO DE INTEGRAÇÃO FINANCEIRA
 @menu
  Sem menu
 /*/
-static function runInteg82()
+static procedure runInteg82()
 	local cIDMgf		:= allTrim( superGetMv( "MGFIDINTEG"	, , "7899b75c-c6fc-42cb-99c5-7930166b121f" ) )
 	local cURLInteg		:= allTrim( superGetMv( "MGFWSC82A"		, , "http://spdwvapl203:1666/processo-financeiro/api/v1/resumo-financeiro/lote" ) )
 	local cIdInteg		:= FWUUIDV4()
@@ -172,10 +172,12 @@ static function runInteg82()
 			oJsonLimit := nil
 			oJsonLimit := jsonObject():new()
 
-			oJsonLimit[ "total" ]		:= QRYZF7->ZF7_LCB
-			oJsonLimit[ "utilizado" ]	:= QRYZF7->ZF7_UTILIB
-			oJsonLimit[ "secundario" ]	:= QRYZF7->A1_LCFIN
-			oJsonLimit[ "vencimento" ]	:= iif( !empty( QRYZF7->A1_VENCLC ) , left( fwTimeStamp( 3, sToD( QRYZF7->A1_VENCLC ) ) , 10 ) , nil )
+			oJsonLimit[ "total"      ] := QRYZF7->ZF7_TLICRE
+			oJsonLimit[ "utilizado"  ] := QRYZF7->ZF7_UTILIB
+			oJsonLimit[ "disponivel" ] := QRYZF7->ZF7_TLIDIS
+
+			oJsonLimit[ "secundario" ] := QRYZF7->A1_LCFIN
+			oJsonLimit[ "vencimento" ] := iif( !empty( QRYZF7->A1_VENCLC ) , left( fwTimeStamp( 3, sToD( QRYZF7->A1_VENCLC ) ) , 10 ) , nil )
 
 			aFinanceir[ len( aFinanceir ) ][ "limiteCredito" ] := oJsonLimit
 
@@ -189,8 +191,8 @@ static function runInteg82()
 			endif
 
 			oJsonClien[ "id" ]				:= ( QRYZF7->A1_COD + QRYZF7->A1_LOJA )
-			oJsonClien[ "cnpj" ]			:= iif( !empty( QRYZF7->A1_CGC )		, QRYZF7->A1_CGC		, nil )
-			oJsonClien[ "idCommerce" ]		:= iif( !empty( QRYZF7->A1_ZCDECOM )	, QRYZF7->A1_ZCDECOM	, nil )
+			oJsonClien[ "cnpj" ]			:= iif( !empty( QRYZF7->A1_CGC )		, alltrim(QRYZF7->A1_CGC)		, nil )
+			oJsonClien[ "idCommerce" ]		:= iif( !empty( QRYZF7->A1_ZCDECOM )	, alltrim(QRYZF7->A1_ZCDECOM)	, nil )
 
 			aFinanceir[ len( aFinanceir ) ][ "cliente" ] := oJsonClien
 
@@ -258,19 +260,25 @@ static function runInteg82()
 			//Inicializar variáveis.
 			cStaLog  := "1"
 			cErroLog := ""
-			cUpdZF7	:= ""
 
-			cUpdZF7 := "UPDATE " + retSQLName("ZF7")										+ CRLF
-			cUpdZF7 += "	SET"															+ CRLF
-			cUpdZF7 += "	ZF7_HASHA = ZF7_HASHB"											+ CRLF
-			cUpdZF7 += " WHERE"																+ CRLF
-			cUpdZF7 += " 		R_E_C_N_O_ IN ("+ left( cZF7Recno , len(cZF7Recno)-1 )+")"  + CRLF
+			begin transaction
 
-			if tcSQLExec( cUpdZF7 ) < 0
-				conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-				cErroLog := "Não foi possível executar UPDATE. "+ tcSqlError()
-				cStaLog  := "2" //Erro
-			endif
+				cUpdZF7 := "UPDATE " + retSQLName("ZF7")										+ CRLF
+				cUpdZF7 += "	SET"															+ CRLF
+				cUpdZF7 += "	ZF7_HASHA = ZF7_HASHB,"											+ CRLF
+				cUpdZF7 += "	ZF7_DTAENV = '" + dToC( dDataBase ) + '-' + time()+"'"			+ CRLF
+				cUpdZF7 += " WHERE"																+ CRLF
+				cUpdZF7 += " 		R_E_C_N_O_ IN ("+ left( cZF7Recno , len(cZF7Recno)-1 )+")"  + CRLF
+
+				if tcSQLExec( cUpdZF7 ) < 0
+					conout( "[SALESFORCE] [MGFWSC82] - Nao foi possivel executar UPDATE." + CRLF + tcSqlError())
+					cErroLog := "Não foi possível executar UPDATE. "+ tcSqlError()
+					cStaLog  := "2" //Erro
+					DisarmTransaction()
+				endif
+
+			end transaction
+
 		else
 			cErroLog := "Erro - Integração retornou estatus Http diferente de sucesso!"
 			cStaLog := "2"//Erro
@@ -321,8 +329,17 @@ return
 //----------------------------------------------------------
 // Seleciona os clientes com dados financeiros atualizados
 //----------------------------------------------------------
-static function getZF7()
-    local cQryWSC82 := ""
+static procedure getZF7()
+    local cQryWSC82
+    local nHH, nMM , nSS, nMS, nMSIni, nMSFim
+
+    nMS := seconds()
+	nHH := int(nMS/3600)
+	nMS -= (nHH*3600)
+	nMM := int(nMS/60)
+	nMS -= (nMM*60)
+	nSS := int(nMS)
+	nMSIni := (nMs - nSS)*1000
 
 	cQryWSC82 := "SELECT"															+ CRLF
 	cQryWSC82 += " ZF7.R_E_C_N_O_ ZF7RECNO	,"										+ CRLF
@@ -348,13 +365,18 @@ static function getZF7()
 	cQryWSC82 += " A1_CGC					,"										+ CRLF
 	cQryWSC82 += " A1_ZCDECOM				,"										+ CRLF
 	cQryWSC82 += " A1_COD					,"										+ CRLF
-	cQryWSC82 += " A1_LOJA"															+ CRLF
+	cQryWSC82 += " A1_LOJA					,"										+ CRLF
+	cQryWSC82 += " ZF7_TLICRE				,"										+ CRLF
+	cQryWSC82 += " ZF7_TLIDIS				,"										+ CRLF
+	cQryWSC82 += " ZF7_TLIUTI"														+ CRLF
+
 	cQryWSC82 += " FROM "			+ retSQLName( "ZF7" ) + " ZF7"					+ CRLF
 	cQryWSC82 += " INNER JOIN   "	+ retSQLName( "SA1" ) + " SA1"					+ CRLF
 	cQryWSC82 += " ON"																+ CRLF
 	cQryWSC82 += "         ZF7.ZF7_LOJA		=	SA1.A1_LOJA"						+ CRLF
 	cQryWSC82 += "     AND ZF7.ZF7_COD		=	SA1.A1_COD"							+ CRLF
 	cQryWSC82 += "     AND SA1.A1_FILIAL	=	'" + xFilial( "SA1" ) + "'"			+ CRLF
+	cQryWSC82 += "     AND SA1.A1_EST	<>	'EX'"			                        + CRLF	
 	cQryWSC82 += "     AND SA1.D_E_L_E_T_	=	' '"								+ CRLF
 	cQryWSC82 += "    AND ("														+ CRLF
 	cQryWSC82 += "         A1_XIDSFOR <> ' '"										+ CRLF
@@ -366,7 +388,17 @@ static function getZF7()
 	cQryWSC82 += " 	AND	ZF7.ZF7_FILIAL	=	'" + xFilial( "ZF7" ) + "'"				+ CRLF
 	cQryWSC82 += " 	AND	ZF7.D_E_L_E_T_	<>	'*'"									+ CRLF
 
-	conout( "[MGFWSC82] [SALESFORCE] " + cQryWSC82 )
-
 	tcQuery cQryWSC82 new alias "QRYZF7"
+
+    nMS := seconds()
+	nHH := int(nMS/3600)
+	nMS -= (nHH*3600)
+	nMM := int(nMS/60)
+	nMS -= (nMM*60)
+	nSS := int(nMS)
+	nMSFim := (nMs - nSS)*1000
+
+	conout( "[MGFWSC82] [SALESFORCE] [GETZF7] - " + cQryWSC82 )
+	conout( "[MGFFINBN] [SALESFORCE] [GETZF7] Tempo de execucao da query : " + Alltrim(Str( nMSFim - nMSIni, 10) + 'ms')) //Tempo de execucao da query e Milesegundos
+
 return

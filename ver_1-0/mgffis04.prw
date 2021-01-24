@@ -8,7 +8,7 @@ Data.....:              08/11/2016
 Descricao / Objetivo:   Ajuste Fiscal - NF de Saida
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -26,7 +26,7 @@ User Function MGFFIS04()
 
 	private nTipoNF	:= 2
 
-	DEFINE MSDIALOG oDlgPrinc TITLE 'Ajuste Fiscal - Nota Fiscal de Saida' FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] PIXEL
+	DEFINE MSDIALOG oDlgPrinc TITLE 'Ajuste Fiscal - Nota Fiscal de Saída' FROM aCoors[1], aCoors[2] TO aCoors[3], aCoors[4] PIXEL
 
 		//
 		// Cria o conteiner onde serÃ£o colocados os browses
@@ -92,10 +92,10 @@ return nil
 static function MenuDef()
 	local aRotina := {}
 
-	aadd( aRotina, { 'Alteracao de Cliente'			, 'U_MGFFIS05()()'	, 0, 4, 0, NIL } )
-	aadd( aRotina, { 'Alteracao da Transportadora'	, 'U_MGFFIS06()()'	, 0, 4, 0, NIL } )
-	aadd( aRotina, { 'Alteracao do Veï¿½culo'			, 'U_MGFFIS07()()'	, 0, 4, 0, NIL } )
-	aadd( aRotina, { 'Alteracao do Livro Fiscal'	, 'U_MGFFIS08()()'	, 0, 4, 0, NIL } )
-	//aadd( aRotina, { 'Alteracao do Produtos'		, 'U_MGFFIS31()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração de Cliente'			, 'U_MGFFIS05()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração da Transportadora'	, 'U_MGFFIS06()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração do Veículo'			, 'U_MGFFIS07()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração do Livro Fiscal'	, 'U_MGFFIS08()()'	, 0, 4, 0, NIL } )
+	//aadd( aRotina, { 'Alteração do Produtos'		, 'U_MGFFIS31()()'	, 0, 4, 0, NIL } )
 
 return aRotina

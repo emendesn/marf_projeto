@@ -9,7 +9,7 @@ Descricao / Objetivo: Rotina chamada pelo ponto de entrada M521DNFS.
 					  Desfaz processo do GAP FIS45 no pedido de venda.
 Doc. Origem.........: Protheus
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */
@@ -55,7 +55,7 @@ If Type("__cCarga") != "U" .and. !Empty(__cCarga) .and. Type("__aPVCarga") != "U
 		Endif	
 		*/
 		If !aRet[1] // deu erro 
-			APMsgAlert("Problemas no estorno do processo do GAP FIS45 ou alteracao de quantidades"+CRLF+;
+			APMsgAlert("Problemas no estorno do processo do GAP FIS45 ou alteração de quantidades"+CRLF+;
 			aRet[2])
 		Endif	
 		

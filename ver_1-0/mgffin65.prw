@@ -5,16 +5,16 @@
 Programa............: MGFFIN65
 Autor...............: Barbieri
 Data................: 09/10/2017
-Descricao / Objetivo: Realizar liberacoes automaticas de pedidos de venda Grandes Redes
+Descrição / Objetivo: Realizar liberações automáticas de pedidos de venda Grandes Redes
 Doc. Origem.........: Contrato - GAP CRE019 FASE 4
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
 User Function MGFFIN65()
 
-	Local cTxtRede  := "Deseja aplicar a alteracao de GRANDES REDES para todos os clientes da Rede?"
+	Local cTxtRede  := "Deseja aplicar a alteração de GRANDES REDES para todos os clientes da Rede?"
 	Local aArea		:= GetArea()
 	Local aAreaSA1  := SA1->(GetArea())
 	Local nStatusUpd
@@ -29,7 +29,7 @@ User Function MGFFIN65()
 				cA1GrRede := M->A1_ZGDERED
 
 				if funName() <> "MGFWSS11"
-					If MSGYESNO(cTxtRede,"Atencao")
+					If MSGYESNO(cTxtRede,"Atenção")
 						cUPD := "UPDATE "+RetSQLName("SA1")+" SET A1_ZGDERED = '"+cA1GrRede+"' "
 						cUPD += "WHERE A1_ZREDE = '"+cA1Rede+"' "
 						cUPD += "AND D_E_L_E_T_ = ' ' "

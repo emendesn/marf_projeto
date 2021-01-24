@@ -7,11 +7,11 @@
 Programa............: MGFFIN95
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Doc. Origem.........: Contrato - GAP Caixinha
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Tela para inclusao dos titulos
+Uso.................: Marfrig
+Obs.................: Tela para inclusão dos titulos
 =====================================================================================
 */
 user function MGFFIN95()
@@ -20,8 +20,8 @@ user function MGFFIN95()
 
 	oBrowse := FWMBrowse():New()
 
-	oBrowse:AddLegend( "Empty(ZE0_APRUNI).and.Empty(ZE0_APRCPA)"  , "RED"  , "Aguardando Aprovacoes" )
-	oBrowse:AddLegend( "!Empty(ZE0_APRUNI).and.Empty(ZE0_APRCPA)" , "YELLOW" , "Aguardando Aprovacao do CP" )
+	oBrowse:AddLegend( "Empty(ZE0_APRUNI).and.Empty(ZE0_APRCPA)"  , "RED"  , "Aguardando Aprovações" )
+	oBrowse:AddLegend( "!Empty(ZE0_APRUNI).and.Empty(ZE0_APRCPA)" , "YELLOW" , "Aguardando Aprovação do CP" )
 	oBrowse:AddLegend( "!Empty(ZE0_APRUNI).and.!Empty(ZE0_APRCPA)", "GREEN"    , "Titulo Aprovado" )
 
 	oBrowse:SetAlias('ZE0')
@@ -34,7 +34,7 @@ return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Modelo de Dados
 =====================================================================================
 */
@@ -74,8 +74,8 @@ Return oModel
 /*=====================================================================================
 Autor...............: Joni Lima
 Data................: 17/12/2018
-Descricao / Objetivo: Consistir na Confirmacao de TudoOK o valor Total das Despesas
-Obs.................: o Total de Despesas nao deve ultrapassar o saldo do Caixinha
+Descrição / Objetivo: Consistir na Confirmação de TudoOK o valor Total das Despesas
+Obs.................: o Total de Despesas não deve ultrapassar o saldo do Caixinha
 =====================================================================================
 */
 
@@ -135,7 +135,7 @@ Return _lRet
 /*=====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: View da Tela
 =====================================================================================
 */
@@ -173,7 +173,7 @@ return oView
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Menu da Tela do Caixinha
 =====================================================================================
 */	
@@ -193,8 +193,8 @@ Return(aRotina)
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Opcao para Alteracao do titulo de Caixinha
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Opção para Alteração do titulo de Caixinha
 =====================================================================================
 */	
 User Function xMGFI95A()
@@ -207,10 +207,10 @@ User Function xMGFI95A()
 		ZDZ->(dbSetOrder(1))//ZDZ_FILIAL+ZDZ_VIAGEM
 
 		If ZDZ->(dbSeek(ZE0->(ZE0_FILIAL+ZE0_VIAGEM)))
-			FWExecView('Alteracao','MGFFIN95', MODEL_OPERATION_UPDATE, , { || .T. }, , ,aButtons )
+			FWExecView('Alteração','MGFFIN95', MODEL_OPERATION_UPDATE, , { || .T. }, , ,aButtons )
 		EndIf
 	Else
-		Help(" ",1,'ERROALTER',,'Todos os Titulos desse processo jï¿½ estao Baixados',1,0)
+		Help(" ",1,'ERROALTER',,'Todos os Titulos desse processo já estão Baixados',1,0)
 	EndIf
 
 	RestArea(aArea)
@@ -221,8 +221,8 @@ Return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Opcao para Exclusao de titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Opção para Exclusão de titulo do Caixinha
 =====================================================================================
 */	
 User Function xMGFI95E()
@@ -236,7 +236,7 @@ User Function xMGFI95E()
 		ZDZ->(dbSetOrder(1))//ZDZ_FILIAL+ZDZ_VIAGEM
 
 		If ZDZ->(dbSeek(ZE0->(ZE0_FILIAL+ZE0_VIAGEM)))
-			FWExecView('Exclusao','MGFFIN95', MODEL_OPERATION_DELETE, , { || .T. }, , ,aButtons )
+			FWExecView('Exclusão','MGFFIN95', MODEL_OPERATION_DELETE, , { || .T. }, , ,aButtons )
 		EndIf
 
 	Else
@@ -253,8 +253,8 @@ Return
 =====================================================================================
 Autor...............: Joni Lima
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Opcao para Visualizacao de titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Opção para Visualização de titulo do Caixinha
 =====================================================================================
 */
 User Function xMGFI95V()
@@ -266,7 +266,7 @@ User Function xMGFI95V()
 	ZDZ->(dbSetOrder(1))//ZDZ_FILIAL+ZDZ_VIAGEM
 
 	If ZDZ->(dbSeek(ZE0->(ZE0_FILIAL+ZE0_VIAGEM)))
-		FWExecView('Exclusao','MGFFIN95', MODEL_OPERATION_VIEW, , { || .T. }, , ,aButtons )
+		FWExecView('Exclusão','MGFFIN95', MODEL_OPERATION_VIEW, , { || .T. }, , ,aButtons )
 	EndIf
 
 
@@ -278,7 +278,7 @@ Return
 =====================================================================================
 Autor...............: xCommit
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: Commit customizado para salavar os campos conforme necessidade
 =====================================================================================
 */
@@ -298,25 +298,25 @@ Static Function xCommit(oModel)
 	Local lRet := .T.
 
 	if oModel:GetOperation() <> MODEL_OPERATION_DELETE
-		//Adiciona os dados do cabecalho no Grid
+		//Adiciona os dados do cabeçalho no Grid
 		For ni := 1  to oMdlDeta:Length()
 			For nx := 1 to Len(oStrZDZ:aFields)
 
-				If !oStrZDZ:aFields[nx,14] //Verifica Se nao ï¿½ Virtual
+				If !oStrZDZ:aFields[nx,14] //Verifica Se não é Virtual
 					cField := oStrZDZ:aFields[nx,3]//Pega o Id do Campo
-					cConte := oMdlMast:GetValue(cField) //Pega o Conteudo do Campo do Cabecalho
+					cConte := oMdlMast:GetValue(cField) //Pega o Conteudo do Campo do Cabeçalho
 
 					If !Empty(cConte)//Verifica se o existe conteudo
-						cField := STRTRAN(cField,"ZDZ","ZE0") //Altera o nome do Campo do Cabecalho para o campo do Grid
+						cField := STRTRAN(cField,"ZDZ","ZE0") //Altera o nome do Campo do Cabeçalho para o campo do Grid
 						oMdlDeta:GoLine(ni)//Posiciona na Linha por garantia
-						oMdlDeta:LoadValue(cField,cConte)//Coloca o valor do cabecalho no Grid
+						oMdlDeta:LoadValue(cField,cConte)//Coloca o valor do cabeçalho no Grid
 					EndIf
 
 				EndIf
 
 			Next nx
 
-			//Limpa flegs para retornar para Aprovacao
+			//Limpa flegs para retornar para Aprovação
 			If Empty(oMdlDeta:GetValue("ZE0_APRCPA"))
 				oMdlDeta:LoadValue("ZE0_APRUNI","")
 				oMdlDeta:LoadValue("ZE0_MARKUN",.F.)
@@ -343,7 +343,7 @@ return lRet
 =====================================================================================
 Autor...............: MGF95When
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
+Descrição / Objetivo: Titulo do Caixinha
 Obs.................: When do Campo
 =====================================================================================
 */
@@ -352,7 +352,7 @@ Static Function MGF95When(oMdlZE0,cField,xValue,nLine)
 	Local lRet := Empty(oMdlZE0:GetValue("ZE0_APRCPA"))
 
 	If !lRet
-		Help(" ",1,'BAIXADO',,'Despesa Jï¿½ Baixada',1,0)	
+		Help(" ",1,'BAIXADO',,'Despesa Já Baixada',1,0)	
 	EndIf
 
 return lRet
@@ -361,8 +361,8 @@ return lRet
 =====================================================================================
 Autor...............: xValExcl
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Validacao para Permissao da Exclusao
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Validação para Permissão da Exclusão
 =====================================================================================
 */
 Static Function xValExcl()
@@ -409,8 +409,8 @@ return lRet
 =====================================================================================
 Autor...............: xValAlt
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Validacao para permissao de Alteracao
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Validação para permissão de Alteração
 =====================================================================================
 */
 Static Function xValAlt()
@@ -457,8 +457,8 @@ return lRet
 =====================================================================================
 Autor...............: xValDelGr
 Data................: 01/04/2016
-Descricao / Objetivo: Titulo do Caixinha
-Obs.................: Validacao Delecao de Linha ja baixadas
+Descrição / Objetivo: Titulo do Caixinha
+Obs.................: Validação Deleção de Linha ja baixadas
 =====================================================================================
 */
 Static Function xValDelGr(oMdlZE0, nLine, cAction, cField)
@@ -468,7 +468,7 @@ Static Function xValDelGr(oMdlZE0, nLine, cAction, cField)
 	If Alltrim(cAction) == "DELETE"
 		If !Empty(oMdlZE0:GetValue("ZE0_APRCPA"))
 			lRet := .F.
-			Help(" ",1,'BAIXADO',,'Despesa Jï¿½ Baixada',1,0)	
+			Help(" ",1,'BAIXADO',,'Despesa Já Baixada',1,0)	
 		EndIf
 	EndIf
 

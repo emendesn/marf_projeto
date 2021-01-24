@@ -3,20 +3,20 @@
 Programa.:              MA261D3
 Autor....:              Atilio Amarilla
 Data.....:              24/11/2016
-Descricao / Objetivo:   PE chamado apos gravacao da transferencia mod.2 (MATA261)
+Descricao / Objetivo:   PE chamado apуs gravaзгo da transferкncia mod.2 (MATA261)
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
 User Function MA261D3()
 
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљƒњ
-//пњљGAP TAURA                                                               пњљ
-//пњљIntegracao PROTHEUS x Taura - Processos Produtivos                      пњљ
-//пњљEnvio de quantidade transferida ao armazem produtivo                    пњљ
-//пњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљпњљ
+//Џƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒњ
+//≥GAP TAURA                                                               ≥
+//≥Integraзгo PROTHEUS x Taura - Processos Produtivos                      ≥
+//≥Envio de quantidade transferida ao armazйm produtivo                    ≥
+//јƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒў
 If ExistBlock("MGFTAP11")
 	U_MGFTAP11()
 EndIf

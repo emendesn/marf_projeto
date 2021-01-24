@@ -14,7 +14,7 @@ Data.....:              12/04/2017
 Descricao / Objetivo:   Importa CSV
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -23,7 +23,7 @@ user function MGFCRM30()
 		//impArq()
 		fwMsgRun(, {|| impArq() }, "Processando", "Aguarde. Processando arquivo..." )
 	endif
-	APMsgInfo("Importacao finalizada.")
+	APMsgInfo("Importação finalizada.")
 return
 
 //******************************************************
@@ -52,7 +52,7 @@ static function impArq()
 	if nOpen < 0
 		Alert("Falha na abertura do arquivo.")
 	else
-		if !msgYesNo("A importacao deste arquivo ira sobrepor a estrutura dos clientes. Deseja prosseguir?", "Alteracao de Estrutura de Vendas")
+		if !msgYesNo("A importação deste arquivo irá sobrepor a estrutura dos clientes. Deseja prosseguir?", "Alteração de Estrutura de Vendas")
 			return
 		endif
 
@@ -199,7 +199,7 @@ static function eraseStruc()
 			SA1->A1_XINTEGX	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SFA
 			SA1->A1_XINTECO	:= '0' // STATUS PARA O CLIENTE SER ENVIADO AO E-COMMERCE
 
-			if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+			if SA1->A1_PESSOA == "J"
 				SA1->A1_XINTSFO	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SALESFORCE
 			endif
 
@@ -250,7 +250,7 @@ static function newStruct()
 	cUpdTbl += " 		A3_COD = '" + ZBJ->ZBJ_REPRES + "'"	+ CRLF
 
 	if tcSQLExec( cUpdTbl ) < 0
-		conout( "Nao  foi possivel executar UPDATE." + CRLF + tcSqlError() )
+		conout( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
 	endif
 	// FIM - STATUS PARA O VENDEDOR SER ENVIADO AO SALESFORCE
 
@@ -266,7 +266,7 @@ static function newStruct()
 			SA1->A1_XINTEGX	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SFA
 			SA1->A1_XINTECO	:= '0' // STATUS PARA O CLIENTE SER ENVIADO AO E-COMMERCE
 
-			if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+			if SA1->A1_PESSOA == "J"
 				SA1->A1_XINTSFO	:= 'P' // STATUS PARA O CLIENTE SER ENVIADO AO SALESFORCE
 			endif
 		SA1->( msUnlock() )

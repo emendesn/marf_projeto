@@ -7,17 +7,16 @@
 
 static _aErr
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-user function MGFFATA5()
-	ptinternal(1,"MGFFATA5 - START")
-	PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010001"
-	ptinternal(1,"MGFFATA5 - AVAIABLE")
-return .T.
+/*/{Protheus.doc} runFATA5	 
+Processa pedido de venda do registro posicionado na XC5
+@type function
 
-//---------------------------------------------------------------------
-//---------------------------------------------------------------------
-user function runFATA5( cIdToProc, xFil )
+@author Josué Danich
+@since 10/08/2020
+@version P12
+/*/
+user function runFATA5()
+	
 	local nI				:= 0
 	local nX				:= 0
 	local aSC5				:= {}
@@ -26,7 +25,6 @@ user function runFATA5( cIdToProc, xFil )
 	local aErro				:= {}
 	local cErro				:= ""
 	local aLine				:= {}
-	local bError 			:= ErrorBlock( { |oError| errorFat53( oError ) } )
 	local cSalesOrAt		:= ""
 	local cTpFretECO		:= allTrim( superGetMv( "MGF_FREECO", , "C" ) )
 	local cCondPgEco		:= allTrim( superGetMv( "MGFECOCDPG", , "999" ) )
@@ -47,6 +45,7 @@ user function runFATA5( cIdToProc, xFil )
 	local cIdCard			:= ""
 	local nCalc				:= 0
 	local cPay				:= ""
+	Local _cerros 			:= "Erro inderteminado ao gerar caucao"
 
 	private aCustomer		:= {}
 	private cAliasXC5		:= getNextAlias()
@@ -54,98 +53,111 @@ user function runFATA5( cIdToProc, xFil )
 	private lMsErroAuto     := .F.
 	private lAutoErrNoFile  := .T. // Precisa estar como .T. para GetAutoGRLog() retornar o array com erros
 
-	default cIdToProc		:= ""
-	default xFil			:= ""
+	BEGIN SEQUENCE
+	BEGIN TRANSACTION
 
-	if !empty( xFil )
-		cFilBkp := cFilAnt
-		cFilAnt := xFil
-	endif
+			SA1->(Dbsetorder(15)) //A1_ZCDECOM
 
-	getXC5( cIdToProc )
+			if !(SA1->(Dbseek(alltrim(XC5->XC5_CLIENT))))
+	
 
-	while !(cAliasXC5)->( EOF() )
-		BEGIN SEQUENCE
-			aCustomer := {}
-			aCustomer := getCustome((cAliasXC5)->XC5_CLIENT)
+					_cstatus := "4"
+					_cmens	 := "Cliente não encontrado"
 
-			if len(aCustomer) == 0
-				updXC5( (cAliasXC5)->XC5_IDECOM, "4", "Cliente não encontrado" ) // 1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-				(cAliasXC5)->( DBSkip() )
+					Disarmtransaction()
+					Break	
+
 			else
-				nCalc := (cAliasXC5)->XC5_VALCAU
-				cPay  := (cAliasXC5)->XC5_PAYMID
 
+				//Valida cartao e gera registro de pre reserva para autorizacao posterior
+
+				nCalc := XC5->XC5_VALCAU
+				cPay  := XC5->XC5_PAYMID
+
+				if !empty( XC5->XC5_NSU )
+					_cerros := MGFFAT5G( XC5->XC5_IDPROF,SA1->A1_COD,SA1->A1_LOJA,SA1->A1_NOME,SA1->A1_CGC,nCalc,cPay )
+				Endif
+
+				If !empty(alltrim(_cerros)) .AND. !empty( XC5->XC5_NSU ) //Não conseguiu criar caução
+
+					while GetSX8Len() > nStackSX8
+						ROLLBACKSX8()
+					enddo
+
+					_cstatus := "4"
+					_cmens	 := _cerros
+
+					Disarmtransaction()
+					Break	
+
+				Endif
+	
 				aSC5 := {}
 				aadd(aSC5, {'C5_TIPO'   	, "N"									, NIL})
-				aadd(aSC5, {'C5_CLIENTE'	, aCustomer[1, 1]						, NIL})
-				aadd(aSC5, {'C5_LOJACLI'	, aCustomer[1, 2]						, NIL})
-				aadd(aSC5, {'C5_TIPOCLI'	, aCustomer[1, 4]						, NIL})
+				aadd(aSC5, {'C5_CLIENTE'	, SA1->A1_COD							, NIL})
+				aadd(aSC5, {'C5_LOJACLI'	, SA1->A1_LOJA							, NIL})
+				aadd(aSC5, {'C5_TIPOCLI'	, SA1->A1_TIPO							, NIL})
 
-				if !empty( (cAliasXC5)->XC5_NSU )
+				if !empty( XC5->XC5_NSU )
 					// Condição de pagamento POR CARTAO
 					aadd(aSC5, {'C5_CONDPAG'	, cCondPgEco						, NIL})
-					aadd(aSC5, {'C5_ZNSU'		, (cAliasXC5)->XC5_NSU				, NIL})
+					aadd(aSC5, {'C5_ZNSU'		, XC5->XC5_NSU				, NIL})
 				endif
 
-				aadd(aSC5, {'C5_VEND1'		, (cAliasXC5)->XC5_VENDED				, NIL})
+				aadd(aSC5, {'C5_VEND1'		, XC5->XC5_VENDED				, NIL})
 
-				if !empty( (cAliasXC5)->XC5_NSU )
+				if !empty( XC5->XC5_NSU )
 					aadd(aSC5, {'C5_ZTIPPED'	, cTpPedCC				, NIL})
 				else
-					aadd(aSC5, {'C5_ZTIPPED'	, (cAliasXC5)->XC5_ZTIPPE				, NIL})
+					aadd(aSC5, {'C5_ZTIPPED'	, XC5->XC5_ZTIPPE				, NIL})
 				endif
 
-				aadd(aSC5, {'C5_ZTPOPER'	, (cAliasXC5)->XC5_ZTIPOP				, NIL})
-				aadd(aSC5, {'C5_TABELA'		, allTrim( (cAliasXC5)->XC5_TABELA )	, NIL})
+				aadd(aSC5, {'C5_ZTPOPER'	, XC5->XC5_ZTIPOP				, NIL})
+				aadd(aSC5, {'C5_TABELA'		, allTrim( XC5->XC5_TABELA )	, NIL})
 
-				if !empty( (cAliasXC5)->XC5_ZIDEND )
-					aadd(aSC5, {'C5_ZIDEND'	, (cAliasXC5)->XC5_ZIDEND				, NIL})
+				if !empty( XC5->XC5_ZIDEND )
+					aadd(aSC5, {'C5_ZIDEND'	, XC5->XC5_ZIDEND				, NIL})
 				endif
 
 				aadd(aSC5, {'C5_TPFRETE'		, cTpFretECO 						, NIL})
 
-				if !empty( (cAliasXC5)->XC5_DTENTR )
-					aadd(aSC5, {'C5_FECENT'		, sToD( (cAliasXC5)->XC5_DTENTR ) 			, NIL})
-					aadd(aSC5, {'C5_ZDTEMBA'	, sToD( (cAliasXC5)->XC5_DTENTR ) 			, NIL})
+				if !empty( XC5->XC5_DTENTR )
+					aadd(aSC5, {'C5_FECENT'		,  XC5->XC5_DTENTR  			, NIL})
+					aadd(aSC5, {'C5_ZDTEMBA'	,  XC5->XC5_DTENTR  			, NIL})
 				endif
 
-				aadd(aSC5, {'C5_ZIDECOM'	, (cAliasXC5)->XC5_IDECOM					, NIL})
+				aadd(aSC5, {'C5_ZIDECOM'	, XC5->XC5_IDECOM					, NIL})
 
-				/*
-					Tratamento de Desconto
-				*/
 				nC5DescCup := 0
-				if (cAliasXC5)->XC5_DESCPV > 0
-					nC5DescCup := (cAliasXC5)->XC5_DESCPV
-					aadd(aSC5, {'C5_ZDSCECO'	, (cAliasXC5)->XC5_DESCPV	, NIL})
+
+				if XC5->XC5_DESCPV > 0
+					nC5DescCup := XC5->XC5_DESCPV
+					aadd(aSC5, {'C5_ZDSCECO'	, XC5->XC5_DESCPV	, NIL})
 				endif
 
 				nC5DescBol := 0
-				if (cAliasXC5)->XC5_DSCBOL > 0
-					nC5DescBol := (cAliasXC5)->XC5_DSCBOL
-					aadd(aSC5, {'C5_ZDSCBOL'	, (cAliasXC5)->XC5_DSCBOL	, NIL})
-				endif
-				/*
-					FIM - Tratamento de Desconto
-				*/
 
-				aadd(aSC5, {'C5_ZUSANCC'	, (cAliasXC5)->XC5_USANCC		, NIL})
-
-				if !empty( (cAliasXC5)->XC5_PROMOC )
-					aadd(aSC5, {'C5_ZPROMOC'	, (cAliasXC5)->XC5_PROMOC	, NIL})
+				if XC5->XC5_DSCBOL > 0
+					nC5DescBol := XC5->XC5_DSCBOL
+					aadd(aSC5, {'C5_ZDSCBOL'	, XC5->XC5_DSCBOL	, NIL})
 				endif
 
-				if !empty( (cAliasXC5)->XC5_DTCARR )
-					aadd(aSC5, {'C5_ZDTCARR'	, sToD((cAliasXC5)->XC5_DTCARR)	, NIL})
+				aadd(aSC5, {'C5_ZUSANCC'	, XC5->XC5_USANCC		, NIL})
+
+				if !empty( XC5->XC5_PROMOC )
+					aadd(aSC5, {'C5_ZPROMOC'	, XC5->XC5_PROMOC	, NIL})
 				endif
 
-				aadd(aSC5, {'C5_XORIGEM'	, (cAliasXC5)->XC5_ORIGEM					, NIL})
-				aadd(aSC5, {'C5_XCALLBA'	, "S"										, NIL})
+				if !empty( XC5->XC5_DTCARR )
+					aadd(aSC5, {'C5_ZDTCARR'	, XC5->XC5_DTCARR	, NIL})
+				endif
 
-				cSalesOrAt	:= (cAliasXC5)->XC5_IDECOM
+				aadd(aSC5, {'C5_XORIGEM'	, XC5->XC5_ORIGEM					, NIL})
+				aadd(aSC5, {'C5_XCALLBA'	, "S"								, NIL})
+
+				cSalesOrAt	:= XC5->XC5_IDECOM
 				cIdCard		:= ""
-				cIdCard		:= (cAliasXC5)->XC5_IDPROF
+				cIdCard		:= XC5->XC5_IDPROF
 
 				aSC6		:= {}
 				aSC6Bonif	:= {}
@@ -154,83 +166,69 @@ user function runFATA5( cIdToProc, xFil )
 				cItemSC6 := strZero ( 0 , tamSX3("C6_ITEM")[1] )
 
 				nC6ValoTot := 0
-				while !(cAliasXC5)->( EOF() ) .and. cSalesOrAt == (cAliasXC5)->XC5_IDECOM
 
-					nC6ValoTot += (cAliasXC5)->XC6_PRCVEN
+				//Posiciona XC6 e faz itens
+				XC6->(Dbsetorder(1))
+				If !(XC6->(Dbseek(XC5->XC5_FILIAL+XC5->XC5_IDECOM)))
+	
+					_cstatus := "4"
+					_cmens	 := "Não foram encontrados itens para o pedido"
+
+					Disarmtransaction()
+					Break	
+
+				Endif
+	
+				while XC5->XC5_IDECOM == XC6->XC6_IDECOM .and. XC5->XC5_FILIAL == XC6->XC6_FILIAL
+
+					nC6ValoTot += XC6->XC6_PRCVEN
 
 					aLine := {}
 
 					cItemSC6 := soma1( cItemSC6 )
 
 					aadd(aLine, {'C6_ITEM'		, cItemSC6															, NIL})
-					aadd(aLine, {'C6_PRODUTO'	, alltrim( (cAliasXC5)->XC6_PRODUT )								, NIL})
-					aadd(aLine, {'C6_QTDVEN'	, (cAliasXC5)->XC6_QTDVEN											, NIL})
+					aadd(aLine, {'C6_PRODUTO'	, alltrim( XC6->XC6_PRODUT )								, NIL})
+					aadd(aLine, {'C6_QTDVEN'	, XC6->XC6_QTDVEN											, NIL})
 
-					if (cAliasXC5)->VALDESC <> (cAliasXC5)->XC6_PRCVEN
-						// Normal
-						aadd(aLine, {'C6_PRCVEN'	, ( (cAliasXC5)->XC6_PRCVEN / (cAliasXC5)->XC6_QTDVEN )				, NIL})
+					aadd(aLine, {'C6_PRCVEN'	, ( XC6->XC6_PRCVEN / XC6->XC6_QTDVEN )				, NIL})
 
-						if ( (cAliasXC5)->XC6_PRCVEN - (cAliasXC5)->XC6_DSCITE ) > 0
-							aadd(aLine, {'C6_ZDSCITM'	, ( (cAliasXC5)->XC6_PRCVEN - (cAliasXC5)->XC6_DSCITE )	, NIL}) // GRAVA SOMENTE DESCONTO DO ITEM
-							aadd(aLine, {'C6_VALDESC'	, ( (cAliasXC5)->XC6_PRCVEN - (cAliasXC5)->XC6_DSCITE )	, NIL}) // GRAVA SOMENTE DESCONTO DO ITEM
-						endif
-					else
-						// Bonificação
-						nValBonifi := 0
-						nValBonifi := 0.0001 / ( 0.01 * (cAliasXC5)->XC6_QTDVEN )
-
-						aadd(aLine, {'C6_PRCVEN'	, nValBonifi														, NIL})
-
-						/*
-
-							0,01		=	0,14
-							x			=	0,01
-
-							X * 0,14	=	0,01 * 0,01
-
-
-							X			=	0,0001 / 0,14
-							x			=	0,000714285714286
-						*/
+					if ( XC6->XC6_PRCVEN - XC6->XC6_DSCITE ) > 0
+						aadd(aLine, {'C6_ZDSCITM'	, ( XC6->XC6_PRCVEN - XC6->XC6_DSCITE )	, NIL}) // GRAVA SOMENTE DESCONTO DO ITEM
+						aadd(aLine, {'C6_VALDESC'	, ( XC6->XC6_PRCVEN - XC6->XC6_DSCITE )	, NIL}) // GRAVA SOMENTE DESCONTO DO ITEM
 					endif
-
-					aadd(aLine, {'C6_OPER'		, (cAliasXC5)->XC6_OPER												, NIL})
+		
+					aadd(aLine, {'C6_OPER'		, XC6->XC6_OPER												, NIL})
 
 					aadd(aLine, {'C6_ZDTMIN'	, CTOD("  /  /  ")	, NIL})
 					aadd(aLine, {'C6_ZDTMAX'	, CTOD("  /  /  ")	, NIL})
 
 					aadd( aSC6, aLine )
 
-					(cAliasXC5)->( DBSkip() )
+					XC6->( DBSkip() )
+
 				enddo
 
-				/*
-					Tratamento de Desconto
-				*/
 				nC5DescTot := 0
 				nC5DescTot := ( nC5DescBol + nC5DescCup )
 
 				nC5PercTot := 0
+				
 				if nC5DescTot > 0
 					nC5PercTot := ( nC5DescTot * 100 ) / nC6ValoTot
 
 					aadd(aSC5, {'C5_PDESCAB'		, nC5PercTot			, NIL})
 				endif
 
-				/*
-					FIM - Tratamento de Desconto
-				*/
-
 				aSC5 := fwVetByDic( aSC5 /*aVetor*/ , "SC5" /*cTable*/ , .F. /*lItens*/ )
 				aSC6 := fwVetByDic( aSC6 /*aVetor*/ , "SC6" /*cTable*/ , .T. /*lItens*/ )
 
-				varInfo( "aSC5"	, aSC5 )
-				varInfo( "aSC6"	, aSC6 )
-
 				lMsErroAuto := .F.
+
 				msExecAuto({|x,y,z|MATA410(x,y,z)}, aSC5, aSC6, 3)
 
-				if lMsErroAuto
+				if lMsErroAuto .AND. alltrim(SC5->C5_ZIDECOM) != Alltrim(XC5->XC5_IDECOM)
+	
 					while GetSX8Len() > nStackSX8
 						ROLLBACKSX8()
 					enddo
@@ -242,92 +240,104 @@ user function runFATA5( cIdToProc, xFil )
 						cErro += aErro[nI] + CRLF
 					next nI
 
-					//cNameLog := funName() + dToS(dDataBase) + strTran(time(),":")
-					//memoWrite("\" + cNameLog , cErro)
+
+					_cstatus := "4"
+					_cmens	 := "Erro na criação do pedido: " + cErro
+
+					Disarmtransaction()
+					Break
+
 				else
+	
 					while GetSX8Len() > nStackSX8
 						CONFIRMSX8()
 					enddo
 
-					conout(' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Gerado Pedido para ID ECO ' + cSalesOrAt + ' ' + time() )
+					_cstatus := "3"
+					_cmens	 := "Pedido Incluido"
 
-					updXC5( cSalesOrAt, "3", "Pedido Incluido", SC5->C5_NUM	, "" ) // 1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-					if !empty( SC5->C5_ZNSU )
-						geraCaucao( cIdCard,SC5->C5_CLIENTE,SC5->C5_LOJACLI,SC5->C5_XNOMECL,SC5->C5_XCGCCPF,nCalc,cPay )
-					endif
+					Reclock("XC5",.F.)
+					XC5->XC5_STATUS := _cstatus
+					XC5->XC5_HRPROC := time()
+					XC5->XC5_PVPROT :=  SC5->C5_NUM
+					XC5->XC5_HRTOTA := elapTime(XC5->XC5_HRRECE, XC5->XC5_HRPROC)
+					XC5->XC5_OBS    := _cmens
+					XC5->(Msunlock())	
 
-					if SC5->C5_ZUSANCC == "1"
-						updSA1( aCustomer[1, 1], aCustomer[1, 2] )
-					endif
-				endif
+					//Atualiza número do pedido na ZE6
+					cQryZE6 := "SELECT R_E_C_N_O_ REC "									+ CRLF
+					cQryZE6 += " FROM " + retSQLName("ZE6") + " ZE6"					+ CRLF	
+					cQryZE6 += " WHERE"													+ CRLF
+					cQryZE6 += " 		ZE6.ZE6_CNPJ	=	'" + cCnpj			+ "'"	+ CRLF
+					cQryZE6 += " 	AND	ZE6.ZE6_NSU		=	'" + cNSU			+ "'"	+ CRLF
+					cQryZE6 += " 	AND	ZE6.ZE6_FILIAL	=	'" + xFilial("ZE6")	+ "'"	+ CRLF
+					cQryZE6 += " 	AND	ZE6.D_E_L_E_T_	<>	'*'"						+ CRLF
 
-				// TRATAMENTO FEITO POIS A ROTINA AUTOMATICA ESTAVA RETORNANDO ERRO POREM GERAVA PEDIDO
-				// CASO INDIQUE ERRO FAZ UM CHECK NA SC5
-				if lMsErroAuto
-					cQrySC5 := ""
-					cQrySC5 := "SELECT C5_FILIAL, C5_NUM, XC5_IDECOM, C5_VEND1"
-					cQrySC5 += " FROM "			+ retSQLName("SC5") + " SC5"
-					cQrySC5 += " INNER JOIN "	+ retSQLName("XC5") + " XC5"
-					cQrySC5 += " ON"
+					tcQuery cQryZE6 New Alias "QRYZE6"
 
-					cQrySC5 += "         TRIM(SC5.C5_ZIDECOM)	=	'" + allTrim( cSalesOrAt ) + "'"
+					if QRYZE6->(!EOF())
 
-					cQrySC5 += "     AND XC5_FILIAL				=	'" + xFilial("SC5") + "'"
-					cQrySC5 += "     AND XC5.D_E_L_E_T_			<>	'*'"
-					cQrySC5 += " WHERE"
-					cQrySC5 += "     SC5.D_E_L_E_T_		<>	'*'"
-					cQrySC5 += " AND SC5.C5_FILIAL		=	'" + xFilial("SC5") + "'"
+						ZE6->(Dbgoto(QRYZE6->REC))
+						
+						//Valida se não tem deadlock na ze6
+						If !ZE6->(MsRLock(ZE6->(RECNO())))
+							QRYZE6->(DBCloseArea())
+							Disarmtransaction()
+							Break
+						else
+							ZE6->(MsRunlock())
+						Endif
 
-					tcQuery cQrySC5 new Alias (cAliasSC5)
+						Reclock("ZE6",.F.)
+						ZE6->ZE6_PEDIDO := SC5->C5_NUM
+						ZE6->(Msunlock())
 
-					if !(cAliasSC5)->(EOF())
-						while GetSX8Len() > nStackSX8
-							CONFIRMSX8()
-						enddo
+						QRYZE6->(DBCloseArea())
 
-						conout(' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Gerado Pedido para ID ECO ' + cSalesOrAt + ' ' + time() )
-
-						updXC5( cSalesOrAt, "3", "Pedido Incluido", (cAliasSC5)->C5_NUM	, "" ) // 1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-						if !empty( SC5->C5_ZNSU )
-							geraCaucao( cIdCard,SC5->C5_CLIENTE,SC5->C5_LOJACLI,SC5->C5_XNOMECL,SC5->C5_XCGCCPF,nCalc,cPay )
-						endif
-
-						if SC5->C5_ZUSANCC == "1"
-							updSA1( aCustomer[1, 1], aCustomer[1, 2] )
-						endif
 					else
-						updXC5( cSalesOrAt, "4", "Erro Pedido" + CRLF + cErro, "", "" ) // 1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
 
-						conout(' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Erro na geracao do Pedido ID ECO: ' + cSalesOrAt + ' Erro gerado: ' + cErro + ' ' + time() )
-					endif
+						_cstatus := "4"
+						_cmens	 := "Falha na atualizacao do registro de caucao"
 
-					(cAliasSC5)->(DBCloseArea())
+						QRYZE6->(DBCloseArea())
+
+						Disarmtransaction()
+						Break
+
+					Endif
+
 				endif
+				
 			endif
-		RECOVER
-			Conout(' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Problema Ocorreu em : ' + dToC(dDataBase) + " - " + time() )
-		END SEQUENCE
-	enddo
 
-	(cAliasXC5)->( DBCloseArea() )
+	END TRANSACTION
+	END SEQUENCE
 
-	if !empty( xFil )
-		cFilAnt := cFilBkp
-	endif
+	//Garante que mesmo com disarmtransaction o resultado vai ser gravado na XC5
+	Reclock("XC5",.F.)
+	XC5->XC5_STATUS := _cstatus
+	XC5->XC5_HRPROC := time()
+	XC5->XC5_HRTOTA := elapTime(XC5->XC5_HRRECE, XC5->XC5_HRPROC)
+	XC5->XC5_OBS    := _cmens
+	XC5->(Msunlock())	
 
-	delClassINTF()
 return
 
-//-------------------------------------------------------
-//-------------------------------------------------------
-static function geraCaucao( cIdCard, cCliente, cLoja, cNome, cCGC, nCalc, cPay )
+/*/{Protheus.doc} MGFFATA5G	 
+Valida cartao e gera registro de pre reserva para autorizacao posterior
+@type function
+
+@author Josué Danich
+@since 10/08/2020
+@version P12
+/*/
+
+static function MGFFAT5G( cIdCard, cCliente, cLoja, cNome, cCGC, nCalc, cPay )
 
 	local aSE1			:= {}
 	local cPrefixECO	:= allTrim( superGetMv( "MGF_PREFEC", , "ECO" ) )
 	local cTipoECO		:= allTrim( superGetMv( "MGF_TIPOEC", , "CC" ) )
-	local nPorcCauca	:= superGetMv( "MGF_PORCCA", , 25 )
 	local nTotalSE1		:= 0
-	local cHistor		:= "Caução gerado com acréscimo de " + allTrim( str( nPorcCauca ) ) + "%"
 	local aErro			:= {}
 	local cErro			:= ""
 	local cQrySC6Sum	:= ""
@@ -343,16 +353,25 @@ static function geraCaucao( cIdCard, cCliente, cLoja, cNome, cCGC, nCalc, cPay )
 	local aAreaSZV		:= SZV->( getArea() )
 	local aAreaSC5		:= SC5->( getArea() )
 
+	Local _cerros 		:= "Falha indeterminada ao gerar caucao"
+
 	cAccessTok := ""
 	cAccessTok := u_authGtnt() // Retorna Token para utilizar os metodos da GetNet
 
 	if !empty( cAccessTok )
+
 		cCard := ""
 		cCard := u_recoCard( cAccessTok, allTrim( cIdCard ) ) // Retorna dados do cartao em JSON 'string'
 
 		oCard := nil
+
 		if fwJsonDeserialize( cCard, @oCard ) // Transforma a string JSON em OBJETO
-			if u_chkCard( cAccessTok, oCard:CARDHOLDER_NAME, oCard:EXPIRATION_MONTH, oCard:EXPIRATION_YEAR, oCard:NUMBER_TOKEN ) // Verifica se Cartao esta VALIDO
+	
+			_cbrand := upper( allTrim( oCard:brand ) )
+			_cretorno := ""
+
+			if u_chkCard( cAccessTok, oCard:CARDHOLDER_NAME, oCard:EXPIRATION_MONTH, oCard:EXPIRATION_YEAR, oCard:NUMBER_TOKEN, @_cretorno ) // Verifica se Cartao esta VALIDO
+	
 				cQryZEC := "SELECT "																	+ CRLF
 				cQryZEC += "    ZEC_FILIAL, "															+ CRLF
 				cQryZEC += "    ZEC_CODIGO, "															+ CRLF
@@ -364,389 +383,84 @@ static function geraCaucao( cIdCard, cCliente, cLoja, cNome, cCGC, nCalc, cPay )
 				cQryZEC += "WHERE "																		+ CRLF
 				cQryZEC += "    ZEC.D_E_L_E_T_ = ' ' "													+ CRLF
 				cQryZEC += "    AND ZEC.ZEC_FILIAL = '" + xFilial("SA1")	+ "' "						+ CRLF
-				cQryZEC += "    AND ZEC.ZEC_DESCRI LIKE '%" + upper( allTrim( oCard:brand ) )	+ "%'"	+ CRLF
-
-				conout(' [E-COM] [MGFFATA5] geraCaucao ' + cQryZEC )
+				cQryZEC += "    AND ZEC.ZEC_DESCRI LIKE '%" + _cbrand	+ "%'"	+ CRLF
 
 				tcQuery cQryZEC New Alias "QRYZEC"
 
 				If !QRYZEC->(EOF())
+
 					If nCalc > 0
 
-	/*
-							xFilCore := Filial Corrente
-						    cCliente := Cliente do pedido
-						    cLoja	 := Loja do Pedido
-						    cCnpj	 := CNPJ do Cliente
-						    cNome    := Nome do Cliente
-						    cNSU     := Numero do NSU
-						    cIdTrans := Id De transação
-						    cPedido  := Numero do Pedido de Venda
-						    dDtPedido:= Data de Inclusão do Pedido
-						    nValorCau:= Valor do Caução
-						    cCodAdm  := Código Administradora
-						    cDesAdm  := Descrição Administradora
-	*/
 
-						U_xFINB2Ped(	xFilial("ZE6")		,;
-										cCliente			,;
-										cLoja				,;
-										cCGC				,;
-										cNome				,;
-										SC5->C5_ZNSU		,;
-										cPay				,;
-										SC5->C5_NUM			,;
-										dDataBase			,;
-										nCalc				,;
-										QRYZEC->ZEC_CODIGO	,;
-										QRYZEC->ZEC_DESCRI	)
+						cQryZE6 := "SELECT R_E_C_N_O_ REC "											+ CRLF
+						cQryZE6 += " FROM " + retSQLName("ZE6") + " ZE6"							+ CRLF	
+						cQryZE6 += " WHERE"															+ CRLF
+						cQryZE6 += " 		ZE6.ZE6_CNPJ	=	'" + cCGC					+ "'"	+ CRLF
+						cQryZE6 += " 	AND	ZE6.ZE6_NSU		=	'" + alltrim(XC5->XC5_NSU)	+ "'"	+ CRLF
+						cQryZE6 += " 	AND	ZE6.ZE6_FILIAL	=	'" + xFilial("ZE6")			+ "'"	+ CRLF
+						cQryZE6 += " 	AND	ZE6.D_E_L_E_T_	<>	'*'"								+ CRLF
 
-						conout(' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Gerado Caução ' + time() )
+						tcQuery cQryZE6 New Alias "QRYZE6"
+
+						if QRYZE6->(EOF())
+		
+							RecLock("ZE6",.T.)
+							ZE6->ZE6_FILIAL		:= XC5->XC5_FILIAL
+							ZE6->ZE6_STATUS		:= "0"		// 0-Caução / 1-Título Gerado / 2-Título Baixado / 3-Erro
+							ZE6->ZE6_CLIENT		:= cCliente
+							ZE6->ZE6_LOJACL		:= cLoja
+							ZE6->ZE6_CNPJ		:= cCGC
+							ZE6->ZE6_NOMECL		:= cNome
+							ZE6->ZE6_NSU		:= XC5->XC5_NSU
+							ZE6->ZE6_IDTRAN		:= cPay
+							ZE6->ZE6_DTINCL		:= dDataBase
+							ZE6->ZE6_VALCAU		:= ( nCalc / 100 ) // Valor vem em centavos -  convertido para reais
+							ZE6->ZE6_CODADM		:= QRYZEC->ZEC_CODIGO
+							ZE6->ZE6_DESADM		:= QRYZEC->ZEC_DESCRI
+							ZE6->ZE6_OBS		:= "Caucao criada a partir do pedido OCC " + ALLTRIM(XC5->XC5_IDECOM)
+			
+							ZE6->(MsUnLock())
+
+							_cerros := ""
+	
+						else
+
+							_cerros := "Ja existe caucao para mesmo NSU: " +  XC5->XC5_NSU
+						
+						endif
+
+						QRYZE6->(DBCloseArea())
+
+					else
+
+						_cerros 		:= "Valor da venda zero"	
+					
 					endif
+	
 				else
-					conout(' [E-COM] [MGFFATA5] Nao foi encontrada operadora de cartao para gerar caucao (Verificar Tabela ZEC)')
 
-					U_xFINB2Ped(	xFilial("ZE6")		,;
-									cCliente			,;
-									cLoja				,;
-									cCGC				,;
-									cNome				,;
-									SC5->C5_ZNSU		,;
-									cPay				,;
-									SC5->C5_NUM			,;
-									dDataBase			,;
-									nCalc				,;
-									""					,;
-									""					,;
-									fwTimeStamp(2) + " - Nao foi encontrada operadora de cartao para gerar caucao (Verificar Tabela ZEC)"	,;
-									"3"					)
-
-					cUpdSC5	:= ""
-
-					cUpdSC5 := "UPDATE " + retSQLName("SC5")							+ CRLF
-					cUpdSC5 += "	SET"												+ CRLF
-					cUpdSC5 += " 		C5_ZBLQRGA = 'B'"								+ CRLF
-					cUpdSC5 += " WHERE"													+ CRLF
-					cUpdSC5 += " 		C5_NUM		=	'" + SC5->C5_NUM	+ "'"		+ CRLF
-					cUpdSC5 += " 	AND	C5_FILIAL	=	'" + SC5->C5_FILIAL	+ "'"		+ CRLF
-					cUpdSC5 += " 	AND	D_E_L_E_T_	<>	'*'"							+ CRLF
-
-					if tcSQLExec( cUpdSC5 ) < 0
-						conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-					endif
-
-					DBSelectArea( 'SZV' )
-					SZV->( DBSetOrder( 1 ) ) //ZV_FILIAL, ZV_PEDIDO, ZV_ITEMPED, ZV_CODRGA
-					if !SZV->( DBSeek( xFilial('SZV') + SC5->C5_NUM + "01" + "999999" ) )
-						recLock("SZV", .T.)
-							SZV->ZV_FILIAL	:= xFilial("SZV")
-							SZV->ZV_PEDIDO	:= SC5->C5_NUM
-							SZV->ZV_ITEMPED	:= "01"
-							SZV->ZV_CODRGA	:= "999999"
-							SZV->ZV_CODRJC	:= "000000"
-							SZV->ZV_DTRJC	:= dDataBase
-							SZV->ZV_HRRJC	:= left( time() , 5 )
-						SZV->(msUnlock())
-					endif
+					_cerros 		:= "Nao localizou operadora cadastrada para o cartao do cofre: " + ccard
+				
 				endif
 
-				QRYSAE->(DBCloseArea())
+				QRYZEC->(DBCloseArea())
+
 			else
-				// cartão invalido
-				conout(' [E-COM] [MGFFATA5] [GERACAUCAO] Cartão não verificado')
 
-				U_xFINB2Ped(	xFilial("ZE6")		,;
-								cCliente			,;
-								cLoja				,;
-								cCGC				,;
-								cNome				,;
-								SC5->C5_ZNSU		,;
-								cPay				,;
-								SC5->C5_NUM			,;
-								dDataBase			,;
-								nCalc				,;
-								""					,;
-								""					,;
-								fwTimeStamp(2) + " - Cartão não verificado"	,;
-								"3"					)
+				_cerros 		:= "Falha validacao cartao recuperado do cofre: " + CHR(10)+CHR(13) + _cretorno
+			
+			Endif
 
-				cUpdSC5	:= ""
-
-				cUpdSC5 := "UPDATE " + retSQLName("SC5")							+ CRLF
-				cUpdSC5 += "	SET"												+ CRLF
-				cUpdSC5 += " 		C5_ZBLQRGA = 'B'"								+ CRLF
-				cUpdSC5 += " WHERE"													+ CRLF
-				cUpdSC5 += " 		C5_NUM		=	'" + SC5->C5_NUM	+ "'"		+ CRLF
-				cUpdSC5 += " 	AND	C5_FILIAL	=	'" + SC5->C5_FILIAL	+ "'"		+ CRLF
-				cUpdSC5 += " 	AND	D_E_L_E_T_	<>	'*'"							+ CRLF
-
-				if tcSQLExec( cUpdSC5 ) < 0
-					conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-				endif
-
-				DBSelectArea( 'SZV' )
-				SZV->( DBSetOrder( 1 ) ) //ZV_FILIAL, ZV_PEDIDO, ZV_ITEMPED, ZV_CODRGA
-				if !SZV->( DBSeek( xFilial('SZV') + SC5->C5_NUM + "01" + "999999" ) )
-					recLock("SZV", .T.)
-						SZV->ZV_FILIAL	:= xFilial("SZV")
-						SZV->ZV_PEDIDO	:= SC5->C5_NUM
-						SZV->ZV_ITEMPED	:= "01"
-						SZV->ZV_CODRGA	:= "999999"
-						SZV->ZV_CODRJC	:= "000000"
-						SZV->ZV_DTRJC	:= dDataBase
-						SZV->ZV_HRRJC	:= left( time() , 5 )
-					SZV->(msUnlock())
-				endif
-			endif
 		else
-			// cartão nao encontrado no cofre
-			conout(' [E-COM] [MGFFATA5] [GERACAUCAO] não recuperado no Cofre GETNET')
 
-			U_xFINB2Ped(	xFilial("ZE6")		,;
-							cCliente			,;
-							cLoja				,;
-							cCGC				,;
-							cNome				,;
-							SC5->C5_ZNSU		,;
-							cPay				,;
-							SC5->C5_NUM			,;
-							dDataBase			,;
-							nCalc				,;
-							""					,;
-							""					,;
-							fwTimeStamp(2) + " - Cartão não recuperado no Cofre GETNET: " + CRLF + cCard	,;
-							"3"					)
-
-			cUpdSC5	:= ""
-
-			cUpdSC5 := "UPDATE " + retSQLName("SC5")							+ CRLF
-			cUpdSC5 += "	SET"												+ CRLF
-			cUpdSC5 += " 		C5_ZBLQRGA = 'B'"								+ CRLF
-			cUpdSC5 += " WHERE"													+ CRLF
-			cUpdSC5 += " 		C5_NUM		=	'" + SC5->C5_NUM	+ "'"		+ CRLF
-			cUpdSC5 += " 	AND	C5_FILIAL	=	'" + SC5->C5_FILIAL	+ "'"		+ CRLF
-			cUpdSC5 += " 	AND	D_E_L_E_T_	<>	'*'"							+ CRLF
-
-			if tcSQLExec( cUpdSC5 ) < 0
-				conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-			endif
-
-			DBSelectArea( 'SZV' )
-			SZV->( DBSetOrder( 1 ) ) //ZV_FILIAL, ZV_PEDIDO, ZV_ITEMPED, ZV_CODRGA
-			if !SZV->( DBSeek( xFilial('SZV') + SC5->C5_NUM + "01" + "999999" ) )
-				recLock("SZV", .T.)
-					SZV->ZV_FILIAL	:= xFilial("SZV")
-					SZV->ZV_PEDIDO	:= SC5->C5_NUM
-					SZV->ZV_ITEMPED	:= "01"
-					SZV->ZV_CODRGA	:= "999999"
-					SZV->ZV_CODRJC	:= "000000"
-					SZV->ZV_DTRJC	:= dDataBase
-					SZV->ZV_HRRJC	:= left( time() , 5 )
-				SZV->(msUnlock())
-			endif
-		endif
-	endif
-
-	restArea( aAreaSC5 )
-	restArea( aAreaSZV )
-	restArea( aArea )
-return
-
-//-------------------------------------------------------
-//-------------------------------------------------------
-static function updXC5( cIDECO, cStatus, cObs, cPV, cPVBonif ) // 1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-	local aArea		:= getArea()
-	local aAreaXC5	:= {}
-	local cTimeProc	:= time()
-
-	default cPVBonif	:= ""
-	default cPV			:= ""
-
-	DBSelectArea( "XC5" )
-
-	aAreaXC5 := XC5->( getArea() )
-
-	XC5->( DBSetOrder( 1 ) )
-	if XC5->( DBSeek( xFilial("XC5") + cIDECO ) ) // XC5_FILIAL+XC5_IDECOM
-		recLock("XC5", .F.)
-		XC5->XC5_STATUS := cStatus //1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-		XC5->XC5_HRPROC := cTimeProc
-		XC5->XC5_HRTOTA := elapTime(XC5->XC5_HRRECE, cTimeProc)
-
-		if !empty( cPV )
-			XC5->XC5_PVPROT := cPV
+			_cerros 		:= "Falha ao recuperar cartao do cofre: " + ccard
+		
 		endif
 
-		if !empty( cPVBonif )
-			XC5->XC5_BONIFI := cPVBonif
-		endif
-
-		if !empty(cObs)
-			if !empty( XC5->XC5_OBS )
-				XC5->XC5_OBS := XC5->XC5_OBS + " / " + cObs
-			else
-				XC5->XC5_OBS := cObs
-			endif
-		endif
-		XC5->( msUnlock() )
-	endif
-
-	restArea(aAreaXC5)
-	restArea(aArea)
-return
-
-//-------------------------------------------------------
-//-------------------------------------------------------
-static function errorFat53( oError )
-	local nQtd := MLCount(oError:ERRORSTACK)
-	local ni
-	local cEr := ''
-
-	for ni:=1 to nQtd
-		cEr += memoLine(oError:ERRORSTACK,,ni)
-	next ni
-
-	conout( cEr )
-
-	_aErr := { '0', cEr }
-
-return .T.
-
-//-------------------------------------------------------
-//-------------------------------------------------------
-static function getCustome(cCodEcom)
-	local aRet		:= {}
-	local cQrySA1	:= ""
-	local cAliasSA1	:= getNextAlias()
-
-	cCodEcom := allTrim( cCodEcom )
-
-	cQrySA1 += "SELECT A1_COD, A1_LOJA, A1_ZVIDAUT, A1_TIPO, A1_NATUREZ"	+ CRLF
-	cQrySA1 += " FROM " + retSQLName("SA1") + " SA1"						+ CRLF
-	cQrySA1 += " WHERE"														+ CRLF
-	cQrySA1 += " 		SA1.A1_ZCDECOM	=	'" + cCodEcom		+ "'"		+ CRLF
-	//cQrySA1 += " 		SA1.A1_CGC		=	'" + cCodEcom		+ "'"		+ CRLF
-	cQrySA1 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"		+ CRLF
-	cQrySA1 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"							+ CRLF
-
-	tcQuery changeQuery(cQrySA1) new Alias (cAliasSA1)
-
-	if !(cAliasSA1)->(EOF())
-		aadd( aRet, { (cAliasSA1)->A1_COD, (cAliasSA1)->A1_LOJA, (cAliasSA1)->A1_ZVIDAUT, (cAliasSA1)->A1_TIPO, (cAliasSA1)->A1_NATUREZ } )
-	endif
-
-	(cAliasSA1)->(DBCloseArea())
-return aRet
-
-
-//-------------------------------------------------------------------
-// Selecione pedidos a serem incluidos
-//-------------------------------------------------------------------
-static function getXC5( cIdToProc )
-	local cQryXC5		:= ""
-
-	default cIdToProc	:= ""
-
-	cQryXC5 += "SELECT XC5_DESCPV, XC5_IDPROF, XC6_DSCITE, XC5_DSCBOL, XC5_USANCC, XC5_NSU, XC5_PROMOC, XC5_DTCARR, XC5.R_E_C_N_O_ XC5RECNO, XC6.R_E_C_N_O_ XC6RECNO, XC5_DTENTR, XC5_VALCAU, XC5_PAYMID, XC6_PRCLIS,"	+ CRLF
-	cQryXC5 += " XC5_FILIAL, XC5_CLIENT, XC5_TABELA, XC5_CONDPG, XC5_ZTIPPE, XC5_VENDED, XC6_OPER,"	+ CRLF
-	cQryXC5 += " XC5_ZIDEND, XC5_IDECOM, XC6_ITEM, XC6_PRODUT, XC6_QTDVEN, XC6_PRCVEN, XC5_ZTIPOP, XC6_DTMINI, XC6_DTMAXI,"		+ CRLF
-
-	cQryXC5 += " ("																			+ CRLF
-	cQryXC5 += "     SELECT"																+ CRLF
-
-	cQryXC5 += "  	("																		+ CRLF
-	cQryXC5 += "      ( XC5.XC5_DSCBOL * 100 ) / SUM( SUBXC6.XC6_DSCITE )"					+ CRLF
-	cQryXC5 += "  	) / 100 * XC6.XC6_DSCITE + XC6.XC6_PRCVEN - XC6.XC6_DSCITE"				+ CRLF
-
-	cQryXC5 += "     FROM "	+ retSQLName("XC6") + " SUBXC6"									+ CRLF
-	cQryXC5 += "     WHERE"																	+ CRLF
-	cQryXC5 += "         SUBXC6.XC6_IDECOM = XC6.XC6_IDECOM"								+ CRLF
-	cQryXC5 += "     AND SUBXC6.XC6_FILIAL = XC6.XC6_FILIAL"								+ CRLF
-	cQryXC5 += "     AND SUBXC6.D_E_L_E_T_ = ' '"											+ CRLF
-	cQryXC5 += " ) VALDESC , XC5_ORIGEM"													+ CRLF
-
-	cQryXC5 += " FROM "			+ retSQLName("XC5") + " XC5"								+ CRLF
-	cQryXC5 += " INNER JOIN "	+ retSQLName("XC6") + " XC6"								+ CRLF
-	cQryXC5 += " ON XC5.XC5_IDECOM = XC6.XC6_IDECOM"											+ CRLF
-	cQryXC5 += " WHERE"																		+ CRLF
-
-	if !empty(cIdToProc)
-		cQryXC5 += " 		XC5.XC5_STATUS	=	'2'"											+ CRLF  //1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-		cQryXC5 += " 	AND	XC5.XC5_IDPROC	=	'" + cIdToProc + "'"							+ CRLF
 	else
-		cQryXC5 += " 		XC5.XC5_STATUS	=	'1'"											+ CRLF  //1 - Recebido / 2 - Processando / 3 - Gerado Pedido / 4 - Erro
-		cQryXC5 += " 	AND	XC5.XC5_IDPROC	=	' '"											+ CRLF
+
+		_cerros 		:= "Falha autenticacao na autorizadora ao gerar caucao"
+	
 	endif
 
-	cQryXC5 += " 	AND	XC6.XC6_FILIAL	=	'" + xFilial("XC6") + "'"						+ CRLF
-	cQryXC5 += " 	AND	XC6.D_E_L_E_T_	<>	'*'"											+ CRLF
-	cQryXC5 += " 	AND	XC5.XC5_FILIAL	=	'" + xFilial("XC5") + "'"						+ CRLF
-	cQryXC5 += " 	AND	XC5.D_E_L_E_T_	<>	'*'"											+ CRLF
-	cQryXC5 += " ORDER BY XC5_IDECOM,XC6_ITEM"														+ CRLF
-
-	conout( ' [E-COM] [MGFFATA5] [EMPRESA] ' + allTrim(cEmpAnt) + ' [FILIAL] ' + allTrim(cFilAnt) + ' Query - Selecao para processamento: ' + cQryXC5 )
-
-	//memoWrite("C:\TEMP\MGFFATA5.SQL", cQryXC5)
-
-	tcQuery changeQuery(cQryXC5) new Alias (cAliasXC5)
-return
-
-//-------------------------------------------------------------------
-//
-//-------------------------------------------------------------------
-static function getPrcList( cXC5Tabela, cProdXC6 )
-	local nRetValor	:= 0
-	local cQryDA1	:= ""
-
-	cQryDA1 := "SELECT DA1_PRCVEN AS VALOR" 													+ CRLF
-	cQryDA1 += " FROM "			+ retSQLName("DA0") + " DA0" 									+ CRLF
-	cQryDA1 += " INNER JOIN "	+ retSQLName("DA1") + " DA1" 									+ CRLF
-	cQryDA1 += " ON" 																			+ CRLF
-	cQryDA1 += "		DA1.DA1_CODPRO	=	'" + cProdXC6 + "'" 								+ CRLF
-	cQryDA1 += " 	AND	DA1.DA1_CODTAB	=	DA0.DA0_CODTAB" 									+ CRLF
-	cQryDA1 += "	AND DA1.DA1_FILIAL	=	'" + xFilial("DA1") + "'" 							+ CRLF
-	cQryDA1 += "	AND DA1.D_E_L_E_T_	<>	'*'" 												+ CRLF
-	cQryDA1 += " INNER JOIN "	+ retSQLName("SA1") + " SA1" 									+ CRLF
-	cQryDA1 += " ON" 																			+ CRLF
-	cQryDA1 += " 		DA0.DA0_CODTAB	=	SA1.A1_ZPRCECO" 									+ CRLF
-	cQryDA1 += " 	AND	SA1.A1_ZPRCECO	<>	' '" 												+ CRLF
-	cQryDA1 += "	AND SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'" 							+ CRLF
-	cQryDA1 += " 	AND	SA1.D_E_L_E_T_	<>	'*'" 												+ CRLF
-	cQryDA1 += " WHERE" 																		+ CRLF
-	cQryDA1 += "		DA0.DA0_CODTAB	=	'" + allTrim( cXC5Tabela ) + "'" 					+ CRLF
-	cQryDA1 += "	AND DA0.DA0_XENVEC	=	'1'" 												+ CRLF
-	cQryDA1 += "	AND DA0.DA0_FILIAL	=	'" + xFilial("DA0") + "'" 							+ CRLF
-	cQryDA1 += "	AND DA0.D_E_L_E_T_	<>	'*'" 												+ CRLF
-
-	tcQuery cQryDA1 new alias "QRYDA1"
-
-	if !QRYDA1->(EOF())
-		nRetValor := QRYDA1->VALOR
-	endif
-
-	QRYDA1->(DBCloseArea())
-return nRetValor
-
-//-------------------------------------------------------------------
-//
-//-------------------------------------------------------------------
-static function updSA1( cCodSA1, cLojaSA1 )
-	local cUpdSA1	:= ""
-	local aAreaX	:= getArea()
-
-	cUpdSA1 := "UPDATE " + retSQLName("SA1")						+ CRLF
-	cUpdSA1 += "	SET"											+ CRLF
-	cUpdSA1 += " 		A1_XINTECO = '0',"							+ CRLF
-	cUpdSA1 += " 		A1_XENVECO = '1'"							+ CRLF
-	cUpdSA1 += " WHERE"												+ CRLF
-	cUpdSA1 += " 		A1_LOJA		=	'" + cLojaSA1		+ "'"	+ CRLF
-	cUpdSA1 += " 	AND	A1_COD		=	'" + cCodSA1		+ "'"	+ CRLF
-	cUpdSA1 += " 	AND	A1_FILIAL	=	'" + xFilial("SA1")	+ "'"	+ CRLF
-	cUpdSA1 += " 	AND	D_E_L_E_T_	<>	'*'"						+ CRLF
-
-	if tcSQLExec( cUpdSA1 ) < 0
-		conout("Não foi possível executar UPDATE." + CRLF + tcSqlError())
-	endif
-
-	restArea( aAreaX )
-return
+return _cerros

@@ -3,12 +3,12 @@
 /*
 =====================================================================================
 Programa............: SE5FI331()
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 14/03/2017 
-Descricao / Objetivo: Ponto de entrada no final da compensacao do titulo a receber
+Descricao / Objetivo: Ponto de entrada no final da compensação do título a receber
 Doc. Origem.........: Financeiro - CRE34
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */          
@@ -33,7 +33,7 @@ User function MGFFIN50()
 Return                    
 
 
-/// Funcao que grava dados bancarios nas baixas manuais FIDIC
+/// Fução que grava dados bancários nas baixas manuais FIDIC
 User Function xMGFFIN50()
       
 Local cBanco //:= SuperGetMV("MGF_FIN43A",,"999/999/999/999")

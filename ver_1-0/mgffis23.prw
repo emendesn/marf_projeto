@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS23
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de Grupo
+Descrição / Objetivo.....: Cadastro de Grupo
 Doc. Origem..............: GAP
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -91,7 +91,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 User Function MGFBLQG()
 
@@ -102,13 +102,13 @@ User Function MGFBLQG()
 		ZDB->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 Static Function MGFLIBG()
 
@@ -120,13 +120,13 @@ Static Function MGFLIBG()
 		
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return
 
 
-/// valida exclusao
+/// valida exclusão
 Static Function MGFEXCL(oMdl)
 	
 	Local lRet := .T.
@@ -143,7 +143,7 @@ Static Function MGFEXCL(oMdl)
 		EndIf
 		
 		If !lRet
-			Help( ,, 'MGFFIS23',, 'Grupo nao pode ser excluido, pois esta vinculado a um SubGrupo', 1, 0 )
+			Help( ,, 'MGFFIS23',, 'Grupo não pode ser excluído, pois está vinculado a um SubGrupo', 1, 0 )
 		Else
 			dBselectArea("ZDD")
 			ZDD->(dbSetOrder(1))
@@ -152,7 +152,7 @@ Static Function MGFEXCL(oMdl)
 			EndIf
 			
 			If !lRet
-				Help( ,, 'MGFFIS23-01',, 'Grupo nao pode ser excluido, pois esta vinculado a uma Familia', 1, 0 )
+				Help( ,, 'MGFFIS23-01',, 'Grupo não pode ser excluído, pois está vinculado a uma Familia', 1, 0 )
 			EndIf
 		EndIf
 	EndIf

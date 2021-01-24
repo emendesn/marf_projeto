@@ -7,8 +7,8 @@ Data.....:              22/05/2017
 Descricao / Objetivo:   Baixa CNAB - Busca de Chave ID CNAB
 Doc. Origem:            Contrato - GAP CNAB Receber
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Titulos importados possuem chave com 24 posicoes (Logix)
+Uso......:              Marfrig
+Obs......:              Titulos importados possuem chave com 24 posições (Logix)
 =====================================================================================
 */
 
@@ -19,7 +19,7 @@ local aArea		:= getArea()
 local aAreaSE1	:= SE1->( getArea() )
 	
 /*
-CNAB - Verifica se possui E1_ZIDCNAB, 24 posicoes (titulo importado, chave/Id CNAB com origem no Logix)
+CNAB - Verifica se possui E1_ZIDCNAB, 24 posições (título importado, chave/Id CNAB com origem no Logix)
 */
 	
 

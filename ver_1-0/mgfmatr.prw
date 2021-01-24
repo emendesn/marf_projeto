@@ -10,12 +10,12 @@
 Programa............: MGFCOM93
 Autor...............: Tarcisio Galeano
 Data................: 07/2018
-Descricao / Objetivo: Impressao pedido de compras
+Descriï¿½ï¿½o / Objetivo: Impressao pedido de compras
 Doc. Origem.........: 
 Solicitante.........: Cliente
 Uso.................: Marfrig
 Obs.................: 
-history : Atualizacoes das Informacoes do Texto 21/05/2020    
+history : Atualizações das Informações do Texto 21/05/2020    
 =====================================================================================
 */     
 
@@ -72,7 +72,7 @@ User Function REL1PCV()
 	//Else
 		
 //SELECT DAS SCS
-//aqui pega todos os pedidos que nao foram enviados.
+//aqui pega todos os pedidos que nï¿½o foram enviados.
 
 //cAlias4	:= GetNextAlias()
 
@@ -184,7 +184,7 @@ User Function REL1PCV()
 			//
 			//Endif
 		Else
-		   msgalert("Nao permitido imprimir pedido bloqueado !!!!")
+		   msgalert("Não permitido imprimir pedido bloqueado !!!!")
 		Endif
 		Endif
 	//Endif
@@ -213,9 +213,9 @@ Static Function fParm01()
 	//_mvpar13 := Space( len( MV_PAR13 ) )
 	//_mvpar13 := SPACE(100) //MV_PAR13
 	
-	//aAdd(aParamBox, {2, "Receber uma Copia do E-mail"	, cCpyEml	, { OemToAnsi("2-Nao") , OemToAnsi("1-Sim")}, 100, "", .F.})
-	//aAdd(aParamBox, {2, "Visualizar o Pedido"			, cOpenPdf	, { OemToAnsi("2-Nao") , OemToAnsi("1-Sim")}, 100, "", .F.})
-	aAdd(aParamBox, {1, "Endereco de Entrega"			, cLocEnt , "@!S90" , , , , 200 , .F.} )
+	//aAdd(aParamBox, {2, "Receber uma Cï¿½pia do E-mail"	, cCpyEml	, { OemToAnsi("2-Nï¿½o") , OemToAnsi("1-Sim")}, 100, "", .F.})
+	//aAdd(aParamBox, {2, "Visualizar o Pedido"			, cOpenPdf	, { OemToAnsi("2-Nï¿½o") , OemToAnsi("1-Sim")}, 100, "", .F.})
+	aAdd(aParamBox, {1, "Endereço de Entrega"			, cLocEnt , "@!S90" , , , , 200 , .F.} )
 	
 	//If ParamBox(aPerg,"SPED - NFe",@aParam,,,,,,,cParNfeExp,.T.,.T.)
 	//Executa perguntas
@@ -223,7 +223,7 @@ Static Function fParm01()
 	If ParamBox(aParamBox, OemToAnsi('PARAMETROS'), @aRet, , ,.T. , 256 , 130 ,oDlgWizard ,carqgrv ,.T.,.T.)
 		varinfo('aRet',aRet)
 	Else
-		Conout( OemToAnsi('Impressao Canceladas.') )
+		Conout( OemToAnsi('Impressão Canceladas.') )
 	EndIf
 	
 	
@@ -358,9 +358,9 @@ Static Function EnviaPCV(aAnexos)
 		
 	EndIF
 	
-	//inicio impressao cabecalho
+	//inicio impressï¿½o cabeï¿½alho
 	Impcabec(oPrinter)
-	//fim cabecalho
+	//fim cabeï¿½alho
 	
 	//-- itens
 	SC7->(dbSetOrder(1))
@@ -400,10 +400,10 @@ Static Function EnviaPCV(aAnexos)
 		oPrinter:Say(nLin-10 , nC_0 	, "|"	 				, oFont11)
 		oPrinter:Say(nLin-10 , nC_1 	, "Item" 				, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_2 	, "Produto" 			, oFont11B 	,, CLR_BLUE)
-		oPrinter:Say(nLin-10 , nC_3 	, "Descricao" 			, oFont11B 	,, CLR_BLUE)
+		oPrinter:Say(nLin-10 , nC_3 	, "Descrição" 			, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_4 	, "UM" 					, oFont11B 	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_5 	, "Quantidade" 			, oFont11B	,, CLR_BLUE)
-		oPrinter:Say(nLin-10 , nC_6 	, "Vr. Unitario" 		, oFont11B	,, CLR_BLUE)
+		oPrinter:Say(nLin-10 , nC_6 	, "Vr. Unitário" 		, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_7 	, "Vr.Total" 			, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_8 	, "Dt.Entrega" 			, oFont11B	,, CLR_BLUE)
 		oPrinter:Say(nLin-10 , nC_9 	, "Moeda" 				, oFont11B	,, CLR_BLUE)
@@ -560,7 +560,7 @@ Static Function EnviaPCV(aAnexos)
 	//ASIGNA CONDICION PAGO
 	cCondPag		:= SE4->E4_CODIGO + " - " + RTRIM(SE4->E4_DESCRI)
 	
-	oPrinter:Say(nLin,0100,"Condicao de Pagamento: ",oFont10B)
+	oPrinter:Say(nLin,0100,"Condição de Pagamento: ",oFont10B)
 	oPrinter:Say(nLin,0550,cCondPag,oFont10)
 	
 	nLin += nEsp
@@ -607,7 +607,7 @@ Static Function EnviaPCV(aAnexos)
 	nLin += nEsp
 	oPrinter:Say(nLin,	nC_1	    ,'Solicitante           : ' +getSOLICV()   ,oFont11)
 	nLin += nEsp
-	oPrinter:Say(nLin,	nC_1	    ,'Comprador Responsavel : ' +getcompradV()   ,oFont11)
+	oPrinter:Say(nLin,	nC_1	    ,'Comprador Responsável : ' +getcompradV()   ,oFont11)
 	
 	//transportadora
 	frx := ""
@@ -698,30 +698,30 @@ ENDIF
 	
 //	oPrinter:Say(nLin,	nC_1		, 'NOTA: So aceitaremos a mercadoria se na sua Nota Fiscal constar o numero do nosso Pedido de Compras.',oFont11B)
 	
-			oPrinter:Say(nLin,	nC_1		, "O B S E R V A C O E S",oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "O B S E R V A Ç Õ E S",oFont11 )
 			nLin += nEsp   
-			oPrinter:Say(nLin,	nC_1		, "1. Qualquer hipotese de desconto  ou  recebimento  antecipado  dos valores advindos da presente  relacao ï¿½ vedada, sendo ", oFont10B ) 
+			oPrinter:Say(nLin,	nC_1		, "1. Qualquer hipótese de desconto  ou  recebimento  antecipado  dos valores advindos da presente  relação é vedada, sendo ", oFont10B ) 
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "   permitida apenas se autorizada pela contratante.", oFont10B )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp   
 
-			oPrinter:Say(nLin,	nC_1		, "2. Encaminhar a nota fiscal eletronica para o endereco de e-mail: recebe_nfe@marfrig.com.br. Essa conta de e-mail nao ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "2. Encaminhar a nota fiscal eletrônica para o endereço de e-mail: recebe_nfe@marfrig.com.br. Essa conta de e-mail não ", oFont11 )
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   recebera XML, PDF ou boleto das NFs de servico;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   receberá XML, PDF ou boleto das NFs de serviço;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "3. Comunicamos a todos os fornecedores  que  em  atendimento  ao  ajuste SINIEF 11/2008 que estabelece a obrigacao de ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "3. Comunicamos a todos os fornecedores  que  em  atendimento  ao  ajuste SINIEF 11/2008 que estabelece a obrigação de ", oFont11 )
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   disponibilizacao do arquivo XML referente emissao de nota fiscal eletronica a partir de 01/10/2013 as empresas  do ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "   disponibilização do arquivo XML referente emissão de nota fiscal eletrônica a partir de 01/10/2013 as empresas  do ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   Grupo Marfrig sï¿½ recebera mercadorias cujo o arquivo XML tenha previamente sido enviado para o  e-mail  a  seguir: ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "   Grupo Marfrig só receberá mercadorias cujo o arquivo XML tenha previamente sido enviado para o  e-mail  a  seguir: ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   recebe_nfe@marfrig.com.br, DANFE, cujo XML nao tenha sido  previamente  enviado  sera  recusado  juntamente com  a ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "   recebe_nfe@marfrig.com.br, DANFE, cujo XML não tenha sido  previamente  enviado  será  recusado  juntamente com  a ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   mercadoria  no momento  do  recebimento.  NF  de serviï¿½ï¿½s devem ser enviadas para e-mails dos Estados no qual sera ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "   mercadoria  no momento  do  recebimento.  NF  de serviçõs devem ser enviadas para e-mails dos Estados no qual será ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   efetuada a prestacao de servico, conforme abaixo:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   efetuada a prestação de serviço, conforme abaixo:", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
             IF SM0->M0_ESTENT="RS"
@@ -761,7 +761,7 @@ ENDIF
 			nLin += nEsp                                                                                                                                             
             ENDIF
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "Empresas que nao se enquadram nesta obrigacao favor desconsiderar esta mensagem.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Empresas que não se enquadram nesta obrigação favor desconsiderar esta mensagem.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
 
@@ -773,81 +773,81 @@ ENDIF
 		//endif	
 
 
-			oPrinter:Say(nLin,	nC_1		, "4. O arquivo XML devera conter obrigatoriamente as informacoes abaixo:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "4. O arquivo XML deverá conter obrigatoriamente as informações abaixo:", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   Numero do Pedido de Compra", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   Número do Pedido de Compra", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   Codigo do Item - Marfrig", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   Código do Item - Marfrig", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "5. A data de vencimento para pagamento, assim como todas as retencoes de impostos devem estar destacados no corpo da NF;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "5. A data de vencimento para pagamento, assim como todas as retenções de impostos devem estar destacados no corpo da NF;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "6. Os pagamentos serao efetuados somente para contas bancarias cadastradas no mesmo CNPJ contida na NF;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "6. Os pagamentos serão efetuados somente para contas bancárias cadastradas no mesmo CNPJ contida na NF;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "7. Para que nao haja divergencia entre NF e Pedido, observe todos os itens do pedido de compras e em caso de  duvidas", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "7. Para que não haja divergência entre NF e Pedido, observe todos os itens do pedido de compras e em caso de  dúvidas", oFont11 )
 			nLin += nEsp                                                                                                                                             
 		    oPrinter:Say(nLin,	nC_1		, "	  entre em contato com o comprador;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "8. ï¿½ obrigatorio o uso da transportadora indicada no pedido de compra com o Frete FOB. Caso  nao ocorra, o  valor  do ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "8. È obrigatório o uso da transportadora indicada no pedido de compra com o Frete FOB. Caso  não ocorra, o  valor  do ", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "	  frete sera revertido para o fornecedor;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "9. O nao cumprimento destas regras acarretarï¿½ em bloqueio do pagamento da nota fiscal. Duvidas  entrar em contato com", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "9. O não cumprimento destas regras acarretará em bloqueio do pagamento da nota fiscal. Dúvidas  entrar em contato com", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "	  o comprador;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "10. Para agendamento de entregas no CD Itupeva, entrar em contato atraves do telefone (11) 4591-6005  ou  por  e-mail: ", oFont10B ) 
+			oPrinter:Say(nLin,	nC_1		, "10. Para agendamento de entregas no CD Itupeva, entrar em contato através do telefone (11) 4591-6005  ou  por  e-mail: ", oFont10B ) 
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "   agendamento.almoxarifado@marfrig.com.br;", oFont10B )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "11. Recebimento de insumos (embalagens, quimicos e ingredientes) ï¿½ proibido o recebimentos desses materiais sem a  ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "11. Recebimento de insumos (embalagens, quimicos e ingredientes) é proibido o recebimentos desses materiais sem a  ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "   apresentacao do laudo de qualidade referente ao lote de descarga;", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "   apresentação do laudo de qualidade referente ao lote de descarga;", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
 			
-			oPrinter:Say(nLin,	nC_1		, "12. Horario de Recebimento: das 08:00 as 15:00 horas.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "12. Horário de Recebimento: das 08:00 as 15:00 horas.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "Regras especificas para contratacao de serviï¿½ï¿½s externos abaixo de 200 mil reais:", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "Regras especificas para contratação de serviçõs externos abaixo de 200 mil reais:", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "A subcontratacao do servico ora contratado ï¿½ vedada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A subcontratação do serviço ora contratado é vedada, sendo permitida apenas se autorizada pela contratante.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "Caso a contratada nao entregue os servicos no prazo sob as  condicoes  estipuladas  incidirao multa  diaria  de 1%  do ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "Caso a contratada não entregue os serviços no prazo sob as  condições  estipuladas  incidirão multa  diária  de 1%  do ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "valor contratado, por dia de atraso, limitada a 10%.", oFont11 )
 			nLin += nEsp                                                                                                                                              
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "Caso nao haja disposicao expressa da contatada que indique prazo maior  de  garantia  contratual,  prevalecerï¿½  prazo ", oFont11 ) 
+			oPrinter:Say(nLin,	nC_1		, "Caso não haja disposição expressa da contatada que indique prazo maior  de  garantia  contratual,  prevalecerá  prazo ", oFont11 ) 
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "manimo de garantia contratual de 90 dias.", oFont11 )
-			nLin += nEsp                                                                                                                                             
-			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "A cessao do presente termo ï¿½ vedada a contratada, sendo permitida apenas se autorizada pela contratante.", oFont10B )
+			oPrinter:Say(nLin,	nC_1		, "mínimo de garantia contratual de 90 dias.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "A contratada se compromete a manter sigilo sobre todas as informacoes tecnicas, industriais  e comerciais a  que teve ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A cessão do presente termo é vedada a contratada, sendo permitida apenas se autorizada pela contratante.", oFont10B )
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "acesso, pelo perï¿½ï¿½odo de 5 anos.", oFont11 )
+			nLin += nEsp                                                                                                                                             
+			oPrinter:Say(nLin,	nC_1		, "A contratada se compromete a manter sigilo sobre todas as informações técnicas, industriais  e comerciais a  que teve ", oFont11 )
+			nLin += nEsp                                                                                                                                             
+			oPrinter:Say(nLin,	nC_1		, "acesso, pelo perí­odo de 5 anos.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
 			                                                                                                                                       
-			oPrinter:Say(nLin,	nC_1		, "A contratada compromete-se a nao incorrer em qualquer das condutas do artigo 5 da lei anticorrupcao, e que ressarcira ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A contratada compromete-se a não incorrer em qualquer das condutas do artigo 5 da lei anticorrupção, e que ressarcirá ", oFont11 )
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "a contratante de quaisquer prejuizos a que der causa.", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "a contratante de quaisquer prejuízos a que der causa.", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			nLin += nEsp                                                                                                                                             
-			oPrinter:Say(nLin,	nC_1		, "A contratada  declara  se  ciente do  Codigo  de  conduta  e  etica da  Marfrig  e  de  sua  politica  anticorrupcao, ", oFont11 )
+			oPrinter:Say(nLin,	nC_1		, "A contratada  declara  se  ciente do  código  de  conduta  e  ética da  Marfrig  e  de  sua  politica  anticorrupção, ", oFont11 )
 			nLin += nEsp                                                                                                                                             
 			oPrinter:Say(nLin,	nC_1		, "disponibilizados no site: http://compliance.marfrig.com.br", oFont11 )
 			nLin += nEsp                                                                                                                                             
@@ -1006,7 +1006,7 @@ Static Function EnvMail( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,cSe
 	
 	If Empty( cServer ) .AND. Empty( cEmail ) .AND. Empty( cPass )
 		lRet := .F.
-		cMsg := 'Nao foram definidos um ou mais parametros de configuraï¿½ï¿½o para envio de e-mail pelo Protheus.'
+		cMsg := 'Não foram definidos um ou mais parâmetros de configuração para envio de e-mail pelo Protheus.'
 		
 		ConOut( cMsg )
 		
@@ -1030,7 +1030,7 @@ Static Function EnvMail( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,cSe
 	If lAuth
 		If Empty( cContAuth ) .OR. Empty( cPswAuth )
 			lRet := .F.
-			cMsg := 'Nao foram definidos conta ou senha de autenticaï¿½ï¿½o para envio de e-mail pelo Protheus.'
+			cMsg := 'Nï¿½o foram definidos conta ou senha de autenticaï¿½ï¿½o para envio de e-mail pelo Protheus.'
 			
 			ConOut( cMsg )
 			
@@ -1049,7 +1049,7 @@ Static Function EnvMail( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,cSe
 		lRet := .F.
 		
 		GET MAIL ERROR cError
-		cMsg := 'Falha na conexao para envio de e-mail ( ' + cError + ' ) '
+		cMsg := 'Falha na conexão para envio de e-mail ( ' + cError + ' ) '
 		ConOut( cMsg )
 		
 		If !IsBlind()
@@ -1074,7 +1074,7 @@ Static Function EnvMail( cDe, cPara, cCc, cAssunto, aAnexos , cMsg ,cCtaEml ,cSe
 				
 				If !( lRet  := MailAuth( cContAuth, cPswAuth ) )
 					lRet := .F.
-					cMsg := 'Nao conseguiu autenticar conta de e-mail ( ' + cContAuth + ' ) '
+					cMsg := 'Não conseguiu autenticar conta de e-mail ( ' + cContAuth + ' ) '
 					
 					ConOut( cMsg )
 					
@@ -1211,7 +1211,7 @@ Return .T.
 ï¿½ï¿½ï¿½Funcao    ï¿½R110Logo  ï¿½ Autor ï¿½ Materiais             ï¿½ Data ï¿½07/01/2015ï¿½ï¿½ï¿½
 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
 ï¿½ï¿½ï¿½Descricao ï¿½ Retorna string com o nome do arquivo bitmap de logotipo    ï¿½ï¿½ï¿½
-ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
+ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´ï¿½ï¿½
 ï¿½ï¿½ï¿½ Uso      ï¿½ MATR110                                                    ï¿½ï¿½ï¿½
 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù±ï¿½
 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
@@ -1268,9 +1268,9 @@ static function impcabec(oprinter)
 	//oPrinter:Say(nLin+40,0100,Alltrim(SM0->M0_NOMECOM)+"                        PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
 	
     IF SUBST(SC7->C7_OBS,1,2) = "SC"
-		oPrinter:Say(nLin+40,0100,"                                      AUTORIZACï¿½o DE ENTREGA Nï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+		oPrinter:Say(nLin+40,0100,"                                      AUTORIZACão DE ENTREGA Nº "+cCdPedido,oFont17B,,CLR_HRED)
 	else
-		oPrinter:Say(nLin+40,0100,"                                            PEDIDO DE COMPRA Nï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
+		oPrinter:Say(nLin+40,0100,"                                            PEDIDO DE COMPRA Nº "+cCdPedido,oFont17B,,CLR_HRED)
     endif
 	//oPrinter:Say(nLin+100,0850,"PEDIDO DE COMPRA N.ï¿½ "+cCdPedido,oFont17B,,CLR_HRED)
 	
@@ -1282,7 +1282,7 @@ static function impcabec(oprinter)
 	
 	//nLin += (nEsp*2)-30
 	
-	//oPrinter:Say(nLin,0100,"Data Emissao:",oFont10B)
+	//oPrinter:Say(nLin,0100,"Data Emissï¿½o:",oFont10B)
 	//oPrinter:Say(nLin,0350,DTOC(SC7->C7_EMISSAO),oFont10)
 	
 	//SM0->(dbSetOrder(1))
@@ -1313,7 +1313,7 @@ static function impcabec(oprinter)
 	oPrinter:Say(nLin+40,0050,+space(140)+"|" ,oFont10B)
 	nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)
-	oPrinter:Say(nLin+40,0100,"Endereco :" + SUBSTR(SM0->M0_ENDENT,1,60)+" | Endereco     : "+SUBSTR(Alltrim(SA2->A2_END),1,60),oFont10B)
+	oPrinter:Say(nLin+40,0100,"Endereço :" + SUBSTR(SM0->M0_ENDENT,1,60)+" | Endereço     : "+SUBSTR(Alltrim(SA2->A2_END),1,60),oFont10B)
 	oPrinter:Say(nLin+40,0050,+space(140)+"|" ,oFont10B)
 	nLin += nEsp
 	oPrinter:Say(nLin+40,0035,"|" ,oFont10B)

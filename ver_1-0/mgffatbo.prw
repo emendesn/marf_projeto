@@ -6,40 +6,54 @@
 
 static _aErr
 
-//---------------------------------------------------------
-user function JOBFATBO( cFilJob )
-
-	U_MGFFATBO( { left( cFilJob , 2 ) , cFilJob } )
-
-return
-
-//---------------------------------------------------------
-user function MNUFATBO()
-
-	runFatBO()
-
-return
-
 /*/
 ==============================================================================================================================================================================
 Descrição   : Job de retorno de pedidos
 @author     : Totvs
 @since      : 11/03/2020
 /*/
-user function MGFFATBO( aEmpX )
-	conout("[MGFFATBO] Iniciando retorno de pedidos para o SFA - " + dToC(date()) + " - " + time())
+user function MGFFATBO( )
 
-	RPCSetType(3)
+	//PREPARE ENVIRONMENT EMPRESA "01" FILIAL "010041"
 
-	PREPARE ENVIRONMENT EMPRESA aEmpX[ 1 ] FILIAL aEmpX[ 2 ]
+	U_MFCONOUT("Iniciou envio de callbacks Salesforce!")
 
-	runFatBO()
+	_cdefault := "010047,010048,010049,010050,010051,010053,010054,010055,010056,010057,010058,010041,010002"
+	_cdefault += ",010003,010004,010005,010006,010007,010008,010009,010010,010012,010013,010015,010016,010022,"
+	_cdefault += "010024,010025,010027,010029,010033,010038,010042,010044,010045,010059,010063,010064,010066,"
+	_cdefault += "010067,010068,010039,010043,010046,010060,010061,010062,010065,010069,010070,020001,020003,020004"
 
-	conout("[MGFFATBO] Completado retorno de pedidos para o SFA - " + dToC(date()) + " - " + time())
+	_cfiliais := getmv("MGFFATBOF",,_cdefault)
 
-	RESET ENVIRONMENT
+	_afiliais := strtokarr2(_cfiliais,",")
+
+	For _nnp := 1 to len(_afiliais)
+
+		U_MFCONOUT("Iniciando callback de pedidos Salesforce para filial - " + _afiliais[_nnp] + "...")
+
+		cfilant := _afiliais[_nnp]
+		cempant := substr(_afiliais[_nnp],1,2)
+
+		MGFFATBOE()
+
+		U_MFCONOUT("Completado callback de pedidos Salesforce para filial - " + _afiliais[_nnp] + "...")
+
+	Next
+
+	U_MFCONOUT("Completou envio de callbacks Salesforce!")
+
+
+
+Return
+
+
+//---------------------------------------------------------
+user function MNUFATBO()
+
+	MGFFATBOE()
 
 return
+
 
 /*/
 ==============================================================================================================================================================================
@@ -48,7 +62,7 @@ Descrição   : Execução retorno de pedidos para o SFA
 @author     : Totvs
 @since      : 02/10/2019
 /*/
-static function runFatBO()
+static function MGFFATBOE()
 	local cIdInteg		:= ""
 	local cIDMgf		:= allTrim( superGetMv( "MGFIDINTEG"	, , "9265ccc0-420b-11ea-bd9b-d80f99a790cc" ) )
 	local cURLInteg		:= allTrim( superGetMv( "MGFFATBOA"		, , "http://spdwvapl203:1650/processo-pedido-venda/api/v2/empresas/{id}/pedidos-vendas" ) )
@@ -72,7 +86,6 @@ static function runFatBO()
 	local lBlockIten	:= .F.
 	local lFaturado		:= .F.
 	local lRoteiriza	:= .F.
-	local bError 		:= ErrorBlock( { |oError| erRunFatBO( oError ) } )
 	local cCallback		:= ""
 	local cOrigemPV		:= ""
 
@@ -104,13 +117,15 @@ static function runFatBO()
 
 	BEGIN SEQUENCE
 
-		conout("[MGFFATBO] Carregando pedidos pendentes de retorno - " + dToC(dDataBase) + " - " + time())
+		U_MFCONOUT("Carregando pedidos pendentes de retorno...")
 
 		getSalesOr()
 
 		if (cQrySalesO)->(EOF())
-
-			conout("[MGFFATBO] Não localizou pedidos pendentes de retorno - " + dtoc(dDataBase) + " - " + time())
+			if lTms	
+				MSGINFO("[MGFFATBO_TMS] Não localizou pedidos para serem enviados ao TMS ","Atenção !!!")
+			endif
+			U_MFCONOUT(" Não localizou pedidos pendentes de retorno" )
 			return
 
 		else
@@ -151,13 +166,12 @@ static function runFatBO()
 			cStaLog		:= ""
 			cErroLog	:= ""
 
-			lRoteiriza	:= .F.
-
 			while	!(cQrySalesO)->(EOF())					.and.;	// ATE O FINAL DA QUERY
 					nCountItem	<= nMaxItens				.and.;	// LIMITE DE ITENS POR INTEGRACAO
 					cOrigemPV	== (cQrySalesO)->C5_XORIGEM	.and.;	// AGRUPA POR ORIGEM
 					cCallback	== (cQrySalesO)->C5_XCALLBA			// AGRUPA POR CALLBACK
 
+				lRoteiriza	:= .F.
 				lBlock		:= .F.
 				lBlockIten	:= .F.
 
@@ -166,17 +180,25 @@ static function runFatBO()
 				endif
 
 				nCountItem++
-				conout("[MGFFATBO] Processando retorno de pedido " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + " - " + (cQrySalesO)->C5_FILIAL + "|" + (cQrySalesO)->C5_NUM + " - " + dToC(dDataBase) + " - " + time())
+				U_MFCONOUT("Processando retorno de pedido " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + " - " + (cQrySalesO)->C5_FILIAL + "|" + (cQrySalesO)->C5_NUM + "...")
 
 				cC5Fil	:= (cQrySalesO)->C5_FILIAL
 				cC5Num	:= (cQrySalesO)->C5_NUM
 				cfilant := alltrim( (cQrySalesO)->C5_FILIAL )
 
 				IF lTms
-					cEndNomePais := POSICIONE("SYA",1,XFILIAL("SYA")+ (cQrySalesO)->A1_PAIS,"YA_DESCR" )
+					If SC5->C5_TIPO $ ("D/B")	
+						cEndNomePais := POSICIONE("SYA",1,XFILIAL("SYA")+ (cQrySalesO)->A2_PAIS,"YA_DESCR" )
+					else
+						cEndNomePais := POSICIONE("SYA",1,XFILIAL("SYA")+ (cQrySalesO)->A1_PAIS,"YA_DESCR" )
+					endif
 				endif
 				If lTms
-					cEndIbge	 := IIf( (cQrySalesO)->A1_TIPO=="X","9999999",(cQrySalesO)->A1_COD_MUN)
+					If SC5->C5_TIPO $ ("D/B")	
+						cEndIbge	 := IIf( (cQrySalesO)->A2_TIPO=="X","9999999",(cQrySalesO)->A2_COD_MUN)
+					ELSE
+						cEndIbge	 := IIf( (cQrySalesO)->A1_TIPO=="X","9999999",(cQrySalesO)->A1_COD_MUN)
+					ENDIF
 				EndIf
 
 				oPedido := nil
@@ -205,7 +227,7 @@ static function runFatBO()
 				oPedido["idEndereco"]			:= allTrim( (cQrySalesO)->C5_ZIDEND )
 				oPedido["condicaoPagamento"]	:= allTrim( (cQrySalesO)->C5_CONDPAG )
 				oPedido["idTabelaPreco"]		:= allTrim( (cQrySalesO)->C5_TABELA )
-				oPedido["comercial"]			:= chkType( (cQrySalesO)->C5_TABELA )
+				oPedido["comercial"]			:= chkType( (cQrySalesO)->C5_TABELA, (cQrySalesO)->C5_ZTIPPED )
 
 				oPedido["observacao"]			:= allTrim( (cQrySalesO)->C5_XOBSPED )
 				oPedido["observacaoNF"]			:= allTrim( (cQrySalesO)->C5_MENNOTA )
@@ -242,17 +264,32 @@ static function runFatBO()
 					oPedido["tipoPagamento"]	:= (cQrySalesO)->C5_TPFRETE //_cTipoFrete
 					oPedido["tipoTomador"]		:= (cQrySalesO)->C5_TPFRETE //_cTipoTomador
 					oPedido["valordescarga"]	:= (cQrySalesO)->C5_XVLDESC
-					oPedido["dataCarregamento"]	:= DTOC(STOD((cQrySalesO)->C5_ZDTEMBA ))+" "+"00:00:00"
 				endif
-				oPedido["dataPrevisaoEntrega"]	:= DTOC(STOD((cQrySalesO)->C5_FECENT ))+" "+"00:00:00"
+
+				oPedido["dataCarregamento"]		:= left( fwTimeStamp( 3 , sToD( (cQrySalesO)->C5_ZDTEMBA ) ) , 10 )
+				oPedido["dataPrevisaoEntrega"]	:= left( fwTimeStamp( 3 , sToD( (cQrySalesO)->C5_FECENT ) ) , 10 )
+
 				oPedido["UID"]					:= fwuuidv4( .T. )
 				oPedido["RECNO"]				:= (cQrySalesO)->XC5RECNO
 
 				oCliente 						:= nil
 				oCliente 						:= jsonObject():new()
-				oCliente["id"]					:= allTrim( (cQrySalesO)->A1_COD )
-				oCliente["loja"]				:= allTrim( (cQrySalesO)->A1_LOJA )
-				oCliente["cnpj"]				:= allTrim( (cQrySalesO)->A1_CGC )
+
+				If lTms
+					If SC5->C5_TIPO $ ("D/B")	
+						oCliente["id"]					:= allTrim( (cQrySalesO)->A2_COD )
+						oCliente["loja"]				:= allTrim( (cQrySalesO)->A2_LOJA )
+						oCliente["cnpj"]				:= allTrim( (cQrySalesO)->A2_CGC )
+					ELSE
+						oCliente["id"]					:= allTrim( (cQrySalesO)->A1_COD )
+						oCliente["loja"]				:= allTrim( (cQrySalesO)->A1_LOJA )
+						oCliente["cnpj"]				:= allTrim( (cQrySalesO)->A1_CGC )
+					endif
+				ELSE
+					oCliente["id"]					:= allTrim( (cQrySalesO)->A1_COD )
+					oCliente["loja"]				:= allTrim( (cQrySalesO)->A1_LOJA )
+					oCliente["cnpj"]				:= allTrim( (cQrySalesO)->A1_CGC )
+				ENDIF
 
 				oPedido["cliente"]				:= oCliente
 
@@ -316,10 +353,17 @@ static function runFatBO()
 
 //-------------------------- Dados do Cliente ----------------------------------------------------------------------------------
 				If lTms
-					oCliente["nomeFantasia"]	:= allTrim( (cQrySalesO)->A1_NREDUZ )
-					oCliente["rgIe"]			:= allTrim( (cQrySalesO)->A1_INSCR)
-					oCliente["razaoSocial"]		:= allTrim( (cQrySalesO)->A1_NOME)
-					oCliente["tipoPessoa"]		:= iif( (cQrySalesO)->A1_PESSOA=="J","Juridica","")
+					If SC5->C5_TIPO $ ("D/B")	
+						oCliente["nomeFantasia"]	:= allTrim( (cQrySalesO)->A2_NREDUZ )
+						oCliente["rgIe"]			:= allTrim( (cQrySalesO)->A2_INSCR)
+						oCliente["razaoSocial"]		:= allTrim( (cQrySalesO)->A2_NOME)
+						oCliente["tipoPessoa"]		:= iif( (cQrySalesO)->A2_TIPO=="J","Juridica","")
+					ELSE
+						oCliente["nomeFantasia"]	:= allTrim( (cQrySalesO)->A1_NREDUZ )
+						oCliente["rgIe"]			:= allTrim( (cQrySalesO)->A1_INSCR)
+						oCliente["razaoSocial"]		:= allTrim( (cQrySalesO)->A1_NOME)
+						oCliente["tipoPessoa"]		:= iif( (cQrySalesO)->A1_PESSOA=="J","Juridica","")
+					ENDIF
 				EndIf
 				oPedido["cliente"]				:= oCliente
 
@@ -328,16 +372,29 @@ static function runFatBO()
 				oEndereco						:= jsonObject():new()
 				If lTms
 					fIbge()
-					oEndereco["bairro"]				:= allTrim( (cQrySalesO)->A1_BAIRRO )
-					oEndereco["cep"]				:= allTrim( (cQrySalesO)->A1_CEP )
-					oEndereco["complemento"]		:= allTrim( (cQrySalesO)->A1_COMPLEM )
-					oEndereco["logradouro"]			:= allTrim( (cQrySalesO)->A1_END )
-					oEndereco["ddd"]				:= VAL( (cQrySalesO)->A1_DDD )
-					oEndereco["telefone"]			:= iif(Empty( (cQrySalesO)->A1_TEL),"99999999", (cQrySalesO)->A1_TEL )
-					oEndereco["cidade"]				:= iif( (cQrySalesO)->A1_TIPO=="X","EXPORTACAO", (cQrySalesO)->A1_MUN)
-					oEndereco["ibge"]				:= val(alltrim(fcodIbge)+cEndIbge)
-					oEndereco["nomePais"]			:= cEndNomePais
-					oEndereco["idPais"]				:= (cQrySalesO)->A1_CODPAIS
+					If SC5->C5_TIPO $ ("D/B")	
+						oEndereco["bairro"]				:= allTrim( (cQrySalesO)->A2_BAIRRO )
+						oEndereco["cep"]				:= allTrim( (cQrySalesO)->A2_CEP )
+						oEndereco["complemento"]		:= allTrim( (cQrySalesO)->A2_COMPLEM )
+						oEndereco["logradouro"]			:= allTrim( (cQrySalesO)->A2_END )
+						oEndereco["ddd"]				:= VAL( (cQrySalesO)->A2_DDD )
+						oEndereco["telefone"]			:= iif(Empty( (cQrySalesO)->A2_TEL),"99999999", (cQrySalesO)->A2_TEL )
+						oEndereco["cidade"]				:= iif( (cQrySalesO)->A2_TIPO=="X","EXPORTACAO", (cQrySalesO)->A2_MUN)
+						oEndereco["ibge"]				:= val(alltrim(fcodIbge)+cEndIbge)
+						oEndereco["nomePais"]			:= cEndNomePais
+						oEndereco["idPais"]				:= (cQrySalesO)->A2_CODPAIS
+					ELSE
+						oEndereco["bairro"]				:= allTrim( (cQrySalesO)->A1_BAIRRO )
+						oEndereco["cep"]				:= allTrim( (cQrySalesO)->A1_CEP )
+						oEndereco["complemento"]		:= allTrim( (cQrySalesO)->A1_COMPLEM )
+						oEndereco["logradouro"]			:= allTrim( (cQrySalesO)->A1_END )
+						oEndereco["ddd"]				:= VAL( (cQrySalesO)->A1_DDD )
+						oEndereco["telefone"]			:= iif(Empty( (cQrySalesO)->A1_TEL),"99999999", (cQrySalesO)->A1_TEL )
+						oEndereco["cidade"]				:= iif( (cQrySalesO)->A1_TIPO=="X","EXPORTACAO", (cQrySalesO)->A1_MUN)
+						oEndereco["ibge"]				:= val(alltrim(fcodIbge)+cEndIbge)
+						oEndereco["nomePais"]			:= cEndNomePais
+						oEndereco["idPais"]				:= (cQrySalesO)->A1_CODPAIS
+					ENDIF
 				Endif
 				oCliente["endereco"]			:= oEndereco
 //-------------------------- Dados do Endereço de Entrega do Cliente -------------------------------------------------------------
@@ -349,7 +406,11 @@ static function runFatBO()
 					oEntrega["complemento"]			:= allTrim( (cQrySalesO)->COMPLEMEN )
 					oEntrega["ddd"]					:= VAL( (cQrySalesO)->DDDZ9 )
 					oEntrega["telefone"]			:= alltrim((cQrySalesO)->TELEFONE)
-					_cIbgeEntrega 					:= IIF((cQrySalesO)->A1_TIPO="X","999999",allTrim( (cQrySalesO)->CODMUNIC ))
+					If SC5->C5_TIPO $ ("D/B")	
+						_cIbgeEntrega 					:= IIF((cQrySalesO)->A2_TIPO="X","999999",allTrim( (cQrySalesO)->CODMUNIC ))
+					ELSE
+						_cIbgeEntrega 					:= IIF((cQrySalesO)->A1_TIPO="X","999999",allTrim( (cQrySalesO)->CODMUNIC ))
+					ENDIF
 					fIbge()
 					oEntrega["ibge"]				:= Val(alltrim(fCodIbge)+_cIbgeEntrega)
 				EndIf
@@ -358,7 +419,11 @@ static function runFatBO()
 				oEntrega["cidade"]				:= allTrim( (cQrySalesO)->MUNICIPIO )
 				if lTms
 					oEntrega["nomePais"]			:= cEndNomePais
-					oEntrega["idPais"]				:= (cQrySalesO)->A1_CODPAIS
+					If SC5->C5_TIPO $ ("D/B")	
+						oEntrega["idPais"]				:= (cQrySalesO)->A2_CODPAIS
+					ELSE
+						oEntrega["idPais"]				:= (cQrySalesO)->A1_CODPAIS
+					ENDIF
 				ENDIF
 				oCliente["entrega"]				:= oEntrega
 
@@ -463,8 +528,6 @@ static function runFatBO()
 						if (cQrySalesO)->PEDIDO == "S" // SOMENTE VERIFICA BLOQUEIOS SE GERAR PEDIDO
 							u_getSZVx( .T. , (cQrySalesO)->C5_FILIAL , (cQrySalesO)->C5_NUM , (cQrySalesO)->C6_ITEM )
 
-							conout("[MGFFATBO] Validando bloqueios de pedido " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + " - " + (cQrySalesO)->C5_FILIAL + "|" + (cQrySalesO)->C5_NUM + " - " + dToC(dDataBase) + " - " + time() )
-
 							while !(cQrySZVRet)->( EOF() )
 								lBlock					:= .T. // Flag de Bloqueio do PEDIDO
 								lBlockIten				:= .T. // Flag de Bloqueio do ITEM
@@ -550,8 +613,6 @@ static function runFatBO()
 				oEndereco["idPais"]				:=  "01058" //POSICIONE("SYA",1,XFILIAL("SYA")+ "105","YA_SISEXP" )
 				oRemetente["endereco"]			:= oEndereco
 
-				conout("[MGFFATBO] Enviando retorno de pedido " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + " - " + (cQrySalesO)->C5_FILIAL + "|" + (cQrySalesO)->C5_NUM + " - " + dToC(dDataBase) + " - " + time())
-
 				if cOrigemPV == "005" .and. cCallback == "S"
 					cHTTPMetho	:= "POST"
 				else
@@ -615,7 +676,10 @@ static function runFatBO()
 				conout(" [SALESFORCE] [MGFFATBO] * * * * * * * * * * * * * * * * * * * * "									)
 			EndIf
 
+			BEGIN TRANSACTION
+
 			if nStatuHttp >= 200 .and. nStatuHttp <= 299
+
 
 				//****************************************
 				// Atualiza SC5 - Pedidos gerados
@@ -647,7 +711,7 @@ static function runFatBO()
 					cUpdTbl += " 	AND	C5_FILIAL	=	'" + xFilial( "SC5" ) + "'"		+ CRLF
 
 					if tcSQLExec( cUpdTbl ) < 0
-						conout( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
+						U_MFCONOUT( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
 					endif
 
 				endif
@@ -665,7 +729,7 @@ static function runFatBO()
 					cUpdTbl += " 	AND	ZC5_FILIAL	=	'" + xFilial( "ZC5" ) + "'"		+ CRLF
 
 					if tcSQLExec( cUpdTbl ) < 0
-						conout( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
+						U_MFCONOUT( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
 					endif
 				endif
 
@@ -687,14 +751,13 @@ static function runFatBO()
 					cUpdTbl	:= ""
 					cUpdTbl := "UPDATE " + retSQLName("SC5")							+ CRLF
 					cUpdTbl += "	SET"												+ CRLF
-					//cUpdTbl += "    C5_ZTMSREE = 'N',"								+ CRLF
 					cupdTbl += "    C5_ZTMSERR = '"+SUBSTR(cErroLog,1,cTamErro)+"'"		+ CRLF
 					cUpdTbl += " WHERE"													+ CRLF
 					cUpdTbl += " 	R_E_C_N_O_ IN (" + cSC5Recnos + ")"					+ CRLF
 					cUpdTbl += " 	AND	D_E_L_E_T_	<>	'*'"							+ CRLF
 					cUpdTbl += " 	AND	C5_FILIAL	=	'" + xFilial( "SC5" ) + "'"		+ CRLF
 					if tcSQLExec( cUpdTbl ) < 0
-						conout( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
+						U_MFCONOUT( "Não foi possível executar UPDATE." + CRLF + tcSqlError() )
 					endif
 				EndIf
 			endif
@@ -705,7 +768,10 @@ static function runFatBO()
 				cHeadHttp += aHeadStr[ nI ]
 			next
 
+			ZHW->(Dbsetorder(1))
+
 			for nI := 1 to len( aSalesOrde )
+			
 				//GRAVAR LOG
 				U_MGFMONITOR(																													 ;
 				cFilAnt																			/* Filial */									,;
@@ -713,7 +779,7 @@ static function runFatBO()
 				cCodInteg																		/* Integração */								,;
 				cCodTpInt																		/* Tipo de integração */						,;
 				iif( empty( cErroLog ) , "Processamento realizado com sucesso!" , cErroLog )	/*cErro*/										,;
-				" "																				/*cDocori*/										,;
+				aSalesOrde[ nI ]["numeroPedidoERP"] 											/*cDocori*/										,;
 				cTimeProc																		/* Tempo de processamento */					,;
 				aSalesOrde[ nI ]:toJson()														/* JSON */										,;
 				aSalesOrde[ nI ]["RECNO"]														/* RECNO do registro */							,;
@@ -723,7 +789,7 @@ static function runFatBO()
 				aSalesOrde[ nI ]["UID"]															/* UUID */	     								,;
 				iif( type( cHttpRet ) <> "U", cHttpRet, " ")									/* JSON de RETORNO */							,;
 				"A"																				/*cTipWsInt*/									,;
-				" "																				/*cJsonCB Z1_JSONCB*/							,;
+				fwJsonSerialize( aSalesOrde , .T. , .T. )										/*cJsonCB Z1_JSONCB*/							,;
 				" "																				/*cJsonRB Z1_JSONRB*/							,;
 				sTod("    /  /  ")																/*dDTCallb Z1_DTCALLB*/							,;
 				" "																				/*cHoraCall Z1_HRCALLB*/						,;
@@ -732,16 +798,54 @@ static function runFatBO()
 				" "																				/*cLinkRec Z1_LINKREC*/							,;
 				cIdInteg																		/*cHeaderID		Z1_HEADEID*/					,;
 				cHeadHttp																		/*cHeadeHttp	Z1_HEADER*/						)
+			
+				//Atualiza ZHW				
+
+				If !empty(alltrim(aSalesOrde[ nI ]["numeroPedidoERP"])) .and.;
+							ZHW->(Dbseek(cfilant+alltrim(aSalesOrde[ nI ]["numeroPedidoERP"]))) 
+
+					_cjsones := aSalesOrde[ nI ]:toJson()
+					_cjsonts := fwJsonSerialize( aSalesOrde , .T. , .T. )
+
+
+					ZHW->(Dbsetorder(1))
+
+					If ZHW->(Dbseek(cFilAnt+alltrim(aSalesOrde[ nI ]["numeroPedidoERP"] ))) 
+
+						If ZHW->(MsRLock(ZHW->(RECNO())))
+						
+							Reclock("ZHW",.F.)
+							ZHW->ZHW_JSONES := _cjsones
+							ZHW->ZHW_JSONTS := _cjsonts
+							ZHW->ZHW_JSONRS := iif( type( cHttpRet ) <> "U", cHttpRet, " ")
+	
+							//Controle para envio duplo
+							If ZHW->ZHW_STATUS == 1
+								ZHW->ZHW_STATUS := nStatuHttp
+							Else
+								ZHW->ZHW_STATUS := 1
+							Endif
+	
+							ZHW->ZHW_DATAES := Date()
+							ZHW->ZHW_HORAES := time()
+							ZHW->(Msunlock())
+
+						Endif
+
+					Endif
+
+				Endif		
+			
 			next
 
-			conout("[MGFFATBO] Enviou retorno de pedido " + strzero(_nni,6) + " de " +  strzero(_ntot,6) + " - " + (cQrySalesO)->C5_FILIAL + "|" + (cQrySalesO)->C5_NUM + " - " + dToC(dDataBase) + " - " + time())
+			END TRANSACTION
+
+			U_MFCONOUT("[MGFFATBO] Enviou retorno de " + strzero(len( aSalesOrde ),6) + " pedidos!")
 		enddo
 
 		(cQrySalesO)->(DBCloseArea())
 
 		delClassINTF()
-	RECOVER
-		conout('[MGFFATBO] Problema Ocorreu em : ' + dToC( dDataBase ) + " - " + time() )
 	END SEQUENCE
 
 return
@@ -762,26 +866,72 @@ static function getSalesOr()
 	cQrySC5 += " 	C5_FILIAL	, C5_ZPEDCLI	, C5_XIDEXTE	,C5_ZIDEND	,"									+ chr(13) + chr(10)
 	cQrySC5 += " 	C5_NUM		, C5_ZTIPPED	, C5_VEND1		,C5_XRESERV	,"									+ chr(13) + chr(10)
 	cQrySC5 += " 	C5_CONDPAG	, C5_TABELA		, C5_FECENT		,"												+ chr(13) + chr(10)
-	cQrySC5 += " 	C5_XORCAME	, C5_XREDE		, C5_XPVPAI		,"												+ chr(13) + chr(10)
+	cQrySC5 += " 	C5_XORCAME	, C5_XREDE		, C5_XPVPAI		, C5_ZDTEMBA, "									+ chr(13) + chr(10)
 
 	If lTms
-		cQrySc5 += "    C5_XVLDESC  , C5_PBRUTO 	, C5_PESOL		, C5_TPFRETE	, C5_ZDTEMBA, C5_ZTMSACA,"	+ chr(13) + chr(10)
-		cQrySc5 += "	C5_ZTMSID	, C5_XACONDC	, C5_ZNUMEXP	, C5_XTPROD, C5_ZBLQRGA,"					+ chr(13) + chr(10)
-		cQrySc5 += "	A1_TIPO		, A1_PESSOA		, A1_COD_MUN	, A1_CODPAIS,"								+ chr(13) + chr(10)
-		cQrySC5 += " 	A1_PAIS		, A1_NREDUZ		, A1_INSCR		, A1_NOME 	,"								+ chr(13) + chr(10)
-		cQrySC5 += " 	A1_BAIRRO	, A1_COMPLEM	, A1_DDD		, A1_TEL	,"								+ chr(13) + chr(10)
-		cQrySC5 += " 	A1_MUN		, A1_CEP		, A1_END		 			,"								+ chr(13) + chr(10)
+		cQrySc5 += "    C5_XVLDESC  , C5_PBRUTO 	, C5_PESOL		, C5_TPFRETE, C5_ZDTEMBA	, C5_ZTMSACA,"	+ chr(13) + chr(10)
+		cQrySc5 += "	C5_ZTMSID	, C5_XACONDC	, C5_ZNUMEXP	, C5_XTPROD	, C5_ZBLQRGA	,"				+ chr(13) + chr(10)		
+		IF SC5->C5_TIPO $ ("D/B")
+			cQrySc5 += "	A2_TIPO		, A2_COD_MUN	, A2_CODPAIS,"												+ chr(13) + chr(10)
+			cQrySC5 += " 	A2_PAIS		, A2_NREDUZ		, A2_INSCR		, A2_NOME 	,"								+ chr(13) + chr(10)
+			cQrySC5 += " 	A2_BAIRRO	, A2_COMPLEM	, A2_DDD		, A2_TEL	,"								+ chr(13) + chr(10)
+			cQrySC5 += " 	A2_MUN		, A2_CEP		, A2_END		 			,"								+ chr(13) + chr(10)
+		ELSE
+			cQrySc5 += "	A1_TIPO		, A1_PESSOA		, A1_COD_MUN	, A1_CODPAIS,"								+ chr(13) + chr(10)
+			cQrySC5 += " 	A1_PAIS		, A1_NREDUZ		, A1_INSCR		, A1_NOME 	,"								+ chr(13) + chr(10)
+			cQrySC5 += " 	A1_BAIRRO	, A1_COMPLEM	, A1_DDD		, A1_TEL	,"								+ chr(13) + chr(10)
+			cQrySC5 += " 	A1_MUN		, A1_CEP		, A1_END		 			,"								+ chr(13) + chr(10)
+		ENDIF
+	ELSE
+		cQrySc5 += "	SA1.A1_TIPO		, SA1.A1_PESSOA		, SA1.A1_COD_MUN	, SA1.A1_CODPAIS,"								+ chr(13) + chr(10)
+		cQrySC5 += " 	SA1.A1_PAIS		, SA1.A1_NREDUZ		, SA1.A1_INSCR		, SA1.A1_NOME 	,"								+ chr(13) + chr(10)
+		cQrySC5 += " 	SA1.A1_BAIRRO	, SA1.A1_COMPLEM	, SA1.A1_DDD		, SA1.A1_TEL	,"								+ chr(13) + chr(10)
+		cQrySC5 += " 	SA1.A1_MUN		, SA1.A1_CEP		, SA1.A1_END		 			,"
 	EndIf
 
 	cQrySC5 += " 	C6_ITEM		, C6_PRODUTO	, C6_QTDVEN		, C6_PRCVEN,"									+ chr(13) + chr(10)
-	cQrySC5 += " 	C6_ZDTMAX	, C6_ZDTMIN		, A1_COD		, "												+ chr(13) + chr(10)
-	cQrySC5 += " 	A1_LOJA		, A1_CGC		,
-	cQrySC5 += "	NVL(SZ9.Z9_ZCEP		, SA1.A1_CEP)  CEP			,"											+ chr(13) + chr(10)
-	cQrySC5 += "	NVL(SZ9.Z9_ZENDER	, SA1.A1_END)  ENDERECO		,"											+ chr(13) + chr(10)
-	cQrySC5 += "	NVL(SZ9.Z9_ZEST		, SA1.A1_EST)  ESTADO		,"											+ chr(13) + chr(10)
-	cQrySC5 += "	NVL(SZ9.Z9_ZMUNIC	, SA1.A1_MUN)  MUNICIPIO	,"											+ chr(13) + chr(10)
-	cQrySC5 += "	SC5.D_E_L_E_T_ EXCLUIDO ,"
+	cQrySC5 += " 	C6_ZDTMAX	, C6_ZDTMIN		, "																+ chr(13) + chr(10)
+	
 	If lTms
+		IF SC5->C5_TIPO $ ("D/B")	
+			cQrySC5 += " 	A2_COD		, A2_LOJA		, A2_CGC		,"												+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCEP		, SA2.A2_CEP)  CEP			,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZENDER	, SA2.A2_END)  ENDERECO		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZEST		, SA2.A2_EST)  ESTADO		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZMUNIC	, SA2.A2_MUN)  MUNICIPIO	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	SC5.D_E_L_E_T_ EXCLUIDO ,"
+		ELSE
+			cQrySC5 += " 	A1_COD		, A1_LOJA		, A1_CGC		,"												+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCEP		, SA1.A1_CEP)  CEP			,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZENDER	, SA1.A1_END)  ENDERECO		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZEST		, SA1.A1_EST)  ESTADO		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZMUNIC	, SA1.A1_MUN)  MUNICIPIO	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	SC5.D_E_L_E_T_ EXCLUIDO ,"
+		ENDIF
+	ELSE
+		cQrySC5 += " 	SA1.A1_COD		, SA1.A1_LOJA		, SA1.A1_CGC		,"												+ chr(13) + chr(10)
+		cQrySC5 += "	NVL(SZ9.Z9_ZCEP		, SA1.A1_CEP)  CEP			,"											+ chr(13) + chr(10)
+		cQrySC5 += "	NVL(SZ9.Z9_ZENDER	, SA1.A1_END)  ENDERECO		,"											+ chr(13) + chr(10)
+		cQrySC5 += "	NVL(SZ9.Z9_ZEST		, SA1.A1_EST)  ESTADO		,"											+ chr(13) + chr(10)
+		cQrySC5 += "	NVL(SZ9.Z9_ZMUNIC	, SA1.A1_MUN)  MUNICIPIO	,"											+ chr(13) + chr(10)
+		cQrySC5 += "	SC5.D_E_L_E_T_ EXCLUIDO ,"
+	ENDIF
+	
+	If lTms
+		If SC5->C5_TIPO $ ("D/B")	
+			cQrySC5 += "	NVL(SZ9.Z9_ZBAIRRO	, SA2.A2_BAIRRO)  BAIRRO	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCOMPLE	, SA2.A2_COMPLEM) COMPLEMEN	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZDDD		, SA2.A2_DDD)  DDDZ9		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZTEL		, SA2.A2_TEL)  TELEFONE		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCODMUN	, SA2.A2_COD_MUN)  CODMUNIC	,"											+ chr(13) + chr(10)
+		Else
+			cQrySC5 += "	NVL(SZ9.Z9_ZBAIRRO	, SA1.A1_BAIRRO)  BAIRRO	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCOMPLE	, SA1.A1_COMPLEM) COMPLEMEN	,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZDDD		, SA1.A1_DDD)  DDDZ9		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZTEL		, SA1.A1_TEL)  TELEFONE		,"											+ chr(13) + chr(10)
+			cQrySC5 += "	NVL(SZ9.Z9_ZCODMUN	, SA1.A1_COD_MUN)  CODMUNIC	,"											+ chr(13) + chr(10)
+		endif
+	Else
 		cQrySC5 += "	NVL(SZ9.Z9_ZBAIRRO	, SA1.A1_BAIRRO)  BAIRRO	,"											+ chr(13) + chr(10)
 		cQrySC5 += "	NVL(SZ9.Z9_ZCOMPLE	, SA1.A1_COMPLEM) COMPLEMEN	,"											+ chr(13) + chr(10)
 		cQrySC5 += "	NVL(SZ9.Z9_ZDDD		, SA1.A1_DDD)  DDDZ9		,"											+ chr(13) + chr(10)
@@ -789,7 +939,6 @@ static function getSalesOr()
 		cQrySC5 += "	NVL(SZ9.Z9_ZCODMUN	, SA1.A1_COD_MUN)  CODMUNIC	,"											+ chr(13) + chr(10)
 	endif
 
-	//cQrySC5 += "	SC6.D_E_L_E_T_ C6DELET ,"																	+ chr(13) + chr(10)
 	cQrySC5 += "	CASE"																						+ chr(13) + chr(10)
 	cQrySC5 += "		WHEN SC6.D_E_L_E_T_ = '*' THEN 2"														+ chr(13) + chr(10)
 	cQrySC5 += "	ELSE"																						+ chr(13) + chr(10)
@@ -815,21 +964,56 @@ static function getSalesOr()
 	cQrySC5 += " ON"																							+ chr(13) + chr(10)
 	cQrySC5 += " 		SC6.C6_NUM		=	SC5.C5_NUM"															+ chr(13) + chr(10)
 	cQrySC5 += " 	AND	SC6.C6_FILIAL	=	SC5.C5_FILIAL"														+ chr(13) + chr(10)
-	//cQrySC5 += " 	AND	SC6.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
-	cQrySC5 += " INNER JOIN "	+ retSQLName("SA1") + " SA1"													+ chr(13) + chr(10)
-	cQrySC5 += " ON"																							+ chr(13) + chr(10)
-	cQrySC5 += " 		SA1.A1_LOJA		=	SC5.C5_LOJACLI"														+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	SA1.A1_COD		=	SC5.C5_CLIENTE"														+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"											+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+	
+	If lTms
+		cQrySC5 += " 	AND	SC6.D_E_L_E_T_	<>	'*'"															+ chr(13) + chr(10)
+	Endif
 
-	cQrySC5 += " 	AND	SA1.A1_EST		<>	'EX'"							       								+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	SA1.A1_CGC		<>	' '"																+ chr(13) + chr(10)
+	If lTms
+		If SC5->C5_TIPO $ ("D/B")		
+			cQrySC5 += " INNER JOIN "	+ retSQLName("SA2") + " SA2"													+ chr(13) + chr(10)
+			cQrySC5 += " ON"																							+ chr(13) + chr(10)
+			cQrySC5 += " 		SA2.A2_LOJA		=	SC5.C5_LOJACLI"														+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA2.A2_COD		=	SC5.C5_CLIENTE"														+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA2.A2_FILIAL	=	'" + xFilial("SA2") + "'"											+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA2.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA2.A2_EST		<>	'EX'"							       								+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA2.A2_CGC		<>	' '"																+ chr(13) + chr(10)
+		Else
+			cQrySC5 += " INNER JOIN "	+ retSQLName("SA1") + " SA1"													+ chr(13) + chr(10)
+			cQrySC5 += " ON"																							+ chr(13) + chr(10)
+			cQrySC5 += " 		SA1.A1_LOJA		=	SC5.C5_LOJACLI"														+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA1.A1_COD		=	SC5.C5_CLIENTE"														+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"											+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA1.A1_EST		<>	'EX'"							       								+ chr(13) + chr(10)
+			cQrySC5 += " 	AND	SA1.A1_CGC		<>	' '"																+ chr(13) + chr(10)
+		endif
+	Else
+		cQrySC5 += " INNER JOIN "	+ retSQLName("SA1") + " SA1"													+ chr(13) + chr(10)
+		cQrySC5 += " ON"																							+ chr(13) + chr(10)
+		cQrySC5 += " 		SA1.A1_LOJA		=	SC5.C5_LOJACLI"														+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	SA1.A1_COD		=	SC5.C5_CLIENTE"														+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"											+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	SA1.A1_EST		<>	'EX'"							       								+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	SA1.A1_CGC		<>	' '"																+ chr(13) + chr(10)
+	endif
 
 	cQrySC5 += " LEFT JOIN "	+ retSQLName("SZ9") + " SZ9"													+ chr(13) + chr(10)
 	cQrySC5 += " ON"																							+ chr(13) + chr(10)
 	cQrySC5 += "         SZ9.Z9_ZIDEND	=	SC5.C5_ZIDEND"														+ chr(13) + chr(10)
-	cQrySC5 += "     AND SZ9.Z9_ZCGC	=	SA1.A1_CGC"															+ chr(13) + chr(10)
+
+	If lTms
+		If SC5->C5_TIPO $ ("D/B")		
+			cQrySC5 += "     AND SZ9.Z9_ZCGC	=	SA2.A2_CGC"															+ chr(13) + chr(10)
+		ELSE
+			cQrySC5 += "     AND SZ9.Z9_ZCGC	=	SA1.A1_CGC"															+ chr(13) + chr(10)
+		ENDIF
+	ELSE
+		cQrySC5 += "     AND SZ9.Z9_ZCGC	=	SA1.A1_CGC"															+ chr(13) + chr(10)
+	ENDIF
+
 	cQrySC5 += "     AND SZ9.Z9_FILIAL	=	'" + xFilial("SZ9") + "'"											+ chr(13) + chr(10)
 	cQrySC5 += "     AND SZ9.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
 
@@ -841,80 +1025,106 @@ static function getSalesOr()
 	cQrySC5 += "	AND SD2.D_E_L_E_T_	=	' '" 																+  chr(13) + chr(10)
 
 	cQrySC5 += " WHERE"																							+ chr(13) + chr(10)
-	//WVN
+
 	If lTms // Pedidos que vao ser considerados pelo Multisoftware
-		cQrySC5 += " 		SC5.C5_FILIAL	='" +xFilial("SC5") + "'" 											+ chr(13) + chr(10)
-		cQrySC5 += " AND	SC5.C5_NUM		='"	+SC5->C5_NUM+"'"												+ chr(13) + chr(10)
-	//	cQrySC5 += " AND    SC5.C5_ZBLQRGA  <> 'B'"																+ chr(13) + chr(10)
+		cQrySC5 += "  SC5.C5_NUM		='"	+SC5->C5_NUM+"' AND "												+ chr(13) + chr(10)
+	else
+		
+		cQrySC5 += " EXISTS (select ZHW_PEDIDO from " + retSQLName("ZHW") + " ZHW where ZHW.d_e_l_e_t_ <> '*' "     +  chr(13) + chr(10)
+		cQrySC5 += "		AND ZHW.ZHW_DATAET = '" + DTOS(DATE()) + "' AND "    									+  chr(13) + chr(10)
+		cQrySC5 += "		(ZHW.ZHW_STATUT = '200' or ZHW.ZHW_STATUT = '999' or ZHW.ZHW_STATUT = '998') " 			+  chr(13) + chr(10)
+		cQrySC5 += "		AND (ZHW.ZHW_STATUS = 0 OR ZHW.ZHW_STATUS = 1) "  										+  chr(13) + chr(10) 
+		cQrySC5 += "		AND ZHW.ZHW_FILIAL = SC5.C5_FILIAL AND ZHW.ZHW_PEDIDO = SC5.C5_NUM ) AND " 				+  chr(13) + chr(10)
+
+		cQrySC5 += " 	SC5.C5_EMISSAO	>=	'" + dtos(date()-getmv("MGF_FAT541",,10))	+ "' AND "					+ chr(13) + chr(10)
 	EndIf
-	//WVN
-	If ! lTms // Pedidos que vao ser considerados pelo Multisoftware
-		cQrySC5 += " 		SC5.C5_XINTEGR	=	'P'"																+ chr(13) + chr(10)
-	EndIf
-	cQrySC5 += " 	AND	SC5.C5_EMISSAO	>=	'" + dtos(date()-getmv("MGF_FAT541",,10))	+ "'"					+ chr(13) + chr(10)
-	//cQrySC5 += " 	AND	SC5.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	SC5.C5_FILIAL	=	'" + xFilial( "SC5" ) + "'"											+ chr(13) + chr(10)
+
+	cQrySC5 += " 	SC5.C5_FILIAL	=	'" + xFilial( "SC5" ) + "'"											+ chr(13) + chr(10)
 
 	If ! lTms //cFilAnt $GetMv("MGF_TMSGER") // Pedidos que vao ser considerados pelo Multisoftware
 		cQrySC5 += " UNION ALL"																						+ chr(13) + chr(10)
 
 	// PEDIDOS COM ERRO
 
-	cQrySC5 += " SELECT DISTINCT"																				+ chr(13) + chr(10)
-	cQrySC5 += " 	'N' PEDIDO	, '' C5_ZROAD,"																	+ chr(13) + chr(10)
-	cQrySC5 += " 	' ' C5_XOBSPED			,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5.R_E_C_N_O_ XC5RECNO	,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_FILIAL	C5_FILIAL	,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_PEDCLI				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_IDEXTE				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_ZIDEND				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' C5_NUM				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_ZTIPPE				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_VENDED				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_RESERV				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_CODCON				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_CODTAB				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_DTENTR				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_ORCAME				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_PVREDE				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_PVPAI				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_ITEM				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_PRODUT				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_QTDVEN				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_PRCVEN				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_DTMAXI				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC6_DTMINI				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' A1_COD				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' A1_LOJA				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_CLIENT				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' CEP					,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' ENDERECO			,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' ' ESTADO				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' '	MUNICIPIO			,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5.D_E_L_E_T_ EXCLUIDO	,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	1	C6DELET				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' '	DESCPROD			,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	' '	C5_XCALLBA			,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	ZC5_ORIGEM				,"																	+ chr(13) + chr(10)
-	cQrySC5 += "	SUBSTR(UTL_RAW.CAST_TO_VARCHAR2(dbms_lob.substr(ZC5_OBS,2000,1)),1,4000) ZC5_OBS	,"		+ chr(13) + chr(10)
-	cQrySC5 += " 	ZC5_DTRECE C5_EMISSAO	,"																	+ chr(13) + chr(10)
-	cQrySC5 += " 	0 D2_QUANT				,"																	+ chr(13) + chr(10)
-	cQrySC5 += " 	' ' D2_DOC				,"																	+ chr(13) + chr(10)
-	cQrySC5 += " 	ZC5_MSGNOT C5_MENNOTA	,"																	+ chr(13) + chr(10)
-	cQrySC5 += " 	' ' C6_NUMPCOM"																				+ chr(13) + chr(10)
-	cQrySC5 += " FROM "			+ retSQLName("ZC5") + " ZC5"													+ chr(13) + chr(10)
-	cQrySC5 += " INNER JOIN " 	+ retSQLName("ZC6") + " ZC6"													+ chr(13) + chr(10)
-	cQrySC5 += " ON"																							+ chr(13) + chr(10)
-	cQrySC5 += " 		ZC5.ZC5_IDSFA	=	ZC6.ZC6_IDSFA"														+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	ZC5.ZC5_FILIAL	=	ZC6.ZC6_FILIAL"														+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	ZC6.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
-	cQrySC5 += " WHERE"																							+ chr(13) + chr(10)
-	cQrySC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS = '4'"										+ chr(13) + chr(10)
-	cQrySC5 += "    AND ZC5.ZC5_DTRECE	>=	'" + dtos(date()-getmv("MGF_FAT541",,10))	+ "'"					+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	ZC5.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
-	cQrySC5 += " 	AND	ZC5.ZC5_FILIAL	=	'" + xFilial( "ZC5" ) + "'"
-    endif										+ chr(13) + chr(10)
-	//cQrySC5 += " ORDER BY C5_XORIGEM , C5_XCALLBA , C5_FILIAL , C5_NUM , C6_ITEM"								+ chr(13) + chr(10)
+		cQrySC5 += " SELECT DISTINCT"																				+ chr(13) + chr(10)
+		cQrySC5 += " 	'N' PEDIDO	, '' C5_ZROAD,"																	+ chr(13) + chr(10)
+		cQrySC5 += " 	' ' C5_XOBSPED			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5.R_E_C_N_O_ XC5RECNO	,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_FILIAL	C5_FILIAL	,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_PEDCLI				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_IDEXTE				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_ZIDEND				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' C5_NUM				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_ZTIPPE				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_VENDED				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_RESERV				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_CODCON				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_CODTAB				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_DTENTR				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_ORCAME				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_PVREDE				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_PVPAI				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_DTEMBA				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	'N' C5_TIPO				,"																	+ chr(13) + chr(10)
+
+		cQrySC5 += "	' ' A1_PESSOA			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_COD_MUN			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_CODPAIS			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_PAIS				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_NREDUZ			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_INSCR			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_NOME				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_BAIRRO			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_COMPLEM			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_DDD				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_TEL				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_MUN				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_CEP				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_END				,"																	+ chr(13) + chr(10)
+
+		cQrySC5 += "	ZC6_ITEM				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC6_PRODUT				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC6_QTDVEN				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC6_PRCVEN				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC6_DTMAXI				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC6_DTMINI				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_COD				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' A1_LOJA				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_CLIENT				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' CEP					,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' ENDERECO			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' ESTADO				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' MUNICIPIO			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5.D_E_L_E_T_ EXCLUIDO	,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' BAIRRO				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' COMPLEMEN			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' DDDZ9				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' TELEFONE			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' ' CODMUNIC			,"																	+ chr(13) + chr(10)
+
+		cQrySC5 += "	1	C6DELET				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' '	DESCPROD			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	' '	C5_XCALLBA			,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	ZC5_ORIGEM				,"																	+ chr(13) + chr(10)
+		cQrySC5 += "	SUBSTR(UTL_RAW.CAST_TO_VARCHAR2(dbms_lob.substr(ZC5_OBS,2000,1)),1,4000) ZC5_OBS	,"		+ chr(13) + chr(10)
+		cQrySC5 += " 	ZC5_DTRECE C5_EMISSAO	,"																	+ chr(13) + chr(10)
+		cQrySC5 += " 	0 D2_QUANT				,"																	+ chr(13) + chr(10)
+		cQrySC5 += " 	' ' D2_DOC				,"																	+ chr(13) + chr(10)
+		cQrySC5 += " 	ZC5_MSGNOT C5_MENNOTA	,"																	+ chr(13) + chr(10)
+		cQrySC5 += " 	' ' C6_NUMPCOM"																				+ chr(13) + chr(10)
+		cQrySC5 += " FROM "			+ retSQLName("ZC5") + " ZC5"													+ chr(13) + chr(10)
+		cQrySC5 += " INNER JOIN " 	+ retSQLName("ZC6") + " ZC6"													+ chr(13) + chr(10)
+		cQrySC5 += " ON"																							+ chr(13) + chr(10)
+		cQrySC5 += " 		ZC5.ZC5_IDSFA	=	ZC6.ZC6_IDSFA"														+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	ZC5.ZC5_FILIAL	=	ZC6.ZC6_FILIAL"														+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	ZC6.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+		cQrySC5 += " WHERE"																							+ chr(13) + chr(10)
+		cQrySC5 += " 		ZC5.ZC5_INTEGR	=	'P' AND ZC5.ZC5_STATUS = '4'"										+ chr(13) + chr(10)
+		cQrySC5 += "    AND ZC5.ZC5_DTRECE	>=	'" + dtos(date()-getmv("MGF_FAT541",,10))	+ "'"					+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	ZC5.D_E_L_E_T_	<>	'*'"																+ chr(13) + chr(10)
+		cQrySC5 += " 	AND	ZC5.ZC5_FILIAL	=	'" + xFilial( "ZC5" ) + "'"
+    endif									
+
 	cQrySC5 += " ORDER BY"																						+ chr(13) + chr(10)
 	cQrySC5 += " C5_XORIGEM		,"																				+ chr(13) + chr(10)
 	cQrySC5 += " C5_XCALLBA		,"																				+ chr(13) + chr(10)
@@ -923,9 +1133,8 @@ static function getSalesOr()
 	cQrySC5 += " C6_PRODUTO		,"																				+ chr(13) + chr(10)
 	cQrySC5 += " C6DELET"																						+ chr(13) + chr(10)
 
-	conout( "[MGFFATBO] [getSalesOr] " + CRLF + cQrySC5 )
-
 	dbUseArea(.T., "TOPCONN", TCGENQRY(,,cQrySC5), (cQrySalesO) , .F. , .T. )
+
 return
 
 //-------------------------------------------------------------------------------------
@@ -960,6 +1169,10 @@ user function getSZVx( lItens , cC5Filial , cC5Num , cItem )
 		cQrySZV += " 	AND	SZT.D_E_L_E_T_	<>	'*'"												+ chr(13) + chr(10)
 		cQrySZV += " WHERE"																			+ chr(13) + chr(10)
 		cQrySZV += " 		SZV.ZV_CODAPR	=	' '"												+ chr(13) + chr(10) // BLOQUEIOS AINDA NAO LIBERADOS
+		//Não envia bloqueios de aguardando keyconsult, só envia se tiver bloqueio permanente
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000096' "												+ chr(13) + chr(10)
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000097' "												+ chr(13) + chr(10)
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000098' "												+ chr(13) + chr(10)
 		cQrySZV += " 	AND	SC5.C5_NUM		=	'" + cC5Num		+ "'"								+ chr(13) + chr(10)
 		cQrySZV += " 	AND	SC5.C5_FILIAL	=	'" + cC5Filial	+ "'"								+ chr(13) + chr(10)
 		cQrySZV += " 	AND	SC5.D_E_L_E_T_	<>	'*'"												+ chr(13) + chr(10)
@@ -990,6 +1203,12 @@ user function getSZVx( lItens , cC5Filial , cC5Num , cItem )
 		cQrySZV += " 	AND	SZT.D_E_L_E_T_	<>	'*'"												+ chr(13) + chr(10)
 		cQrySZV += " WHERE"																			+ chr(13) + chr(10)
 		cQrySZV += " 		SZV.ZV_CODAPR	=	' '"												+ chr(13) + chr(10) // BLOQUEIOS AINDA NAO LIBERADOS
+
+		//Não envia bloqueios de aguardando keyconsult, só envia se tiver bloqueio permanente
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000096' "												+ chr(13) + chr(10)
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000097' "												+ chr(13) + chr(10)
+		cQrySZV += "    AND SZV.ZV_CODRGA <> '000098' "												+ chr(13) + chr(10)
+
 		cQrySZV += " 	AND	SC5.C5_NUM		=	'" + cC5Num		+ "'"								+ chr(13) + chr(10)
 		cQrySZV += " 	AND	SC5.C5_FILIAL	=	'" + cC5Filial	+ "'"								+ chr(13) + chr(10)
 		cQrySZV += " 	AND	SC5.D_E_L_E_T_	<>	'*'"												+ chr(13) + chr(10)
@@ -1000,25 +1219,6 @@ user function getSZVx( lItens , cC5Filial , cC5Num , cItem )
 	dbUseArea(.T., "TOPCONN", TCGENQRY(,,cQrySZV), (cQrySZVRet) , .F. , .T. )
 
 return
-
-//--------------------------------------------------------------------
-//--------------------------------------------------------------------
-static function erRunFatBO(oError)
-	local nQtd	:= MLCount(oError:ERRORSTACK)
-	local nI	:= 0
-	local cEr	:= ''
-
-	nQtd := iif( nQtd > 10 , 10 , nQtd )
-
-	for nI :=1 to nQtd
-		cEr += MemoLine(oError:ERRORSTACK,,ni)
-	next nI
-
-	conout( "[MGFFATBO] [ERROR] " + oError:Description )
-	_aErr := { '0', cEr }
-
-	break
-return .T.
 
 //--------------------------------------------------------------------
 //--------------------------------------------------------------------
@@ -1065,12 +1265,13 @@ return fCodIbge
 //---------------------------------------------------------------------------------------------
 // Verifica se o Tipo de Pedido é de Venda
 //---------------------------------------------------------------------------------------------
-static function chkType( cDA0CODTAB )
+static function chkType( cDA0CODTAB, cCodTip )
 	local lTipoVenda	:= .F.
-	local cQryCHK		:= ""
+	local cQryCHK
 
-	cQryCHK += " SELECT DISTINCT ZK_CODTPED, DA0_CODTAB , DA0_DESCRI , DA0_DATDE , DA0_DATATE , DA0_ATIVO , DA0.D_E_L_E_T_ DA0DELETE , "	+ CRLF
-	cQryCHK += " DA0.R_E_C_N_O_ DA0RECNO , DA0_ZSTASF , DA0_XENVSF"												+ CRLF
+	cQryCHK := " SELECT DISTINCT SZK.ZK_CODTPED, DA0.DA0_CODTAB , DA0.DA0_DESCRI , DA0.DA0_DATDE , "	        + CRLF
+	cQryCHK += " DA0.DA0_DATATE , DA0.DA0_ATIVO , DA0.D_E_L_E_T_ DA0DELETE , DA0.R_E_C_N_O_ DA0RECNO , "		+ CRLF
+	cQryCHK += " DA0.DA0_ZSTASF , DA0.DA0_XENVSF"                                                               + CRLF
 	cQryCHK += " FROM			" + retSQLName( "DA0" ) + " DA0"												+ CRLF
 
 	cQryCHK += " INNER JOIN	" + retSQLName( "SZK" ) + " SZK"													+ CRLF
@@ -1082,16 +1283,15 @@ static function chkType( cDA0CODTAB )
 	cQryCHK += " INNER JOIN	" + retSQLName( "SZJ" ) + " SZJ"													+ CRLF
 	cQryCHK += " ON"																							+ CRLF
 	cQryCHK += " 		SZJ.ZJ_VENDA	=	'S'"																+ CRLF
-	cQryCHK += " 	AND	SZK.ZK_CODTPED	=	SZJ.ZJ_COD"															+ CRLF
+	cQryCHK += " 	AND	SZJ.ZJ_COD		=	SZK.ZK_CODTPED"														+ CRLF
 	cQryCHK += " 	AND	SZJ.ZJ_FILIAL	=	'" + xFilial( "SZJ") + "'"											+ CRLF
+	cQryCHK += " 	AND	SZJ.ZJ_COD	    =	'" + cCodTip + "'"													+ CRLF
 	cQryCHK += " 	AND SZJ.D_E_L_E_T_	=	' '"																+ CRLF
 
 	cQryCHK += " WHERE"																							+ CRLF
 	cQryCHK += " 		DA0.DA0_CODTAB	=	'" + cDA0CODTAB + "'"												+ CRLF
 	cQryCHK += " 	AND	DA0.DA0_FILIAL	=	'" + xFilial( "DA0") + "'"											+ CRLF
 	cQryCHK += " 	AND DA0.D_E_L_E_T_	=	' '"																+ CRLF
-
-	conout("[MGFFATBO] [SALESFORCE] [chkType] " + cQryCHK)
 
 	tcQuery cQryCHK new alias "QRYCHK"
 

@@ -7,10 +7,10 @@
 Programa.:              F090REST
 Autor....:              Luis Artuso
 Data.....:              08/09/2016
-Descricao / Objetivo:   Chamada do P.E. F090REST para salvar os arquivos processados na rotina de baixa automatica.
+Descricao / Objetivo:   Chamada do P.E. F090REST para salvar os arquivos processados na rotina de baixa automática.
 Doc. Origem:            Contrato - GAP MGFINT03
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

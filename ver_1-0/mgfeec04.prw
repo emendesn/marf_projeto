@@ -9,7 +9,7 @@ Data.....:              27/10/16
 Descricao / Objetivo:   Chamada da rotina principal
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -27,8 +27,8 @@ Data.....:              27/10/16
 Descricao / Objetivo:   Browse da tela de cadastro de motivos
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Manutencao do Cadastro de Motivos
+Uso......:              Marfrig
+Obs......:              Manutenção do Cadastro de Motivos
 =====================================================================================
 */
 Static Function fMVCBrowse()
@@ -61,7 +61,7 @@ Data.....:              27/10/16
 Descricao / Objetivo:
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -84,7 +84,7 @@ Data.....:              27/10/16
 Descricao / Objetivo:
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -124,7 +124,7 @@ Data.....:              27/10/16
 Descricao / Objetivo:
 Doc. Origem:            Contrato - GAP EEC10
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */

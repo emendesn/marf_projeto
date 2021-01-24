@@ -217,7 +217,8 @@ return
 // Seleciona os clientes para exportação
 //-------------------------------------------------------------------
 static function getSU5()
-	local cQryWSC36 := ""
+	local cQryWSC36	:= ""
+	local lFilPes	:= superGetMv( "MGFWSC34D" , , .T.) //Filtro para filtrar pessoa Juridica
 
 	cQryWSC36 += " SELECT"														+ CRLF
 	cQryWSC36 += " AC8_CODENT	,"												+ CRLF
@@ -225,8 +226,8 @@ static function getSU5()
 	cQryWSC36 += " U5_CONTAT	,"												+ CRLF
 	cQryWSC36 += " U5_CLIENTE	,"												+ CRLF
 	cQryWSC36 += " U5_LOJA		,"												+ CRLF
-	cQryWSC36 += " U5_DDD		,"												+ CRLF
-	cQryWSC36 += " U5_FCOM2		,"												+ CRLF
+	cQryWSC36 += " U5_DDD		, U5_CODPAIS ,"									+ CRLF
+	cQryWSC36 += " U5_FCOM1		,"												+ CRLF
 	cQryWSC36 += " U5_CELULAR	,"												+ CRLF
 	cQryWSC36 += " U5_EMAIL		,"												+ CRLF
 	cQryWSC36 += " U5_XIDSFOR	,"												+ CRLF
@@ -243,20 +244,24 @@ static function getSU5()
 	cQryWSC36 += "	AND	AC8.AC8_FILIAL	=	'" + xFilial("AC8") + "'"			+ CRLF
 	cQryWSC36 += "	AND	AC8.D_E_L_E_T_	<>	'*'"								+ CRLF
 
-	cQryWSC36 += " INNER JOIN "	+ retSQLName( "SA1" ) + " SA1"					+ CRLF
-	cQryWSC36 += " ON"															+ CRLF
-	cQryWSC36 += " 		SA1.A1_XIDSFOR	<>	' '"								+ CRLF
-	cQryWSC36 += " 	AND	SA1.A1_XINTSFO	=	'I'"								+ CRLF
-	cQryWSC36 += " 	AND	SA1.A1_XENVSFO	=	'S'"								+ CRLF
-	cQryWSC36 += " 	AND	SA1.A1_LOJA		=	SU5.U5_LOJA"						+ CRLF
-	cQryWSC36 += " 	AND	SA1.A1_COD		=	SU5.U5_CLIENTE"						+ CRLF
-	cQryWSC36 += " 	AND	SA1.A1_FILIAL	=	'" + xFilial("SA1") + "'"			+ CRLF
-	cQryWSC36 += " 	AND	SA1.D_E_L_E_T_	<>	'*'"								+ CRLF
+	cQryWSC36 += " INNER JOIN "	+ retSQLName( "SA1" ) + " SA1"						+ CRLF
+	cQryWSC36 += " ON"																+ CRLF
+	cQryWSC36 += " 		SA1.A1_XIDSFOR				<>	' '"						+ CRLF
+	cQryWSC36 += " 	AND	SA1.A1_XINTSFO				=	'I'"						+ CRLF
+	cQryWSC36 += " 	AND	SA1.A1_XENVSFO				=	'S'"						+ CRLF
+	cQryWSC36 += " 	AND	SA1.A1_COD || SA1.A1_LOJA	=	AC8.AC8_CODENT"				+ CRLF
+	cQryWSC36 += " 	AND	SA1.A1_FILIAL				=	'" + xFilial("SA1") + "'"	+ CRLF
+	cQryWSC36 += " 	AND	SA1.D_E_L_E_T_				<>	'*'"						+ CRLF
+
+	if lFilPes
+		cQryWSC36 += "	AND	SA1.A1_PESSOA = 'J' "							        + CRLF
+	endIf
 
 	cQryWSC36 += " WHERE"														+ CRLF
 	cQryWSC36 += " 		SU5.U5_XINTSFO	=	'P'"								+ CRLF
 	cQryWSC36 += " 	AND	SU5.U5_FILIAL	=	'" + xFilial("SU5") + "'"			+ CRLF
 	cQryWSC36 += " 	AND	SU5.D_E_L_E_T_	<>	'*'"								+ CRLF
+
 	cQryWSC36 += " ORDER BY AC8_CODENT"											+ CRLF
 
 	conout( "[MGFWSC36] [SALESFORCE] " + cQryWSC36 )
@@ -269,14 +274,17 @@ return
 //---------------------------------------------------------------------
 static function setSU5()
 	oJson["U5_CODCONT"	]	:= iif( !empty( QRYWSC36->U5_CODCONT	)	, allTrim( QRYWSC36->U5_CODCONT	)	, nil )
-	oJson["U5_CONTAT"	]	:= iif( !empty( QRYWSC36->U5_CONTAT		)	, allTrim( QRYWSC36->U5_CONTAT	)	, nil )
+
+	oJson["U5_CONTAT"	]	:= iif( !empty( QRYWSC36->U5_CONTAT		)	, EncodeUtf8(allTrim( QRYWSC36->U5_CONTAT))							, nil )
+
 	oJson["U5_CLIENTE"	]	:= iif( !empty( QRYWSC36->AC8_CODENT	)	, allTrim( QRYWSC36->AC8_CODENT	)	, nil )
 	oJson["U5_LOJA"		]	:= iif( !empty( QRYWSC36->U5_LOJA		)	, allTrim( QRYWSC36->U5_LOJA	)	, nil )
 	oJson["U5_DDD"		]	:= iif( !empty( QRYWSC36->U5_DDD		)	, allTrim( QRYWSC36->U5_DDD		)	, nil )
-	oJson["U5_FCOM2"	]	:= iif( !empty( QRYWSC36->U5_FCOM2		)	, allTrim( QRYWSC36->U5_FCOM2	)	, nil )
+	oJson["U5_FCOM2"	]	:= iif( !empty( QRYWSC36->U5_FCOM1		)	, allTrim( QRYWSC36->U5_FCOM1	)	, nil )
 	oJson["U5_CELULAR"	]	:= iif( !empty( QRYWSC36->U5_CELULAR	)	, allTrim( QRYWSC36->U5_CELULAR	)	, nil )
 	oJson["U5_EMAIL"	]	:= iif( !empty( QRYWSC36->U5_EMAIL		)	, allTrim( QRYWSC36->U5_EMAIL	)	, nil )
 	oJson["U5_XIDSFOR"	]	:= iif( !empty( QRYWSC36->U5_XIDSFOR	)	, allTrim( QRYWSC36->U5_XIDSFOR	)	, nil )
 	oJson["U5_XDEPTO"	]	:= iif( !empty( QRYWSC36->U5_XDEPTO		)	, allTrim( QRYWSC36->U5_XDEPTO	)	, nil )
 	oJson["U5_XCARGO"	]	:= iif( !empty( QRYWSC36->U5_XCARGO		)	, allTrim( QRYWSC36->U5_XCARGO	)	, nil )
+	oJson["U5_XDDI"	]		:= iif( !empty( QRYWSC36->U5_CODPAIS	)	, allTrim( QRYWSC36->U5_CODPAIS	)	, nil )
 return

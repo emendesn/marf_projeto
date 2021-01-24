@@ -10,8 +10,8 @@ Data.....:              Out/2016
 Descricao / Objetivo:   Browse com os Documentos exigidos pelo cliente  
 Doc. Origem:            EEC03
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Leo - Alteracao para incluir os documentos obrigatorios automaticamente no cliente.
+Uso......:              Marfrig
+Obs......:              Leo - Alteração para incluir os documentos obrigatórios automáticamente no cliente.
 ===========================================================================================
 */               
 
@@ -35,7 +35,7 @@ User Function MGFEEC02()
 	
 	
 	oBrowse:setAlias("ZZ2")
-	oBrowse:setDescription("Clientes x Doc/Ativ Exportacao")
+	oBrowse:setDescription("Clientes x Doc/Ativ Exportação")
 	oBrowse:AddLegend("GetAdvFVal('SZZ','ZZ_TIPO',xFilial('SZZ')+ZZ2_CODDOC,1,'') = 'D' ","BLUE" ,'Documento')
 	oBrowse:AddLegend("GetAdvFVal('SZZ','ZZ_TIPO',xFilial('SZZ')+ZZ2_CODDOC,1,'') = 'A' ","GREEN" ,"Atividade")
 	
@@ -81,7 +81,7 @@ Static Function ModelDef()
 
       
 
-      oModel:SetDescription('Clientes x Doc/Ativ Exportacao')
+      oModel:SetDescription('Clientes x Doc/Ativ Exportação')
 
       oModel:SetPrimaryKey({"ZZ2_FILIAL","ZZ2_COD"})
 
@@ -120,8 +120,8 @@ Static Function ViewDef()
 
 Return oView
 
-//=============================== Relacao das Functions =================================
-// 01 - Funcao Principal - Clientes x Doc. de Exportacao -  MGFEEC02()
+//=============================== Relação das Functions =================================
+// 01 - Função Principal - Clientes x Doc. de Exportação -  MGFEEC02()
 // 02 - Legendas - LEGEEC02() 
 //=======================================================================================
 User Function MGFEEC2A()   
@@ -132,7 +132,7 @@ User Function MGFEEC2A()
 	
 	If cParam == "ANTES_DO_MSGET"
 		//If Altera
-			aAdd(aButtons,{"BITMAP",{|| U_MGFEEC02()}, 'Doc/Ativ Exportacao','Doc/Ativ x Cliente'})
+			aAdd(aButtons,{"BITMAP",{|| U_MGFEEC02()}, 'Doc/Ativ Exportação','Doc/Ativ x Cliente'})
 		//EndIf
 	EndIf
 	 

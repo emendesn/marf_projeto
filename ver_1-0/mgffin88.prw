@@ -12,7 +12,7 @@ Data................: 07/03/2018
 Descricao / Objetivo: Tipo de Valor do Contas a Pagar
 Doc. Origem.........: MIT044- CAP016 - Tipo de Valor
 Solicitante.........: Cliente - Mauricio CAP
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Chamado pelo programa FIN050 onde .T. permite incluir
 =====================================================================================
 */
@@ -54,13 +54,13 @@ DEFINE MSDIALOG oDlg TITLE "Tipo de Valor" FROM 000, 000  TO 320, 650 COLORS 0, 
 	@ 022, 190 SAY  "Valor Original:"   SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
 	@ 020, 240 MSGET  SE2->E2_VALOR     SIZE 070, 010 OF oDLG When .F. PICTURE '@E 99,999,999.99' COLORS 0, 16777215 PIXEL
 
-	@ 037, 190 SAY  "Total Acrï¿½scimo:"  SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
+	@ 037, 190 SAY  "Total Acréscimo:"  SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
 	@ 035, 240 MSGET nValA     			SIZE 070, 010 OF oDLG When .F. PICTURE '@E 99,999,999.99' COLORS 0, 16777215 PIXEL
 
-	@ 052, 190 SAY  "Total Decrï¿½scimo:" SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
+	@ 052, 190 SAY  "Total Decréscimo:" SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
 	@ 050, 240 MSGET  nValD   			SIZE 070, 010 OF oDLG When .F. PICTURE '@E 99,999,999.99' COLORS 0, 16777215 PIXEL
 
-	@ 067, 190 SAY  "Valor Lï¿½quido:"    SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
+	@ 067, 190 SAY  "Valor Líquido:"    SIZE 061, 010 OF oDLG                                     COLORS 0, 16777215 PIXEL
 	@ 065, 240 MSGET  nValLiq           SIZE 070, 010 OF oDLG When .F. PICTURE '@E 99,999,999.99' COLORS 0, 16777215 PIXEL
 	
 	//@ 080, 003 LISTBOX oBrowse   SIZE 320,060 OF oDlg PIXEL ColSizes 50,50
@@ -82,8 +82,8 @@ DEFINE MSDIALOG oDlg TITLE "Tipo de Valor" FROM 000, 000  TO 320, 650 COLORS 0, 
 
 	
 	oBrowse:addColumn(TCColumn():new(""         ,{||aLisTV[oBrowse:nAt][01]},"@!" ,,,"LEFT" , 1,.T.,.F.,,,,,))
-	oBrowse:addColumn(TCColumn():new("Cï¿½d."     ,{||aLisTV[oBrowse:nAt][02]},"@!" ,,,"LEFT"  ,20,.F.,.F.,,,,,))
-	oBrowse:addColumn(TCColumn():new("Descricao",{||aLisTV[oBrowse:nAt][03]},"@!" ,,,"LEFT"  ,70,.F.,.F.,,,,,))
+	oBrowse:addColumn(TCColumn():new("Cód."     ,{||aLisTV[oBrowse:nAt][02]},"@!" ,,,"LEFT"  ,20,.F.,.F.,,,,,))
+	oBrowse:addColumn(TCColumn():new("Descrição",{||aLisTV[oBrowse:nAt][03]},"@!" ,,,"LEFT"  ,70,.F.,.F.,,,,,))
 	oBrowse:addColumn(TCColumn():new("Tipo"     ,{||aLisTV[oBrowse:nAt][04]},"@!" ,,,"LEFT"  ,20,.F.,.F.,,,,,))
 	oBrowse:addColumn(TCColumn():new("Valor"    ,{||aLisTV[oBrowse:nAt][05]},"@E 999,999,999.99" ,,,"RIGHT" ,40,.F.,.F.,,,,,))
 	oBrowse:addColumn(TCColumn():new("Historico",{||aLisTV[oBrowse:nAt][06]},"@!" ,,,"LEFT"  ,100,.F.,.F.,,,,,))
@@ -124,7 +124,7 @@ While ZDS->(!Eof()) .And.        ;
         AAdd(aRec,IIF(ZDR->ZDR_TIPO == 'A',oVerde,oRed))
         AAdd(aRec,ZDS->ZDS_COD)
         AAdd(aRec,ZDR->ZDR_DESC)
-        AAdd(aRec,IIF(ZDR->ZDR_TIPO == 'A','Acrï¿½scimo','Decrï¿½scimo'))
+        AAdd(aRec,IIF(ZDR->ZDR_TIPO == 'A','Acréscimo','Decréscimo'))
         AAdd(aRec,ZDS->ZDS_VALOR)
         AAdd(aRec,ZDS->ZDS_HISTOR)
         AAdd(aRec,ZDS->(Recno()))
@@ -153,19 +153,19 @@ Private nReg     :=  0
 
       
 IF SE2->E2_VALOR <> SE2->E2_SALDO
-     MsgAlert('Acao nao ï¿½ possivel, motivo : O Titulo sofreu baixa !!')
+     MsgAlert('Ação não é possivel, motivo : O Titulo sofreu baixa !!')
 	 Return
 EndIF
 IF SE2->E2_MOEDA <> 1
-     MsgAlert('Acao nao ï¿½ possivel, motivo : Moeda do Titulo !!')
+     MsgAlert('Ação não é possivel, motivo : Moeda do Titulo !!')
 	 Return
 EndIF
 IF Alltrim(SE2->E2_TIPO) $ 'PA#NDF'
-     MsgAlert('Acao nao ï¿½ possivel, motivo : Adiantamento !!')
+     MsgAlert('Ação não é possivel, motivo : Adiantamento !!')
 	 Return
 EndIF
 
-IF nTipo == 1 //Inclusao
+IF nTipo == 1 //Inclusão
 		dbSelectArea('ZDR')
 		cAlias   := 'ZDS'
 		nOpc     := 3
@@ -201,7 +201,7 @@ IF nTipo == 1 //Inclusao
 				Carrega_Dados()
 				Brow_Refresh()
 		EndIF
-ElseIF nTipo == 2 // Alteracao
+ElseIF nTipo == 2 // Alteração
 	IF aLisTV[oBrowse:nAt,7] <> 0
 		ZDS->(dbGoTo(aLisTV[oBrowse:nAt,7]))
 		cAlias   := 'ZDS'
@@ -224,7 +224,7 @@ ElseIF nTipo == 2 // Alteracao
 			Brow_Refresh()
 		EndIF
 	EndIF
-ElseIF nTipo == 3 // Exclusao
+ElseIF nTipo == 3 // Exclusão
 	IF aLisTV[oBrowse:nAt,7] <> 0 .And. MsgYESNO('Deseja Excluir o Tipo de Valor ?')
 		ZDS->(dbGoTo(aLisTV[oBrowse:nAt,7]))
 		Reclock("ZDS",.F.)
@@ -254,18 +254,18 @@ Local lRet := .T.
 
 If !ExistCPO('ZDR',M->ZDS_COD,1)
 	//IF AScan(aLisTV,{|x|  Alltrim(x[2]) == Alltrim(M->ZDS_COD) }) <> 0
-    //    MsgAlert('Tipo de Valor jï¿½ Cadastrado !!')
+    //    MsgAlert('Tipo de Valor já Cadastrado !!')
 	//	lRet := .F.
 	//EndIF
 //Else                                              
-	MsgAlert('Tipo de Valor nao Cadastrado !!')
+	MsgAlert('Tipo de Valor não Cadastrado !!')
 	lRet := .F.
 Endif
 
 IF lRet .And. ZDR->(dbSeek(xFilial('ZDR')+M->ZDS_COD))
 	IF ZDR->ZDR_TIPO == 'D'
 		IF nValLiq - M->ZDS_VALOR <= 0
-			MsgAlert('O Valor de decrescimo ira zerar o valor do Titulo !!')
+			MsgAlert('O Valor de decrescimo irá zerar o valor do Titulo !!')
 			Return
 		EndIF
 	EndIF
@@ -316,6 +316,6 @@ Return {nPos,nNeg}
 	/*	
 	AAdd(aParamBox, {1, "Tipo de Valor :"	, Space(03) , "@!"," U_FIN88VL() "      ,"MGFZDR" ,, 020	, .T.	})
 	AAdd(aParamBox, {1, "Valor :"	        , 0         , '@E 99,999,999.99',       ,""	   ,, 070	, .T.	})
-	AAdd(aParamBox, {1, "Historico:"        , Space(100), "@!",                     ,      ,, 100	, .T.	})
-	IF ParamBox(aParambox, "Inclusao do Tipo de Valor no Titulo"	, @aRet, , , .T. , 0, 0, , , .T. , .T. )*/
+	AAdd(aParamBox, {1, "Histórico:"        , Space(100), "@!",                     ,      ,, 100	, .T.	})
+	IF ParamBox(aParambox, "Inclusão do Tipo de Valor no Titulo"	, @aRet, , , .T. , 0, 0, , , .T. , .T. )*/
                                                            	

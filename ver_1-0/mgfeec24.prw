@@ -68,8 +68,8 @@ Descrição / Objetivo: MenuDef Browse
 */
 Static function MenuDef()
 
-	Local	aRotina	:= {}
-
+	Local	aRotina	 := {}
+	Local   _cUsrPrO := SuperGetMV("MGF_USRPRO", , "") // usuarios que podem gerar/imprimir progorma
 	ADD OPTION aRotina TITLE "Pesquisar"    	  		ACTION "PesqBrw"          	OPERATION 1                      	ACCESS 0
 	ADD OPTION aRotina TITLE "Visualizar"   	  		ACTION "VIEWDEF.MGFEEC24" 	OPERATION MODEL_OPERATION_VIEW   	ACCESS 0
 	ADD OPTION aRotina TITLE "Alterar"       	  		ACTION "VIEWDEF.MGFEEC24" 	OPERATION MODEL_OPERATION_UPDATE 	ACCESS 0
@@ -77,7 +77,9 @@ Static function MenuDef()
 	ADD OPTION aRotina TITLE "Gerar Pedido" 	  		ACTION "U_xMEEC24GP"	  	OPERATION 8 					 	ACCESS 0
 	ADD OPTION aRotina TITLE "Certif.Sanitario"  		ACTION "U_EEC46B"         	OPERATION 6 					 	ACCESS 0
 	ADD OPTION aRotina TITLE "Packing List"	  			ACTION "U_MGFEEC47"        	OPERATION 13 					 	ACCESS 0
-	ADD OPTION aRotina TITLE "Proforma Invoice"	  		ACTION "U_MGFEEC21"       	OPERATION 10 					 	ACCESS 0
+	IF ( __cUserId $ _cUsrPro  ) .Or. Empty(_cUsrPro)
+		ADD OPTION aRotina TITLE "Proforma Invoice"	  		ACTION "U_MGFEEC21"       	OPERATION 10 					 	ACCESS 0
+	ENDIF
 	ADD OPTION aRotina TITLE 'Shipping Instructions'	ACTION 'u_MGFECC14' 		OPERATION 9 						ACCESS 0
 	ADD OPTION aRotina TITLE 'Documentos'				ACTION 'u_MGFEEC15' 		OPERATION 11 						ACCESS 0
 	ADD OPTION aRotina TITLE 'Distribuir'				ACTION 'u_MGFEEC33' 		OPERATION 12						ACCESS 0
@@ -85,6 +87,7 @@ Static function MenuDef()
 	ADD OPTION aRotina TITLE 'Adiantamento'				ACTION 'u_xAdiant24'		OPERATION 15 						ACCESS 0
 	ADD OPTION aRotina TITLE 'Envia EXP ao TMS'			ACTION 'U_TMSENVEX'			OPERATION 16 						ACCESS 0
 	ADD OPTION aRotina TITLE 'Despesas EXP'  			ACTION 'U_xSeekSc7'			OPERATION 17 						ACCESS 0
+	ADD OPTION aRotina TITLE 'Importa Processos ME'		ACTION 'U_MONINT79'			OPERATION 18 						ACCESS 0
 
 return(aRotina)
 
@@ -446,8 +449,8 @@ Static function ViewDef()
 	oView:AddGrid( 'VIEW_ZB9' , oStrZB9, 'ZB9DETAIL' )
 	oView:AddField( 'VIEW_CALC', oCalc1, 'EEC24CALC' )
 
-	oView:CreateHorizontalBox( 'SUPERIOR' , 40 )
-	oView:CreateHorizontalBox( 'INFERIOR' , 50 )
+	oView:CreateHorizontalBox( 'SUPERIOR' , 60 )
+	oView:CreateHorizontalBox( 'INFERIOR' , 30 )
 	oView:CreateHorizontalBox( 'CALC' , 10 )
 
 	oView:SetOwnerView( 'VIEW_ZB8', 'SUPERIOR' )
@@ -1702,7 +1705,16 @@ User Function xMEEC24GP()
 			If lOk
 				GrvFRPREV(_nValFrePr, _nTaXa)
 				Processa({|| xProsPed()},"Aguarde...","Gerando Pedido no Comex",.F.)
-			EndIf
+//wvn - envia para tms
+				IF ZB8->ZB8_TMSACA == "A" .And. !EMPTY(ZB8->ZB8_PEDFAT) .And. ZB8->ZB8_MOTEXP  == '2'
+					If EE7->EE7_FILIAL $ GETMV("MGF_TMSEXP")	
+						cFilB  := EE7->EE7_FILIAL
+						_lTela := .F.
+						Processa({|| U_MGFEEC81( ZB8->ZB8_EXP, ZB8->ZB8_ANOEXP, ZB8->ZB8_SUBEXP, ZB8->ZB8_MOTEXP, ZB8->ZB8_TMSACA, _lTela, "01", cFilB  ) },"Processando","Aguarde........Enviando EXP ao TMS MultiSoftWare.",.F.)
+					Endif
+				Endif
+//
+			EndIf			
 		EndIf
 	Else
 		Help(" ",1,"Atenção",,'Só é Possivel a geração de Pedidos para EXPs que estejam Distribuídas ou geradas parcialmente.',1,0)
@@ -1821,7 +1833,7 @@ Static function xProsPed()
 					EE7->(MsUnlock())
 				EndIf
 			EndIf
-/*
+			
 			//WVN GRAVA NUMERO DO PEDIDO DE VENDAS NA EXP
 			If EMPTY(ZB8->ZB8_PEDFAT)
 				cQrySc5 := ' '
@@ -1829,28 +1841,37 @@ Static function xProsPed()
 				cQrySc5 += " FROM "+RetSqlname("SC5")+ " TSC5"
 				cQrySc5 += " WHERE "
 				cQrysc5 += "  TSC5.C5_FILIAL = '"+cFilB+"' AND"
-				IF LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP))=9
-					cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,9)='"+ALLTRIM(ZB8->ZB8_EXP)+"' AND"
-				ELSEIF LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP))=14
-					cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,14)='"+ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP+"' AND"
-				ELSEIF LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP))=11
-					cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,11)='"+ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+"' AND"					
+
+				IF 		LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP)) == 9
+						cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,9)='"+ALLTRIM(ZB8->ZB8_EXP)+"' AND"
+				ELSEIF 	LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP)) == 14
+						cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,14)='"+ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP+"' AND"
+				ELSEIF 	LEN(ALLTRIM(ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+ZB8->ZB8_SUBEXP)) == 11
+						cQrysc5 += "  SUBSTR(TSC5.C5_PEDEXP,1,11)='"+ZB8->ZB8_EXP+ZB8->ZB8_ANOEXP+"' AND"					
 				ENDIF
+
 				cQrySc5 += "  TSC5.D_E_L_E_T_ = ' ' "
+
 				cQrySc5 := ChangeQuery(cQrySc5)
 				dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQrySc5),"QRYSC5",.T.,.T.)
+
 				QRYSC5->(dbGoTop())
 				Count To nRegSc5
+
 				QRYSC5->(dbGoTop())
+				
 				If nRegSc5 > 0 
 					RecLock('ZB8',.F.)
 					ZB8->ZB8_PEDFAT := QRYSC5->C5_NUM
 					ZB8->(MSUNLOCK())
 				ENDIF
+
 				QRYSC5->(dbCloseArea())
+
 				inkey(.1)
+			
 			ENDIF
-*/
+
 			//Salva Pedido ZB9
 			dbSelectArea('ZB9')
 			ZB9->(dbSetOrder(2))//ZB9_FILIAL+ZB9_EXP+ZB9_ANOEXP+ZB9_SUBEXP+ZB9_SEQUENC
@@ -1975,7 +1996,8 @@ Static function xProsPed()
 		If lGrvStt
 			RecLock('ZB8',.F.)
 			ZB8->ZB8_MOTEXP  := '2'
-			//ZB8->ZB8_PEDFAT  := SC5->C5_NUM //WVN
+			ZB8->ZB8_PEDFAT  := EE7->EE7_PEDFAT
+			ZB8->ZB8_TMSACA	 := "A"
 			ZB8->(MsUnLock())
 			ApMsgInfo(cSuc,"Pedidos Gerados")
 		ElseIf !(lGrvStt) .and. lPedOk
@@ -2005,7 +2027,6 @@ User Function xMG24JBIC(aDadEE7,aDadEE8,cFilAtu,aRegist)
 
 	//RpcSetEnv( '01' , cFilAtu )
 	PREPARE ENVIRONMENT EMPRESA( '01' ) FILIAL ( cFilAtu ) MODULO ( 'EEC' ) TABLES "EE7", "EE8", "SX6"
-
 
 	//Executa Execauto
 	aRet :=  IncluirPed(aDadEE7,aDadEE8,aRegist,cFilAtu)
@@ -2366,6 +2387,20 @@ Static Function IncluirPed(aCabec,aItens,aRegist,cFilAtu)
 	END SEQUENCE
 
 	ErrorBlock( bError )
+/*
+ 	if ! lMsErroAuto .or. Empty(cError)
+		_wRecnoZB8 := ZB8->(RECNO())
+	 	_ChaveZb8  :=  XFILIAL("ZB8") + SUBSTR(EE7->EE7_PEDIDO,1,14)
+	 	ZB8->(DbsetOrder(3)) //ZB8_FILIAL+ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP                                                                                                                        
+	 	IF ZB8->(DbSeek(_ChaveZb8))
+			ZB8->(RecLock('ZB8',.F.))
+			ZB8->ZB8_PEDFAT := EE7->EE7_PEDFAT
+			ZB8->ZB8_TMSACA := "A"
+			ZB8->(MSUNLOCK())
+		ENDIF
+		ZB8->(DbGoTo(_wRecnoZB8))
+	EndIf
+*/
 
 	If lMsErroAuto .or. !Empty(cError)
 		lRet := .F.
@@ -2761,14 +2796,14 @@ User function xM24CAN()
 		BeginSql Alias cAliasZB9
 			SELECT '*' EXIST
 			FROM %Table:EE7% EE7
-			WHERE 	EE7.%notDel% AND
+			WHERE 	EE7.D_E_L_E_T_ = '*' AND
 				EE7_FILIAL 	= %xFilial:EE7% AND
 				EE7_ZEXP		= %Exp:EE7->EE7_ZEXP% AND
 				EE7_ZSUBEX	= %Exp:EE7->EE7_ZSUBEX% AND
 				EE7_ZANOEX	= %Exp:EE7->EE7_ZANOEX% AND
-				EE7.R_E_C_N_O_	<> %Exp:EE7->(Recno())%
+				EE7.R_E_C_N_O_	= %Exp:EE7->(Recno())%
 			EndSql
-			If (cAliasZB9)->(Eof())
+			If !(cAliasZB9)->(Eof())
 				(cAliasZB9)->(DbCloseArea())
 				//Traz todos os itens das EXPs com esse número de Pedido
 				BeginSql Alias cAliasZB9
@@ -2815,9 +2850,14 @@ User function xM24CAN()
 							ZB9_ANOEXP	= %Exp:EE7->EE7_ZANOEX% AND
 							ZB9_ZPEDID	<> ' '
 						EndSql
-						If (cAliasZB9)->(Eof())
+						If !(cAliasZB9)->(Eof())
 							RecLock("ZB8",.F.)
-							ZB8->ZB8_MOTEXP := iif(ZB8->ZB8_MOTEXP == '2','6','4')
+							ZB8->ZB8_MOTEXP := '4'//iif(ZB8->ZB8_MOTEXP == '2','6','4')
+							ZB8->ZB8_PEDFAT := SPACE(06)  //wvn 220720
+							ZB8->(MsUnlock())
+						Else 
+							RecLock("ZB8",.F.)
+							ZB8->ZB8_MOTEXP := '6'//iif(ZB8->ZB8_MOTEXP == '2','6','4')
 							ZB8->ZB8_PEDFAT := SPACE(06)  //wvn 220720
 							ZB8->(MsUnlock())
 						EndIf
@@ -3456,6 +3496,11 @@ Static function xPedVen()
 		aadd(aCabec,{"C5_FRETE"		,ZB8->ZB8_FRPREV,Nil})
 		aadd(aCabec,{"C5_SEGURO"	,ZB8->ZB8_SEGPRE,Nil})
 
+		// Envia o numero da EXP, quando o Tipo do Pedido contiver : IT|TE|EX - PRB0041099
+		If AllTrim(ZB8->ZB8_ZTIPPE) $ "IT|TE|EX"
+		   aadd(aCabec,{"C5_ZNUMEXP",ZB8->ZB8_EXP,Nil})
+		EndIf
+
 		Begin Transaction
 			//Prepara Itens ZB9
 			dbSelectArea('ZB9')
@@ -3997,10 +4042,14 @@ User Function TMSENVEX( _cZB8_EXP, _ZB8ANOEXP, _ZB8SUBEXP, _cZB8_MOTE, _ZB8TMSAC
 
 		ElseIf _ZB8TMSACA == " " 		// Se receber _ZB8TMSACA por parametro, utilizo o seu conteudo. Se estiver vazio leio a base de dados e uso a logica abaixo
 			_ZB8TMSACA	:= "I"
+		
+		//WVN-20200820
+		ElseIf _ZB8TMSACA == "I" .And. EMPTY(ZB8->ZB8_ZTMSID )
+			_ZB8TMSACA	:= "I"
+		//
 
-		ElseIf ZB8->ZB8_TMSACA == "I" .OR. ZB8->ZB8_TMSACA == "A"
+		ElseIf (ZB8->ZB8_TMSACA == "I" .OR. ZB8->ZB8_TMSACA == "A") .AND. !EMPTY(ZB8->ZB8_ZTMSID)
 			_ZB8TMSACA	:= "A"
-
 		Else
 			If _lTela
 				_ZB8TMSACA	:= "?"		// Na tela, se houver um caracter inesperado neste campo, insiro o caracter "?", qe deve ser substituido por "I","A" ou "C"
@@ -4616,7 +4665,12 @@ Return Nil
 /*/
 User Function fEnvExpT()
 
-	Local cUrl 		 := AllTrim("http://spdwvapl203:1451/processo-exportacao/api/v1/empresa/"+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP + ZB8_ANOEXP + ZB8_SUBEXP))
+	//Local cUrl 		 := AllTrim("http://spdwvapl203:1451/processo-exportacao/api/v1/empresa/"+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP + ZB8_ANOEXP + ZB8_SUBEXP))
+	//Local cUrl 	     := AllTrim("http://integracoes.marfrig.com.br:1451/processo-exportacao/api/v1/empresa/"+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP + ZB8_ANOEXP + ZB8_SUBEXP)) 
+	
+	Local cWayUrl	 	 := SuperGetMV("MGF_E24URL",,"http://integracoes.marfrig.com.br:1451/processo-exportacao/api/v1/empresa/")
+	Local cUrl 		 	 := AllTrim(AllTrim(cWayUrl)+AllTrim(ZB8->ZB8_FILVEN)+"/exp/"+ZB8->(ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP)) 
+				        
 	Local cMsgErro	 := ""
 	Local cHeadRet 	 := ""
 	Local aHeadOut	 := {}

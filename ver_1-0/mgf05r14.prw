@@ -1,15 +1,15 @@
 #include "totvs.ch"
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½
-//ï¿½ï¿½ï¿½Programa  ï¿½ MGF05R14	ï¿½Autor  ï¿½ Geronimo Benedito Alves                                                               ï¿½Data ï¿½  22/08/18  ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Desc.     ï¿½ Rotina que mostra na tela os dados da planilha: Financeiro - Contas a Pagar - Titulos em Aberto CP (Modulo 06-FIN)                ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½          ï¿½ Os dados sao obtidos e mostrados na tela atravez da execucao de query, e depois, o usuario pode gerar uma planilha excel com eles ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¹ï¿½ï¿½
-//ï¿½ï¿½ï¿½Uso       ï¿½ Cliente Global Foods                                                                                                              ï¿½ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ
+//±±ÉÍÍÍÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÑÍÍÍÍÍÍÍÍÍÍÍÍ»±±
+//±±ºPrograma  ³ MGF05R14	ºAutor  ³ Geronimo Benedito Alves                                                               ºData ³  22/08/18  º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºDesc.     ³ Rotina que mostra na tela os dados da planilha: Financeiro - Contas a Pagar - Títulos em Aberto CP (Módulo 06-FIN)                º±±
+//±±º          ³ Os dados sao obtidos e mostrados na tela atravéz da execução de query, e depois, o usuario pode gerar uma planilha excel com eles º±±
+//±±ÌÍÍÍÍÍÍÍÍÍÍØÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¹±±
+//±±ºUso       ³ Marfrig Global Foods                                                                                                              º±±
+//±±ÈÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÏÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼±±
+//ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
 
 User Function MGF05R14()
 
@@ -19,33 +19,33 @@ User Function MGF05R14()
 	Private _aEmailQry, _cWhereAnd
 	_aEmailQry	:= {};	_cWhereAnd	:= ""
 
-	Aadd(_aDefinePl, "Faturamento Analise de pedidos(1)"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecera na regua de processamento.
+	Aadd(_aDefinePl, "Faturamento Analise de pedidos(1)"	)	//01-	_cTitulo	- Titulo da planilha a ser gerada. Aparecerá na regua de processamento.
 	Aadd(_aDefinePl, "Faturamento Analise pedidos(1)"		)	//02-	_cArqName  - Nome da planilha Excel a ser criada
 	Aadd(_aDefinePl, {"Faturamento Analise pedidos"}		)	//03-	_cNomAbAna - Titulo(s) da(s) aba(s) na planilha excel
 	Aadd(_aDefinePl, {"Faturamento Analise pedidos"}		)	//04-	_cNomTTAna - Titulo(s) da(s) tabela(s) na planilha excel
-	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serao mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, sera mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry
-	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluido naquela aba
+	Aadd(_aDefinePl, {}										)	//05-	Array de Arrays que define quais colunas serão mostradas em quais abas da planilha. Se a Array _aDefinePl ou a sua subArray for {}, será mostrado na(s) aba(s), todas as colunas contidas na array _aCampoQry
+	Aadd(_aDefinePl, { {||.T.} }							)	//06-	Array de code blocks (um code block para cada aba) com a regra que determina se aquele registro deve ser incluído naquela aba
 
 	_aCpoExce	:= {}
 	_cTmp01		:= ""
 
 	//1-Campo Base(SX3), 2-Nome campo na View, 3-Titulo do campo, 4-Tipo dado-C,D,N, 5-Tamanho, 6-Decimais, 7-Picture, 8-Apelido, 9-PictVar
-	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou ï¿½ usado alguma funcao (Sum,Count,max,Coalesc,etc), ï¿½ dado a ele um apelido indicado
-	//pela clausula "as" que sera transportado para o elemento 8.
-	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 sao sobrepostos aos elemntos correspondentes
-	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serao preservados.
+	//Se o elemento 2 (nome do campo na view) tem mais de 10 letras ou é usado alguma função (Sum,Count,max,Coalesc,etc), é dado a ele um apelido indicado
+	//pela clausula "as" que será transportado para o elemento 8.
+	//Se o nome indicado no elemento 1, Campo Base(SX3), existir no SX3, as propriedades do registro do SX3 são sobrepostos aos elemntos correspondentes
+	//do Array, que estiverem vazios. Os elementos do array _aCampoQry que estiverem  preenchidos serão preservados.
 	//					01			 02					 03							 04	 05	 06	07		08	09
 
-	Aadd(_aCampoQry, {"C5_FILIAL"	,"EMPRESA"				   ,"Cod. Filial"			,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"C5_FILIAL"	,"EMPRESA"				   ,"Cód. Filial"			,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_NUM"		,"PEDIDO"				   ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_EMISSAO"	,"DATA_EMISSAO"   		   ,""						,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"C5_ZTPOPER"	,"COD_TIPO_OPERACAO"	   ,""						,""	,""	,""	,""		,""	,""	}) // 30/10/2019 - RTASK0010342
-	Aadd(_aCampoQry, {"X5_DESCRI"	,"TIPO_OPERACAO"	       ,""						,""	,""	,""	,""		,""	,""	}) // 30/10/2019 - RTASK0010342
+	Aadd(_aCampoQry, {"C5_ZTPOPER"	,"COD_TIPO_OPERACAO"	   ,""						,""	,""	,""	,""		,""	,""	}) // Paulo Henrique - MARFRIG - 30/10/2019 - RTASK0010342
+	Aadd(_aCampoQry, {"X5_DESCRI"	,"TIPO_OPERACAO"	       ,""						,""	,""	,""	,""		,""	,""	}) // Paulo Henrique - MARFRIG - 30/10/2019 - RTASK0010342
 	Aadd(_aCampoQry, {"C5_CLIENTE"	,"CLIENTE"                 ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_XCGCCPF"	,"CNPJ"                    ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_ZBLQRGA"	,"STATUS"                  ,"Status"	  		    ,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_ZTIPPED"	,"ESPECIE_PEDIDO"          ,""						,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"TABELA_PRECO","TABELA_PRECO"            ,"Tabela Preco"			,""	,""	,""	,""		,""	,""	}) // Alteracao de visibilidade do campo em questao
+	Aadd(_aCampoQry, {"TABELA_PRECO","TABELA_PRECO"            ,"Tabela Preco"			,""	,""	,""	,""		,""	,""	}) // Paulo da Mata - 10/12/2019 - Alteração de visibilidade do campo em questão
 //	Aadd(_aCampoQry, {"C5_FECENT"	,"DATA_ENTREGA"            ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_ZDTEMBA"	,"DATA_EMBARQUE"           ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"A1_NOME"		,"NOME_CLIENTE"            ,""						,""	,""	,""	,""		,""	,""	})
@@ -74,17 +74,17 @@ User Function MGF05R14()
 	Aadd(_aCampoQry, {"C5_ZCODUSU"	,"COD_USUARIO"             ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_ZNOMUSU"	,"NOME_USUARIO"            ,""						,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"CJ_ZMESTRE"	,"NUM_ORCAMENTO"           ,""						,""	,""	,""	,""		,""	,""	})
-	Aadd(_aCampoQry, {"CJ_EMISSAO"	,"EMISSAO_ORCAMENTO"       ,"Dt. Emissao Orcamento"	,""	,""	,""	,""		,""	,""	})
+	Aadd(_aCampoQry, {"CJ_EMISSAO"	,"EMISSAO_ORCAMENTO"       ,"Dt. Emissão Orçamento"	,""	,""	,""	,""		,""	,""	})
 	Aadd(_aCampoQry, {"C5_XOBSPED"	,"PEDIDO_OBSERVACAO"       ,""						,"C",2020,0	,""		,""	,""	})
 
 	Aadd(_aCampoQry, {"DATA_BLOQUEIO"     ,"DATA_BLOQUEIO"        ,"Dt Bloqueio"	      ,"",,	,""		,""	,""	})
 	Aadd(_aCampoQry, {"DESCRICAO_BLOQUEIO","DESCRICAO_BLOQUEIO"   ,"Bloqueio"	          ,"",,	,""		,""	,""	})
- 	Aadd(_aCampoQry, {"STATUS_BLOQUEIO"   ,"STATUS_BLOQUEIO"      ,"Status Bloqueio"	  ,"",,	,""		,""	,""	})  // 30/10/2019 - RTASK0010342
+ 	Aadd(_aCampoQry, {"STATUS_BLOQUEIO"   ,"STATUS_BLOQUEIO"      ,"Status Bloqueio"	  ,"",,	,""		,""	,""	})  // Paulo Henrique - MARFRIG - 30/10/2019 - RTASK0010342
 	Aadd(_aCampoQry, {"TOTAL_DESCONTO"    ,"TOTAL_DESCONTO"       ,"Total Desconto"	      ,"N",17,2	,""		,""	,""	})
 	
 	Aadd(_aCampoQry, {"VLR_DESCONTO"      ,"PERC_DESC_FECHAMENTO" ,"% Desconto Contrato"  ,"N",15,2	,""		,""	,""	})
 	Aadd(_aCampoQry, {"VLR_ACORDO"	      ,"PER_ACORDO_CONTRATO"  ,"% Acordo Contrato"    ,"N",15,2	,""		,""	,""	})
-	Aadd(_aCampoQry, {"DESCRI_4"	      ,"DATA_APROVACAO"      ,"Data Aprovacao"	      ,"",	,	,""		,""	,""	})
+	Aadd(_aCampoQry, {"DESCRI_4"	      ,"DATA_APROVACAO"      ,"Data Aprovação"	      ,"",	,	,""		,""	,""	})
 	Aadd(_aCampoQry, {"DESCRI_5"	      ,"NOME_APROVADOR"      ,"Nome Aprovador"	      ,"C",40	,0	,""		,""	,""	})
 
 //	aAdd(_aParambox,{1,"Data Entrega Inicial"	  ,Ctod("")						,""		,""														,""		,""	,050,.F.})
@@ -95,22 +95,22 @@ User Function MGF05R14()
 	aAdd(_aParambox,{1,"Data Emissao Final"		  ,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR03, MV_PAR04, 'Data Emissao' )"		,""		,""	,050,.F.})
 	aAdd(_aParambox,{1,"Data Faturamento Inicial" ,Ctod("")						,""		,""														,""		,""	,050,.F.})
 	aAdd(_aParambox,{1,"Data Faturamento Inicial" ,Ctod("")						,""		,"U_VLFIMMAI(MV_PAR05, MV_PAR06, 'Data Faturamento' )"	,""		,""	,050,.F.})
-	aAdd(_aParambox,{1,"Codigo Produto Inicial"	  ,Space(tamSx3("B1_COD")[1])	,"@!"	,""														,"SB1"	,""	,050,.F.})
-	aAdd(_aParambox,{1,"Codigo Produto Final"	  ,Space(tamSx3("B1_COD")[1])	,"@!"	,"U_VLFIMMAI(MV_PAR07, MV_PAR08, 'Cod. Produto' )"		,"SB1"	,""	,050,.F.})
-	aAdd(_aParambox,{1,"Codigo Cliente Inicial"	  ,Space(tamSx3("A1_COD")[1])	,"@!"	,""														,"SA1"	,""	,050,.F.})
-	aAdd(_aParambox,{1,"Codigo Cliente Final"	  ,Space(tamSx3("A1_COD")[1])	,"@!"	,"U_VLFIMMAI(MV_PAR09, MV_PAR10, 'Cod. Produto' )"		,"SA1"	,""	,050,.F.})
- 	aAdd(_aParambox,{3,"Status Pedido"			  ,Iif(Set(_SET_DELETED),1,2)	,{"FATURADO","NAO FATURADO","AMBOS"}					        , 100	,"" ,.F.})  // 30/10/2019 - RTASK0010342
-	aAdd(_aParambox,{1,"Nï¿½ do Pedido:"			  ,Space(tamSx3("C5_NUM")[1])	,"@!"		,""													,""		,"" ,050,.F.})
+	aAdd(_aParambox,{1,"Código Produto Inicial"	  ,Space(tamSx3("B1_COD")[1])	,"@!"	,""														,"SB1"	,""	,050,.F.})
+	aAdd(_aParambox,{1,"Código Produto Final"	  ,Space(tamSx3("B1_COD")[1])	,"@!"	,"U_VLFIMMAI(MV_PAR07, MV_PAR08, 'Cód. Produto' )"		,"SB1"	,""	,050,.F.})
+	aAdd(_aParambox,{1,"Código Cliente Inicial"	  ,Space(tamSx3("A1_COD")[1])	,"@!"	,""														,"SA1"	,""	,050,.F.})
+	aAdd(_aParambox,{1,"Código Cliente Final"	  ,Space(tamSx3("A1_COD")[1])	,"@!"	,"U_VLFIMMAI(MV_PAR09, MV_PAR10, 'Cód. Produto' )"		,"SA1"	,""	,050,.F.})
+ 	aAdd(_aParambox,{3,"Status Pedido"			  ,Iif(Set(_SET_DELETED),1,2)	,{"FATURADO","NAO FATURADO","AMBOS"}					        , 100	,"" ,.F.})  // Paulo Henrique - MARFRIG - 30/10/2019 - RTASK0010342
+	aAdd(_aParambox,{1,"Nº do Pedido:"			  ,Space(tamSx3("C5_NUM")[1])	,"@!"		,""													,""		,"" ,050,.F.})
 
 	If ! U_ParameRe(_aParambox, _bParameRe, @_aRet) ; Return ; Endif
 
-	// Paulo Henrique - Sï¿½ emite o relatorio se a data de emissao for menor de 90 dias
+	// Paulo Henrique - Só emite o relatório se a data de emissão for menor de 90 dias
 	If Mv_Par03 < (dDataBase - 90) .Or. Mv_Par04 > (dDataBase + 90)
-	   ApMsgAlert(OemToAnsi("OS DADOS DEVERï¿½O SER EMITIDOS DOS ULTIMOS 90 DIAS"),OemToAnsi("ATENCAO"))
+	   ApMsgAlert(OemToAnsi("OS DADOS DEVERÃO SER EMITIDOS DOS ULTIMOS 90 DIAS"),OemToAnsi("ATENÇÃO"))
 	   Return
 	EndIf
 
-	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecao das FILIAIS a processar e as armazena na array _aSelFil
+	AdmSelecFil("", 0 ,.F.,@_aSelFil,"",.F.)		// Rotina que obtem a selecão das FILIAIS a processar e as armazena na array _aSelFil
 	If Empty(_aSelFil) ; Return ; Endif
 	_cCODFILIA	:= U_Array_In(_aSelFil)
 
@@ -122,10 +122,10 @@ User Function MGF05R14()
 	cTitDireto	:= "Selecione os registros "
 	nPosRetorn	:= 1		// Quero que seja retornado o primeiro campo: CAMPO_01
 
-	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene.
-	//.T. no _lCancProg, apos a Markgene, indica que realmente foi teclado o Botao cancelar e que devo abandonar o programa.
-	//.F. no _lCancProg, apos a Markgene, indica que realmente nao foi teclado o Botao cancelar ou que mesmo ele teclado, nao devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcacao dos registro)
-	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o Botao cancelar da MarkGene
+	//.T. no envio do parametro _lCancProg, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene.
+	//.T. no _lCancProg, após a Markgene, indica que realmente foi teclado o botão cancelar e que devo abandonar o programa.
+	//.F. no _lCancProg, após a Markgene, indica que realmente não foi teclado o botão cancelar ou que mesmo ele teclado, não devo abandonar o programa (mas apenas "limpar/desconsiderar" a marcação dos registro)
+	_lCancProg	:= .T. 		//.T. no envio do parametro, indica que devo abandonar programa, se for clicado o botão cancelar da MarkGene
 	//aStatuSoli	:= U_MarkGene(cQStatSoli, aCpoStSoli, cTitStSoli, nPosRetorn, @_lCancProg )
 	_cDiretoria	:= U_Array_In( U_MarkGene(cQryDireto, aCpoDireto, cTitDireto, nPosRetorn, @_lCancProg ) )
 	
@@ -149,7 +149,7 @@ User Function MGF05R14()
 	_cQuery += U_WhereAnd( !empty(_aRet[10]),      " COD_CLIENTE_FILTRO BETWEEN '"		+ _aRet[9]   + "' AND '" + _aRet[10] + "' " )
 	_cQuery += U_WhereAnd( !empty(_cDiretoria),    " DIRETORIA IN " 					+ _cDiretoria 							 	)
 
-    // Paulo Henrique - 28/11/2019 - Separaï¿½ï¿½o das informacoes conforme marcacao do usuario
+    // Paulo Henrique - 28/11/2019 - Separação das informações conforme marcação do usuário
 	 IF VALTYPE(_aRet[11]) == 'N'
 
 	     IF _aRet[11] == 1
@@ -163,13 +163,13 @@ User Function MGF05R14()
 	EndIF
     
 	If _aRet[11] == 'FATURADO' .Or. _aRet[11] == 'NAO FATURADO'
-	   _cQuery += U_WhereAnd( !empty(_aRet[11] )," STATUS_PEDIDO = '"+_aRet[11]+"' ")  // 30/10/2019 - RTASK0010342
+	   _cQuery += U_WhereAnd( !empty(_aRet[11] )," STATUS_PEDIDO = '"+_aRet[11]+"' ")  // Paulo Henrique - Marfrig - 30/10/2019 - RTASK0010342
 	Else 
 //     _cQuery += U_WhereAnd( !empty(_aRet[11] )," STATUS_PEDIDO LIKE '%"+_aRet[11]+"%' ")
        _cQuery += U_WhereAnd( !empty(_aRet[11] )," STATUS_PEDIDO IN "+FormatIn(_aRet[11],"/"))+" "
 	EndIf
  	
-	 _cQuery += U_WhereAnd( !empty(_aRet[12] )," PEDIDO LIKE '%"+_aRet[12]+"%' ")  // 30/10/2019 - RTASK0010342
+	 _cQuery += U_WhereAnd( !empty(_aRet[12] )," PEDIDO LIKE '%"+_aRet[12]+"%' ")  // Paulo Henrique - Marfrig - 30/10/2019 - RTASK0010342
 																				//
 	//MemoWrite( GetTempPath(.T.) + "AAA_" + FunName() +".TXT",_cQuery)
 	MemoWrite("C:\TEMP\AAA_" + FunName() +".SQL",_cQuery)

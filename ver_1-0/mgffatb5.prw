@@ -6,10 +6,10 @@
 Programa.:              MGFFATB5
 Autor....:              Paulo Henrique
 Data.....:              19/08/2019
-Descricao / Objetivo:   Atualizar tabela CDG, quando houver a inclusao das TAGS nProc e indProc
+Descricao / Objetivo:   Atualizar tabela CDG, quando houver a inclusão das TAGS nProc e indProc
 Doc. Origem:            Chamado RITM0024388 - TAGS
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 ===============================================================================================
 */

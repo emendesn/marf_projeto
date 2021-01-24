@@ -10,16 +10,16 @@
 Programa............: MA040VLD
 Autor...............: Marcelo Carneiro
 Data................: 23/06/2017 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: CAD04 - Cadastro de Vendedor para monstrar msg
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada antes de alterar
 =====================================================================================
 */
 User Function MA040VLD()
                              
-Local _nOpc := PARAMIXB     //3- Inclusao, 4- Alteracao e 5- Exclusao
+Local _nOpc := PARAMIXB     //3- Inclusão, 4- Alteração e 5- Exclusão
 Local _lRet := .T.
  
 If _nOpc == 4

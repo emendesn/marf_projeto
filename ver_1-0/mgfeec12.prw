@@ -6,10 +6,10 @@
 Programa.:              MGFEEC12
 Autor....:              Leonardo Kume
 Data.....:              Dez/2016
-Descricao / Objetivo:   Fonte MVC para exibicao de Track Aprovacao
+Descricao / Objetivo:   Fonte MVC para exibição de Track Aprovação
 Doc. Origem:            EEC09
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */
@@ -22,7 +22,7 @@ User Function MGFEEC12()
 
 	oBrowse2 := FWMBrowse():New()
 	oBrowse2:SetAlias('ZZG')
-	oBrowse2:SetDescription('Orcamento Exportacao Marfrig')
+	oBrowse2:SetDescription('Orçamento Exportação Marfrig')
 	oBrowse2:AddLegend("ZZG_STATUS = 'P' ","BLUE" ,'Pendente')
 	oBrowse2:AddLegend("ZZG_STATUS = 'W' ","YELLOW" ,'Enviado Workflow')
 	oBrowse2:AddLegend("ZZG_STATUS = 'A' ","GREEN" ,'Aprovado')
@@ -54,16 +54,16 @@ Static Function ModelDef()
 // Cria o objeto do Modelo de Dados
 	oModel := MPFormModel():New('EEC12M', /*bPreValidacao*/, /*bPosValidacao*/, /*bCommit*/, /*bCancel*/ )
 
-// Adiciona ao modelo uma estrutura de formulario de edicao por campo
+// Adiciona ao modelo uma estrutura de formulário de edição por campo
 	oModel:AddFields( 'EEC12MASTER', /*cOwner*/, oStruZZG, /*bPreValidacao*/, /*bPosValidacao*/, /*bCarga*/ )
 
 // Adiciona a descricao do Modelo de Dados
-	oModel:SetDescription( 'Orcamento Exportacao Marfrig' )
+	oModel:SetDescription( 'Orçamento Exportação Marfrig' )
 
 // Adiciona a descricao do Componente do Modelo de Dados
-	oModel:GetModel( 'EEC12MASTER' ):SetDescription( 'Historico Aprovacao' )
+	oModel:GetModel( 'EEC12MASTER' ):SetDescription( 'Historico Aprovação' )
 
-//Adiciona chave Primaria
+//Adiciona chave Primária
 	oModel:SetPrimaryKey({"ZZG_FILIAL","ZZG_NUMERO"})
 	
 Return oModel
@@ -82,7 +82,7 @@ Static Function ViewDef()
 // Cria o objeto de View
 	oView := FWFormView():New()
 
-// Define qual o Modelo de dados sera utilizado
+// Define qual o Modelo de dados será utilizado
 	oView:SetModel( oModel )
 
 //Adiciona no nosso View um controle do tipo FormFields(antiga enchoice)

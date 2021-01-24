@@ -12,14 +12,14 @@ Data................: 07/03/2018
 Descricao / Objetivo: Tipo de Valor do Contas a Pagar
 Doc. Origem.........: MIT044- CAP016 - Tipo de Valor
 Solicitante.........: Cliente - Mauricio CAP
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Pontos de Entrada
                       1 = F040ALT - Para atualizar o valor Acrescimo e Decrescimo
-                      2 = F050B01 - Para exclusao da ZDS na exclusao do Titulo
+                      2 = F050B01 - Para exclusão da ZDS na exclusão do Titulo
                       3 = CTBGRV  - Para marcar o campo CT2_DTCV3 em Branco
-                      4 = DPCTB102GR - Para marcar os Flags como N na Exclusao
-                      5 = ANCTB102GR - Para marcar os Flags como N na Exclusao do Lote
-                      MGFFINCTB - Funcao que gera a movimentacao.
+                      4 = DPCTB102GR - Para marcar os Flags como N na Exclusão
+                      5 = ANCTB102GR - Para marcar os Flags como N na Exclusão do Lote
+                      MGFFINCTB - Função que gera a movimentação.
 =====================================================================================
 */
 User Function MGFFIN87(nTipo,nOpc,dDatalanc,cLoteP,cSubLote,cDoc)
@@ -111,10 +111,10 @@ Return
 Programa............: MGFFINCTB
 Autor...............: Marcelo Carneiro
 Data................: 12/03/2018
-Descricao / Objetivo: Realiza Contabilizacao dos Rateios de Tipo de Valor
+Descrição / Objetivo: Realiza Contabilização dos Rateios de Tipo de Valor
 Doc. Origem.........: FIN - Tipo de Valor
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -122,14 +122,14 @@ User Function MGFFINCTB()
 
 Private aParamBox := {} 
 Private aRet      := {}
-Private aSimNao   := {'Sim','Nao'}           
+Private aSimNao   := {'Sim','Não'}           
 
-AAdd(aParamBox, {2, "Monstra Lanï¿½amentos:"	,1,aSimNao , 050	, , .F.	})
+AAdd(aParamBox, {2, "Monstra Lançamentos:"	,1,aSimNao , 050	, , .F.	})
 AAdd(aParamBox, {1, "Dt.Inicio:"	    ,CTOD('  /  /  ')                     , "@!",,      ,, 050	, .T.	})
 AAdd(aParamBox, {1, "Dt.Fim:"	        ,CTOD('  /  /  ')                     , "@!",,      ,, 050	, .T.	})
 AAdd(aParamBox, {1, "Filial de:"       	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
-AAdd(aParamBox, {1, "Filial Ate:"      	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
-IF ParamBox(aParambox, "Gera Contabilizacao por Tipo de Valor"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
+AAdd(aParamBox, {1, "Filial Até:"      	,Space(tamSx3("A2_FILIAL")[1])        , "@!",                           ,"XM0" ,, 070	, .F.	})
+IF ParamBox(aParambox, "Gera Contabilização por Tipo de Valor"	, @aRet, , , .T. /*lCentered*/, 0, 0, , , .T. /*lCanSave*/, .T. /*lUserSave*/)
 	IF VALTYPE(MV_PAR01) == 'C'
 		IF MV_PAR01 == 'Sim'     
 		    MV_PAR01 := 1 
@@ -238,7 +238,7 @@ Else
 		SM0->(dbSeek(SM0->M0_CODIGO + cFilAnt))
 		
 		dDtHav 	 := STOD(aFil[ni,2]) //Pega Data
-		lTempRet := U_XXVlDtCal(dDtHav,dDtHav) //Realiza Validacao do Periodo
+		lTempRet := U_XXVlDtCal(dDtHav,dDtHav) //Realiza Validação do Periodo
 		
 		If !lTempRet
 			AADD(aERROS,'Filial: ' + aFil[ni,1] + ', Data: ' + dToC(dDtHav))
@@ -247,7 +247,7 @@ Else
 		
 	Next ni
 	
-	//Verifica se Gerou erros e apresenta as filiais e datas que estao com datas em calendarios INDISPONIVEIS
+	//Verifica se Gerou erros e apresenta as filiais e datas que estão com datas em calendarios INDISPONIVEIS
 	If Len(aERROS) > 0
 		For ni := 1 to Len(aERROS)
 			cErros += aERROS[ni]

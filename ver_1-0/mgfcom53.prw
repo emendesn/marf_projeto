@@ -8,7 +8,7 @@ Data.....:              Nov/2017
 Descricao / Objetivo:   Funcao chamada pelo ponto de entrada MT120CND
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */

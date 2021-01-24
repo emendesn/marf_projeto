@@ -8,7 +8,7 @@ Data.....:              10/11/2016
 Descricao / Objetivo:   Ajuste Fiscal - NF de Entrada
 Doc. Origem:            GAP FIS040
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              
 =====================================================================================
 */
@@ -93,7 +93,7 @@ return nil
 static function MenuDef()
 	local aRotina := {}
 
-	aadd( aRotina, { 'Alteracao de Fornecedor'		, 'U_MGFFIS10()()'	, 0, 4, 0, NIL } )
-	aadd( aRotina, { 'Alteracao do Livro Fiscal'	, 'U_MGFFIS11()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração de Fornecedor'		, 'U_MGFFIS10()()'	, 0, 4, 0, NIL } )
+	aadd( aRotina, { 'Alteração do Livro Fiscal'	, 'U_MGFFIS11()()'	, 0, 4, 0, NIL } )
 
 return aRotina

@@ -6,7 +6,7 @@ Data.....:              Maio/2017
 Descricao / Objetivo:   P.E. para complementar a gravacao do estorno na rotina MATA241.
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:               
 ===========================================================================================
 */

@@ -11,7 +11,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: Cadastro de Aprovadores
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Tela de Cadastro de Aprovadores
 =====================================================================================
 */
@@ -34,7 +34,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: MenuDef da rotina
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Definição do Menu
 =====================================================================================
 */
@@ -59,7 +59,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: ModelDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Definição do Modelo de Dados para cadastro de Aprovadores
 =====================================================================================
 */
@@ -95,7 +95,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: ViewDef
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Definição da visualização da tela
 =====================================================================================
 */
@@ -123,7 +123,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: Validação do campo de ZS_USER
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz a validação do Usuario digitado( se existe e se não esta vinculado a Outro usuario)
 =====================================================================================
 */
@@ -165,7 +165,7 @@ Data................: 06/10/2016
 Descrição / Objetivo: Validação pos validação do Modelo
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz a validação do Modelo de Dados
 =====================================================================================
 */
@@ -221,7 +221,7 @@ Static Function xMF07TdOk(oModel , lValid)
 
 			lRet	:= .F.
 
-			Help(" ",1,"Valores inconsistentes",,"Valor maximo de aprovacao deve estar preenchido e superior ao valor inicial",1,0)
+			Help(" ",1,"Valores inconsistentes",,"Valor m�ximo de aprova��o deve estar preenchido e superior ao valor inicial",1,0)
 
 		EndIf
 
@@ -237,7 +237,7 @@ Data................: 07/10/2016
 Descrição / Objetivo: Realizar o Commit do modelo
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Para o desbloqueio ou Bloqueio da SZU.
 =====================================================================================
 */
@@ -313,7 +313,7 @@ Data................: 07/10/2016
 Descrição / Objetivo: Realiza o vinculo do Aprovador com as Regras
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Faz o vinculo do Aprovador com as Regras
 =====================================================================================
 */
@@ -322,7 +322,7 @@ User Function xMF07Vinc()
 	Local aArea := GetArea()
 
 	If SZS->ZS_MSBLQL <> '1'
-		FWExecView("Alteracao", "MGFFAT09", MODEL_OPERATION_UPDATE,, {|| .T.})	//"Alteracao"
+		FWExecView("Alteração", "MGFFAT09", MODEL_OPERATION_UPDATE,, {|| .T.})	//"Alteração"
 	Else
 		Help(" ",1,"Aprovador Bloqueado",,"Não sera possivel realizar vinculo com nenhuma regra pois o aprovador encontra-se bloqueado",1,0)
 	EndIf
@@ -339,7 +339,7 @@ Data................: 21/10/2016
 Descrição / Objetivo: Validacao dos valores informados nos campos: ZS_LIMINI e ZS_LIMMAX
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................:
 =====================================================================================
 */
@@ -402,7 +402,7 @@ Data................: 06/10/2016
 Descrição / Objetivo:
 Doc. Origem.........: Contrato - GAP FAT14
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Permite a verificacao dos limites minimo/maximo de aprovacao
 =====================================================================================
 */

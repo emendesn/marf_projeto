@@ -28,9 +28,6 @@ Private nI              := 0
 
 U_MFCONOUT('Iniciando retorno de processamento dos movimentos produtivos...') 
 
-RpcSetType(3) 
-RpcSetEnv( "01" , "010001" , Nil, Nil, "EST", Nil )//, aTables )
-
 cURLPost	:= GetMv("MGF_TAP13A",,"http://spdwvtds002/wsintegracaoShape/api/v0/Integracao")
 cCodInt		:= AllTrim(GetMv("MGF_MONI01"))
 cTipInt		:= AllTrim(GetMv("MGF_MONT10"))
@@ -75,8 +72,6 @@ End
 QRYZZE->(DBCloseArea())
 
 U_MFCONOUT('Completou retorno de processamento dos movimentos produtivos...') 
-
-RpcClearEnv()
 
 Return
 

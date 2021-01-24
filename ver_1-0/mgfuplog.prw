@@ -4,7 +4,7 @@
 #Include "TbiConn.ch"
 
 /*/{Protheus.doc} MGFUPLOG
-//TODO Descricao auto-gerada.
+//TODO Descrição auto-gerada.
 @author thiago.queiroz
 @since 02/10/2019
 @version 1.0
@@ -82,7 +82,7 @@ Static Function MGFUPLOG01()
 
 	Fclose( nHdFaile )
 
-	ConOut("Taura Producao - MGFTAP13 - Finalizando Integracao de Retorno")
+	ConOut("Taura Producao - MGFTAP13 - Finalizando Integraï¿½ï¿½o de Retorno")
 	
 
 

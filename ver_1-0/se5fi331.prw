@@ -3,12 +3,12 @@
 /*
 =====================================================================================
 Programa............: SE5FI331()
-Autor...............: Flavio Dentello
+Autor...............: Flávio Dentello
 Data................: 14/03/2017 
-Descricao / Objetivo: Ponto de entrada no final da compensacao do titulo a receber
+Descricao / Objetivo: Ponto de entrada no final da compensação do título a receber
 Doc. Origem.........: Financeiro - CRE34
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: 
 =====================================================================================
 */

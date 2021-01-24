@@ -10,16 +10,16 @@
 Programa............: MA050PRE
 Autor...............: Marcelo Carneiro
 Data................: 23/06/2017 
-Descricao / Objetivo: Integracao 
+Descricao / Objetivo: Integração 
 Doc. Origem.........: CAD04 - Cadastro de Transportadora para monstrar msg
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Ponto de Entrada antes de alterar
 =====================================================================================
 */
 User Function MA050PRE()
  
-Local _nOpc := PARAMIXB     //3- Inclusao, 4- Alteracao e 5- Exclusao
+Local _nOpc := PARAMIXB     //3- Inclusão, 4- Alteração e 5- Exclusão
  
 If _nOpc == 4
 	IF findfunction("U_MGFINT38") 

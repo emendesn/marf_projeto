@@ -11,7 +11,7 @@ Data.....:              15/03/2018
 Descricao / Objetivo:   Integracao PROTHEUS x MultiEmbarcador - WS envio caminho xml 
 Doc. Origem:            Especificacao de Processos_Emissao_CT-e - EF - 01_v2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              WS Server para Integracao de dados 
 =====================================================================================
 */
@@ -39,7 +39,7 @@ ENDWSSTRUCT
 ***************************************************************************/
 WSSERVICE MGFFATAU DESCRIPTION "Integracao Protheus x Multiembarcador - envia caminho XML" NameSpace "http://totvs.com.br/MGFFATAU.apw"
 
-	// Passagem dos parametros de entrada
+	// Passagem dos par�metros de entrada
 	WSDATA MGFFAUTREQCXML AS MGFFATAUREQXML
 	// Retorno (array)
 	WSDATA MGFFATAURETCXML  AS MGFFATAURETXML
@@ -313,7 +313,7 @@ Static Function XSpedPExp(cIdEnt,cSerie,cNotaIni,cNotaFim,cDirDest,lEnd,dDataDe,
 		Endif
 	Endif
 
-	If IntTMS() .and. lCTe//Altera o conteudo da variavel quando for carta de corre��o para o CTE
+	If IntTMS() .and. lCTe//Altera o conte�do da variavel quando for carta de corre��o para o CTE
 		cTipoNfe := "SAIDA"
 	EndIf
 	ProcRegua(Val(cNotaFim)-Val(cNotaIni))
@@ -646,8 +646,8 @@ Static Function XSpedPExp(cIdEnt,cSerie,cNotaIni,cNotaFim,cDirDest,lEnd,dDataDe,
 				EndIf
 				aDeleta  := {}
 				If ( Len(oRetorno:OWSNOTAS:OWSNFES3) == 0 .And. Empty(cNfes) )
-					//Aviso("SPED","Nao h� dados",{"Ok"})	// "Nao h� dados"
-					conout("MGFFATAU Nao h� dados")
+					//Aviso("SPED","N�o h� dados",{"Ok"})	// "N�o h� dados"
+					conout("MGFFATAU N�o h� dados")
 
 
 
@@ -671,10 +671,10 @@ Static Function XSpedPExp(cIdEnt,cSerie,cNotaIni,cNotaFim,cDirDest,lEnd,dDataDe,
 					lFlush := .F.
 					If !Empty(cNfes)
 						/*
-						If Aviso("SPED","Solicitacao processada com sucesso.",{"Sim","Nao"}) == 1	//"Solicitacao processada com sucesso."
+						If Aviso("SPED","Solicita��o processada com sucesso.",{"Sim","N�o"}) == 1	//"Solicita��o processada com sucesso."
 						if alltrim(FunName()) == 'SPEDMDFE'
 						if empty(cNumMdfe)
-						Aviso("SPED","Nao h� dados",{"Ok"})	// "Nao h� dados"
+						Aviso("SPED","N�o h� dados",{"Ok"})	// "N�o h� dados"
 						else
 						Aviso("STR0126","STR0151"+" "+Upper(cDestino)+CRLF+CRLF+cNumMdfe,{"Ok"})
 						endif
@@ -684,10 +684,10 @@ Static Function XSpedPExp(cIdEnt,cSerie,cNotaIni,cNotaFim,cDirDest,lEnd,dDataDe,
 						endif
 						EndIf
 						*/
-						conout("MGFFATAU Solicitacao processada com sucesso.")
+						conout("MGFFATAU Solicita��o processada com sucesso.")
 					else
-						//Aviso("SPED","STR0106",{"Ok"})	// "Nao h� dados"
-						conout("MGFFATAU Nao h� dados")
+						//Aviso("SPED","STR0106",{"Ok"})	// "N�o h� dados"
+						conout("MGFFATAU N�o h� dados")
 
 					EndIf
 				EndIf

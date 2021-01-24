@@ -204,7 +204,7 @@ return cJsonRet
 //--------------------------------------------------------------
 // Verifica Cartao
 //--------------------------------------------------------------
-user function chkCard( cAccessTok, cCardName, cExpiMonth, cExpiYear, cNumberTok )
+user function chkCard( cAccessTok, cCardName, cExpiMonth, cExpiYear, cNumberTok, _cretorno )
 	local cSellerID		:= allTrim( superGetMv( "MGFGTNTSEL" , , "384f0f3e-1f4d-4417-8454-a323f331b89f" ) )
 	local cClientID		:= allTrim( superGetMv( "MGFGTNTCLI" , , "922ed86c-53e7-4e65-9c30-819aa5fbfa16" ) )
 	local cClientSec	:= allTrim( superGetMv( "MGFGTNTSEC" , , "e791420a-177f-4e54-86e7-5c5847452b2f" ) )
@@ -229,6 +229,8 @@ user function chkCard( cAccessTok, cCardName, cExpiMonth, cExpiYear, cNumberTok 
 	local cTimeFin		:= ""
 	local cTimeProc		:= ""
 
+	Default _cretorno   := ""
+
 	aadd( aHeadOut, 'Authorization: Bearer ' + cAccessTok )
 	aadd( aHeadOut, 'seller_id: ' + cSellerID )
 	aadd( aHeadOut, 'Content-Type: application/json')
@@ -246,11 +248,15 @@ user function chkCard( cAccessTok, cCardName, cExpiMonth, cExpiYear, cNumberTok 
 
 	cTimeIni := time()
 
-	//xPostRet := httpPost(cUrl, , "scope=oob&grant_type=client_credentials",nTimeOut,aHeadOut,@cHeadRet)
 	xPostRet := httpQuote( cUrl /*<cUrl>*/, "POST" /*<cMethod>*/, /*[cGETParms]*/, cJson/*[cPOSTParms]*/, nTimeOut /*[nTimeOut]*/, aHeadOut /*[aHeadStr]*/, @cHeadRet /*[@cHeaderRet]*/ )
 
 	nStatuHttp	:= 0
 	nStatuHttp	:= httpGetStatus()
+
+	_cretorno := "URL: " + alltrim(cUrl) + CHR(10)+CHR(13)
+	_cretorno += "JSON ENVIADO: " + allTrim( cJson ) + CHR(10)+CHR(13)
+	_cretorno += "STATUS DO RETORNO: " + alltrim(str(nStatuHttp))  + CHR(10)+CHR(13)
+	_cretorno += "JSON RETORNADO: "  + alltrim(xPostRet)
 
 	cTimeFin	:= time()
 	cTimeProc	:= elapTime( cTimeIni, cTimeFin )
@@ -279,6 +285,7 @@ user function chkCard( cAccessTok, cCardName, cExpiMonth, cExpiYear, cNumberTok 
 	varInfo( " [E-COM] [GETNET] [CHKCARD] nStatuHttp..."		, nStatuHttp	)
 	varInfo( " [E-COM] [GETNET] [CHKCARD] xPostRet....."		, xPostRet		)
 	varInfo( " [E-COM] [GETNET] [CHKCARD] cHeadRet....."		, cHeadRet		)
+
 return lRetChkCar
 
 //--------------------------------------------------------------

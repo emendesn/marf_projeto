@@ -18,7 +18,7 @@
 
 user function MGFFAT25(_cFunc)
 	recLock("SA1", .F.)
-	if SA1->A1_PESSOA == "J" .and. !empty( SA1->A1_CGC )
+	if SA1->A1_PESSOA == "J"
 		SA1->A1_XINTSFO	:= "P" // STATUS PARA O CLIENTE SER ENVIADO AO SALESFORCE
 		SA1->A1_XENVSFO	:= "S"
 	endif

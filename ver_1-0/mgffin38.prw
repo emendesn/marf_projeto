@@ -3,12 +3,12 @@
 /*
 =====================================================================================
 Programa.:              MGFFIN38
-Autor....:              Flavio Dentello
+Autor....:              Flávio Dentello
 Data.....:              21/10/2016
 Descricao / Objetivo:   Cadastro de tipos de desconto
 Doc. Origem:            GAP FINCRE029_V2
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:              Chamado pelo PE SF1100I
 =====================================================================================
 */
@@ -16,9 +16,9 @@ Obs......:              Chamado pelo PE SF1100I
 User Function MGFFIN38()
 
 
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Declaracao de Variaveis                                             ï¿½
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Declaracao de Variaveis                                             ³
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 Local cVldAlt := ".T." // Validacao para permitir a alteracao. Pode-se utilizar ExecBlock.
 Local cVldExc := ".T." // Validacao para permitir a exclusao. Pode-se utilizar ExecBlock.
@@ -33,9 +33,9 @@ AxCadastro(cString,"Cadastro de Tipo de Desconto",cVldExc,cVldAlt)
 Return
 
 ///Ponto de entrada
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
-//ï¿½ Funcao que grava o tipo de desconto no contas a receber a partir da emissao da nota fiscal
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+//³ Função que grava o tipo de desconto no contas a receber a partir da emissão da nota fiscal
+//ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 User Function CRE2901()
 
 Local aArea	:=	GetArea()
@@ -71,7 +71,7 @@ If (!Empty(SF2->F2_PREFIXO) .or. !Empty(SF2->F2_DUPL))
 						nCount++
 						
 						
-						//Tratamento para gravar o numero da ordem de embarque do OMS no titulo gerado.
+						//Tratamento para gravar o número da ordem de embarque do OMS no título gerado.
 						//GAP CRE24
 						
 						dBselectArea('DAI')
@@ -104,7 +104,7 @@ RestArea(aArea)
 
 Return()
 
-//// PONTO DE ENTRADA PARA ADIONAR O BOTï¿½O DE ALTERACAO DE TIPO DE DESCONTO.
+//// PONTO DE ENTRADA PARA ADIONAR O BOTÃO DE ALTERAÇÃO DE TIPO DE DESCONTO.
 
 #Include 'Protheus.ch'
 
@@ -117,7 +117,7 @@ Return aButtons
 
 
 
-///Apresenta a tela de alteracao do tipo de desconto
+///Apresenta a tela de alteração do tipo de desconto
 
 User Function ALTTPDES()
 
@@ -146,7 +146,7 @@ If SE1->(DbSeek(xFilial('SE1')+SE1->E1_PREFIXO+SE1->E1_NUM+SE1->E1_PARCELA ) )
 		SE1->E1_ZTPDESC := cTpdes
 		SE1->(MsUnLock())
 		
-		MsgInfo ("Alteracao realizada com sucesso!")
+		MsgInfo ("Alteração realizada com sucesso!")
 		
 	EndIf
 	
@@ -156,7 +156,7 @@ aEval(aArea,{|x| RestArea(x)})
 
 Return
 
-/////////Ponto de Entrada para gravar Tipo de desconto na tabela de Movimentacao Bancaria
+/////////Ponto de Entrada para gravar Tipo de desconto na tabela de Movimentação Bancária
 
 User Function xCRE2903()
 
@@ -176,27 +176,27 @@ Local lRet := .T.
 If !Empty(M->E1_DESCFIN) .or. !Empty(M->E1_DECRESC) .or. M->E1_TIPO $ MVABATIM
 	If Empty(M->E1_ZTPDESC)
 		lRet := .F.
-//		APMsgAlert("Titulo com valor de desconto informado ou titulo de abatimento financeiro."+CRLF+;
-//		"Necessario informar o campo de Tipo de Desconto Marfrig.")
+//		APMsgAlert("Título com valor de desconto informado ou título de abatimento financeiro."+CRLF+;
+//		"Necessário informar o campo de Tipo de Desconto Marfrig.")
 		If IsBlind()
-			Help(" ",1,'TPDESCMGF',,'Titulo com valor de desconto informado ou titulo de abatimento financeiro.'+CRLF+;
-						    'Necessario informar o campo de Tipo de Desconto Marfrig.',1,0)
+			Help(" ",1,'TPDESCMGF',,'Título com valor de desconto informado ou título de abatimento financeiro.'+CRLF+;
+						    'Necessário informar o campo de Tipo de Desconto Marfrig.',1,0)
 		Else
-			MsgAlert("Titulo com valor de desconto informado ou titulo de abatimento financeiro."+CRLF+;
-			"Necessario informar o campo de Tipo de Desconto Marfrig.")
+			MsgAlert("Título com valor de desconto informado ou título de abatimento financeiro."+CRLF+;
+			"Necessário informar o campo de Tipo de Desconto Marfrig.")
 		EndIf
 	Endif
 Else
 	If !Empty(M->E1_ZTPDESC)
 		lRet := .F.
-//		APMsgAlert("Titulo nao tem valor de desconto informado ou titulo nao ï¿½ de abatimento financeiro."+CRLF+;
-//		"Nao ï¿½ necessario informar o campo de Tipo de Desconto Marfrig.")
+//		APMsgAlert("Título não tem valor de desconto informado ou título não é de abatimento financeiro."+CRLF+;
+//		"Não é necessário informar o campo de Tipo de Desconto Marfrig.")
 		If IsBlind()
-			Help(" ",1,'TPDESCMGF',,'Titulo nao tem valor de desconto informado ou titulo nao ï¿½ de abatimento financeiro.'+CRLF+;
-						    'Nao ï¿½ necessario informar o campo de Tipo de Desconto Marfrig.',1,0)
+			Help(" ",1,'TPDESCMGF',,'Título não tem valor de desconto informado ou título não é de abatimento financeiro.'+CRLF+;
+						    'Não é necessário informar o campo de Tipo de Desconto Marfrig.',1,0)
 		Else
-			MsgAlert("Titulo nao tem valor de desconto informado ou titulo nao ï¿½ de abatimento financeiro."+CRLF+;
-			"Nao ï¿½ necessario informar o campo de Tipo de Desconto Marfrig.")
+			MsgAlert("Título não tem valor de desconto informado ou título não é de abatimento financeiro."+CRLF+;
+			"Não é necessário informar o campo de Tipo de Desconto Marfrig.")
 		EndIf
 	Endif	
 Endif		

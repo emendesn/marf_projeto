@@ -12,7 +12,7 @@ Descricao / Objetivo:   RAMI - No Pedido aberto para refaturamento valida se a R
 Chamado pelo PE MT410TOK
 Doc. Origem:            GAP CRM
 Solicitante:            Cliente
-Uso......:              
+Uso......:              Marfrig
 Obs......:
 =====================================================================================
 */
@@ -75,7 +75,7 @@ user function MGFCRM34()
 	/*if ALTERA .or. INCLUI
 		if M->C5_ZREFATU == "S"
 			if empty(M->C5_ZRAMI)
-				msgAlert("ï¿½ obrigatï¿½rio informar a RAMI para Refaturamento.")
+				msgAlert("É obrigatório informar a RAMI para Refaturamento.")
 				lRet := .F.
 			endif
 		endif
@@ -85,14 +85,14 @@ user function MGFCRM34()
 	if ALTERA
 		if !empty(SC5->C5_ZREFATU)
 			if empty(SC5->C5_ZRAMI)
-				msgAlert("ï¿½ obrigatï¿½rio informar a RAMI para Refaturamento.")
+				msgAlert("É obrigatório informar a RAMI para Refaturamento.")
 				lRet := .F.
 			endif
 		endif
 	elseif INCLUI
 		if !empty(M->C5_ZREFATU)
 			if empty(M->C5_ZRAMI)
-				msgAlert("ï¿½ obrigatï¿½rio informar a RAMI para Refaturamento.")
+				msgAlert("É obrigatório informar a RAMI para Refaturamento.")
 				lRet := .F.
 			endif
 		endif

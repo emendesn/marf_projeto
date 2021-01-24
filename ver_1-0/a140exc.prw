@@ -7,11 +7,11 @@
 Programa.:              A140EXC 
 Autor....:              Marcelo Carneiro         
 Data.....:              09/11/2016 
-Descricao / Objetivo:   Integracao TAURA - ENTRADAS
+Descricao / Objetivo:   Integração TAURA - ENTRADAS
 Doc. Origem:            Contrato GAPS - MIT044- TAURA PROCESSO DE ENTRADA
 Solicitante:            Cliente
-Uso......:              
-Obs......:              Ponto de Entrada para Nao permitir excluir Pre Nota de AR
+Uso......:              Marfrig
+Obs......:              Ponto de Entrada para Não permitir excluir Pré Nota de AR
 =============================================================================================
 */
 User Function A140EXC 

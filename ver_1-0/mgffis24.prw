@@ -4,12 +4,12 @@
 /*
 =========================================================================================================
 Programa.................: MGFFIS24
-Autor:...................: Flavio Dentello
+Autor:...................: Flávio Dentello
 Data.....................: 24/10/2017
-Descricao / Objetivo.....: Cadastro de SubGrupo
+Descrição / Objetivo.....: Cadastro de SubGrupo
 Doc. Origem..............: GAP
 Solicitante..............: Cliente
-Uso......................: 
+Uso......................: Marfrig
 Obs......................: 
 =========================================================================================================
 */
@@ -101,7 +101,7 @@ Static Function ViewDef()
 
 Return oView
 
-//// Funcao que bloqueia o cadastro
+//// Função que bloqueia o cadastro
 
 Static Function MGFBLQG()
 
@@ -112,13 +112,13 @@ Static Function MGFBLQG()
 		ZDC->(msUnlock())
 		MsgInfo('Cadastro bloqueado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Bloqueado!')
+		MsgAlert('Cadastro já encontra-se Bloqueado!')
 	EndIf
 
 Return
 
 
-//// Funcao que Libera o cadastro
+//// Função que Libera o cadastro
 
 Static Function MGFLIBG()
 
@@ -130,14 +130,14 @@ Static Function MGFLIBG()
 		
 		MsgInfo('Cadastro Liberado!')
 	Else
-		MsgAlert('Cadastro jï¿½ encontra-se Liberado!')
+		MsgAlert('Cadastro já encontra-se Liberado!')
 	EndIf
 
 Return
 
 
 /*===============================================
-Valida alteracao do cadastro
+Valida alteração do cadastro
 ================================================*/
 Static Function ValidAlt(oModel)
 Local nOperation := oModel:GetOperation()
@@ -152,7 +152,7 @@ If nOperation == MODEL_OPERATION_UPDATE
 	DBSelectArea(cAliasTMP1)
 	If !EOF()
 		lRet := .F.
-		Help( ,, 'MGFFIS24-ALT',, 'O Registro jï¿½ foi relacionado a um Produto. Nao podera ser alterado', 1, 0)
+		Help( ,, 'MGFFIS24-ALT',, 'O Registro já foi relacionado a um Produto. Não poderá ser alterado', 1, 0)
 	EndIf
 	DBCloseArea()
 EndIf

@@ -10,7 +10,7 @@ Data................: Outubro/2018
 Descricao / Objetivo: FAT
 Doc. Origem.........: FAT
 Solicitante.........: Cliente
-Uso.................: 
+Uso.................: Marfrig
 Obs.................: Rotina chamada pelo PE M410TOK
 =====================================================================================
 */
@@ -53,7 +53,7 @@ If IsInCallStack("A410Copia")
 					gdFieldPut("C6_CODLAN",GetAdvFVal("SF4","F4_CODLAN",xFilial("SF4")+cTes,1,""),nCnt)
 				Else
 					lRet := .F.
-					APMsgAlert("TES nao encontrado para este tipo de operacao. Item: "+gdFieldGet("C6_ITEM",nCnt))
+					APMsgAlert("TES não encontrado para este tipo de operação. Item: "+gdFieldGet("C6_ITEM",nCnt))
 					Exit
 				Endif	
 			Endif

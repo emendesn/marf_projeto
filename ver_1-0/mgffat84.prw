@@ -7,11 +7,11 @@
 Programa.:              FA070TIT
 Autor....:              Tarcisio Galeano
 Data.....:              03/2018
-Descricao / Objetivo:   bloquear condicao de pagamento pedido de vendas
+Descricao / Objetivo:   bloquear condição de pagamento pedido de vendas
 Doc. Origem:            Faturamento
 Solicitante:            Cliente
-Uso......:              
-Obs......:              validacao do campo C5_CONDPAG
+Uso......:              Marfrig
+Obs......:              validação do campo C5_CONDPAG
 ============================================================================================================================
 */
 user function MGFFAT84()
@@ -32,7 +32,7 @@ Endif
 
 If M->C5_TIPO == "N" // solicitado inclusao pelo TI Marfrig em 03/10/18
 	IF !C_TPCOND $ '23' .and. !IsBlind()
-   		MSGALERT("CONDICAO DE PAGAMENTO INVALIDA PARA VENDAS ")
+   		MSGALERT("CONDIÇÃO DE PAGAMENTO INVALIDA PARA VENDAS ")
 	    LRET := .F.
 	ENDIF
 Endif	

@@ -6,17 +6,17 @@ Data.....:              25/09/2017
 Descricao / Objetivo:   PE acionado no processamento de arquivo CNAB
 Doc. Origem:            
 Solicitante:            Cliente
-Uso......:              
-Obs......:              PE rotina FINA200. Permite bloquear (lRet := .F.)alteracao de
+Uso......:              Marfrig
+Obs......:              PE rotina FINA200. Permite bloquear (lRet := .F.)alteraГЦo de
 Obs......:              banco da baixa pelo portador (E1_PORTADO+...)
 =====================================================================================
 */
 User Function F200PORT()
 
 Local lRet := .T.
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
-//О©╫GAP 19_20_21 FIDC - Bloqueio baixa pelo portador para titulo FIDC            О©╫
-//О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
+//здддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
+//ЁGAP 19_20_21 FIDC - Bloqueio baixa pelo portador para tМtulo FIDC            Ё
+//юдддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
 If ExistBlock("MGFFIN59")
 	lRet := U_MGFFIN59(lRet)
 EndIf

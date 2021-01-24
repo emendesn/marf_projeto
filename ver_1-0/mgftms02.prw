@@ -48,7 +48,7 @@ USER Function TMSJASPV( aParam, _xC5TMSACA, _lTela, _cFunc )	//aParam == {(cAlia
 	If _ltela
 		fwmsgrun(,{|| U_TMSJAWPV(aParam, _xC5TMSACA, _lTela, aEmpFilial,_cFunc)},"Aguarde...","Enviando pedido " + SC5->C5_NUM + " para TMS-Transwide...")
 	Else
-		StartJob("U_TMSJAWPV",GetEnvServer(),.F. ,aParam, _xC5TMSACA, _lTela, aEmpFilial,_cFunc )		// o terceiro parametro como .F. ,  não aguarda o retorno da função do startjob
+		U_TMSJAWPV(aParam, _xC5TMSACA, _lTela, aEmpFilial,_cFunc )		
 	Endif
 
 Return()
@@ -83,11 +83,7 @@ USER Function TMSJAWPV( aParam ,_xC5TMSACA ,_lTela ,aEmpFilial,_cFunName )	//aPa
 	Local _lContinua
 	Default _cFunName := ""
 
-	inkey(.1)				// Pausa de 1/3 de segundo para que um processo somente comece, apos o anterior, inclusive nos logs
-	If Valtype( aEmpFilial ) == "A" .and. !_ltela
-		RpcSetType(3)
-		RpcSetEnv(aEmpFilial[1],aEmpFilial[2],,,"FAT")
-	Else
+	If _ltela
 		aArea := {SC5->(GetArea()),SC6->(GetArea()),SA1->(GetArea()),GetArea()}		// Se não for JOB, Grava as areas, para no retorno não ficar deposiionado.
 	Endif
 
@@ -199,8 +195,15 @@ USER Function TMSJAWPV( aParam ,_xC5TMSACA ,_lTela ,aEmpFilial,_cFunName )	//aPa
 		Next
 
 		oWSPV := MGFINT53():new(cURLPost,oPV/*oObjToJson*/,SC5->(Recno())/*nKeyRecord*/,/*cTblUpd*/,/*cFieldUpd*/,Get("MGF_TMS02B")/*cIntegra*/,Get("MGF_TMS02C")/*cTypeInte*/, cChave, .F., .F., .T.)
-		StaticCall(MGFTAC01,ForcaIsBlind,oWSPV)
+		
+		cSavcInternet := Nil
+		cSavcInternet := __cInternet
+		__cInternet := "AUTOMATICO"
 
+		oWSPV:SendByHttpPost()
+
+		__cInternet := cSavcInternet
+		
 		If oWSPV:lOk
 			IF oWSPV:nStatus == 1
 				ConOut("Integração completada com sucesso")
@@ -252,10 +255,6 @@ USER Function TMSJAWPV( aParam ,_xC5TMSACA ,_lTela ,aEmpFilial,_cFunName )	//aPa
 	conOut('Final do MGFTMS02 - integração Protheus x TMS Transwide - Filial/pedido = ' +SC5->C5_FILIAL + SC5->C5_NUM + " - " + DTOC(dDATABASE) + " - " + TIME() + CRLF)
 	conOut("************************************************* **********************************************************"+ CRLF)
 	aEval(aArea,{|x| RestArea(x)})
-
-	If !_ltela .and. Valtype( aEmpFilial ) == "A"
-		RpcClearEnv()
-	Endif
 
 	If _ltela .and. oWSPV:lOk
 		msginfo("Pedido " + SC5->C5_NUM  + " enviado com sucesso ao TMS Transwide.")
@@ -378,7 +377,6 @@ User Function TMSENVPV( aParam, _xC5TMSACA, _lTela )
 		RestArea(aArea)
 		Return()
 	endif
-	//era aqui
 	// Se receber _cC5TMSACA por parametro, utilizo o seu conteudo.
 	If Valtype( aParam ) == "A"
 		_cC5_FILIAL    	:= SC5->C5_FILIAL
@@ -420,21 +418,20 @@ User Function TMSENVPV( aParam, _xC5TMSACA, _lTela )
 		Endif
 		
 		If _lTela
-//wvn
+
 			If cFilAnt $GetMv("MGF_TMSGER")
 				DEFINE 	MSDIALOG oDlg2 TITLE "Pedido de venda a ser enviado ao TMS MultiSoftware" From 0,0 to 350,400 of oMainWnd PIXEL
 				@ 35,005 SAY   "Filial:"           							  SIZE 100,8                                         PIXEL OF oDlg2
 				@ 35,100 MSGET _oC5_FILIAL            						  VAR _cC5_FILIAL WHEN .F.  PICTURE "@!" SIZE 55,8  F3 "SC5"  PIXEL OF oDlg2
 				@ 55,005 SAY   "Pedido:"           							  SIZE 100,8                                         PIXEL OF oDlg2
 				@ 55,100 MSGET _oC5_NUM            							  VAR _cC5_NUM     PICTURE "@!" SIZE 55,8  F3 "SC5"  PIXEL OF oDlg2		
-				//@ 75,005 SAY "Pedido Provisório"				      		  SIZE 100,8                                         PIXEL OF oDlg2
-				//@ 75,100 MSGET _oC5_PROVIS				 					  VAR _cC5_PROVIS  PICTURE "@!" SIZE 55,8  F3 "SC5"  PIXEL OF oDlg2
 				_oC5_NUM:Enable()
-				//_oC5_PROVIS:Enable()
+
 				ACTIVATE MSDIALOG oDlg2 CENTERED ON INIT EnchoiceBar( oDlg2, ;
 					{|| IF(U_TMSVLPV(SC5->C5_FILIAL,_cC5_NUM,_cC5TMSACA,_lTela,_cC5_PROVIS), U_TMSPVJA({SC5->C5_NUM, IIf( SC5->(Deleted()),3,1), SC5->(Recno())},_cC5TMSACA,_lTela,"U_TMSENVPV",oDlg2) , .T. ) } ,;
 					{|| oDlg2:End()}  , ,aButtons )
 				return
+
 			else
 
 				DEFINE 	MSDIALOG oDlg2 TITLE "Pedido de venda a ser enviado ao TMS Transwide" From 0,0 to 350,400 of oMainWnd PIXEL
@@ -461,13 +458,10 @@ User Function TMSENVPV( aParam, _xC5TMSACA, _lTela )
 		Endif
 
 	Endif
-/*
-	If Valtype(oDlg2) == "O"		// Se a tela de digitacao dos parametros foi criada, fecho-a.
-		oDlg2:End()					// Fecho a tela de digitação dos parâmetros.
-	Endif
-*/
+
 	SC5->(RestArea(aAreaSC5))
 	RestArea(aArea)
+
 Return
 
 
@@ -705,12 +699,7 @@ User Function TMSENVP2( aParam, _xC5TMSACA, _lTela )
 								(_cTMSSC5)->TA_OBS 	:= "Tipo de Pedido não parametrizado para envio ao TMS"
 								(_cTMSSC5)->TA_MARK := SPACE(2)
 							EndIf
-/*
-							If U_TMSBlSZT((cAliasTrb)->C5_NUM) // Verifica se o pedido tem bloqueio
-								(_cTMSSC5)->TA_OBS 	:= "Pedido encontra-se com bloqueio de restrição de enviao ao TMS"
-								(_cTMSSC5)->TA_MARK := SPACE(2)
-							EndIf
-*/
+
 							(_cTMSSC5)->TA_RECNO   	:= (cAliasTrb)->SC5_RECNO
 
 							If (cAliasTrb)->DELET = "*"		// PV Cancelado
@@ -833,44 +822,24 @@ Return
 /*/
 
 User Function TMSVLPV( _cFilialPV, _cC5_NUM, _cC5TMSACA, _lTela,_cC5_PROVIS )		// SC5->C5_FILIAL, _cC5_NUM,  _cC5TMSACA, _lTela
-	//Local aArea		:= GetArea()	// Nesta funcao nao devo usar GetArea/Restarea. Porque reposiciono o SC5 se usuario alterar o numero do pedido, via digitação.
+
 	Local _lRet		:= .T.
 	Local cAliasTr2 := GetNextAlias()
-//wvn
+
 	If cFilAnt $GetMv("MGF_TMSGER")
 	
-		If SC5->C5_ZBLQRGA == "B" .And. Empty(SC5->C5_ZTMSID)
-			MSGINFO("O pedido "+SC5->C5_NUM+" está bloqueado por motivo de regra. Não será enviado ao TMS MultiSoftware.","Pedido Inválido")
-			RETURN
-		ENDIF
+		IF IsInCallStack("A410COPIA")  // copia de pedido
+			If _ltela 
+				oDlg2:End()
+			ENDIF
+			Return
+		EndIf
 
 		If SC5->C5_ZTIPPED = "EX"
 			MSGINFO("O pedido "+SC5->C5_NUM+" é de exportação. Não será enviado ao TMS MultiSoftware.","Pedido Inválido")
 			RETURN
 		ENDIF
-/*
-		If ! Empty(_cC5_PROVIS)
-			If Select("QRYTIPPED") # 0
-				QRYTIPPED->(dbCloseArea())
-			EndIf
-			cQryTPed := ' '
-			cQryTPed := + CRLF + "SELECT C5_FILIAL,C5_NUM,C5_ZTIPPED,C5_ZTMSID"
-			cQryTPed += + CRLF + " FROM "	+ RetSQLName("SC5") + " TSC5"
-			cQryTPed += + CRLF + " WHERE "
-			cQryTPed += + CRLF + "  TSC5.C5_FILIAL='"+xFilial("SC5")+"'"
-			cQryTPed += + CRLF + " 	AND TSC5.C5_NUM='"+_cC5_PROVIS+"'"
-			cQryTPed += + CRLF + "  AND TSC5.D_E_L_E_T_ = ' ' "
-			tcQuery cQryTPed New Alias "QRYTIPPED"
-				
-			If QRYTIPPED->C5_ZTIPPED="PV"
-				MSGINFO("O pedido provisório selecionado não é um pedido do Tipo Provisório (PV), favor selecionar novamente","Pedido Inválido")
-				QRYTIPPED->(dbCloseArea())
-				Return
-			ElseIf EMPTY(QRYTIPPED->C5_ZTMSID)
-				MSGINFO("O pedido Provisório selecionado ainda não foi integrado com o TMS","Atenção !!!")	
-			ENDIF
-		EndIf
-*/
+
 		if IsInCallStack("A410ALTERA") //ALTERA 
 			if ! Empty(SC5->C5_ZTMSID)
 				_xC5TMSACA := 'A'	
@@ -925,7 +894,6 @@ User Function TMSVLPV( _cFilialPV, _cC5_NUM, _cC5TMSACA, _lTela,_cC5_PROVIS )		/
 
 	Endif
 
-	//RestArea(aArea)		//// Nesta funcao nao devo usar GetArea/Restarea.
 Return _lRet
 
 
@@ -946,13 +914,6 @@ Static Function PesoBruPed( _cC5FILIAL,  _cC5NUM )		//SC5->C5_FILIAL + SC5->C5_N
 	If SC5->C5_PBRUTO <> 0
 		_nRet	:= SC5->C5_PBRUTO
 	Else
-
-		//_cQuery := " SELECT SC6.C6_QTDVEN,SB1.B1_PESBRU,SC6.C6_QTDVEN * SB1.B1_PESBRU PESO_TOTAL, SC6.D_E_L_E_T_ SC6_D_E_L_E_T_ , SB1.D_E_L_E_T_  SB1_D_E_L_E_T_ "
-		//_cQuery += " FROM "       + RetSqlName("SC6") + " SC6 "
-		//_cQuery += " INNER JOIN " + RetSqlName("SB1") + " SB1 ON SB1.B1_COD = SC6.C6_PRODUTO AND SB1.D_E_L_E_T_ <> '*'  "
-		//_cQuery += " WHERE  C6_FILIAL = '"+SC5->C5_FILIAL+"' "
-		//_cQuery += " AND C6_NUM = '"+SC5->C5_NUM+"' "
-		//_cQuery += " AND SC6.D_E_L_E_T_ <> '*'   "
 
 		_cQuery := " SELECT SUM(SC6.C6_QTDVEN) PESO_TOTAL  "
 		_cQuery += " FROM "       + RetSqlName("SC6") + " SC6 "
@@ -1121,8 +1082,6 @@ static function getSZV( _cC5_FILIAL, _cC5_NUM )
 	cQrySZV += " 	AND	SC5.D_E_L_E_T_	<>	'*'"												+ CRLF
 	cQrySZV += " ORDER BY C5_FILIAL, C5_NUM, ZT_TIPO, C6_ITEM, ZV_CODRGA"						+ CRLF
 
-	//memoWrite("C:\TEMP\mgfwsc22_2.sql", cQrySZV)
-
 	TcQuery cQrySZV New Alias (cQrySZVRet)
 return
 
@@ -1168,8 +1127,7 @@ User function TMSSELPV(_cFunc,oDlg2)
 		_cQuery += " AND (C5_NOTA =' '  ) "			//_cQuery += " AND (C5_NOTA =' ' OR  C5_NOTA  like 'XXXX%') "
 		_cQuery += Iif(_aRet[6] == 1, " AND SC5.D_E_L_E_T_  = ' ' " , " AND SC5.D_E_L_E_T_  = '*' " ) 	// OBS: Conforme o processa só a linhas deletadas ou só as não deletadas
 		_cQuery += " ORDER BY C5_NUM "
-		//MemoWrite( GetTempPath(.T.) + "AAA_query_" + FunName() +".TXT",_cQuery)
-
+	
 		_cQuery := ChangeQuery(_cQuery)
 		dbUseArea(.T.,"TOPCONN",tcGenQry(,,_cQuery),cAliasTrb,.T.,.T.)
 		(cAliasTrb)->(dbGoTop())
@@ -1218,155 +1176,6 @@ User function TMSSELPV(_cFunc,oDlg2)
 Return
 
 
-	*****************************************************************************************************************
-	* // Rotina criada para testes e simulações
-	*****************************************************************************************************************
-
-User Function TSTGCABE()
-
-	Local cStringTime := "T00:00:00"
-	Local cCliente := ""
-	Local cLoja := ""
-	Local cNomeClien := ""
-	Local cAliasSC5
-	Local _cNumerEXP	:= ""
-	Local _aSM0			:= AbreSM0( cEmpAnt, SC5->C5_FILIAL )
-	Local _nPosFilia	:= 1
-	Local _nI
-	Local xxaction ,xxcodigocliente ,xxnomecliente ,xxdataembarque ,xxdataemissao ,xxdataentrega ,xxenderecoentrega ,xxmunicipioenderecoentrega ,xxcependeroentrega ,xxufenderecoentrega ,xxpaisenderecoentrega ,xxcodigofilial ,xxcnpjfilial
-	Local xxnomefilial ,xxenderecofilial ,xxmunicipiofilial ,xxuffilial ,xxcepfilial ,xxpaisfilial ,xxnumeropedido ,xxstatuspedido ,xxcodigotipopedido ,xxobservacaopedido ,xxnumeroEXP ,xxnomevendedor ,xxQTDETOTAL ,xxunidademedidatotal ,xxtipodeproduto
-
-
-
-	_cC5TMSACA := "I"
-
-	DbSelectArea("SC5")
-	DbGoto(184466)
-	aParam := { SC5->C5_NUM, IIf( Deleted(),3,1), SC5->(recno() ) }
-	_xC5TMSACA	:= "I"
-	_lTela		:= .F.
-	U_TMSJASPV( aParam, _xC5TMSACA, _lTela )
-
-	If .F.
-
-		If SC5->C5_TIPO $ ("D/B")
-			SA2->(dbSetOrder(1))
-			If SA2->(dbSeek(xFilial("SA2")+SC5->C5_CLIENTE+SC5->C5_LOJACLI))
-				If !Empty(SA2->A2_CGC)
-					cCliente	:= SA2->A2_CGC
-				ElseIf !Empty(SA2->A2_ZCODMGF)
-					cCliente := SA2->A2_ZCODMGF
-				Else
-					cCliente := SA2->A2_COD
-					cLoja := SA2->A2_LOJA
-				Endif
-				cNomeClien	:= AllTrim(SA2->A2_NREDUZ) + "  - " + AllTrim(SA2->A2_MUN)
-				cCGC 		:= SA2->A2_CGC
-
-				_cEnderEnt	:= SA2->A2_END
-				_cMunicEnt	:= SA2->A2_MUN
-				_cepEnt		:= SA2->A2_CEP
-				_cEstadEnt	:= SA2->A2_EST
-				_cEstadEnt	:= IF(_cEstadEnt == "EX" ,"  " ,_cEstadEnt )
-				//_cPais_Ent	:= GetAdvFVal("SYA","YA_DESCR",xFilial("SYA")+SA2->A2_PAIS,1,"")
-				_cPais_Ent	:= GetAdvFVal("SYA","YA_ZSIGLA",xFilial("SYA")+SA2->A2_PAIS,1,"")
-
-			Endif
-
-		Else
-			SA1->(dbSetOrder(1))
-			If SA1->(dbSeek(xFilial("SA1")+SC5->C5_CLIENTE+SC5->C5_LOJACLI))
-				If !Empty(SA1->A1_CGC)
-					cCliente	:= SA1->A1_CGC
-				ElseIf !Empty(SA1->A1_ZCODMGF) // campo que conterah o codigo do cliente no sistema da Marfrig. ***verificar o nome que este campo serah criado
-					cCliente := SA1->A1_ZCODMGF
-				Else
-					cCliente := SA1->A1_COD
-					cLoja := SA1->A1_LOJA
-				Endif
-
-				cNomeClien	:= AllTrim(SA1->A1_NREDUZ) + "  - " + AllTrim(SA1->A1_MUN)
-				cCGC		:= SA1->A1_CGC
-				_cEnderEnt	:= IF(Empty(SA1->A1_ENDENT), SA1->A1_END, SA1->A1_ENDENT )
-				_cMunicEnt	:= IF(Empty(SA1->A1_MUNE),   SA1->A1_MUN, SA1->A1_MUNE   )
-				_cepEnt		:= IF(Empty(SA1->A1_CEPE),   SA1->A1_CEP, SA1->A1_CEPE )
-				_cEstadEnt	:= IF(Empty(SA1->A1_ESTE),   SA1->A1_EST, SA1->A1_ESTE )
-				_cEstadEnt	:= IF(_cEstadEnt == "EX" ,"  " ,_cEstadEnt )
-				//_cPais_Ent	:= GetAdvFVal("SYA","YA_DESCR",xFilial("SYA")+SA1->A1_PAIS,1,"")
-				_cPais_Ent	:= GetAdvFVal("SYA","YA_ZSIGLA",xFilial("SYA")+SA1->A1_PAIS,1,"")
-
-				// Se houver endereço cadastrado na SZ9, uso-o
-				If !Empty(SC5->C5_ZIDEND)
-					DbSelectArea("SZ9")
-					SZ9->(dbsetOrder(1))
-					IF SZ9->(DbSeek(xFilial("SZ9")+SC5->C5_CLIENTE+SC5->C5_LOJACLI+SC5->C5_ZIDEND ))
-						_cCNPJSZ9 :=  if(len(alltrim(SZ9->Z9_ZCGC)) = 11, Transform(alltrim(SZ9->Z9_ZCGC),"@! 999.999.999-99"), Transform(SZ9->Z9_ZCGC,"@! 99.999.999.9999/99"))
-						_cNomeSZ9 := Alltrim(SZ9->Z9_ZRAZEND)
-
-						_cEnderEnt  := ALLTRIM(SZ9->Z9_ZENDER)
-						_cBairEnt	:= ALLTRIM(SZ9->Z9_ZBAIRRO)
-						_cMunicEnt  := ALLTRIM(SZ9->Z9_ZMUNIC)
-						_cepEnt		:= ALLTRIM(SZ9->Z9_ZCEP)
-						_cEstadEnt  := ALLTRIM(SZ9->Z9_ZEST)
-						_cPais_Ent	:= If(Empty( SZ9->Z9_ZCODMUN) , "" , "BR" )
-					Endif
-				Endif
-			Endif
-		Endif
-
-		cAliasZB8 := GetNextAlias()
-		BeginSql Alias cAliasZB8
-			SELECT ZB8_FILIAL, ZB8_EXP, ZB8_ANOEXP, ZB8_SUBEXP, R_E_C_N_O_ REC
-			FROM %Table:ZB8% ZB8
-			WHERE
-			ZB8.ZB8_FILIAL = %xFilial:ZB8% AND
-			ZB8.ZB8_PEDFAT = %Exp:SC5->C5_NUM%  AND
-			ZB8.D_E_L_E_T_ = ' '
-		EndSql													// AND ZB8.ZB8_MOTEXP = '7'
-
-		If !(cAliasZB8)->(Eof())
-			_cNumerEXP	:= ZB8_EXP+ZB8_ANOEXP+ZB8_SUBEXP
-		EndIf
-
-		_cNumerEXP	:= StrTran( _cNumerEXP, "EXP", "" )
-
-		xxaction					:= Alltrim( U_TMSAcao( _cC5TMSACA ) )
-		xxcodigocliente				:= cCliente
-		xxnomecliente				:= cNomeClien
-		xxdataembarque				:= Alltrim( IIf(!Empty(SC5->C5_ZDTEMBA),Subs(dTos(SC5->C5_ZDTEMBA),1,4)+"-"+Subs(dTos(SC5->C5_ZDTEMBA),5,2)+"-"+Subs(dTos(SC5->C5_ZDTEMBA),7,2)+cStringTime,"") )
-		xxdataemissao				:= Alltrim( IIf(!Empty(SC5->C5_EMISSAO),Subs(dTos(SC5->C5_EMISSAO),1,4)+"-"+Subs(dTos(SC5->C5_EMISSAO),5,2)+"-"+Subs(dTos(SC5->C5_EMISSAO),7,2)+cStringTime,"") )
-		xxdataentrega				:= Alltrim( IIf(!Empty(SC5->C5_FECENT) ,Subs(dTos(SC5->C5_FECENT) ,1,4)+"-"+Subs(dTos(SC5->C5_FECENT) ,5,2)+"-"+Subs(dTos(SC5->C5_FECENT) ,7,2)+cStringTime,"") )
-		xxenderecoentrega			:= _cEnderEnt
-		xxmunicipioenderecoentrega	:= _cMunicEnt
-		xxcependeroentrega			:= _cepEnt
-		xxufenderecoentrega			:= _cEstadEnt
-		xxpaisenderecoentrega		:= _cPais_Ent
-		xxcodigofilial				:= SC5->C5_FILIAL
-		xxcnpjfilial				:= _aSM0[01]	// SM0->M0_CGC
-		xxnomefilial				:= _aSM0[02]	// SM0->M0_FILIAL
-		xxenderecofilial			:= Alltrim(_aSM0[03]) + " " + Alltrim(_aSM0[04]) + "-" + Alltrim(_aSM0[05])		// Alltrim(SM0->M0_ENDCOB) + " " + Alltrim(SM0->M0_COMPCOB) + "-" + Alltrim(SM0->M0_BAIRCOB)
-		xxmunicipiofilial			:= _aSM0[06]	// SM0->M0_CIDCOB
-		xxuffilial					:= _aSM0[07]	// SM0->M0_ESTCOB
-		xxcepfilial					:= _aSM0[08]	// SM0->M0_CEPCOB
-		xxpaisfilial				:= "BR"
-		xxnumeropedido				:= SC5->C5_NUM + SC5->C5_FILIAL
-		xxstatuspedido				:= IIf(!Empty(SC5->C5_PEDEXP),"N",IIf(SC5->C5_ZBLQRGA=="B","B","N")) // B=bloqueado,N=Liberado
-		xxcodigotipopedido			:= Alltrim(SC5->C5_ZTIPPED) //"VE"
-		xxobservacaopedido			:= Alltrim(SC5->C5_XOBSPED)		// C5_ZOBS
-		xxnumeroEXP					:= _cNumerEXP
-		xxnomevendedor				:= POSICIONE('SA3',1,xFilial('SA3')+SC5->C5_VEND1,'A3_NOME')
-		xxQTDETOTAL					:= PesoBruPed(SC5->C5_FILIAL , SC5->C5_NUM)
-		xxunidademedidatotal     	:= "KG"
-		xxtipodeproduto				:= Alltrim(SC5->C5_XTPROD)
-
-	Endif
-
-	MsgStop("Fim com sucesso")
-	//::Itens	:= {}
-
-Return()
-
-
 // funcao de filtragem dos PV´s que serao enviados ao Tms-Transwide
 // serah chamada por job
 // ******************************
@@ -1389,91 +1198,11 @@ User Function TMS02FiP(aEmpSel, _lTela )
 	Local nVezes    := GetMv("MGF_TMSVEZ",,5)
 	Local cVezes    := ''
 
-
-	If .f.
-
-		Private _cC5TMSACA	:= ""
-
-		// alterado em 16/04/2018 - Paulo Fernandes		// tratamento do job por grupo de filiais
-		For nI := 1 To Len(aEmpSel)
-			If aEmpSel[nI] $ cTMSFIL
-				cEmpSel += ",'"+aEmpSel[nI]+"'"
-			Endif
-		Next nI
-		// fim
-
-		//C5_ZTMSFLA, flags:
-		//1=enviado com sucesso
-		//2=enviado e rejeitado - Erro
-		//3=enviado e Tms-Transwide nao usou PV
-
-		If Empty(cIDTms)
-			ConOut("Não encontrado parâmetro 'MGF_TMSIDV'.")
-			Return()
-		Endif
-
-		cIDTms := Soma1(cIDTms)
-		PutMV("MGF_TMSIDV",cIDTms)
-
-		cVezes := "'S',' '"								// S=Reenviar, ' '= Campo novo ou muito antigo
-		For nI := 1 To nVezes-1
-			cVezes += ",'"+Alltrim(STR(nI))+"'"
-		Next nI
-
-		// flega todos os pedidos selecionados como "em processamento", para que outro job nao pegue o mesmo pedido para processar
-		cQ := " UPDATE "
-		cQ += RetSqlName("SC5")+" "
-		cQ += " SET C5_ZTMSID = '"+cIDTms+"' "
-		cQ += " WHERE  " // PV nao enviado ainda ao Tms-Transwide
-		cQ += "     C5_ZTIPPED in ( Select ZJ_COD from "+RetSqlName("SZJ")+" SZJ Where SZJ.D_E_L_E_T_	=	' ' AND ( ZJ_TMS='S' )) "
-		cQ += " AND (C5_NOTA =' ' OR  C5_NOTA  like 'XXXX%') "
-		// alterado em 16/04/2018 - Paulo Fernandes
-		cQ += " AND C5_FILIAL in ("+cEmpSel+") "
-		cQ += " AND C5_ZTMSREE in ("+cVezes+") "
-		cQ += "	AND C5_ZTMSINT <> 'S' " // N = nao enviado ao Tms-Transwide, pois o envio deve ser feito on-line pelo fonte mgfTMS06. O inicializador padrao deste campo eh 'N', apos o envio pelo mgfTMS06, o campo vai para 'S' e se ocorrer erro no envio da inclusao vai para 'E'. Conteudos possiveis do campo, N/E/S.
-
-		/* Antes da Alteração do Metodo Sicrono. Marcelo Carneiro 11/09
-		cQ += "WHERE (C5_ZTMSFLA = ' ' " // PV nao enviado ainda ao Tms-Transwide
-		cQ += "OR C5_ZTMSREE = 'S' " // PV foi alterado
-		cQ += "OR C5_ZLIBENV = 'S' " // rotina GAP FAT14 teve alteracao no status do PV, bloqueado ou liberado
-		cQ += "OR C5_ZTMSFLA = '3' "
-		cQ += "OR C5_ZTMSFLA = '2') " // PV enviado e retornou erro
-		cQ += "AND C5_ZTMSSEM <> 'S' "
-		cQ += "AND C5_TIPO IN ('N','D','B') "
-		cQ += "AND NOT (D_E_L_E_T_ = '*' "
-		cQ += "AND C5_ZTMSINT = ' ') "
-		cQ += "AND C5_ZTIPPED in ( Select ZJ_COD from "+RetSqlName("SZJ")+" SZJ Where SZJ.D_E_L_E_T_	=	' ' AND ZJ_TMS='S' ) "
-		cQ += "AND (C5_NOTA =' ' OR  C5_NOTA ='XXXXXXXXX') "
-		*/
-
-		nRet := tcSqlExec(cQ)
-		If nRet == 0
-		Else
-			ConOut("Problemas na gravação do semáforo do pedido de venda, para envio ao Tms-Transwide.")
-			Return()
-		EndIf
-
-		cQ := "SELECT SC5.R_E_C_N_O_ SC5_RECNO,C5_FILIAL,C5_NUM,C5_ZTMSINT, C5_ZTMSACA, SC5.D_E_L_E_T_ DELET "
-		cQ += "FROM "+RetSqlName("SC5")+" SC5 "
-		cQ += "WHERE "
-		//cQ += "SC5.D_E_L_E_T_ <> '*' " // OBS: processa linhas deletadas
-		cQ += "C5_ZTMSID = '"+cIDTms+"' "
-		// alterado em 16/04/2018 - Paulo Fernandes
-		cQ += "AND C5_FILIAL in ("+cEmpSel+")"
-		cQ += "ORDER BY C5_FILIAL,C5_NUM "
-
-		cQ := ChangeQuery(cQ)
-		dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
-
-	ENDIF
-
-	//select SC5.R_E_C_N_O_ SC5_RECNO,C5_FILIAL,C5_NUM,C5_ZTMSINT,SC5.D_E_L_E_T_ DELET  FROM SC5010 WHERE C5_FILIAL = '010003' AND C5_NUM = '385359' AND C5_TIPO <> 'B' AND D_E_L_E_T_ = ' '
 	cQ := "SELECT SC5.R_E_C_N_O_ SC5_RECNO,C5_FILIAL,C5_NUM,C5_ZTMSINT, C5_ZTMSACA, SC5.D_E_L_E_T_ DELET "
 	cQ += "FROM "+RetSqlName("SC5")+" SC5 "
 	cQ += "WHERE C5_FILIAL = '010003' AND C5_NUM = '385359' AND C5_TIPO <> 'B' AND D_E_L_E_T_ = ' ' "
 	cQ += "ORDER BY C5_FILIAL,C5_NUM "
 
-	//cQ := ChangeQuery(cQ)
 	dbUseArea(.T.,"TOPCONN",tcGenQry(,,cQ),cAliasTrb,.T.,.T.)
 
 	(cAliasTrb)->(dbGoTop())
@@ -1486,30 +1215,8 @@ User Function TMS02FiP(aEmpSel, _lTela )
 		_cC5TMSACA	:= (cAliasTrb)->C5_ZTMSACA
 		lRet := U_TMSJASPV( {(cAliasTrb)->C5_NUM,IIf((cAliasTrb)->DELET=="*",3,1),(cAliasTrb)->SC5_RECNO}, _cC5TMSACA,"", nil   ) // USER Function TMSJASPV( aParam, _xC5TMSACA, _lTela )	//aParam == {(cAliasTrb)->C5_NUM, IIf((cAliasTrb)->DELET=="*",3,1), (cAliasTrb)->SC5_RECNO}  )
 
-		/* Mudança metodo sicrono 09/17 Marcelo Carneiro
-		SC5->(dbGoto((cAliasTrb)->SC5_RECNO))
-		If SC5->(Recno()) == (cAliasTrb)->SC5_RECNO
-			If SC5->C5_ZTMSFLA != "2" // soh tira flag de reenvio se o envio foi com sucesso
-		cQ := "UPDATE "
-		cQ += RetSqlName("SC5")+" "
-		cQ += "SET "
-		cQ += "C5_ZTMSREE = ' ' "
-				If SC5->C5_ZLIBENV == "S"
-		cQ += ", C5_ZLIBENV = ' ' "
-				Endif
-		cQ += "WHERE R_E_C_N_O_ = "+Alltrim(Str(SC5->(Recno())))
-
-		nRet := tcSqlExec(cQ)
-				If nRet == 0
-				Else
-		ConOut("Problemas na gravação dos campos do pedido de venda, para envio ao Tms-Transwide.")
-		Return()
-				EndIf
-			Endif
-		Endif
-		*/
-
 		(cAliasTrb)->(dbSkip())
+
 	Enddo
 
 	(cAliasTrb)->(dbCloseArea())
@@ -1565,11 +1272,12 @@ Solicitante.........: Cliente
 Uso.................: Marfrig
 =====================================================================================
 */
-User Function U_TMS01Cpy()
+User Function TMS01Cpy()
 	M->C5_ZTMSERR := CriaVar("C5_ZTMSERR")
 	M->C5_ZTMSREE := CriaVar("C5_ZTMSREE")
 	M->C5_ZTMSINT := CriaVar("C5_ZTMSINT")
 	M->C5_ZTMSACA := CriaVar("C5_ZTMSACA")
+	M->C5_ZTMSID  := CriaVar("C5_ZTMSID")
 Return()
 
 /*
@@ -1986,7 +1694,6 @@ Return Nil
 		Method GravarPVItens()
 		Method CarneOsso()
 
-//Return
 	EndClass
 
 Method New() Class GravaPVTMS
@@ -2034,7 +1741,6 @@ Method GravarPVCab(cStatus) Class GravaPVTMS
 			_cepEnt		:= SA2->A2_CEP
 			_cEstadEnt	:= SA2->A2_EST
 			_cEstadEnt	:= IF(_cEstadEnt == "EX" ,"  " ,_cEstadEnt )
-			//_cPais_Ent	:= GetAdvFVal("SYA","YA_DESCR",xFilial("SYA")+SA2->A2_PAIS,1,"")
 			_cPais_Ent	:= GetAdvFVal("SYA","YA_ZSIGLA",xFilial("SYA")+SA2->A2_PAIS,1,"")
 
 		Endif
@@ -2058,7 +1764,6 @@ Method GravarPVCab(cStatus) Class GravaPVTMS
 			_cepEnt		:= IF(Empty(SA1->A1_CEPE),   SA1->A1_CEP, SA1->A1_CEPE )
 			_cEstadEnt	:= IF(Empty(SA1->A1_ESTE),   SA1->A1_EST, SA1->A1_ESTE )
 			_cEstadEnt	:= IF(_cEstadEnt == "EX" ,"  " ,_cEstadEnt )
-			//_cPais_Ent	:= GetAdvFVal("SYA","YA_DESCR",xFilial("SYA")+SA1->A1_PAIS,1,"")
 			_cPais_Ent	:= GetAdvFVal("SYA","YA_ZSIGLA",xFilial("SYA")+SA1->A1_PAIS,1,"")
 
 			// Se houver endereço cadastrado na SZ9, uso-o

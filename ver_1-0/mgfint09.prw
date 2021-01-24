@@ -14,6 +14,10 @@ Doc. Origem:            Contrato - GAP MGFINT02
 Solicitante:            Cliente
 Uso......:              Marfrig
 Obs......:              Programa para recebimento do xml do fornecedor
+
+Últimas Alterações
+RTASK0011511 - 08/09/2020 - Luiz Cesar Silva (DMS) - Importação de XML para Fornecedores autorizados.
+
 =====================================================================================
 
 [OnStart]
@@ -52,7 +56,7 @@ return
 
 User function zcall09()
 
-	Local aParam := {{ "01", "020001" }}
+	Local aParam := {{ "01", "010005" }}
 
 	u_MGFINT09(aParam)
 
@@ -83,15 +87,6 @@ User Function MGFINT09(aParam)
 	Private _lJob	:= IsBlind() .OR. Type("__LocalDriver") == "U"
 
 	//	Private _lJob	:= .T.
-
-	//	If _lJob
-	//		RpcSetType(3)
-	//		//RpcSetEnv("01", "01") //, "Administrador",'123',,,aTables)
-	//		conout("SCH XML BARBI")
-	//		RpcSetEnv( "01", "010001" )
-	//		conout(cFilant)
-	//		//RpcSetEnv( SM0->M0_CODIGO, SM0->M0_CODFIL )
-	//	EndIf
 
    	If _lJob             
    	   //	RpcSetType(3)
@@ -164,14 +159,7 @@ User Function MGFINT09(aParam)
 			EndIf
 		EndIf
 
-		//cXml := FwNoAccent( cXml )
-		//cXml := EncodeUtf8( cXml )
-		//oXML := XmlParser(cXml, "_", @cError, @cWarning )
-
 		if valType( oXML ) == "O"
-			//msgAlert("Nao foi possivel converter o XML do arquivo " + allTrim( cArqOri ) )
-			//Loop
-			//exit
             IF !Empty(XmlChildEx(oXML,"_NFEPROC"))
 				oXML := XmlGetChild(oXML:_NFEPROC, 3)  // pega o 3º elemento a partir do elemento _NFEPROC
 				//Gera Pré Nota e grava na pasta processados
@@ -206,9 +194,6 @@ User Function MGFINT09(aParam)
 	Next w
 
 	cFilAnt := cFilBK
-	//	If _lJob
-	//		RpcClearEnv()
-	//	EndIF
 	If _lJob
 		If ValType ( aParam ) == 'A'
 			RpcClearEnv()
@@ -235,7 +220,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 	Local cSitTrib		:= ""
 	Local cCF			:= ""
 	Local cTexto		:= ""
-	//Local cPedido		:= ""
 	Local cPedido		:= ""
 	Local cItPed		:= ""
 	Local cTpDoc		:= ""
@@ -263,6 +247,9 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 	Local cEmitente     := ''
 	Local nPos          := 0
 	Local bPedObr       := .F.
+
+    Local bFornAut      := .f. // RTASK0011511 - Luiz Cesar (DMS) - Flag para validar fornecedor autorizado para importação XML
+
 	Local cLocaPad      := ''
 	Local _nQent        := 0
 	Local oDestino      := Nil
@@ -385,6 +372,12 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 			cLoja	:= SA2->A2_LOJA
 			cNome	:= SA2->A2_NOME
 			cTpCliFor := "Fornecedor"
+
+			// RTASK0011511 - Luiz Cesar Silva - Busca Fornecedor autorizado para importar xml e atualiza flag bFornAut
+			dbselectarea("SHB")
+			SHB->(dbsetorder(1))
+			bFornAut := ZHB->(dbseek(xFilial("ZHB")+cCliFor+cLoja+cProd))
+
 		Else
 			lRet := .F.
 			cMSG += "Fornecedor não cadastrado, CNPJ Inválido: "+cCnpj+CRLF
@@ -406,7 +399,7 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 		oProd:= oProd:_INFNFE:_DET
 		nValTot := Val(oTotal:_ICMSTOT:_vNF:TEXT) // valor total da nfe
 
-		//Validaçao de NFs, foi notado que quando a nota tem apenas um Item, a tag nao vem em formato array
+		// Validaçao de NFs, foi notado que quando a nota tem apenas um Item, a tag nao vem em formato array
 
 		If ValType(oProd) != 'A'
 			oProd:= XmlParser(GetInfXML(cXML, "infNFe",.T.) , "_", @cError, @cWarning )
@@ -420,16 +413,41 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 			//@ticket TSUPQG - Ricardo Munhoz: Verificar 1o na SA5, depois posicionar na SB1
 			//Verifica amarração produtoxfornecedor
 			If bPedObr
+
 				If cTpCliFor == "Fornecedor"
+
+                    // RTASK0011511 - Luiz Cesar Silva (DMS)- Remanejada sequencia de validação do fornecedor efetuando tratamento 
+					// para verificação de Fornecedores autorizados para importar xml.
+					// Fornecedor autorizado identifica produto pela tag XPED no pedido de compras
 					dbSelectArea("SA5")
 					SA5->(DbSetOrder(14))
-					If SA5->(DbSeek(xFilial("SA5")+cCliFor+cLoja+cProd))
+					If  SA5->(DbSeek(xFilial("SA5")+cCliFor+cLoja+cProd))
 						cProd := SA5->A5_PRODUTO
 						SB1->(dbSeek(xFilial("SB1")+cProd)) //Produto existe e está amarrado. Posiciona SB1
 					Else
-						cMSG += "Amarração Produto x Fornecedor (SA5), produto, "+Alltrim(cProd)+", não cadastrado! "+CRLF
-						lRet := .F.
-					EndIf
+                        // Fornecedor não encontrado na tabela ZHB - Fornecedores autorizados para importar xml
+                        if !bFornAut 
+						   cMSG += "Fornecedor não consta em autorizados para importar xml "+Alltrim(cClifor)+"-"+alltrim(cLoja)+" "+CRLF
+						   lRet := .F.
+
+                        // Fornecedor autorizado identifica produto pela tag XPED no pedido de compras
+                        Elseif !Empty(XmlChildEx(oProd,'_XPED')) 
+					       
+					       cPedido	:= StrZero(VAL(GetInfXML(cXml, "<xPed>"	)),TamSX3('C7_NUM')[1])
+ 						   cPed  	:= PADL(cPedido,TamSX3('C7_NUM')[1],'0')
+                           cItPed	:= GetInfXML(cXml, "<nItemPed>"	)
+						   
+						   SC7->(dbSetOrder(1))
+					       IF SC7->(dbSeek(xFilial('SC7')+cPed+cItem))
+					          cProd := SC7->C7_PRODUTO
+						   Endif	 
+
+						Else
+			//			   cMSG += "Amarração Produto x Fornecedor (SA5), produto, "+Alltrim(cProd)+", não cadastrado! "+CRLF
+			//			   lRet := .F.
+						endif
+					EndIf                    
+
 				Else
 					dbSelectArea("SA7")
 					SA7->(DbSetOrder(1))
@@ -478,15 +496,15 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 				EndIf
 			Next nY
 
-			//cCF := IIF( Substr(oProd:_CFOP:TEXT,1,10)=="5" , "1" , "2" ) + Substr(oProd:_CFOP:TEXT,2,3)
-			//If !GetInfXML(cXml,"<xPed>") .OR. !GetInfXML(cXml, "<nItemPed>")
 			IF  bPedObr
 				If Empty(XmlChildEx(oProd,'_XPED')) //.AND. Empty(XmlChildEx(oProd,'_NITEMPED'))
 					cMSG += "Tag xPed não encontrada no arquivo XML da nota fiscal: "+AllTrim(cNf)+"-"+AllTrim(cSerie)+CRLF
 					lRet := .F.
+				Elseif Empty(XmlChildEx(oProd,'_NITEMPED'))	.and. bFornAut
+					cMSG += "Tag NItemPed não encontrada no arquivo XML da nota fiscal: "+AllTrim(cNf)+"-"+AllTrim(cSerie)+CRLF
+					lRet := .F.
 				Else
 					cPedido		:= StrZero(VAL(GetInfXML(cXml, "<xPed>"	)),TamSX3('C7_NUM')[1])
-					//cItPed		:= StrZero(VAL(GetInfXML(cXml, "<nItemPed>")),TamSX3('C7_ITEM')[1])
 				Endif
 				IF Empty(Alltrim(cPedido)) .OR. val(cPedido) == 0 .AND. bPedObr
 					cMSG += "É Obrigatorio ter Pedido de Compra"+CRLF
@@ -494,14 +512,16 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 				EndIF
 			EndIF
 			IF lRet
-				//cPed  := PADL(Left( cPedido , At( "/" , cPedido)  - 1  ),TamSX3('C7_NUM')[1],'0')
-				//cItem := PADL(SUBSTR(cPedido, At( "/" , cPedido)  +1, Len(cPedido)  ),TamSX3('C7_ITEM')[1],'0')
-				//cPedido		:= GetInfXML(cXml, "<xPed>"	)
-				//cItPed		:= GetInfXML(cXml, "<nItemPed>"	)
 				If bPedObr
 					cPed  := PADL(cPedido,TamSX3('C7_NUM')[1],'0')
-					//cItem := PADL(cItPed,TamSX3('C7_ITEM')[1],'0')
-					cItem := xRetItPed(cFilAnt,cPed,cProd)
+					// RTASK0011511 - Luiz Cesar (DMS) - Busca produto no pedido quando o Fornecedor for encontrado na tabela ZHB - Fornecedores autorizados
+					if bFornAut
+					   SC7->(dbSetOrder(1))
+					   IF SC7->(dbSeek(xFilial('SC7')+cPed+cItem))
+					      cProd := SC7->C7_PRODUTO
+					   endif   
+					   cItem := xRetItPed(cFilAnt,cPed,cProd)
+					endif   
 					If Empty(cItem)
 						cMSG += "Item do pedido: "+ cPed + " do produto: "+ cProd +" não encontrado."
 						lRet := .F.
@@ -520,15 +540,7 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 								lRet := .F.
 							EndIF
 						EndIF
-						/*//Buscar CNPJ do Fornecedor PC p/ comparar com o do XML - cCNPJ
-						SA2->(dbSetOrder(1)) //A2_FILIAL+A2_CODIGO+A2_LOJA
-						If SA2->(DbSeek(xFilial("SA2")+SC7->C7_FORNECE+SC7->C7_LOJA))
-						If SUBSTR(cCNPJ,1,8) != SUBSTR(SA2->A2_CGC,1,8)
-						cMSG += "Raiz CNPJ do Fornecedor: "+Alltrim(SC7->C7_FORNECE)+"-"+Alltrim(SC7->C7_LOJA)+" inválida (Pedido x XML)!"+CRLF
-						lRet := .F.
-						//lRetPC := .T.  //Se a raiz do CNPJ bater deve baixar o PC Original
-						EndIf
-						EndIf*/
+
 						//Verifica se o fornecedor tem entrega por terceiro (tabela CPX)
 						If GetMv("MV_FORPCNF")
 							SA2->(dbSetOrder(1)) //A2_FILIAL+A2_CODIGO+A2_LOJA
@@ -546,6 +558,7 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 								Endif
 							Endif
 						Else
+						
 							cMSG += "Parametro MV_FORPCNF está desabilitado!"+CRLF
 							lRet := .F.
 						Endif
@@ -566,11 +579,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 			IF lRet
 				CadAlmox(cLocaPad,cProd)
 			EndIF
-
-			/*IF lRetPC
-			_nQent := Val(oProd:_QCOM:TEXT)
-			BaixaPC(cPed,cItem,_nQent)
-			ENDIF*/
 
 			aLinha		:= {}
 			AAdd(aLinha ,{'D1_COD'  		,cProd					   				,NIL})
@@ -607,13 +615,21 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 			EndIf
 
 			AAdd(aItens,aLinha)
-		Else
+		
+		Else // Validação do processo com a verificação do array.
+
 			For nI:= 1 To Len(oProd)
 				If !Empty(XmlChildEx(oProd[nI]:_PROD,'_XPED')) // .AND. !Empty(XmlChildEx(oProd[nI]:_PROD,'_NITEMPED'))
 					cProd 	:= oProd[nI]:_PROD:_CPROD:TEXT
 					cPedido	:= StrZero(VAL(oProd[nI]:_PROD:_XPED:TEXT),TamSX3('C7_NUM')[1])
-					//cItPed	:= StrZero(VAL(oProd[nI]:_PROD:_NITEMPED:TEXT),TamSX3('C7_ITEM')[1])
+					if !Empty(XmlChildEx(oProd[nI]:_PROD,'_NITEMPED'))
+					   cItPed	:= StrZero(VAL(oProd[nI]:_PROD:_NITEMPED:TEXT),TamSX3('C7_ITEM')[1])
+					else
+					   cItped := ""
+					endif   
 					cProd	:= Subs(cProd+Space(TamSX3("B1_COD")[1]),1,TamSX3("B1_COD")[1])
+
+
 					If bPedObr
 						cPed  	:= PADL(cPedido,TamSX3('C7_NUM')[1],'0')
 						//cItem 	:= PADL(cItPed,TamSX3('C7_ITEM')[1],'0')
@@ -624,17 +640,36 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 						SB1->(DbSetOrder(1))
 						If !SB1->(dbSeek(xFilial("SB1")+cProd))
 
-							//Verifica amarração produtoxfornecedor
+                            // RTASK0011511 - Luiz Cesar (DMS) - Remanejada sequencia de validação do fornecedor 
+							// efetuando tratamento para verificação de Fornecedores autorizados para importar xml.
 							If cTpCliFor == "Fornecedor"
+
 								dbSelectArea("SA5")
 								SA5->(DbSetOrder(14))
-								If SA5->(DbSeek(xFilial("SA5")+cCliFor+cLoja+cProd))
+								If  SA5->(DbSeek(xFilial("SA5")+cCliFor+cLoja+cProd))
 									cProd := SA5->A5_PRODUTO
-									SB1->(dbSeek(xFilial("SB1")+cProd))
+									SB1->(dbSeek(xFilial("SB1")+cProd)) //Produto existe e está amarrado. Posiciona SB1
 								Else
-									cMSG += "Amarração Cliente x Fornecedor (SA5), produto, "+Alltrim(cProd)+", não cadastrado! "+CRLF
-									lRet := .F.
-								EndIf
+                                    // Fornecedor não encontrado na tabela ZHB - Fornecedores autorizados para importar xml
+                                    // Fornecedor autorizado identifica produto pela tag XPED no pedido de compras
+                        			if !bFornAut 
+						   				cMSG += "Fornecedor não consta em autorizados para importar xml "+Alltrim(cClifor)+"-"+alltrim(cLoja)+" "+CRLF
+						   				lRet := .F.
+
+                                    // Fornecedor autorizado identifica produto pela tag XPED no pedido de compras
+                        			Elseif !Empty(XmlChildEx(oProd[nI]:_PROD,'_XPED')) 
+					       					   
+						 		  			SC7->(dbSetOrder(1))
+					       					IF SC7->(dbSeek(xFilial('SC7')+cPed+cItPed))
+					          					cProd := SC7->C7_PRODUTO
+						   					Endif	 
+									Else
+
+			//			   				cMSG += "Amarração Produto x Fornecedor (SA5), produto, "+Alltrim(cProd)+", não cadastrado! "+CRLF
+			//			   				lRet := .F.
+									endif
+
+								EndIf                    
 
 								//Verifica amarração produtoxcliente
 							Else
@@ -648,7 +683,12 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 									lRet := .F.
 								EndIf
 							EndIf
-							cItem := xRetItPed(cFilAnt,cPed,cProd)
+
+                            if bFornAut .and. !Empty(XmlChildEx(oProd[nI]:_PROD,'_NITEMPED'))
+                               cItem := cItPed
+							else   
+							   cItem := xRetItPed(cFilAnt,cPed,cProd)
+							endif   
 							If Empty(cItem)
 								cMSG += "Item do pedido: "+ cPed + " do produto: "+ cProd +" não encontrado."
 								lRet := .F.
@@ -694,12 +734,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 							cMSG += "É Obrigatorio ter Pedido de Compra"+CRLF
 							lRet := .F.
 						Else
-							//cPed  := PADL(Left( cPedido , At( "/" , cPedido)  - 1  ),TamSX3('C7_NUM')[1],'0')
-							//cItem := PADL(SUBSTR(cPedido, At( "/" , cPedido)  +1, Len(cPedido)  ),TamSX3('C7_ITEM')[1],'0')
-							//cPedido		:= GetInfXML(cXml, "<xPed>"	)
-							//cItPed		:= GetInfXML(cXml, "<nItemPed>"	)
-							//Ped  := PADL(cPedido,TamSX3('C7_NUM')[1],'0')
-							//cItem := PADL(cItPed,TamSX3('C7_ITEM')[1],'0')
 							SC7->(dbSetOrder(1))
 							IF SC7->(!dbSeek(xFilial('SC7')+cPed+cItem))
 								cMSG += "Pedido/Item não cadastrado: "+Alltrim(cPed)+"-"+Alltrim(cItem)+CRLF
@@ -714,15 +748,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 										lRet := .F.
 									EndIF
 								EndIF
-								/*//Buscar CNPJ do Fornecedor PC p/ comparar com o do XML - cCNPJ
-								SA2->(dbSetOrder(1)) //A2_FILIAL+A2_CODIGO+A2_LOJA
-								If SA2->(DbSeek(xFilial("SA2")+SC7->C7_FORNECE+SC7->C7_LOJA))
-								If SUBSTR(cCNPJ,1,8) != SUBSTR(SA2->A2_CGC,1,8)
-								cMSG += "Raiz CNPJ do Fornecedor: "+Alltrim(SC7->C7_FORNECE)+"-"+Alltrim(SC7->C7_LOJA)+" inválida (Pedido x XML)!"+CRLF
-								lRet := .F.
-								//lRetPC := .T.  //Se a raiz do CNPJ bater deve baixar o PC Original
-								EndIf
-								EndIf*/
 								//Verifica se o fornecedor tem entrega por terceiro (tabela CPX)
 								If GetMv("MV_FORPCNF")
 									SA2->(dbSetOrder(1)) //A2_FILIAL+A2_CODIGO+A2_LOJA
@@ -749,13 +774,8 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 								cConta		:= SC7->C7_CONTA
 								cItemCta	:= SC7->C7_ITEMCTA
 								cClassVal	:= SC7->C7_CLVL
-
 							EndIf
-
 						EndIf
-						//					Else
-						//						cPed  := Space(TamSX3('C7_NUM')[1])
-						//						cItem := Space(TamSX3('C7_ITEM')[1])
 					Endif
 
 					cLocaPad      := ''
@@ -768,10 +788,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 					IF lRet
 						CadAlmox(cLocaPad,cProd)
 					EndIF
-
-					/*IF lRetPC
-					BaixaPC(cPed,cItem,_nQent)
-					ENDIF*/
 
 					aLinha		:= {}
 					AAdd(aLinha ,{'D1_COD'  		,cProd					   				,NIL})
@@ -808,10 +824,6 @@ Static Function GeraPreNota(cXML,cMsg, aDados)
 					EndIf
 
 					AAdd(aItens,aLinha)
-					//				Else
-					//					cMSG += "Tag xPed ou nItemPed não encontradas no arquivo XML da nota fiscal: "+AllTrim(cNf)+"-"+AllTrim(cSerie)+CRLF
-					//					lRet := .F.
-					//					Exit
 				Endif
 			Next nI
 		EndIf

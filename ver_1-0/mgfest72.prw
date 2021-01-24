@@ -16,10 +16,10 @@
 Programa............: MGFEST72
 Autor...............: Wagner Neves
 Data................: 29/04/2020
-Descricao / Objetivo: Aprovacao das SA de EPI
+Descricao / Objetivo: Aprovação das SA de EPI
 Solicitante.........: Cliente
-Uso.................: 
-Obs.................: Aprovacoes
+Uso.................: Marfrig
+Obs.................: Aprovações
 Data................: 29/04/2020
 =====================================================================================
 */
@@ -27,15 +27,15 @@ User Function MGFEST72()
 
 	Local cAlias := "ZG6"
 	Private _cNivel     := ' '
-	Private cCadastro   := "Aprovacao de SA - Controle de EPI"
+	Private cCadastro   := "Aprovação de SA - Controle de EPI"
 	Private aRotina     := {}
 	Private aIndexNF    := {}
 	Private cFiltro     := ''
 	Private bFiltraBrw  := ''
 	Private aCores      := {}
 
-	If !cFilAnt $GetMv("MGF_EPIFIL") // Verifica se a filial esta autorizada ao tratamento de EPI
-		MsgAlert("Esta filial nao esta habilitada para executar essa rotina-MGFEST72","MGF_EPIFIL")
+	If !cFilAnt $GetMv("MGF_EPIFIL") // Verifica se a filial está autorizada ao tratamento de EPI
+		MsgAlert("Esta filial não está habilitada para executar essa rotina-MGFEST72","MGF_EPIFIL")
 		Return
 	ENDIF
 
@@ -50,11 +50,12 @@ User Function MGFEST72()
 
 	AADD(aRotina,{"Pesquisar"   ,   "PesqBrw"       ,0,1})
 	AADD(aRotina,{"Visualiza"   ,   "AxVisual"  	,0,2})
-	AADD(aRotina,{"Aprovar SA"  ,   "u_Est72Apr()"  ,0,3})
-	AADD(aRotina,{"Rejeitar SA" ,   "u_Est72Rej()"  ,0,4})
+	AADD(aRotina,{"Aprovar SA"  ,   "u_Est72Apr()"  ,0,2})
+	AADD(aRotina,{"Rejeitar SA" ,   "u_Est72Rej()"  ,0,2})
 	AADD(aRotina,{"Legenda"     ,   "U_Est72Leg()"  ,0,6})
 
-	AADD(aCores,{"ZG6_STATUS ==' ' ","BR_AZUL" })
+	AADD(aCores,{"ZG6_STATUS ==' ' .AND. ZG6_NIVEL == 'A' ","BR_AZUL" })
+	AADD(aCores,{"(ZG6_NIVEL =='A' .AND. ZG6_STATUS =='1') .OR. (ZG6_NIVEL	== 'T' .AND. ZG6_STATUS  ==' ') ","BR_AMARELO" })
 	AADD(aCores,{"ZG6_STATUS =='A' ","BR_VERDE" })
 	AADD(aCores,{"ZG6_STATUS =='R' ","BR_VERMELHO" })
 
@@ -71,7 +72,6 @@ User Function MGFEST72()
 
 	Eval(bFiltraBrw)
 
-	//mBrowse( 6,1,22,75,cAlias,,,,,,aCores)
 	MBrowse(06, 01, 22, 75, cAlias,,,,,, aCores,,,,,,,,, 60000, {|| o := GetMBrowse(), o:GoBottom(), o:GoTop(), o:Refresh() })
 
 Return
@@ -79,7 +79,8 @@ Return
 User Function Est72Leg()
 
 	Local aLegenda := {}
-	AADD(aLegenda,{"BR_AZUL"     ,"SA Pendente de Aprovacao." })
+	AADD(aLegenda,{"BR_AZUL"     ,"SA Pendente Aprovação ADM." })
+	AADD(aLegenda,{"BR_AMARELO"  ,"SA Pendente Aprovação TEC." })
 	AADD(aLegenda,{"BR_VERDE"    ,"SA Aprovada." })
 	AADD(aLegenda,{"BR_VERMELHO" ,"SA Rejeitada" })
 	BrwLegenda(cCadastro, "Legenda", aLegenda)
@@ -95,7 +96,7 @@ User Function Est72Apr()
 	Local cQryEst73		:= ""
 	Local cMatFun 		:= ZG6->ZG6_ZMATFU
 
-// Aprovacao ADM
+// Aprovação ADM
 	If _cNivel == 'A'
 		cQryEst71 := ' '
 		cQryEst71 := "SELECT COUNT( * ) E71COUNT"				        +CRLF
@@ -110,35 +111,61 @@ User Function Est72Apr()
 		If QRYEST71->E71COUNT = 0
 			lChkSerEsp := .T.
 		Else
-			Help(NIL, NIL, "Aprovacao Administrativa", NIL, "A Aprovacao Administrativa jï¿½ foi realizada para esta SA.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"SA jï¿½ liberada pela ï¿½rea Administrativa"})
+			Help(NIL, NIL, "Aprovação Administrativa", NIL, "A Aprovação Administrativa já foi realizada para esta SA.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"SA já liberada pela área Administrativa"})
 			QRYEST71->(DbCloseArea())
 			Return
 		EndIf
 		QRYEST71->(DbCloseArea())
 	EndIf
 
-// Aprovacao TEC
+// Aprovação TEC
 	If _cNivel == 'T'
 		cQryEst72 := ' '
 		cQryEst72 := "SELECT COUNT( * ) E72COUNT"				        +CRLF
 		cQryEst72 += " FROM " + RetSqlName("ZG6") + " ZG6"		        +CRLF
 		cQryEst72 += " WHERE ZG6_NUM  	=	'" + ZG6->ZG6_NUM+"'"       +CRLF
 		cQryEst72 += "  AND ZG6_ITEM  	=	'" + ZG6->ZG6_ITEM+"'"       +CRLF
-		cQryEst72 += "	AND ZG6_NIVEL	=	'A' "                       +CRLF
-		cQryEst72 += "	AND ZG6_STATUS  = '1'"                          +CRLF
+		cQryEst72 += "	AND ((ZG6_NIVEL	=	'A' AND ZG6_STATUS  = '1')"  +CRLF
+		cQryEst72 += "	       OR (ZG6_NIVEL	=	'T' AND ZG6_STATUS  = ' '))"  +CRLF
 		cQryEst72 += " 	AND ZG6_FILIAL	=	'" + xFilial("ZG6") + "'"   +CRLF
 		cQryEst72 += " 	AND ZG6.D_E_L_E_T_ = ' ' "
 		TcQuery cQryEst72 New Alias "QRYEST72"
 		If QRYEST72->E72COUNT > 0
 			lChkSerEsp := .T.
 		Else
-			Help(NIL, NIL, "Aprovacao Tï¿½cnica", NIL, "A Aprovacao Tï¿½cnica somente podera ser feita apos a aprovacao Administrativa.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Aguarde a aprovacao Administrativa"})
-			QRYEST72->(DbCloseArea())
-			Return
+	
+			// Verifica se ja foi feita aprovação técnica para essa SA
+			cQryEst73 := ' '
+			cQryEst73 := "SELECT COUNT( * ) E73COUNT"				        +CRLF
+			cQryEst73 += " FROM " + RetSqlName("ZG6") + " ZG6"		        +CRLF
+			cQryEst73 += " WHERE ZG6_NUM  	=	'" + ZG6->ZG6_NUM+"'"       +CRLF
+			cQryEst73 += "  AND ZG6_ITEM 	=	'" + ZG6->ZG6_ITEM+"'"     +CRLF
+			cQryEst73 += "	AND ZG6_NIVEL	=	'T' "                       +CRLF
+			cQryEst73 += "	AND ZG6_STATUS  = '1'"                          +CRLF
+			cQryEst73 += " 	AND ZG6_FILIAL	=	'" + xFilial("ZG6") + "'"   +CRLF
+			cQryEst73 += " 	AND ZG6.D_E_L_E_T_ = ' ' "
+			TcQuery cQryEst73 New Alias "QRYEST73"
+	
+			If QRYEST73->E73COUNT = 0
+		
+				Help(NIL, NIL, "Aprovação Técnica", NIL, "A Aprovação Técnica somente poderá ser feita após a aprovação Administrativa.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Aguarde a aprovação Administrativa"})
+				QRYEST72->(DbCloseArea())
+				QRYEST73->(DbCloseArea())
+				Return
+
+			Else
+		
+				Help(NIL, NIL, "Aprovação Técnica", NIL, "A Aprovação Técnica já foi realizada para esta SA.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"SA já liberada pela área Técnica"})
+				QRYEST73->(DbCloseArea())
+				QRYEST72->(DbCloseArea())
+				Return
+		
+			EndIf
+	
 		EndIf
 		QRYEST72->(DbCloseArea())
 
-// Verifica se ja foi feita aprovacao tï¿½cnica para essa SA
+		// Verifica se ja foi feita aprovação técnica para essa SA
 		cQryEst73 := ' '
 		cQryEst73 := "SELECT COUNT( * ) E73COUNT"				        +CRLF
 		cQryEst73 += " FROM " + RetSqlName("ZG6") + " ZG6"		        +CRLF
@@ -152,7 +179,7 @@ User Function Est72Apr()
 		If QRYEST73->E73COUNT = 0
 			lChkSerEsp := .T.
 		Else
-			Help(NIL, NIL, "Aprovacao Tï¿½cnica", NIL, "A Aprovacao Tï¿½cnica jï¿½ foi realizada para esta SA.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"SA jï¿½ liberada pela ï¿½rea Tï¿½cnica"})
+			Help(NIL, NIL, "Aprovação Técnica", NIL, "A Aprovação Técnica já foi realizada para esta SA.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"SA já liberada pela área Técnica"})
 			QRYEST73->(DbCloseArea())
 			Return
 		EndIf
@@ -215,12 +242,12 @@ User Function Est72Apr()
 	EndIf
 
 	If _cNivel == "A"
-		MsgInfo("Solicitaï¿½ï¿½o ao Armazï¿½m "+ZG6->ZG6_NUM+" Item : "+ZG6->ZG6_ITEM+" aprovada com sucesso pela ï¿½rea Administrativa.","SA Aprovada!!!")
+		MsgInfo("Solicitação ao Armazém "+ZG6->ZG6_NUM+" Item : "+ZG6->ZG6_ITEM+" aprovada com sucesso pela área Administrativa.","SA Aprovada!!!")
 	EndIf
 
 	If _cNivel == "T" .And. lGrv
-// Envia para o RH
-		fEnviaRh(cMatFun)
+		// Envia para o RH
+		u_MGEST72E(cMatFun)
 	ENDIF
 RETURN
 
@@ -244,7 +271,7 @@ User Function Est72Rej()
 		If QRYEST72->E72COUNT > 0
 			lChkSerEsp := .T.
 		Else
-			Help(NIL, NIL, "Rejeicao Tï¿½cnica", NIL, "A rejeicao Tï¿½cnica somente podera ser feita apos a Aprovacao Administrativa.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Aguarde a aprovacao Administrativa"})
+			Help(NIL, NIL, "Rejeição Técnica", NIL, "A rejeição Técnica somente poderá ser feita após a Aprovação Administrativa.", 1, 0, NIL, NIL, NIL, NIL, NIL, {"Aguarde a aprovação Administrativa"})
 			QRYEST72->(DbCloseArea())
 			Return
 		EndIf
@@ -284,7 +311,6 @@ User Function Est72Rej()
 		cQryEst71A += "SET ZG6_STATUS  = 'X'"                           +CRLF
 		cQryEst71A += " WHERE ZG6_NUM  	=	'" + ZG6->ZG6_NUM+"'"       +CRLF
 		cQryEst71A += " AND ZG6_ITEM 	=	'" + ZG6->ZG6_ITEM+"'"      +CRLF
-		//cQryEst71A += "	AND ZG6_NIVEL	=	'A' "                   +CRLF
 		cQryEst71A += "	AND ZG6_STATUS  = ' '"                          +CRLF
 		cQryEst71A += "	AND ZG6_FILIAL	=	'" + xFilial("ZG6") + "'"   +CRLF
 		cQryEst71A += "	AND D_E_L_E_T_ = ' ' "
@@ -306,11 +332,11 @@ User Function Est72Rej()
 			MsgStop(TcSQLError())
 		ENDIF
 	EndIf
-	MsgInfo("Solicitaï¿½ï¿½o ao Armazï¿½m "+ZG6->ZG6_NUM+" Item : "+ZG6->ZG6_ITEM+" rejeitada com sucesso pela ï¿½rea "+IIf(_cNivel="A","Administrativa","Tï¿½cnica")+".","SA Rejeitada!!!")
+	MsgInfo("Solicitação ao Armazém "+ZG6->ZG6_NUM+" Item : "+ZG6->ZG6_ITEM+" rejeitada com sucesso pela área "+IIf(_cNivel="A","Administrativa","Técnica")+".","SA Rejeitada!!!")
 Return
 
 
-Static Function fEnviaRh(cMatFun)
+User Function MGEST72E(cMatFun)
 	Local cHeadRet	   := ""
 	Local cUrlFun	   := GetMv("MGF_EPIURL",,"http://spdwvapl203:1685/epi/api/consulta/mapa?matricula=")
 	Local aHeadOut	   := {}
@@ -330,7 +356,7 @@ Static Function fEnviaRh(cMatFun)
 			_cProdRh  := Alltrim(oFuncionario[1]:codequip)
 		EndIf
 	EndIf
-	//-----| Fazendo a comunicaï¿½ï¿½o com o Barramento |-----\\
+	//-----| Fazendo a comunicação com o Barramento |-----\\
 
 	oObjRet 	:= nil
 	oCarga 		:= nil
@@ -344,24 +370,25 @@ Static Function fEnviaRh(cMatFun)
 	__cInternet	:= "AUTOMATICO"
 	oWSEST72:SendByHttpPost()
 	__cInternet := _cSavcInt
-	If oWSEST72:lOk
+	nStatuHttp	:= httpGetStatus()
+	If oWSEST72:lOk .and. nStatuHttp >= 200 .and. nStatuHttp <= 299
 		If fwJsonDeserialize(oWSEST72:cPostRet , @oObjRet)
-			EST72GRVLOG()
-			MsgInfo("Solicitaï¿½ï¿½o ao Armazï¿½m aprovada com sucesso pela ï¿½rea Tï¿½cnica. SA enviada para o RH solicitando aprovacao.","SA Aprovada-Tï¿½cnica !!!")
+			U_EST72GRV()
+			MsgInfo("Solicitação ao Armazém aprovada com sucesso pela área Técnica. SA enviada para o RH solicitando aprovação.","SA Aprovada-Técnica !!!")
 		Else
-			MsgAlert("Erro no envio da SA para aprovacao do RH. A aprovacao Tï¿½CNICA nao foi realizada. Favor verificar se jï¿½ nao foi enviado para o RH uma SA com a mesma matrï¿½cula e produto na data de hoje.","Atencao !!!")
-			EST72GRVLOG()
-			EST72ROLAPR()
+			MsgAlert("Erro no envio da SA para aprovação do RH. A aprovação TÉCNICA não foi realizada. Favor verificar se já não foi enviado para o RH uma SA com a mesma matrícula e produto na data de hoje.","Atenção !!!")
+			U_EST72GRV()
+			U_EST72ROL()
 		EndIf
 	Else
-		MsgAlert("Erro na comunicaï¿½ï¿½o com o RH para envio da SA para aprovacao. Aprovacao Tï¿½CNICA nao foi realizada. Favor verificar com a TI se o barramento esta ativo.","Atencao !!!")
-		EST72GRVLOG()
-		EST72ROLAPR()
+		MsgAlert("Erro na comunicação com o RH para envio da SA para aprovação. Aprovação TÉCNICA não foi realizada. Favor verificar com a TI se o barramento está ativo.","Atenção !!!")
+		U_EST72GRV()
+		U_EST72ROL()
 	EndIf
 
 Return
 
-Static Function EST72GRVLOG()
+User Function EST72GRV()
 	ZG7->(dbSetOrder(1))
 	Reclock("ZG7",.T.)
 	ZG7->ZG7_FILIAL		:= xFilial("ZG7")
@@ -379,9 +406,9 @@ Static Function EST72GRVLOG()
 	ZG7->(MsUnlock())
 Return
 
-Static Function EST72ROLAPR()
+User Function EST72ROL()
 
-// voltando a aprovacao
+// voltando a aprovação
 	cZg6Num := ZG6->ZG6_NUM
 	cZg6Item:= ZG6->ZG6_ITEM
 	cQryEst72X := "UPDATE " + RetSqlName("ZG6")  		            +CRLF
@@ -412,7 +439,7 @@ RETURN
 
 /*/
 	{Protheus.doc} EST72CARGA
-	Faz comunicaï¿½ï¿½o com o Barramento via HTTP Post.
+	Faz comunicação com o Barramento via HTTP Post.
 
 	@author Wagner Neves
 	@since 05/05/2020
@@ -453,7 +480,7 @@ return
 
 /*/
 	{Protheus.doc} EST72CARGA -> setDados
-	Metodo para pegar Matricula do Funcionï¿½rio
+	Metodo para pegar Matricula do Funcionário
 	@author Wagner Neves
 	@since 05/05/2020
 	@type Method
@@ -467,7 +494,6 @@ Method SetDados() Class EST72CARGA
 	Self:qtdAprov		:= SCP->CP_QUANT
 	Self:nroReqErp		:= Alltrim(SCP->CP_NUM)
 	Self:dataRegErp		:= SUBS(DTOS(SCP->CP_EMISSAO),1,4)+"-"+SUBS(DTOS(SCP->CP_EMISSAO),5,2)+"-"+SUBS(DTOS(SCP->CP_EMISSAO),7,2)+" "+SUBS(ZG6->ZG6_HORLIB,1,5) // "2020-05-01 12:10"
-	//DTOS(SCP->CP_EMISSAO)
 	Self:usuarioErp		:= SUBS(ZG6->ZG6_USRLIB,1,30)
 	Self:codEquipSupr	:= ALLTRIM(SCP->CP_PRODUTO)
 Return
